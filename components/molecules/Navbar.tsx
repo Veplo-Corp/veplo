@@ -6,7 +6,9 @@ type Props = {
     onShowCategory: () => void
 }
 
-const navbar: React.FC<Props> = ({genere, showCategory, onShowCategory}) => {    
+const navbar: React.FC<Props> = ({genere, showCategory, onShowCategory}) => {      
+
+
     return (
         
         <nav className=" justify-center w-full hidden md:flex  "> {/* pr-80 */}
