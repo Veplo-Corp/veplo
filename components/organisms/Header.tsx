@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { NextRouter, useRouter } from 'next/router'
 import Navbar from '../molecules/navbar'
+import JoinUs_Navbar from '../molecules/JoinUs_Navbar'
 
 
 const Header = () => {
@@ -16,13 +17,20 @@ const Header = () => {
         })
     }
     return (
-        <>
+        <div onMouseLeave={() => setshowCategory(false)}>
+            <JoinUs_Navbar />
 
-
-
-            <div className="pl-2 md:pl-8 absolute z-50 top-3"> {/* lg:w-0 lg:flex-1 */}
+            {/* Menu button, Search button and Dintorni Logo for screen >=md */}
+            <div className=" absolute z-50 top-3 md:hidden">
+                <button type="button" className="inline-flex mt-0.5 rounded-md px-4  active:bg-gray-100 focus:outline-none" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-black">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                </button>
+            </div>
+            <div className="hidden md:flex pl-8 absolute z-50 top-10 -mt-px"> {/* lg:w-0 lg:flex-1 */}
                 <Link href="/home">
-                    <a className="font-black text-xl md:text-3xl italic text-black-900">DINTORNI</a>
+                    <a className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</a>
                 </Link>
             </div>
             <div className="pl-2 md:pl-8 absolute z-50 top-3 md:top-4  right-0 md:hidden">
@@ -39,12 +47,16 @@ const Header = () => {
                 <div className="mx-auto max-w-full border-b-2 border-gray-100">
                     <div className=" py-2 md:py-3 lg:justify-start lg:space-x-10">
                         <div className='flex items-center justify-between h-8 '>
-                            <Navbar genere={genere} showCategory={showCategory} onShowCategory={handleShowCategory}></Navbar>
+                            <Navbar genere={genere} showCategory={showCategory} onShowCategory={handleShowCategory} /> 
+                            <div className=" justify-center w-full flex md:hidden">
+                                <Link href="/home">
+                                    <a className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</a>
+                                </Link>
+                            </div>
                         </div>
 
-
                     </div>
-                    {showCategory && <div className='h-96 border-b-2 border-gray-100 bg-white w-screen	absolute z-50	 top-12'>
+                    {showCategory && <div className='h-80 border-b-2 border-gray-100 bg-white w-screen	absolute z-50	 top-12'>
 
                     </div>}
                 </div>
@@ -145,7 +157,8 @@ const Header = () => {
                     </div>
                 </div>}
             </div>
-        </>
+
+        </div>
     )
 }
 
