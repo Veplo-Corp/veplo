@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { NextRouter, useRouter } from 'next/router'
-import Navbar from '../molecules/navbar'
+import Navbar from '../molecules/Home_Navbar'
 import JoinUs_Navbar from '../molecules/JoinUs_Navbar'
 
 
