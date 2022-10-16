@@ -10,6 +10,7 @@ const Header = () => {
     const genere: 'uomo' | 'donna' | undefined = router.query.genere
     const showMenu = false;
     const [showCategory, setshowCategory] = useState(false);
+    const address = 'Terni, via cavour 41';
 
     const handleShowCategory = () => {
         setshowCategory((actualValue) => {
@@ -29,9 +30,20 @@ const Header = () => {
                 </button>
             </div>
             <div className="hidden md:flex pl-8 absolute z-50 top-10 -mt-px"> {/* lg:w-0 lg:flex-1 */}
-                <Link href="/home">
+                {!address && <Link href="/home">
                     <a className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</a>
-                </Link>
+                </Link>}
+                {address &&
+                    <>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-6 h-6 mt-1">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                        </svg>
+                        <p className="font-sm text-sm mt-2 ml-1  ">
+                            {address}
+                        </p>
+                    </>
+                }
             </div>
             <div className="pl-2 md:pl-8 absolute z-50 top-3 md:top-4  right-0 md:hidden">
                 <button type="button" className="inline-flex mt-0.5 rounded-md px-4 active:bg-gray-100 focus:outline-none" aria-expanded="false">
@@ -47,7 +59,7 @@ const Header = () => {
                 <div className="mx-auto max-w-full border-b-2 border-gray-100">
                     <div className=" py-2 md:py-3 lg:justify-start lg:space-x-10">
                         <div className='flex items-center justify-between h-8 '>
-                            <Navbar genere={genere} showCategory={showCategory} onShowCategory={handleShowCategory} /> 
+                            <Navbar genere={genere} showCategory={showCategory} onShowCategory={handleShowCategory} />
                             <div className=" justify-center w-full flex md:hidden">
                                 <Link href="/home">
                                     <a className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</a>
