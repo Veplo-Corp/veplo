@@ -42,13 +42,14 @@ const index = () => {
                     </Box>
                     <div>
                         {dress.imageUrl.map((image) => {
-                            if (image !== fullImage) {
                                 return (
-                                    <Box onClick={() => changeImageFull(image)} key={Math.random()} minW='20' maxW='24' mb={'5'} borderRadius='lg' overflow='hidden' className='cursor-pointer'>
+                                    <Box onClick={() => changeImageFull(image)} key={Math.random()} minW='20' maxW='24' mb={'5'} borderRadius='lg' overflow='hidden'
+                                    borderWidth={1.5}
+                                    className={` ${image == fullImage ? "border-black" : "border-white"} cursor-pointer`}
+                                    >
                                         <Image src={image} alt={dress.imageAlt} />
                                     </Box>
                                 )
-                            }
                         })}
 
                     </div>
