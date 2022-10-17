@@ -43,7 +43,7 @@ const Home: NextPage = () => {
           <Stack direction='row' spacing={4} align='center' className='mt-2'>
             {ARRAY_CITY.map((city: string) => {
               return (
-                <BlackButton key={city} element={city} borderRadius={50} size={'lg'} typeButton='button'></BlackButton>
+                <BlackButton disabled={false} key={city} element={city} borderRadius={50} size={'lg'} typeButton='button'></BlackButton>
               )
             })}
           </Stack>
