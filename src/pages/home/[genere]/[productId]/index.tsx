@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
 import { Box, Image } from '@chakra-ui/react';
 
-
 const index = () => {
 
     const router = useRouter();
@@ -33,8 +32,12 @@ const index = () => {
         setfullImage(url)
     }
 
+
+
+
     return (
         <Desktop_Layout>
+
             <div className='flex justify-between'>
                 <div className='flex space-x-4 '>
                     <Box onClick={zoomImage} key={Math.random()} minW='20' maxW='450' mb={'5'} borderRadius='lg' overflow='hidden' className='cursor-pointer'>
@@ -42,14 +45,14 @@ const index = () => {
                     </Box>
                     <div>
                         {dress.imageUrl.map((image) => {
-                                return (
-                                    <Box onClick={() => changeImageFull(image)} key={Math.random()} minW='20' maxW='24' mb={'5'} borderRadius='lg' overflow='hidden'
+                            return (
+                                <Box onClick={() => changeImageFull(image)} key={Math.random()} minW='20' maxW='24' mb={'5'} borderRadius='lg' overflow='hidden'
                                     borderWidth={1.5}
                                     className={` ${image == fullImage ? "border-black" : "border-white"} cursor-pointer`}
-                                    >
-                                        <Image src={image} alt={dress.imageAlt} />
-                                    </Box>
-                                )
+                                >
+                                    <Image src={image} alt={dress.imageAlt} />
+                                </Box>
+                            )
                         })}
 
                     </div>

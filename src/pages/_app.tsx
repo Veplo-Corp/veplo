@@ -5,6 +5,8 @@ import Header from '../../components/organisms/Header'
 // 1. import `ChakraProvider` component
 import { ChakraProvider } from '@chakra-ui/react'
 import { extendTheme } from "@chakra-ui/react"
+import { Provider } from 'react-redux'
+import { store } from '../../store/store'
 
 
 const theme = extendTheme({
@@ -23,13 +25,13 @@ const theme = extendTheme({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <Provider store={store}>
       <ChakraProvider theme={theme}>
         <Header></Header>
         <Component {...pageProps} />
       </ChakraProvider>
 
-    </>
+    </Provider>
 
   )
 }

@@ -17,11 +17,14 @@ import {
 } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 import Input_Search from '../../components/atoms/Input_Search'
+import { useSelector } from 'react-redux'
 
 
 
 const Home: NextPage = () => {
-
+  const user = useSelector((state) => state.user);
+  console.log(user);
+  
   const ARRAY_CITY = ['Terni', 'Rieti', 'Perugia'];
   const ADDRESS = ['Via Roma 41, Terni', 'Via Cavour 50, Terni', "Via dell'ortica, Terni"]
 
@@ -43,7 +46,7 @@ const Home: NextPage = () => {
           <Stack direction='row' spacing={4} align='center' className='mt-2'>
             {ARRAY_CITY.map((city: string) => {
               return (
-                <BlackButton key={city} city={city}></BlackButton>
+                <BlackButton key={city} element={city} borderRadius={50} size={'lg'}></BlackButton>
               )
             })}
           </Stack>
@@ -93,7 +96,7 @@ const Home: NextPage = () => {
               <h2 className='text-md font-bold text-gray-500 mb-2'>risultati</h2>
               {ADDRESS.map((address) => {
                 return (
-                  <div onClick={() => setisOpen(false)} className=' pt-2 -ml-2  cursor-pointer hover:bg-gray-100 rounded-sm	'>
+                  <div key={address} onClick={() => setisOpen(false)} className=' pt-2 -ml-2  cursor-pointer hover:bg-gray-100 rounded-sm	'>
                     <p className='pl-2  text-md font-medium text-gray-800'>{address}</p>
                     <Divider p={1} orientation='horizontal' />
                   </div>
