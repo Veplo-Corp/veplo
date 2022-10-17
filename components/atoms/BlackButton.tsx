@@ -4,12 +4,15 @@ import { Button } from '@chakra-ui/react'
 type Props = {
     element: string,
     borderRadius: number,
-    size:string
+    size:string,
+    typeButton: "button" | "submit" | "reset"
 }
 
-const BlackButton: React.FC<Props>  = ({element, borderRadius, size}) => {
+const BlackButton: React.FC<Props>  = ({element, borderRadius, size, typeButton}) => {
     return (
-        <Button borderRadius={borderRadius} size={size} padding={5} paddingInline={10}
+        <Button
+        type={typeButton}
+        borderRadius={borderRadius} size={size} padding={5} paddingInline={10}
             bg={'black.900'}
             color={'white'}
             _hover={{ bg: 'black.900' }}

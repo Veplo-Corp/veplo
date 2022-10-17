@@ -5,8 +5,11 @@ import Header from '../../components/organisms/Header'
 // 1. import `ChakraProvider` component
 import { ChakraProvider } from '@chakra-ui/react'
 import { extendTheme } from "@chakra-ui/react"
-import { Provider } from 'react-redux'
-import { store } from '../../store/store'
+import { Provider, useDispatch, useSelector } from 'react-redux'
+import { store } from './store/store'
+import { useEffect } from 'react'
+import { auth, onAuthStateChanged } from '../firebase'
+import { login, logout } from './store/reducers/user'
 
 
 const theme = extendTheme({
@@ -23,14 +26,42 @@ const theme = extendTheme({
   },
 })
 
+function Auth({ children }) {
+
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  // check at page load if a user is authenticated
+  // check at page load if a user is authenticated
+  useEffect(() => {
+    onAuthStateChanged(auth, (userAuth) => {    
+      console.log(userAuth?.email);
+        
+      if (userAuth) {
+        // user is logged in, send the user's details to redux, store the current user in the state
+        dispatch(
+          login(userAuth)
+        );
+      } else {
+        dispatch(logout());
+      }
+    });
+  }, []);
+  return (
+    <>
+      {children}
+    </>
+  )
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <ChakraProvider theme={theme}>
-        <Header></Header>
-        <Component {...pageProps} />
-      </ChakraProvider>
-
+      <Auth>
+        <ChakraProvider theme={theme}>
+          <Header></Header>
+          <Component {...pageProps} />
+        </ChakraProvider>
+      </Auth>
     </Provider>
 
   )
