@@ -2,12 +2,14 @@ import React from 'react'
 import { Button } from '@chakra-ui/react'
 
 type Props = {
-    city: string
+    element: string,
+    borderRadius: number,
+    size:string
 }
 
-const BlackButton: React.FC<Props>  = ({city}) => {
+const BlackButton: React.FC<Props>  = ({element, borderRadius, size}) => {
     return (
-        <Button borderRadius={50} size={'lg'} padding={5} paddingInline={10}
+        <Button borderRadius={borderRadius} size={size} padding={5} paddingInline={10}
             bg={'black.900'}
             color={'white'}
             _hover={{ bg: 'black.900' }}
@@ -17,7 +19,7 @@ const BlackButton: React.FC<Props>  = ({city}) => {
             _active={{
                 transform: 'scale(0.98)',
             }}
-        >{city}</Button>
+        >{element}</Button>
     )
 }
 
