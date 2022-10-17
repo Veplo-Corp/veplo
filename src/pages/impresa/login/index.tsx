@@ -2,9 +2,10 @@ import React, { useReducer, useState } from 'react'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import { Button } from '@chakra-ui/react'
 import BlackButton from '../../../../components/atoms/BlackButton'
-import { auth, createUserWithEmailAndPassword } from '../../../firebase'
+import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '../../../firebase'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../store/reducers/user'
+import { sendEmailVerificationHanlder } from '../../../../components/utils/emailVerification'
 
 
 
@@ -13,12 +14,13 @@ const index = () => {
 
   const [showPassword, setshowPassword] = useState<boolean>(false)
   const [email, setemail] = useState<string>('')
-  const [isValidEmail, setisValidEmail] = useState<boolean>(true)
-  const [isValidPassword, setisValidPassword] = useState<boolean>(true)
+  const [isValidEmail, setisValidEmail] = useState<boolean | null>(null)
+  const [isValidPassword, setisValidPassword] = useState<boolean | null>(null)
+  const [typeForm, settypeForm] = useState<'registration' | 'login'>('registration')
 
   const [password, setpassword] = useState<string>('')
   const user = useSelector((state) => state.user.user);
-  
+
 
   const dispatch = useDispatch();
 
@@ -51,32 +53,57 @@ const index = () => {
     setisValidPassword(false)
   }
 
-  const signUpCompany = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    createUserWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
-    console.log(user);
-    
-    dispatch(
-      login(user)
-    );
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // ..
-    console.log(error);
-    
-  });    
+    if (typeForm === 'registration') {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in 
+          const user = userCredential.user;
+          console.log(user);
+          sendEmailVerificationHanlder()
+          dispatch(
+            login(user)
+          );
+          setemail('')
+          setpassword('')
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(error);
+
+        });
+    } else {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in 
+          const user = userCredential.user;
+          dispatch(
+            login(user)
+          );
+          setemail('')
+          setpassword('')
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorMessage);
+
+        });
+    }
+
+  }
+
+  const registerOrLoginHandler = () => {
+
   }
 
   return (
     <Desktop_Layout>
       <div className='flex justify-between'>
-        <form className="p-3 w-fit space-y-4" onSubmit={signUpCompany}>
+        <form className="p-3 w-fit space-y-4" onSubmit={handleSubmit}>
           <div>
             <div className="mt-1 flex rounded-sm">
               <span className="inline-flex items-center rounded-l-md border-r-0 border-2 border-gray-900  bg-black px-3 text-sm text-white">
@@ -92,7 +119,7 @@ const index = () => {
                 focus:outline-none
                 sm:text-sm placeholder-black" placeholder="email" />
             </div>
-            {!isValidEmail && <p className='text-sm md:text-xs text-red-600'>email non corretta</p>}
+            {isValidEmail === false && <p className='text-sm md:text-xs text-red-600'>email non corretta</p>}
           </div>
           <div>
             <div className="mt-1 flex rounded-sm">
@@ -120,15 +147,33 @@ const index = () => {
 
               </span>
             </div>
-            {!isValidPassword &&<p className='text-sm md:text-xs text-red-600'>la password deve contentere almeno 8 caratteri</p>}
+            {isValidPassword === false && <p className='text-sm md:text-xs text-red-600'>la password deve contentere almeno 8 caratteri</p>}
           </div>
           <div className='w-full flex justify-end pt-3 md:pt-1'>
-            <BlackButton typeButton='submit' element='registrati' borderRadius={10} size={'md'}></BlackButton>
+            <BlackButton disabled={!isValidEmail || !isValidPassword} typeButton='submit' element={typeForm == 'registration' ? 'registrati' : 'accedi'} borderRadius={10} size={'md'}></BlackButton>
+          </div>
+          <div className='flex'>
+            {typeForm === 'registration' &&
+              <>
+                <p className='mr-1 text-black	'>hai già un account?</p>
+                <Button className='underline' onClick={() => settypeForm('login')} variant='link' colorScheme={'black'}>
+                  Registrati
+                </Button>
+              </>
+            }
+            {typeForm === 'login' &&
+              <>
+                <p className='mr-1 text-black	'>non hai ancora un account?</p>
+                <Button className='underline' onClick={() => settypeForm('registration')} variant='link' colorScheme={'black'}>
+                  Registrati
+                </Button>
+              </>
+            }
           </div>
         </form>
-        <div>
+        <div className='hidden ms:flex'>
           <h1>{user.email}</h1>
-          
+
         </div>
       </div>
     </Desktop_Layout>

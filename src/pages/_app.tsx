@@ -10,6 +10,7 @@ import { store } from './store/store'
 import { useEffect } from 'react'
 import { auth, onAuthStateChanged } from '../firebase'
 import { login, logout } from './store/reducers/user'
+import { useRouter } from 'next/router'
 
 
 const theme = extendTheme({
@@ -27,7 +28,7 @@ const theme = extendTheme({
 })
 
 function Auth({ children }) {
-
+  const router = useRouter()
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   // check at page load if a user is authenticated
@@ -41,6 +42,8 @@ function Auth({ children }) {
         dispatch(
           login(userAuth)
         );
+        router.push('/impresa/home')
+
       } else {
         dispatch(logout());
       }

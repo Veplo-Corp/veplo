@@ -5,12 +5,14 @@ type Props = {
     element: string,
     borderRadius: number,
     size:string,
-    typeButton: "button" | "submit" | "reset"
+    typeButton: "button" | "submit" | "reset",
+    disabled: boolean
 }
 
-const BlackButton: React.FC<Props>  = ({element, borderRadius, size, typeButton}) => {
+const BlackButton: React.FC<Props>  = ({element, borderRadius, size, typeButton, disabled}) => {
     return (
         <Button
+        disabled={disabled}
         type={typeButton}
         borderRadius={borderRadius} size={size} padding={5} paddingInline={10}
             bg={'black.900'}
