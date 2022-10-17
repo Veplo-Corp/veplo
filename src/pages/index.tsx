@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import Header from '../../components/organisms/Header'
 import styles from '../styles/Home.module.css'
 import { Button, Box, Stack, Text } from '@chakra-ui/react'
@@ -17,13 +16,11 @@ import {
 } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 import Input_Search from '../../components/atoms/Input_Search'
-import { useSelector } from 'react-redux'
 
 
 
 const Home: NextPage = () => {
-  const user = useSelector((state) => state.user);
-  console.log(user);
+  
   
   const ARRAY_CITY = ['Terni', 'Rieti', 'Perugia'];
   const ADDRESS = ['Via Roma 41, Terni', 'Via Cavour 50, Terni', "Via dell'ortica, Terni"]
@@ -46,7 +43,7 @@ const Home: NextPage = () => {
           <Stack direction='row' spacing={4} align='center' className='mt-2'>
             {ARRAY_CITY.map((city: string) => {
               return (
-                <BlackButton key={city} element={city} borderRadius={50} size={'lg'}></BlackButton>
+                <BlackButton key={city} element={city} borderRadius={50} size={'lg'} typeButton='button'></BlackButton>
               )
             })}
           </Stack>

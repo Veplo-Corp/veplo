@@ -1,16 +1,82 @@
-import React, { useState } from 'react'
+import React, { useReducer, useState } from 'react'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import { Button } from '@chakra-ui/react'
 import BlackButton from '../../../../components/atoms/BlackButton'
+import { auth, createUserWithEmailAndPassword } from '../../../firebase'
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../../store/reducers/user'
 
-const login = () => {
 
-  const [showPassword, setshowPassword] = useState(false)
+
+
+const index = () => {
+
+  const [showPassword, setshowPassword] = useState<boolean>(false)
+  const [email, setemail] = useState<string>('')
+  const [isValidEmail, setisValidEmail] = useState<boolean>(true)
+  const [isValidPassword, setisValidPassword] = useState<boolean>(true)
+
+  const [password, setpassword] = useState<string>('')
+  const user = useSelector((state) => state.user.user);
+  
+
+  const dispatch = useDispatch();
+
+  const emailHandler = (event) => {
+    setemail(event.target.value)
+    if (/\S+@\S+\.\S+/.test(event.target.value)) {
+      return setisValidEmail(true)
+    }
+  }
+
+  const emailErrorHandler = () => {
+    if (/\S+@\S+\.\S+/.test(email)) {
+      return setisValidEmail(true)
+    }
+    setisValidEmail(false)
+  }
+
+  const passwordHandler = (event) => {
+    setpassword(event.target.value)
+    if (event.target.value.length > 8) {
+      return setisValidPassword(true)
+    }
+  }
+
+
+  const passwordErrorHandler = () => {
+    if (password.length > 8) {
+      return setisValidPassword(true)
+    }
+    setisValidPassword(false)
+  }
+
+  const signUpCompany = (event) => {
+    event.preventDefault();
+    createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user);
+    
+    dispatch(
+      login(user)
+    );
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+    console.log(error);
+    
+  });    
+  }
 
   return (
     <Desktop_Layout>
       <div className='flex justify-between'>
-        <div className="p-3 w-fit">
+        <form className="p-3 w-fit space-y-4" onSubmit={signUpCompany}>
           <div>
             <div className="mt-1 flex rounded-sm">
               <span className="inline-flex items-center rounded-l-md border-r-0 border-2 border-gray-900  bg-black px-3 text-sm text-white">
@@ -18,11 +84,15 @@ const login = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
               </span>
-              <input type="text" name="email" id="email" className="block w-80 flex-1 rounded-r-md border-2 p-2 py-3 border-gray-900
+              <input
+                onBlur={emailErrorHandler}
+                value={email}
+                onChange={emailHandler}
+                type="text" name="email" id="email" className="block w-80 flex-1 rounded-r-md border-2 p-2 py-3 border-gray-900
                 focus:outline-none
                 sm:text-sm placeholder-black" placeholder="email" />
             </div>
-            <p className='text-sm md:text-xs text-red-600'>email non corretta</p>
+            {!isValidEmail && <p className='text-sm md:text-xs text-red-600'>email non corretta</p>}
           </div>
           <div>
             <div className="mt-1 flex rounded-sm">
@@ -31,7 +101,11 @@ const login = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                 </svg>
               </span>
-              <input type={showPassword ? 'text' : 'password'} name="password" id="password" className="block md:w-80 flex-1 border-2 border-r-0	 p-2 py-3 border-gray-900
+              <input
+                onBlur={passwordErrorHandler}
+                value={password}
+                onChange={passwordHandler}
+                type={showPassword ? 'text' : 'password'} name="password" id="password" className="block md:w-80 flex-1 border-2 border-r-0	 p-2 py-3 border-gray-900
                 focus:outline-none
                 sm:text-sm placeholder-black" placeholder="password" />
               <span className="inline-flex items-center rounded-r-md border-l-0 border-2 border-black   px-3 text-sm text-black" onClick={() => setshowPassword(!showPassword)}>
@@ -46,15 +120,19 @@ const login = () => {
 
               </span>
             </div>
-            <p className='text-sm md:text-xs text-red-600'>la password deve contentere almeno 8 caratteri</p>
+            {!isValidPassword &&<p className='text-sm md:text-xs text-red-600'>la password deve contentere almeno 8 caratteri</p>}
           </div>
           <div className='w-full flex justify-end pt-3 md:pt-1'>
-            <BlackButton element='registrati' borderRadius={10} size={'md'}></BlackButton>
+            <BlackButton typeButton='submit' element='registrati' borderRadius={10} size={'md'}></BlackButton>
           </div>
+        </form>
+        <div>
+          <h1>{user.email}</h1>
+          
         </div>
       </div>
     </Desktop_Layout>
   )
 }
 
-export default login
+export default index;
