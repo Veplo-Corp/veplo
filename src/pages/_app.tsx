@@ -8,7 +8,7 @@ import { extendTheme } from "@chakra-ui/react"
 import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from './store/store'
 import { useEffect } from 'react'
-import { auth, onAuthStateChanged } from '../firebase'
+import { auth, onAuthStateChanged } from './config/firebase'
 import { login, logout } from './store/reducers/user'
 import { useRouter } from 'next/router'
 
@@ -42,7 +42,7 @@ function Auth({ children }) {
         dispatch(
           login(userAuth)
         );
-        router.push('/impresa/home')
+        //!router.push('/impresa/home')
 
       } else {
         dispatch(logout());

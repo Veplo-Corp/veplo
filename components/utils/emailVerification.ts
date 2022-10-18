@@ -1,5 +1,5 @@
 import { sendEmailVerification } from '@firebase/auth';
-import { auth } from '../../src/firebase';
+import { auth } from '../../src/pages/config/firebase';
 export const sendEmailVerificationHanlder = () => {
     if (auth.currentUser) {
         sendEmailVerification(auth.currentUser)

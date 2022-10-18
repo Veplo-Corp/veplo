@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
 import { useEffect } from 'react'
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 
 // Define the initial state using that type
@@ -19,7 +18,7 @@ export const userState = createSlice({
     name: 'user',
     initialState: {
       user: {
-        email:'cane'
+        email:null
       },
     },
     reducers: {
