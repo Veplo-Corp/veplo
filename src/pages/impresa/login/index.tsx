@@ -2,10 +2,11 @@ import React, { useReducer, useState } from 'react'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import { Button } from '@chakra-ui/react'
 import BlackButton from '../../../../components/atoms/BlackButton'
-import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '../../../firebase'
+import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '../../config/firebase'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../store/reducers/user'
 import { sendEmailVerificationHanlder } from '../../../../components/utils/emailVerification'
+import resetPassword from '../../../../components/utils/resetPassword'
 
 
 
@@ -16,7 +17,7 @@ const index = () => {
   const [email, setemail] = useState<string>('')
   const [isValidEmail, setisValidEmail] = useState<boolean | null>(null)
   const [isValidPassword, setisValidPassword] = useState<boolean | null>(null)
-  const [typeForm, settypeForm] = useState<'registration' | 'login'>('registration')
+  const [typeForm, settypeForm] = useState<'registration' | 'login' | 'reset_password'>('registration')
 
   const [password, setpassword] = useState<string>('')
   const user = useSelector((state) => state.user.user);
@@ -40,7 +41,7 @@ const index = () => {
 
   const passwordHandler = (event) => {
     setpassword(event.target.value)
-    if (event.target.value.length > 8) {
+    if (event.target.value.length >= 8) {
       return setisValidPassword(true)
     }
   }
@@ -52,6 +53,54 @@ const index = () => {
     }
     setisValidPassword(false)
   }
+
+  // const handleSubmit = async (event) => {
+  //   // Stop the form from submitting and refreshing the page.
+  //   event.preventDefault();
+
+  //   // Get data from the form.
+  //   const data = {
+  //     email: event.target.email.value,
+  //     password: event.target.password.value,
+  //     typeForm: typeForm
+  //   }
+
+  //   // Send the data to the server in JSON format.
+  //   const JSONdata = JSON.stringify(data)
+
+  //   // API endpoint where we send form data.
+  //   const endpoint = '/api/firebase/registration-company'
+
+  //   // Form the request for sending data to the server.
+  //   const options = {
+  //     // The method is POST because we are sending data.
+  //     method: 'POST',
+  //     // Tell the server we're sending JSON.
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     // Body of the request is the JSON data we created above.
+  //     body: JSONdata,
+  //   }
+  //   // Send the form data to our forms API on Vercel and get a response.
+  //   const response = await fetch(endpoint, options)
+
+  //   // Get the response data from server as JSON.
+  //   // If server returns the name submitted, that means the form works.
+  //   const result = await response.json()
+  //   console.log(result.data);
+
+  //   if(response.status === 200){
+  //     dispatch(
+  //       login(result.data)
+  //     );
+  //     setemail('')
+  //     setpassword('')
+  //   } else {
+  //     console.log(result);
+
+  //   }    
+  // }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -79,6 +128,7 @@ const index = () => {
         .then((userCredential) => {
           // Signed in 
           const user = userCredential.user;
+
           dispatch(
             login(user)
           );
@@ -96,9 +146,18 @@ const index = () => {
 
   }
 
-  const registerOrLoginHandler = () => {
-
+  const LoginButton = () => {
+    return (
+      <>
+        <p className='mr-1 text-black	'>hai già un account?</p>
+        <Button className='underline' onClick={() => settypeForm('login')} variant='link' colorScheme={'black'}>
+          Accedi
+        </Button>
+      </>
+    )
   }
+
+
 
   return (
     <Desktop_Layout>
@@ -121,7 +180,7 @@ const index = () => {
             </div>
             {isValidEmail === false && <p className='text-sm md:text-xs text-red-600'>email non corretta</p>}
           </div>
-          <div>
+          {typeForm !== 'reset_password' && <div>
             <div className="mt-1 flex rounded-sm">
               <span className="inline-flex items-center rounded-l-md border-r-0 border-2 border-gray-900  bg-black px-3 text-sm text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -148,30 +207,34 @@ const index = () => {
               </span>
             </div>
             {isValidPassword === false && <p className='text-sm md:text-xs text-red-600'>la password deve contentere almeno 8 caratteri</p>}
-          </div>
-          <div className='w-full flex justify-end pt-3 md:pt-1'>
+          </div>}
+          {typeForm !== 'reset_password' && <div className='w-full flex justify-end pt-2 md:pt-1'>
             <BlackButton disabled={!isValidEmail || !isValidPassword} typeButton='submit' element={typeForm == 'registration' ? 'registrati' : 'accedi'} borderRadius={10} size={'md'}></BlackButton>
-          </div>
+          </div>}
+          {typeForm === 'reset_password' && <div className='w-full flex justify-end pt-2 md:pt-1' onClick={() => resetPassword(email)}>
+            <Button disabled={isValidEmail == null || false} onClick={() => resetPassword(email)} colorScheme={'orange'} borderRadius={10} size={'md'}>resetta password</Button>
+          </div>}
           <div className='flex'>
-            {typeForm === 'registration' &&
-              <>
-                <p className='mr-1 text-black	'>hai già un account?</p>
-                <Button className='underline' onClick={() => settypeForm('login')} variant='link' colorScheme={'black'}>
-                  Registrati
-                </Button>
-              </>
-            }
+            {(typeForm === 'registration') &&<LoginButton />}
+            {(typeForm === 'reset_password') &&<LoginButton />}
+
             {typeForm === 'login' &&
-              <>
-                <p className='mr-1 text-black	'>non hai ancora un account?</p>
-                <Button className='underline' onClick={() => settypeForm('registration')} variant='link' colorScheme={'black'}>
-                  Registrati
-                </Button>
-              </>
+              <div className='grid'>
+                <p className=' text-black	'>non hai ancora un account?
+                  <Button className='underline ml-1' onClick={() => settypeForm('registration')} variant='link' colorScheme={'black'}>
+                    Registrati
+                  </Button>
+                </p>
+                <p className='mt-1 text-black	'>hai dimenticato la tua password?
+                  <Button className='underline md:ml-1' onClick={() => settypeForm('reset_password')} variant='link' colorScheme={'black'}>
+                    Resetta password
+                  </Button>
+                </p>
+              </div>
             }
           </div>
         </form>
-        <div className='hidden ms:flex'>
+        <div className='hidden md:flex  '>
           <h1>{user.email}</h1>
 
         </div>

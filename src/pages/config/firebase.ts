@@ -6,7 +6,8 @@ import {
     createUserWithEmailAndPassword, 
     onAuthStateChanged, 
     signInWithEmailAndPassword, 
-    signOut 
+    signOut,
+    sendPasswordResetEmail
 } from 'firebase/auth';
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -32,11 +33,14 @@ initializeApp(firebaseConfig);
 
 //init services
 const auth = getAuth();
+auth.languageCode = 'it';
+
 
 export {
 auth,
 createUserWithEmailAndPassword,
 onAuthStateChanged,
 signInWithEmailAndPassword,
-signOut
+signOut,
+sendPasswordResetEmail
 }
