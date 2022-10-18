@@ -112,7 +112,12 @@ const index = () => {
           console.log(user);
           sendEmailVerificationHanlder()
           dispatch(
-            login(user)
+            login(
+              {
+                email:user.email,
+                uid: user.uid
+              }
+            )
           );
           setemail('')
           setpassword('')
@@ -130,7 +135,10 @@ const index = () => {
           const user = userCredential.user;
 
           dispatch(
-            login(user)
+            login({
+              email:user.email,
+              uid: user.uid
+            })
           );
           setemail('')
           setpassword('')

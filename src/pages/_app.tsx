@@ -40,7 +40,10 @@ function Auth({ children }) {
       if (userAuth) {
         // user is logged in, send the user's details to redux, store the current user in the state
         dispatch(
-          login(userAuth)
+          login({
+            email:userAuth.email,
+            uid: userAuth.uid
+          })
         );
         //!router.push('/impresa/home')
 

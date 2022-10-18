@@ -4,6 +4,7 @@ import Header from '../../components/organisms/Header'
 import styles from '../styles/Home.module.css'
 import { Button, Box, Stack, Text } from '@chakra-ui/react'
 import BlackButton from '../../components/atoms/BlackButton'
+
 import {
   Drawer,
   DrawerOverlay,
@@ -20,10 +21,23 @@ import Input_Search from '../../components/atoms/Input_Search'
 
 
 const Home: NextPage = () => {
-  
-  
+
+  let filterTimeout:any;
   const ARRAY_CITY = ['Terni', 'Rieti', 'Perugia'];
-  const ADDRESS = ['Via Roma 41, Terni', 'Via Cavour 50, Terni', "Via dell'ortica, Terni"]
+  const [address, setAddress] = useState([])
+
+  const onChangeAddress = (features) => {
+
+
+    clearTimeout(filterTimeout)
+
+    filterTimeout = setTimeout(() => {
+      setAddress(features.data)
+      console.log(features.data);
+    }, 1000)
+
+  }
+
 
   const btnRef = useRef()
 
@@ -77,7 +91,8 @@ const Home: NextPage = () => {
       <Drawer
         placement='top'
         isOpen={isOpen}
-        size={'md'}
+        size={'xl'}
+
         onClose={() => setisOpen(false)} >
         <DrawerOverlay />
         <DrawerContent >
@@ -88,13 +103,13 @@ const Home: NextPage = () => {
             </svg>
           </DrawerHeader>
           <DrawerBody className='md:m-auto'>
-            <Input_Search />
-            <div className='my-3 pl-8'>
-              <h2 className='text-md font-bold text-gray-500 mb-2'>risultati</h2>
-              {ADDRESS.map((address) => {
+            <Input_Search onChangeAddress={onChangeAddress} />
+             <div className='my-3 pl-8'>
+              {address[0] && <h2 className='text-md font-bold text-gray-500 mb-2'>risultati</h2>}
+              {address.map((value) => {
                 return (
-                  <div key={address} onClick={() => setisOpen(false)} className=' pt-2 -ml-2  cursor-pointer hover:bg-gray-100 rounded-sm	'>
-                    <p className='pl-2  text-md font-medium text-gray-800'>{address}</p>
+                  <div key={value.id} onClick={() => setisOpen(false)} className=' pt-2 -ml-2  cursor-pointer hover:bg-gray-100 rounded-sm	'>
+                    <p className='pl-2  text-md font-medium text-gray-800'>{value.place_name}</p>
                     <Divider p={1} orientation='horizontal' />
                   </div>
                 )
