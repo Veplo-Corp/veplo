@@ -68,7 +68,7 @@ const Header = () => {
                         </div>
 
                     </div>
-                    {showCategory && <div className='h-80 border-b-2 border-gray-100 bg-white w-screen	fixed z-50	 top-12'>
+                    {showCategory && <div className='h-80 border-b-2 border-gray-100 bg-white w-screen	fixed z-50	 top-30'>
 
                     </div>}
                 </div>

@@ -52,7 +52,7 @@ const index = () => {
 
     return (
         <Desktop_Layout>
-            <Box_Shop shop={SHOP} width={500} height={340} scale={1} eventHandler={() => { }}>
+            <Box_Shop shop={SHOP} width={500} height={350} scale={1} eventHandler={() => { }}>
 
             </Box_Shop>
             <div className='w-full md:mt-6 mb-4 md:mb-8 border-b rounded-lg bg-slate-500'></div>

@@ -8,7 +8,7 @@ const Box_Shop = (props) => {
                             _active={{
                                 transform: `${props.scale}`,
                             }}>
-                            <Image src={props.shop.imageUrl} className='object-cover' borderRadius='lg' width={props.width} max-height={props.height} alt={props.shop.imageAlt} />
+                            <Image src={props.shop.imageUrl} className='object-cover' borderRadius='lg' width={props.width} maxHeight={props.height} alt={props.shop.imageAlt} />
                             <Box py='1' px={'0'}>
                                 <Box
                                     mt='1'
