@@ -4,7 +4,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
 import { sendEmailVerificationHanlder } from '../../../../components/utils/emailVerification';
-import { auth } from '../../config/firebase';
+import { auth } from '../../../config/firebase';
 
 
 const index = () => {

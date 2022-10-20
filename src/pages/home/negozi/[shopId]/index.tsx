@@ -43,11 +43,19 @@ const index = () => {
 
     const router = useRouter();
 
-    const query = router.query;
+    const query = {...router.query, genere: 'uomo'};
 
     const toProductPage = (product: any) => {
-        console.log('preso');
-        
+        router.push({
+            pathname: `/home/${query.genere}/${product.id}`,
+            // query: { 
+            //   productId: product.id,
+            //   nome: encodeURIComponent(product.name),
+            //   marca: encodeURIComponent(product.brand),
+            //   company: encodeURIComponent(product.company)
+            //  },
+          })
+
     }
 
     return (

@@ -1,5 +1,5 @@
 import { sendEmailVerificationHanlder } from './../../../../components/utils/emailVerification';
-import { auth, createUserWithEmailAndPassword } from "../../config/firebase"
+import { auth, createUserWithEmailAndPassword } from "../../../config/firebase"
 
 type Req = {
     body: {
