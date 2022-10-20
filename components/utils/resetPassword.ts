@@ -1,4 +1,4 @@
-import { auth, sendPasswordResetEmail } from "../../src/pages/config/firebase";
+import { auth, sendPasswordResetEmail } from "../../src/config/firebase";
 
 const resetPassword = (email:string) => {
         sendPasswordResetEmail(auth, auth.currentUser?.email || email)
