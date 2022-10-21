@@ -1,13 +1,14 @@
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
-import { Box, Image } from '@chakra-ui/react';
+import { Box, Image, Modal, ModalBody, ModalContent, ModalOverlay } from '@chakra-ui/react';
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
 import { useQuery } from '@apollo/client';
 import { Product } from '../../../../interfaces/product.interface';
 import { initApollo } from '../../../../lib/apollo';
 import Circle_Color from '../../../../../components/atoms/Circle_Color';
 import Size_Box from '../../../../../components/atoms/Size_Box';
+import { isMobile } from 'react-device-detect';
 
 
 export async function getStaticPaths() {
@@ -41,15 +42,7 @@ export async function getStaticProps(ctx) {
     }
 
 
-    // By returning { props: { posts } }, the Blog component
-    // will receive `posts` as a prop at build time
-    return {
-        props: {
-            // data,
-            // error,
-            // loading
-        },
-    }
+   
 }
 
 
@@ -63,16 +56,6 @@ export async function getStaticProps(ctx) {
 
 
 const index: React.FC<{ product: Product, error: string }> = ({ product, error }) => {
-    //!handle error case
-    console.log(product);
-
-    //const router = useRouter();
-    //const query = router.query;
-    //decodeURI
-    //console.log(decodeURIComponent(query.nome));
-
-
-
     const dress = {
         name: 'LOGO LONG SLEEVE TEE - Maglietta a manica lunga',
         company: 'Sartoria Rizzo Merlini',
@@ -85,9 +68,23 @@ const index: React.FC<{ product: Product, error: string }> = ({ product, error }
     }
 
     const [fullImage, setfullImage] = useState(dress.imageUrl[0])
+    const [isOpen, setisOpen] = useState(false)
+    //!handle error case
+
+    //const router = useRouter();
+    //const query = router.query;
+    //decodeURI
+    //console.log(decodeURIComponent(query.nome));
+
+
+
+
 
 
     const zoomImage = () => {
+        setisOpen(true)
+
+
     }
 
     const changeImageFull = (url) => {
@@ -95,113 +92,194 @@ const index: React.FC<{ product: Product, error: string }> = ({ product, error }
     }
 
 
+    const onClickImageModal = () => {
+        if (isOpen) {
+            const i = dress.imageUrl.indexOf(fullImage) + 1
+
+            if (dress.imageUrl[i] !== undefined) {
+                setfullImage(dress.imageUrl[i])
+            } else {
+                setfullImage(dress.imageUrl[0])
+            }
+        }
+    }
+
+
+
+
+
+
+
+
 
 
     return (
-        <Desktop_Layout>
-
-            <div className='flex justify-between w-full'>
-                <div className='flex space-x-4 w-full md:w-7/12 xl:w-1/2 '>
-                    <Box onClick={zoomImage} key={Math.random()} minW='20' maxW='450' mb={'5'} borderRadius='lg' overflow='hidden' className='cursor-pointer'>
-                        <Image src={fullImage} alt={dress.imageAlt} />
-                    </Box>
-                    <div>
-                        {dress.imageUrl.map((image) => {
-                            return (
-                                <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
-                                    borderWidth={1.5}
-                                    className={` ${image == fullImage ? "border-black" : "border-white"} cursor-pointer
+        <>
+            <Modal size={'lg'} isCentered={true} isOpen={isOpen} onClose={() => setisOpen(false)}>
+                <ModalOverlay
+                    bg='blackAlpha.300'
+                    backdropFilter='blur(10px) '
+                />
+                <ModalContent >
+                    <ModalBody padding={0}>
+                        <Image onClick={onClickImageModal} src={fullImage} alt={dress.imageAlt} />
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+            <Desktop_Layout>
+                <div className='md:flex justify-between w-full'>
+                    <div className='flex space-x-4 w-full md:w-7/12 xl:w-1/2 '>
+                        <Box onClick={zoomImage} minW='20' maxW='450' mb={'5'} borderRadius='lg' overflow='hidden' className='cursor-pointer'>
+                            <Image src={fullImage} alt={dress.imageAlt} />
+                        </Box>
+                        <div>
+                            {dress.imageUrl.map((image) => {
+                                return (
+                                    <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
+                                        borderWidth={1.5}
+                                        className={` ${image == fullImage ? "border-black" : "border-white"} cursor-pointer
                                     w-20
                                     xl:w-32
                                     `}
-                                >
-                                    <Image src={image} alt={dress.imageAlt} />
-                                </Box>
-                            )
-                        })}
+                                    >
+                                        <Image src={image} alt={dress.imageAlt} />
+                                    </Box>
+                                )
+                            })}
 
+                        </div>
                     </div>
+                    <Box className='md:block md:w-5/12 xl:w-1/2 md:pl-4 lg:pl-0 xl:pr-10'>
+                        <Box
+                            fontWeight='normal'
+                            as='h2'
+                            lineHeight='tall'
+                            noOfLines={1}
+                            fontSize='small'
+                        >
+                            {/* codice schiantato */}
+                            {product.macroCategory}
+                            {product.gender === 'F' && <span className='ml-1'>per donna</span>}
+                            {product.gender === 'M' && <span className='ml-1'>per uomo</span>}
+                        </Box>
+                        <Box
+                            fontWeight='normal'
+                            as='h2'
+                            noOfLines={1}
+                            mt='-2'
+                            fontSize='3xl'
+                            className='italic'
+                        >
+                            {product.brand}
+                        </Box>
+                        <Box
+                            fontWeight='medium'
+                            as='h1'
+                            noOfLines={2}
+                            lineHeight={'30px'}
+                            mt='0'
+                            fontSize='3xl'
+                        >
+                            {product.name}
+                        </Box>
+                        <Box
+                            fontWeight='medium'
+                            as='h1'
+                            noOfLines={1}
+                            mt='2'
+                            fontSize='medium'
+                        >
+                            {product.price.toFixed(2)}€
+                        </Box>
+                        <Box
+                            fontWeight='light'
+                            as='h1'
+                            noOfLines={1}
+                            mt='6'
+                            fontSize='md'
+                        >
+                            {product.colors.length}
+                            {product.colors.length === 1 && <span className='ml-1'>colorazione disponibile</span>}
+                            {product.colors.length > 1 && <span className='ml-1'>colorazioni disponibili</span>}
+                        </Box>
+                        <div className='mt-2'>
+                            <Circle_Color colors={product.colors} dimension={10} space={'4'} />
+                        </div>
+                        <Box
+                            fontWeight='light'
+                            as='h1'
+                            noOfLines={1}
+                            mt='6'
+                            mb={3}
+                            fontSize='md'
+                        >
+                            Taglie disponibili
+                        </Box>
+                        <Size_Box
+                            borderWidth='1px'
+                            py={2}
+                            borderRadius={5}
+                            width={28}
+                            fontSize={'2xl'}
+                            fontWeight={'normal'}
+                            sizes={product.sizes}
+                        />
+                        <Box
+                            fontWeight='light'
+                            as='h1'
+                            noOfLines={1}
+                            mt='6'
+                            mb={3}
+                            fontSize='md'
+                        >
+                            Altri prodotti di Sartoria Rizzo Merlini
+                        </Box>
+                        <div className="overflow-x-scroll flex w-full gap-4 ">
+                            {dress.imageUrl.map((image) => {
+                                return (
+                                    <div className='flex  gap-4 w-fit'>
+                                        <Box key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
+                                            borderWidth={1.5}
+                                            className={`cursor-pointer
+                                    w-32
+                                    lg:w-40
+                                    `}
+                                        >
+                                            <Image src={image} alt={dress.imageAlt} />
+                                        </Box>
+                                        <Box key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
+                                            borderWidth={1.5}
+                                            className={`cursor-pointer
+                                    w-32
+                                    lg:w-40
+                                    `}
+                                        >
+                                            <Image src={image} alt={dress.imageAlt} />
+                                        </Box>
+                                        <Box key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
+                                            borderWidth={1.5}
+                                            className={`cursor-pointer
+                                    w-32
+                                    lg:w-40
+                                    `}
+                                        >
+                                            <Image src={image} alt={dress.imageAlt} />
+                                        </Box>
+                                    </div>
+
+                                )
+                            })}
+                        </div>
+                    </Box>
+
+
+
                 </div>
-                <Box className='hidden md:block md:w-5/12 xl:w-1/2 pl-4 lg:pl-0 xl:pr-10'>
-                    <Box
-                        fontWeight='normal'
-                        as='h2'
-                        lineHeight='tall'
-                        noOfLines={1}
-                        fontSize='small'
-                    >
-                        {/* codice schiantato */}
-                        {product.macroCategory}
-                        {product.gender === 'F' && <span className='ml-1'>per donna</span>}
-                        {product.gender === 'M' && <span className='ml-1'>per uomo</span>}
-                    </Box>
-                    <Box
-                        fontWeight='normal'
-                        as='h2'
-                        noOfLines={1}
-                        mt='-2'
-                        fontSize='3xl'
-                        className='italic'
-                    >
-                        {product.brand}
-                    </Box>
-                    <Box
-                        fontWeight='medium'
-                        as='h1'
-                        noOfLines={2}
-                        lineHeight={'30px'}
-                        mt='0'
-                        fontSize='3xl'
-                    >
-                        {product.name}
-                    </Box>
-                    <Box
-                        fontWeight='medium'
-                        as='h1'
-                        noOfLines={1}
-                        mt='2'
-                        fontSize='sm'
-                    >
-                        {product.price.toFixed(2)}€
-                    </Box>
-                    <Box
-                        fontWeight='light'
-                        as='h1'
-                        noOfLines={1}
-                        mt='6'
-                        fontSize='md'
-                    >
-                        {product.colors.length}
-                        {product.colors.length === 1 && <span className='ml-1'>colorazione disponibile</span>}
-                        {product.colors.length > 1 && <span className='ml-1'>colorazioni disponibili</span>}
-                    </Box>
-                    <div className='mt-2'>
-                        <Circle_Color colors={product.colors} dimension={10} space={'4'} />
-                    </div>
-                    <Box
-                        fontWeight='light'
-                        as='h1'
-                        noOfLines={1}
-                        mt='6'
-                        mb={3}
-                        fontSize='md'
-                    >
-                        Taglie disponibili
-                    </Box>
-                    <Size_Box
-                        borderWidth='1px'
-                        py={2}
-                        borderRadius={5}
-                        width={28}
-                        fontSize={'2xl'}
-                        fontWeight={'normal'}
-                        sizes={product.sizes}
-                    />
+            </Desktop_Layout>
 
-                </Box>
 
-            </div>
-        </Desktop_Layout>
+        </>
+
     )
 }
 

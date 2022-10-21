@@ -34,9 +34,8 @@ const Size_Box = ({ borderWidth, py, borderRadius, width, fontSize, fontWeight, 
 
 
     return (
-        <div className='grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-fit gap-3 '>
+        <div className='grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-fit gap-3 '>
             {SIZES.map((size) => {
-
                 let bg = 'gray.100'
                 let color = 'gray.400'
 
