@@ -1,5 +1,6 @@
 import React from 'react'
 import { Box, Image } from '@chakra-ui/react'
+import Circle_Color from '../atoms/Circle_Color'
 
 
 const Box_Dress = (props) => {
@@ -53,14 +54,8 @@ const Box_Dress = (props) => {
                     >
                         {props.dress.formattedPrice}
                     </Box>
-                    <div className='flex space-x-1'>
-                        {props.dress.color.map((color) => {
-                            return (
-                                <Box key={color} h={'4'} w={'4'} borderRadius={'100%'} bg={color} borderWidth={1} borderColor={'gray.200'}>
-                                </Box>
-                            )
-                        })}
-                    </div>
+                    <Circle_Color colors={props.dress.color} dimension={'4'}  space={'1'}/>
+                    
                 </div>
             </Box>
         </Box>
