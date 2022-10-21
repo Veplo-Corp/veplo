@@ -8,6 +8,7 @@ export interface Product {
     macroCategory: string,
     microCategory: string,
     price: number,
-    sizes: string[]
-
+    sizes: string[],
+    gender: string,
+    brand:string
 }

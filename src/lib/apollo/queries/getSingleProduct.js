@@ -15,6 +15,8 @@ const GET_SINGLE_PRODUCT = gql`
             type
             coordinates
             }
+            brand
+            gender
         } 
     }
 `
