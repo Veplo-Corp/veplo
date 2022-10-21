@@ -106,7 +106,7 @@ const index = () => {
     event.preventDefault();
     if (typeForm === 'registration') {
       createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        .then(async(userCredential) => {
           // Signed in 
           const user = userCredential.user;
           console.log(user);
@@ -115,7 +115,8 @@ const index = () => {
             login(
               {
                 email:user.email,
-                uid: user.uid
+                uid: user.uid,
+                idToken: await user.getIdToken()
               }
             )
           );

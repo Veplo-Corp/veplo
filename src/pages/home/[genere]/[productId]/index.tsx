@@ -237,7 +237,7 @@ const index: React.FC<{ product: Product, error: string }> = ({ product, error }
                         <div className="overflow-x-scroll flex w-full gap-4 ">
                             {dress.imageUrl.map((image) => {
                                 return (
-                                    <div className='flex  gap-4 w-fit'>
+                                    <div key={Math.random()} className='flex  gap-4 w-fit'>
                                         <Box key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
                                             borderWidth={1.5}
                                             className={`cursor-pointer

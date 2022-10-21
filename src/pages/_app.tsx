@@ -35,15 +35,16 @@ function Auth({ children }) {
   // check at page load if a user is authenticated
   // check at page load if a user is authenticated
   useEffect(() => {
-    onAuthStateChanged(auth, (userAuth) => {
-      // console.log(userAuth?.email);
-
+    onAuthStateChanged(auth, async(userAuth) => {
       if (userAuth) {
+        const idToken = await userAuth.getIdToken()
+        //console.log(idToken);
         // user is logged in, send the user's details to redux, store the current user in the state
         dispatch(
           login({
             email: userAuth.email,
-            uid: userAuth.uid
+            uid: userAuth.uid,
+            idToken: idToken
           })
         );
         //!router.push('/impresa/home')
