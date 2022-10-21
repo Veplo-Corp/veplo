@@ -1,15 +1,87 @@
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
 import { Box, Image } from '@chakra-ui/react';
+import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
+import { useQuery } from '@apollo/client';
+import { Product } from '../../../../interfaces/product.interface';
+import { initApollo } from '../../../../lib/apollo';
 
-const index = () => {
 
-    const router = useRouter();
+export async function getStaticPaths() {
+    return {
+        paths: [],
+        fallback: 'blocking', // can also be true or false
+    }
+}
 
-    const query = router.query;
+export async function getStaticProps(ctx) {
+    // Call an external API endpoint to get posts.
+    // You can use any data fetching library
+    const apolloClient = initApollo()
+    
+
+    const {productId} = ctx.params
+    console.log(productId);
+    
+    
+    const { data, error } = await apolloClient.query({
+        query: GET_SINGLE_PRODUCT,
+        variables: { id: productId }
+    })
+
+    return {
+        props: {
+            data: data || null,
+            error: error || null
+            // initialApolloState: apolloClient.cache.extract(),
+        }
+    }
+
+
+    // By returning { props: { posts } }, the Blog component
+    // will receive `posts` as a prop at build time
+    return {
+        props: {
+            // data,
+            // error,
+            // loading
+        },
+    }
+}
+
+
+// const { loading, data, error } = useQuery(GET_SINGLE_PRODUCT, {
+//     fetchPolicy: 'no-cache',
+//     variables: {
+//         id: '635030f4692a668cf323436f',
+//     },
+// })
+
+const index = (props) => {
+    console.log(props);
+    
+
+    //const router = useRouter();
+    //const query = router.query;
     //decodeURI
-    console.log(decodeURIComponent(query.nome));
+    //console.log(decodeURIComponent(query.nome));
+
+
+
+
+
+
+
+
+
+
+
+
+    //handle error case
+    // console.log(loading);
+    // console.log(error);
+
 
     const dress = {
         name: 'LOGO LONG SLEEVE TEE - Maglietta a manica lunga',
