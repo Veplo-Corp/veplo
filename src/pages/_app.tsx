@@ -36,7 +36,7 @@ function Auth({ children }) {
   // check at page load if a user is authenticated
   useEffect(() => {
     onAuthStateChanged(auth, (userAuth) => {
-      console.log(userAuth?.email);
+      // console.log(userAuth?.email);
 
       if (userAuth) {
         // user is logged in, send the user's details to redux, store the current user in the state
