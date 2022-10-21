@@ -45,7 +45,7 @@ return (
         <div className="grid grid-cols-1 md:pt-4 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 w-full m-auto justify-items-center	">
             {shops.map((shop) => {
                 return (
-                    <Box_Shop scale={'scale(0.99)'} key={Math.random()} eventHandler={toStore} shop={shop} width={420} height={250} />
+                    <Box_Shop key={Math.random()} scale={'scale(0.99)'} key={Math.random()} eventHandler={toStore} shop={shop} width={420} height={250} />
 
                 )
             })}

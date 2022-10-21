@@ -27,7 +27,7 @@ const dress = {
     imageUrl: 'https://img01.ztat.net/article/spp-media-p1/0a53a253d16a366cb8752f4ef4c76f37/24afae32e49b473db7b2502bef83e4ea.jpg?imwidth=1800',
     imageAlt: 'Rear view of modern dress',
     color: ['blackAlpha.900', 'gray.300', 'red.700', 'white'],
-    id: 'ABC1234'
+    id: '635030f4692a668cf323436f'
 }
 let clothes: any[] = [];
 
