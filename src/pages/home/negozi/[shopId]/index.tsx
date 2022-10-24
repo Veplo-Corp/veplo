@@ -4,6 +4,7 @@ import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout'
 import { defineStyle, Divider } from '@chakra-ui/react'
 import Box_Dress from '../../../../../components/molecules/Box_Dress'
 import { useRouter } from 'next/router'
+import Horizontal_Line from '../../../../../components/atoms/Horizontal_Line'
 
 
 const SHOP = {
@@ -63,7 +64,7 @@ const index = () => {
             <Box_Shop shop={SHOP} width={500} height={350} scale={1} eventHandler={() => { }}>
 
             </Box_Shop>
-            <div className='w-full md:mt-6 mb-4 md:mb-8 border-b rounded-lg bg-slate-500'></div>
+            <Horizontal_Line />
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
                 {clothes.map((dress) => {
                     return (
