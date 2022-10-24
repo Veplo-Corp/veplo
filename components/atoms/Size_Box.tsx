@@ -32,9 +32,8 @@ const SIZES = [
 const Size_Box = ({ borderWidth, py, borderRadius, width, fontSize, fontWeight, sizes }) => {
 
 
-
     return (
-        <div className='grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-fit gap-3 '>
+        <div className='grid grid-cols-3 xl:grid-cols-4 w-fit gap-3 '>
             {SIZES.map((size) => {
                 let bg = 'gray.100'
                 let color = 'gray.400'
@@ -50,12 +49,12 @@ const Size_Box = ({ borderWidth, py, borderRadius, width, fontSize, fontWeight, 
                     borderWidth={borderWidth}
                     py={py}
                     borderRadius={borderRadius}
-                    width={width}
+                    
                     fontSize={fontSize}
                     fontWeight={fontWeight}
                     bg={bg}
                     color={color}
-                    className='text-center '
+                    className='text-center w-24 md:w-20 lg:w-28 '
                 >
                     {size.text}
                 </Box>)

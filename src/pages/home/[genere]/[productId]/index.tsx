@@ -9,6 +9,7 @@ import { initApollo } from '../../../../lib/apollo';
 import Circle_Color from '../../../../../components/atoms/Circle_Color';
 import Size_Box from '../../../../../components/atoms/Size_Box';
 import { isMobile } from 'react-device-detect';
+import Horizontal_Line from '../../../../../components/atoms/Horizontal_Line';
 
 
 export async function getStaticPaths() {
@@ -42,7 +43,7 @@ export async function getStaticProps(ctx) {
     }
 
 
-   
+
 }
 
 
@@ -219,7 +220,6 @@ const index: React.FC<{ product: Product, error: string }> = ({ product, error }
                             borderWidth='1px'
                             py={2}
                             borderRadius={5}
-                            width={28}
                             fontSize={'2xl'}
                             fontWeight={'normal'}
                             sizes={product.sizes}
@@ -266,18 +266,14 @@ const index: React.FC<{ product: Product, error: string }> = ({ product, error }
                                             <Image src={image} alt={dress.imageAlt} />
                                         </Box>
                                     </div>
-
                                 )
                             })}
                         </div>
                     </Box>
-
-
-
                 </div>
+                <Horizontal_Line />
+                
             </Desktop_Layout>
-
-
         </>
 
     )
