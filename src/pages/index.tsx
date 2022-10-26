@@ -26,7 +26,14 @@ const Home: NextPage = () => {
   const ARRAY_CITY = ['Terni', 'Rieti', 'Perugia'];
   const [address, setAddress] = useState([])
 
-  const onChangeAddress = (address_searched) => {
+  const onChangeAddress = async(address_searched) => {
+    const longitude = '12.632041'
+    const latitude = '42.550182'
+    const endpoint = `/api/mapbox/reverse-geocoding?longitude=${longitude}&latitude=${latitude}`
+    const response = await fetch(endpoint)
+    const result = await response.json()
+    console.log(result.data);
+
 
 
     clearTimeout(filterTimeout)
