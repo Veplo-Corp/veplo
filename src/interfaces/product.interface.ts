@@ -1,14 +1,21 @@
 export interface Product {
-    name: string,
-    colors: string[],
+    id: string,
+    name: string
+    photos: string[]
+    price: number,
+    colors: string[]
+    sizes:string[],
+    macroCategory:string,
+    microCategory :string,
+    gender: string
+    brand: string
     location:{
         type: string,
         coordinates: number[]
     },
-    macroCategory: string,
-    microCategory: string,
-    price: number,
-    sizes: string[],
-    gender: string,
-    brand:string
+    shopId: string,
+    description: string,
+    address: any,
+    updateTime: string,
+    shopName: string
 }

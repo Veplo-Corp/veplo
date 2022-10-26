@@ -38,8 +38,8 @@ function Auth({ children }) {
     onAuthStateChanged(auth, async(userAuth) => {
       if (userAuth) {
         const idToken = await userAuth.getIdToken()
-        console.log(idToken);
-        console.log(userAuth.uid);
+        // console.log(idToken);
+        // console.log(userAuth.uid);
         
         // user is logged in, send the user's details to redux, store the current user in the state
         dispatch(

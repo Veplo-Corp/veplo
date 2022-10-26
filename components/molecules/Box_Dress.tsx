@@ -11,7 +11,7 @@ const Box_Dress = (props) => {
             _active={{
                 transform: 'scale(0.99)',
             }}>
-            <Image src={props.dress.imageUrl} alt={props.dress.imageAlt} />
+            <Image src={props.dress.photos[0]} alt={props.dress.imageAlt} />
             <Box py='1' px={'0'}>
                 <Box
                     mt='1'
@@ -21,7 +21,7 @@ const Box_Dress = (props) => {
                     noOfLines={1}
                     fontSize='sm'
                 >
-                    {props.dress.company}
+                    {props.dress.shopName}
                 </Box>
                 <Box
                     fontWeight='normal'
@@ -54,7 +54,7 @@ const Box_Dress = (props) => {
                     >
                         {props.dress.formattedPrice}
                     </Box>
-                    <Circle_Color colors={props.dress.color} dimension={'4'}  space={'1'}/>
+                    <Circle_Color colors={props.dress.colors} dimension={'4'}  space={'1'}/>
                     
                 </div>
             </Box>

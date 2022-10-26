@@ -51,7 +51,6 @@ const Home: NextPage = () => {
   }
 
 
-  const btnRef = useRef()
 
   /* drawer */
   const [isOpen, setisOpen] = useState(false)
