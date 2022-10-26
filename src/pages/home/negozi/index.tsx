@@ -43,7 +43,6 @@ return (
             {shops.map((shop) => {
                 return (
                     <Box_Shop key={Math.random()} scale={'scale(0.99)'} key={Math.random()} eventHandler={toStore} shop={shop} width={420} height={250} />
-
                 )
             })}
         </div>

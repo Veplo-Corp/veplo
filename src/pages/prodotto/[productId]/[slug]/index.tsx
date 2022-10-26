@@ -10,6 +10,7 @@ import Circle_Color from '../../../../../components/atoms/Circle_Color';
 import Size_Box from '../../../../../components/atoms/Size_Box';
 import { isMobile } from 'react-device-detect';
 import Horizontal_Line from '../../../../../components/atoms/Horizontal_Line';
+import createUrlSchema from '../../../../../components/utils/create_url';
 
 
 const dress: Product = {
@@ -79,7 +80,23 @@ export async function getStaticProps(ctx) {
 
 
 const index: React.FC<{ product: Product, error: string }> = ({ product, error }) => {
-   
+
+    const router = useRouter();
+    const { slug } = router.query
+
+    useEffect(() => {
+        const url_slug_correct = createUrlSchema([product.brand, product.name, product.microCategory])
+        if(url_slug_correct !== slug){
+            router.push({
+                pathname: `/prodotto/${product.id}/${url_slug_correct}`,
+              }, 
+              undefined, { shallow: true }
+            )
+        }
+        
+
+    }, [product])
+
 
     const [fullImage, setfullImage] = useState(dress.photos[0])
     const [isOpen, setisOpen] = useState(false)
@@ -117,14 +134,6 @@ const index: React.FC<{ product: Product, error: string }> = ({ product, error }
             }
         }
     }
-
-
-
-
-
-
-
-
 
 
     return (
@@ -190,17 +199,17 @@ const index: React.FC<{ product: Product, error: string }> = ({ product, error }
                             fontWeight='medium'
                             as='h1'
                             noOfLines={2}
-                            lineHeight={'30px'}
-                            mt='0'
+                            mt='-1'
                             fontSize='3xl'
+                            lineHeight={'33px'}
                         >
-                            {product.name}
+                            {`${product.name.toLocaleUpperCase()} - ${product.microCategory}`}
                         </Box>
                         <Box
                             fontWeight='medium'
                             as='h1'
                             noOfLines={1}
-                            mt='2'
+                            mt='3'
                             fontSize='medium'
                         >
                             {product.price.toFixed(2)}€
