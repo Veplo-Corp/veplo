@@ -16,24 +16,36 @@ import {
 
 } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
-import Input_Search from '../../components/atoms/Input_Search'
+import Input_Search_Address from '../../components/atoms/Input_Search_Address'
 
 
 
 const Home: NextPage = () => {
 
-  let filterTimeout:any;
+  let filterTimeout: any;
   const ARRAY_CITY = ['Terni', 'Rieti', 'Perugia'];
   const [address, setAddress] = useState([])
 
-  const onChangeAddress = (features) => {
+  const onChangeAddress = (address_searched) => {
 
 
     clearTimeout(filterTimeout)
 
-    filterTimeout = setTimeout(() => {
-      setAddress(features.data)
-      console.log(features.data);
+    filterTimeout = setTimeout(async() => {
+
+      // Send the data to the server in JSON format.
+
+      // API endpoint where we send form data.
+      const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}`
+
+      // Send the form data to our forms API on Vercel and get a response.
+      const response = await fetch(endpoint)
+
+      // Get the response data from server as JSON.
+      // If server returns the name submitted, that means the form works.
+      const result = await response.json()
+      setAddress(result.data)
+      console.log(result.data);
     }, 1000)
 
   }
@@ -46,9 +58,9 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <div className='w-full h-96 bg-cyan-900' onClick={() => setisOpen(false)}>
-        <div className='flex justify-end p-6'>
-          <Button borderRadius={50} size={'md'} padding={4}>Iscrivi il tuo negozio</Button>
+      <div className='w-full h-96 bg-cyan-900 pt-10 md:mt-20' onClick={() => setisOpen(false)}>
+        <div className='hidden md:flex justify-end p-6 z-0'>
+          <Button zIndex={0} borderRadius={50} size={'md'} padding={4}>Iscrivi il tuo negozio</Button>
         </div>
       </div>
       <div className='w-full p-4 md:p-6 py-8 md:flex justify-between'>
@@ -64,7 +76,7 @@ const Home: NextPage = () => {
         </div>
         <div>
           <h1 className='font-extrabold italic text-xl text-black-900 text-end'>oppure inserisci la tua posizione</h1>
-          <Box borderRadius={12} className='w-full mt-2 h-12 flex justify-between px-4 pt-3 cursor-pointer'
+          <Box borderRadius={12} className='w-full mt-2 h-12 flex justify-between items-center px-4 cursor-pointer'
             onClick={() => setisOpen(true)}
             bg={'black.900'}
             color={'white'}
@@ -91,20 +103,18 @@ const Home: NextPage = () => {
       <Drawer
         placement='top'
         isOpen={isOpen}
-        size={'xl'}
-
-        onClose={() => setisOpen(false)} >
+        onClose={() => setisOpen(false)}>
         <DrawerOverlay />
-        <DrawerContent >
+        <DrawerContent className='h-80'  >
           <DrawerHeader borderBottomWidth='1px' border={'none'} className='flex justify-between '>
             <h1 className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</h1>
             <svg onClick={() => setisOpen(false)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 cursor-pointer">
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </DrawerHeader>
-          <DrawerBody className='md:m-auto'>
-            <Input_Search onChangeAddress={onChangeAddress} />
-             <div className='my-3 pl-8'>
+          <DrawerBody className='md:m-auto '>
+            <Input_Search_Address handleEvent={onChangeAddress} />
+            <div className='my-3 pl-8'>
               {address[0] && <h2 className='text-md font-bold text-gray-500 mb-2'>risultati</h2>}
               {address.map((value) => {
                 return (

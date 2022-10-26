@@ -3,12 +3,15 @@ import Link from 'next/link'
 import { NextRouter, useRouter } from 'next/router'
 import Navbar from '../molecules/Home_Navbar'
 import JoinUs_Navbar from '../molecules/JoinUs_Navbar'
+import { Box } from '@chakra-ui/react'
+import Input_Search_Item from '../atoms/Input_Search_Item'
+import Circle_Color from '../atoms/Circle_Color'
 
 
 const Header = () => {
     const router: NextRouter = useRouter()
     const genere: 'uomo' | 'donna' | undefined = router.query.genere
-    const showMenu = false;
+    const [showMenu, setshowMenu] = useState(false);
     const [showCategory, setshowCategory] = useState(false);
     const address = 'Terni, via cavour 41';
 
@@ -22,15 +25,23 @@ const Header = () => {
             <JoinUs_Navbar />
 
             {/* Menu button, Search button and Dintorni Logo for screen >=md */}
-            <div className=" fixed z-50 top-3 md:hidden">
-                <button type="button" className="inline-flex mt-0.5 rounded-md px-4  active:bg-gray-100 focus:outline-none" aria-expanded="false">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-black">
+            <div className=" fixed z-50 top-3 right-2 md:hidden">
+                <button type="button" className="inline-flex mt-0.5 rounded-md px-1  active:bg-gray-100 focus:outline-none" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                     </svg>
                 </button>
             </div>
+            <div className="pl-2 md:pl-8 fixed z-50 top-3 md:top-4  right-12 md:hidden">
+                <button type="button" className="inline-flex mt-0.5 rounded-md px-1 active:bg-gray-100 focus:outline-none" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+
+                </button>
+            </div>
             <div className="hidden md:flex pl-8 fixed z-50 top-10 -mt-px"> {/* lg:w-0 lg:flex-1 */}
-                {!address && <Link href="/home">
+                {!address && <Link href="/">
                     <a className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</a>
                 </Link>}
                 {address &&
@@ -45,31 +56,31 @@ const Header = () => {
                     </>
                 }
             </div>
-            <div className="pl-2 md:pl-8 fixed z-50 top-3 md:top-4  right-0 md:hidden">
-                <button type="button" className="inline-flex mt-0.5 rounded-md px-4 active:bg-gray-100 focus:outline-none" aria-expanded="false">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-black">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                    </svg>
-
-                </button>
-            </div>
 
 
-            <div className="w-full fixed top-0 md:top-7 bg-white">
+
+            <div className="w-full z-10 fixed top-0 md:top-7 bg-white">
                 <div className="mx-auto max-w-full border-b-2 border-gray-100">
-                    <div className=" py-2 md:py-3 lg:justify-start lg:space-x-10">
+                    <div className="py-3 lg:justify-start lg:space-x-10">
                         <div className='flex items-center justify-between h-8 '>
                             <Navbar genere={genere} showCategory={showCategory} onShowCategory={handleShowCategory} />
-                            <div className=" justify-center w-full flex md:hidden">
-                                <Link href="/home">
-                                    <a className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</a>
+                            <div className="  w-full md:hidden">
+                                <Link href="/">
+                                    <a className="font-black mt-2 ml-5 text-2xl italic text-black-900  ">DINTORNI</a>
                                 </Link>
+                            </div>
+                            <div className="hidden lg:flex gap-3 fixed top-9 right-8 z-10"> {/* pr-80 */}
+                                    <Input_Search_Item />
+                                    <Link href={'/'}>
+                                        <a>
+                                            <Circle_Color colors={['gray.200']} dimension={10} space={'0'} />
+                                        </a>
+                                    </Link>
                             </div>
                         </div>
 
                     </div>
                     {showCategory && <div className='h-80 border-b-2 border-gray-100 bg-white w-screen	fixed z-50	 top-30'>
-
                     </div>}
                 </div>
 
