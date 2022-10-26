@@ -7,23 +7,11 @@ import {
 
 
 
-const Input_Search = ({onChangeAddress}) => {
+const Input_Search_Address = ({handleEvent}) => {
 
     const  mapboxSearchHandle = async(event) => {
-        const address_searched = event.target.value
-
-        // Send the data to the server in JSON format.
-
-        // API endpoint where we send form data.
-        const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}`
-
-        // Send the form data to our forms API on Vercel and get a response.
-        const response = await fetch(endpoint)
-
-        // Get the response data from server as JSON.
-        // If server returns the name submitted, that means the form works.
-        const result = await response.json()
-        onChangeAddress(result)
+        
+        handleEvent(event.target.value)
     }
 
     return (
@@ -55,4 +43,4 @@ const Input_Search = ({onChangeAddress}) => {
     )
 }
 
-export default Input_Search
+export default Input_Search_Address
