@@ -15,7 +15,8 @@ export interface Product {
     },
     shopId: string,
     description: string,
-    address: any,
+    cityShop:string
     updateTime: string,
     shopName: string
+    firebaseShopId: string,
 }
