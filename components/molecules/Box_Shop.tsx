@@ -8,13 +8,12 @@ const Box_Shop = (props) => {
                             _active={{
                                 transform: `${props.scale}`,
                             }}>
-                            <Image src={props.shop.imageUrl} className='object-cover' borderRadius='lg' width={props.width} maxHeight={props.height} alt={props.shop.imageAlt} />
+                            <Image src={props.shop.photo} className='object-cover' borderRadius='lg' width={props.width} maxHeight={props.height} alt={props.shop.imageAlt} />
                             <Box py='1' px={'0'}>
                                 <Box
                                     mt='1'
                                     fontWeight='semibold'
                                     as='h2'
-                                    lineHeight='tall'
                                     noOfLines={1}
                                     fontSize='medium'
                                 >
@@ -34,10 +33,9 @@ const Box_Shop = (props) => {
                                     fontWeight='medium'
                                     as='h2'
                                     fontSize='12px'
-                                    lineHeight='4'
                                     mt={-0.5}
                                 >
-                                    {props.shop.address}
+                                    {props.shop.address.city}
                                 </Box>
 
                                 {/* <div className='flex justify-between mt-2'>

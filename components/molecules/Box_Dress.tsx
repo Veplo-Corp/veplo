@@ -37,8 +37,8 @@ const Box_Dress = (props) => {
                     fontWeight='normal'
                     as='h3'
                     fontSize='sm'
-                    lineHeight='none'
                     noOfLines={1}
+                    mt={-1}
                 >
                     {props.dress.name}
                 </Box>
