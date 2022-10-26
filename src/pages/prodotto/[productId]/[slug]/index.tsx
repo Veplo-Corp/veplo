@@ -12,6 +12,30 @@ import { isMobile } from 'react-device-detect';
 import Horizontal_Line from '../../../../../components/atoms/Horizontal_Line';
 
 
+const dress: Product = {
+    id: '635030f4692a668cf323436f',
+    name: 'logo long sleeve tee',
+    photos: ['https://img01.ztat.net/article/spp-media-p1/0a53a253d16a366cb8752f4ef4c76f37/24afae32e49b473db7b2502bef83e4ea.jpg?imwidth=1800', 'https://img01.ztat.net/article/spp-media-p1/92ec5b9defd53c6095411644ba6df0a3/b55be231798048b1a53c715a5285e32f.jpg?imwidth=1800', 'https://img01.ztat.net/article/spp-media-p1/d975829dee9936ac91401531ffc18747/bb1c440521394dc088318d777a8c4280.jpg?imwidth=1800&filter=packshot'],
+    price: 24.99,
+    colors: ['blackAlpha.900', 'gray.300', 'red.700', 'white'],
+    sizes: ['S 36', 'M 40'],
+    macroCategory: 't-shirt',
+    microCategory: 'maglietta a manica lunga',
+    gender: 'M',
+    brand: 'Tommy Hilfiger',
+    location: {
+        type: 'Point',
+        coordinates: [42.562309, 12.64576]
+    },
+    shopId: '63459223b728b4f0b7d88a6f',
+    description: 'negozio nel centro di terni',
+    address: 'da inserire', //!TODO
+    updateTime: '', //!TODO
+    shopName: 'Sartoria Rizzo Merlini',
+}
+
+
+
 export async function getStaticPaths() {
     return {
         paths: [],
@@ -42,8 +66,6 @@ export async function getStaticProps(ctx) {
         }
     }
 
-
-
 }
 
 
@@ -57,18 +79,9 @@ export async function getStaticProps(ctx) {
 
 
 const index: React.FC<{ product: Product, error: string }> = ({ product, error }) => {
-    const dress = {
-        name: 'LOGO LONG SLEEVE TEE - Maglietta a manica lunga',
-        company: 'Sartoria Rizzo Merlini',
-        brand: 'Tommy Hilfiger',
-        formattedPrice: '24,99€',
-        imageUrl: ['https://img01.ztat.net/article/spp-media-p1/0a53a253d16a366cb8752f4ef4c76f37/24afae32e49b473db7b2502bef83e4ea.jpg?imwidth=1800', 'https://img01.ztat.net/article/spp-media-p1/92ec5b9defd53c6095411644ba6df0a3/b55be231798048b1a53c715a5285e32f.jpg?imwidth=1800', 'https://img01.ztat.net/article/spp-media-p1/d975829dee9936ac91401531ffc18747/bb1c440521394dc088318d777a8c4280.jpg?imwidth=1800&filter=packshot'],
-        imageAlt: 'Rear view of modern dress',
-        color: ['blackAlpha.900', 'gray.300', 'red.700', 'white'],
-        id: 'ABC1234'
-    }
+   
 
-    const [fullImage, setfullImage] = useState(dress.imageUrl[0])
+    const [fullImage, setfullImage] = useState(dress.photos[0])
     const [isOpen, setisOpen] = useState(false)
     //!handle error case
 
@@ -95,12 +108,12 @@ const index: React.FC<{ product: Product, error: string }> = ({ product, error }
 
     const onClickImageModal = () => {
         if (isOpen) {
-            const i = dress.imageUrl.indexOf(fullImage) + 1
+            const i = dress.photos.indexOf(fullImage) + 1
 
-            if (dress.imageUrl[i] !== undefined) {
-                setfullImage(dress.imageUrl[i])
+            if (dress.photos[i] !== undefined) {
+                setfullImage(dress.photos[i])
             } else {
-                setfullImage(dress.imageUrl[0])
+                setfullImage(dress.photos[0])
             }
         }
     }
@@ -134,7 +147,7 @@ const index: React.FC<{ product: Product, error: string }> = ({ product, error }
                             <Image src={fullImage} alt={dress.imageAlt} />
                         </Box>
                         <div>
-                            {dress.imageUrl.map((image) => {
+                            {dress.photos.map((image) => {
                                 return (
                                     <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
                                         borderWidth={1.5}
@@ -235,7 +248,7 @@ const index: React.FC<{ product: Product, error: string }> = ({ product, error }
                             Altri prodotti di Sartoria Rizzo Merlini
                         </Box>
                         <div className="overflow-x-scroll flex w-full gap-4 ">
-                            {dress.imageUrl.map((image) => {
+                            {dress.photos.map((image) => {
                                 return (
                                     <div key={Math.random()} className='flex  gap-4 w-fit'>
                                         <Box key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
@@ -272,7 +285,6 @@ const index: React.FC<{ product: Product, error: string }> = ({ product, error }
                     </Box>
                 </div>
                 <Horizontal_Line />
-                
             </Desktop_Layout>
         </>
 

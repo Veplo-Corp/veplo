@@ -17,6 +17,7 @@ const GET_SINGLE_PRODUCT = gql`
             }
             brand
             gender
+            id
         } 
     }
 `
