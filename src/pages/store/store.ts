@@ -1,10 +1,12 @@
 import userState from './reducers/user';
 import { configureStore } from '@reduxjs/toolkit';
+import addressState from './reducers/address_user';
 
 
 export const store = configureStore({
   reducer: {
-    user: userState
+    user: userState,
+    address: addressState
   },
 })
 

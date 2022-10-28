@@ -6,6 +6,7 @@ import JoinUs_Navbar from '../molecules/JoinUs_Navbar'
 import { Box } from '@chakra-ui/react'
 import Input_Search_Item from '../atoms/Input_Search_Item'
 import Circle_Color from '../atoms/Circle_Color'
+import { useSelector } from 'react-redux'
 
 
 const Header = () => {
@@ -13,7 +14,8 @@ const Header = () => {
     const genere: 'uomo' | 'donna' | undefined = router.query.genere
     const [showMenu, setshowMenu] = useState(false);
     const [showCategory, setshowCategory] = useState(false);
-    const address = 'Terni, via cavour 41';
+    const address_user = useSelector((state) => state.address.address);
+    // console.log(address_user);
 
     const handleShowCategory = () => {
         setshowCategory((actualValue) => {
@@ -41,20 +43,21 @@ const Header = () => {
                 </button>
             </div>
             <div className="hidden md:flex pl-8 fixed z-50 top-10 -mt-px"> {/* lg:w-0 lg:flex-1 */}
-                {!address && <Link href="/">
+                {!address_user && <Link href="/">
                     <a className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</a>
                 </Link>}
-                {address &&
+                {address_user &&
                     <>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-6 h-6 mt-1">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                         </svg>
                         <p className="font-sm text-sm mt-2 ml-1  ">
-                            {address}
+                            {address_user.placeType === 'address' && <span>{address_user.address}, </span>} {address_user.city}
                         </p>
                     </>
                 }
+                
             </div>
 
 
@@ -70,12 +73,12 @@ const Header = () => {
                                 </Link>
                             </div>
                             <div className="hidden lg:flex gap-3 fixed top-9 right-8 z-10"> {/* pr-80 */}
-                                    <Input_Search_Item />
-                                    <Link href={'/'}>
-                                        <a>
-                                            <Circle_Color colors={['gray.200']} dimension={10} space={'0'} />
-                                        </a>
-                                    </Link>
+                                <Input_Search_Item />
+                                <Link href={'/'}>
+                                    <a>
+                                        <Circle_Color colors={['gray.200']} dimension={10} space={'0'} />
+                                    </a>
+                                </Link>
                             </div>
                         </div>
 

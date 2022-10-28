@@ -39,9 +39,7 @@ const Home: NextPage = () => {
     clearTimeout(filterTimeout)
 
     filterTimeout = setTimeout(async () => {
-
       // Send the data to the server in JSON format.
-
       // API endpoint where we send form data.
       const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}`
 
@@ -58,7 +56,6 @@ const Home: NextPage = () => {
 
   const setUserAddress = async (element) => {
 
-
     const placeType = element.place_type[0];
     const longitude: number | undefined = undefined
     const latitude: number | undefined = undefined
@@ -70,7 +67,11 @@ const Home: NextPage = () => {
       longitude = element.geometry.coordinates[0];
       latitude = element.geometry.coordinates[1];
       postcode = element.context[0].text_it;
-      city = element.context[1].text_it;
+      if(element.context[1].id.split('.')[0] === 'place'){
+        city = element.context[1].text_it;
+      } else {
+        city = element.context[2].text_it;
+      }
       address = element.address !== undefined ? (element.text_it + ' ' + element.address) : element.text_it;
     }
     else if (placeType === 'place') {
@@ -88,18 +89,14 @@ const Home: NextPage = () => {
       placeType
     });
 
-
-
     const endpoint = `/api/mapbox/save-user-address?longitude=${longitude}&latitude=${latitude}&postcode=${postcode}&city=${city}&address=${address}&placeType=${placeType}`
     const response = await fetch(endpoint)
-    const result = await response.json()
+    const result = await response.json();
     console.log(result.address_user);
-
-
-
-
-
-
+    
+    if (typeof window !== "undefined") {
+      localStorage.setItem('address', JSON.stringify(result.address_user))
+    }
   }
 
 
@@ -186,7 +183,7 @@ const Home: NextPage = () => {
                       <Divider p={1} orientation='horizontal' />
                     </div>
                   )
-                } 
+                }
 
               })}
 
