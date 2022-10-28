@@ -10,9 +10,11 @@ import { store } from './store/store'
 import { useEffect } from 'react'
 import { auth, onAuthStateChanged } from '../config/firebase'
 import { login, logout } from './store/reducers/user'
+import { setAddress } from './store/reducers/address_user'
 import { useRouter } from 'next/router'
 import { ApolloProvider } from '@apollo/client'
 import { useApollo } from '../lib/apollo'
+import { getAddressFromLocalStorage } from '../../components/utils/getAddress_from_LocalStorage'
 
 const theme = extendTheme({
   colors: {
@@ -30,17 +32,36 @@ const theme = extendTheme({
 
 function Auth({ children }) {
   const router = useRouter()
-  const user = useSelector((state) => state.user);
+  // const user = useSelector((state) => state.user);
+  // const address_user = useSelector((state) => state.address);
+  // console.log(address_user);
+
+
+
   const dispatch = useDispatch();
-  // check at page load if a user is authenticated
-  // check at page load if a user is authenticated
+
+
+  
+
+  //* check at page load if a user is authenticated
   useEffect(() => {
-    onAuthStateChanged(auth, async(userAuth) => {
+
+    //* GET the user address from localstorage
+  const address_user = getAddressFromLocalStorage();
+  console.log(address_user);
+
+  dispatch(
+    setAddress({
+      address: address_user
+    })
+  );
+
+    onAuthStateChanged(auth, async (userAuth) => {
       if (userAuth) {
         const idToken = await userAuth.getIdToken()
         // console.log(idToken);
         // console.log(userAuth.uid);
-        
+
         // user is logged in, send the user's details to redux, store the current user in the state
         dispatch(
           login({
@@ -53,6 +74,8 @@ function Auth({ children }) {
 
       } else {
         dispatch(logout());
+
+
       }
     });
   }, []);
