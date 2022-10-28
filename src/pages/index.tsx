@@ -24,21 +24,21 @@ const Home: NextPage = () => {
 
   let filterTimeout: any;
   const ARRAY_CITY = ['Terni', 'Rieti', 'Perugia'];
-  const [address, setAddress] = useState([])
+  const [addresses, setAddresses] = useState([])
 
-  const onChangeAddress = async(address_searched) => {
-    const longitude = '12.632041'
-    const latitude = '42.550182'
-    const endpoint = `/api/mapbox/reverse-geocoding?longitude=${longitude}&latitude=${latitude}`
-    const response = await fetch(endpoint)
-    const result = await response.json()
-    console.log(result.data);
+  const onChangeAddress = async (address_searched) => {
+    // const longitude = '12.632041'
+    // const latitude = '42.550182'
+    // const endpoint = `/api/mapbox/reverse-geocoding?longitude=${longitude}&latitude=${latitude}`
+    // const response = await fetch(endpoint)
+    // const result = await response.json()
+    // console.log(result.data);
 
 
 
     clearTimeout(filterTimeout)
 
-    filterTimeout = setTimeout(async() => {
+    filterTimeout = setTimeout(async () => {
 
       // Send the data to the server in JSON format.
 
@@ -51,9 +51,54 @@ const Home: NextPage = () => {
       // Get the response data from server as JSON.
       // If server returns the name submitted, that means the form works.
       const result = await response.json()
-      setAddress(result.data)
+      setAddresses(result.data)
       console.log(result.data);
-    }, 1000)
+    }, 500)
+  }
+
+  const setUserAddress = async (element) => {
+
+
+    const placeType = element.place_type[0];
+    const longitude: number | undefined = undefined
+    const latitude: number | undefined = undefined
+    const postcode: string | undefined = undefined
+    const city: string | undefined = undefined
+    const address: string | undefined = undefined
+
+    if (placeType === 'address') {
+      longitude = element.geometry.coordinates[0];
+      latitude = element.geometry.coordinates[1];
+      postcode = element.context[0].text_it;
+      city = element.context[1].text_it;
+      address = element.address !== undefined ? (element.text_it + ' ' + element.address) : element.text_it;
+    }
+    else if (placeType === 'place') {
+      longitude = element.geometry.coordinates[0];
+      latitude = element.geometry.coordinates[1];
+      city = element.text_it
+    }
+
+    console.log({
+      longitude,
+      latitude,
+      postcode,
+      city,
+      address,
+      placeType
+    });
+
+
+
+    const endpoint = `/api/mapbox/save-user-address?longitude=${longitude}&latitude=${latitude}&postcode=${postcode}&city=${city}&address=${address}&placeType=${placeType}`
+    const response = await fetch(endpoint)
+    const result = await response.json()
+    console.log(result.address_user);
+
+
+
+
+
 
   }
 
@@ -121,14 +166,28 @@ const Home: NextPage = () => {
           <DrawerBody className='md:m-auto '>
             <Input_Search_Address handleEvent={onChangeAddress} />
             <div className='my-3 pl-8'>
-              {address[0] && <h2 className='text-md font-bold text-gray-500 mb-2'>risultati</h2>}
-              {address.map((value) => {
-                return (
-                  <div key={value.id} onClick={() => setisOpen(false)} className=' pt-2 -ml-2  cursor-pointer hover:bg-gray-100 rounded-sm	'>
-                    <p className='pl-2  text-md font-medium text-gray-800'>{value.place_name}</p>
-                    <Divider p={1} orientation='horizontal' />
-                  </div>
-                )
+              {addresses[0] && <h2 className='text-md font-bold text-gray-500 mb-2'>risultati</h2>}
+              {addresses.map((element) => {
+                if (element.place_type[0] === 'address') {
+                  return (
+                    <div key={element.id} onClick={() => setUserAddress(element)} className=' pt-2 -ml-2  cursor-pointer hover:bg-gray-100 rounded-sm	'>
+                      <p className='pl-2  text-md font-medium text-gray-800'>
+                        {element.address !== undefined ? <span >{element.text_it + ' ' + element.address}</span> : <span>{element.text_it}</span>}, <span>{element.context[1].text_it}</span>
+                      </p>
+                      <Divider p={1} orientation='horizontal' />
+                    </div>
+                  )
+                } else if (element.place_type[0] === 'place') {
+                  return (
+                    <div key={element.id} onClick={() => setUserAddress(element)} className=' pt-2 -ml-2  cursor-pointer hover:bg-gray-100 rounded-sm	'>
+                      <p className='pl-2  text-md font-medium text-gray-800'>
+                        {element.text_it}, {element.context[0].text_it}
+                      </p>
+                      <Divider p={1} orientation='horizontal' />
+                    </div>
+                  )
+                } 
+
               })}
 
 
