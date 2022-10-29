@@ -82,7 +82,7 @@ export async function getStaticProps(ctx) {
   let category: undefined | string;
 
   if (typeof slug === 'string') {
-    gender = slug.split('-')[0];
+    gender =   slug.split('-')[0];
     category = slug.substring(slug.indexOf("-") + 1);
   }
 

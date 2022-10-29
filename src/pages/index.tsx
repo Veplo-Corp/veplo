@@ -1,41 +1,31 @@
 import type { NextPage } from 'next'
-import Head from 'next/head'
-import Header from '../../components/organisms/Header'
-import styles from '../styles/Home.module.css'
 import { Button, Box, Stack, Text } from '@chakra-ui/react'
 import BlackButton from '../../components/atoms/BlackButton'
-
+import { useState } from 'react'
+import Input_Search_Address from '../../components/atoms/Input_Search_Address'
 import {
   Drawer,
   DrawerOverlay,
   DrawerContent,
   DrawerHeader,
   DrawerBody,
-  Divider,
-  DrawerFooter
-
 } from '@chakra-ui/react'
-import { useRef, useState } from 'react'
-import Input_Search_Address from '../../components/atoms/Input_Search_Address'
-
+import setUserAddress from '../../components/utils/setUserAddress'
+import { useDispatch } from 'react-redux'
+import { setAddress } from './store/reducers/address_user'
+import Address_text_handle from '../../components/molecules/Address_text_handle'
 
 
 const Home: NextPage = () => {
+  const dispatch = useDispatch();
 
   let filterTimeout: any;
   const ARRAY_CITY = ['Terni', 'Rieti', 'Perugia'];
-  const [addresses, setAddresses] = useState([])
+  const [addresses, setAddresses] = useState([]);
+  /* drawer */
+  const [isOpen, setisOpen] = useState(false)
 
-  const onChangeAddress = async (address_searched) => {
-    // const longitude = '12.632041'
-    // const latitude = '42.550182'
-    // const endpoint = `/api/mapbox/reverse-geocoding?longitude=${longitude}&latitude=${latitude}`
-    // const response = await fetch(endpoint)
-    // const result = await response.json()
-    // console.log(result.data);
-
-
-
+  const onChangeAddress = async (address_searched: string) => {
     clearTimeout(filterTimeout)
 
     filterTimeout = setTimeout(async () => {
@@ -54,55 +44,15 @@ const Home: NextPage = () => {
     }, 500)
   }
 
-  const setUserAddress = async (element) => {
-
-    const placeType = element.place_type[0];
-    const longitude: number | undefined = undefined
-    const latitude: number | undefined = undefined
-    const postcode: string | undefined = undefined
-    const city: string | undefined = undefined
-    const address: string | undefined = undefined
-
-    if (placeType === 'address') {
-      longitude = element.geometry.coordinates[0];
-      latitude = element.geometry.coordinates[1];
-      postcode = element.context[0].text_it;
-      if(element.context[1].id.split('.')[0] === 'place'){
-        city = element.context[1].text_it;
-      } else {
-        city = element.context[2].text_it;
-      }
-      address = element.address !== undefined ? (element.text_it + ' ' + element.address) : element.text_it;
-    }
-    else if (placeType === 'place') {
-      longitude = element.geometry.coordinates[0];
-      latitude = element.geometry.coordinates[1];
-      city = element.text_it
-    }
-
-    console.log({
-      longitude,
-      latitude,
-      postcode,
-      city,
-      address,
-      placeType
-    });
-
-    const endpoint = `/api/mapbox/save-user-address?longitude=${longitude}&latitude=${latitude}&postcode=${postcode}&city=${city}&address=${address}&placeType=${placeType}`
-    const response = await fetch(endpoint)
-    const result = await response.json();
-    console.log(result.address_user);
-    
-    if (typeof window !== "undefined") {
-      localStorage.setItem('address', JSON.stringify(result.address_user))
-    }
+  const handleEventSetAddress = async (element: any) => {
+    const result = await setUserAddress(element)
+    dispatch(
+      setAddress({
+        address: result
+      })
+    );
+    return setisOpen(false)
   }
-
-
-
-  /* drawer */
-  const [isOpen, setisOpen] = useState(false)
 
   return (
     <>
@@ -144,7 +94,6 @@ const Home: NextPage = () => {
         </div>
       </div>
       <div className='w-full h-96 bg-gray-100'>
-
       </div>
 
 
@@ -164,27 +113,10 @@ const Home: NextPage = () => {
             <Input_Search_Address handleEvent={onChangeAddress} />
             <div className='my-3 pl-8'>
               {addresses[0] && <h2 className='text-md font-bold text-gray-500 mb-2'>risultati</h2>}
-              {addresses.map((element) => {
-                if (element.place_type[0] === 'address') {
-                  return (
-                    <div key={element.id} onClick={() => setUserAddress(element)} className=' pt-2 -ml-2  cursor-pointer hover:bg-gray-100 rounded-sm	'>
-                      <p className='pl-2  text-md font-medium text-gray-800'>
-                        {element.address !== undefined ? <span >{element.text_it + ' ' + element.address}</span> : <span>{element.text_it}</span>}, <span>{element.context[1].text_it}</span>
-                      </p>
-                      <Divider p={1} orientation='horizontal' />
-                    </div>
-                  )
-                } else if (element.place_type[0] === 'place') {
-                  return (
-                    <div key={element.id} onClick={() => setUserAddress(element)} className=' pt-2 -ml-2  cursor-pointer hover:bg-gray-100 rounded-sm	'>
-                      <p className='pl-2  text-md font-medium text-gray-800'>
-                        {element.text_it}, {element.context[0].text_it}
-                      </p>
-                      <Divider p={1} orientation='horizontal' />
-                    </div>
-                  )
-                }
-
+              {addresses.map((element: any) => {
+                return (
+                    <Address_text_handle key={element.geometry.coordinates[0]} element={element} handleEvent={handleEventSetAddress} />
+                )
               })}
 
 
