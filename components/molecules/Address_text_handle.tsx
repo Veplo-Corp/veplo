@@ -2,7 +2,8 @@ import { Divider } from '@chakra-ui/react'
 import React from 'react';
 
 
-const Text = ({element}) => {
+
+const Address_text_handle = ({ element }) => {
     if (element.place_type[0] === 'address') {
         if (element.context[1].id.split('.')[0] === 'place') {
             return (
@@ -24,7 +25,7 @@ const Text = ({element}) => {
             )
         }
 
-    } else if (element.place_type[0] === 'place') {
+    } else if(element.place_type[0] === 'place'){
         return (
             <>
                 <p className='pl-2  text-md font-medium text-gray-800'>
@@ -34,26 +35,14 @@ const Text = ({element}) => {
             </>
         )
     }
-    else{
-        return(<></>)
-    }
-}
 
-const Address_text_handle = ({ element, handleEvent }) => {
-    // return (
-    //     <Divider p={1} orientation='horizontal' />
-
-    // )
-    console.log(element);
     return (
-        <div key={element.id} onClick={() => handleEvent(element)} className=' pt-2 -ml-2  cursor-pointer hover:bg-gray-100 rounded-sm	'>
-            <Text element={element} />
-        </div>
+        <></>
     )
 
 
 
-    
+
 
 }
 

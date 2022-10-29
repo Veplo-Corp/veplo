@@ -48,7 +48,7 @@ function Auth({ children }) {
 
     //* GET the user address from localstorage
   const address_user = getAddressFromLocalStorage();
-  console.log(address_user);
+  // console.log(address_user);
 
   dispatch(
     setAddress({

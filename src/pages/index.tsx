@@ -2,61 +2,22 @@ import type { NextPage } from 'next'
 import { Button, Box, Stack, Text } from '@chakra-ui/react'
 import BlackButton from '../../components/atoms/BlackButton'
 import { useState } from 'react'
-import Input_Search_Address from '../../components/atoms/Input_Search_Address'
-import {
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerHeader,
-  DrawerBody,
-} from '@chakra-ui/react'
-import setUserAddress from '../../components/utils/setUserAddress'
-import { useDispatch } from 'react-redux'
-import { setAddress } from './store/reducers/address_user'
-import Address_text_handle from '../../components/molecules/Address_text_handle'
+import Drawer_Address from '../../components/organisms/Drawer_Address'
 
 
 const Home: NextPage = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  let filterTimeout: any;
+  // let filterTimeout: any;
   const ARRAY_CITY = ['Terni', 'Rieti', 'Perugia'];
-  const [addresses, setAddresses] = useState([]);
   /* drawer */
-  const [isOpen, setisOpen] = useState(false)
+  const [openDrawer, setopenDrawer] = useState(1)
+  
 
-  const onChangeAddress = async (address_searched: string) => {
-    clearTimeout(filterTimeout)
-
-    filterTimeout = setTimeout(async () => {
-      // Send the data to the server in JSON format.
-      // API endpoint where we send form data.
-      const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}`
-
-      // Send the form data to our forms API on Vercel and get a response.
-      const response = await fetch(endpoint)
-
-      // Get the response data from server as JSON.
-      // If server returns the name submitted, that means the form works.
-      const result = await response.json()
-      setAddresses(result.data)
-      console.log(result.data);
-    }, 500)
-  }
-
-  const handleEventSetAddress = async (element: any) => {
-    const result = await setUserAddress(element)
-    dispatch(
-      setAddress({
-        address: result
-      })
-    );
-    return setisOpen(false)
-  }
 
   return (
     <>
-      <div className='w-full h-96 bg-cyan-900 pt-10 md:mt-20' onClick={() => setisOpen(false)}>
+      <div className='w-full h-96 bg-cyan-900 pt-10 md:mt-20' > {/* onClick={() => setisOpen(false)} */}
         <div className='hidden md:flex justify-end p-6 z-0'>
           <Button zIndex={0} borderRadius={50} size={'md'} padding={4}>Iscrivi il tuo negozio</Button>
         </div>
@@ -75,7 +36,7 @@ const Home: NextPage = () => {
         <div>
           <h1 className='font-extrabold italic text-xl text-black-900 text-end'>oppure inserisci la tua posizione</h1>
           <Box borderRadius={12} className='w-full mt-2 h-12 flex justify-between items-center px-4 cursor-pointer'
-            onClick={() => setisOpen(true)}
+            onClick={() => setopenDrawer(Math.random())}
             bg={'black.900'}
             color={'white'}
             _hover={{ bg: 'black.900' }}
@@ -95,36 +56,7 @@ const Home: NextPage = () => {
       </div>
       <div className='w-full h-96 bg-gray-100'>
       </div>
-
-
-      <Drawer
-        placement='top'
-        isOpen={isOpen}
-        onClose={() => setisOpen(false)}>
-        <DrawerOverlay />
-        <DrawerContent className='h-80'  >
-          <DrawerHeader borderBottomWidth='1px' border={'none'} className='flex justify-between '>
-            <h1 className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</h1>
-            <svg onClick={() => setisOpen(false)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 cursor-pointer">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </DrawerHeader>
-          <DrawerBody className='md:m-auto '>
-            <Input_Search_Address handleEvent={onChangeAddress} />
-            <div className='my-3 pl-8'>
-              {addresses[0] && <h2 className='text-md font-bold text-gray-500 mb-2'>risultati</h2>}
-              {addresses.map((element: any) => {
-                return (
-                    <Address_text_handle key={element.geometry.coordinates[0]} element={element} handleEvent={handleEventSetAddress} />
-                )
-              })}
-
-
-            </div>
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer >
-
+      <Drawer_Address openDrawerMath={openDrawer}/>
     </>
   )
 }

@@ -6,11 +6,31 @@ import { Box, Image } from '@chakra-ui/react'
 import Box_Shop from '../../../../components/molecules/Box_Shop';
 import { SHOP } from '../../../interfaces/shop.interface';
 import createUrlSchema from '../../../../components/utils/create_url';
+import getCityAndPostcodeFromSlug from '../../../../components/utils/get_City_and_Postcode_from_Slug';
 
+export async function getStaticPaths() {
+    return {
+        paths: [],
+        fallback: 'blocking', // can also be true or false
+    }
+  }
+  
+  export async function getStaticProps(ctx) {
+    
+    let { city_cap } = ctx.params;
+    const element: {city: string, postcode: string | null} = getCityAndPostcodeFromSlug(city_cap);
+    
+  
+    return {
+      props: {
+        city: element.city,
+        postcode: element.postcode,
+      }
+  }
+  }
 
-const index = () => {
-    const router = useRouter();
-    const query = router.query;
+const index: React.FC<{city:string, postcode: null | string}> = ({city, postcode}) => {
+    const router = useRouter()
 
     const shop: SHOP = {
         id: '635905bdadc75fa62375263f',
@@ -38,7 +58,7 @@ const index = () => {
 
 return (
     <Desktop_Layout>
-        <DintorniLogo_Below_Header citta={query.citta} />
+        <DintorniLogo_Below_Header city={city} />
         <div className="grid grid-cols-1 md:pt-4 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 w-full m-auto justify-items-center	">
             {shops.map((shop) => {
                 return (
