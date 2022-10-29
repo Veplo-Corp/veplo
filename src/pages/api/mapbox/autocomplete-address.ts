@@ -20,7 +20,7 @@ export default async function handler(
 
     try{
         const request =
-        await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${search_text}.json?types=${types}&limit=2&country=IT&language=it&access_token=${uri_mapbox}`)
+        await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${search_text}.json?types=${types}&limit=2&country=it&language=it&access_token=${uri_mapbox}`)
         
         res.status(200).json({ data: request.data.features })
     } catch (e){
