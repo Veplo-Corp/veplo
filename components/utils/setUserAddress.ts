@@ -35,11 +35,10 @@ const setUserAddress = async (element: any) => {
     const endpoint = `/api/mapbox/save-user-address?longitude=${mapbox_result.longitude}&latitude=${mapbox_result.latitude}&postcode=${mapbox_result.postcode}&city=${mapbox_result.city}&address=${mapbox_result.address}&placeType=${mapbox_result.placeType}`
     const response = await fetch(endpoint)
     const result = await response.json();
-    console.log(result.address_user);
+    // console.log(result.address_user);
 
     if (typeof window !== "undefined") {
         localStorage.setItem('address', JSON.stringify(result.address_user))
-        console.log('eccolo');
         return result.address_user
     } else {
         return console.log('impossibile creare elemento');
