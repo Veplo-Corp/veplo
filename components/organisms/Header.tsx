@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { NextRouter, useRouter } from 'next/router'
 import Navbar from '../molecules/Home_Navbar'
@@ -7,12 +7,15 @@ import { Box } from '@chakra-ui/react'
 import Input_Search_Item from '../atoms/Input_Search_Item'
 import Circle_Color from '../atoms/Circle_Color'
 import { useSelector } from 'react-redux'
+import Drawer_Address from './Drawer_Address'
 
 
 const Header = () => {
     const router: NextRouter = useRouter()
     const genere: 'uomo' | 'donna' | undefined = router.query.genere
     const [showMenu, setshowMenu] = useState(false);
+    const [openDrawer, setopenDrawer] = useState(1)
+
     const [showCategory, setshowCategory] = useState(false);
     const address_user = useSelector((state) => state.address.address);
     // console.log(address_user);
@@ -22,8 +25,11 @@ const Header = () => {
             return !actualValue
         })
     }
+
+
     return (
         <div onMouseLeave={() => setshowCategory(false)}>
+            <Drawer_Address openDrawerMath={openDrawer} />
             <JoinUs_Navbar />
 
             {/* Menu button, Search button and Dintorni Logo for screen >=md */}
@@ -52,12 +58,14 @@ const Header = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                         </svg>
-                        <p className="font-sm text-sm mt-2 ml-1  ">
+                        <p className="font-sm text-sm mt-2 ml-1 cursor-pointer"
+                            onClick={() => setopenDrawer(Math.random())}
+                        >
                             {address_user.placeType === 'address' && <span>{address_user.address}, </span>} {address_user.city}
                         </p>
                     </>
                 }
-                
+
             </div>
 
 
@@ -184,6 +192,7 @@ const Header = () => {
                 </div>}
             </div>
         </div>
+
     )
 }
 

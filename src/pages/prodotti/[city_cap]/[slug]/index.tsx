@@ -5,8 +5,10 @@ import DintorniLogo_Below_Header from '../../../../../components/molecules/Dinto
 import Box_Dress from '../../../../../components/molecules/Box_Dress'
 import { Product } from '../../../../interfaces/product.interface'
 import createUrlScheme from '../../../../../components/utils/create_url'
-import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter'
+
+
 import user from '../../../store/reducers/user'
+import getCityAndPostcodeFromSlug from '../../../../../components/utils/get_City_and_Postcode_from_Slug'
 
 
 type Router = {
@@ -46,61 +48,33 @@ for (let i = 0; i < 20; i++) {
 
 export async function getStaticPaths() {
   return {
-      paths: [],
-      fallback: 'blocking', // can also be true or false
+    paths: [],
+    fallback: 'blocking', // can also be true or false
   }
 }
 
 export async function getStaticProps(ctx) {
-  console.log(ctx);
-  
-  let { city, slug } = ctx.params;
-  let cap = 'undefined'
-  if (typeof cap === 'string') {
-    
-  }
-  
-  if (typeof city === 'string') {
-    city = toUpperCaseFirstLetter(city);
-    let provisional_cap: number | string = Number(city.split('-')[1])
-    if(provisional_cap>0){
-      provisional_cap = provisional_cap.toString();
-      if(provisional_cap.length <= 4){
-        let addText = ''
-        for (let index = 0; index < (5-provisional_cap.length); index++) {
-          addText += '0'
-        }
-        provisional_cap = addText + provisional_cap
-      }
-      console.log(provisional_cap);
-      cap = provisional_cap;
-      city = city.split('-')[0]
-    }
-  }
 
-  let gender: undefined | string;
-  let category: undefined | string;
-
-  if (typeof slug === 'string') {
-    gender =   slug.split('-')[0];
-    category = slug.substring(slug.indexOf("-") + 1);
-  }
-
+  let { city_cap, slug } = ctx.params;
+  const element: {city: string, postcode: string | null} = getCityAndPostcodeFromSlug(city_cap);
+  let gender: null | string = null;
+  let category: null | string = null;
   return {
     props: {
-        city: city || undefined,
-        gender: gender || undefined,
-        category: category || undefined,
-        cap: cap || undefined,
+      city: element.city,
+      gender: gender ,
+      category: category ,
+      postcode: element.postcode,
     }
+  }
 }
-}
 
 
 
-const genere = ({city, gender, category, cap}) => {
-
-  const router = useRouter() 
+const genere = ({ city, gender, category, postcode }) => {
+  console.log(postcode,city );
+  
+  const router = useRouter()
 
   const toProductPage = (product: Product) => {
     const newUrl = createUrlScheme([product.brand, product.name, product.microCategory])
@@ -109,7 +83,7 @@ const genere = ({city, gender, category, cap}) => {
     }
   }
 
-  
+
 
 
   return (

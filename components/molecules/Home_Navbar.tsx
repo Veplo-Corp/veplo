@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import createUrlSchema from '../utils/create_url';
 
 type Props = {
     genere?: 'uomo' | 'donna' | undefined | String[],
@@ -10,13 +12,25 @@ type Props = {
 
 const navbar: React.FC<Props> = ({ genere, showCategory, onShowCategory }) => {
     const router = useRouter();
+    const address_user = useSelector((state) => state.address.address);
+    console.log(address_user);
+    
+
+
     const pushToStores = () => {
-        router.push({
-            pathname: '/home/negozi',
-            query: {
-                citta: 'Terni',
-            },
-        })
+        if(address_user){
+            if(address_user.city && address_user.city !== 'undefined'){
+                if(address_user.CAP.postcode.length === 5){
+                    const uri = createUrlSchema([address_user.city, address_user.CAP.postcode])
+                    return router.push(`/negozi/${uri}`)
+                } else {
+                    const uri = createUrlSchema([address_user.city])
+                    return router.push(`/negozi/${uri}`) 
+                }
+            }
+        }
+        return
+        
     }
 
     return (
