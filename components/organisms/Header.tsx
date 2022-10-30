@@ -3,11 +3,12 @@ import Link from 'next/link'
 import { NextRouter, useRouter } from 'next/router'
 import Navbar from '../molecules/Home_Navbar'
 import JoinUs_Navbar from '../molecules/JoinUs_Navbar'
-import { Box } from '@chakra-ui/react'
+import { Box, useToast } from '@chakra-ui/react'
 import Input_Search_Item from '../atoms/Input_Search_Item'
 import Circle_Color from '../atoms/Circle_Color'
 import { useSelector } from 'react-redux'
 import Drawer_Address from './Drawer_Address'
+import redirectToAddressForm from '../utils/redirect_to_address_form'
 
 
 const Header = () => {
@@ -15,15 +16,32 @@ const Header = () => {
     const genere: 'uomo' | 'donna' | undefined = router.query.genere
     const [showMenu, setshowMenu] = useState(false);
     const [openDrawer, setopenDrawer] = useState(1)
+    const toast = useToast()
 
     const [showCategory, setshowCategory] = useState(false);
     const address_user = useSelector((state) => state.address.address);
     // console.log(address_user);
 
-    const handleShowCategory = () => {
-        setshowCategory((actualValue) => {
-            return !actualValue
-        })
+    const handleShowCategory = (value?) => {
+        if (address_user) {
+            if (value === false) {
+                setshowCategory(false)
+            } else {
+                setshowCategory((actualValue) => {
+                    return !actualValue
+                })
+            }
+        }
+        else {
+            toast({
+                title: 'Non hai collegato un indirizzo',
+                description: "collega un indirizzo per permetterci di trovare il meglio per te",
+                status: 'info',
+                duration: 6000,
+                isClosable: true,
+            })
+            return setopenDrawer(Math.random())
+        }
     }
 
 
@@ -31,7 +49,6 @@ const Header = () => {
         <div onMouseLeave={() => setshowCategory(false)}>
             <Drawer_Address openDrawerMath={openDrawer} />
             <JoinUs_Navbar />
-
             {/* Menu button, Search button and Dintorni Logo for screen >=md */}
             <div className=" fixed z-50 top-3 right-2 md:hidden">
                 <button type="button" className="inline-flex mt-0.5 rounded-md px-1  active:bg-gray-100 focus:outline-none" aria-expanded="false">
@@ -67,8 +84,6 @@ const Header = () => {
                 }
 
             </div>
-
-
 
             <div className="w-full z-10 fixed top-0 md:top-7 bg-white">
                 <div className="mx-auto max-w-full border-b-2 border-gray-100">

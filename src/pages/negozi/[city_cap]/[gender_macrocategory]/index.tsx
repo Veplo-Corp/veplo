@@ -1,12 +1,13 @@
 import { useRouter } from 'next/router';
 import React from 'react'
-import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
-import DintorniLogo_Below_Header from '../../../../components/molecules/DintorniLogo_Below_Header';
+import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
+import DintorniLogo_Below_Header from '../../../../../components/molecules/DintorniLogo_Below_Header';
 import { Box, Image } from '@chakra-ui/react'
-import Box_Shop from '../../../../components/molecules/Box_Shop';
-import { SHOP } from '../../../interfaces/shop.interface';
-import createUrlSchema from '../../../../components/utils/create_url';
-import getCityAndPostcodeFromSlug from '../../../../components/utils/get_City_and_Postcode_from_Slug';
+import Box_Shop from '../../../../../components/molecules/Box_Shop';
+import { SHOP } from '../../../../interfaces/shop.interface';
+import createUrlSchema from '../../../../../components/utils/create_url';
+import getCityAndPostcodeFromSlug from '../../../../../components/utils/get_City_and_Postcode_from_Slug';
+import getGenderandMacrocategory from '../../../../../components/utils/get_Gender_and_Macrocategory';
 
 export async function getStaticPaths() {
     return {
@@ -16,17 +17,22 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(ctx) {
-    let { city_cap } = ctx.params;
-    const element: { city: string, postcode: string | null } = getCityAndPostcodeFromSlug(city_cap);
+    let { city_cap, gender_macrocategory} = ctx.params;
+    const CITY_CAP: { city: string, postcode: string | null } = getCityAndPostcodeFromSlug(city_cap);
+    const GENDER_MACROCATEGORY: { gender: string, macrocategory: string | null } = getGenderandMacrocategory(gender_macrocategory)
+    
+
     return {
         props: {
-            city: element.city,
-            postcode: element.postcode,
+            city: CITY_CAP.city,
+            postcode: CITY_CAP.postcode,
+            gender: GENDER_MACROCATEGORY.gender,
+            macrocategory: GENDER_MACROCATEGORY.macrocategory
         }
     }
 }
 
-const index: React.FC<{ city: string, postcode: null | string }> = ({ city, postcode }) => {
+const index: React.FC<{ city: string, postcode: null | string, macrocategory: null | string, gender: string}> = ({ city, postcode, macrocategory, gender }) => {
     const router = useRouter()
 
     const shop: SHOP = {
@@ -55,7 +61,7 @@ const index: React.FC<{ city: string, postcode: null | string }> = ({ city, post
 
     return (
         <Desktop_Layout>
-            <DintorniLogo_Below_Header city={city} />
+            <DintorniLogo_Below_Header city={city} category={macrocategory} gender={gender}/>
             <div className="grid grid-cols-1 md:pt-4 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 w-full m-auto justify-items-center	">
                 {shops.map((shop) => {
                     return (

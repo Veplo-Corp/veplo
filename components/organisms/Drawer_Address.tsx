@@ -31,8 +31,10 @@ const Drawer_Address: React.FC<{openDrawerMath:number}> = ({openDrawerMath}) => 
 
     const onChangeAddress = async (address_searched: string) => {
         clearTimeout(filterTimeout)
-
         filterTimeout = setTimeout(async () => {
+            if(address_searched === undefined ||  address_searched.length < 3){
+                return
+            }
             // Send the data to the server in JSON format.
             // API endpoint where we send form data.
             const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}`
@@ -43,8 +45,7 @@ const Drawer_Address: React.FC<{openDrawerMath:number}> = ({openDrawerMath}) => 
             // Get the response data from server as JSON.
             // If server returns the name submitted, that means the form works.
             const result = await response.json()
-            setAddresses(result.data)
-            console.log(result.data);
+            return setAddresses(result.data)
         }, 500)
     }
 
