@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import Horizontal_Line from '../../../../../components/atoms/Horizontal_Line'
 import { Product } from '../../../../interfaces/product.interface'
 import { SHOP } from '../../../../interfaces/shop.interface'
+import createUrlSchema from '../../../../../components/utils/create_url'
 
 
 const shop: SHOP = {
@@ -58,8 +59,9 @@ const index = () => {
     const query = { ...router.query, genere: 'uomo' };
 
     const toProductPage = (product: any) => {
+        const url = createUrlSchema([dress.brand, dress.name, dress.microCategory])
         router.push({
-            pathname: `/home/${query.genere}/${product.id}`,
+            pathname: `/prodotto/${dress.id}/${url}`,
             // query: { 
             //   productId: product.id,
             //   nome: encodeURIComponent(product.name),
