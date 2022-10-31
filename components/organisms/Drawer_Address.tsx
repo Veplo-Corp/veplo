@@ -82,8 +82,6 @@ const Drawer_Address: React.FC<{openDrawerMath:number}> = ({openDrawerMath}) => 
                                 </div>
                             )
                         })}
-
-
                     </div>
                 </DrawerBody>
             </DrawerContent>
