@@ -13,7 +13,17 @@ import {
 import ReactCrop, { PixelCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { canvasPreview } from '../molecules/Canva_previews'
-import { useDebounceEffect } from '../utils/useDebounceEffect'
+import { useDebounceEffect } from '../utils/useDebounceEffect';
+import { ref, uploadBytes } from "firebase/storage";
+import { storage } from '../../src/config/firebase'
+
+
+type Image = {
+    type: string,
+    blob: any,
+    url: any
+}
+
 
 const Drawer_Add_Image = () => {
     const [isOpen, setisOpen] = useState(true);
@@ -23,26 +33,43 @@ const Drawer_Add_Image = () => {
     const previewCanvasRef = useRef<HTMLCanvasElement>(null)
     const [imgSrc, setImgSrc] = useState('')
     const imgRef = useRef<HTMLImageElement>(null)
-    const [url, seturl] = useState(null)
+    const [url, setUrl] = useState()
+    const [blob, setBlob] = useState()
+    const [images, setImages] = useState<Image[]>([])
+    const [isDisabledButton, setIsDisabledButton] = useState(true)
 
 
-    const [crop, setCrop] = useState<any>({
-        unit: '%', // Can be 'px' or '%'
-        x: 17.53,
-        y: 11.00,
-        width: 65.99,  //762 diviso 5
-        height: 76.209,//1100 diviso 5
-    })
+    const [crop, setCrop] = useState<any>(
+        //     {
+        //     unit: '%', // Can be 'px' or '%'
+        //     x: 17.53,
+        //     y: 11.00,
+        //     width: 65.99,  //762 diviso 5
+        //     height: 76.209,//1100 diviso 5
+        // }
+    )
 
     const onHanldeConfirm = () => {
-        console.log(previewCanvasRef.current);
+        const storageElement = storage;
+        const storageRef = ref(storageElement, 'some-child');
+        console.log(blob);
+        setImages((prevstate: Image[]) => {
+            const updateImages = [
+                ...prevstate,
+                {
+                    type: 'test',
+                    blob: blob,
+                    url: url
+                }
+            ]
+            return updateImages
+        })
+        setBlob(null)
+        setUrl(null)
+        setCrop(null)
+        setImgSrc(null)
+        setIsDisabledButton(true)
     }
-
-
-
-
-
-
 
 
 
@@ -55,6 +82,11 @@ const Drawer_Add_Image = () => {
 
 
     function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
+        setBlob(null)
+        setUrl(null)
+        setCrop(null)
+        setImgSrc(null)
+        setIsDisabledButton(true)
         if (e.target.files && e.target.files.length > 0) {
             //setCrop(undefined) // Makes crop preview update between images.
             const reader = new FileReader()
@@ -62,6 +94,10 @@ const Drawer_Add_Image = () => {
                 setImgSrc(reader.result?.toString() || ''),
             )
             reader.readAsDataURL(e.target.files[0])
+        }
+        else {
+            return console.log('non trovata immagine caricata');
+            
         }
     }
 
@@ -73,16 +109,13 @@ const Drawer_Add_Image = () => {
         }
     }
 
-    useDebounceEffect(
-
-        async () => {
+    useDebounceEffect(async () => {
             if (
                 completedCrop?.width &&
                 completedCrop?.height &&
                 imgRef.current &&
                 previewCanvasRef.current
             ) {
-
                 // We use canvasPreview as it's much faster than imgPreview.
                 canvasPreview(
                     imgRef.current,
@@ -93,8 +126,9 @@ const Drawer_Add_Image = () => {
                     .then(canvas => {
                         canvas.toBlob(function (blob) {
                             const url = URL.createObjectURL(blob);
-                            seturl(url)
-                            console.log(blob);
+                            setUrl(url)
+                            setBlob(blob)
+                            setIsDisabledButton(false)
                             console.log(url); // this line should be here
                         }, 'image/webp');
                     })
@@ -119,7 +153,7 @@ const Drawer_Add_Image = () => {
             <DrawerOverlay />
             <DrawerContent>
 
-                <DrawerHeader padding={4} className='flex justify-between'>
+                <DrawerHeader padding={2} className='flex justify-between'>
                     <h3 className='md:ml-12 italic text-sm md:text-3xl font-black my-auto hidden md:flex'>
                         Inserisci le immagini del prodotto
                     </h3>
@@ -146,38 +180,63 @@ const Drawer_Add_Image = () => {
                             onSelectFile(e);
                         }} />
                 </DrawerHeader>
-                <DrawerBody>
-                    <ReactCrop
-                        className='w-full md:w-1/2'
-                        //onImageLoaded={setImage}
-                        crop={crop}
-                        onChange={(_, percentCrop) => setCrop(percentCrop)}
-                        onComplete={(c) => setCompletedCrop(c)}
-                        aspect={762 / 1100}
-                    >
-                        <img src={imgSrc} ref={imgRef} />
-                    </ReactCrop>
-                    <button onClick={onHanldeConfirm}>test</button>
-                    <div>
-                        {!!completedCrop && (
-                            <canvas
-
-                                ref={previewCanvasRef}
-                                style={{
-                                    border: '1px solid black',
-                                    objectFit: 'contain',
-                                    width: completedCrop.width,
-                                    height: completedCrop.height,
+                <DrawerBody className='grid md:flex justify-between'>
+                    <div className='w-full md:ml-8 md:w-2/5 grid '>
+                        <div className='grid'>
+                            <ReactCrop
+                                crop={crop}
+                                onChange={(_, percentCrop) => setCrop(percentCrop)}
+                                onComplete={(c) => {
+                                    setIsDisabledButton(true)
+                                    setCompletedCrop(c)
                                 }}
-                            />
-                        )}
-                    </div>
-                    <div>
-                        {!!url && (
-                            <img src={url} alt="" />
-                        )}
-                    </div>
+                                aspect={762 / 1100}
+                            >
+                                <img src={imgSrc} ref={imgRef} />
+                            </ReactCrop>
+                            {imgSrc && <div className='flex justify-end mt-2'>
+                                <BlackButton
+                                    onClick={onHanldeConfirm}
+                                    element='aggiungi'
+                                    borderRadius={5}
+                                    width={200}
+                                    heigth={12}
+                                    size={'sm'}
+                                    typeButton={'button'}
+                                    disabled={isDisabledButton} />
+                            </div>}
 
+                            <div className='hidden'>
+                                {!!completedCrop && (
+                                    <canvas
+                                        ref={previewCanvasRef}
+                                        style={{
+                                            border: '1px solid black',
+                                            objectFit: 'contain',
+                                            width: completedCrop.width,
+                                            height: completedCrop.height,
+                                        }}
+                                    />
+                                )}
+                            </div>
+                            {/* <div>
+                            {!!url && (
+                                <img src={url} alt="" />
+                            )}
+                            </div> */}
+                        </div>
+
+
+                    </div>
+                    <div className="min-h-screen items-center justify-center">
+                        <div className='w-full md:mr-11 md:w-fit grid gap-5 grid-cols-2 justify-items-start mt-8'>
+                            {images.map((image: Image) => {
+                                return (<img
+                                    className='md:w-44 lg:w-56 h-fit rounded'
+                                    key={Math.random()} src={image.url} alt="" />)
+                            })}
+                        </div>
+                    </div>
                 </DrawerBody>
                 <DrawerFooter padding={0}>
                     <footer className="w-full bg-whith items-center py-4 px-6 md:px-10 border-t	border-inherit	">
