@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button } from '@chakra-ui/react'
+import { Box, Button, position } from '@chakra-ui/react'
 import BlackButton from '../atoms/BlackButton'
 import {
     Drawer,
@@ -21,8 +21,40 @@ import { storage } from '../../src/config/firebase'
 type Image = {
     type: string,
     blob: any,
-    url: any
+    url: any,
+    position: number
 }
+
+const ImageFormat: { position: number, text: string }[] = [
+    {
+        position: 0,
+        text: 'fronte del prodotto'
+    },
+    {
+        position: 1,
+        text: 'retro del prodotto'
+    },
+    {
+        position: 2,
+        text: 'prodotto indossato'
+    },
+    {
+        position: 3,
+        text: 'opzionale'
+    },
+    {
+        position: 4,
+        text: 'opzionale'
+    },
+]
+
+const ImageTextFormat: string[] = [
+    'fronte del prodotto',
+    'retro del prodotto',
+    'prodotto indossato',
+    'opzionale',
+    'opzionale'
+]
 
 
 const Drawer_Add_Image = () => {
@@ -37,6 +69,7 @@ const Drawer_Add_Image = () => {
     const [blob, setBlob] = useState()
     const [images, setImages] = useState<Image[]>([])
     const [isDisabledButton, setIsDisabledButton] = useState(true)
+    const [positionPhoto, setPositionPhoto] = useState(null)
 
 
     const [crop, setCrop] = useState<any>(
@@ -54,15 +87,37 @@ const Drawer_Add_Image = () => {
         const storageRef = ref(storageElement, 'some-child');
         console.log(blob);
         setImages((prevstate: Image[]) => {
-            const updateImages = [
-                ...prevstate,
-                {
-                    type: 'test',
-                    blob: blob,
-                    url: url
-                }
-            ]
-            return updateImages
+
+            const newImage: Image = {
+                type: 'test',
+                blob: blob,
+                url: url,
+                position: positionPhoto === null ? prevstate.length : positionPhoto
+            }
+
+            if (positionPhoto !== null) {
+                let prevstateImages = [...prevstate]
+                prevstateImages = prevstateImages.filter(image => image.position !== positionPhoto)
+
+                let updateImages = [
+                    ...prevstateImages,
+                    newImage
+                ]
+
+                updateImages.sort((a, b) => a.position - b.position)
+                console.log(updateImages[0]);
+                
+                return updateImages
+
+            } else {
+                const updateImages: Image[] = [
+                    ...prevstate,
+                    newImage
+                ]
+                console.log(updateImages);
+                return updateImages
+            }
+
         })
         setBlob(null)
         setUrl(null)
@@ -75,8 +130,9 @@ const Drawer_Add_Image = () => {
 
     // Programatically click the hidden file input element
     // when the Button component is clicked
-    const handleClick = (event) => {
+    const handleClick = (position: null | number) => {
         hiddenFileInput.current.click();
+        setPositionPhoto(position)
     };
 
 
@@ -88,16 +144,21 @@ const Drawer_Add_Image = () => {
         setImgSrc(null)
         setIsDisabledButton(true)
         if (e.target.files && e.target.files.length > 0) {
+            
             //setCrop(undefined) // Makes crop preview update between images.
             const reader = new FileReader()
-            reader.addEventListener('load', () =>
-                setImgSrc(reader.result?.toString() || ''),
+            reader.addEventListener('load', () =>                
+                setImgSrc(reader.result?.toString() || '')
             )
+            // setBlob(null)
+            // setUrl(null)
+            // setCrop(null)
+            // setImgSrc(null)
+            // setIsDisabledButton(true)
             reader.readAsDataURL(e.target.files[0])
         }
         else {
             return console.log('non trovata immagine caricata');
-            
         }
     }
 
@@ -110,31 +171,32 @@ const Drawer_Add_Image = () => {
     }
 
     useDebounceEffect(async () => {
-            if (
-                completedCrop?.width &&
-                completedCrop?.height &&
-                imgRef.current &&
-                previewCanvasRef.current
-            ) {
-                // We use canvasPreview as it's much faster than imgPreview.
-                canvasPreview(
-                    imgRef.current,
-                    previewCanvasRef.current,
-                    completedCrop,
+        if (
+            completedCrop?.width &&
+            completedCrop?.height &&
+            imgRef.current &&
+            previewCanvasRef.current
+        ) {
+            // We use canvasPreview as it's much faster than imgPreview.
+            canvasPreview(
+                imgRef.current,
+                previewCanvasRef.current,
+                completedCrop,
 
-                )
-                    .then(canvas => {
-                        canvas.toBlob(function (blob) {
-                            const url = URL.createObjectURL(blob);
-                            setUrl(url)
-                            setBlob(blob)
-                            setIsDisabledButton(false)
-                            console.log(url); // this line should be here
-                        }, 'image/webp');
-                    })
+            )
+                .then(canvas => {
+                    canvas.toBlob(function (blob) {
+                        if (!blob) { return }
+                        const url = URL.createObjectURL(blob);
+                        setUrl(url)
+                        setBlob(blob)
+                        setIsDisabledButton(false)
+                        console.log(url); // this line should be here
+                    }, 'image/webp');
+                })
 
-            }
-        },
+        }
+    },
         300,
         [completedCrop],
     )
@@ -163,7 +225,7 @@ const Drawer_Add_Image = () => {
 
                     <div className='md:mr-16' >
                         <BlackButton
-                            onClick={handleClick}
+                            onClick={() => handleClick(null)}
                             element='aggiungi immagine'
                             borderRadius={5}
                             width={200}
@@ -181,16 +243,17 @@ const Drawer_Add_Image = () => {
                         }} />
                 </DrawerHeader>
                 <DrawerBody className='grid md:flex justify-between'>
-                    <div className='w-full md:ml-8 md:w-2/5 grid '>
+                    <div className='w-full h-fit md:ml-8 md:w-2/5 grid '>
                         <div className='grid'>
                             <ReactCrop
+                                className='w-fit h-fit'
                                 crop={crop}
                                 onChange={(_, percentCrop) => setCrop(percentCrop)}
                                 onComplete={(c) => {
                                     setIsDisabledButton(true)
                                     setCompletedCrop(c)
                                 }}
-                                aspect={762 / 1100}
+                                aspect={1} /* 762 / 1100 */
                             >
                                 <img src={imgSrc} ref={imgRef} />
                             </ReactCrop>
@@ -231,9 +294,31 @@ const Drawer_Add_Image = () => {
                     <div className="min-h-screen items-center justify-center">
                         <div className='w-full md:mr-11 md:w-fit grid gap-5 grid-cols-2 justify-items-start mt-8'>
                             {images.map((image: Image) => {
-                                return (<img
-                                    className='md:w-44 lg:w-56 h-fit rounded'
-                                    key={Math.random()} src={image.url} alt="" />)
+                                return (
+                                    <div key={image.position * Math.random()} className='md:w-44 lg:w-56 h-fit'>
+                                        <div className='flex justify-between mb-1'>
+                                            <p>{ImageTextFormat[image.position]}</p>
+                                            <Box
+                                                className='my-auto cursor-pointer'
+                                                _active={{
+                                                    transform: 'scale(0.90)',
+                                                }}
+                                                onClick={() => handleClick(image.position)}
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                                    <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
+                                                </svg>
+                                            </Box>
+
+
+
+                                        </div>
+                                        <img
+                                            className='rounded'
+                                            src={image.url} alt="" />
+                                    </div>
+                                )
                             })}
                         </div>
                     </div>
