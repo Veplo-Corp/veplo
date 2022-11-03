@@ -1,17 +1,36 @@
 import { Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import Autocomplete from '../../../../components/atoms/Autocomplete_Headless'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
+import Select_multiple_options from '../../../../components/atoms/Select_multiple_options'
+import Select_options from '../../../../components/atoms/Select_options'
+import { Brand, BRANDS } from '../../../../components/mook/brands'
+import { Color, COLORS } from '../../../../components/mook/colors'
+import { MACROCATEGORY, Macrocategory } from '../../../../components/mook/macrocategories'
 import Drawer_Add_Image from '../../../../components/organisms/Drawer_Add_Image'
 
 const index = () => {
   //* create product form
-  const product_name = useRef<HTMLInputElement | null>(null)
-  const product_price = useRef<HTMLInputElement | null>(null)
+  const product_name = useRef<HTMLInputElement>(null)
+  //const product_price = useRef<HTMLInputElement>(null)
+  const [product_price, setProduct_Price] = useState<string>('');
+  const brands = useRef<Brand[]>(BRANDS)
+  const colors = useRef<Color[]>(COLORS)
+  const macrocategories = useRef<Macrocategory[]>(MACROCATEGORY)
+
+
+
+  const onChangePrice = (e) => {
+    const inputValue: string = (e.target.value)
+    console.log(inputValue);
+    setProduct_Price(inputValue)
+  }
+
   return (
     <>
       <Desktop_Layout>
-        <div className='flex justify-between w-full'>
-          <form className="p-3 px-4 lg:px-24 w-full md:w-6/12 xl:w-5/12" onSubmit={() => { }}>
+        <div className='flex justify-between w-full mb-96'>
+          <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-6/12 xl:w-5/12" onSubmit={() => { }}>
             <div className='w-full'>
               <h1 className='italic text-lg lg:text-xl font-extrabold mb-4'>Aggiungi un capo di abbigliamento</h1>
               <div className='mb-2'>
@@ -20,6 +39,7 @@ const index = () => {
                 </p>
                 <InputGroup >
                   <Input
+                    maxLength={35}
                     rounded={10}
                     paddingY={6}
                     type="text"
@@ -38,14 +58,39 @@ const index = () => {
                   <Input
                     rounded={10}
                     paddingY={6}
-                    type="text"
-                    ref={product_price}
+                    type="number"
+                    // ref={product_price}
+                    value={product_price}
                     placeholder={'34,99'}
                     textAlign={"end"}
                     isInvalid={false}
-                  //onChange={()=> console.log(product_name.current.value)}
+                    onChange={onChangePrice}
                   />
                 </InputGroup>
+              </div>
+              <div className='mb-2'>
+                <p className='text-xs text-gray-400 font-normal mb-px'>
+                  Brand
+                </p>
+                <Autocomplete values={brands.current} />
+              </div>
+              <div className='mb-2'>
+                <p className='text-xs text-gray-400 font-normal mb-px'>
+                  Colori disponibili
+                </p>
+                <Select_multiple_options values={colors.current} />
+              </div>
+              <div className='mb-2'>
+                <p className='text-xs text-gray-400 font-normal mb-px'>
+                  Categria
+                </p>
+                <Select_options values={macrocategories.current}/>
+              </div>
+              <div className='mb-2'>
+                <p className='text-xs text-gray-400 font-normal mb-px'>
+                  Micro categria collegata
+                </p>
+                <Select_options values={macrocategories.current}/>
               </div>
             </div>
           </form>
