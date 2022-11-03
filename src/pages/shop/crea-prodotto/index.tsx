@@ -7,6 +7,7 @@ import Select_options from '../../../../components/atoms/Select_options'
 import { Brand, BRANDS } from '../../../../components/mook/brands'
 import { Color, COLORS } from '../../../../components/mook/colors'
 import { MACROCATEGORY, Macrocategory } from '../../../../components/mook/macrocategories'
+import { MICROCATEGORY, Microcategory } from '../../../../components/mook/microcategories'
 import Drawer_Add_Image from '../../../../components/organisms/Drawer_Add_Image'
 
 const index = () => {
@@ -14,9 +15,28 @@ const index = () => {
   const product_name = useRef<HTMLInputElement>(null)
   //const product_price = useRef<HTMLInputElement>(null)
   const [product_price, setProduct_Price] = useState<string>('');
+  const [product_macrocategory, setMacrocategory] = useState<Macrocategory>();
+  const [product_microcategory, setMicrocategory] = useState<string[]>([]);
+  const [microcategorySelected, setMicrocategorySelected] = useState<Microcategory>();
   const brands = useRef<Brand[]>(BRANDS)
   const colors = useRef<Color[]>(COLORS)
   const macrocategories = useRef<Macrocategory[]>(MACROCATEGORY)
+  const microcategories = useRef<Microcategory[]>(MICROCATEGORY)
+  useEffect(() => {
+    console.log(product_macrocategory);
+    console.log(microcategories);
+    const microcategorySelected = microcategories.current.filter(category => category.id === product_macrocategory?.id);
+    console.log(microcategorySelected);
+    
+    if(microcategorySelected.length > 0 && microcategorySelected){
+      console.log('eccolo');
+      setMicrocategorySelected(microcategorySelected[0])
+    }
+    
+  }, [product_macrocategory])
+
+
+
 
 
 
@@ -25,6 +45,8 @@ const index = () => {
     console.log(inputValue);
     setProduct_Price(inputValue)
   }
+
+
 
   return (
     <>
@@ -84,13 +106,13 @@ const index = () => {
                 <p className='text-xs text-gray-400 font-normal mb-px'>
                   Categria
                 </p>
-                <Select_options values={macrocategories.current}/>
+                <Select_options values={macrocategories.current} handleClick={setMacrocategory} type={'macrocategory'} />
               </div>
               <div className='mb-2'>
                 <p className='text-xs text-gray-400 font-normal mb-px'>
-                  Micro categria collegata
+                  Microcategria collegata
                 </p>
-                <Select_options values={macrocategories.current}/>
+                <Select_options values={microcategorySelected?.microcategories} handleClick={() => { }} type={'microcategory'}/>
               </div>
             </div>
           </form>
