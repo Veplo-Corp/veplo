@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Box, Button } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button } from '@chakra-ui/react'
 import BlackButton from '../atoms/BlackButton'
 import {
     Drawer,
@@ -10,7 +10,7 @@ import {
     DrawerContent,
     DrawerCloseButton,
 } from '@chakra-ui/react'
-import ReactCrop, { PixelCrop } from 'react-image-crop'
+import ReactCrop, { Crop, PixelCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { canvasPreview } from '../molecules/Canva_previews'
 import { useDebounceEffect } from '../utils/useDebounceEffect';
@@ -74,14 +74,14 @@ const Drawer_Add_Image = () => {
     const [positionPhoto, setPositionPhoto] = useState(null)
 
 
-    const [crop, setCrop] = useState<any>(
-        //     {
-        //     unit: '%', // Can be 'px' or '%'
-        //     x: 17.53,
-        //     y: 11.00,
-        //     width: 65.99,  //762 diviso 5
-        //     height: 76.209,//1100 diviso 5
-        // }
+    const [crop, setCrop] = useState<Crop>(
+        {
+            unit: '%', // Can be 'px' or '%'
+            x: 17.53,
+            y: 11.00,
+            width: 65.99,  //762 diviso 5
+            height: 76.209,//1100 diviso 5
+        }
     )
 
     const onHanldeConfirm = () => {
@@ -208,7 +208,7 @@ const Drawer_Add_Image = () => {
 
     return (
         <>
-           
+
             <Drawer
                 isOpen={isOpen}
                 placement='top'
@@ -254,20 +254,29 @@ const Drawer_Add_Image = () => {
                     <DrawerBody className='grid md:flex justify-between '>
                         <div className='w-full h-fit md:ml-8 md:w-2/5 grid '>
                             <div className='grid'>
-                                <ReactCrop
-                                    className='w-full h-full'
-                                    crop={crop}
-                                    onChange={(_, percentCrop) => setCrop(percentCrop)}
-                                    onComplete={(c) => {
-                                        setIsDisabledButton(true)
-                                        setCompletedCrop(c)
-                                    }}
-                                    aspect={762 / 1100}
-                                >
-                                    <img
-                                        className='min-w-full'
-                                        src={imgSrc} ref={imgRef} />
-                                </ReactCrop>
+                                {imgSrc && (
+                                    <>
+                                        <Alert status='info' variant='solid' className='mb-2'>
+                                            <AlertIcon />
+                                            Ritaglia la foto
+                                        </Alert>
+                                        <ReactCrop
+                                            className='w-full h-full'
+                                            crop={crop}
+                                            onChange={(_, percentCrop) => setCrop(percentCrop)}
+                                            onComplete={(c) => {
+                                                setIsDisabledButton(true)
+                                                setCompletedCrop(c)
+                                            }}
+                                            aspect={762 / 1100}
+                                        >
+                                            <img
+                                                className='min-w-full'
+                                                src={imgSrc} ref={imgRef} />
+                                        </ReactCrop>
+                                    </>
+
+                                )}
                                 {imgSrc && <div className='flex justify-end mt-2'>
                                     <BlackButton
                                         onClick={onHanldeConfirm}
