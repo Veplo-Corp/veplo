@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Autocomplete from '../../../../components/atoms/Autocomplete_Headless'
 import BlackButton from '../../../../components/atoms/BlackButton'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
+import Div_input_creation from '../../../../components/atoms/Div_input_creation'
 import Select_multiple_options from '../../../../components/atoms/Select_multiple_options'
 import Select_options from '../../../../components/atoms/Select_options'
 import { Brand, BRANDS } from '../../../../components/mook/brands'
@@ -66,7 +67,6 @@ const index = () => {
   const submitData = (e) => {
     e.preventDefault()
     console.log(e);
-    
   }
 
   return (
@@ -76,10 +76,7 @@ const index = () => {
           <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-6/12 xl:w-5/12" onSubmit={submitData}>
             <div className='w-full'>
               <h1 className='italic text-lg lg:text-xl font-extrabold mb-4'>Aggiungi un capo di abbigliamento</h1>
-              <div className='mb-2'>
-                <p className='text-xs text-gray-400 font-normal mb-px'>
-                  Nome prodotto
-                </p>
+              <Div_input_creation text='Nome del prodotto'>
                 <InputGroup >
                   <Input
                     maxLength={35}
@@ -91,11 +88,8 @@ const index = () => {
                   //onChange={()=> console.log(product_name.current.value)}
                   />
                 </InputGroup>
-              </div>
-              <div className='mb-2'>
-                <p className='text-xs text-gray-400 font-normal mb-px'>
-                  Prezzo prodotto
-                </p>
+              </Div_input_creation>
+              <Div_input_creation text='Prezzo'>
                 <InputGroup >
                   <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} />
                   <Input
@@ -110,41 +104,23 @@ const index = () => {
                     onChange={onChangePrice}
                   />
                 </InputGroup>
-              </div>
-              <div className='mb-2'>
-                <p className='text-xs text-gray-400 font-normal mb-px'>
-                  Brand
-                </p>
+              </Div_input_creation>
+              <Div_input_creation text='Brand'>
                 <Autocomplete values={brands.current} />
-              </div>
-              <div className='mb-2'>
-                <p className='text-xs text-gray-400 font-normal mb-px'>
-                  Colori disponibili
-                </p>
+              </Div_input_creation>
+              <Div_input_creation text='Colori disponibili'>
                 <Select_multiple_options values={colors.current} type={'color'} />
-              </div>
-              <div className='mb-2'>
-                <p className='text-xs text-gray-400 font-normal mb-px'>
-                  Categria
-                </p>
+              </Div_input_creation>
+              <Div_input_creation text='Categoria'>
                 <Select_options values={macrocategories.current} handleClick={setMacrocategory} type={'macrocategory'} />
-              </div>
-              <div className='mb-2'>
-                <p className='text-xs text-gray-400 font-normal mb-px'>
-                  Microcategria collegata
-                </p>
+              </Div_input_creation>
+              <Div_input_creation text='Microcategoria collegata'>
                 <Select_options values={microcategorySelected?.microcategories} handleClick={() => { }} type={'microcategory'} />
-              </div>
-              <div className='mb-2'>
-                <p className='text-xs text-gray-400 font-normal mb-px'>
-                  taglie disponibili
-                </p>
+              </Div_input_creation>
+              <Div_input_creation text='Taglie disponibili'>
                 <Select_multiple_options values={sizeSelected?.microcategories} type={'size'} />
-              </div>
-              <div className='mb-2'>
-                <p className='text-xs text-gray-400 font-normal mb-px'>
-                  carica immgini
-                </p>
+              </Div_input_creation>
+              <Div_input_creation text='Carica immagini'>
                 <Box
                   rounded={10}
                   padding={3.5}
@@ -173,7 +149,7 @@ const index = () => {
                     />
                   </div>
                 </Box>
-              </div>
+              </Div_input_creation>
               <div className='flex justify-end mt-3'>
                 <BlackButton
                   typeButton='submit'
