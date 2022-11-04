@@ -57,7 +57,7 @@ const ImageTextFormat: string[] = [
 ]
 
 
-const Drawer_Add_Image: React.FC<{openDraw: number | undefined}>  = ({openDraw}) => {
+const Drawer_Add_Image: React.FC<{openDraw: number | undefined, confirmPhotos: any} >  = ({openDraw, confirmPhotos}) => {
 
     useEffect(() => {
         if(!openDraw){
@@ -380,6 +380,9 @@ const Drawer_Add_Image: React.FC<{openDraw: number | undefined}>  = ({openDraw})
                                         heigth={12}
                                         size={'sm'}
                                         typeButton={'button'}
+                                        onClick={() => {
+                                            setisOpen(false)
+                                            confirmPhotos(images)}}
                                         disabled={images.length < 3} />
                                 </div>
                             </div>

@@ -2,6 +2,7 @@ import { DownloadIcon } from '@chakra-ui/icons'
 import { Box, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import Autocomplete from '../../../../components/atoms/Autocomplete_Headless'
+import BlackButton from '../../../../components/atoms/BlackButton'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import Select_multiple_options from '../../../../components/atoms/Select_multiple_options'
 import Select_options from '../../../../components/atoms/Select_options'
@@ -21,6 +22,7 @@ const index = () => {
   const [product_microcategory, setMicrocategory] = useState<string[]>([]);
   const [microcategorySelected, setMicrocategorySelected] = useState<Microcategory>();
   const [sizeSelected, setSizeSelected] = useState<Sizes>();
+  const [photos, setPhotos] = useState<[]>([])
 
   //openDraw
   const [openDrawNumber, setOpenDrawNumber] = useState()
@@ -47,14 +49,7 @@ const index = () => {
       // console.log(sizeTypeSelected);
       setSizeSelected(sizeTypeSelected[0])
     }
-
-
-
   }, [product_macrocategory])
-
-
-
-
 
 
   const onChangePrice = (e) => {
@@ -64,12 +59,21 @@ const index = () => {
   }
 
 
+  const setPhotosHandler = (photos) => {
+    setPhotos(photos)
+  }
+
+  const submitData = (e) => {
+    e.preventDefault()
+    console.log(e);
+    
+  }
 
   return (
     <>
       <Desktop_Layout>
         <div className='flex justify-between w-full mb-96'>
-          <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-6/12 xl:w-5/12" onSubmit={() => { }}>
+          <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-6/12 xl:w-5/12" onSubmit={submitData}>
             <div className='w-full'>
               <h1 className='italic text-lg lg:text-xl font-extrabold mb-4'>Aggiungi un capo di abbigliamento</h1>
               <div className='mb-2'>
@@ -168,14 +172,25 @@ const index = () => {
 
                     />
                   </div>
-
                 </Box>
               </div>
+              <div className='flex justify-end mt-3'>
+                <BlackButton
+                  typeButton='submit'
+                  element='aggiungi'
+                  borderRadius={10}
+                  size={'sm'}
+                  disabled={false}
+                  width={200}
+                  heigth={12}
+                />
+              </div>
+
             </div>
           </form>
         </div>
       </Desktop_Layout>
-      <Drawer_Add_Image openDraw={openDrawNumber}/>
+      <Drawer_Add_Image openDraw={openDrawNumber} confirmPhotos={setPhotosHandler} />
 
     </>
 
