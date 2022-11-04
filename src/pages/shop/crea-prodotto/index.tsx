@@ -1,4 +1,5 @@
-import { Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
+import { DownloadIcon } from '@chakra-ui/icons'
+import { Box, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import Autocomplete from '../../../../components/atoms/Autocomplete_Headless'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
@@ -8,6 +9,7 @@ import { Brand, BRANDS } from '../../../../components/mook/brands'
 import { Color, COLORS } from '../../../../components/mook/colors'
 import { MACROCATEGORY, Macrocategory } from '../../../../components/mook/macrocategories'
 import { MICROCATEGORY, Microcategory } from '../../../../components/mook/microcategories'
+import { SIZES, Sizes } from '../../../../components/mook/sizes'
 import Drawer_Add_Image from '../../../../components/organisms/Drawer_Add_Image'
 
 const index = () => {
@@ -18,21 +20,36 @@ const index = () => {
   const [product_macrocategory, setMacrocategory] = useState<Macrocategory>();
   const [product_microcategory, setMicrocategory] = useState<string[]>([]);
   const [microcategorySelected, setMicrocategorySelected] = useState<Microcategory>();
+  const [sizeSelected, setSizeSelected] = useState<Sizes>();
+
+  //openDraw
+  const [openDrawNumber, setOpenDrawNumber] = useState()
+
   const brands = useRef<Brand[]>(BRANDS)
   const colors = useRef<Color[]>(COLORS)
   const macrocategories = useRef<Macrocategory[]>(MACROCATEGORY)
   const microcategories = useRef<Microcategory[]>(MICROCATEGORY)
+  const sizes = useRef<Sizes[]>(SIZES)
+
   useEffect(() => {
-    console.log(product_macrocategory);
-    console.log(microcategories);
     const microcategorySelected = microcategories.current.filter(category => category.id === product_macrocategory?.id);
-    console.log(microcategorySelected);
-    
-    if(microcategorySelected.length > 0 && microcategorySelected){
-      console.log('eccolo');
+    if (microcategorySelected.length > 0) {
       setMicrocategorySelected(microcategorySelected[0])
+    } else {
+      setMicrocategorySelected(undefined);
     }
-    
+    if (product_macrocategory && product_macrocategory.id === 'uomo_scarpe') {
+      const sizeTypeSelected = sizes.current.filter(size => size.id === 'scarpe');
+      //console.log(sizeTypeSelected);
+      setSizeSelected(sizeTypeSelected[0])
+    } else {
+      const sizeTypeSelected = sizes.current.filter(size => size.id === 'vestiti');
+      // console.log(sizeTypeSelected);
+      setSizeSelected(sizeTypeSelected[0])
+    }
+
+
+
   }, [product_macrocategory])
 
 
@@ -100,7 +117,7 @@ const index = () => {
                 <p className='text-xs text-gray-400 font-normal mb-px'>
                   Colori disponibili
                 </p>
-                <Select_multiple_options values={colors.current} />
+                <Select_multiple_options values={colors.current} type={'color'} />
               </div>
               <div className='mb-2'>
                 <p className='text-xs text-gray-400 font-normal mb-px'>
@@ -112,13 +129,53 @@ const index = () => {
                 <p className='text-xs text-gray-400 font-normal mb-px'>
                   Microcategria collegata
                 </p>
-                <Select_options values={microcategorySelected?.microcategories} handleClick={() => { }} type={'microcategory'}/>
+                <Select_options values={microcategorySelected?.microcategories} handleClick={() => { }} type={'microcategory'} />
+              </div>
+              <div className='mb-2'>
+                <p className='text-xs text-gray-400 font-normal mb-px'>
+                  taglie disponibili
+                </p>
+                <Select_multiple_options values={sizeSelected?.microcategories} type={'size'} />
+              </div>
+              <div className='mb-2'>
+                <p className='text-xs text-gray-400 font-normal mb-px'>
+                  carica immgini
+                </p>
+                <Box
+                  rounded={10}
+                  padding={3.5}
+                  mt={1}
+                  backgroundColor={`white`}
+                  borderWidth={1}
+                  borderColor={'gray.200'}
+                  lineHeight='tight'
+                  noOfLines={1}
+                  fontSize='sm'
+                  className='cursor-pointer'
+                  onClick={() => {
+                    setOpenDrawNumber(Math.random())
+                  }}
+                >
+                  <div
+                    className='w-full flex justify-between text-gray-500 '
+                  >
+                    <span >
+                      carica immagini del prodotto
+                    </span>
+                    <DownloadIcon
+                      className="h-5 w-5 text-gray-400 my-auto"
+                      aria-hidden="true"
+
+                    />
+                  </div>
+
+                </Box>
               </div>
             </div>
           </form>
         </div>
       </Desktop_Layout>
-      <Drawer_Add_Image />
+      <Drawer_Add_Image openDraw={openDrawNumber}/>
 
     </>
 
