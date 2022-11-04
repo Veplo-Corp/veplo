@@ -1,8 +1,9 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import Circle_Color from './Circle_Color'
 import { Color } from '../mook/colors'
+import { Macrocategory } from '../mook/macrocategories'
 
 // const value = [
 //     { name: 'Wade Cooper' },
@@ -13,12 +14,31 @@ import { Color } from '../mook/colors'
 //     { name: 'Hellen Schmidt' },
 // ]
 
-const Select_multiple_options: React.FC<{ values: Color[] }> = ({ values }) => {
-    //const [selected, setSelected] = useState(value[0])
+// type Value = {
+//     name: string, 
+//     DB_name: string , 
+//     color?: string,
+// }
+
+
+const Select_multiple_options: React.FC<{values:Color[] | undefined | Macrocategory[] ,  type:string }> = ({values, type}) => {
     const [selectedValue, setSelectedValue] = useState<Color[]>([])
-    /* [value[0], value[1]] */
+    const [isListboxDisabled, setIsListboxDisabled] = useState(false)
+
+
+    useEffect(() => {   
+        if(values === undefined){
+            setIsListboxDisabled(true)
+        } else if(values){
+            setIsListboxDisabled(false)
+        }
+        if(type === 'size'){
+            setSelectedValue([])
+        }
+    }, [values])
+    
     return (
-        <Listbox value={selectedValue} onChange={setSelectedValue} multiple>
+        <Listbox value={selectedValue} disabled={isListboxDisabled} onChange={setSelectedValue} multiple>
             <div className="relative mt-1 border border-gray rounded-lg">
                 <Listbox.Button className="cursor-default w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0">
                     <span className="block truncate text-start">{selectedValue.map((value) => value.name).join(', ')}</span>
@@ -37,13 +57,14 @@ const Select_multiple_options: React.FC<{ values: Color[] }> = ({ values }) => {
                     leaveTo="opacity-0"
                 >
                     <Listbox.Options className="z-10 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                        {values.map((value, valueIdx) => 
+                        {values &&  values.map((value, valueIdx) => 
                         (
                             <Listbox.Option
                                 key={valueIdx}
-                                className={({ active }) =>
-                                    `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-blue-700 text-white' : 'text-white-900'
-                                    }`
+                                className={({ active, selected }) =>
+                                    `relative cursor-default select-none py-2 pl-10 pr-4 
+                                    ${selected ? 'bg-blue-700 text-white' : ''}`
+                                    /* ${active ? 'bg-blue-700 text-white' : 'text-white-900'} */
                                 }
                                 value={value}
                             >

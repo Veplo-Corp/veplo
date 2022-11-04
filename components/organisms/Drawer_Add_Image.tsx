@@ -57,7 +57,15 @@ const ImageTextFormat: string[] = [
 ]
 
 
-const Drawer_Add_Image = () => {
+const Drawer_Add_Image: React.FC<{openDraw: number | undefined}>  = ({openDraw}) => {
+
+    useEffect(() => {
+        if(!openDraw){
+            return
+        }
+        setisOpen(true)
+    }, [openDraw])
+    
 
     //* react image crop
     const [isOpen, setisOpen] = useState(false);

@@ -5,25 +5,24 @@ import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { Macrocategory } from '../mook/macrocategories'
 
-// const people = [
-//   { name: 'Wade Cooper' },
-//   { name: 'Arlene Mccoy' },
-//   { name: 'Devon Webb' },
-//   { name: 'Tom Cook' },
-//   { name: 'Tanya Fox' },
-//   { name: 'Hellen Schmidt' },
-// ]
 
-const Select_options: React.FC<{ values: Macrocategory[], handleClick?: any, type: string }> = ({ values, handleClick, type }) => {
-    const [selected, setSelected] = useState<Macrocategory>()
-    console.log(values);
+
+const Select_options: React.FC<{ values: Macrocategory[] | undefined, handleClick?: any, type: string}> = ({ values, handleClick, type }) => {
+    const [selected, setSelected] = useState<Macrocategory>();
+    const [isListboxDisabled, setIsListboxDisabled] = useState(false)
     
     const handleEvent = (value) => {
         setSelected(value)
         handleClick(value)
     }
 
-    useEffect(() => {
+    useEffect(() => {        
+        if(values === undefined){
+            setIsListboxDisabled(true)
+        } else if(values){
+            setIsListboxDisabled(false)
+        }
+
         if(type === 'microcategory'){
             setSelected(undefined)
         }
@@ -32,10 +31,10 @@ const Select_options: React.FC<{ values: Macrocategory[], handleClick?: any, typ
     
 
     return (
-        <Listbox value={selected} onChange={handleEvent}>
-            <div className="z-1 relative mt-1 border border-gray rounded-lg">
+        <Listbox disabled={isListboxDisabled} value={selected} onChange={handleEvent}>
+            <div className={`z-1 relative mt-1 border border-gray rounded-lg ${!isListboxDisabled ? 'bg-white' : 'bg-gray-200' }`}>
                 <Listbox.Button className="cursor-default w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0">
-                    {selected ? <span className="block truncate text-start">{selected.name}</span> : <span className="block truncate text-start text-white">---</span>}
+                    {selected ? <span className="block truncate text-start">{selected.name}</span> : <span className="block truncate text-start text-white">--</span>}
 
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <ChevronUpDownIcon
