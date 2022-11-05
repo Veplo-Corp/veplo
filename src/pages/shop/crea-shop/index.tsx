@@ -1,5 +1,6 @@
-import { Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
+import { Box, Center, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
 import React, { useRef, useState } from 'react'
+import BlackButton from '../../../../components/atoms/BlackButton'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import Div_input_creation from '../../../../components/atoms/Div_input_creation'
 import Select_multiple_options from '../../../../components/atoms/Select_multiple_options'
@@ -16,7 +17,36 @@ const index = () => {
     const [open_hour, setOpen_hour] = useState('');
     const [close_hour, setClose_hour] = useState('');
 
-    //address parameters
+    //*handle image upload and crop
+    const hiddenFileInput = useRef(null);
+
+    // Programatically click the hidden file input element
+    // when the Button component is clicked
+    const handleClick = (position: null | number) => {
+        hiddenFileInput.current.click();
+    };
+
+    function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
+        // setBlob(null)
+        // setUrl(null)
+        // setCrop(null)
+        // setImgSrc(null)
+        // setIsDisabledButton(true)
+        if (e.target.files && e.target.files.length > 0) {
+
+            //setCrop(undefined) // Makes crop preview update between images.
+            const reader = new FileReader()
+            reader.addEventListener('load', () =>
+                setImgSrc(reader.result?.toString() || '')
+            )
+            reader.readAsDataURL(e.target.files[0])
+        }
+        else {
+            return console.log('non trovata immagine caricata');
+        }
+    }
+
+    //*address parameters
     let filterTimeout: any;
     const [address_Mapbox, setAddress_Mapbox] = useState('');
 
@@ -29,16 +59,6 @@ const index = () => {
 
     const days = useRef<Day[]>(DAYS)
 
-
-    const onChangePhoneNumber = (e) => {
-        const value: string = e.target.value.replace(/[^0-9\.]+/g, '');
-        setShop_phone(value)
-    }
-
-    const onChangePiva = (e) => {
-        const value: string = e.target.value.replace(/[^0-9\.]+/g, '');
-        setShop_piva(value)
-    }
 
     const customizeTime = (time) => {
         const minutes = time.split(':')[1];
@@ -86,6 +106,8 @@ const index = () => {
         return setAddresses([])
     }
 
+    //* handle input change
+
     const changeInput = (e, type: string) => {
         let newTime: string;
         switch (type) {
@@ -111,9 +133,37 @@ const index = () => {
     return (
         <Desktop_Layout>
             <div className='flex justify-between w-full mb-96'>
-                <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-6/12 xl:w-5/12" onSubmit={() => { }}>
+                <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-6/12 xl:w-5/12" onSubmit={(e) => { e.preventDefault() }}>
                     <div className='w-full'>
                         <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>parlaci di te!</h1>
+                        <Center
+                            onClick={() => handleClick(null)}
+                            marginBottom={1}
+                            width={'full'}
+                            height={'52'}
+                            borderWidth={1}
+                            borderColor={'gray.200'}
+                            borderStyle={'dashed'}
+                            borderRadius={10}
+                            color={'gray.400'}
+                            className='cursor-pointer'
+                        >
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 m-auto">
+                                    <path fillRule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clipRule="evenodd" />
+                                </svg>
+                                <h2>immagine negozio</h2>
+                            </div>
+
+
+                        </Center>
+                        <input
+                            ref={hiddenFileInput}
+                            type="file" id="file" multiple accept="image/*"
+                            className='hidden'
+                            onChange={(e) => {
+                                onSelectFile(e);
+                            }} />
                         <Div_input_creation text='Nome (visualizzato dagli utenti)'>
                             <InputGroup >
                                 <Input
@@ -141,23 +191,33 @@ const index = () => {
                                 />
                             </InputGroup>
                         </Div_input_creation>
-                        <div className={`${showAddress ? 'hidden' : ''}`}>
-                            <Div_input_creation text='Indirizzo (es. via roma 41, Terni)'>
-                                <InputGroup >
-                                    <Input
-                                        maxLength={30}
-                                        rounded={10}
-                                        paddingY={6}
-                                        type='tel'
-                                        //value={address_Mapbox}
-                                        isInvalid={false}
-                                        //onChange={(event) => changeInput(event, 'search_address')}
-                                        onChange={(e) => {
-                                            onChangeAddress(e.target.value)
-                                        }}
-                                    />
-                                </InputGroup>
-                            </Div_input_creation>
+                        <div className={`${showAddress ? 'hidden' : ''} mb-1 w-full`}>
+                            <div className='flex justify-between text-gray-400'>
+                                <p className='text-xs font-normal mb-px'>
+                                    Indirizzo (es. via roma 41, Terni)
+                                </p>
+                                {address && <svg
+                                    onClick={() => setShowAddress(true)}
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
+                                    className="w-4 h-4 cursor-pointer my-auto">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>}
+
+                            </div>
+                            <InputGroup >
+                                <Input
+                                    maxLength={30}
+                                    rounded={10}
+                                    paddingY={6}
+                                    type='tel'
+                                    //value={address_Mapbox}
+                                    isInvalid={false}
+                                    //onChange={(event) => changeInput(event, 'search_address')}
+                                    onChange={(e) => {
+                                        onChangeAddress(e.target.value)
+                                    }}
+                                />
+                            </InputGroup>
                         </div>
 
                         <div className={` my-3`}>
@@ -178,7 +238,7 @@ const index = () => {
                                     </p>
                                     <svg
                                         onClick={() => setShowAddress(false)}
-                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3 cursor-pointer">
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3 cursor-pointer my-auto">
                                         <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
                                     </svg>
                                 </div>
@@ -220,7 +280,7 @@ const index = () => {
                                             }}
                                         />
                                     </div>
-                                    <Div_input_creation text='città'>
+                                    <Div_input_creation text='Città'>
                                         <Input
                                             width={'full'}
                                             rounded={10}
@@ -279,7 +339,18 @@ const index = () => {
                         <Div_input_creation text='giorni di apertura'>
                             <Select_multiple_options values={days.current} type={'day'} />
                         </Div_input_creation>
+                        <div className='flex justify-end mt-4'>
+                            <BlackButton
+                                element='crea negozio'
+                                borderRadius={5}
+                                width={200}
+                                heigth={12}
+                                size={'sm'}
+                                typeButton={'submit'}
+                                disabled={false} />
+                        </div>
                     </div>
+
 
                 </form>
             </div>

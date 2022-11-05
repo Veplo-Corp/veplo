@@ -142,7 +142,7 @@ const Drawer_Add_Image: React.FC<{openDraw: number | undefined, confirmPhotos: a
     // when the Button component is clicked
     const handleClick = (position: null | number) => {
         hiddenFileInput.current.click();
-        setPositionPhoto(position)
+        //setPositionPhoto(position)
     };
 
 

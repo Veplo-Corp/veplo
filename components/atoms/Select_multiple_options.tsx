@@ -37,9 +37,17 @@ const Select_multiple_options: React.FC<{values:Color[] | undefined | Macrocateg
             setSelectedValue([])
         }
     }, [values])
+
+    const onChangeSelectedValue = (e: any[]) => {
+        if(type === 'day'){
+            const selectedValues = e.sort((a, b) => a.dayPosition - b.dayPosition)
+            setSelectedValue(selectedValues)
+        }
+        return setSelectedValue(e)
+    }
     
     return (
-        <Listbox value={selectedValue} disabled={isListboxDisabled} onChange={setSelectedValue} multiple>
+        <Listbox value={selectedValue} disabled={isListboxDisabled} onChange={onChangeSelectedValue} multiple>
             <div className="relative mt-1 border border-gray rounded-lg">
                 <Listbox.Button className="cursor-default w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0">
                     <span className="block truncate text-start">{selectedValue.map((value) => value.name).join(', ')}</span>
