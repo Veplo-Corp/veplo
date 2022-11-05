@@ -37,7 +37,7 @@ const Drawer_Address: React.FC<{openDrawerMath:number}> = ({openDrawerMath}) => 
             }
             // Send the data to the server in JSON format.
             // API endpoint where we send form data.
-            const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}`
+            const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}&type=user`
 
             // Send the form data to our forms API on Vercel and get a response.
             const response = await fetch(endpoint)
@@ -50,7 +50,13 @@ const Drawer_Address: React.FC<{openDrawerMath:number}> = ({openDrawerMath}) => 
     }
 
     const handleEventSetAddress = async (element: any) => {
-        const result = await setUserAddress(element)
+        const result = await setUserAddress(element, 'user');
+        if (typeof window !== "undefined") {
+            localStorage.setItem('address', JSON.stringify(result))
+            result.address_user
+        } else {
+            return console.log('impossibile creare elemento');
+        }
         dispatch(
             setAddress({
                 address: result

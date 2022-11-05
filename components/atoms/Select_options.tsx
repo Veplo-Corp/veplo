@@ -60,8 +60,7 @@ const Select_options: React.FC<{ values: Macrocategory[] | undefined, handleClic
                                 <Listbox.Option
                                     key={valueIdx}
                                     className={({ active }) =>
-                                        ` z-10 relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-blue-700 text-white' : 'text-white-900'
-                                        }`
+                                        ` z-10 relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-blue-700 text-white' : 'text-white-900'}`
                                     }
                                     value={value}
                                 >
