@@ -5,4 +5,5 @@ export interface Mapbox_Result {
     postcode: string | undefined,
     city: string | undefined,
     address: string | undefined,
+    streetNumber: string | undefined
 }

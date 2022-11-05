@@ -16,8 +16,12 @@ export default async function handler(
     const latitude = req.query.latitude
     const postcode = req.query.postcode
     const city = req.query.city
-    const address = req.query.address
+    let address = req.query.address
     const placeType = req.query.placeType
+    const streetNumber = req.query.streetNumber
+    console.log(streetNumber);
+    
+    address = streetNumber !== 'undefined' ? (address + ' ' + streetNumber) : address;
 
     // const response = {
     //     longitude,

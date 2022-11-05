@@ -11,7 +11,12 @@ export default async function handler(
     const search_text = req.query.search_text
     const uri_mapbox = 'pk.eyJ1Ijoibmljb2xvbGVnYWN5IiwiYSI6ImNsOWVkaGsxZzFzdjEzd3A4eGlubDdnZ3cifQ.G9KaZlNas4WvUgnZiL-d7w';
     const endpoint = 'mapbox.place';
-    const types = ['address', 'place' ]
+    let types = ['address', 'place' ]
+
+    if(req.query.type === 'shop'){
+        types = ['address']
+    }
+    
 
     if(search_text === undefined ||  search_text.length < 3){
         
