@@ -1,4 +1,4 @@
-import { Box, Center, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, Center, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
 import React, { useRef, useState } from 'react'
 import BlackButton from '../../../../components/atoms/BlackButton'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
@@ -8,6 +8,19 @@ import Address_text_handle from '../../../../components/molecules/Address_text_h
 import { Day, DAYS } from '../../../../components/mook/days'
 import setUserAddress from '../../../../components/utils/setUserAddress'
 import { Mapbox_Result } from '../../../interfaces/mapbox_result.interface'
+import ReactCrop, { Crop, PixelCrop } from 'react-image-crop'
+import 'react-image-crop/dist/ReactCrop.css'
+import { Image } from '@chakra-ui/react'
+import { useDebounceEffect } from '../../../../components/utils/useDebounceEffect'
+import { canvasPreview } from '../../../../components/molecules/Canva_previews'
+import { storage } from '../../../config/firebase'
+
+
+type Image = {
+    type: string,
+    blob: any,
+    url: any,
+}
 
 const index = () => {
 
@@ -19,6 +32,24 @@ const index = () => {
 
     //*handle image upload and crop
     const hiddenFileInput = useRef(null);
+    const [imgSrc, setImgSrc] = useState('')
+    const imgRef = useRef<HTMLImageElement>(null)
+    const [url, setUrl] = useState()
+    const [blob, setBlob] = useState()
+    const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
+    const previewCanvasRef = useRef<HTMLCanvasElement>(null)
+    const [isDisabledButton, setIsDisabledButton] = useState(true)
+    const [crop, setCrop] = useState<Crop>(
+        {
+            unit: '%', // Can be 'px' or '%'
+            x: 17.53,
+            y: 11.00,
+            width: 65.99,  //762 diviso 5
+            height: 76.209,//1100 diviso 5
+        }
+    )
+    const [image, setImage] = useState<Image>()
+
 
     // Programatically click the hidden file input element
     // when the Button component is clicked
@@ -27,11 +58,10 @@ const index = () => {
     };
 
     function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
-        // setBlob(null)
-        // setUrl(null)
-        // setCrop(null)
-        // setImgSrc(null)
-        // setIsDisabledButton(true)
+        setBlob(null)
+        setUrl(null)
+        setCrop(null)
+        setImgSrc(null)
         if (e.target.files && e.target.files.length > 0) {
 
             //setCrop(undefined) // Makes crop preview update between images.
@@ -46,7 +76,56 @@ const index = () => {
         }
     }
 
-    //*address parameters
+    useDebounceEffect(async () => {
+        console.log(imgRef.current);
+
+        if (
+            completedCrop?.width &&
+            completedCrop?.height &&
+            imgRef.current &&
+            previewCanvasRef.current
+        ) {
+            // We use canvasPreview as it's much faster than imgPreview.
+            canvasPreview(
+                imgRef.current,
+                previewCanvasRef.current,
+                completedCrop,
+
+            )
+                .then(canvas => {
+                    canvas.toBlob(function (blob) {
+                        if (!blob) { return }
+                        const url = URL.createObjectURL(blob);
+                        setUrl(url)
+                        setBlob(blob)
+                        setIsDisabledButton(false)
+                        console.log(url); // this line should be here
+                    }, 'image/webp');
+                })
+
+        }
+    },
+        300,
+        [completedCrop],
+    )
+
+
+    const onHanldeConfirm = () => {
+        console.log(blob);
+        const newImage: Image = {
+            type: 'test',
+            blob: blob,
+            url: url,
+        }
+        setImage(newImage)
+        setBlob(null)
+        setUrl(null)
+        setCrop(null)
+        setImgSrc(null)
+        setIsDisabledButton(true)
+    }
+
+    //* address parameters
     let filterTimeout: any;
     const [address_Mapbox, setAddress_Mapbox] = useState('');
 
@@ -136,7 +215,7 @@ const index = () => {
                 <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-6/12 xl:w-5/12" onSubmit={(e) => { e.preventDefault() }}>
                     <div className='w-full'>
                         <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>parlaci di te!</h1>
-                        <Center
+                        {!imgSrc && !image && <Center
                             onClick={() => handleClick(null)}
                             marginBottom={1}
                             width={'full'}
@@ -154,9 +233,64 @@ const index = () => {
                                 </svg>
                                 <h2>immagine negozio</h2>
                             </div>
-
-
-                        </Center>
+                        </Center>}
+                        {imgSrc && (
+                            <>
+                                <Alert status='warning' variant='solid' className='mb-2'>
+                                    <AlertIcon />
+                                    Ritaglia la foto
+                                </Alert>
+                                <ReactCrop
+                                    className='w-full h-fit'
+                                    crop={crop}
+                                    onChange={(_, percentCrop) => setCrop(percentCrop)}
+                                    onComplete={(c) => {
+                                        setIsDisabledButton(true)
+                                        setCompletedCrop(c)
+                                    }}
+                                    aspect={1100 / 762}
+                                >
+                                    <img
+                                        className='min-w-full'
+                                        src={imgSrc} ref={imgRef}
+                                    />
+                                </ReactCrop>
+                                <div className='flex justify-between mt-2 mb-2 gap-2'>
+                                  
+                                    <Button
+                                        onClick={() => handleClick(null)}
+                                        borderRadius={5}
+                                        width={150}
+                                        height={12}
+                                        size={'sm'}
+                                        variant='outline'
+                                        colorScheme={'blackAlpha'}
+                                        color={'blackAlpha.900'}
+                                        disabled={false} >
+                                        cambia immagine
+                                    </Button>
+                                    <BlackButton
+                                        onClick={onHanldeConfirm}
+                                        element='aggiungi'
+                                        borderRadius={5}
+                                        width={200}
+                                        heigth={12}
+                                        size={'sm'}
+                                        typeButton={'button'}
+                                        disabled={isDisabledButton} />
+                                </div>
+                            </>
+                        )}
+                        {image && !imgSrc && <Image
+                            width={'full'}
+                            height={'52'}
+                            borderRadius={10}
+                            marginBottom={1}
+                            objectFit='cover'
+                            onClick={() => handleClick(null)}
+                            src={image.url} /* 'https://bit.ly/dan-abramov' */
+                            alt='Errore estrapolazione immagine'
+                        />}
                         <input
                             ref={hiddenFileInput}
                             type="file" id="file" multiple accept="image/*"
@@ -164,6 +298,16 @@ const index = () => {
                             onChange={(e) => {
                                 onSelectFile(e);
                             }} />
+                        {<canvas
+                            ref={previewCanvasRef}
+                            className='hidden'
+                        // style={{
+                        //     border: '1px solid black',
+                        //     objectFit: 'contain',
+                        //     width: completedCrop.width,
+                        //     height: completedCrop.height,
+                        // }}
+                        />}
                         <Div_input_creation text='Nome (visualizzato dagli utenti)'>
                             <InputGroup >
                                 <Input

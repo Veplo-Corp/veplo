@@ -57,15 +57,15 @@ const ImageTextFormat: string[] = [
 ]
 
 
-const Drawer_Add_Image: React.FC<{openDraw: number | undefined, confirmPhotos: any} >  = ({openDraw, confirmPhotos}) => {
+const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: any }> = ({ openDraw, confirmPhotos }) => {
 
     useEffect(() => {
-        if(!openDraw){
+        if (!openDraw) {
             return
         }
         setisOpen(true)
     }, [openDraw])
-    
+
 
     //* react image crop
     const [isOpen, setisOpen] = useState(false);
@@ -285,17 +285,30 @@ const Drawer_Add_Image: React.FC<{openDraw: number | undefined, confirmPhotos: a
                                     </>
 
                                 )}
-                                {imgSrc && <div className='flex justify-end mt-2'>
-                                    <BlackButton
-                                        onClick={onHanldeConfirm}
-                                        element='aggiungi'
-                                        borderRadius={5}
-                                        width={200}
-                                        heigth={12}
-                                        size={'sm'}
-                                        typeButton={'button'}
-                                        disabled={isDisabledButton} />
-                                </div>}
+                                {imgSrc &&
+                                    <div className='flex justify-between mt-2 mb-2 gap-2'>
+                                        <Button
+                                            onClick={() => handleClick(null)}
+                                            borderRadius={5}
+                                            width={150}
+                                            height={12}
+                                            size={'sm'}
+                                            variant='outline'
+                                            colorScheme={'blackAlpha'}
+                                            color={'blackAlpha.900'}
+                                            disabled={false} >
+                                            cambia immagine
+                                        </Button>
+                                        <BlackButton
+                                            onClick={onHanldeConfirm}
+                                            element='aggiungi'
+                                            borderRadius={5}
+                                            width={200}
+                                            heigth={12}
+                                            size={'sm'}
+                                            typeButton={'button'}
+                                            disabled={isDisabledButton} />
+                                    </div>}
 
                                 <div className='hidden'>
                                     {!!completedCrop && (
@@ -382,7 +395,8 @@ const Drawer_Add_Image: React.FC<{openDraw: number | undefined, confirmPhotos: a
                                         typeButton={'button'}
                                         onClick={() => {
                                             setisOpen(false)
-                                            confirmPhotos(images)}}
+                                            confirmPhotos(images)
+                                        }}
                                         disabled={images.length < 3} />
                                 </div>
                             </div>
