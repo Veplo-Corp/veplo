@@ -23,12 +23,19 @@ type Image = {
 }
 
 const index = () => {
-
+    //* input to create shop
     const shop_name = useRef<HTMLInputElement>(null);
     const [shop_phone, setShop_phone] = useState('')
     const [shop_piva, setShop_piva] = useState('');
     const [open_hour, setOpen_hour] = useState('');
     const [close_hour, setClose_hour] = useState('');
+
+    //* validators
+    const [isValid_shop_phone, setIsValid_Shop_phone] = useState<boolean | null>(null)
+    const [isValid_shop_piva, setIsValid_Shop_piva] = useState<boolean | null>(null)
+    const [isValid_open_hour, setIsValid_Open_hour] = useState<boolean | null>(null)
+    const [isValid_close_hour, setIsValid_Close_hour] = useState<boolean | null>(null)
+
 
     //*handle image upload and crop
     const hiddenFileInput = useRef(null);
@@ -143,7 +150,6 @@ const index = () => {
         const minutes = time.split(':')[1];
         let roundUp_minutes: number | string = (Math.round(minutes / 15) * 15) % 60;
         roundUp_minutes = ('0' + roundUp_minutes).slice(-2)
-        console.log(roundUp_minutes);
         const newTime = time.split(':')[0] + ':' + roundUp_minutes;
         return newTime
     }
@@ -189,20 +195,56 @@ const index = () => {
 
     const changeInput = (e, type: string) => {
         let newTime: string;
+        let value = e.target.value.replace(/[^0-9\.]+/g, '');
         switch (type) {
             case 'shop_phone':
-                setShop_phone(e.target.value.replace(/[^0-9\.]+/g, ''))
+                setShop_phone(value)
+                setIsValid_Shop_phone(true)
                 break;
             case 'shop_piva':
-                setShop_piva(e.target.value.replace(/[^0-9\.]+/g, ''))
+                setShop_piva(value)
+                setIsValid_Shop_piva(true)
                 break;
             case 'open_hour':
-                newTime = customizeTime(e.target.value)
-                setOpen_hour(newTime)
+
                 break;
             case 'close_hour':
-                newTime = customizeTime(e.target.value)
-                setClose_hour(newTime)
+                
+                break;
+            default:
+                console.log(`Sorry, we are out of ${type}.`);
+        }
+    }
+
+    const checkInput = (type: string) => {
+        let newTime: string;
+        switch (type) {
+            case 'shop_phone':
+                if (shop_phone.length < 3) {
+                    setIsValid_Shop_phone(false)
+                }
+                break;
+            case 'shop_piva':
+                if (shop_piva.length !== 11) {
+                    setIsValid_Shop_piva(false)
+                }
+                break;
+            case 'open_hour':
+                newTime = customizeTime(open_hour)
+                if (newTime.length === 5) {
+                    setOpen_hour(newTime)
+                } else {
+                    setIsValid_Open_hour(false)
+                }
+                break;
+            case 'close_hour':
+                newTime = customizeTime(close_hour)
+                if (newTime.length === 5) {
+                    setClose_hour(newTime)
+                } else {
+                    setIsValid_Close_hour(false)
+                }
+                break;
                 break;
             default:
                 console.log(`Sorry, we are out of ${type}.`);
@@ -256,7 +298,7 @@ const index = () => {
                                     />
                                 </ReactCrop>
                                 <div className='flex justify-between mt-2 mb-2 gap-2'>
-                                  
+
                                     <Button
                                         onClick={() => handleClick(null)}
                                         borderRadius={5}
@@ -322,8 +364,12 @@ const index = () => {
                             </InputGroup>
                         </Div_input_creation>
                         <Div_input_creation text='Numero di telefono'>
-                            <InputGroup >
-                                <InputLeftAddon children='+39' paddingY={6} />
+                            <InputGroup
+                            >
+                                <InputLeftAddon children='+39' paddingY={6}
+                                    textColor={`${isValid_shop_phone === false ? 'red.900' : 'gray.500'}`}
+                                    borderColor={`${isValid_shop_phone === false ? 'red.900' : 'gray.200'}`}
+                                />
                                 <Input
                                     maxLength={12}
                                     rounded={10}
@@ -331,9 +377,13 @@ const index = () => {
                                     type='tel'
                                     value={shop_phone}
                                     isInvalid={false}
+                                    borderColor={`${isValid_shop_phone === false ? 'red.900' : 'gray.200'}`}
+                                    onBlur={() => checkInput('shop_phone')}
                                     onChange={(event) => changeInput(event, 'shop_phone')}
                                 />
                             </InputGroup>
+                            {isValid_shop_phone === false && <p className='text-sm md:text-xs text-red-600'>numero non corretto</p>}
+
                         </Div_input_creation>
                         <div className={`${showAddress ? 'hidden' : ''} mb-1 w-full`}>
                             <div className='flex justify-between text-gray-400'>
@@ -353,7 +403,7 @@ const index = () => {
                                     maxLength={30}
                                     rounded={10}
                                     paddingY={6}
-                                    type='tel'
+                                    type='text'
                                     //value={address_Mapbox}
                                     isInvalid={false}
                                     //onChange={(event) => changeInput(event, 'search_address')}
@@ -446,15 +496,18 @@ const index = () => {
                         <Div_input_creation text='Partita Iva'>
                             <InputGroup >
                                 <Input
+                                    borderColor={`${isValid_shop_piva === false ? 'red.900' : 'gray.200'}`}
                                     maxLength={11}
                                     rounded={10}
                                     paddingY={6}
                                     type='tel'
                                     value={shop_piva}
                                     isInvalid={false}
+                                    onBlur={() => checkInput('shop_piva')}
                                     onChange={(event) => changeInput(event, 'shop_piva')}
                                 />
                             </InputGroup>
+                            {isValid_shop_piva === false && <p className='text-sm md:text-xs text-red-600'>la Partita Iva deve contenere 11 numeri</p>}
                         </Div_input_creation>
                         <Div_input_creation text=''>
                             <InputGroup className='flex justify-between gap-2'>
@@ -464,8 +517,12 @@ const index = () => {
                                         paddingY={6}
                                         type="time"
                                         value={open_hour}
-                                        onChange={(event) => setOpen_hour(event.target.value)}
-                                        onBlur={(event) => changeInput(event, 'open_hour')}
+                                        onChange={(event) => {
+                                            setIsValid_Open_hour(true)
+                                            setOpen_hour(event.target.value)
+                                        }}
+                                        onBlur={() => checkInput('open_hour')}
+                                        borderColor={`${isValid_open_hour === false ? 'red.900' : 'gray.200'}`}
                                     />
                                 </Div_input_creation>
                                 <Div_input_creation text='orario chiusura'>
@@ -474,8 +531,12 @@ const index = () => {
                                         paddingY={6}
                                         type="time"
                                         value={close_hour}
-                                        onChange={(event) => setClose_hour(event.target.value)}
-                                        onBlur={(event) => changeInput(event, 'close_hour')}
+                                        onChange={(event) => {
+                                            setClose_hour(event.target.value)
+                                            setIsValid_Close_hour(true)
+                                        }}
+                                        onBlur={() => checkInput('close_hour')}
+                                        borderColor={`${isValid_close_hour === false ? 'red.900' : 'gray.200'}`}
                                     />
                                 </Div_input_creation>
                             </InputGroup>
