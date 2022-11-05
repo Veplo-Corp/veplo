@@ -2,6 +2,8 @@ import { Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
 import React, { useRef, useState } from 'react'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import Div_input_creation from '../../../../components/atoms/Div_input_creation'
+import Select_multiple_options from '../../../../components/atoms/Select_multiple_options'
+import { Day, DAYS } from '../../../../components/mook/days'
 
 const index = () => {
 
@@ -10,6 +12,7 @@ const index = () => {
     const [shop_piva, setShop_piva] = useState('')
     const [open_hour, setOpen_hour] = useState('')
     const [close_hour, setClose_hour] = useState('')
+    const days = useRef<Day[]>(DAYS)
 
 
     const onChangePhoneNumber = (e) => {
@@ -22,7 +25,17 @@ const index = () => {
         setShop_piva(value)
     }
 
-    const changeHour = (e, type:string) => {
+    const customizeTime = (time) => {
+        const minutes = time.split(':')[1];
+        let roundUp_minutes: number | string = (Math.round(minutes / 15) * 15) % 60;
+        roundUp_minutes = ('0' + roundUp_minutes).slice(-2)
+        console.log(roundUp_minutes);
+        const newTime = time.split(':')[0] + ':' + roundUp_minutes;
+        return newTime
+    }
+
+    const changeHour = (e, type: string) => {
+        let newTime: string;
         switch (type) {
             case 'shop_phone':
                 setShop_phone(e.target.value.replace(/[^0-9\.]+/g, ''))
@@ -31,10 +44,12 @@ const index = () => {
                 setShop_piva(e.target.value.replace(/[^0-9\.]+/g, ''))
                 break;
             case 'open_hour':
-                setOpen_hour(e.target.value)
+                newTime = customizeTime(e.target.value)
+                setOpen_hour(newTime)
                 break;
             case 'close_hour':
-                setClose_hour(e.target.value)
+                newTime = customizeTime(e.target.value)
+                setClose_hour(newTime)
                 break;
             default:
                 console.log(`Sorry, we are out of ${type}.`);
@@ -84,7 +99,7 @@ const index = () => {
                                     value={shop_piva}
                                     isInvalid={false}
                                     onChange={(event) => changeHour(event, 'shop_piva')}
-                                    />
+                                />
                             </InputGroup>
                         </Div_input_creation>
                         <Div_input_creation text=''>
@@ -95,7 +110,8 @@ const index = () => {
                                         paddingY={6}
                                         type="time"
                                         value={open_hour}
-                                        onChange={(event) => changeHour(event, 'open_hour')}
+                                        onChange={(event) => setOpen_hour(event.target.value)}
+                                        onBlur={(event) => changeHour(event, 'open_hour')}
                                     />
                                 </Div_input_creation>
                                 <Div_input_creation text='orario chiusura'>
@@ -104,10 +120,14 @@ const index = () => {
                                         paddingY={6}
                                         type="time"
                                         value={close_hour}
-                                        onChange={(event) => changeHour(event, 'close_hour')}
+                                        onChange={(event) => setClose_hour(event.target.value)}
+                                        onBlur={(event) => changeHour(event, 'close_hour')}
                                     />
                                 </Div_input_creation>
                             </InputGroup>
+                        </Div_input_creation>
+                        <Div_input_creation text='giorni di apertura'>
+                        <Select_multiple_options values={days.current} type={'day'} />
                         </Div_input_creation>
                     </div>
 

@@ -4,6 +4,7 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import Circle_Color from './Circle_Color'
 import { Color } from '../mook/colors'
 import { Macrocategory } from '../mook/macrocategories'
+import { Day } from '../mook/days'
 
 // const value = [
 //     { name: 'Wade Cooper' },
@@ -21,7 +22,7 @@ import { Macrocategory } from '../mook/macrocategories'
 // }
 
 
-const Select_multiple_options: React.FC<{values:Color[] | undefined | Macrocategory[] ,  type:string }> = ({values, type}) => {
+const Select_multiple_options: React.FC<{values:Color[] | undefined | Macrocategory[] | Day[] ,  type:string }> = ({values, type}) => {
     const [selectedValue, setSelectedValue] = useState<Color[]>([])
     const [isListboxDisabled, setIsListboxDisabled] = useState(false)
 
