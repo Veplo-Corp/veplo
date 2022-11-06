@@ -587,7 +587,7 @@ const index = () => {
                                 heigth={12}
                                 size={'sm'}
                                 typeButton={'submit'}
-                                disabled={!shop_name || !shop_phone || !address || !streetNumber || !city || !shop_piva || !open_hour || !close_hour || !image || !days_open || !isValid_close_hour || !isValid_open_hour || !isValid_shop_phone || !isValid_shop_piva || !isValid_shop_streetNumber} />
+                                disabled={!shop_name || !shop_phone || !address || !streetNumber || !city || !shop_piva || !open_hour || !close_hour || !image || !days_open || !isValid_close_hour || !isValid_open_hour || !isValid_shop_phone || !isValid_shop_piva || !isValid_shop_streetNumber || !days_open[0]} />
                         </div>
                     </div>
 
