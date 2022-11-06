@@ -5,7 +5,6 @@ const GET_SINGLE_PRODUCT = gql`
         product(
             id: $id
         ){
-          
             name
             price
             colors
