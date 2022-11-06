@@ -14,7 +14,7 @@ import createUrlSchema from '../../../../../components/utils/create_url';
 
 
 const dress: Product = {
-    id: '635030f4692a668cf323436f',
+    _id: '636297034dd4e3be6d52c03d',
     name: 'logo long sleeve tee',
     photos: ['https://img01.ztat.net/article/spp-media-p1/0a53a253d16a366cb8752f4ef4c76f37/24afae32e49b473db7b2502bef83e4ea.jpg?imwidth=1800', 'https://img01.ztat.net/article/spp-media-p1/92ec5b9defd53c6095411644ba6df0a3/b55be231798048b1a53c715a5285e32f.jpg?imwidth=1800', 'https://img01.ztat.net/article/spp-media-p1/d975829dee9936ac91401531ffc18747/bb1c440521394dc088318d777a8c4280.jpg?imwidth=1800&filter=packshot'],
     price: 24.99,
@@ -80,19 +80,20 @@ export async function getStaticProps(ctx) {
 
 
 const index: React.FC<{ product: Product, error: string }> = ({ product, error }) => {
-
+    console.log(product);
+    
     const router = useRouter();
     const { slug } = router.query
 
     useEffect(() => {
         const url_slug_correct = createUrlSchema([product.brand, product.name, product.microCategory])
-        if(url_slug_correct !== slug){
-            router.push({
-                pathname: `/prodotto/${product.id}/${url_slug_correct}`,
-              }, 
-              undefined, { shallow: true }
-            )
-        }
+        // if(url_slug_correct !== slug){
+        //     router.push({
+        //         pathname: `/prodotto/${product._id}/${url_slug_correct}`,
+        //       }, 
+        //       undefined, { shallow: true }
+        //     )
+        // }
         
 
     }, [product])
@@ -114,8 +115,6 @@ const index: React.FC<{ product: Product, error: string }> = ({ product, error }
 
     const zoomImage = () => {
         setisOpen(true)
-
-
     }
 
     const changeImageFull = (url) => {

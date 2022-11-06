@@ -5,21 +5,30 @@ const GET_SINGLE_PRODUCT = gql`
         product(
             id: $id
         ){
+          
             name
+            price
             colors
+            sizes
             macroCategory
             microCategory
-            price
-            sizes
-            location {
-            type
-            coordinates
-            }
-            brand
             gender
-            id
+            brand
+            shopId
+            firebaseShopId
+            photos
+            updatedAt
+            location {
+                type
+                coordinates
+            }
+            shop {
+                city
+                name
+            }
         } 
     }
+    
 `
 
 export default GET_SINGLE_PRODUCT;

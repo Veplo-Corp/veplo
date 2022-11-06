@@ -22,9 +22,11 @@ import { Day } from '../mook/days'
 // }
 
 
-const Select_multiple_options: React.FC<{values:Color[] | undefined | Macrocategory[] | Day[] ,  type:string }> = ({values, type}) => {
+const Select_multiple_options: React.FC<{values:Color[] | undefined | Macrocategory[] | Day[] ,  type:string, handleChangeState?: any}> = ({values, type, handleChangeState}) => {
     const [selectedValue, setSelectedValue] = useState<Color[]>([])
     const [isListboxDisabled, setIsListboxDisabled] = useState(false)
+
+
 
 
     useEffect(() => {   
@@ -42,6 +44,7 @@ const Select_multiple_options: React.FC<{values:Color[] | undefined | Macrocateg
         if(type === 'day'){
             const selectedValues = e.sort((a, b) => a.dayPosition - b.dayPosition)
             setSelectedValue(selectedValues)
+            handleChangeState(selectedValues, 'days_open')            
         }
         return setSelectedValue(e)
     }
