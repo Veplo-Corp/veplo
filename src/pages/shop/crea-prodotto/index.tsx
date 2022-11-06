@@ -1,4 +1,4 @@
-import { DownloadIcon } from '@chakra-ui/icons'
+import { CheckIcon, DownloadIcon } from '@chakra-ui/icons'
 import { Box, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import Autocomplete from '../../../../components/atoms/Autocomplete_Headless'
@@ -54,9 +54,17 @@ const index = () => {
 
 
   const onChangePrice = (e) => {
-    const inputValue: string = (e.target.value)
-    console.log(inputValue);
-    setProduct_Price(inputValue)
+    let inputValue: string = e.target.value
+    if (inputValue.split('.')[1]) {
+      if (inputValue.split('.')[1].length > 2) {
+        const lastChart = inputValue.charAt(inputValue.length - 1)
+        inputValue = Number(inputValue).toFixed(1) + lastChart;
+        return setProduct_Price(inputValue)
+      }
+    }
+    return setProduct_Price(inputValue)
+
+
   }
 
 
@@ -125,7 +133,7 @@ const index = () => {
                   rounded={10}
                   padding={3.5}
                   mt={1}
-                  backgroundColor={`white`}
+                  backgroundColor={`${photos.length < 3 ? 'white' : 'gray.200'}`}
                   borderWidth={1}
                   borderColor={'gray.200'}
                   lineHeight='tight'
@@ -137,16 +145,22 @@ const index = () => {
                   }}
                 >
                   <div
-                    className='w-full flex justify-between text-gray-500 '
+                    className={`w-full flex justify-between ${photos.length < 3 ? 'text-gray-500' : 'text-gray-900'}  `}
                   >
-                    <span >
-                      carica immagini del prodotto
+                    <span>
+                      {photos.length < 3 ? 'carica immagini del prodotto' : 'immagini caricate correttamente'}
                     </span>
-                    <DownloadIcon
-                      className="h-5 w-5 text-gray-400 my-auto"
-                      aria-hidden="true"
-
-                    />
+                    {photos.length < 3 ?
+                      (<DownloadIcon
+                        className="h-5 w-5 text-gray-400 my-auto"
+                        aria-hidden="true"
+                      />) : (
+                        <CheckIcon
+                          className="h-5 w-5 text-gray-400 my-auto"
+                          aria-hidden="true"
+                        />
+                      )
+                    }
                   </div>
                 </Box>
               </Div_input_creation>
