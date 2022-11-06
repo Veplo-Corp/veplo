@@ -29,7 +29,17 @@ const index = () => {
     const [shop_piva, setShop_piva] = useState('');
     const [open_hour, setOpen_hour] = useState('');
     const [close_hour, setClose_hour] = useState('');
+    const [days_open, setDays_open] = useState<any[]>([]);
+    const days = useRef<Day[]>(DAYS)
 
+
+    const customizeTime = (time) => {
+        const minutes = time.split(':')[1];
+        let roundUp_minutes: number | string = (Math.round(minutes / 15) * 15) % 60;
+        roundUp_minutes = ('0' + roundUp_minutes).slice(-2)
+        const newTime = time.split(':')[0] + ':' + roundUp_minutes;
+        return newTime
+    }
     //* validators
     const [isValid_shop_phone, setIsValid_Shop_phone] = useState<boolean | null>(null)
     const [isValid_shop_piva, setIsValid_Shop_piva] = useState<boolean | null>(null)
@@ -139,20 +149,12 @@ const index = () => {
     const [addresses, setAddresses] = useState([]);
     const [address, setAddress] = useState('');
     const [streetNumber, setStreetNumber] = useState('');
+    const [isValid_shop_streetNumber, setisValid_shop_streetNumber] = useState<boolean | null>(null)
     const [city, setCity] = useState('');
     const [showAddress, setShowAddress] = useState(false)
     const [streetNumberDisabled, setStreetNumberDisabled] = useState(false)
 
-    const days = useRef<Day[]>(DAYS)
 
-
-    const customizeTime = (time) => {
-        const minutes = time.split(':')[1];
-        let roundUp_minutes: number | string = (Math.round(minutes / 15) * 15) % 60;
-        roundUp_minutes = ('0' + roundUp_minutes).slice(-2)
-        const newTime = time.split(':')[0] + ':' + roundUp_minutes;
-        return newTime
-    }
 
     const onChangeAddress = async (address_searched: string) => {
         //setAddress_Mapbox(address_searched)
@@ -178,6 +180,7 @@ const index = () => {
     const handleEventSetAddress = async (element: Mapbox_Result) => {
         const result = await setUserAddress(element, 'shop');
         console.log(result);
+        setisValid_shop_streetNumber(true)
 
         setCity(result.city);
         setAddress(result.address);
@@ -186,6 +189,8 @@ const index = () => {
         if (result.streetNumber !== undefined) {
             setStreetNumber(result.streetNumber)
             setStreetNumberDisabled(true)
+        } else {
+            setisValid_shop_streetNumber(false)
         }
         console.log(result);
         return setAddresses([])
@@ -195,7 +200,11 @@ const index = () => {
 
     const changeInput = (e, type: string) => {
         let newTime: string;
-        let value = e.target.value.replace(/[^0-9\.]+/g, '');
+        let value: string = e;
+        if (type !== 'days_open') {
+            value = e.target.value.replace(/[^0-9\.]+/g, '');
+        }
+
         switch (type) {
             case 'shop_phone':
                 setShop_phone(value)
@@ -209,7 +218,11 @@ const index = () => {
 
                 break;
             case 'close_hour':
-                
+                break;
+            case 'days_open':
+                setDays_open(e)
+                console.log(value);
+
                 break;
             default:
                 console.log(`Sorry, we are out of ${type}.`);
@@ -220,7 +233,7 @@ const index = () => {
         let newTime: string;
         switch (type) {
             case 'shop_phone':
-                if (shop_phone.length < 3) {
+                if (shop_phone.length < 6) {
                     setIsValid_Shop_phone(false)
                 }
                 break;
@@ -298,7 +311,20 @@ const index = () => {
                                     />
                                 </ReactCrop>
                                 <div className='flex justify-between mt-2 mb-2 gap-2'>
-
+                                    <Button
+                                        onClick={() => setImgSrc(null)}
+                                        borderRadius={5}
+                                        width={'fit-content'}
+                                        height={12}
+                                        size={'sm'}
+                                        variant='outline'
+                                        colorScheme={'blackAlpha'}
+                                        color={'blackAlpha.900'}
+                                        disabled={false} >
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                                            <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clipRule="evenodd" />
+                                        </svg>
+                                    </Button>
                                     <Button
                                         onClick={() => handleClick(null)}
                                         borderRadius={5}
@@ -309,7 +335,7 @@ const index = () => {
                                         colorScheme={'blackAlpha'}
                                         color={'blackAlpha.900'}
                                         disabled={false} >
-                                        cambia immagine
+                                        cambia
                                     </Button>
                                     <BlackButton
                                         onClick={onHanldeConfirm}
@@ -320,6 +346,7 @@ const index = () => {
                                         size={'sm'}
                                         typeButton={'button'}
                                         disabled={isDisabledButton} />
+
                                 </div>
                             </>
                         )}
@@ -382,8 +409,7 @@ const index = () => {
                                     onChange={(event) => changeInput(event, 'shop_phone')}
                                 />
                             </InputGroup>
-                            {isValid_shop_phone === false && <p className='text-sm md:text-xs text-red-600'>numero non corretto</p>}
-
+                            {isValid_shop_phone === false && <p className='text-sm md:text-xs text-red-600'>Inserisci un numero corretto</p>}
                         </Div_input_creation>
                         <div className={`${showAddress ? 'hidden' : ''} mb-1 w-full`}>
                             <div className='flex justify-between text-gray-400'>
@@ -462,12 +488,21 @@ const index = () => {
                                             Civico
                                         </p>
                                         <Input
+                                            borderColor={`${isValid_shop_streetNumber === false ? 'red.900' : 'gray.200'}`}
                                             width={'28'}
                                             rounded={10}
                                             paddingY={6}
-                                            type="text"
+                                            type="number"
                                             value={streetNumber}
-                                            onChange={(event) => setStreetNumber(event.target.value)}
+                                            onChange={(event) => {
+                                                const value = event.target.value
+                                                setStreetNumber(value)
+                                                if (value.length > 0) {
+                                                    setisValid_shop_streetNumber(true)
+                                                } else {
+                                                    setisValid_shop_streetNumber(false)
+                                                }
+                                            }}
                                             disabled={streetNumberDisabled}
                                             _disabled={{
                                                 opacity: '1'
@@ -542,17 +577,17 @@ const index = () => {
                             </InputGroup>
                         </Div_input_creation>
                         <Div_input_creation text='giorni di apertura'>
-                            <Select_multiple_options values={days.current} type={'day'} />
+                            <Select_multiple_options handleChangeState={changeInput} values={days.current} type={'day'} />
                         </Div_input_creation>
                         <div className='flex justify-end mt-4'>
                             <BlackButton
-                                element='crea negozio'
+                                element='conferma'
                                 borderRadius={5}
                                 width={200}
                                 heigth={12}
                                 size={'sm'}
                                 typeButton={'submit'}
-                                disabled={false} />
+                                disabled={!shop_name || !shop_phone || !address || !streetNumber || !city || !shop_piva || !open_hour || !close_hour || !image || !days_open || !isValid_close_hour || !isValid_open_hour || !isValid_shop_phone || !isValid_shop_piva || !isValid_shop_streetNumber} />
                         </div>
                     </div>
 

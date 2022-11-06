@@ -1,22 +1,24 @@
 export interface Product {
-    id: string,
-    name: string
-    photos: string[]
+    _id: string,
+    name: string,
     price: number,
-    colors: string[]
-    sizes:string[],
-    macroCategory:string,
-    microCategory :string,
-    gender: string
-    brand: string
-    location:{
+    colors: string[],
+    sizes: string[],
+    macroCategory: string,
+    microCategory: string,
+    gender: string,
+    brand: string,
+    shopId: string,
+    firebaseShopId: string,
+    photos: string[],
+    updatedAt: string,
+    location: {
         type: string,
         coordinates: number[]
     },
-    shopId: string,
-    description: string,
-    cityShop:string
-    updateTime: string,
-    shopName: string
-    firebaseShopId: string,
+    shop: {
+        city: string,
+        name: string,
+    }
+    description?: string,
 }
