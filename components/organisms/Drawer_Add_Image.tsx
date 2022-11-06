@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Alert, AlertIcon, Box, Button } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, Highlight, List, ListItem, UnorderedList } from '@chakra-ui/react'
 import BlackButton from '../atoms/BlackButton'
 import {
     Drawer,
@@ -47,6 +47,30 @@ const ImageFormat: { position: number, text: string }[] = [
         text: 'opzionale'
     },
 ]
+
+const list_explanation_photos_format = [
+    {
+        type: 'vestiti',
+        list: [
+            'prima immagine: fronte del prodotto',
+            'seconda immagine: retro del prodotto',
+            'terza immagine: prodotto indossato',
+            'quarta / quinta immagine: prodotto nei diversi colori',
+        ]
+    },
+    {
+        type: 'scarpe',
+        list: [
+            'prima immagine: profilo del prodotto',
+            'seconda immagine: fronte del prodotto',
+            'terza immagine: scarpe indossate',
+            'quarta: retro del prodotto',
+            'quinta immagine: opzionale'
+        ]
+    }
+]
+
+
 
 const ImageTextFormat: string[] = [
     'fronte del prodotto',
@@ -260,123 +284,160 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                             }} />
                     </DrawerHeader>
                     <DrawerBody className='grid md:flex justify-between '>
-                        <div className='w-full h-fit md:ml-8 md:w-2/5 grid '>
-                            <div className='grid'>
-                                {imgSrc && (
-                                    <>
-                                        <Alert status='info' variant='solid' className='mb-2'>
-                                            <AlertIcon />
-                                            Ritaglia la foto
-                                        </Alert>
-                                        <ReactCrop
-                                            className='w-full h-full'
-                                            crop={crop}
-                                            onChange={(_, percentCrop) => setCrop(percentCrop)}
-                                            onComplete={(c) => {
-                                                setIsDisabledButton(true)
-                                                setCompletedCrop(c)
-                                            }}
-                                            aspect={762 / 1100}
-                                        >
-                                            <img
-                                                className='min-w-full'
-                                                src={imgSrc} ref={imgRef} />
-                                        </ReactCrop>
-                                    </>
+                        {imgSrc || images[0] ? (
+                            <>
+                                <div className='w-full h-fit md:ml-8 md:w-2/5 grid '>
+                                    <div className='grid'>
+                                        {imgSrc && (
+                                            <>
+                                                <Alert status='info' variant='solid' className='mb-2'>
+                                                    <AlertIcon />
+                                                    Ritaglia la foto
+                                                </Alert>
+                                                <ReactCrop
+                                                    className='w-full h-full'
+                                                    crop={crop}
+                                                    onChange={(_, percentCrop) => setCrop(percentCrop)}
+                                                    onComplete={(c) => {
+                                                        setIsDisabledButton(true)
+                                                        setCompletedCrop(c)
+                                                    }}
+                                                    aspect={762 / 1100}
+                                                >
+                                                    <img
+                                                        className='min-w-full'
+                                                        src={imgSrc} ref={imgRef} />
+                                                </ReactCrop>
+                                            </>
 
-                                )}
-                                {imgSrc &&
-                                    <div className='flex justify-between mt-2 mb-2 gap-2'>
-                                        <Button
-                                            onClick={() => setImgSrc(null)}
-                                            borderRadius={5}
-                                            width={'fit-content'}
-                                            height={12}
-                                            size={'sm'}
-                                            variant='outline'
-                                            colorScheme={'blackAlpha'}
-                                            color={'blackAlpha.900'}
-                                            disabled={false} >
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                                                <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clipRule="evenodd" />
-                                            </svg>
-                                        </Button>
-                                        <Button
-                                            onClick={() => handleClick(null)}
-                                            borderRadius={5}
-                                            width={150}
-                                            height={12}
-                                            size={'sm'}
-                                            variant='outline'
-                                            colorScheme={'blackAlpha'}
-                                            color={'blackAlpha.900'}
-                                            disabled={false} >
-                                            cambia immagine
-                                        </Button>
-                                        <BlackButton
-                                            onClick={onHanldeConfirm}
-                                            element='aggiungi'
-                                            borderRadius={5}
-                                            width={200}
-                                            heigth={12}
-                                            size={'sm'}
-                                            typeButton={'button'}
-                                            disabled={isDisabledButton} />
-                                    </div>}
+                                        )}
+                                        {imgSrc &&
+                                            <div className='flex justify-between mt-2 mb-2 gap-2'>
+                                                <Button
+                                                    onClick={() => setImgSrc(null)}
+                                                    borderRadius={5}
+                                                    width={'fit-content'}
+                                                    height={12}
+                                                    size={'sm'}
+                                                    variant='outline'
+                                                    colorScheme={'blackAlpha'}
+                                                    color={'blackAlpha.900'}
+                                                    disabled={false} >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                                                        <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clipRule="evenodd" />
+                                                    </svg>
+                                                </Button>
+                                                <Button
+                                                    onClick={() => handleClick(null)}
+                                                    borderRadius={5}
+                                                    width={150}
+                                                    height={12}
+                                                    size={'sm'}
+                                                    variant='outline'
+                                                    colorScheme={'blackAlpha'}
+                                                    color={'blackAlpha.900'}
+                                                    disabled={false} >
+                                                    cambia immagine
+                                                </Button>
+                                                <BlackButton
+                                                    onClick={onHanldeConfirm}
+                                                    element='aggiungi'
+                                                    borderRadius={5}
+                                                    width={200}
+                                                    heigth={12}
+                                                    size={'sm'}
+                                                    typeButton={'button'}
+                                                    disabled={isDisabledButton} />
+                                            </div>}
 
-                                <div className='hidden'>
-                                    {!!completedCrop && (
-                                        <canvas
-                                            ref={previewCanvasRef}
-                                            style={{
-                                                border: '1px solid black',
-                                                objectFit: 'contain',
-                                                width: completedCrop.width,
-                                                height: completedCrop.height,
-                                            }}
-                                        />
-                                    )}
-                                </div>
-                                {/* <div>
+                                        <div className='hidden'>
+                                            {!!completedCrop && (
+                                                <canvas
+                                                    ref={previewCanvasRef}
+                                                    style={{
+                                                        border: '1px solid black',
+                                                        objectFit: 'contain',
+                                                        width: completedCrop.width,
+                                                        height: completedCrop.height,
+                                                    }}
+                                                />
+                                            )}
+                                        </div>
+                                        {/* <div>
                             {!!url && (
                                 <img src={url} alt="" />
                             )}
                             </div> */}
-                            </div>
+                                    </div>
 
 
-                        </div>
-                        <div className="min-h-screen items-center justify-center mb-96 ">
-                            <div className='w-full md:mr-11 md:w-fit grid gap-5 grid-cols-2 justify-items-start mt-8'>
-                                {images.map((image: Image) => {
+                                </div>
+                                <div className="min-h-screen items-center justify-center mb-96 ">
+                                    <div className='w-full md:mr-11 md:w-fit grid gap-5 grid-cols-2 justify-items-start mt-8'>
+                                        {images.map((image: Image) => {
+                                            return (
+                                                <div key={image.position * Math.random()} className='md:w-44 lg:w-56 h-fit'>
+                                                    <div className='flex justify-between mb-1'>
+                                                        <p>{ImageTextFormat[image.position]}</p>
+                                                        <Box
+                                                            className='my-auto cursor-pointer'
+                                                            _active={{
+                                                                transform: 'scale(0.90)',
+                                                            }}
+                                                            onClick={() => handleClick(image.position)}
+                                                        >
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                                                <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
+                                                            </svg>
+                                                        </Box>
+
+
+
+                                                    </div>
+                                                    <img
+                                                        className='rounded'
+                                                        src={image.url} alt="" />
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                            </>
+                        ) : (
+                            <Box className='mt-5 md:mt-20 md:ml-20 w-full md:w-3/5'>
+                                <h1 className='text-2xl font-bold mb-2'>
+                                    <Highlight
+                                        query={['perfetta!']}
+                                        styles={{ px: '2', py: '1', bg: 'gray.900', color: 'white', fontStyle: 'italic' }}
+                                    >
+                                        Mostra i tuoi prodotti in maniera perfetta!
+                                    </Highlight>
+                                </h1>
+
+                                <h3 className='text-sm font-medium leading-4	'>inserisci le immagini secondo uno schema preciso, migliorando l’esperienza
+                                    che vivranno gli utenti nel tuo store</h3>
+                                {list_explanation_photos_format.map(list => {
                                     return (
-                                        <div key={image.position * Math.random()} className='md:w-44 lg:w-56 h-fit'>
-                                            <div className='flex justify-between mb-1'>
-                                                <p>{ImageTextFormat[image.position]}</p>
-                                                <Box
-                                                    className='my-auto cursor-pointer'
-                                                    _active={{
-                                                        transform: 'scale(0.90)',
-                                                    }}
-                                                    onClick={() => handleClick(image.position)}
-                                                >
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-                                                        <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
-                                                    </svg>
-                                                </Box>
-
-
-
-                                            </div>
-                                            <img
-                                                className='rounded'
-                                                src={image.url} alt="" />
+                                        <div key = {list.type}><h2 className='text-lg font-bold mt-2'>{list.type}:</h2>
+                                            <List spacing={1} marginLeft={30}>
+                                                <UnorderedList >
+                                                    {
+                                                        list.list.map((value, id) => {
+                                                            return (
+                                                                <ListItem key={id}>{value}</ListItem>
+                                                            )
+                                                        })
+                                                    }
+                                                </UnorderedList>
+                                            </List>
                                         </div>
                                     )
                                 })}
-                            </div>
-                        </div>
+                            </Box>
+                        )}
+
+
                     </DrawerBody>
                     {!imgSrc && <DrawerFooter padding={0}>
                         <footer className="w-full bg-whith items-center py-4 px-6 md:px-10 border-t	border-inherit	">
@@ -418,7 +479,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                         </footer>
                     </DrawerFooter>}
                 </DrawerContent>
-            </Drawer>
+            </Drawer >
         </>
 
 
