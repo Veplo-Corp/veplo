@@ -81,20 +81,20 @@ export async function getStaticProps(ctx) {
 
 const index: React.FC<{ product: Product, error: string }> = ({ product, error }) => {
     console.log(product);
-    
+
     const router = useRouter();
     const { slug } = router.query
 
     useEffect(() => {
-        const url_slug_correct = createUrlSchema([product.brand, product.name, product.microCategory])
-        // if(url_slug_correct !== slug){
-        //     router.push({
-        //         pathname: `/prodotto/${product._id}/${url_slug_correct}`,
-        //       }, 
-        //       undefined, { shallow: true }
-        //     )
-        // }
-        
+        const url_slug_correct = createUrlSchema([product.brand, product.name, product.macroCategory, product.microCategory])
+        if (url_slug_correct !== slug) {
+            router.push({
+                pathname: `/prodotto/${router.query.productId}/${url_slug_correct}`,
+            },
+                undefined, { shallow: true }
+            )
+        }
+
 
     }, [product])
 
@@ -177,10 +177,10 @@ const index: React.FC<{ product: Product, error: string }> = ({ product, error }
                             as='h2'
                             lineHeight='tall'
                             noOfLines={1}
-                            fontSize='small'
+                            fontSize='md'
                         >
                             {/* codice schiantato */}
-                            {product.macroCategory}
+                            {product.macroCategory} {product.microCategory}
                             {product.gender === 'F' && <span className='ml-1'>per donna</span>}
                             {product.gender === 'M' && <span className='ml-1'>per uomo</span>}
                         </Box>
@@ -293,6 +293,25 @@ const index: React.FC<{ product: Product, error: string }> = ({ product, error }
                     </Box>
                 </div>
                 <Horizontal_Line />
+                <Box
+                    fontWeight='medium'
+                    as='h1'
+                    noOfLines={1}
+                    className='text-2xl md:text-5xl'
+                    lineHeight={'normal'}
+                >
+                    Prodotti simili 
+                </Box>
+                <Box
+                    fontWeight='normal'
+                    as='h1'
+                    noOfLines={1}
+                    mb={3}
+                    className='text-xl md:text-4xl'
+                    lineHeight={'normal'}
+                >
+                    scopri altri negozi con prodotti simili 
+                </Box>
             </Desktop_Layout>
         </>
 
