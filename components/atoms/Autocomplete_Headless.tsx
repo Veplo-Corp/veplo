@@ -4,7 +4,7 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { Brand } from '../mook/brands'
 
 
-const Autocomplete: React.FC<{ values: Brand[] }> = ({ values }) => {
+const Autocomplete: React.FC<{ values: Brand[], handleChangeValues?: any }> = ({ values, handleChangeValues }) => {
     const [selected, setSelected] = useState('')
     const [query, setQuery] = useState('')
 
@@ -18,9 +18,14 @@ const Autocomplete: React.FC<{ values: Brand[] }> = ({ values }) => {
                     .includes(query.toLowerCase().replace(/\s+/g, ''))
             )
 
+    
+
     return (
         <div className="w-full">
-            <Combobox value={selected} onChange={setSelected}>
+            <Combobox value={selected} onChange={(value) => {
+                setSelected(value)
+                handleChangeValues(value)
+            }}>
                 <div className="relative mt-1">
                     <div className="border border-gray rounded-lg">
                         {values[0] && <Combobox.Input

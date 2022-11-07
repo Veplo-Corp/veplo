@@ -45,6 +45,8 @@ const Select_multiple_options: React.FC<{values:Color[] | undefined | Macrocateg
             const selectedValues = e.sort((a, b) => a.dayPosition - b.dayPosition)
             setSelectedValue(selectedValues)
             handleChangeState(selectedValues, 'days_open')            
+        } if(type === 'color' || type === 'size'){
+            handleChangeState(e)            
         }
         return setSelectedValue(e)
     }

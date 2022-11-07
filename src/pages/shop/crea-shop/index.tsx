@@ -184,12 +184,16 @@ const index = () => {
 
         setCity(result.city);
         setAddress(result.address);
+        //reset StreetNumber
+
         setAddress_Mapbox('');
         setShowAddress(true)
         if (result.streetNumber !== undefined) {
             setStreetNumber(result.streetNumber)
             setStreetNumberDisabled(true)
         } else {
+            setStreetNumber('');
+            setStreetNumberDisabled(false)
             setisValid_shop_streetNumber(false)
         }
         console.log(result);
