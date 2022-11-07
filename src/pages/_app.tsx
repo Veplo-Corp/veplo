@@ -15,6 +15,7 @@ import { useRouter } from 'next/router'
 import { ApolloProvider } from '@apollo/client'
 import { client, useApollo } from '../lib/apollo'
 import { getAddressFromLocalStorage } from '../../components/utils/getAddress_from_LocalStorage'
+import { setAuthTokenInLocalStorage } from '../../components/utils/setAuthTokenInLocalStorage'
 
 const theme = extendTheme({
   colors: {
@@ -59,7 +60,7 @@ function Auth({ children }) {
     onAuthStateChanged(auth, async (userAuth) => {
       if (userAuth) {
         const idToken = await userAuth.getIdToken()
-        console.log(idToken);
+        setAuthTokenInLocalStorage(idToken)
         // console.log(userAuth.uid);
 
         // user is logged in, send the user's details to redux, store the current user in the state
