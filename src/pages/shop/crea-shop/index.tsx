@@ -24,7 +24,7 @@ type Image = {
 
 const index = () => {
     //* input to create shop
-    const shop_name = useRef<HTMLInputElement>(null);
+    const [shop_name, setShop_name] = useState('')
     const [shop_phone, setShop_phone] = useState('')
     const [shop_piva, setShop_piva] = useState('');
     const [open_hour, setOpen_hour] = useState('');
@@ -184,14 +184,13 @@ const index = () => {
 
         setCity(result.city);
         setAddress(result.address);
-        //reset StreetNumber
-
         setAddress_Mapbox('');
         setShowAddress(true)
         if (result.streetNumber !== undefined) {
             setStreetNumber(result.streetNumber)
             setStreetNumberDisabled(true)
         } else {
+            //reset StreetNumber
             setStreetNumber('');
             setStreetNumberDisabled(false)
             setisValid_shop_streetNumber(false)
@@ -210,6 +209,9 @@ const index = () => {
         }
 
         switch (type) {
+            case 'shop_name':                
+                setShop_name(e.target.value);
+                break
             case 'shop_phone':
                 setShop_phone(value)
                 setIsValid_Shop_phone(true)
@@ -388,7 +390,8 @@ const index = () => {
                                     rounded={10}
                                     paddingY={6}
                                     type="text"
-                                    ref={shop_name}
+                                    value={shop_name}
+                                    onChange={(event) => changeInput(event, 'shop_name')}
                                     isInvalid={false}
                                 //onChange={()=> console.log(product_name.current.value)}
                                 />
@@ -591,11 +594,9 @@ const index = () => {
                                 heigth={12}
                                 size={'sm'}
                                 typeButton={'submit'}
-                                disabled={!shop_name || !shop_phone || !address || !streetNumber || !city || !shop_piva || !open_hour || !close_hour || !image || !days_open || !isValid_close_hour || !isValid_open_hour || !isValid_shop_phone || !isValid_shop_piva || !isValid_shop_streetNumber || !days_open[0]} />
+                                disabled={shop_name.length <= 0 || !shop_phone || !address || !streetNumber || !city || !shop_piva || !open_hour || !close_hour || !image || !days_open || !isValid_close_hour || !isValid_open_hour || !isValid_shop_phone || !isValid_shop_piva || !isValid_shop_streetNumber || !days_open[0]} />
                         </div>
                     </div>
-
-
                 </form>
             </div>
         </Desktop_Layout>
