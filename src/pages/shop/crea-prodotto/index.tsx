@@ -16,14 +16,19 @@ import Drawer_Add_Image from '../../../../components/organisms/Drawer_Add_Image'
 
 const index = () => {
   //* create product form
-  const product_name = useRef<HTMLInputElement>(null)
   //const product_price = useRef<HTMLInputElement>(null)
+  const [product_name, setProduct_name] = useState<string>('');
   const [product_price, setProduct_Price] = useState<string>('');
+  const [product_brand, setProduct_Brand] = useState<Brand[]>([]);
+  const [product_colors, setProduct_Colors] = useState<Brand[]>([]);
   const [product_macrocategory, setMacrocategory] = useState<Macrocategory>();
   const [product_microcategory, setMicrocategory] = useState<string[]>([]);
   const [microcategorySelected, setMicrocategorySelected] = useState<Microcategory>();
+  const [product_Size, setProduct_Size] = useState<Sizes[]>([]);
+
   const [sizeSelected, setSizeSelected] = useState<Sizes>();
-  const [photos, setPhotos] = useState<[]>([])
+
+  const [photos, setPhotos] = useState<any[]>([])
 
   //openDraw
   const [openDrawNumber, setOpenDrawNumber] = useState()
@@ -73,8 +78,8 @@ const index = () => {
   }
 
   const submitData = (e) => {
-    e.preventDefault()
-    console.log(e);
+    e.preventDefault();
+    console.log(product_name, product_price, product_brand, product_colors, product_macrocategory, product_microcategory, product_Size, photos);
   }
 
   return (
@@ -91,7 +96,8 @@ const index = () => {
                     rounded={10}
                     paddingY={6}
                     type="text"
-                    ref={product_name}
+                    value={product_name}
+                    onChange={(e) => setProduct_name(e.target.value)}
                     isInvalid={false}
                   //onChange={()=> console.log(product_name.current.value)}
                   />
@@ -104,6 +110,7 @@ const index = () => {
                     rounded={10}
                     paddingY={6}
                     type="number"
+                    onWheel={(e) => e.target.blur()}                    
                     // ref={product_price}
                     value={product_price}
                     placeholder={'34,99'}
@@ -114,19 +121,19 @@ const index = () => {
                 </InputGroup>
               </Div_input_creation>
               <Div_input_creation text='Brand'>
-                <Autocomplete values={brands.current} />
+                <Autocomplete values={brands.current} handleChangeValues={setProduct_Brand} />
               </Div_input_creation>
               <Div_input_creation text='Colori disponibili'>
-                <Select_multiple_options values={colors.current} type={'color'} />
+                <Select_multiple_options values={colors.current} type={'color'} handleChangeState={setProduct_Colors} />
               </Div_input_creation>
               <Div_input_creation text='Categoria'>
                 <Select_options values={macrocategories.current} handleClick={setMacrocategory} type={'macrocategory'} />
               </Div_input_creation>
               <Div_input_creation text='Microcategoria collegata'>
-                <Select_options values={microcategorySelected?.microcategories} handleClick={() => { }} type={'microcategory'} />
+                <Select_options values={microcategorySelected?.microcategories} handleClick={setMicrocategory} type={'microcategory'} />
               </Div_input_creation>
               <Div_input_creation text='Taglie disponibili'>
-                <Select_multiple_options values={sizeSelected?.microcategories} type={'size'} />
+                <Select_multiple_options values={sizeSelected?.microcategories} type={'size'} handleChangeState={setProduct_Size} />
               </Div_input_creation>
               <Div_input_creation text='Carica immagini'>
                 <Box
@@ -170,7 +177,7 @@ const index = () => {
                   element='aggiungi'
                   borderRadius={10}
                   size={'sm'}
-                  disabled={false}
+                  disabled={product_name.length <= 0 || !product_price || !product_brand || !product_colors || !product_macrocategory || !product_microcategory || !product_Size[0] || photos.length < 3}
                   width={200}
                   heigth={12}
                 />
