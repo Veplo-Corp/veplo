@@ -7,11 +7,27 @@ import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../store/reducers/user'
 import { sendEmailVerificationHanlder } from '../../../../components/utils/emailVerification'
 import resetPassword from '../../../../components/utils/resetPassword'
+import { useMutation } from '@apollo/client'
+import DELETE_PRODUCT from '../../../lib/apollo/queries/deleteProduct'
 
 
 
 
 const index = () => {
+
+  const [deleteProduct, { data, loading, error }] = useMutation(DELETE_PRODUCT);
+
+  const handleDeleteProductTest = async() => {
+    try {
+      await deleteProduct();
+      console.log(data);
+      
+    } 
+    catch(e) {
+      console.log(error);
+            
+    }
+  }
 
   const [showPassword, setshowPassword] = useState<boolean>(false)
   const [email, setemail] = useState<string>('')
@@ -106,7 +122,7 @@ const index = () => {
     event.preventDefault();
     if (typeForm === 'registration') {
       createUserWithEmailAndPassword(auth, email, password)
-        .then(async(userCredential) => {
+        .then(async (userCredential) => {
           // Signed in 
           const user = userCredential.user;
           console.log(user);
@@ -114,7 +130,7 @@ const index = () => {
           dispatch(
             login(
               {
-                email:user.email,
+                email: user.email,
                 uid: user.uid,
                 idToken: await user.getIdToken()
               }
@@ -137,7 +153,7 @@ const index = () => {
 
           dispatch(
             login({
-              email:user.email,
+              email: user.email,
               uid: user.uid
             })
           );
@@ -156,6 +172,9 @@ const index = () => {
   }
 
   const LoginButton = () => {
+
+
+
     return (
       <>
         <p className='mr-1 text-black	'>hai già un account?</p>
@@ -169,6 +188,7 @@ const index = () => {
 
 
   return (
+
     <Desktop_Layout>
       <div className='flex justify-between'>
         <form className="p-3 w-fit space-y-4" onSubmit={handleSubmit}>
@@ -224,8 +244,8 @@ const index = () => {
             <Button disabled={isValidEmail == null || false} onClick={() => resetPassword(email)} colorScheme={'orange'} borderRadius={10} size={'md'}>resetta password</Button>
           </div>}
           <div className='flex'>
-            {(typeForm === 'registration') &&<LoginButton />}
-            {(typeForm === 'reset_password') &&<LoginButton />}
+            {(typeForm === 'registration') && <LoginButton />}
+            {(typeForm === 'reset_password') && <LoginButton />}
 
             {typeForm === 'login' &&
               <div className='grid'>
@@ -245,7 +265,7 @@ const index = () => {
         </form>
         <div className='hidden md:flex  '>
           <h1>{user.email}</h1>
-
+          <button onClick={handleDeleteProductTest}>delete product</button>
         </div>
       </div>
     </Desktop_Layout>

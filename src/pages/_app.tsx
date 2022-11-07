@@ -13,7 +13,7 @@ import { login, logout } from './store/reducers/user'
 import { setAddress } from './store/reducers/address_user'
 import { useRouter } from 'next/router'
 import { ApolloProvider } from '@apollo/client'
-import { useApollo } from '../lib/apollo'
+import { client, useApollo } from '../lib/apollo'
 import { getAddressFromLocalStorage } from '../../components/utils/getAddress_from_LocalStorage'
 
 const theme = extendTheme({
@@ -41,25 +41,25 @@ function Auth({ children }) {
   const dispatch = useDispatch();
 
 
-  
+
 
   //* check at page load if a user is authenticated
   useEffect(() => {
 
     //* GET the user address from localstorage
-  const address_user = getAddressFromLocalStorage();
-  // console.log(address_user);
+    const address_user = getAddressFromLocalStorage();
+    // console.log(address_user);
 
-  dispatch(
-    setAddress({
-      address: address_user
-    })
-  );
+    dispatch(
+      setAddress({
+        address: address_user
+      })
+    );
 
     onAuthStateChanged(auth, async (userAuth) => {
       if (userAuth) {
         const idToken = await userAuth.getIdToken()
-        // console.log(idToken);
+        console.log(idToken);
         // console.log(userAuth.uid);
 
         // user is logged in, send the user's details to redux, store the current user in the state
@@ -89,18 +89,20 @@ function Auth({ children }) {
 function MyApp({ Component, pageProps }: AppProps) {
 
   const apolloClient = useApollo(pageProps.initialApolloState)
+  //! new mode to initialize apollo
+  //const clientApollo  = client;
 
   return (
-    <ApolloProvider client={apolloClient}>
-      <Provider store={store}>
+    <Provider store={store}>
+      <ApolloProvider client={apolloClient} > {/* client={clientApollo} */}
         <Auth>
           <ChakraProvider theme={theme}>
             <Header></Header>
             <Component {...pageProps} />
           </ChakraProvider>
         </Auth>
-      </Provider>
-    </ApolloProvider>
+      </ApolloProvider>
+    </Provider>
 
   )
 }

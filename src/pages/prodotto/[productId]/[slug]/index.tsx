@@ -5,7 +5,7 @@ import { Box, Image, Modal, ModalBody, ModalContent, ModalOverlay } from '@chakr
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
 import { useQuery } from '@apollo/client';
 import { Product } from '../../../../interfaces/product.interface';
-import { initApollo } from '../../../../lib/apollo';
+import { client, initApollo } from '../../../../lib/apollo';
 import Circle_Color from '../../../../../components/atoms/Circle_Color';
 import Size_Box from '../../../../../components/atoms/Size_Box';
 import { isMobile } from 'react-device-detect';
@@ -45,19 +45,22 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(ctx) {
+    const { productId } = ctx.params
     // Call an external API endpoint to get posts.
     // You can use any data fetching library
+
+    //! old graphQL schema
     const apolloClient = initApollo()
-
-
-    const { productId } = ctx.params
     console.log(productId);
-
-
     const { data, error } = await apolloClient.query({
         query: GET_SINGLE_PRODUCT,
         variables: { id: productId }
     })
+
+    // const { data, error } = await client.query({
+    //     query: GET_SINGLE_PRODUCT,
+    //     variables: { id: productId }
+    // })
 
     return {
         props: {
@@ -66,7 +69,6 @@ export async function getStaticProps(ctx) {
             // initialApolloState: apolloClient.cache.extract(),
         }
     }
-
 }
 
 
@@ -300,7 +302,7 @@ const index: React.FC<{ product: Product, error: string }> = ({ product, error }
                     className='text-2xl md:text-5xl'
                     lineHeight={'normal'}
                 >
-                    Prodotti simili 
+                    Prodotti simili
                 </Box>
                 <Box
                     fontWeight='normal'
@@ -310,7 +312,7 @@ const index: React.FC<{ product: Product, error: string }> = ({ product, error }
                     className='text-xl md:text-4xl'
                     lineHeight={'normal'}
                 >
-                    scopri altri negozi con prodotti simili 
+                    scopri altri negozi con prodotti simili
                 </Box>
             </Desktop_Layout>
         </>
