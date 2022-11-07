@@ -9,6 +9,7 @@ import { sendEmailVerificationHanlder } from '../../../../components/utils/email
 import resetPassword from '../../../../components/utils/resetPassword'
 import { useMutation } from '@apollo/client'
 import DELETE_PRODUCT from '../../../lib/apollo/queries/deleteProduct'
+import { setAuthTokenInLocalStorage } from '../../../../components/utils/setAuthTokenInLocalStorage'
 
 
 
@@ -17,15 +18,15 @@ const index = () => {
 
   const [deleteProduct, { data, loading, error }] = useMutation(DELETE_PRODUCT);
 
-  const handleDeleteProductTest = async() => {
+  const handleDeleteProductTest = async () => {
     try {
       await deleteProduct();
       console.log(data);
-      
-    } 
-    catch(e) {
+
+    }
+    catch (e) {
       console.log(error);
-            
+
     }
   }
 
@@ -125,6 +126,8 @@ const index = () => {
         .then(async (userCredential) => {
           // Signed in 
           const user = userCredential.user;
+          const idToken = await userCredential.user.getIdToken();
+          setAuthTokenInLocalStorage(idToken)
           console.log(user);
           sendEmailVerificationHanlder()
           dispatch(
@@ -147,16 +150,18 @@ const index = () => {
         });
     } else {
       signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        .then(async(userCredential) => {
           // Signed in 
           const user = userCredential.user;
-
+          const idToken = await userCredential.user.getIdToken();
+          setAuthTokenInLocalStorage(idToken)
           dispatch(
             login({
               email: user.email,
               uid: user.uid
             })
           );
+
           setemail('')
           setpassword('')
           // ...
@@ -263,10 +268,10 @@ const index = () => {
             }
           </div>
         </form>
-        <div className='hidden md:flex  '>
+        {user && <div className='hidden md:flex  '>
           <h1>{user.email}</h1>
           <button onClick={handleDeleteProductTest}>delete product</button>
-        </div>
+        </div>}
       </div>
     </Desktop_Layout>
   )
