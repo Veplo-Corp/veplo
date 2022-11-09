@@ -3854,6 +3854,11 @@
     "use-callback-ref" "^1.3.0"
     "use-sidecar" "^1.1.2"
 
+"react-hook-form@^7.39.1":
+  "integrity" "sha512-MiF9PCILN5KulhSGbnjohMiTOrB47GerDTichMNP0y2cPUu1GTRFqbunOxCE9N1499YTLMV/ne4gFzqCp1rxrQ=="
+  "resolved" "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.39.1.tgz"
+  "version" "7.39.1"
+
 "react-image-crop@^10.0.8":
   "integrity" "sha512-JyFYRs+KbZhab7/8bDQjZsha1y+ruIIFRQo6BJH+aTd7ua4wSOh+POe305HQV3DH6SxiWrma5UXTYpCiVvx9aw=="
   "resolved" "https://registry.npmjs.org/react-image-crop/-/react-image-crop-10.0.8.tgz"
@@ -3911,7 +3916,7 @@
     "invariant" "^2.2.4"
     "tslib" "^2.0.0"
 
-"react@^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16 || ^17 || ^18", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.9.0 || ^17.0.0 || ^18", "react@^16.9.0 || ^17.0.0 || ^18.0.0", "react@^17.0.2 || ^18.0.0-0", "react@^18.0.0", "react@^18.2.0", "react@>= 0.14.0", "react@>= 16", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>=16.13.1", "react@>=16.8.0", "react@>=18", "react@18.2.0":
+"react@^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16 || ^17 || ^18", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17 || ^18", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.9.0 || ^17.0.0 || ^18", "react@^16.9.0 || ^17.0.0 || ^18.0.0", "react@^17.0.2 || ^18.0.0-0", "react@^18.0.0", "react@^18.2.0", "react@>= 0.14.0", "react@>= 16", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>=16.13.1", "react@>=16.8.0", "react@>=18", "react@18.2.0":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   "version" "18.2.0"
