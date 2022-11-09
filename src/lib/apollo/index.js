@@ -9,17 +9,17 @@ import { setContext } from '@apollo/client/link/context';
 
 
 
-//let uri = 'http://206.189.55.217/graphql'
 
 let apolloClient;
 
 
 function createApolloClient() {
     // Declare variable to store authToken
-    let token;
+    let authorization_token;
+
     const httpLink = createHttpLink({
         uri: 'http://206.189.55.217/graphql',
-        //credentials: 'include',
+        credentials: 'same-origin',
     });
 
     const authLink = setContext((_, { headers }) => {
@@ -37,10 +37,32 @@ function createApolloClient() {
     });
 
     return new ApolloClient({
-        ssrMode: typeof window === 'undefined',
+        ssrMode: typeof window !== 'undefined',
         link: authLink.concat(httpLink),/* new HttpLink({ uri }) */
-        cache: new InMemoryCache(),
-
+        cache: new InMemoryCache({
+            // typePolicies: {
+            //     Product: {
+            //         keyFields: ["id"]
+            //     }
+            // }
+        }),
+        connectToDevTools: true,
+        // defaultOptions: {
+        //     watchQuery: {
+        //         nextFetchPolicy(currentFetchPolicy) {
+        //             if (
+        //                 currentFetchPolicy === 'network-only' ||
+        //                 currentFetchPolicy === 'cache-and-network'
+        //             ) {
+        //                 // Demote the network policies (except "no-cache") to "cache-first"
+        //                 // after the first request.
+        //                 return 'cache-first';
+        //             }
+        //             // Leave all other fetch policies unchanged.
+        //             return currentFetchPolicy;
+        //         },
+        //     },
+        // },
     })
 }
 
@@ -106,6 +128,6 @@ export function useApollo(initialState) {
 
 // export const client = new ApolloClient({
 //     link: authLink.concat(httpLink),
-//     ssrMode: typeof window === 'undefined',
+//     ssrMode: typeof window !== 'undefined',
 //     cache: new InMemoryCache(),
 // });

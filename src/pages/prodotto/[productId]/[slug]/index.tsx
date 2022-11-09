@@ -51,12 +51,26 @@ export async function getStaticProps(ctx) {
 
     //! old graphQL schema
     const apolloClient = initApollo()
-    console.log(productId);
+    //console.log(productId);
     const { data, error } = await apolloClient.query({
         query: GET_SINGLE_PRODUCT,
-        variables: { id: productId }
+        variables: { id: productId },
+        //!useless
+        // fetchPolicy: 'cache-first',
+        // nextFetchPolicy: 'cache-only',
     })
 
+
+    // //! testing
+    // const { dats } = await apolloClient.query({
+    //     query: GET_SINGLE_PRODUCT,
+    //     variables: { id: "63693558a3aab0f65e18b1c1" },
+    //     //!useless
+    //     // fetchPolicy: 'cache-first',
+    //     // nextFetchPolicy: 'cache-only',
+    // })
+
+    //!old system - you can delete it
     // const { data, error } = await client.query({
     //     query: GET_SINGLE_PRODUCT,
     //     variables: { id: productId }
@@ -65,27 +79,26 @@ export async function getStaticProps(ctx) {
     return {
         props: {
             product: data.product || null,
-            error: error || null
-            // initialApolloState: apolloClient.cache.extract(),
+            error: error || null,
+            //?understand cache in GraphQL
+            initialApolloState: apolloClient.cache.extract(),
         }
     }
 }
 
 
-// const { loading, data, error } = useQuery(GET_SINGLE_PRODUCT, {
-//     fetchPolicy: 'no-cache',
-//     variables: {
-//         id: '635030f4692a668cf323436f',
-//     },
-// })
 
 
 
-const index: React.FC<{ product: Product, error: string }> = ({ product, error }) => {
-    console.log(product);
+const index: React.FC<{ product: Product, error: string, initialApolloState: any }> = ({ product, error, initialApolloState }) => {
 
     const router = useRouter();
     const { slug } = router.query
+    console.log(initialApolloState)
+
+
+
+
 
     useEffect(() => {
         const url_slug_correct = createUrlSchema([product.brand, product.name, product.macroCategory, product.microCategory])

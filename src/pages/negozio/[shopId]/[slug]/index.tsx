@@ -21,8 +21,8 @@ const shop: SHOP = {
 }
 
 //DRESS MOOK
-const dress: Product = {
-    id: '635030f4692a668cf323436f',
+const dress1: Product = {
+    id: '636ab27e97bfedfee8f96f8f',
     name: 'logo long sleeve tee',
     photos: ['https://img01.ztat.net/article/spp-media-p1/0a53a253d16a366cb8752f4ef4c76f37/24afae32e49b473db7b2502bef83e4ea.jpg?imwidth=1800', 'https://img01.ztat.net/article/spp-media-p1/92ec5b9defd53c6095411644ba6df0a3/b55be231798048b1a53c715a5285e32f.jpg?imwidth=1800', 'https://img01.ztat.net/article/spp-media-p1/d975829dee9936ac91401531ffc18747/bb1c440521394dc088318d777a8c4280.jpg?imwidth=1800&filter=packshot'],
     price: 24.99,
@@ -42,10 +42,34 @@ const dress: Product = {
     updateTime: '', //!TODO
     shopName: 'Sartoria Rizzo Merlini',
 }
+
+const dress2: Product = {
+    id: '636ab27e97bfedfee8f96f8f',
+    name: 'logo long sleeve tee - 63693558a3aab0f65e18b1c1',
+    photos: ['https://img01.ztat.net/article/spp-media-p1/0a53a253d16a366cb8752f4ef4c76f37/24afae32e49b473db7b2502bef83e4ea.jpg?imwidth=1800', 'https://img01.ztat.net/article/spp-media-p1/92ec5b9defd53c6095411644ba6df0a3/b55be231798048b1a53c715a5285e32f.jpg?imwidth=1800', 'https://img01.ztat.net/article/spp-media-p1/d975829dee9936ac91401531ffc18747/bb1c440521394dc088318d777a8c4280.jpg?imwidth=1800&filter=packshot'],
+    price: 24.99,
+    colors: ['blackAlpha.900', 'gray.300', 'red.700', 'white'],
+    sizes: ['S 36', 'M 40'],
+    macroCategory: 't-shirt',
+    microCategory: 'maglietta a manica lunga',
+    gender: 'M',
+    brand: 'TEST _ PRODOTTO',
+    location: {
+        type: 'Point',
+        coordinates: [42.562309, 12.64576]
+    },
+    shopId: '63459223b728b4f0b7d88a6f',
+    description: 'negozio nel centro di terni',
+    address: 'da inserire', //!TODO
+    updateTime: '', //!TODO
+    shopName: 'Sartoria Rizzo Merlini',
+}
+
 let clothes: any[] = [];
 
 for (let i = 0; i < 20; i++) {
-    clothes.push(dress)
+    clothes.push(dress1)
+    clothes.push(dress2)
 }
 
 
@@ -59,9 +83,9 @@ const index = () => {
     const query = { ...router.query, genere: 'uomo' };
 
     const toProductPage = (product: any) => {
-        const url = createUrlSchema([dress.brand, dress.name, dress.microCategory])
+        const url = createUrlSchema([product.brand, product.name, product.microCategory])
         router.push({
-            pathname: `/prodotto/${dress.id}/${url}`,
+            pathname: `/prodotto/${product.id}/${url}`,
             // query: { 
             //   productId: product.id,
             //   nome: encodeURIComponent(product.name),

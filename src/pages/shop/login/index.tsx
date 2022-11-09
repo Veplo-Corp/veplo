@@ -7,28 +7,48 @@ import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../store/reducers/user'
 import { sendEmailVerificationHanlder } from '../../../../components/utils/emailVerification'
 import resetPassword from '../../../../components/utils/resetPassword'
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import DELETE_PRODUCT from '../../../lib/apollo/queries/deleteProduct'
 import { setAuthTokenInLocalStorage } from '../../../../components/utils/setAuthTokenInLocalStorage'
+import GET_SINGLE_PRODUCT from '../../../lib/apollo/queries/getSingleProduct'
+import { initApollo } from '../../../lib/apollo'
 
 
 
 
 const index = () => {
 
-  const [deleteProduct, { data, loading, error }] = useMutation(DELETE_PRODUCT);
+  //! test cache GraphQL
+  // const ElementTest = useQuery(GET_SINGLE_PRODUCT, {
+  //   fetchPolicy: 'cache-only',
+  //   nextFetchPolicy: 'cache-only',
+  //   variables: {
+  //       id: '63693558a3aab0f65e18b1c1', /* 63693558a3aab0f65e18b1c1 */
+  //   },
 
-  const handleDeleteProductTest = async () => {
-    try {
-      await deleteProduct();
-      console.log(data);
+  // })
 
-    }
-    catch (e) {
-      console.log(error);
+  // console.log(ElementTest.data);
 
-    }
-  }
+  // const [deleteProduct, { data, loading, error }] = useMutation(DELETE_PRODUCT);
+  // const apolloClient = initApollo()
+  // const cache = apolloClient.cache.extract();
+  // console.log(cache);
+  
+  // const handleDeleteProductTest = async () => {
+  //   try {
+  //     await deleteProduct();
+  //     console.log(data);
+
+  //   }
+  //   catch (e) {
+  //     console.log(error);
+
+  //   }
+  // }
+  //! end test apollo client
+
+
 
   const [showPassword, setshowPassword] = useState<boolean>(false)
   const [email, setemail] = useState<string>('')
