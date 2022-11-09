@@ -6,7 +6,7 @@ export interface Macrocategory {
 }
 
 export const MACROCATEGORY: Macrocategory[] = [
-    {id: 'uomo_t-shirt', gender: 'uomo' , name: 'T-shirt', DB_Category: 't-shirt'},
+    {id: 'uomo_t-shirt', gender: 'uomo' , name: 'T-shirt', DB_Category: 'T-shirt & Polo'},
     {id: 'uomo_pantalone', gender: 'uomo' , name: 'Pantalone', DB_Category: 'pantalone'},
     {id: 'uomo_scarpe', gender: 'uomo' , name: 'Scarpe', DB_Category: 'scarpe'},
     {id: 'donna_gonna', gender: 'donna' , name: 'Gonna', DB_Category: 'gonna'},

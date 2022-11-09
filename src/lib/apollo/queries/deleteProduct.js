@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from '@apollo/client';
 
 const DELETE_PRODUCT = gql`
   mutation deleteProduct{
