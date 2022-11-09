@@ -9,16 +9,17 @@ import { useRouter } from 'next/router';
 export async function getServerSideProps(ctx) {
 
     const apolloClient = initApollo()
-
+    
 
     const { productId } = ctx.params
-    console.log(productId);
 
 
     const{ data, error }: {data:any, error:any} = await apolloClient.query({
         query: GET_SINGLE_PRODUCT,
         variables: { id: productId }
     })
+
+   
 
     const product: Product = data.product
     
