@@ -8,16 +8,16 @@ export const MICROCATEGORY: Microcategory[] = [
     {
         id: 'uomo_t-shirt', microcategories: [
             {
-                name: 'Basic',
+                name: 'a maniche lunghe',
+                DB_Category: 'a maniche lunghe'
+            },
+            {
+                name: 'basic',
                 DB_Category: 'basic'
             },
             {
-                name: 'Top',
-                DB_Category: 'top'
-            },
-            {
                 name: 'canotte',
-                DB_Category: 'Canotte'
+                DB_Category: 'canotte'
             },
         ]
     }, {

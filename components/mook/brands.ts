@@ -6,7 +6,7 @@ export interface Brand {
 
 export const BRANDS: Brand[] = [
     {name: 'Nike', DB_name: 'nike'  },
-    {name: 'Adidas', DB_name: 'adidas'  },
+    {name: 'Adidas', DB_name: 'Adidas Originals'  },
     {name: 'Tommy Hilfigher', DB_name: 'tommy hilfiger'  },
     {name: 'Sergio Tacchini', DB_name: 'sergio tacchini'  },
     {name: 'Reebok', DB_name: 'reebok'  },

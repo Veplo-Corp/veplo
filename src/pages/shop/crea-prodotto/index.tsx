@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/client'
 import { CheckIcon, DownloadIcon } from '@chakra-ui/icons'
 import { Box, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
@@ -15,21 +16,26 @@ import { MICROCATEGORY, Microcategory } from '../../../../components/mook/microc
 import { SIZES, Sizes } from '../../../../components/mook/sizes'
 import Drawer_Add_Image from '../../../../components/organisms/Drawer_Add_Image'
 import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
-
+import CREATE_PRODUCT from '../../../lib/apollo/mutations/createProduct'
 
 
 interface IFormInput {
   name: string;
   price: string;
-  brands: Brand[];
-  colors: string[];
+  brands: Brand;
+  colors: Color[];
   macrocategory: Macrocategory;
-  microcategory: string[];
-  sizes: Sizes[];
+  microcategory: Macrocategory;
+  sizes: Macrocategory[];
   photos: any[];
 }
 
 const index = () => {
+
+  //* graphQL
+  const [createProduct, Element] = useMutation(CREATE_PRODUCT);
+
+
   //*UseForm
   const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInput>({
     mode: "all",
@@ -101,15 +107,52 @@ const index = () => {
 
 
 
+
+
   const submitData = ({ name, price, brands, colors, macrocategory, microcategory, sizes, photos }: IFormInput) => {
 
     console.log(name, price, brands, colors, macrocategory, microcategory, sizes, photos);
 
+
     if (!brands || !colors || !macrocategory || !microcategory || !sizes || photos[2]) {
-      setOpenModalMath(Math.random())
+      return setOpenModalMath(Math.random())
     }
 
+    const colorsToDB = colors.map((color) => {
+      return color.DB_name
+    })
+
+
+    const sizesToDB = sizes.map((size) => {
+      return size.DB_Category
+    })
+    
+    console.log(colorsToDB,sizesToDB );
+
+    const priceToDB = Number(price.replace(',', '.'))
+    const Product = {
+      name,
+      price: priceToDB,
+      colors: colorsToDB,
+      sizes: sizesToDB,
+      macroCategory: macrocategory.DB_Category,
+      microCategory: microcategory.DB_Category,
+      gender: macrocategory.gender === 'donna' ? 'F' : 'M',
+      brand: brands.DB_name,
+      photos: ['https://img01.ztat.net/article/spp-media-p1/9ef0d4c555c14dd7b07a638a8f203f95/a5c4db103222485daa2ebf4dbbbeff44.jpg?imwidth=1800&filter=packshot'],
+    }
+    try{
+      createProduct({ variables: {shopId: '635905bdadc75fa62375263f', options: Product} })
+      console.log(Element.data);
+      
+    } catch (e){
+      console.log('error');
+    }
+   
+
+
   }
+  
 
   return (
     <>

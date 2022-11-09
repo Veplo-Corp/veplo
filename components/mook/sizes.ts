@@ -9,15 +9,15 @@ export const SIZES: Sizes[] = [
         id: 'vestiti', microcategories: [
             {
                 name: 'xs',
-                DB_Category: 'xs'
+                DB_Category: 'xs (44)'
             },
             {
                 name: 's',
-                DB_Category: 's'
+                DB_Category: 's (46)'
             },
             {
                 name: 'm',
-                DB_Category: 'm'
+                DB_Category: 'm (48)'
             },
         ]
     }, {
