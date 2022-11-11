@@ -9,11 +9,12 @@ import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import Div_input_creation from '../../../../components/atoms/Div_input_creation'
 import Select_multiple_options from '../../../../components/atoms/Select_multiple_options'
 import Select_options from '../../../../components/atoms/Select_options'
-import { Brand, BRANDS } from '../../../../components/mook/brands'
+import { BRANDS } from '../../../../components/mook/brands'
+import { CATEGORIES, Categories, Category } from '../../../../components/mook/categories'
 import { Color, COLORS } from '../../../../components/mook/colors'
 import { MACROCATEGORY, Macrocategory } from '../../../../components/mook/macrocategories'
 import { MICROCATEGORY, Microcategory } from '../../../../components/mook/microcategories'
-import { SIZES, Sizes } from '../../../../components/mook/sizes'
+import { man_bottom_clothes_sizes, man_top_clothes_sizes, SIZES, Sizes, woman_clothes_sizes } from '../../../../components/mook/sizes'
 import Drawer_Add_Image from '../../../../components/organisms/Drawer_Add_Image'
 import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
 import CREATE_PRODUCT from '../../../lib/apollo/mutations/createProduct'
@@ -22,12 +23,13 @@ import CREATE_PRODUCT from '../../../lib/apollo/mutations/createProduct'
 interface IFormInput {
   name: string;
   price: string;
-  brands: Brand;
+  brand: string;
   colors: Color[];
-  macrocategory: Macrocategory;
-  microcategory: Macrocategory;
+  macrocategory: Category;
+  microcategory: string;
   sizes: Macrocategory[];
   photos: any[];
+  gender: 'M' | 'F' | undefined
 }
 
 const index = () => {
@@ -53,7 +55,7 @@ const index = () => {
 
   //* create product form
   const [microcategorySelected, setMicrocategorySelected] = useState<Microcategory>();
-  const [sizeSelected, setSizeSelected] = useState<Sizes>();
+  const [sizesSelected, setSizesSelected] = useState<Sizes>();
 
   //openDraw
   const [openDrawNumber, setOpenDrawNumber] = useState()
@@ -61,26 +63,52 @@ const index = () => {
   const colors = useRef<Color[]>(COLORS)
   const macrocategories = useRef<Macrocategory[]>(MACROCATEGORY)
   const microcategories = useRef<Microcategory[]>(MICROCATEGORY)
-  const sizes = useRef<Sizes[]>(SIZES)
+  const categories = useRef<Categories>(CATEGORIES)
+  const ARRAY_woman_clothes_sizes = useRef<string[]>(woman_clothes_sizes)
+  const ARRAY_man_top_clothes_sizes = useRef<string[]>(man_top_clothes_sizes)
+  const ARRAY_man_bottom_clothes_sizes = useRef<string[]>(man_bottom_clothes_sizes)
+
+
 
   useEffect(() => {
     const product_macrocategory = watch('macrocategory')
-    const microcategorySelected = microcategories.current.filter(category => category.id === product_macrocategory?.id);
-    if (microcategorySelected.length > 0) {
+    console.log(product_macrocategory);
 
-      setMicrocategorySelected(microcategorySelected[0])
-    } else {
+    if (!product_macrocategory) {
+
       setMicrocategorySelected(undefined);
+      setSizesSelected(undefined)
+      return
     }
-    if (product_macrocategory && product_macrocategory.id === 'uomo_scarpe') {
-      const sizeTypeSelected = sizes.current.filter(size => size.id === 'scarpe');
-      //console.log(sizeTypeSelected);
-      setSizeSelected(sizeTypeSelected[0])
-    } else {
-      const sizeTypeSelected = sizes.current.filter(size => size.id === 'vestiti');
-      // console.log(sizeTypeSelected);
-      setSizeSelected(sizeTypeSelected[0])
+
+
+
+    if (product_macrocategory.sizes.split('_')[0] === 'man') {
+      console.log('eccolo cazzo');
+      setValue('gender', 'M');
+    } else if (product_macrocategory.sizes.split('_')[0] === 'woman'){
+      setValue('gender', 'F');
     }
+    setMicrocategorySelected(watch('macrocategory').types)
+
+    //* da migliorare logica
+    if (watch('macrocategory').sizes === 'woman_clothes_sizes') {
+      setSizesSelected(ARRAY_woman_clothes_sizes.current)
+    }
+    else if (watch('macrocategory').sizes === 'man_top_clothes_sizes') {
+      setSizesSelected(ARRAY_man_top_clothes_sizes.current)
+      console.log('passa qui 1');
+
+    }
+    else if (watch('macrocategory').sizes === 'man_bottom_clothes_sizes') {
+      setSizesSelected(ARRAY_man_bottom_clothes_sizes.current)
+      console.log('passa qui 1');
+
+    }
+
+
+
+
   }, [watch('macrocategory')])
 
 
@@ -109,50 +137,47 @@ const index = () => {
 
 
 
-  const submitData = ({ name, price, brands, colors, macrocategory, microcategory, sizes, photos }: IFormInput) => {
+  const submitData = async ({ name, price, brand, colors, macrocategory, microcategory, sizes, photos, gender }: IFormInput) => {
 
-    console.log(name, price, brands, colors, macrocategory, microcategory, sizes, photos);
+    console.log(name, price, brand, colors, macrocategory, microcategory, sizes, photos);
 
 
-    if (!brands || !colors || !macrocategory || !microcategory || !sizes || photos[2]) {
+    if (!brand || !colors || !macrocategory || !microcategory || !sizes || photos[2] || !gender) {
       return setOpenModalMath(Math.random())
     }
 
     const colorsToDB = colors.map((color) => {
-      return color.DB_name
+      return color.name
     })
 
-
-    const sizesToDB = sizes.map((size) => {
-      return size.DB_Category
-    })
-    
-    console.log(colorsToDB,sizesToDB );
 
     const priceToDB = Number(price.replace(',', '.'))
     const Product = {
       name,
       price: priceToDB,
       colors: colorsToDB,
-      sizes: sizesToDB,
-      macroCategory: macrocategory.DB_Category,
-      microCategory: microcategory.DB_Category,
-      gender: macrocategory.gender === 'donna' ? 'F' : 'M',
-      brand: brands.DB_name,
+      sizes: sizes,
+      macroCategory: macrocategory.name,
+      microCategory: microcategory,
+      gender: gender,
+      brand: brand,
       photos: ['https://img01.ztat.net/article/spp-media-p1/9ef0d4c555c14dd7b07a638a8f203f95/a5c4db103222485daa2ebf4dbbbeff44.jpg?imwidth=1800&filter=packshot'],
     }
-    try{
-      createProduct({ variables: {shopId: '635905bdadc75fa62375263f', options: Product} })
-      console.log(Element.data);
-      
-    } catch (e){
-      console.log('error');
+    try {
+      await createProduct({ variables: { shopId: '636e6796e7e2c508038ee182', options: Product } })
+      //* alert to show product creation process OK!
+    } catch (e) {
+      console.log(e);
+      console.log(e.code);
+      console.log(e.message);
+
+
     }
-   
+
 
 
   }
-  
+
 
   return (
     <>
@@ -168,7 +193,7 @@ const index = () => {
                     rounded={10}
                     paddingY={6}
                     type="text"
-                    {...register("name", { required: false, maxLength: 30 })}
+                    {...register("name", { required: true, maxLength: 30 })}
                     isInvalid={false}
                   />
                 </InputGroup>
@@ -181,7 +206,7 @@ const index = () => {
                     paddingY={6}
                     type="string"
                     {...register("price", {
-                      required: false,
+                      required: true,
                     })}
                     onWheel={(e) => e.target.blur()}
                     placeholder={'34,99'}
@@ -195,12 +220,12 @@ const index = () => {
               >
                 <Controller
                   control={control}
-                  name="brands"
+                  name="brand"
                   rules={{ required: false }}
                   render={({ field: { onChange, onBlur, value, ref } }) => (
                     <Autocomplete values={brands.current}
-                      handleChangeValues={(brands) => {
-                        setValue('brands', brands);
+                      handleChangeValues={(brand) => {
+                        setValue('brand', brand);
                       }} />
                   )}
                 />
@@ -224,7 +249,7 @@ const index = () => {
                   name="macrocategory"
                   rules={{ required: false }}
                   render={() => (
-                    <Select_options values={macrocategories.current} type={'macrocategory'}
+                    <Select_options values={categories.current} type={'macrocategory'}
                       handleClick={(macrocategory) => {
                         setValue('macrocategory', macrocategory);
                       }}
@@ -238,8 +263,10 @@ const index = () => {
                   name="macrocategory"
                   rules={{ required: false }}
                   render={() => (
-                    <Select_options values={microcategorySelected?.microcategories} type={'microcategory'}
+                    <Select_options values={microcategorySelected} type={'microcategory'}
                       handleClick={(microCategory) => {
+                        console.log(microCategory);
+
                         setValue('microcategory', microCategory);
                       }}
                     />
@@ -253,7 +280,7 @@ const index = () => {
                   name="sizes"
                   rules={{ required: false }}
                   render={() => (
-                    <Select_multiple_options values={sizeSelected?.microcategories} type={'size'}
+                    <Select_multiple_options values={sizesSelected} type={'size'}
                       handleChangeState={(sizes) => {
                         setValue('sizes', sizes);
                       }}
@@ -306,8 +333,8 @@ const index = () => {
                   size={'sm'}
                   width={200}
                   heigth={12}
-                  //disabled={!isDirty || !isValid}
-                  disabled={false}
+                  disabled={!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0]}
+                //disabled={false}
                 />
               </div>
 
@@ -320,14 +347,14 @@ const index = () => {
         name="photos"
         rules={{ required: false }}
         render={() => (
-          <Drawer_Add_Image openDraw={openDrawNumber} confirmPhotos={(images) => {
+          <Drawer_Add_Image openDraw={openDrawNumber} confirmPhotos={(images: string[]) => {
             setValue('photos', images);
           }} />
         )}
       />
       <Modal_Error_Shop openModalMath={openModalMath} title='Manca qualcosa' description='Impossibile creare il prodotto.
       Controlla di aver inserito tutti dati in maniera corretta' closeText='chiudi' />
-      
+
 
 
     </>

@@ -1,41 +1,31 @@
-import { Macrocategory } from './macrocategories';
-export interface Sizes {
-    id: string,
-    microcategories: Macrocategory[]
-}
-
-export const SIZES: Sizes[] = [
-    {
-        id: 'vestiti', microcategories: [
-            {
-                name: 'xs',
-                DB_Category: 'xs (44)'
-            },
-            {
-                name: 's',
-                DB_Category: 's (46)'
-            },
-            {
-                name: 'm',
-                DB_Category: 'm (48)'
-            },
-        ]
-    }, {
-        id: 'scarpe', microcategories: [
-            {
-                name: '38',
-                DB_Category: '38'
-            },
-            {
-                name: '40',
-                DB_Category: '40'
-            },
-            {
-                name: '42',
-                DB_Category: '42'
-            },
-        ]
-    }
-
-]
-
+export const woman_clothes_sizes = [
+    "xxs (36)",
+    "xs (38)",
+    "s (40)",
+    "m (42)",
+    "l (44)",
+    "xl (46)",
+    "xxl (48)",
+    "3xl (50/52/54)",
+  ];
+  
+export  const man_top_clothes_sizes = [
+    "xs (44)",
+    "s (46)",
+    "m (48)",
+    "l (50)",
+    "xl (52)",
+    "xxl (54)",
+    "3xl (56/58)",
+  ];
+  
+export const man_bottom_clothes_sizes = [
+    "xxs (40)",
+    "xs (42)",
+    "s (44)",
+    "m (46/48)",
+    "l (50)",
+    "xl (52)",
+    "xxl (54)",
+    "3xl (56/58)",
+  ];
