@@ -1,24 +1,43 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Combobox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import { Brand } from '../mook/brands'
+// import { Brand } from '../mook/brands'
 
 
-const Autocomplete: React.FC<{ values: Brand[], handleChangeValues?: any }> = ({ values, handleChangeValues }) => {
+const Autocomplete: React.FC<{ values: string[], handleChangeValues?: any }> = ({ values, handleChangeValues }) => {
+    //console.log(values);
+
     const [selected, setSelected] = useState('')
     const [query, setQuery] = useState('')
+    const [filteredValues, setFilteredValues] = useState([])
 
-    const filteredValues =
-        query === ''
-            ? values
-            : values.filter((value) =>
-                value.name
+
+
+    useEffect(() => {
+
+
+        setFilteredValues((): string[] => {
+            return query === '' || query.length < 3
+                ? values.filter((value) =>
+                value
                     .toLowerCase()
                     .replace(/\s+/g, '')
-                    .includes(query.toLowerCase().replace(/\s+/g, ''))
-            )
+                    .startsWith(query.toLowerCase().replace(/\s+/g, ''))
+                ).slice(0, 2) : values.filter((value) =>
+                    value
+                        .toLowerCase()
+                        .replace(/\s+/g, '')
+                        .includes(query.toLowerCase().replace(/\s+/g, ''))
+                )
+        })
 
-    
+
+        return () => {
+
+        }
+    }, [query])
+
+
 
     return (
         <div className="w-full">
@@ -30,7 +49,7 @@ const Autocomplete: React.FC<{ values: Brand[], handleChangeValues?: any }> = ({
                     <div className="border border-gray rounded-lg">
                         {values[0] && <Combobox.Input
                             className="w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0"
-                            displayValue={(value) => value.name}
+                            displayValue={(value) => value}
                             onChange={(event) => setQuery(event.target.value)}
                         />}
                         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -50,11 +69,11 @@ const Autocomplete: React.FC<{ values: Brand[], handleChangeValues?: any }> = ({
                         <Combobox.Options className="z-10 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                             {filteredValues.length === 0 && query !== '' ? (
                                 <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
-                                    Nothing found.
+                                    Nessun brand trovato.
                                 </div>
-                                
+
                             ) : (
-                                
+
                                 filteredValues.map((value, valueId) => (
                                     <Combobox.Option
                                         key={valueId}
@@ -70,7 +89,7 @@ const Autocomplete: React.FC<{ values: Brand[], handleChangeValues?: any }> = ({
                                                     className={`block truncate ${selected ? 'font-medium' : 'font-normal'
                                                         }`}
                                                 >
-                                                    {value.name}
+                                                    {value}
                                                 </span>
                                                 {selected ? (
                                                     <span

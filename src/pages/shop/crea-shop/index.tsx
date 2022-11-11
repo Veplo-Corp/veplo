@@ -14,6 +14,7 @@ import { Image } from '@chakra-ui/react'
 import { useDebounceEffect } from '../../../../components/utils/useDebounceEffect'
 import { canvasPreview } from '../../../../components/molecules/Canva_previews'
 import { storage } from '../../../config/firebase'
+import { useForm } from 'react-hook-form'
 
 
 type Image = {
@@ -22,7 +23,38 @@ type Image = {
     url: any,
 }
 
+interface IFormInput {
+    name: string;
+    postcode: string
+    address: {
+        city: string
+        street: string
+        location: {
+            type: string,
+            coordinates: number[]
+        }
+    }
+    opening: {
+        days: number[]
+    }
+
+    //! togliere description (obbligatoria), macrocategories e gendere in createProduct
+    //!deve inserire tommaso
+    piva: string
+    photo: string
+    phone: string
+}
+
+
 const index = () => {
+    //*useForm Registration Shop
+    const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInput>({
+        mode: "all",
+        defaultValues: {
+            photo: 'https://img.freepik.com/premium-vector/online-shop-logo-designs-concept-vector-online-store-logo-designs_7649-661.jpg'
+        }
+    });
+
     //* input to create shop
     const [shop_name, setShop_name] = useState('')
     const [shop_phone, setShop_phone] = useState('')
@@ -157,7 +189,6 @@ const index = () => {
 
 
     const onChangeAddress = async (address_searched: string) => {
-        //setAddress_Mapbox(address_searched)
         clearTimeout(filterTimeout)
         filterTimeout = setTimeout(async () => {
             if (address_searched === undefined || address_searched.length < 3) {
@@ -181,9 +212,9 @@ const index = () => {
         const result = await setUserAddress(element, 'shop');
         console.log(result);
         setisValid_shop_streetNumber(true)
-
         setCity(result.city);
         setAddress(result.address);
+
         setAddress_Mapbox('');
         setShowAddress(true)
         if (result.streetNumber !== undefined) {
@@ -205,11 +236,11 @@ const index = () => {
         let newTime: string;
         let value: string = e;
         if (type !== 'days_open') {
-            value = e.target.value.replace(/[^0-9\.]+/g, '');
+            value = e.target.value.replace(/[^0-9]+/g, '');
         }
 
         switch (type) {
-            case 'shop_name':                
+            case 'shop_name':
                 setShop_name(e.target.value);
                 break
             case 'shop_phone':
@@ -217,18 +248,22 @@ const index = () => {
                 setIsValid_Shop_phone(true)
                 break;
             case 'shop_piva':
-                setShop_piva(value)
-                setIsValid_Shop_piva(true)
-                break;
-            case 'open_hour':
-
-                break;
-            case 'close_hour':
+                let inputValue: string = e.target.value.replace(/[^0-9]/g, '')
+                setValue('piva', inputValue);
+                // setShop_piva(value)
+                // setIsValid_Shop_piva(true)
                 break;
             case 'days_open':
-                setDays_open(e)
-                console.log(value);
+                // setDays_open(e)
+                // console.log(value);                
+                let dayArray = []
+                for (let i = 0; i < e.length; i++) {
 
+                    dayArray.push(Number(e[i].id))
+                }
+
+                dayArray = dayArray.sort()                
+                setValue('opening.days', dayArray);
                 break;
             default:
                 console.log(`Sorry, we are out of ${type}.`);
@@ -270,10 +305,14 @@ const index = () => {
         }
     }
 
+    const submitData = (e) => {
+        console.log(e);
+    }
+
     return (
         <Desktop_Layout>
             <div className='flex justify-between w-full mb-96'>
-                <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-6/12 xl:w-5/12" onSubmit={(e) => { e.preventDefault() }}>
+                <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-6/12 xl:w-5/12" onSubmit={handleSubmit(submitData)}>
                     <div className='w-full'>
                         <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>parlaci di te!</h1>
                         {!imgSrc && !image && <Center
@@ -309,6 +348,7 @@ const index = () => {
                                         setIsDisabledButton(true)
                                         setCompletedCrop(c)
                                     }}
+
                                     aspect={1100 / 762}
                                 >
                                     <img
@@ -390,10 +430,10 @@ const index = () => {
                                     rounded={10}
                                     paddingY={6}
                                     type="text"
-                                    value={shop_name}
-                                    onChange={(event) => changeInput(event, 'shop_name')}
+                                    // value={shop_name}
+                                    {...register("name", { required: true, maxLength: 30 })}
+                                    // onChange={(event) => changeInput(event, 'shop_name')}
                                     isInvalid={false}
-                                //onChange={()=> console.log(product_name.current.value)}
                                 />
                             </InputGroup>
                         </Div_input_creation>
@@ -409,11 +449,12 @@ const index = () => {
                                     rounded={10}
                                     paddingY={6}
                                     type='tel'
-                                    value={shop_phone}
                                     isInvalid={false}
                                     borderColor={`${isValid_shop_phone === false ? 'red.900' : 'gray.200'}`}
-                                    onBlur={() => checkInput('shop_phone')}
-                                    onChange={(event) => changeInput(event, 'shop_phone')}
+                                    //value={shop_phone}
+                                    // onBlur={() => checkInput('shop_phone')}
+                                    // onChange={(event) => changeInput(event, 'shop_phone')}
+                                    {...register("phone", { required: true, minLength: 6, maxLength: 12 })}
                                 />
                             </InputGroup>
                             {isValid_shop_phone === false && <p className='text-sm md:text-xs text-red-600'>Inserisci un numero corretto</p>}
@@ -543,10 +584,10 @@ const index = () => {
                                     rounded={10}
                                     paddingY={6}
                                     type='tel'
-                                    value={shop_piva}
                                     isInvalid={false}
-                                    onBlur={() => checkInput('shop_piva')}
+                                    {...register("piva", { required: true, minLength: 11, maxLength: 11 })}
                                     onChange={(event) => changeInput(event, 'shop_piva')}
+
                                 />
                             </InputGroup>
                             {isValid_shop_piva === false && <p className='text-sm md:text-xs text-red-600'>la Partita Iva deve contenere 11 numeri</p>}
@@ -584,7 +625,9 @@ const index = () => {
                             </InputGroup>
                         </Div_input_creation>
                         <Div_input_creation text='giorni di apertura'>
-                            <Select_multiple_options handleChangeState={changeInput} values={days.current} type={'day'} />
+                            <Select_multiple_options 
+                            handleChangeState={changeInput}
+                            values={days.current} type={'day'} />
                         </Div_input_creation>
                         <div className='flex justify-end mt-4'>
                             <BlackButton
@@ -594,7 +637,9 @@ const index = () => {
                                 heigth={12}
                                 size={'sm'}
                                 typeButton={'submit'}
-                                disabled={shop_name.length <= 0 || !shop_phone || !address || !streetNumber || !city || !shop_piva || !open_hour || !close_hour || !image || !days_open || !isValid_close_hour || !isValid_open_hour || !isValid_shop_phone || !isValid_shop_piva || !isValid_shop_streetNumber || !days_open[0]} />
+                                //disabled={false}
+                                disabled={!address || !streetNumber || !city || !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('opening.days') ||  watch('opening.days').length <= 0 || !isValid} 
+                            />
                         </div>
                     </div>
                 </form>

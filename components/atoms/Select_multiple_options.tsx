@@ -22,11 +22,13 @@ import { Day } from '../mook/days'
 // }
 
 
-const Select_multiple_options: React.FC<{values:Color[] | undefined | Macrocategory[] | Day[] ,  type:string, handleChangeState?: any}> = ({values, type, handleChangeState}) => {
+const Select_multiple_options: React.FC<{values:Color[] | undefined | Macrocategory[] | Day[] | String[] ,  type:string, handleChangeState?: any}> = ({values, type, handleChangeState}) => {
     const [selectedValue, setSelectedValue] = useState<Color[]>([])
     const [isListboxDisabled, setIsListboxDisabled] = useState(false)
 
 
+    
+    
 
 
     useEffect(() => {   
@@ -53,10 +55,10 @@ const Select_multiple_options: React.FC<{values:Color[] | undefined | Macrocateg
     
     return (
         <Listbox value={selectedValue} disabled={isListboxDisabled} onChange={onChangeSelectedValue} multiple>
-            <div className="relative mt-1 border border-gray rounded-lg">
+            <div className={`relative mt-1 border border-gray rounded-lg ${!isListboxDisabled ? 'bg-white' : 'bg-gray-200'}`}>
                 <Listbox.Button className="cursor-default w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0">
-                    <span className="block truncate text-start">{selectedValue.map((value) => value.name).join(', ')}</span>
-                    {!selectedValue[0] && <span className="block truncate text-start text-white">---</span>}
+                    <span className="block truncate text-start">{selectedValue.map((value) => {return (value.name || value)}).join(', ')}</span>
+                    {!selectedValue[0] && <span className="block truncate text-start text-white">--</span>}
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <ChevronUpDownIcon
                             className="h-5 w-5 text-gray-400"
@@ -88,11 +90,11 @@ const Select_multiple_options: React.FC<{values:Color[] | undefined | Macrocateg
                                             className={`block truncate ${selected ? 'font-medium' : 'font-normal'
                                                 }`}
                                         >
-                                            {value.name}
+                                            {value.name || value}
                                         </span>
-                                        {value.color ? (
+                                        {value.cssColor ? (
                                             <span className="absolute inset-y-0 right-0 flex items-center pr-3 ">
-                                                <Circle_Color colors={[value.color]} dimension={5} space={0} />
+                                                <Circle_Color colors={[value.cssColor]} dimension={5} space={0} />
                                             </span>) : null
                                         }
                                         {selected ? (
