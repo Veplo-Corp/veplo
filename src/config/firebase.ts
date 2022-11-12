@@ -34,7 +34,7 @@ const app = initializeApp(firebaseConfig);
 //const analytics = getAnalytics(app);
 
 // Initialize Cloud Storage and get a reference to the service
-const storage = getStorage();
+const storage = getStorage(app);
 
 //init services
 const auth = getAuth();

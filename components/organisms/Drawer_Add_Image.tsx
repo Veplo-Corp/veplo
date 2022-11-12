@@ -14,7 +14,7 @@ import ReactCrop, { Crop, PixelCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { canvasPreview } from '../molecules/Canva_previews'
 import { useDebounceEffect } from '../utils/useDebounceEffect';
-import { ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
 import { storage } from '../../src/config/firebase'
 
 
@@ -116,10 +116,66 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
         }
     )
 
-    const onHanldeConfirm = () => {
-        const storageElement = storage;
-        const storageRef = ref(storageElement, 'some-child');
-        console.log(blob);
+    const onHanldeConfirm = async () => {
+
+
+
+        // const postData = async () => {
+
+        //     const blobToBase64 = () => {
+        //         return new Promise((resolve) => {
+        //             const reader = new FileReader();
+        //             reader.readAsDataURL(blob);
+        //             reader.onloadend = function () {
+        //                 resolve(reader.result);
+        //             };
+        //         });
+        //     };
+
+        //     const b64 = await blobToBase64();
+        //     console.log(b64);
+
+
+        //     const data = {
+        //         name: 'test_test',
+        //         base64: b64,
+        //     };
+
+
+        //     const response = await fetch("/api/firebase/addImage", {
+        //         method: "POST",
+        //         body: JSON.stringify(data),
+        //     });
+        //     return response.json();
+        // };
+
+        // try{
+        //     const response = await postData();
+        //     console.log(response);
+        // } catch (e){
+        //     console.log(e);
+        // }
+
+        const name = Math.random().toString()
+
+        const storageRef = ref(storage, `/files/${name}`);
+        const uploadTask = uploadBytesResumable(storageRef, blob)
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                console.log(snapshot.bytesTransferred)
+            },
+            (error) => {
+                console.log(error);
+               
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then(url => {
+                    console.log(url);
+                })
+            }
+        )
+
         setImages((prevstate: Image[]) => {
 
             const newImage: Image = {
@@ -172,13 +228,13 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
 
 
     function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
+
         setBlob(null)
         setUrl(null)
         setCrop(null)
         setImgSrc(null)
         setIsDisabledButton(true)
-        if (e.target.files && e.target.files.length > 0) {
-
+        if (e.target.files /* && e.target.files.length > 0 */) {
             //setCrop(undefined) // Makes crop preview update between images.
             const reader = new FileReader()
             reader.addEventListener('load', () =>
@@ -211,6 +267,11 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
             imgRef.current &&
             previewCanvasRef.current
         ) {
+            const dimension = {
+                width: completedCrop.width,
+                height: completedCrop.height
+            }
+            console.log(dimension);
             // We use canvasPreview as it's much faster than imgPreview.
             canvasPreview(
                 imgRef.current,
@@ -219,14 +280,16 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
 
             )
                 .then(canvas => {
+
                     canvas.toBlob(function (blob) {
                         if (!blob) { return }
                         const url = URL.createObjectURL(blob);
                         setUrl(url)
                         setBlob(blob)
+                        console.log(blob.arrayBuffer());
+                        
                         setIsDisabledButton(false)
-                        console.log(url); // this line should be here
-                    }, 'image/webp');
+                    }, 'image/webp', 0.1);
                 })
 
         }
@@ -419,7 +482,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                     che vivranno gli utenti nel tuo store</h3>
                                 {list_explanation_photos_format.map(list => {
                                     return (
-                                        <div key = {list.type}><h2 className='text-lg font-bold mt-2'>{list.type}:</h2>
+                                        <div key={list.type}><h2 className='text-lg font-bold mt-2'>{list.type}:</h2>
                                             <List spacing={1} marginLeft={30}>
                                                 <UnorderedList >
                                                     {

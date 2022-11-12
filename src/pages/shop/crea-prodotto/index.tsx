@@ -17,6 +17,7 @@ import { MICROCATEGORY, Microcategory } from '../../../../components/mook/microc
 import { man_bottom_clothes_sizes, man_top_clothes_sizes, SIZES, Sizes, woman_clothes_sizes } from '../../../../components/mook/sizes'
 import Drawer_Add_Image from '../../../../components/organisms/Drawer_Add_Image'
 import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
+import { ToastOpen } from '../../../../components/utils/Toast'
 import CREATE_PRODUCT from '../../../lib/apollo/mutations/createProduct'
 
 
@@ -33,7 +34,7 @@ interface IFormInput {
 }
 
 const index = () => {
-
+  const { addToast } = ToastOpen();
   //* graphQL
   const [createProduct, Element] = useMutation(CREATE_PRODUCT);
 
@@ -86,7 +87,7 @@ const index = () => {
     if (product_macrocategory.sizes.split('_')[0] === 'man') {
       console.log('eccolo cazzo');
       setValue('gender', 'M');
-    } else if (product_macrocategory.sizes.split('_')[0] === 'woman'){
+    } else if (product_macrocategory.sizes.split('_')[0] === 'woman') {
       setValue('gender', 'F');
     }
     setMicrocategorySelected(watch('macrocategory').types)
@@ -103,7 +104,6 @@ const index = () => {
     else if (watch('macrocategory').sizes === 'man_bottom_clothes_sizes') {
       setSizesSelected(ARRAY_man_bottom_clothes_sizes.current)
       console.log('passa qui 1');
-
     }
 
 
@@ -152,6 +152,11 @@ const index = () => {
 
 
     const priceToDB = Number(price.replace(',', '.'))
+
+    if(!priceToDB || priceToDB <= 0.01){
+      return setOpenModalMath(Math.random())
+    }
+
     const Product = {
       name,
       price: priceToDB,
@@ -164,14 +169,20 @@ const index = () => {
       photos: ['https://img01.ztat.net/article/spp-media-p1/9ef0d4c555c14dd7b07a638a8f203f95/a5c4db103222485daa2ebf4dbbbeff44.jpg?imwidth=1800&filter=packshot'],
     }
     try {
-      await createProduct({ variables: { shopId: '636e6796e7e2c508038ee182', options: Product } })
+      const isCreatedProduct = await createProduct({ variables: { shopId: '636e6796e7e2c508038ee182', options: Product } })
       //* alert to show product creation process OK!
+      if (isCreatedProduct.data.createProduct) {
+        addToast({ position: 'top', title: 'Prodotto creato consuccesso', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
+      }
+      else {
+        addToast({ position: 'top', title: 'Impossibile creare il prodotto', description: "c'è stato un errore durante la creazione del prodotto, riprova più tardi", status: 'error', duration: 5000, isClosable: true })
+      }
+
     } catch (e) {
       console.log(e);
       console.log(e.code);
       console.log(e.message);
-
-
+      addToast({ position: 'top', title: 'Impossibile creare il prodotto', description: "c'è stato un errore durante la creazione del prodotto, riprova più tardi", status: 'error', duration: 5000, isClosable: true })
     }
 
 
