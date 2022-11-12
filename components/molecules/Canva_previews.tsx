@@ -49,6 +49,9 @@ export async function canvasPreview(
     ctx.scale(scale, scale)
     // 1) Move the center of the image to the origin (0,0)
     ctx.translate(-centerX, -centerY)
+    
+    ctx.drawImage(image, 0, 0, 300, 300);
+
     ctx.drawImage(
         image,
         0,
@@ -60,6 +63,9 @@ export async function canvasPreview(
         image.naturalWidth,
         image.naturalHeight,
     )
+
+
+    
 
     ctx.restore()
     return canvas

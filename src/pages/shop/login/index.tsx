@@ -146,7 +146,7 @@ const index = () => {
         .then(async (userCredential) => {
           // Signed in 
           const user = userCredential.user;
-          const idToken = await userCredential.user.getIdToken();
+          const idToken = await userCredential.user.getIdToken(true);
           setAuthTokenInLocalStorage(idToken)
           console.log(user);
           sendEmailVerificationHanlder()
@@ -155,7 +155,7 @@ const index = () => {
               {
                 email: user.email,
                 uid: user.uid,
-                idToken: await user.getIdToken()
+                idToken: await user.getIdToken(true)
               }
             )
           );
@@ -190,7 +190,6 @@ const index = () => {
           const errorCode = error.code;
           const errorMessage = error.message;
           console.log(errorCode);
-
         });
     }
 

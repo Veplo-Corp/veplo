@@ -59,7 +59,7 @@ function Auth({ children }) {
 
     onAuthStateChanged(auth, async (userAuth) => {
       if (userAuth) {
-        const idToken = await userAuth.getIdToken()
+        const idToken = await userAuth.getIdToken(true)
         setAuthTokenInLocalStorage(idToken)
         // console.log(userAuth.uid);
 
