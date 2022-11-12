@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Alert, AlertIcon, Box, Button, Highlight, List, ListItem, UnorderedList } from '@chakra-ui/react'
 import BlackButton from '../atoms/BlackButton'
+import Resizer from "react-image-file-resizer";
+
 import {
     Drawer,
     DrawerBody,
@@ -14,8 +16,7 @@ import ReactCrop, { Crop, PixelCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { canvasPreview } from '../molecules/Canva_previews'
 import { useDebounceEffect } from '../utils/useDebounceEffect';
-import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
-import { storage } from '../../src/config/firebase'
+
 
 
 type Image = {
@@ -80,6 +81,22 @@ const ImageTextFormat: string[] = [
     'opzionale'
 ]
 
+const resizeFile = (file) =>
+  new Promise((resolve) => {
+    Resizer.imageFileResizer(
+      file,
+      1200,
+      1200,
+      "WEBP",
+      100,
+      0,
+      (uri) => {
+        resolve(uri.toString());
+      },
+      "base64"
+    );
+  });
+
 
 const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: any }> = ({ openDraw, confirmPhotos }) => {
 
@@ -89,6 +106,9 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
         }
         setisOpen(true)
     }, [openDraw])
+
+  
+    
 
 
     //* react image crop
@@ -104,7 +124,12 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     const [images, setImages] = useState<Image[]>([])
     const [isDisabledButton, setIsDisabledButton] = useState(true)
     const [positionPhoto, setPositionPhoto] = useState(null)
-
+    
+    
+    useEffect(() => {
+        console.log(imgSrc);
+        
+      }, [imgSrc])
 
     const [crop, setCrop] = useState<Crop>(
         {
@@ -117,7 +142,6 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     )
 
     const onHanldeConfirm = async () => {
-
 
 
         // const postData = async () => {
@@ -155,26 +179,6 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
         // } catch (e){
         //     console.log(e);
         // }
-
-        const name = Math.random().toString()
-
-        const storageRef = ref(storage, `/files/${name}`);
-        const uploadTask = uploadBytesResumable(storageRef, blob)
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-                console.log(snapshot.bytesTransferred)
-            },
-            (error) => {
-                console.log(error);
-               
-            },
-            () => {
-                getDownloadURL(uploadTask.snapshot.ref).then(url => {
-                    console.log(url);
-                })
-            }
-        )
 
         setImages((prevstate: Image[]) => {
 
@@ -222,12 +226,12 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     // when the Button component is clicked
     const handleClick = (position: null | number) => {
         hiddenFileInput.current.click();
-        //setPositionPhoto(position)
+        setPositionPhoto(position)
     };
 
 
 
-    function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
+    async function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
 
         setBlob(null)
         setUrl(null)
@@ -235,17 +239,27 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
         setImgSrc(null)
         setIsDisabledButton(true)
         if (e.target.files /* && e.target.files.length > 0 */) {
+
+            try {
+                const file = e.target.files[0];
+                const image = await resizeFile(file);
+                setImgSrc(image)
+              } catch (err) {
+                console.log(err);
+              }
             //setCrop(undefined) // Makes crop preview update between images.
-            const reader = new FileReader()
-            reader.addEventListener('load', () =>
-                setImgSrc(reader.result?.toString() || '')
-            )
-            // setBlob(null)
-            // setUrl(null)
-            // setCrop(null)
-            // setImgSrc(null)
-            // setIsDisabledButton(true)
-            reader.readAsDataURL(e.target.files[0])
+
+            //!depecrated
+            // const reader = new FileReader()
+            // reader.addEventListener('load', () =>            
+            //     setImgSrc(reader.result?.toString() || '')
+            // )
+            // // setBlob(null)
+            // // setUrl(null)
+            // // setCrop(null)
+            // // setImgSrc(null)
+            // // setIsDisabledButton(true)
+            // reader.readAsDataURL(e.target.files[0])
         }
         else {
             return console.log('non trovata immagine caricata');
@@ -289,7 +303,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                         console.log(blob.arrayBuffer());
                         
                         setIsDisabledButton(false)
-                    }, 'image/webp', 0.1);
+                    }, 'image/webp', 0.8);
                 })
 
         }
@@ -538,7 +552,6 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                         disabled={images.length < 3} />
                                 </div>
                             </div>
-
                         </footer>
                     </DrawerFooter>}
                 </DrawerContent>

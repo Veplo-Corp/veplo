@@ -18,6 +18,7 @@ import { man_bottom_clothes_sizes, man_top_clothes_sizes, SIZES, Sizes, woman_cl
 import Drawer_Add_Image from '../../../../components/organisms/Drawer_Add_Image'
 import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
 import { ToastOpen } from '../../../../components/utils/Toast'
+import uploadPhotoFirebase from '../../../../components/utils/uploadPhotoFirebase'
 import CREATE_PRODUCT from '../../../lib/apollo/mutations/createProduct'
 
 
@@ -139,12 +140,29 @@ const index = () => {
 
   const submitData = async ({ name, price, brand, colors, macrocategory, microcategory, sizes, photos, gender }: IFormInput) => {
 
-    console.log(name, price, brand, colors, macrocategory, microcategory, sizes, photos);
+    // console.log(name, price, brand, colors, macrocategory, microcategory, sizes, photos);
 
 
-    if (!brand || !colors || !macrocategory || !microcategory || !sizes || photos[2] || !gender) {
-      return setOpenModalMath(Math.random())
+    // if (!brand || !colors || !macrocategory || !microcategory || !sizes || !photos[2] || !gender) {
+    //   return setOpenModalMath(Math.random())
+    // }
+
+    let photoURLForDB = [];
+    let i = 1;
+    console.log(photos);
+    
+
+    for await (let photo of photos) {
+      
+      const url = await uploadPhotoFirebase('photo' + i, photo.blob, 'ab123456')
+      photoURLForDB.push(url)      
+      i++
     }
+
+    //const url = await uploadPhotoFirebase('photo' + i, photos[0], 'ab123456')
+
+    return console.log(photoURLForDB);
+    
 
     const colorsToDB = colors.map((color) => {
       return color.name
@@ -344,8 +362,8 @@ const index = () => {
                   size={'sm'}
                   width={200}
                   heigth={12}
-                  disabled={!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0]}
-                //disabled={false}
+                  //disabled={false}
+                  disabled={!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0] || !watch('photos')[2]}
                 />
               </div>
 
