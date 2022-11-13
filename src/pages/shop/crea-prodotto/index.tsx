@@ -3,6 +3,7 @@ import { CheckIcon, DownloadIcon } from '@chakra-ui/icons'
 import { Box, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
+import { useSelector } from 'react-redux'
 import Autocomplete from '../../../../components/atoms/Autocomplete_Headless'
 import BlackButton from '../../../../components/atoms/BlackButton'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
@@ -35,6 +36,7 @@ interface IFormInput {
 }
 
 const index = () => {
+  const user = useSelector((state) => state.user.user);
   const { addToast } = ToastOpen();
   //* graphQL
   const [createProduct, Element] = useMutation(CREATE_PRODUCT);
@@ -154,7 +156,7 @@ const index = () => {
 
     for await (let photo of photos) {
       
-      const url = await uploadPhotoFirebase('photo' + i, photo.blob, 'ab123456')
+      const url = await uploadPhotoFirebase('photo' + i, photo.blob, 'ab123456', user.uid)
       photoURLForDB.push(url)      
       i++
     }
@@ -362,8 +364,8 @@ const index = () => {
                   size={'sm'}
                   width={200}
                   heigth={12}
-                  //disabled={false}
-                  disabled={!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0] || !watch('photos')[2]}
+                  disabled={false}
+                  //disabled={!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0] || !watch('photos')[2]}
                 />
               </div>
 

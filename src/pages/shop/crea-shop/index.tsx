@@ -33,9 +33,11 @@ interface IFormInput {
             type: string,
             coordinates: number[]
         }
+        postcode: string
     }
     opening: {
-        days: number[]
+        days: number[],
+        hours: string[]
     }
 
     //! togliere description (obbligatoria), macrocategories e gendere in createProduct
@@ -179,10 +181,16 @@ const index = () => {
     const [address_Mapbox, setAddress_Mapbox] = useState('');
 
     const [addresses, setAddresses] = useState([]);
-    const [address, setAddress] = useState('');
-    const [streetNumber, setStreetNumber] = useState('');
+    const [address, setAddress] = useState<Mapbox_Result>({
+        address: '',
+        city: "",
+        latitude: 0,
+        longitude: 0,
+        placeType: "address",
+        postcode: "",
+        streetNumber: "",
+    })
     const [isValid_shop_streetNumber, setisValid_shop_streetNumber] = useState<boolean | null>(null)
-    const [city, setCity] = useState('');
     const [showAddress, setShowAddress] = useState(false)
     const [streetNumberDisabled, setStreetNumberDisabled] = useState(false)
 
@@ -197,13 +205,13 @@ const index = () => {
             // Send the data to the server in JSON format.
             // API endpoint where we send form data.
             const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}&type=shop`
-
+            
             // Send the form data to our forms API on Vercel and get a response.
             const response = await fetch(endpoint)
-
+            
             // Get the response data from server as JSON.
             // If server returns the name submitted, that means the form works.
-            const result = await response.json()
+            const result = await response.json()                        
             return setAddresses(result.data)
         }, 500)
     }
@@ -211,21 +219,25 @@ const index = () => {
     const handleEventSetAddress = async (element: Mapbox_Result) => {
         const result = await setUserAddress(element, 'shop');
         console.log(result);
-        setisValid_shop_streetNumber(true)
-        setCity(result.city);
-        setAddress(result.address);
-
-        setAddress_Mapbox('');
-        setShowAddress(true)
+        
         if (result.streetNumber !== undefined) {
-            setStreetNumber(result.streetNumber)
+            //setStreetNumber(result.streetNumber)
             setStreetNumberDisabled(true)
         } else {
             //reset StreetNumber
-            setStreetNumber('');
+            //setStreetNumber('');
             setStreetNumberDisabled(false)
             setisValid_shop_streetNumber(false)
+            result.streetNumber = ''
         }
+        setisValid_shop_streetNumber(true)
+        console.log(result);
+        
+        setAddress(result);
+        setAddress_Mapbox('');
+
+        setShowAddress(true)
+        
         console.log(result);
         return setAddresses([])
     }
@@ -262,7 +274,7 @@ const index = () => {
                     dayArray.push(Number(e[i].id))
                 }
 
-                dayArray = dayArray.sort()                
+                dayArray = dayArray.sort()
                 setValue('opening.days', dayArray);
                 break;
             default:
@@ -305,8 +317,29 @@ const index = () => {
         }
     }
 
-    const submitData = (e) => {
-        console.log(e);
+    const submitData = (e: IFormInput) => {
+
+        const Shop: IFormInput = {
+            name: e.name,
+            address: {
+                city: address.city,
+                street:address.address + ' ' + address.streetNumber,
+                postcode: address.postcode,
+                location: address.location
+            },
+            opening: {
+                days: watch('opening.days'),
+                hours: [open_hour, close_hour]
+            },
+            piva: watch('piva'),
+            photo: watch('photo'),
+            phone: watch('phone'),
+            description: ''
+        }
+
+        console.log(Shop);
+        
+
     }
 
     return (
@@ -517,10 +550,10 @@ const index = () => {
                                         rounded={10}
                                         paddingY={6}
                                         type='tel'
-                                        value={address}
+                                        value={address.address}
                                         isInvalid={false}
                                         readOnly
-                                        disabled={address.length > 0}
+                                        disabled={address.address.length > 0}
                                         _disabled={{
                                             opacity: '1'
                                         }}
@@ -541,10 +574,15 @@ const index = () => {
                                             rounded={10}
                                             paddingY={6}
                                             type="number"
-                                            value={streetNumber}
+                                            value={address.streetNumber}
                                             onChange={(event) => {
                                                 const value = event.target.value
-                                                setStreetNumber(value)
+                                                setAddress(prevstate => {
+                                                    return {
+                                                        ...prevstate,
+                                                        streetNumber: value.toString()
+                                                    }
+                                                })
                                                 if (value.length > 0) {
                                                     setisValid_shop_streetNumber(true)
                                                 } else {
@@ -563,9 +601,9 @@ const index = () => {
                                             rounded={10}
                                             paddingY={6}
                                             type="text"
-                                            value={city}
+                                            value={address.city}
                                             readOnly
-                                            disabled={city.length > 0}
+                                            disabled={address.city.length > 0}
                                             _disabled={{
                                                 opacity: '1'
                                             }}
@@ -625,9 +663,9 @@ const index = () => {
                             </InputGroup>
                         </Div_input_creation>
                         <Div_input_creation text='giorni di apertura'>
-                            <Select_multiple_options 
-                            handleChangeState={changeInput}
-                            values={days.current} type={'day'} />
+                            <Select_multiple_options
+                                handleChangeState={changeInput}
+                                values={days.current} type={'day'} />
                         </Div_input_creation>
                         <div className='flex justify-end mt-4'>
                             <BlackButton
@@ -638,7 +676,7 @@ const index = () => {
                                 size={'sm'}
                                 typeButton={'submit'}
                                 //disabled={false}
-                                disabled={!address || !streetNumber || !city || !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('opening.days') ||  watch('opening.days').length <= 0 || !isValid} 
+                                disabled={!address || address.streetNumber === ''||  !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('opening.days') || watch('opening.days').length <= 0 || !isValid}
                             />
                         </div>
                     </div>

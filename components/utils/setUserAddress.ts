@@ -1,11 +1,13 @@
+import { stringify } from 'querystring';
 import { setAddress } from '../../src/pages/store/reducers/address_user';
 import { Mapbox_Result } from './../../src/interfaces/mapbox_result.interface';
 
 const setUserAddress = async (element: any, type: string) => {
     let mapbox_result: Mapbox_Result = {
         placeType: element.place_type[0],
-        longitude: undefined,
-        latitude: undefined,
+        // longitude: undefined,
+        // latitude: undefined,
+        location : element.geometry,
         postcode: undefined,
         city: undefined,
         address: undefined,
@@ -13,8 +15,7 @@ const setUserAddress = async (element: any, type: string) => {
     }
 
     if (mapbox_result.placeType === 'address') {
-        mapbox_result.longitude = element.geometry.coordinates[0];
-        mapbox_result.latitude = element.geometry.coordinates[1];
+        mapbox_result.location = element.geometry;
         mapbox_result.postcode = element.context[0].text_it;
         if (element.context[1].id.split('.')[0] === 'place') {
             mapbox_result.city = element.context[1].text_it;
@@ -26,8 +27,7 @@ const setUserAddress = async (element: any, type: string) => {
 
     }
     else if (mapbox_result.placeType === 'place') {
-        mapbox_result.longitude = element.geometry.coordinates[0];
-        mapbox_result.latitude = element.geometry.coordinates[1];
+        mapbox_result.location = element.geometry
         mapbox_result.city = element.text_it
     }
 

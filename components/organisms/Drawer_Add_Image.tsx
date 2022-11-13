@@ -82,20 +82,20 @@ const ImageTextFormat: string[] = [
 ]
 
 const resizeFile = (file) =>
-  new Promise((resolve) => {
-    Resizer.imageFileResizer(
-      file,
-      1200,
-      1200,
-      "WEBP",
-      100,
-      0,
-      (uri) => {
-        resolve(uri.toString());
-      },
-      "base64"
-    );
-  });
+    new Promise((resolve) => {
+        Resizer.imageFileResizer(
+            file,
+            1200,
+            1200,
+            "WEBP",
+            100,
+            0,
+            (uri) => {
+                resolve(uri.toString());
+            },
+            "base64"
+        );
+    });
 
 
 const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: any }> = ({ openDraw, confirmPhotos }) => {
@@ -106,10 +106,6 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
         }
         setisOpen(true)
     }, [openDraw])
-
-  
-    
-
 
     //* react image crop
     const [isOpen, setisOpen] = useState(false);
@@ -123,13 +119,15 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     const [blob, setBlob] = useState()
     const [images, setImages] = useState<Image[]>([])
     const [isDisabledButton, setIsDisabledButton] = useState(true)
-    const [positionPhoto, setPositionPhoto] = useState(null)
-    
-    
+    const [positionPhoto, setPositionPhoto] = useState(null);
+    const [showCroppedImage, setShowCroppedImage] = useState(false);
+
+
+
     useEffect(() => {
         console.log(imgSrc);
-        
-      }, [imgSrc])
+
+    }, [imgSrc])
 
     const [crop, setCrop] = useState<Crop>(
         {
@@ -143,43 +141,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
 
     const onHanldeConfirm = async () => {
 
-
-        // const postData = async () => {
-
-        //     const blobToBase64 = () => {
-        //         return new Promise((resolve) => {
-        //             const reader = new FileReader();
-        //             reader.readAsDataURL(blob);
-        //             reader.onloadend = function () {
-        //                 resolve(reader.result);
-        //             };
-        //         });
-        //     };
-
-        //     const b64 = await blobToBase64();
-        //     console.log(b64);
-
-
-        //     const data = {
-        //         name: 'test_test',
-        //         base64: b64,
-        //     };
-
-
-        //     const response = await fetch("/api/firebase/addImage", {
-        //         method: "POST",
-        //         body: JSON.stringify(data),
-        //     });
-        //     return response.json();
-        // };
-
-        // try{
-        //     const response = await postData();
-        //     console.log(response);
-        // } catch (e){
-        //     console.log(e);
-        // }
-
+        //add image Blob in the array of images
         setImages((prevstate: Image[]) => {
 
             const newImage: Image = {
@@ -211,12 +173,12 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                 console.log(updateImages);
                 return updateImages
             }
-
         })
         setBlob(null)
         setUrl(null)
         setCrop(null)
-        setImgSrc(null)
+        setShowCroppedImage(false)
+        //setImgSrc(null)
         setIsDisabledButton(true)
     }
 
@@ -226,29 +188,29 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     // when the Button component is clicked
     const handleClick = (position: null | number) => {
         hiddenFileInput.current.click();
+        setShowCroppedImage(true)
+        //set the posizion of the cropp
         setPositionPhoto(position)
     };
 
 
 
     async function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
-
         setBlob(null)
         setUrl(null)
         setCrop(null)
-        setImgSrc(null)
         setIsDisabledButton(true)
+        setShowCroppedImage(true)
+
         if (e.target.files /* && e.target.files.length > 0 */) {
 
             try {
                 const file = e.target.files[0];
                 const image = await resizeFile(file);
                 setImgSrc(image)
-              } catch (err) {
+            } catch (err) {
                 console.log(err);
-              }
-            //setCrop(undefined) // Makes crop preview update between images.
-
+            }
             //!depecrated
             // const reader = new FileReader()
             // reader.addEventListener('load', () =>            
@@ -263,14 +225,6 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
         }
         else {
             return console.log('non trovata immagine caricata');
-        }
-    }
-
-
-    function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
-        if (aspect) {
-            const { width, height } = e.currentTarget
-            setCrop(centerAspectCrop(width, height, aspect))
         }
     }
 
@@ -300,8 +254,6 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                         const url = URL.createObjectURL(blob);
                         setUrl(url)
                         setBlob(blob)
-                        console.log(blob.arrayBuffer());
-                        
                         setIsDisabledButton(false)
                     }, 'image/webp', 0.8);
                 })
@@ -317,7 +269,6 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
 
     return (
         <>
-
             <Drawer
                 isOpen={isOpen}
                 placement='top'
@@ -326,7 +277,6 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
             >
                 <DrawerOverlay />
                 <DrawerContent>
-
                     <DrawerHeader padding={3} className='flex justify-between'>
 
                         <h3 className='md:ml-12 italic text-sm  md:text-2xl xl:text-3xl  font-black my-auto hidden md:flex'>
@@ -356,6 +306,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                             ref={hiddenFileInput}
                             type="file" id="file" multiple accept="image/*"
                             className='hidden'
+
                             onChange={(e) => {
                                 onSelectFile(e);
                             }} />
@@ -365,7 +316,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                             <>
                                 <div className='w-full h-fit md:ml-8 md:w-2/5 grid '>
                                     <div className='grid'>
-                                        {imgSrc && (
+                                        {showCroppedImage && imgSrc && (
                                             <>
                                                 <Alert status='info' variant='solid' className='mb-2'>
                                                     <AlertIcon />
@@ -385,47 +336,47 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                                         className='min-w-full'
                                                         src={imgSrc} ref={imgRef} />
                                                 </ReactCrop>
+                                                <div className='flex justify-between mt-2 mb-2 gap-2'>
+                                                    <Button
+                                                        onClick={() => setShowCroppedImage(false)}
+                                                        borderRadius={5}
+                                                        width={'fit-content'}
+                                                        height={12}
+                                                        size={'sm'}
+                                                        variant='outline'
+                                                        colorScheme={'blackAlpha'}
+                                                        color={'blackAlpha.900'}
+                                                        disabled={false} >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                                                            <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clipRule="evenodd" />
+                                                        </svg>
+                                                    </Button>
+                                                    <Button
+                                                        onClick={() => handleClick(null)}
+                                                        borderRadius={5}
+                                                        width={150}
+                                                        height={12}
+                                                        size={'sm'}
+                                                        variant='outline'
+                                                        colorScheme={'blackAlpha'}
+                                                        color={'blackAlpha.900'}
+                                                        disabled={false} >
+                                                        cambia immagine
+                                                    </Button>
+                                                    <BlackButton
+                                                        onClick={onHanldeConfirm}
+                                                        element='aggiungi'
+                                                        borderRadius={5}
+                                                        width={200}
+                                                        heigth={12}
+                                                        size={'sm'}
+                                                        typeButton={'button'}
+                                                        disabled={isDisabledButton} />
+                                                </div>
                                             </>
 
                                         )}
-                                        {imgSrc &&
-                                            <div className='flex justify-between mt-2 mb-2 gap-2'>
-                                                <Button
-                                                    onClick={() => setImgSrc(null)}
-                                                    borderRadius={5}
-                                                    width={'fit-content'}
-                                                    height={12}
-                                                    size={'sm'}
-                                                    variant='outline'
-                                                    colorScheme={'blackAlpha'}
-                                                    color={'blackAlpha.900'}
-                                                    disabled={false} >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                                                        <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clipRule="evenodd" />
-                                                    </svg>
-                                                </Button>
-                                                <Button
-                                                    onClick={() => handleClick(null)}
-                                                    borderRadius={5}
-                                                    width={150}
-                                                    height={12}
-                                                    size={'sm'}
-                                                    variant='outline'
-                                                    colorScheme={'blackAlpha'}
-                                                    color={'blackAlpha.900'}
-                                                    disabled={false} >
-                                                    cambia immagine
-                                                </Button>
-                                                <BlackButton
-                                                    onClick={onHanldeConfirm}
-                                                    element='aggiungi'
-                                                    borderRadius={5}
-                                                    width={200}
-                                                    heigth={12}
-                                                    size={'sm'}
-                                                    typeButton={'button'}
-                                                    disabled={isDisabledButton} />
-                                            </div>}
+
 
                                         <div className='hidden'>
                                             {!!completedCrop && (
@@ -440,14 +391,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                                 />
                                             )}
                                         </div>
-                                        {/* <div>
-                            {!!url && (
-                                <img src={url} alt="" />
-                            )}
-                            </div> */}
                                     </div>
-
-
                                 </div>
                                 <div className="min-h-screen items-center justify-center mb-96 ">
                                     <div className='w-full md:mr-11 md:w-fit grid gap-5 grid-cols-2 justify-items-start mt-8'>
@@ -516,7 +460,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
 
 
                     </DrawerBody>
-                    {!imgSrc && <DrawerFooter padding={0}>
+                    {/* !showCroppedImage */ true && <DrawerFooter padding={0}>
                         <footer className="w-full bg-whith items-center py-4 px-6 md:px-10 border-t	border-inherit	">
                             <div className='flex justify-between'>
                                 <div className='hidden md:flex'>
@@ -549,7 +493,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                             setisOpen(false)
                                             confirmPhotos(images)
                                         }}
-                                        disabled={images.length < 3} />
+                                        disabled={images.length < 1} />
                                 </div>
                             </div>
                         </footer>
