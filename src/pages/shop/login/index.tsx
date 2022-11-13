@@ -289,7 +289,7 @@ const index = () => {
         </form>
         {user && <div className='hidden md:flex  '>
           <h1>{user.email}</h1>
-          <button onClick={handleDeleteProductTest}>delete product</button>
+          {/* <button onClick={handleDeleteProductTest}>delete product</button> */}
         </div>}
       </div>
     </Desktop_Layout>

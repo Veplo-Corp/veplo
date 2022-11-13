@@ -1,7 +1,9 @@
 export interface Mapbox_Result {
     placeType: string,
-    longitude: number | undefined,
-    latitude: number | undefined,
+    location: {
+        type: string,
+        coordinates: number[]
+    },
     postcode: string | undefined,
     city: string | undefined,
     address: string | undefined,

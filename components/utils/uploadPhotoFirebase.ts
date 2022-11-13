@@ -2,9 +2,8 @@ import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from "firebase
 import { storage } from '../../src/config/firebase'
 
 
-const uploadPhotoFirebase = async(name:string, blob:any, productId:any) => {
-
-    const storageRef = ref(storage, `/files/${productId}/${name}`);
+const uploadPhotoFirebase = async(name:string, blob:any, productId:any , shopId) => {
+    const storageRef = ref(storage, `/${shopId}/prodotti/${productId}/${name}`);
     await uploadBytes(storageRef, blob)
     const url = await getDownloadURL(storageRef)
     console.log(url);
