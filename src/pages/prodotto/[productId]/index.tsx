@@ -32,9 +32,11 @@ export async function getServerSideProps(ctx) {
 
 const index: React.FC<{ product: Product, error: string }> = ({product}) => {
     const router = useRouter()
-    const newUrl = createUrlScheme([product.brand, product.name, product.macroCategory, product.microCategory])
-    console.log(newUrl);
-    
+    const category = 
+        product.macroCategory.toLocaleLowerCase().includes(product.microCategory.toLocaleLowerCase()) 
+        ? product.microCategory
+        : product.macroCategory + '-' + product.microCategory
+    const newUrl = createUrlScheme([product.brand, product.name, category])    
     const navigate = (url) => {}
     useEffect(() => {
         if(newUrl){  

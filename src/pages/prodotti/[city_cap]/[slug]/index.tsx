@@ -9,6 +9,7 @@ import createUrlScheme from '../../../../../components/utils/create_url'
 
 import user from '../../../store/reducers/user'
 import getCityAndPostcodeFromSlug from '../../../../../components/utils/get_City_and_Postcode_from_Slug'
+import getGenderandMacrocategory from '../../../../../components/utils/get_Gender_and_Macrocategory'
 
 
 type Router = {
@@ -56,15 +57,18 @@ export async function getStaticPaths() {
 export async function getStaticProps(ctx) {
 
   let { city_cap, slug } = ctx.params;
-  const element: {city: string, postcode: string | null} = getCityAndPostcodeFromSlug(city_cap);
+  const elementCityCap: {city: string, postcode: string | null} = getCityAndPostcodeFromSlug(city_cap);
+  const elementGenderMacrocategory: {gender: string, macrocategory: string | null} = getGenderandMacrocategory(slug);
   let gender: null | string = null;
   let category: null | string = null;
+
+  
   return {
     props: {
-      city: element.city,
-      gender: gender ,
-      category: category ,
-      postcode: element.postcode,
+      city: elementCityCap.city,
+      gender: elementGenderMacrocategory.gender ,
+      category: elementGenderMacrocategory.macrocategory ,
+      postcode: elementCityCap.postcode,
     }
   }
 }
