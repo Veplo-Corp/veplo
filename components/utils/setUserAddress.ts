@@ -39,11 +39,15 @@ const setUserAddress = async (element: any, type: string) => {
         return mapbox_result;
     }
 
-    const endpoint = `/api/mapbox/save-user-address?longitude=${mapbox_result.longitude}&latitude=${mapbox_result.latitude}&postcode=${mapbox_result.postcode}&city=${mapbox_result.city}&address=${mapbox_result.address}&placeType=${mapbox_result.placeType}&streetNumber=${mapbox_result.streetNumber}`
+    const endpoint = `/api/mapbox/save-user-address?longitude=${mapbox_result.location.coordinates[0]}&latitude=${mapbox_result.location.coordinates[1]}&postcode=${mapbox_result.postcode}&city=${mapbox_result.city}&address=${mapbox_result.address}&placeType=${mapbox_result.placeType}&streetNumber=${mapbox_result.streetNumber}`
     const response = await fetch(endpoint)
     const result = await response.json();
-    // console.log(result.address_user);
-    return result.address_user
+    const returnAddress = {
+        ...mapbox_result,
+        postcode: result.CAP_location.postcode || mapbox_result.postcode,
+        CAP_Location: result.CAP_location.location
+    }
+    return returnAddress
 
 
 

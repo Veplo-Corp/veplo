@@ -53,7 +53,6 @@ const Drawer_Address: React.FC<{openDrawerMath:number}> = ({openDrawerMath}) => 
         const result = await setUserAddress(element, 'user');
         if (typeof window !== "undefined") {
             localStorage.setItem('address', JSON.stringify(result))
-            result.address_user
         } else {
             return console.log('impossibile creare elemento');
         }

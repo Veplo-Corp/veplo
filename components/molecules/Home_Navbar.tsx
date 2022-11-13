@@ -21,8 +21,8 @@ const navbar: React.FC<Props> = ({ genere, showCategory, onShowCategory }) => {
         onShowCategory(false)
         if(address_user){
             if(address_user.city && address_user.city !== 'undefined'){
-                if(address_user.CAP.postcode.length === 5){
-                    const uri = createUrlSchema([address_user.city, address_user.CAP.postcode])
+                if(address_user.postcode.length === 5){
+                    const uri = createUrlSchema([address_user.city, address_user.postcode])
                     return router.push(`/negozi/${uri}`)
                 } else {
                     const uri = createUrlSchema([address_user.city])
