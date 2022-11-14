@@ -1,12 +1,12 @@
-import { Status, ToastPosition, useToast } from "@chakra-ui/react";
+import { ToastPosition, useToast, UseToastOptions } from "@chakra-ui/react";
 
 interface toastInput {
     position?: ToastPosition | undefined,
     title: string,
     description?: string,
-    status: Status | undefined,
+    status: UseToastOptions["status"],
     duration: number
-    isClosable?: boolean
+    isClosable: boolean
 }
 
 export const ToastOpen = () => {
@@ -20,7 +20,7 @@ export const ToastOpen = () => {
             description: newRes.description || '',
             status: newRes.status,
             duration: newRes.duration,
-            isClosable: newRes.isClosable || true,
+            isClosable: newRes.isClosable,
         })
     }
 

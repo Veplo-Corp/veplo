@@ -78,7 +78,7 @@ const Header = () => {
                         <p className="font-sm text-sm mt-2 ml-1 cursor-pointer"
                             onClick={() => setopenDrawer(Math.random())}
                         >
-                            {address_user.placeType === 'address' && <span>{address_user.address}, </span>} {address_user.city}
+                            {address_user.placeType === 'address' && <span>{address_user.address}{address_user.streetNumber && <span> {address_user.streetNumber}</span>}, </span>}  {address_user.city}
                         </p>
                     </>
                 }
