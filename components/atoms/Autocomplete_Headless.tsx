@@ -23,7 +23,7 @@ const Autocomplete: React.FC<{ values: string[], handleChangeValues?: any }> = (
                     .toLowerCase()
                     .replace(/\s+/g, '')
                     .startsWith(query.toLowerCase().replace(/\s+/g, ''))
-                ).slice(0, 2) : values.filter((value) =>
+                ).slice(0, 700) : values.filter((value) =>
                     value
                         .toLowerCase()
                         .replace(/\s+/g, '')

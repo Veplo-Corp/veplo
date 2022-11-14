@@ -149,22 +149,24 @@ const index = () => {
     //   return setOpenModalMath(Math.random())
     // }
 
+    //upload Images to database
     let photoURLForDB = [];
     let i = 1;
     console.log(photos);
-    
-
     for await (let photo of photos) {
-      
-      const url = await uploadPhotoFirebase('photo' + i, photo.blob, 'ab123456', user.uid)
-      photoURLForDB.push(url)      
-      i++
+      try {
+        const url = await uploadPhotoFirebase('photo' + i, photo.blob, 'ab123456', user.uid)
+        photoURLForDB.push(url)
+        i++
+      } catch {        
+        addToast({ position: 'top', title: 'Errore upload immagine', description: "errore durante l'upload dell'immagini", status: 'error', duration: 5000, isClosable: false })
+        break;
+      }
     }
 
-    //const url = await uploadPhotoFirebase('photo' + i, photos[0], 'ab123456')
-
     return console.log(photoURLForDB);
-    
+
+
 
     const colorsToDB = colors.map((color) => {
       return color.name
@@ -173,7 +175,7 @@ const index = () => {
 
     const priceToDB = Number(price.replace(',', '.'))
 
-    if(!priceToDB || priceToDB <= 0.01){
+    if (!priceToDB || priceToDB <= 0.01) {
       return setOpenModalMath(Math.random())
     }
 
@@ -189,9 +191,16 @@ const index = () => {
       photos: ['https://img01.ztat.net/article/spp-media-p1/9ef0d4c555c14dd7b07a638a8f203f95/a5c4db103222485daa2ebf4dbbbeff44.jpg?imwidth=1800&filter=packshot'],
     }
     try {
+
+
       const isCreatedProduct = await createProduct({ variables: { shopId: '636e6796e7e2c508038ee182', options: Product } })
       //* alert to show product creation process OK!
+      console.log(isCreatedProduct);
+
+
+
       if (isCreatedProduct.data.createProduct) {
+
         addToast({ position: 'top', title: 'Prodotto creato consuccesso', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
       }
       else {
@@ -365,7 +374,7 @@ const index = () => {
                   width={200}
                   heigth={12}
                   disabled={false}
-                  //disabled={!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0] || !watch('photos')[2]}
+                //disabled={!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0] || !watch('photos')[2]}
                 />
               </div>
 
