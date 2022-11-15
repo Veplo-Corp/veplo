@@ -85,8 +85,8 @@ const resizeFile = (file) =>
     new Promise((resolve) => {
         Resizer.imageFileResizer(
             file,
-            1200,
-            1200,
+            3000,
+            3000,
             "WEBP",
             100,
             0,
@@ -126,7 +126,6 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
 
     useEffect(() => {
         console.log(imgSrc);
-
     }, [imgSrc])
 
     const [crop, setCrop] = useState<Crop>(
@@ -248,14 +247,44 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
 
             )
                 .then(canvas => {
+                    const yourBase64String = imgSrc.substring(imgSrc.indexOf(',') + 1);
+                    const kb = Math.ceil(((yourBase64String.length * 6) / 8) / 1000); // 426 kb
+                    console.log(kb);
+                    //set quality based on dimension photo
+                    if (kb < 600) {
+                        canvas.toBlob(function (blob) {
+                            if (!blob) { return }
+                            const url = URL.createObjectURL(blob);
+                            setUrl(url)
+                            setBlob(blob)
+                            setIsDisabledButton(false)
+                        }, 'image/webp', 0.8);
+                    } else if (kb > 3000) {
+                        canvas.toBlob(function (blob) {
+                            if (!blob) { return }
+                            const url = URL.createObjectURL(blob);
+                            setUrl(url)
+                            setBlob(blob)
+                            setIsDisabledButton(false)
+                        }, 'image/webp', 0.3);
+                    } else if(kb > 600 && kb <=3000) {
+                        canvas.toBlob(function (blob) {
+                            if (!blob) { return }
+                            const url = URL.createObjectURL(blob);
+                            setUrl(url)
+                            setBlob(blob)
+                            setIsDisabledButton(false)
+                        }, 'image/webp', 0.5);
+                    } else {
+                        canvas.toBlob(function (blob) {
+                            if (!blob) { return }
+                            const url = URL.createObjectURL(blob);
+                            setUrl(url)
+                            setBlob(blob)
+                            setIsDisabledButton(false)
+                        }, 'image/webp', 1);
+                    }
 
-                    canvas.toBlob(function (blob) {
-                        if (!blob) { return }
-                        const url = URL.createObjectURL(blob);
-                        setUrl(url)
-                        setBlob(blob)
-                        setIsDisabledButton(false)
-                    }, 'image/webp', 0.8);
                 })
 
         }
