@@ -15,6 +15,9 @@ import { useDebounceEffect } from '../../../../components/utils/useDebounceEffec
 import { canvasPreview } from '../../../../components/molecules/Canva_previews'
 import { storage } from '../../../config/firebase'
 import { useForm } from 'react-hook-form'
+import { useMutation } from '@apollo/client'
+import CREATE_SHOP from '../../../lib/apollo/mutations/createShop'
+import { ToastOpen } from '../../../../components/utils/Toast'
 
 
 type Image = {
@@ -49,6 +52,10 @@ interface IFormInput {
 
 
 const index = () => {
+
+    const [createShop, createShopElement] = useMutation(CREATE_SHOP);
+    const { addToast } = ToastOpen();
+
     //*useForm Registration Shop
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInput>({
         mode: "all",
@@ -205,13 +212,13 @@ const index = () => {
             // Send the data to the server in JSON format.
             // API endpoint where we send form data.
             const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}&type=shop`
-            
+
             // Send the form data to our forms API on Vercel and get a response.
             const response = await fetch(endpoint)
-            
+
             // Get the response data from server as JSON.
             // If server returns the name submitted, that means the form works.
-            const result = await response.json()                        
+            const result = await response.json()
             return setAddresses(result.data)
         }, 500)
     }
@@ -219,7 +226,7 @@ const index = () => {
     const handleEventSetAddress = async (element: Mapbox_Result) => {
         const result = await setUserAddress(element, 'shop');
         console.log(result);
-        
+
         if (result.streetNumber !== undefined) {
             //setStreetNumber(result.streetNumber)
             setStreetNumberDisabled(true)
@@ -232,12 +239,12 @@ const index = () => {
         }
         setisValid_shop_streetNumber(true)
         console.log(result);
-        
+
         setAddress(result);
         setAddress_Mapbox('');
 
         setShowAddress(true)
-        
+
         console.log(result);
         return setAddresses([])
     }
@@ -317,13 +324,13 @@ const index = () => {
         }
     }
 
-    const submitData = (e: IFormInput) => {
+    const submitData = async (e: IFormInput) => {
 
         const Shop: IFormInput = {
             name: e.name,
             address: {
                 city: address.city,
-                street:address.address + ' ' + address.streetNumber,
+                street: address.address + ' ' + address.streetNumber,
                 postcode: address.postcode,
                 location: address.location
             },
@@ -334,11 +341,18 @@ const index = () => {
             piva: watch('piva'),
             photo: watch('photo'),
             phone: watch('phone'),
-            description: ''
+            //description: ''
         }
-
         console.log(Shop);
-        
+        try {
+            const isCreatedShop = await createShop({ variables: { options: Shop } })
+            console.log(isCreatedShop.data.createShop)
+            //return addToast({ position: 'top', title: 'Prodotto creato consuccesso', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
+
+        } catch (e) {
+            addToast({ position: 'top', title: 'Errore durante la creazione dello Shop', description: "non siamo riusciti a creare il tuo shop. riprova più tardi o contattaci", status: 'error', duration: 5000, isClosable: false })
+
+        }
 
     }
 
@@ -676,7 +690,7 @@ const index = () => {
                                 size={'sm'}
                                 typeButton={'submit'}
                                 //disabled={false}
-                                disabled={!address || address.streetNumber === ''||  !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('opening.days') || watch('opening.days').length <= 0 || !isValid}
+                                disabled={!address || address.streetNumber === '' || !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('opening.days') || watch('opening.days').length <= 0 || !isValid}
                             />
                         </div>
                     </div>
