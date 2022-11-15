@@ -447,7 +447,7 @@ export const BRANDS : string[] = [
 "Bellivalini",
 "Bellroy",
 "Belly Bandit",
-"Bellybutton",
+"bellybutton",
 "Belmil",
 "Belmondo",
 "Beloro Jewels",

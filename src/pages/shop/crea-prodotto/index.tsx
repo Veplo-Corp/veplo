@@ -21,6 +21,7 @@ import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
 import { ToastOpen } from '../../../../components/utils/Toast'
 import uploadPhotoFirebase from '../../../../components/utils/uploadPhotoFirebase'
 import CREATE_PRODUCT from '../../../lib/apollo/mutations/createProduct'
+import EDIT_PRODUCT from '../../../lib/apollo/mutations/editProduct'
 
 
 interface IFormInput {
@@ -40,6 +41,7 @@ const index = () => {
   const { addToast } = ToastOpen();
   //* graphQL
   const [createProduct, Element] = useMutation(CREATE_PRODUCT);
+  const [editProduct, editProductResult] = useMutation(EDIT_PRODUCT);
 
 
   //*UseForm
@@ -149,62 +151,67 @@ const index = () => {
     //   return setOpenModalMath(Math.random())
     // }
 
-    //upload Images to database
-    let photoURLForDB = [];
-    let i = 1;
-    console.log(photos);
-    for await (let photo of photos) {
-      try {
-        const url = await uploadPhotoFirebase('photo' + i, photo.blob, 'ab123456', user.uid)
-        photoURLForDB.push(url)
-        i++
-      } catch {        
-        addToast({ position: 'top', title: 'Errore upload immagine', description: "errore durante l'upload dell'immagini", status: 'error', duration: 5000, isClosable: false })
-        break;
-      }
-    }
-
-    return console.log(photoURLForDB);
-
-
-
-    const colorsToDB = colors.map((color) => {
-      return color.name
-    })
-
-
-    const priceToDB = Number(price.replace(',', '.'))
-
-    if (!priceToDB || priceToDB <= 0.01) {
-      return setOpenModalMath(Math.random())
-    }
-
-    const Product = {
-      name,
-      price: priceToDB,
-      colors: colorsToDB,
-      sizes: sizes,
-      macroCategory: macrocategory.name,
-      microCategory: microcategory,
-      gender: gender,
-      brand: brand,
-      photos: ['https://img01.ztat.net/article/spp-media-p1/9ef0d4c555c14dd7b07a638a8f203f95/a5c4db103222485daa2ebf4dbbbeff44.jpg?imwidth=1800&filter=packshot'],
-    }
     try {
+      if(photos.length < 2){
+        throw new Error('poche immagini')
+      }
 
+      const colorsToDB = colors.map((color) => {
+        return color.name
+      })
+  
+  
+      const priceToDB = Number(price.replace(',', '.'))
+  
+      if (!priceToDB || priceToDB <= 0.01) {
+        return setOpenModalMath(Math.random())
+      }
+  
+      const Product = {
+        name,
+        price: priceToDB,
+        colors: colorsToDB,
+        sizes: sizes,
+        macroCategory: macrocategory.name,
+        microCategory: microcategory,
+        gender: gender,
+        brand: brand,
+        photos: [''],
+      }
+  
+      console.log(Product);
 
-      const isCreatedProduct = await createProduct({ variables: { shopId: '636e6796e7e2c508038ee182', options: Product } })
+      const isCreatedProduct = await createProduct({ variables: { shopId: '6373bb3c0742ade8758b1a97', options: Product } })
       //* alert to show product creation process OK!
+      //upload Images to database
       console.log(isCreatedProduct);
+      const productId =isCreatedProduct.data.createProduct
+      let photoURLForDB = [];
+      let i = 1;
+      console.log(photos);
 
+      
 
+      for await (let photo of photos) {
+        try {
+          const url = await uploadPhotoFirebase('photo' + i, photo.blob, productId, user.uid)
+          photoURLForDB.push(url)
+          i++
+        } catch {
+          addToast({ position: 'top', title: 'Errore upload immagine', description: "errore durante l'upload dell'immagini", status: 'error', duration: 5000, isClosable: false })
+          break;
+        }
+      }
 
-      if (isCreatedProduct.data.createProduct) {
+      const areImagesAdded = await editProduct({ variables: { id: productId, options: {
+        photos: photoURLForDB
+      } } })
 
-        addToast({ position: 'top', title: 'Prodotto creato consuccesso', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
+      if (isCreatedProduct.data.createProduct && areImagesAdded.data.editProduct === true) {
+        return addToast({ position: 'top', title: 'Prodotto creato consuccesso', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
       }
       else {
-        addToast({ position: 'top', title: 'Impossibile creare il prodotto', description: "c'è stato un errore durante la creazione del prodotto, riprova più tardi", status: 'error', duration: 5000, isClosable: true })
+        return addToast({ position: 'top', title: 'Impossibile creare il prodotto', description: "c'è stato un errore durante la creazione del prodotto, riprova più tardi", status: 'error', duration: 5000, isClosable: true })
       }
 
     } catch (e) {
@@ -346,12 +353,12 @@ const index = () => {
                   }}
                 >
                   <div
-                    className={`w-full flex justify-between ${watch('photos').length < 3 ? 'text-gray-500' : 'text-gray-900'}  `}
+                    className={`w-full flex justify-between ${watch('photos').length < 2 ? 'text-gray-500' : 'text-gray-900'}  `}
                   >
                     <span>
-                      {watch('photos').length < 3 ? 'carica immagini del prodotto' : 'immagini caricate correttamente'}
+                      {watch('photos').length < 2 ? 'carica immagini del prodotto' : 'immagini caricate correttamente'}
                     </span>
-                    {watch('photos').length < 3 ?
+                    {watch('photos').length < 2 ?
                       (<DownloadIcon
                         className="h-5 w-5 text-gray-400 my-auto"
                         aria-hidden="true"
@@ -373,8 +380,8 @@ const index = () => {
                   size={'sm'}
                   width={200}
                   heigth={12}
-                  disabled={false}
-                //disabled={!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0] || !watch('photos')[2]}
+                  //disabled={false}
+                  disabled={!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0] || !watch('photos')[1]}
                 />
               </div>
 

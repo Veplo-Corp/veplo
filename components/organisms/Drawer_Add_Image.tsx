@@ -264,6 +264,11 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
         [completedCrop],
     )
 
+    const closeModal = () => {
+        setisOpen(false)
+        confirmPhotos(images)
+    }
+
 
 
 
@@ -366,7 +371,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                                         onClick={onHanldeConfirm}
                                                         element='aggiungi'
                                                         borderRadius={5}
-                                                        
+
                                                         heigth={12}
                                                         size={'sm'}
                                                         typeButton={'button'}
@@ -464,7 +469,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                             <div className='flex justify-between'>
                                 <div className='hidden md:flex'>
                                     <Button
-                                        onClick={() => setisOpen(false)}
+                                        onClick={closeModal}
                                         borderRadius={5}
                                         width={200}
                                         height={12}
@@ -479,7 +484,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
 
                                 <div className='flex justify-between gap-6  md:gap-4'>
                                     <p className='my-auto	italic text-sm md:text-base	font-medium	'>
-                                        aggiungi minimo 3 foto per confermare
+                                        aggiungi minimo 2 foto per confermare
                                     </p>
                                     <BlackButton
                                         element='conferma'
@@ -488,11 +493,8 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                         heigth={12}
                                         size={'sm'}
                                         typeButton={'button'}
-                                        onClick={() => {
-                                            setisOpen(false)
-                                            confirmPhotos(images)
-                                        }}
-                                        disabled={images.length < 1} />
+                                        onClick={closeModal}
+                                        disabled={images.length < 2} />
                                 </div>
                             </div>
                         </footer>
