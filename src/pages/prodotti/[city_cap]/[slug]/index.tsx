@@ -58,7 +58,7 @@ export async function getStaticProps(ctx) {
 
   let { city_cap, slug } = ctx.params;
   const elementCityCap: {city: string, postcode: string | null} = getCityAndPostcodeFromSlug(city_cap);
-  const elementGenderMacrocategory: {gender: string, macrocategory: string | null} = getGenderandMacrocategory(slug);
+  const elementGenderMacrocategory: { gender: string | null, macrocategory: string | null } = getGenderandMacrocategory(slug);
   let gender: null | string = null;
   let category: null | string = null;
 
@@ -75,10 +75,14 @@ export async function getStaticProps(ctx) {
 
 
 
-const genere = ({ city, gender, category, postcode }) => {
-  console.log(postcode,city );
-  
+const genere = ({ city, gender, category, postcode }) => {  
   const router = useRouter()
+  useEffect(() => {
+    if(gender === null){
+      router.push('/')
+    }
+  }, [])
+  
 
   const toProductPage = (product: Product) => {
     const newUrl = createUrlScheme([product.brand, product.name, product.microCategory])

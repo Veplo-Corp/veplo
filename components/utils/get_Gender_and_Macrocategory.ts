@@ -10,7 +10,10 @@ const getGenderandMacrocategory = (gender_macrocategory: string) => {
     macrocategory = gender_macrocategory.substring(gender_macrocategory.indexOf('-') + 1);
 
     if(gender !== 'uomo' && gender !== 'donna'){
-        throw new Error('Gender i can be uomo or donna');
+        return {
+            gender: null,
+            macrocategory: null
+        }
     }
 
     if(!macrocategory || macrocategory === 'uomo' || macrocategory==='donna'){

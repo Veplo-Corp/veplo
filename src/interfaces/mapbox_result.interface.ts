@@ -4,6 +4,10 @@ export interface Mapbox_Result {
         type: string,
         coordinates: number[]
     },
+    CAP_Location?: {
+        type: string,
+        coordinates: number[]
+    },
     postcode: string | undefined,
     city: string | undefined,
     address: string | undefined,
