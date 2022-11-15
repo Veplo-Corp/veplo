@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React from 'react'
+import React, { useEffect } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
 import DintorniLogo_Below_Header from '../../../../../components/molecules/DintorniLogo_Below_Header';
 import { Box, Image } from '@chakra-ui/react'
@@ -17,10 +17,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(ctx) {
-    let { city_cap, gender_macrocategory} = ctx.params;
+    let { city_cap, gender_macrocategory } = ctx.params;
     const CITY_CAP: { city: string, postcode: string | null } = getCityAndPostcodeFromSlug(city_cap);
-    const GENDER_MACROCATEGORY: { gender: string, macrocategory: string | null } = getGenderandMacrocategory(gender_macrocategory)
-    
+    const GENDER_MACROCATEGORY: { gender: string | null, macrocategory: string | null } = getGenderandMacrocategory(gender_macrocategory)
 
     return {
         props: {
@@ -32,8 +31,16 @@ export async function getStaticProps(ctx) {
     }
 }
 
-const index: React.FC<{ city: string, postcode: null | string, macrocategory: null | string, gender: string}> = ({ city, postcode, macrocategory, gender }) => {
+const index: React.FC<{ city: string, postcode: null | string, macrocategory: null | string, gender: string }> = ({ city, postcode, macrocategory, gender }) => {
     const router = useRouter()
+
+    useEffect(() => {
+        if (gender === null) {
+            router.push('/')
+        }
+    }, [])
+
+    if(gender === null) {return}
 
     const shop: SHOP = {
         id: '635905bdadc75fa62375263f',
@@ -61,7 +68,7 @@ const index: React.FC<{ city: string, postcode: null | string, macrocategory: nu
 
     return (
         <Desktop_Layout>
-            <DintorniLogo_Below_Header city={city} category={macrocategory} gender={gender}/>
+            <DintorniLogo_Below_Header city={city} category={macrocategory} gender={gender} />
             <div className="grid grid-cols-1 md:pt-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 w-full m-auto justify-items-center	">
                 {shops.map((shop) => {
                     return (

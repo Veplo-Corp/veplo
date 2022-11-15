@@ -3,15 +3,17 @@ import React from 'react'
 
 const Input_Search_Item = () => {
     return (
-        <div className='w-auto md:w-72'>
+        <div className='w-auto md:w-56 lg:w-72'>
             <InputGroup
             >
-                <Input placeholder='Cerca negozi o vestiti'
+                <Input 
+                    placeholder={'Cerca negozi o vestiti'}
                     _placeholder={{ color: 'gray.500', opacity: 1 }}
                     borderRadius={12}
                     py={3}
                     pl={4}
-                    size='md' focusBorderColor='gray.300'
+                    size='md' 
+                    focusBorderColor='gray.300'
                     bg={'gray.100'} />
                 <InputRightElement
                     ml={3}

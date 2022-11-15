@@ -9,6 +9,7 @@ import Circle_Color from '../atoms/Circle_Color'
 import { useSelector } from 'react-redux'
 import Drawer_Address from './Drawer_Address'
 import redirectToAddressForm from '../utils/redirect_to_address_form'
+import Show_Categories_NavBar from '../molecules/Show_Categories_NavBar'
 
 
 const Header = () => {
@@ -18,17 +19,26 @@ const Header = () => {
     const [openDrawer, setopenDrawer] = useState(1)
     const toast = useToast()
 
-    const [showCategory, setshowCategory] = useState(false);
+    const [showCategory, setshowCategory] = useState({
+        show: false,
+        gender: ''
+    });
     const address_user = useSelector((state) => state.address.address);
     // console.log(address_user);
 
-    const handleShowCategory = (value?) => {
+    const handleShowCategory = (value?, gender?) => {
         if (address_user) {
-            if (value === false) {
-                setshowCategory(false)
+            if (value === false) {                
+                setshowCategory({
+                    show: false,
+                    gender: ''
+                })
             } else {
                 setshowCategory((actualValue) => {
-                    return !actualValue
+                    return {
+                        show: true,
+                        gender: gender
+                    }
                 })
             }
         }
@@ -46,7 +56,10 @@ const Header = () => {
 
 
     return (
-        <div onMouseLeave={() => setshowCategory(false)}>
+        <div onMouseLeave={() => setshowCategory({
+            show: false,
+            gender: ''
+        })} >
             <Drawer_Address openDrawerMath={openDrawer} />
             <JoinUs_Navbar />
             {/* Menu button, Search button and Dintorni Logo for screen >=md */}
@@ -89,13 +102,13 @@ const Header = () => {
                 <div className="mx-auto max-w-full border-b-2 border-gray-100">
                     <div className="py-3 lg:justify-start lg:space-x-10">
                         <div className='flex items-center justify-between h-8 '>
-                            <Navbar genere={genere} showCategory={showCategory} onShowCategory={handleShowCategory} />
+                            <Navbar genere={genere} showCategory={showCategory.show} onShowCategory={handleShowCategory} />
                             <div className="  w-full md:hidden">
                                 <Link href="/">
                                     <a className="font-black mt-2 ml-5 text-2xl italic text-black-900  ">DINTORNI</a>
                                 </Link>
                             </div>
-                            <div className="hidden lg:flex gap-3 fixed top-9 right-8 z-10"> {/* pr-80 */}
+                            <div className="hidden md:flex gap-3 fixed top-9 right-8 z-10"> {/* pr-80 */}
                                 <Input_Search_Item />
                                 <Link href={'/'}>
                                     <a>
@@ -106,8 +119,9 @@ const Header = () => {
                         </div>
 
                     </div>
-                    {showCategory && <div className='h-80 border-b-2 border-gray-100 bg-white w-screen	fixed z-50	 top-30'>
-                    </div>}
+                    {showCategory.show &&
+                        <Show_Categories_NavBar gender={showCategory.gender} closeCategory={handleShowCategory}/>
+                    }
                 </div>
 
                 {/* <!--
