@@ -78,7 +78,8 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
 
     const router = useRouter();
     const { slug } = router.query
-    const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([])
+    const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
+
     const [textCategory, setTextCategory] = useState('vestito')
 
     useEffect(() => {
@@ -188,7 +189,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                             as='h2'
                             lineHeight='tall'
                             noOfLines={1}
-                            fontSize='md'
+                            fontSize='sm'
                         >
 
                             {product.macroCategory} - {product.microCategory}
@@ -206,14 +207,15 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                             {product.brand}
                         </Box>
                         <Box
-                            fontWeight='medium'
+                            fontWeight='semibold'
                             as='h1'
                             noOfLines={2}
                             mt='-1'
                             fontSize='3xl'
                             lineHeight={'33px'}
                         >
-                            {`${product.name.toLocaleUpperCase()} - ${product.microCategory}`}
+                            {`${product.name.toLocaleUpperCase()}`}
+                            <span className='font-normal'>{` - ${textCategory}`}</span>
                         </Box>
                         <Box
                             fontWeight='medium'
