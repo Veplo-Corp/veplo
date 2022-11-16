@@ -156,7 +156,8 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                 />
                 <ModalContent >
                     <ModalBody padding={0}>
-                        <Image onClick={onClickImageModal} src={fullImage} alt={product.imageAlt} />
+                        <Image
+                        onClick={onClickImageModal} src={fullImage} alt={product.imageAlt} />
                     </ModalBody>
                 </ModalContent>
             </Modal>

@@ -6,8 +6,7 @@ export const sendEmailVerificationHanlder = () => {
             .then(() => {
                 // Email verification sent!
                 // ...
-                console.log('email inviata');
-                
+                console.log('email inviata');    
             });
     }
 }

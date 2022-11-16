@@ -9,7 +9,7 @@ import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from './store/store'
 import { useEffect } from 'react'
 import { auth, onAuthStateChanged } from '../config/firebase'
-import { login, logout } from './store/reducers/user'
+import user, { login, logout } from './store/reducers/user'
 import { setAddress } from './store/reducers/address_user'
 import { useRouter } from 'next/router'
 import { ApolloProvider } from '@apollo/client'
@@ -68,7 +68,8 @@ function Auth({ children }) {
           login({
             email: userAuth.email,
             uid: userAuth.uid,
-            idToken: idToken
+            idToken: idToken,
+            emailVerified: userAuth.emailVerified
           })
         );
         //!router.push('/impresa/home')
