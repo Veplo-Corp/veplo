@@ -185,7 +185,7 @@ const index = () => {
       //* alert to show product creation process OK!
       //upload Images to database
       console.log(isCreatedProduct);
-      const productId =isCreatedProduct.data.createProduct
+      const productId =isCreatedProduct.data.createProduct;
       let photoURLForDB = [];
       let i = 1;
       console.log(photos);
@@ -208,7 +208,7 @@ const index = () => {
       } } })
 
       if (isCreatedProduct.data.createProduct && areImagesAdded.data.editProduct === true) {
-        return addToast({ position: 'top', title: 'Prodotto creato consuccesso', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
+        return addToast({ position: 'top', title: 'Prodotto creato con successo', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
       }
       else {
         return addToast({ position: 'top', title: 'Impossibile creare il prodotto', description: "c'è stato un errore durante la creazione del prodotto, riprova più tardi", status: 'error', duration: 5000, isClosable: true })

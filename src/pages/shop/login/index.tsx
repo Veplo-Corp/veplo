@@ -30,23 +30,7 @@ const index = () => {
 
   // console.log(ElementTest.data);
 
-  // const [deleteProduct, { data, loading, error }] = useMutation(DELETE_PRODUCT);
-  // const apolloClient = initApollo()
-  // const cache = apolloClient.cache.extract();
-  // console.log(cache);
-  
-  // const handleDeleteProductTest = async () => {
-  //   try {
-  //     await deleteProduct();
-  //     console.log(data);
-
-  //   }
-  //   catch (e) {
-  //     console.log(error);
-
-  //   }
-  // }
-  //! end test apollo client
+ 
 
 
 
@@ -179,7 +163,9 @@ const index = () => {
           dispatch(
             login({
               email: user.email,
-              uid: user.uid
+              uid: user.uid,
+              emailVerified: user.emailVerified,
+              idToken: idToken
             })
           );
 

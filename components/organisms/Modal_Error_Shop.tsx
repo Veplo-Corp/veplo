@@ -1,17 +1,19 @@
+import { Button } from '@chakra-ui/react'
 import { Dialog, Transition } from '@headlessui/react'
 import React, { useEffect } from 'react'
 import { Fragment, useState } from 'react'
 
 interface Props {
-    title : string,
-    description : string,
-    closeText : string,
-    openModalMath: number
-
+    title: string,
+    description: string,
+    closeText: string,
+    openModalMath: number,
+    consfirmText?: string,
+    handleEvent?: any,
+    data?: any
 }
 
-const Modal_Error_Shop: React.FC<Props> = ({title, description, closeText, openModalMath }) => {
-    
+const Modal_Error_Shop: React.FC<Props> = ({ title, description, closeText, confirmText, openModalMath,handleEvent, data  }) => {    
     let [isOpen, setIsOpen] = useState(false)
 
     function closeModal() {
@@ -19,7 +21,7 @@ const Modal_Error_Shop: React.FC<Props> = ({title, description, closeText, openM
     }
 
     useEffect(() => {
-        if(openModalMath !== 1 && openModalMath !== undefined){
+        if (openModalMath !== 1 && openModalMath !== undefined) {
             setIsOpen(true)
         }
     }, [openModalMath])
@@ -62,16 +64,30 @@ const Modal_Error_Shop: React.FC<Props> = ({title, description, closeText, openM
                                         {description}
                                     </p>
                                 </div>
-
-                                <div className="mt-4">
-                                    <button
-                                        type="button"
-                                        className="inline-flex justify-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus-visible:ring-1 focus-visible:ring-gray-900 focus-visible:ring-offset-2"
-                                        onClick={closeModal}
-                                    >
-                                        {closeText}
-                                    </button>
+                                <div className='flex '>
+                                    <div className="mt-4 m-auto mr-2">
+                                        <Button
+                                            colorScheme={'black'}
+                                            variant='outline'
+                                            onClick={closeModal}
+                                        >
+                                            {closeText}
+                                        </Button>
+                                    </div>
+                                    {confirmText &&
+                                        <div className="mt-4">
+                                            <Button
+                                                onClick={() => {
+                                                    handleEvent(data)
+                                                    closeModal()}}
+                                                colorScheme={'red'}
+                                            >
+                                                {confirmText}
+                                            </Button>
+                                        </div>
+                                    }
                                 </div>
+
                             </Dialog.Panel>
                         </Transition.Child>
                     </div>

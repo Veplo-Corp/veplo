@@ -1,10 +1,12 @@
 import { gql } from '@apollo/client';
 
 const DELETE_PRODUCT = gql`
-  mutation deleteProduct{
-    deleteProduct(id: "63693552a3aab0f65e18b1c0") 
+  mutation deleteProduct(
+    $id: ID!
+  ){
+    deleteProduct(id: $id) 
   }
+
 `;
 
-/* Bearer */
 export default DELETE_PRODUCT;
