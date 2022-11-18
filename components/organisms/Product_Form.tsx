@@ -21,17 +21,13 @@ import Modal_Error_Shop from './Modal_Error_Shop';
 
 
 
-const Product_Form: React.FC<{ handleSubmitEvent: any }> = ({ handleSubmitEvent }) => {
-    const { addToast } = ToastOpen();
-
+const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?: string, disabled: boolean }> = ({ handleSubmitEvent, defaultValues, type, disabled }) => {
     //*UseForm
-    const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInput>({
+    const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<any>({
         mode: "all",
-        defaultValues: {
-            photos: []
-        }
+        defaultValues: defaultValues
     });
-    const [openModalMath, setOpenModalMath] = useState(1);
+    
 
 
 
@@ -53,6 +49,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any }> = ({ handleSubmitEvent 
 
 
     useEffect(() => {
+        if (type === 'edit') return
         const product_macrocategory = watch('macrocategory')
         console.log(product_macrocategory);
 
@@ -160,6 +157,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any }> = ({ handleSubmitEvent 
                                 rules={{ required: false }}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <Autocomplete values={brands.current}
+                                        selectedValue={watch('brand')}
                                         handleChangeValues={(brand) => {
                                             setValue('brand', brand);
                                         }} />
@@ -173,9 +171,11 @@ const Product_Form: React.FC<{ handleSubmitEvent: any }> = ({ handleSubmitEvent 
                                 name="colors"
                                 rules={{ required: false }}
                                 render={() => (
-                                    <Select_multiple_options values={colors.current} type={'color'} handleChangeState={(colors) => {
-                                        setValue('colors', colors);
-                                    }} />
+                                    <Select_multiple_options values={colors.current} type={'color'}
+                                        selectedValueBefore={watch('colors')}
+                                        handleChangeState={(colors) => {
+                                            setValue('colors', colors);
+                                        }} />
                                 )}
                             />
                         </Div_input_creation>
@@ -186,6 +186,8 @@ const Product_Form: React.FC<{ handleSubmitEvent: any }> = ({ handleSubmitEvent 
                                 rules={{ required: false }}
                                 render={() => (
                                     <Select_options values={categories.current} type={'macrocategory'}
+                                        disabled={disabled}
+                                        selectedValueBefore={watch('macrocategory')}
                                         handleClick={(macrocategory) => {
                                             setValue('macrocategory', macrocategory);
                                         }}
@@ -196,10 +198,15 @@ const Product_Form: React.FC<{ handleSubmitEvent: any }> = ({ handleSubmitEvent 
                         <Div_input_creation text='Microcategoria collegata'>
                             <Controller
                                 control={control}
+
                                 name="macrocategory"
                                 rules={{ required: false }}
                                 render={() => (
-                                    <Select_options values={microcategorySelected} type={'microcategory'}
+                                    <Select_options 
+                                    values={microcategorySelected}
+                                        disabled={disabled}
+                                        selectedValueBefore={watch('microcategory')}
+                                        type={'microcategory'}
                                         handleClick={(microCategory) => {
                                             console.log(microCategory);
 
@@ -230,7 +237,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any }> = ({ handleSubmitEvent 
                                 rounded={10}
                                 padding={3.5}
                                 mt={1}
-                                backgroundColor={`${watch('photos').length < 3 ? 'white' : 'gray.200'}`}
+                                backgroundColor={`${watch('photos')} && ${watch('photos').length < 3 ? 'white' : 'gray.200'}`}
                                 borderWidth={1}
                                 borderColor={'gray.200'}
                                 lineHeight='tight'
@@ -269,8 +276,8 @@ const Product_Form: React.FC<{ handleSubmitEvent: any }> = ({ handleSubmitEvent 
                                 size={'sm'}
                                 width={200}
                                 heigth={12}
-                                //disabled={false}
-                                disabled={!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0] || !watch('photos')[1]}
+                                disabled={false}
+                            //disabled={!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0] || !watch('photos')[1]}
                             />
                         </div>
 
@@ -287,8 +294,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any }> = ({ handleSubmitEvent 
                     }} />
                 )}
             />
-            <Modal_Error_Shop openModalMath={openModalMath} title='Manca qualcosa' description='Impossibile creare il prodotto.
-      Controlla di aver inserito tutti dati in maniera corretta' closeText='chiudi' />
+
         </>
     )
 }

@@ -4,10 +4,10 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 // import { Brand } from '../mook/brands'
 
 
-const Autocomplete: React.FC<{ values: string[], handleChangeValues?: any }> = ({ values, handleChangeValues }) => {
+const Autocomplete: React.FC<{ values: string[], handleChangeValues?: any, selectedValue?:string }> = ({ values, handleChangeValues, selectedValue }) => {
     //console.log(values);
 
-    const [selected, setSelected] = useState('')
+    const [selected, setSelected] = useState(selectedValue ||'')
     const [query, setQuery] = useState('')
     const [filteredValues, setFilteredValues] = useState([])
 
