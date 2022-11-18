@@ -3,13 +3,17 @@ import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button } from '@ch
 import { sendEmailVerification } from '@firebase/auth';
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import BlackButton from '../../../../components/atoms/BlackButton';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
 import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop';
 import Table_Products_Shop from '../../../../components/organisms/Table_Products_Shop';
 import { sendEmailVerificationHanlder } from '../../../../components/utils/emailVerification';
 import { ToastOpen } from '../../../../components/utils/Toast';
 import { auth } from '../../../config/firebase';
+import { initApollo } from '../../../lib/apollo';
 import DELETE_PRODUCT from '../../../lib/apollo/mutations/deleteProduct';
+import GET_PRODUCTS_FROM_SHOP from '../../../lib/apollo/queries/geetProductsShop';
+import GET_SINGLE_PRODUCT from '../../../lib/apollo/queries/getSingleProduct';
 
 
 const index = () => {
@@ -18,12 +22,84 @@ const index = () => {
     const [mathNumber, setMathNumber] = useState(1)
     const { addToast } = ToastOpen();
     const [productToDeleteData, setProductToDeleteData] = useState({})
+    const apolloClient = initApollo();
 
 
     //delete product
-    const [deleteProduct, { data, loading, error }] = useMutation(DELETE_PRODUCT);
+    const [deleteProduct] = useMutation(DELETE_PRODUCT, {
+        update(cache, el) {
+            const deleteId = el.data
+            console.log(deleteId);
+            //mi devi dare l'id come data dalla delete
+            /* 637746060742ade8758b1aa9 */
+            const { shop } = cache.readQuery<any>({
+                query: GET_PRODUCTS_FROM_SHOP,
+                variables: {
+                    id: '6373bb3c0742ade8758b1a97' //* mettere idShop,
+                },
+            });
+            console.log(shop);
 
-    const handleDeleteProductModal = (productId:string, productName: string) => {
+            //*Delete Product
+            cache.writeQuery({
+                query: GET_PRODUCTS_FROM_SHOP,
+                variables: { id: '6373bb3c0742ade8758b1a97' },
+                data: {
+                    shop: {
+                        products: shop.products.filter(product => product.id != '637746060742ade8758b1aa9')
+                    }
+                }
+            })
+
+
+            //! add new product on Cache
+            // let newProduct = {
+            //     ...shop.products[0],
+            //     id: 'cacca'
+            // }
+
+            // console.log(newProduct);
+            // newProduct['id'] = '637746060742ade875869100'
+            // newProduct['name']= 'CHE COSA STA SUCCEDENDO'
+            // cache.writeQuery({
+            //     query: GET_PRODUCTS_FROM_SHOP,
+            //     variables: { id: '6373bb3c0742ade8758b1a97' },
+            //     data: {
+            //         shop: {
+            //             products: [
+            //                 ...shop.products,
+            //                 newProduct
+            //             ]
+            //         }
+            //     }
+            // })
+
+
+            //*delete old data, finding serialized number
+            const normalizedId = cache.identify({ id: '637746060742ade8758b1aa9', __typename: 'Product' });
+            cache.evict({ id: normalizedId });
+            //*The gc method removes all objects from the normalized cache that are not reachable:
+            //cache.gc();
+
+            setTimeout(async () => {
+                console.log(apolloClient.cache.extract());
+                const { shop } = apolloClient.readQuery({
+                    query: GET_PRODUCTS_FROM_SHOP,
+                    // Provide any required variables in this object.
+                    // Variables of mismatched types will return `null`.
+                    variables: {
+                        id: '6373bb3c0742ade8758b1a97' //* mettere idShop,
+                    },
+                });
+                console.log(shop.products);
+            }, 2000);
+        }
+    });
+
+
+
+
+    const handleDeleteProductModal = (productId: string, productName: string) => {
         setProductToDeleteData({
             productId,
             productName
@@ -31,19 +107,19 @@ const index = () => {
         setMathNumber(Math.random())
     }
 
-    const deleteProductEvent = async({productId, productName }: {productId:string, productName:string}) => {
+    const deleteProductEvent = async ({ productId, productName }: { productId: string, productName: string }) => {
         try {
-            await deleteProduct({variables: {id: productId}})
+            await deleteProduct({ variables: { id: productId } })
             return addToast({ position: 'top', title: 'Prodotto eliminato', description: `${productName} è stato eliminato con successo`, status: 'success', duration: 5000, isClosable: true })
         }
         catch (e) {
             console.log(e);
         }
     }
-    
 
-    
-    
+
+
+
 
 
     return (
@@ -74,7 +150,7 @@ const index = () => {
                 </Alert>
             }
             <Table_Products_Shop idShop={'6373bb3c0742ade8758b1a97'} deleteProduct={handleDeleteProductModal} />
-            <Modal_Error_Shop title={'Elimina prodotto'} description={'confermando eliminerai il prodotto dal tuo negozio'} closeText={'annulla'} openModalMath={mathNumber} confirmText={'conferma'} data={productToDeleteData} handleEvent={deleteProductEvent}/>
+            <Modal_Error_Shop title={'Elimina prodotto'} description={'confermando eliminerai il prodotto dal tuo negozio'} closeText={'annulla'} openModalMath={mathNumber} confirmText={'conferma'} data={productToDeleteData} handleEvent={deleteProductEvent} />
         </Desktop_Layout >
 
     )
