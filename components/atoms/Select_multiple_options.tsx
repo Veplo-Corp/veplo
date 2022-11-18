@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import Circle_Color from './Circle_Color'
-import { Color } from '../mook/colors'
+import { Color, COLORS } from '../mook/colors'
 import { Macrocategory } from '../mook/macrocategories'
 import { Day } from '../mook/days'
 
@@ -22,42 +22,55 @@ import { Day } from '../mook/days'
 // }
 
 
-const Select_multiple_options: React.FC<{values:Color[] | undefined | Macrocategory[] | Day[] | String[] ,  type:string, handleChangeState?: any}> = ({values, type, handleChangeState}) => {
+const Select_multiple_options: React.FC<{ values: Color[] | undefined | Macrocategory[] | Day[] | String[], type: string, handleChangeState?: any, selectedValueBefore: any }> = ({ values, type, handleChangeState, selectedValueBefore }) => {
     const [selectedValue, setSelectedValue] = useState<Color[]>([])
     const [isListboxDisabled, setIsListboxDisabled] = useState(false)
 
 
-    
-    
 
 
-    useEffect(() => {   
-        if(values === undefined){
+
+
+    useEffect(() => {
+
+        if (values === undefined) {
             setIsListboxDisabled(true)
-        } else if(values){
+        } else if (values) {
             setIsListboxDisabled(false)
+            
         }
-        if(type === 'size'){
+        if (type === 'size') {
             setSelectedValue([])
         }
+
+        if (selectedValueBefore && type == 'color') {
+            let productColors = [];
+            for (let i = 0; i < selectedValueBefore.length; i++) {
+                const index = COLORS.findIndex(color => color.name === selectedValueBefore[i]);
+                productColors.push(values[index])
+            }
+            setSelectedValue(productColors)
+        }
+
+
     }, [values])
 
     const onChangeSelectedValue = (e: any[]) => {
-        if(type === 'day'){
+        if (type === 'day') {
             const selectedValues = e.sort((a, b) => a.dayPosition - b.dayPosition)
             setSelectedValue(selectedValues)
-            handleChangeState(selectedValues, 'days_open')            
-        } if(type === 'color' || type === 'size'){
-            handleChangeState(e)            
+            handleChangeState(selectedValues, 'days_open')
+        } if (type === 'color' || type === 'size') {
+            handleChangeState(e)
         }
         return setSelectedValue(e)
     }
-    
+
     return (
         <Listbox value={selectedValue} disabled={isListboxDisabled} onChange={onChangeSelectedValue} multiple>
             <div className={`relative mt-1 border border-gray rounded-lg ${!isListboxDisabled ? 'bg-white' : 'bg-gray-200'}`}>
                 <Listbox.Button className="cursor-default w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0">
-                    <span className="block truncate text-start">{selectedValue.map((value) => {return (value.name || value)}).join(', ')}</span>
+                    <span className="block truncate text-start">{selectedValue.map((value) => { return (value.name || value) }).join(', ')}</span>
                     {!selectedValue[0] && <span className="block truncate text-start text-white">--</span>}
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <ChevronUpDownIcon
@@ -73,7 +86,9 @@ const Select_multiple_options: React.FC<{values:Color[] | undefined | Macrocateg
                     leaveTo="opacity-0"
                 >
                     <Listbox.Options className="z-10 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                        {values &&  values.map((value, valueIdx) => 
+                        {values && values.map((value, valueIdx) =>
+
+
                         (
                             <Listbox.Option
                                 key={valueIdx}

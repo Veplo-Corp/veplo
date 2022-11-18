@@ -8,10 +8,9 @@ import { Categories, Category } from '../mook/categories'
 
 
 
-const Select_options: React.FC<{ values: Category , handleClick?: any, type: string }> = ({ values, handleClick, type }) => {
-    const [selected, setSelected] = useState<any>();
-    const [isListboxDisabled, setIsListboxDisabled] = useState(false)    
-
+const Select_options: React.FC<{ values: Category , handleClick?: any, type: string, disabled?:boolean, selectedValueBefore?:any }> = ({ values, handleClick, type, disabled, selectedValueBefore }) => {
+    const [selected, setSelected] = useState<any>(selectedValueBefore || null);
+    const [isListboxDisabled, setIsListboxDisabled] = useState(disabled || false)        
     
 
 
@@ -21,15 +20,13 @@ const Select_options: React.FC<{ values: Category , handleClick?: any, type: str
     }
 
     useEffect(() => {
-        
-
+        if(disabled === true)return      
         if (values === undefined) {
             setIsListboxDisabled(true)
         } else if (values) {
             setIsListboxDisabled(false)
         }
-
-        if (type === 'microcategory') {
+        if (type === 'microcategory' && !selectedValueBefore) {
             setSelected(undefined)
         }
     }, [values])
