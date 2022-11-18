@@ -40,11 +40,19 @@ function createApolloClient() {
         ssrMode: typeof window !== 'undefined',
         link: authLink.concat(httpLink),/* new HttpLink({ uri }) */
         cache: new InMemoryCache({
-            // typePolicies: {
-            //     Product: {
-            //         keyFields: ["id"]
-            //     }
-            // }
+            typePolicies: {
+                Product: {
+                    keyFields: ["id"],
+                    //!non funzionano
+                    //*opzione 1
+                    // merge(existing, incoming, { mergeObjects }) {
+                    //     return mergeObjects(existing, incoming);
+                    // },
+                    //*opzione 2
+                    // merge: true,
+                }
+            }
+            
         }),
         connectToDevTools: true,
         // defaultOptions: {
@@ -74,6 +82,7 @@ export function initApollo(initialState = null) {
             ...initialState
         })
     }
+
 
     if (typeof window === 'undefined') {
         return client

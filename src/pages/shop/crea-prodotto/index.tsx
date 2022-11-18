@@ -18,13 +18,14 @@ import { MICROCATEGORY, Microcategory } from '../../../../components/mook/microc
 import { man_bottom_clothes_sizes, man_top_clothes_sizes, SIZES, Sizes, woman_clothes_sizes } from '../../../../components/mook/sizes'
 import Drawer_Add_Image from '../../../../components/organisms/Drawer_Add_Image'
 import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
+import Product_Form from '../../../../components/organisms/Product_Form'
 import { ToastOpen } from '../../../../components/utils/Toast'
 import uploadPhotoFirebase from '../../../../components/utils/uploadPhotoFirebase'
 import CREATE_PRODUCT from '../../../lib/apollo/mutations/createProduct'
 import EDIT_PRODUCT from '../../../lib/apollo/mutations/editProduct'
 
 
-interface IFormInput {
+export interface IFormInput {
   name: string;
   price: string;
   brand: string;
@@ -86,8 +87,6 @@ const index = () => {
       setSizesSelected(undefined)
       return
     }
-
-
 
     if (product_macrocategory.sizes.split('_')[0] === 'man') {
       console.log('eccolo cazzo');
@@ -229,7 +228,7 @@ const index = () => {
   return (
     <>
       <Desktop_Layout>
-        <div className='flex justify-between w-full mb-96'>
+        {/* <div className='flex justify-between w-full mb-96'>
           <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-6/12 xl:w-5/12" onSubmit={handleSubmit(submitData)}>
             <div className='w-full'>
               <h1 className='italic text-lg lg:text-xl font-extrabold mb-4'>Aggiungi un capo di abbigliamento</h1>
@@ -387,7 +386,8 @@ const index = () => {
 
             </div>
           </form>
-        </div>
+        </div> */}
+        <Product_Form handleSubmitEvent={submitData}/>
       </Desktop_Layout>
       <Controller
         control={control}
