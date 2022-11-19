@@ -29,6 +29,7 @@ const GET_PRODUCTS_FROM_SHOP = gql`
                     city
                     name
                 }
+                gender
             }
         } 
     }

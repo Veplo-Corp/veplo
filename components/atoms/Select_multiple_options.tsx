@@ -26,8 +26,7 @@ const Select_multiple_options: React.FC<{ values: Color[] | undefined | Macrocat
     const [selectedValue, setSelectedValue] = useState<Color[]>([])
     const [isListboxDisabled, setIsListboxDisabled] = useState(false)
 
-
-
+    
 
 
 
@@ -39,18 +38,24 @@ const Select_multiple_options: React.FC<{ values: Color[] | undefined | Macrocat
             setIsListboxDisabled(false)
             
         }
-        if (type === 'size') {
+        if (type === 'size' && !selectedValueBefore) {
             setSelectedValue([])
         }
 
-        if (selectedValueBefore && type == 'color') {
-            let productColors = [];
-            for (let i = 0; i < selectedValueBefore.length; i++) {
-                const index = COLORS.findIndex(color => color.name === selectedValueBefore[i]);
-                productColors.push(values[index])
+        if(selectedValueBefore){
+            if (type == 'color') {
+                let productColors = [];
+                for (let i = 0; i < selectedValueBefore.length; i++) {
+                    const index = COLORS.findIndex(color => color.name === selectedValueBefore[i]);
+                    productColors.push(values[index])
+                }
+                setSelectedValue(productColors)
+            } if (type == 'size'){
+                setSelectedValue(selectedValueBefore)                
             }
-            setSelectedValue(productColors)
         }
+
+        
 
 
     }, [values])

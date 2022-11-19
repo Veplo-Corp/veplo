@@ -61,15 +61,15 @@ function Auth({ children }) {
       if (userAuth) {
         const idToken = await userAuth.getIdToken(true)
         setAuthTokenInLocalStorage(idToken)
-        // console.log(userAuth.uid);
-
+        const tokenResult = await userAuth.getIdTokenResult()        
         // user is logged in, send the user's details to redux, store the current user in the state
         dispatch(
           login({
             email: userAuth.email,
             uid: userAuth.uid,
             idToken: idToken,
-            emailVerified: userAuth.emailVerified
+            emailVerified: userAuth.emailVerified,
+            isShop: tokenResult.claims.isShop ? true : false
           })
         );
         //!router.push('/impresa/home')

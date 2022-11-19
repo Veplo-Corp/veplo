@@ -46,20 +46,8 @@ const index = () => {
   const [editProduct, editProductResult] = useMutation(EDIT_PRODUCT);
 
   const [openModalMath, setOpenModalMath] = useState(1);
-
-
-
-
-
-
-
-
-
   const submitData = async ({ name, price, brand, colors, macrocategory, microcategory, sizes, photos, gender }: IFormInput) => {
-
     // console.log(name, price, brand, colors, macrocategory, microcategory, sizes, photos);
-
-
     // if (!brand || !colors || !macrocategory || !microcategory || !sizes || !photos[2] || !gender) {
     //   return setOpenModalMath(Math.random())
     // }
