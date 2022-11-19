@@ -8,7 +8,7 @@ interface Props {
     description: string,
     closeText: string,
     openModalMath: number,
-    consfirmText?: string,
+    confirmText?: string,
     handleEvent?: any,
     data?: any
 }

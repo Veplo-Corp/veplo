@@ -2,9 +2,9 @@ import React, { useReducer, useState } from 'react'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import { Button } from '@chakra-ui/react'
 import BlackButton from '../../../../components/atoms/BlackButton'
-import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '../../../config/firebase'
+import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from '../../../config/firebase'
 import { useDispatch, useSelector } from 'react-redux'
-import { login } from '../../store/reducers/user'
+import { login, logout } from '../../store/reducers/user'
 import { sendEmailVerificationHanlder } from '../../../../components/utils/emailVerification'
 import resetPassword from '../../../../components/utils/resetPassword'
 import { useMutation, useQuery } from '@apollo/client'
@@ -12,25 +12,15 @@ import DELETE_PRODUCT from '../../../lib/apollo/mutations/deleteProduct'
 import { setAuthTokenInLocalStorage } from '../../../../components/utils/setAuthTokenInLocalStorage'
 import GET_SINGLE_PRODUCT from '../../../lib/apollo/queries/getSingleProduct'
 import { initApollo } from '../../../lib/apollo'
+import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
 
 
 
 
 const index = () => {
 
-  //! test cache GraphQL
-  // const ElementTest = useQuery(GET_SINGLE_PRODUCT, {
-  //   fetchPolicy: 'cache-only',
-  //   nextFetchPolicy: 'cache-only',
-  //   variables: {
-  //       id: '63693558a3aab0f65e18b1c1', /* 63693558a3aab0f65e18b1c1 */
-  //   },
 
-  // })
 
-  // console.log(ElementTest.data);
-
- 
 
 
 
@@ -42,8 +32,8 @@ const index = () => {
 
   const [password, setpassword] = useState<string>('')
   const user = useSelector((state) => state.user.user);
-  console.log(user);
-  
+  const [openModalMath, setOpenModalMath] = useState(1);
+
 
   const dispatch = useDispatch();
 
@@ -61,7 +51,7 @@ const index = () => {
     setisValidEmail(false)
   }
 
-  const passwordHandler = (event) => {    
+  const passwordHandler = (event) => {
     setpassword(event.target.value)
     if (event.target.value.length >= 8) {
       return setisValidPassword(true)
@@ -69,7 +59,7 @@ const index = () => {
   }
 
 
-  const passwordErrorHandler = () => {    
+  const passwordErrorHandler = () => {
     if (password.length >= 8) {
       return setisValidPassword(true)
     } else {
@@ -126,7 +116,10 @@ const index = () => {
   // }
 
   const handleSubmit = (event) => {
+
     event.preventDefault();
+
+
     if (typeForm === 'registration') {
       createUserWithEmailAndPassword(auth, email, password)
         .then(async (userCredential) => {
@@ -155,8 +148,9 @@ const index = () => {
 
         });
     } else {
+
       signInWithEmailAndPassword(auth, email, password)
-        .then(async(userCredential) => {
+        .then(async (userCredential) => {
           //! Signed in update automatially in _app 
           // const user = userCredential.user;
           // const idToken = await userCredential.user.getIdToken();
@@ -169,9 +163,19 @@ const index = () => {
           //     idToken: idToken
           //   })
           // );
+          const tokenResult = await userCredential.user.getIdTokenResult();
+          const isShop = tokenResult.claims.isShop ? true : false
+
+          if (!isShop) {
+            console.log('logout')
+            signOut(auth)
+            dispatch(logout)
+            return setOpenModalMath(Math.random())
+          }
 
           setemail('')
           setpassword('')
+
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -183,15 +187,16 @@ const index = () => {
   }
 
   const LoginButton = () => {
-
-
-
     return (
       <>
         <p className='mr-1 text-black	'>hai già un account?</p>
-        <Button className='underline' onClick={() => settypeForm('login')} variant='link' colorScheme={'black'}>
+        <Button className='underline' onClick={() => {
+          settypeForm('login')
+        }
+        } variant='link' colorScheme={'black'}>
           Accedi
         </Button>
+
       </>
     )
   }
@@ -201,6 +206,8 @@ const index = () => {
   return (
 
     <Desktop_Layout>
+      <Modal_Error_Shop openModalMath={openModalMath} title="Accesso negato" description="il tuo account non è collegato a nessuno shop" closeText='chiudi' confirmText='chiedi aiuto' />
+
       <div className='flex justify-between'>
         <form className="p-3 w-fit space-y-4" onSubmit={handleSubmit}>
           <div>
@@ -254,8 +261,8 @@ const index = () => {
             <Button disabled={isValidEmail == null || false} onClick={() => resetPassword(email)} colorScheme={'orange'} borderRadius={10} size={'md'}>resetta password</Button>
           </div>}
           <div className='flex'>
-            {(typeForm === 'registration') && <LoginButton />}
-            {(typeForm === 'reset_password') && <LoginButton />}
+            {(typeForm === 'registration') && <LoginButton openModalMath={openModalMath} />}
+            {(typeForm === 'reset_password') && <LoginButton openModalMath={openModalMath} />}
 
             {typeForm === 'login' &&
               <div className='grid'>
