@@ -72,7 +72,8 @@ const index = () => {
                 macrocategory: product.macroCategory,
                 microcategory: product.microCategory,
                 sizes: product.sizes,
-                photos: product.photos
+                photos: product.photos,
+                gender: product.gender
             }} type={'edit'}  disabled={true}/>}
         </Desktop_Layout>
     )

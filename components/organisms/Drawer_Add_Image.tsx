@@ -98,14 +98,8 @@ const resizeFile = (file) =>
     });
 
 
-const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: any }> = ({ openDraw, confirmPhotos }) => {
+const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: any, imagesUploadedBefore?: string[] }> = ({ openDraw, confirmPhotos, imagesUploadedBefore }) => {
 
-    useEffect(() => {
-        if (!openDraw) {
-            return
-        }
-        setisOpen(true)
-    }, [openDraw])
 
     //* react image crop
     const [isOpen, setisOpen] = useState(false);
@@ -117,16 +111,29 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     const imgRef = useRef<HTMLImageElement>(null)
     const [url, setUrl] = useState()
     const [blob, setBlob] = useState()
-    const [images, setImages] = useState<Image[]>([])
+    const [images, setImages] = useState<Image[] | string[]>([])
     const [isDisabledButton, setIsDisabledButton] = useState(true)
     const [positionPhoto, setPositionPhoto] = useState(null);
     const [showCroppedImage, setShowCroppedImage] = useState(false);
 
 
+    useEffect(() => {
+        if (!openDraw) {
+            return
+        }
+        setisOpen(true)
+
+    }, [openDraw])
+
+    // useEffect(() => {
+    //     console.log(imgSrc);
+    // }, [imgSrc])
 
     useEffect(() => {
-        console.log(imgSrc);
-    }, [imgSrc])
+        if (imagesUploadedBefore != []) {
+            setImages(imagesUploadedBefore)
+        }
+    }, [imagesUploadedBefore])
 
     const [crop, setCrop] = useState<Crop>(
         {
@@ -141,26 +148,30 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     const onHanldeConfirm = async () => {
 
         //add image Blob in the array of images
-        setImages((prevstate: Image[]) => {
-
+        setImages((prevstate: Image[] | string[]) => {
+            console.log('position photo: ', positionPhoto);
+            
             const newImage: Image = {
                 type: 'test',
                 blob: blob,
                 url: url,
                 position: positionPhoto === null ? prevstate.length : positionPhoto
             }
+            
 
             if (positionPhoto !== null) {
                 let prevstateImages = [...prevstate]
-                prevstateImages = prevstateImages.filter(image => image.position !== positionPhoto)
-
+                //prevstateImages = prevstateImages.filter(image => image.position !== positionPhoto)
+                prevstateImages.splice(positionPhoto,1,newImage)
+                console.log(prevstateImages);
+                
                 let updateImages = [
                     ...prevstateImages,
-                    newImage
+                    //*vecchio modello
+                    //newImage
                 ]
-
-                updateImages.sort((a, b) => a.position - b.position)
-                console.log(updateImages[0]);
+                // updateImages.sort((a, b) => a.position - b.position)
+                // console.log(updateImages[0]);
 
                 return updateImages
 
@@ -169,6 +180,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                     ...prevstate,
                     newImage
                 ]
+
                 console.log(updateImages);
                 return updateImages
             }
@@ -190,6 +202,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
         setShowCroppedImage(true)
         //set the posizion of the cropp
         setPositionPhoto(position)
+        
     };
 
 
@@ -267,7 +280,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                             setBlob(blob)
                             setIsDisabledButton(false)
                         }, 'image/webp', 0.3);
-                    } else if(kb > 600 && kb <=3000) {
+                    } else if (kb > 600 && kb <= 3000) {
                         canvas.toBlob(function (blob) {
                             if (!blob) { return }
                             const url = URL.createObjectURL(blob);
@@ -428,17 +441,17 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                 </div>
                                 <div className="min-h-screen items-center justify-center mb-96 ">
                                     <div className='w-full md:mr-11 md:w-fit grid gap-5 grid-cols-2 justify-items-start mt-8'>
-                                        {images.map((image: Image) => {
+                                        {images.map((image: Image, position) => {
                                             return (
-                                                <div key={image.position * Math.random()} className='md:w-44 lg:w-56 h-fit'>
+                                                <div key={position} className='md:w-44 lg:w-56 h-fit'>
                                                     <div className='flex justify-between mb-1'>
-                                                        <p>{ImageTextFormat[image.position]}</p>
+                                                        <p>{ImageTextFormat[position]}</p>
                                                         <Box
                                                             className='my-auto cursor-pointer'
                                                             _active={{
                                                                 transform: 'scale(0.90)',
                                                             }}
-                                                            onClick={() => handleClick(image.position)}
+                                                            onClick={() => handleClick(position)}
                                                         >
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
@@ -449,9 +462,18 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
 
 
                                                     </div>
-                                                    <img
-                                                        className='rounded'
-                                                        src={image.url} alt="" />
+                                                    {!image.url ? (
+                                                        <img
+                                                            className='rounded'
+                                                            src={image} alt="" />
+                                                    ): 
+                                                    (
+                                                        <img
+                                                            className='rounded'
+                                                            src={image.url} alt="" />
+                                                    )
+                                                    }
+
                                                 </div>
                                             )
                                         })}

@@ -27,7 +27,9 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
         mode: "all",
         defaultValues: defaultValues
     });
-    
+
+
+
 
 
 
@@ -39,7 +41,6 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
     const [openDrawNumber, setOpenDrawNumber] = useState()
     const brands = useRef<string[]>(BRANDS)
     const colors = useRef<Color[]>(COLORS)
-    const macrocategories = useRef<Macrocategory[]>(MACROCATEGORY)
     const microcategories = useRef<Microcategory[]>(MICROCATEGORY)
     const categories = useRef<Categories>(CATEGORIES)
     const ARRAY_woman_clothes_sizes = useRef<string[]>(woman_clothes_sizes)
@@ -49,44 +50,59 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
 
 
     useEffect(() => {
-        if (type === 'edit') return
-        const product_macrocategory = watch('macrocategory')
-        console.log(product_macrocategory);
-
-        if (!product_macrocategory) {
-
-            setMicrocategorySelected(undefined);
-            setSizesSelected(undefined)
-            return
-        }
-
-        if (product_macrocategory.sizes.split('_')[0] === 'man') {
-            console.log('eccolo cazzo');
-            setValue('gender', 'M');
-        } else if (product_macrocategory.sizes.split('_')[0] === 'woman') {
-            setValue('gender', 'F');
-        }
-        setMicrocategorySelected(watch('macrocategory').types)
-
-        //* da migliorare logica
-        if (watch('macrocategory').sizes === 'woman_clothes_sizes') {
-            setSizesSelected(ARRAY_woman_clothes_sizes.current)
-        }
-        else if (watch('macrocategory').sizes === 'man_top_clothes_sizes') {
-            setSizesSelected(ARRAY_man_top_clothes_sizes.current)
-            console.log('passa qui 1');
-
-        }
-        else if (watch('macrocategory').sizes === 'man_bottom_clothes_sizes') {
-            setSizesSelected(ARRAY_man_bottom_clothes_sizes.current)
-            console.log('passa qui 1');
+        if (type === 'edit') {
+            if (watch('gender') === 'F') {
+                const sizetype = categories.current.donna.abbigliamento.filter(category => category.name === watch('macrocategory'))[0].sizes;
+                console.log(sizetype);
+                handleSizeType(sizetype)
+            } else if (watch('gender') === 'M') {
+                const sizetype = categories.current.uomo.abbigliamento.filter(category => category.name === watch('macrocategory'))[0].sizes;
+                console.log(sizetype);
+                handleSizeType(sizetype)
+            }
         }
 
 
+        if (type !== 'edit') {
+
+
+            const product_macrocategory = watch('macrocategory')
+
+            if (!product_macrocategory) {
+
+                setMicrocategorySelected(undefined);
+                setSizesSelected(undefined)
+                return
+            }
+
+            if (product_macrocategory.sizes.split('_')[0] === 'man') {
+                console.log('eccolo cazzo');
+                setValue('gender', 'M');
+            } else if (product_macrocategory.sizes.split('_')[0] === 'woman') {
+                setValue('gender', 'F');
+            }
+            setMicrocategorySelected(watch('macrocategory').types)
+
+            //* da migliorare logica
+            handleSizeType(watch('macrocategory').sizes)
+        }
 
 
     }, [watch('macrocategory')])
 
+    const handleSizeType = (sizetype: string) => {
+        //* da migliorare logica
+        if (sizetype === 'woman_clothes_sizes') {
+            setSizesSelected(ARRAY_woman_clothes_sizes.current)
+        }
+        else if (sizetype === 'man_top_clothes_sizes') {
+            setSizesSelected(ARRAY_man_top_clothes_sizes.current)
+
+        }
+        else if (sizetype === 'man_bottom_clothes_sizes') {
+            setSizesSelected(ARRAY_man_bottom_clothes_sizes.current)
+        }
+    }
 
     const onChangePrice = (e) => {
         let inputValue: string = e.target.value.replace(',', '.');
@@ -202,8 +218,8 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                 name="macrocategory"
                                 rules={{ required: false }}
                                 render={() => (
-                                    <Select_options 
-                                    values={microcategorySelected}
+                                    <Select_options
+                                        values={microcategorySelected}
                                         disabled={disabled}
                                         selectedValueBefore={watch('microcategory')}
                                         type={'microcategory'}
@@ -224,6 +240,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                 rules={{ required: false }}
                                 render={() => (
                                     <Select_multiple_options values={sizesSelected} type={'size'}
+                                        selectedValueBefore={watch('sizes')}
                                         handleChangeState={(sizes) => {
                                             setValue('sizes', sizes);
                                         }}
@@ -232,12 +249,11 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                             />
                         </Div_input_creation>
                         <Div_input_creation text='Carica immagini'>
-
                             <Box
                                 rounded={10}
                                 padding={3.5}
                                 mt={1}
-                                backgroundColor={`${watch('photos')} && ${watch('photos').length < 3 ? 'white' : 'gray.200'}`}
+                                // backgroundColor={`${watch('photos')} && ${watch('photos').length < 2 ? 'white' : 'gray.200'}`}
                                 borderWidth={1}
                                 borderColor={'gray.200'}
                                 lineHeight='tight'
@@ -289,7 +305,9 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                 name="photos"
                 rules={{ required: false }}
                 render={() => (
-                    <Drawer_Add_Image openDraw={openDrawNumber} confirmPhotos={(images: string[]) => {
+                    <Drawer_Add_Image openDraw={openDrawNumber} imagesUploadedBefore={watch('photos')} confirmPhotos={(images: string[]) => {
+                        console.log(images);
+                        
                         setValue('photos', images);
                     }} />
                 )}

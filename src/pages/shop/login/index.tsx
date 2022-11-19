@@ -42,7 +42,8 @@ const index = () => {
 
   const [password, setpassword] = useState<string>('')
   const user = useSelector((state) => state.user.user);
-
+  console.log(user);
+  
 
   const dispatch = useDispatch();
 
@@ -156,22 +157,21 @@ const index = () => {
     } else {
       signInWithEmailAndPassword(auth, email, password)
         .then(async(userCredential) => {
-          // Signed in 
-          const user = userCredential.user;
-          const idToken = await userCredential.user.getIdToken();
-          setAuthTokenInLocalStorage(idToken)
-          dispatch(
-            login({
-              email: user.email,
-              uid: user.uid,
-              emailVerified: user.emailVerified,
-              idToken: idToken
-            })
-          );
+          //! Signed in update automatially in _app 
+          // const user = userCredential.user;
+          // const idToken = await userCredential.user.getIdToken();
+          // setAuthTokenInLocalStorage(idToken)
+          // dispatch(
+          //   login({
+          //     email: user.email,
+          //     uid: user.uid,
+          //     emailVerified: user.emailVerified,
+          //     idToken: idToken
+          //   })
+          // );
 
           setemail('')
           setpassword('')
-          // ...
         })
         .catch((error) => {
           const errorCode = error.code;
