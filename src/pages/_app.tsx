@@ -16,6 +16,8 @@ import { ApolloProvider } from '@apollo/client'
 import { client, useApollo } from '../lib/apollo'
 import { getAddressFromLocalStorage } from '../../components/utils/getAddress_from_LocalStorage'
 import { setAuthTokenInLocalStorage } from '../../components/utils/setAuthTokenInLocalStorage'
+import Modal_Error_Shop, { ErrorModal } from '../../components/organisms/Modal_Error_Shop'
+import modal_error from './store/reducers/modal_error'
 
 
 const theme = extendTheme({
@@ -34,12 +36,10 @@ const theme = extendTheme({
 
 function Auth({ children }) {
   const router = useRouter()
-  // const user = useSelector((state) => state.user);
-  // const address_user = useSelector((state) => state.address);
   // console.log(address_user);
-
-
-
+  const modal:ErrorModal = useSelector((state) => state.modal.modal);
+  
+    
   const dispatch = useDispatch();
 
 
@@ -58,14 +58,14 @@ function Auth({ children }) {
       })
     );
 
-    onAuthStateChanged(auth, async(userAuth) => {
+    onAuthStateChanged(auth, async (userAuth) => {
       if (userAuth) {
         const idToken = await userAuth.getIdToken(true)
         setAuthTokenInLocalStorage(idToken)
-        const tokenResult = await userAuth.getIdTokenResult()        
+        const tokenResult = await userAuth.getIdTokenResult()
         // user is logged in, send the user's details to redux, store the current user in the state
         const isShop = tokenResult.claims.isShop ? true : false
-        if(!isShop)return
+        if (!isShop) return
 
         dispatch(
           login({
@@ -85,11 +85,14 @@ function Auth({ children }) {
   return (
     <>
       {children}
+      {modal && <Modal_Error_Shop openModalMath={modal.openModalMath} title={modal.title} description={modal.description} closeText={modal.closeText} />}
     </>
   )
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
+
+
 
   const apolloClient = useApollo(pageProps.initialApolloState)
   //! new mode to initialize apollo
@@ -102,6 +105,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <ChakraProvider theme={theme}>
             <Header></Header>
             <Component {...pageProps} />
+
           </ChakraProvider>
         </Auth>
       </ApolloProvider>

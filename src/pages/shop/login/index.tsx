@@ -13,6 +13,8 @@ import { setAuthTokenInLocalStorage } from '../../../../components/utils/setAuth
 import GET_SINGLE_PRODUCT from '../../../lib/apollo/queries/getSingleProduct'
 import { initApollo } from '../../../lib/apollo'
 import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
+import { handleErrorFirebase } from '../../../../components/utils/handleErrorFirebase'
+import { setModalTitleAndDescription, handleOpenModal } from '../../store/reducers/modal_error'
 
 
 
@@ -115,73 +117,73 @@ const index = () => {
   //   }    
   // }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
 
     event.preventDefault();
 
 
     if (typeForm === 'registration') {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(async (userCredential) => {
-          // Signed in 
-          const user = userCredential.user;
-          const idToken = await userCredential.user.getIdToken(true);
-          setAuthTokenInLocalStorage(idToken)
-          console.log(user);
-          sendEmailVerificationHanlder()
-          dispatch(
-            login(
-              {
-                email: user.email,
-                uid: user.uid,
-                idToken: await user.getIdToken(true)
-              }
-            )
-          );
-          setemail('')
-          setpassword('')
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(error);
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+        // Signed in 
+        const user = userCredential.user;
+        const idToken = await userCredential.user.getIdToken(true);
+        setAuthTokenInLocalStorage(idToken)
+        console.log(user);
+        sendEmailVerificationHanlder()
+        dispatch(
+          login(
+            {
+              email: user.email,
+              uid: user.uid,
+              idToken: await user.getIdToken(true)
+            }
+          )
+        );
+        setemail('')
+        setpassword('')
+      } catch (error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        //console.log(errorCode);
+        console.log(errorCode);
+        const errorForModal = handleErrorFirebase(error.code)
+        dispatch(setModalTitleAndDescription({
+          title: errorForModal?.title,
+          description: errorForModal?.description
+        }))
 
-        });
+
+      }
     } else {
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password)
+        const tokenResult = await userCredential.user.getIdTokenResult();
+        const isShop = tokenResult.claims.isShop ? true : false
 
-      signInWithEmailAndPassword(auth, email, password)
-        .then(async (userCredential) => {
-          //! Signed in update automatially in _app 
-          // const user = userCredential.user;
-          // const idToken = await userCredential.user.getIdToken();
-          // setAuthTokenInLocalStorage(idToken)
-          // dispatch(
-          //   login({
-          //     email: user.email,
-          //     uid: user.uid,
-          //     emailVerified: user.emailVerified,
-          //     idToken: idToken
-          //   })
-          // );
-          const tokenResult = await userCredential.user.getIdTokenResult();
-          const isShop = tokenResult.claims.isShop ? true : false
+        if (!isShop) {
+          console.log('logout')
+          signOut(auth)
+          dispatch(logout({}))
+          return setOpenModalMath(Math.random())
+        }
 
-          if (!isShop) {
-            console.log('logout')
-            signOut(auth)
-            dispatch(logout)
-            return setOpenModalMath(Math.random())
-          }
+        setemail('')
+        setpassword('')
+      } catch (error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        //console.log(errorCode);
+        console.log('cane');
+        const errorForModal = handleErrorFirebase(error.code)
 
-          setemail('')
-          setpassword('')
+        dispatch(setModalTitleAndDescription({
+          title: errorForModal?.title,
+          description: errorForModal?.description
+        }))
+        dispatch(handleOpenModal)
+      }
 
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode);
-        });
     }
 
   }
@@ -207,7 +209,6 @@ const index = () => {
 
     <Desktop_Layout>
       <Modal_Error_Shop openModalMath={openModalMath} title="Accesso negato" description="il tuo account non è collegato a nessuno shop" closeText='chiudi' confirmText='chiedi aiuto' />
-
       <div className='flex justify-between'>
         <form className="p-3 w-fit space-y-4" onSubmit={handleSubmit}>
           <div>

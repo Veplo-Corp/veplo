@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import React, { useEffect } from 'react'
 import { Fragment, useState } from 'react'
 
-interface Props {
+export interface ErrorModal {
     title: string,
     description: string,
     closeText: string,
@@ -13,7 +13,7 @@ interface Props {
     data?: any
 }
 
-const Modal_Error_Shop: React.FC<Props> = ({ title, description, closeText, confirmText, openModalMath,handleEvent, data  }) => {    
+const Modal_Error_Shop: React.FC<ErrorModal> = ({ title, description, closeText, confirmText, openModalMath,handleEvent, data  }) => {    
     let [isOpen, setIsOpen] = useState(false)
 
     function closeModal() {
