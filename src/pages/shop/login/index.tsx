@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import { Button } from '@chakra-ui/react'
 import BlackButton from '../../../../components/atoms/BlackButton'
@@ -15,16 +15,14 @@ import { initApollo } from '../../../lib/apollo'
 import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
 import { handleErrorFirebase } from '../../../../components/utils/handleErrorFirebase'
 import { setModalTitleAndDescription, handleOpenModal } from '../../store/reducers/modal_error'
+import { useRouter } from 'next/router'
 
 
 
 
 const index = () => {
-
-
-
-
-
+  const {type}: 'registration' | 'login' | 'reset_password' = useRouter().query
+  
 
   const [showPassword, setshowPassword] = useState<boolean>(false)
   const [email, setemail] = useState<string>('')
@@ -32,10 +30,18 @@ const index = () => {
   const [isValidPassword, setisValidPassword] = useState<boolean | null>(null)
   const [typeForm, settypeForm] = useState<'registration' | 'login' | 'reset_password'>('registration')
 
+
+  useEffect(() => {
+    if(type){
+      settypeForm(type)
+    }    
+  }, [type])
+  
+
   const [password, setpassword] = useState<string>('')
   const user = useSelector((state) => state.user.user);
   const [openModalMath, setOpenModalMath] = useState(1);
-
+  
 
   const dispatch = useDispatch();
 
@@ -174,8 +180,8 @@ const index = () => {
         const errorCode = error.code;
         const errorMessage = error.message;
         //console.log(errorCode);
-        console.log('cane');
-        const errorForModal = handleErrorFirebase(error.code)
+        console.log(errorCode);
+        const errorForModal = handleErrorFirebase(errorCode)
 
         dispatch(setModalTitleAndDescription({
           title: errorForModal?.title,

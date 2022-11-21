@@ -37,9 +37,9 @@ const theme = extendTheme({
 function Auth({ children }) {
   const router = useRouter()
   // console.log(address_user);
-  const modal:ErrorModal = useSelector((state) => state.modal.modal);
-  
-    
+  const modal: ErrorModal = useSelector((state) => state.modal.modal);
+
+
   const dispatch = useDispatch();
 
 
@@ -85,7 +85,7 @@ function Auth({ children }) {
   return (
     <>
       {children}
-      {modal && <Modal_Error_Shop openModalMath={modal.openModalMath} title={modal.title} description={modal.description} closeText={modal.closeText} />}
+      {modal && <Modal_Error_Shop openModalMath={modal.openModalMath} title={modal.title} description={modal.description} closeText={modal.closeText} handleEvent={modal.handleEvent} confirmText={modal.confirmText} />}
     </>
   )
 }
@@ -101,15 +101,14 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <ApolloProvider client={apolloClient} > {/* client={clientApollo} */}
-        <Auth>
-          <ChakraProvider theme={theme}>
+        <ChakraProvider theme={theme}>
+          <Auth>
             <Header></Header>
             <Component {...pageProps} />
-
-          </ChakraProvider>
-        </Auth>
+          </Auth>
+        </ChakraProvider>
       </ApolloProvider>
-    </Provider>
+    </Provider >
 
   )
 }

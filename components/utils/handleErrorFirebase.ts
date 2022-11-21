@@ -1,15 +1,25 @@
 export const handleErrorFirebase = (error) => {
     switch (error) {
         case 'auth/email-already-in-use':
-            console.log('eccolo');
-            
             return {
                 title: 'Email già esistente',
-                description: 'impossibile registrare la mail perchè già esistente'
+                description: "impossibile registrare la mail perchè hai già effettuato l'accesso"
             }
-            break;
-    
+        case 'auth/wrong-password':
+            return {
+                title: 'Password errata',
+                description: "la password inserita non è corretta"
+            }
+        case 'auth/user-not-found':
+            return {
+                title: 'Email errata',
+                description: "l'email inserita non è collegata a nessun account"
+            }
         default:
-            break;
+            return {
+                title: 'Si è verificato un errore!',
+                description: "per ora è impossibile procedere. riprova più tardi"
+            }
+
     }
 }

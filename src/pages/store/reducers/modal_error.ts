@@ -16,7 +16,9 @@ import { stat } from 'fs';
 // }
 
 
+const functionEvent = () => {
 
+}
 
 
 
@@ -27,7 +29,9 @@ export const userState = createSlice({
             title: 'Si è verificato un errore!',
             description: 'per ora è impossibile procedere. riprova più tardi',
             closeText: 'chiudi',
-            openModalMath: 1
+            openModalMath: 1,
+            handleEvent: functionEvent(),
+            confirmText: ''
         }
     },
     reducers: {
