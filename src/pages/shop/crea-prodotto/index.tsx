@@ -3,7 +3,7 @@ import { CheckIcon, DownloadIcon } from '@chakra-ui/icons'
 import { Box, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Autocomplete from '../../../../components/atoms/Autocomplete_Headless'
 import BlackButton from '../../../../components/atoms/BlackButton'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
@@ -19,10 +19,12 @@ import { man_bottom_clothes_sizes, man_top_clothes_sizes, SIZES, Sizes, woman_cl
 import Drawer_Add_Image from '../../../../components/organisms/Drawer_Add_Image'
 import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
 import Product_Form from '../../../../components/organisms/Product_Form'
+import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required'
 import { ToastOpen } from '../../../../components/utils/Toast'
 import uploadPhotoFirebase from '../../../../components/utils/uploadPhotoFirebase'
 import CREATE_PRODUCT from '../../../lib/apollo/mutations/createProduct'
 import EDIT_PRODUCT from '../../../lib/apollo/mutations/editProduct'
+import { setModalTitleAndDescription } from '../../store/reducers/modal_error'
 
 
 export interface IFormInput {
@@ -39,6 +41,7 @@ export interface IFormInput {
 
 const index = () => {
   const { addToast } = ToastOpen();
+  const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user.user);
   //* graphQL
@@ -65,7 +68,12 @@ const index = () => {
       const priceToDB = Number(price.replace(',', '.'))
 
       if (!priceToDB || priceToDB <= 0.01) {
+        dispatch(setModalTitleAndDescription({
+          title: 'Manca qualcosa',
+          description: "Impossibile creare il prodotto. Controlla di aver inserito tutti dati in maniera corretta"
+        }))
         return setOpenModalMath(Math.random())
+        
       }
 
       const Product = {
@@ -132,18 +140,11 @@ const index = () => {
 
 
   return (
-    <>
+    <Shop_UID_Required>
       <Desktop_Layout>
-
-        <Product_Form handleSubmitEvent={submitData} defaultValues={{photos:[]}} disabled={false}/>
+        <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false} />
       </Desktop_Layout>
-      <Modal_Error_Shop openModalMath={openModalMath} title='Manca qualcosa' description='Impossibile creare il prodotto.
-      Controlla di aver inserito tutti dati in maniera corretta' closeText='chiudi' />
-
-
-
-
-    </>
+    </Shop_UID_Required>
 
   )
 }

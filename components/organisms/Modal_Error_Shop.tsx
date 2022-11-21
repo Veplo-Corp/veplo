@@ -74,7 +74,7 @@ const Modal_Error_Shop: React.FC<ErrorModal> = ({ title, description, closeText,
                                             {closeText}
                                         </Button>
                                     </div>
-                                    {confirmText &&
+                                    {confirmText && confirmText.length>0 &&
                                         <div className="mt-4">
                                             <Button
                                                 onClick={() => {
