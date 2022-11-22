@@ -3,20 +3,23 @@ import Link from 'next/link'
 import { NextRouter, useRouter } from 'next/router'
 import Navbar from '../molecules/Home_Navbar'
 import JoinUs_Navbar from '../molecules/JoinUs_Navbar'
-import { Box, useToast } from '@chakra-ui/react'
+import { Box, Button, useToast } from '@chakra-ui/react'
 import Input_Search_Item from '../atoms/Input_Search_Item'
 import Circle_Color from '../atoms/Circle_Color'
 import { useSelector } from 'react-redux'
 import Drawer_Address from './Drawer_Address'
 import redirectToAddressForm from '../utils/redirect_to_address_form'
 import Show_Categories_NavBar from '../molecules/Show_Categories_NavBar'
+import Drawer_User_Menu from './Drawer_User_Menu'
 
 
 const Header = () => {
     const router: NextRouter = useRouter()
     const genere: 'uomo' | 'donna' | undefined = router.query.genere
     const [showMenu, setshowMenu] = useState(false);
-    const [openDrawer, setopenDrawer] = useState(1)
+    const [openDrawer, setopenDrawer] = useState(1);
+    const [openDrawerMenuMobile, setOpenDrawerMenuMobile] = useState(1);
+
     const toast = useToast()
 
     const [showCategory, setshowCategory] = useState({
@@ -28,7 +31,7 @@ const Header = () => {
 
     const handleShowCategory = (value?, gender?) => {
         if (address_user) {
-            if (value === false) {                
+            if (value === false) {
                 setshowCategory({
                     show: false,
                     gender: ''
@@ -61,24 +64,33 @@ const Header = () => {
             gender: ''
         })} >
             <Drawer_Address openDrawerMath={openDrawer} />
+            <Drawer_User_Menu handleChangeAddress={() => {
+                setopenDrawer(Math.random())
+            }} address_user={address_user}  openDrawerMath={openDrawerMenuMobile} />
             <JoinUs_Navbar />
             {/* Menu button, Search button and Dintorni Logo for screen >=md */}
             <div className=" fixed z-50 top-3 right-2 md:hidden">
-                <button type="button" className="inline-flex mt-0.5 rounded-md px-1  active:bg-gray-100 focus:outline-none" aria-expanded="false">
+                <button
+
+                    type="button" className="inline-flex mt-0.5 rounded-md px-1  active:bg-gray-100 focus:outline-none" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                     </svg>
                 </button>
             </div>
             <div className="pl-2 md:pl-8 fixed z-50 top-3 md:top-4  right-12 md:hidden">
-                <button type="button" className="inline-flex mt-0.5 rounded-md px-1 active:bg-gray-100 focus:outline-none" aria-expanded="false">
+                <button
+                    onClick={() => {
+                        setOpenDrawerMenuMobile(Math.random())
+                    }}
+                    type="button" className="inline-flex mt-0.5 rounded-md px-1 active:bg-gray-100 focus:outline-none" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
 
                 </button>
             </div>
-            <div className="hidden md:flex pl-8 fixed z-50 top-10 -mt-px"> {/* lg:w-0 lg:flex-1 */}
+            <div className="hidden md:flex pl-2 lg:pl-8 fixed z-50 top-10 -mt-px"> {/* lg:w-0 lg:flex-1 */}
                 {!address_user && <Link href="/">
                     <a className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</a>
                 </Link>}
@@ -108,19 +120,25 @@ const Header = () => {
                                     <a className="font-black mt-2 ml-5 text-2xl italic text-black-900  ">DINTORNI</a>
                                 </Link>
                             </div>
-                            <div className="hidden md:flex gap-3 fixed top-9 right-8 z-10"> {/* pr-80 */}
+                            <div className="hidden md:flex gap-3 fixed top-9 right-2 lg:right-8 z-10"> {/* pr-80 */}
                                 <Input_Search_Item />
                                 <Link href={'/'}>
                                     <a>
                                         <Circle_Color colors={['gray.200']} dimension={10} space={'0'} />
                                     </a>
                                 </Link>
+                                <Button variant='ghost' borderRadius={100} colorScheme={'gray'} p={0} ml={'-1'}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
+                                        <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
+                                    </svg>
+
+                                </Button>
                             </div>
                         </div>
 
                     </div>
                     {showCategory.show &&
-                        <Show_Categories_NavBar gender={showCategory.gender} closeCategory={handleShowCategory}/>
+                        <Show_Categories_NavBar gender={showCategory.gender} closeCategory={handleShowCategory} />
                     }
                 </div>
 

@@ -3,7 +3,7 @@ import React from 'react'
 
 const Input_Search_Item = () => {
     return (
-        <div className='w-auto md:w-56 lg:w-72'>
+        <div className='w-auto md:w-48 lg:w-56 xl:w-72'>
             <InputGroup
             >
                 <Input 
