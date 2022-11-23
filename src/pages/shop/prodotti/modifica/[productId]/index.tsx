@@ -15,7 +15,7 @@ import { setModalTitleAndDescription } from '../../../../store/reducers/modal_er
 
 const index = () => {
     const { addToast } = ToastOpen();
-    const [editProduct, editProductResult] = useMutation(EDIT_PRODUCT);
+    const [editProduct] = useMutation(EDIT_PRODUCT)
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.user);
 
@@ -54,7 +54,7 @@ const index = () => {
 
 
     const submitData = async ({ name, price, brand, colors, macrocategory, microcategory, sizes, photos, gender }: IFormInput) => {
-        console.log(photos);
+        //console.log(photos);
 
         let colorsToDB;
         colorsToDB = colors.map((color) => {
@@ -64,9 +64,11 @@ const index = () => {
         if (colorsToDB[0] === undefined) {
             colorsToDB = colors
         }
+
+        
         let priceToDB = price
         if (typeof priceToDB != "number") {
-            const priceToDB = Number(price.replace(',', '.'))
+            priceToDB = Number(price.replace(',', '.'))
             if (!priceToDB || priceToDB <= 0.01) {
                 dispatch(setModalTitleAndDescription({
                     title: 'Manca qualcosa',
@@ -78,13 +80,13 @@ const index = () => {
 
         let photoURLForDB = [];
         let i = 1;
-        for await (let photo of photos) {            
+        for await (let photo of photos) {
             try {
-                if(photo.blob){                    
+                if (photo.blob) {
                     const url = await uploadPhotoFirebase('photo' + i, photo.blob, productId, user.uid)
                     photoURLForDB.push(url)
                 } else {
-                    console.log('passa');
+                    //console.log('passa');
                     photoURLForDB.push(photo)
                 }
                 i++
@@ -93,8 +95,7 @@ const index = () => {
                 break;
             }
         }
-        console.log(photoURLForDB);
-        
+        //console.log(photoURLForDB);
 
 
         const options = {
@@ -105,9 +106,10 @@ const index = () => {
             sizes: product.sizes != sizes ? sizes : product.sizes,
             photos: product.photos != photos ? photoURLForDB : product.photos,
         }
+
         // console.log(name, price, brand, colors, macrocategory, microcategory, sizes, photos);
-        console.log(name, price, brand, colors, macrocategory, microcategory, sizes, photos, gender);
-        console.log(product);
+        //console.log(name, price, brand, colors, macrocategory, microcategory, sizes, photos, gender);
+        //console.log(product);
         try {
             const areImagesAdded = await editProduct({
                 variables: {
@@ -115,7 +117,32 @@ const index = () => {
                     options
                 }
             })
-            console.log(areImagesAdded);
+            const normalizedId = apolloClient.cache.identify({ id: productId, __typename: 'Product' });
+            apolloClient.cache.modify({
+                id: normalizedId,
+                fields: {
+                    name(/* cachedvalue */) {
+                        return options.name.toUpperCase()
+                    },
+                    price(/* cachedvalue */) {
+                        return options.price
+                    },
+                    brand(/* cachedvalue */) {
+                        return options.brand
+                    },
+                    colors(/* cachedvalue */) {
+                        return options.colors
+                    },
+                    sizes(/* cachedvalue */) {
+                        return options.sizes
+                    },
+                    photos(/* cachedvalue */) {
+                        return options.photos
+                    },
+                },
+                broadcast: false // Include this to prevent automatic query refresh
+            });
+            router.push('/shop/prodotti')
         } catch (e) {
             console.log(e);
         }
