@@ -140,9 +140,9 @@ const Drawer_User_Menu: React.FC<{ openDrawerMath: number, address_user: any, ha
                     <DrawerFooter background={'#355CC1'} height={'24'} borderTopRadius={'3xl'} >
                         <Center width={'full'} >
                             <div className='text-center	'>
-                                <p className='text-white text-lg font-semibold mb-1'>
+                                {address_user && <p className='text-white text-lg font-semibold mb-1'>
                                     {address_user.placeType === 'address' && <span>{address_user.address}{address_user.streetNumber && <span> {address_user.streetNumber}</span>}, </span>}  {address_user.city}
-                                </p>
+                                </p>}
                                 <Button onClick={() => {
                                     onClose()
                                     handleChangeAddress()

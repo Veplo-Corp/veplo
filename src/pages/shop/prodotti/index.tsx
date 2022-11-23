@@ -9,6 +9,7 @@ import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
 import Table_Products_Shop from '../../../../components/organisms/Table_Products_Shop';
 import { sendEmailVerificationHanlder } from '../../../../components/utils/emailVerification';
 import { ToastOpen } from '../../../../components/utils/Toast';
+import deletePhotoFirebase from '../../../../components/utils/deletePhotoFirebase';
 import { auth } from '../../../config/firebase';
 import { initApollo } from '../../../lib/apollo';
 import DELETE_PRODUCT from '../../../lib/apollo/mutations/deleteProduct';
@@ -29,13 +30,13 @@ const index = () => {
     const [deleteProduct] = useMutation(DELETE_PRODUCT, {
         update(cache, el) {
             const deleteId = el.data
-            console.log(deleteId);
+            console.log(deleteId.deleteProduct);
             //mi devi dare l'id come data dalla delete
             /* 637746060742ade8758b1aa9 */
             const { shop } = cache.readQuery<any>({
                 query: GET_PRODUCTS_FROM_SHOP,
                 variables: {
-                    id: '6373bb3c0742ade8758b1a97' //* mettere idShop,
+                    id: '6373bb3c0742ade8758b1a97'//* mettere idShop,
                 },
             });
             console.log(shop);
@@ -43,13 +44,17 @@ const index = () => {
             //*Delete Product
             cache.writeQuery({
                 query: GET_PRODUCTS_FROM_SHOP,
-                variables: { id: '6373bb3c0742ade8758b1a97' },
+                variables: { id: '6373bb3c0742ade8758b1a97' }, //shopId
                 data: {
                     shop: {
-                        products: shop.products.filter(product => product.id != '637746060742ade8758b1aa9')
+                        products: shop.products.filter(product => product.id != deleteId.deleteProduct)
                     }
                 }
             })
+
+            
+
+
 
 
             //! add new product on Cache
@@ -76,40 +81,77 @@ const index = () => {
 
 
             //*delete old data, finding serialized number
-            const normalizedId = cache.identify({ id: '637746060742ade8758b1aa9', __typename: 'Product' });
+            const normalizedId = cache.identify({ id: deleteId.deleteProduct, __typename: 'Product' });
             cache.evict({ id: normalizedId });
             //*The gc method removes all objects from the normalized cache that are not reachable:
             //cache.gc();
 
             setTimeout(async () => {
-                console.log(apolloClient.cache.extract());
-                const { shop } = apolloClient.readQuery({
-                    query: GET_PRODUCTS_FROM_SHOP,
-                    // Provide any required variables in this object.
-                    // Variables of mismatched types will return `null`.
-                    variables: {
-                        id: '6373bb3c0742ade8758b1a97' //* mettere idShop,
-                    },
-                });
-                console.log(shop.products);
+                handleCache()
             }, 2000);
         }
     });
 
+    const handleCache = () => {
+        console.log(apolloClient.cache.extract());
+        const { shop } = apolloClient.readQuery({
+            query: GET_PRODUCTS_FROM_SHOP,
+            // Provide any required variables in this object.
+            // Variables of mismatched types will return `null`.
+            variables: {
+                id: '6373bb3c0742ade8758b1a97' //* mettere idShop,
+            },
+        });
+
+
+        // let newProduct = {
+        //     ...shop.products[0],
+        //     id: 'cacca',
+        //     __typename: 'Product'
+        // }
+        // console.log(newProduct);
+        // newProduct['id'] = '637746060742ade875869100'
+        // newProduct['name'] = 'CHE COSA STA SUCCEDENDO'
+        // apolloClient.writeQuery({
+        //     query: GET_PRODUCTS_FROM_SHOP,
+        //     variables: { id: '6373bb3c0742ade8758b1a97' },
+        //     data: {
+        //         shop: {
+        //             products: [
+        //                 ...shop.products,
+        //                 newProduct
+        //             ]
+        //         }
+        //     }
+        // })
+    }
 
 
 
-    const handleDeleteProductModal = (productId: string, productName: string) => {
+    const handleDeleteProductModal = (productId: string, productName: string, productPhotos: string) => {
         setProductToDeleteData({
             productId,
-            productName
+            productName,
+            productPhotos
         })
         setMathNumber(Math.random())
     }
 
-    const deleteProductEvent = async ({ productId, productName }: { productId: string, productName: string }) => {
+    const deleteProductEvent = async ({ productId, productName, productPhotos }: { productId: string, productName: string, productPhotos: string[] }) => {
         try {
             await deleteProduct({ variables: { id: productId } })
+            //*delete product's images from firebase
+            let i = 1;
+            for await (let photo of productPhotos) {
+                try {
+                    await deletePhotoFirebase('photo' + i, productId, user.uid)
+                    i++
+                } catch (e) {
+                    console.log(e);
+                    addToast({ position: 'top', title: 'Errore eliminazione prodotto', description: "errore durante l'upload dell'immagini", status: 'error', duration: 5000, isClosable: false })
+                    break;
+                }
+            }
             return addToast({ position: 'top', title: 'Prodotto eliminato', description: `${productName} è stato eliminato con successo`, status: 'success', duration: 5000, isClosable: true })
         }
         catch (e) {
@@ -151,6 +193,9 @@ const index = () => {
             }
             <Table_Products_Shop idShop={'6373bb3c0742ade8758b1a97'} deleteProduct={handleDeleteProductModal} />
             <Modal_Error_Shop title={'Elimina prodotto'} description={'confermando eliminerai il prodotto dal tuo negozio'} closeText={'annulla'} openModalMath={mathNumber} confirmText={'conferma'} data={productToDeleteData} handleEvent={deleteProductEvent} />
+            <button
+                onClick={handleCache}
+            >handleCache</button>
         </Desktop_Layout >
 
     )

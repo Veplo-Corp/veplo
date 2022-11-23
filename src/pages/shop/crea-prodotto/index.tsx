@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client'
 import { CheckIcon, DownloadIcon } from '@chakra-ui/icons'
 import { Box, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
@@ -22,8 +23,10 @@ import Product_Form from '../../../../components/organisms/Product_Form'
 import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required'
 import { ToastOpen } from '../../../../components/utils/Toast'
 import uploadPhotoFirebase from '../../../../components/utils/uploadPhotoFirebase'
+import { initApollo } from '../../../lib/apollo'
 import CREATE_PRODUCT from '../../../lib/apollo/mutations/createProduct'
 import EDIT_PRODUCT from '../../../lib/apollo/mutations/editProduct'
+import GET_PRODUCTS_FROM_SHOP from '../../../lib/apollo/queries/geetProductsShop'
 import { setModalTitleAndDescription } from '../../store/reducers/modal_error'
 
 
@@ -42,10 +45,19 @@ export interface IFormInput {
 const index = () => {
   const { addToast } = ToastOpen();
   const dispatch = useDispatch();
+  const apolloClient = initApollo();
+  const router = useRouter()
 
   const user = useSelector((state) => state.user.user);
   //* graphQL
-  const [createProduct, Element] = useMutation(CREATE_PRODUCT);
+  const [createProduct, Element] = useMutation(CREATE_PRODUCT, {
+    update(cache, el) {
+      console.log(el);
+
+    }
+  }
+
+  );
   const [editProduct, editProductResult] = useMutation(EDIT_PRODUCT);
 
   const [openModalMath, setOpenModalMath] = useState(1);
@@ -73,10 +85,10 @@ const index = () => {
           description: "Impossibile creare il prodotto. Controlla di aver inserito tutti dati in maniera corretta"
         }))
         return setOpenModalMath(Math.random())
-        
+
       }
 
-      const Product = {
+      let Product = {
         name,
         price: priceToDB,
         colors: colorsToDB,
@@ -98,9 +110,6 @@ const index = () => {
       let photoURLForDB = [];
       let i = 1;
       console.log(photos);
-
-
-
       for await (let photo of photos) {
         try {
           const url = await uploadPhotoFirebase('photo' + i, photo.blob, productId, user.uid)
@@ -120,7 +129,50 @@ const index = () => {
         }
       })
 
-      if (isCreatedProduct.data.createProduct && areImagesAdded.data.editProduct === true) {
+      const prodoctForGQLCache = {
+        ...Product,
+        photos: photoURLForDB,
+        id: productId,
+        shopId: '6373bb3c0742ade8758b1a97',
+        firebaseShopId: user.uid,
+        updatedAt: 'ora',
+        location: {
+          type: 'Points',
+          coordinates: [1, 1],
+          __typename: 'Location'
+        },
+        shop: {
+          city: "Terni",
+          name: "Sartoria Rizzo Merlini",
+          __typename: "Lightshop",
+        },
+        __typename: 'Product'
+      }
+
+      const { shop } = apolloClient.readQuery({
+        query: GET_PRODUCTS_FROM_SHOP,
+        // Provide any required variables in this object.
+        // Variables of mismatched types will return `null`.
+        variables: {
+          id: '6373bb3c0742ade8758b1a97' //* mettere idShop,
+        },
+      });
+
+      apolloClient.writeQuery({
+        query: GET_PRODUCTS_FROM_SHOP,
+        variables: { id: '6373bb3c0742ade8758b1a97' }, //*idShop
+        data: {
+          shop: {
+            products: [
+              ...shop.products,
+              prodoctForGQLCache
+            ]
+          }
+        }
+      })
+
+      if (isCreatedProduct.data.createProduct && areImagesAdded.data.editProduct) {
+        router.push('/shop/prodotti')
         return addToast({ position: 'top', title: 'Prodotto creato con successo', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
       }
       else {
