@@ -98,9 +98,6 @@ const index = () => {
       let photoURLForDB = [];
       let i = 1;
       console.log(photos);
-
-
-
       for await (let photo of photos) {
         try {
           const url = await uploadPhotoFirebase('photo' + i, photo.blob, productId, user.uid)
@@ -119,8 +116,8 @@ const index = () => {
           }
         }
       })
-
-      if (isCreatedProduct.data.createProduct && areImagesAdded.data.editProduct === true) {
+      
+      if (isCreatedProduct.data.createProduct && areImagesAdded.data.editProduct) {
         return addToast({ position: 'top', title: 'Prodotto creato con successo', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
       }
       else {

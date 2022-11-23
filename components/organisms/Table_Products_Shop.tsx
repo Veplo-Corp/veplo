@@ -78,8 +78,8 @@ const Table_Products_Shop: React.FC<{ idShop: string, deleteProduct: any }> = ({
     }, [data])
 
 
-    const handleButtonDelete = async (productId, name) => {
-        await deleteProduct(productId, name)
+    const handleButtonDelete = async (productId, name, photos) => {
+        await deleteProduct(productId, name, photos)
 
         //! funziona! refetch dati
         // setTimeout(async() => {
@@ -203,7 +203,7 @@ const Table_Products_Shop: React.FC<{ idShop: string, deleteProduct: any }> = ({
 
                                         </Button>
                                         <Button onClick={() =>
-                                            handleButtonDelete(product.id, product.name)
+                                            handleButtonDelete(product.id, product.name, product.photos)
                                         }
                                             colorScheme={'red'} size={['xs', 'md']} variant={['ghost', 'outline']}>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
