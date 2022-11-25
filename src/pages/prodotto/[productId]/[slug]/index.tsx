@@ -93,8 +93,6 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
 
 
 
-
-
     useEffect(() => {
         const category = createTextCategory(product.macroCategory, product.microCategory)
         setTextCategory(category)
@@ -225,7 +223,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                             mt='3'
                             fontSize='medium'
                         >
-                            {product.price.toFixed(2)}€
+                            {product.price.toFixed(2).replace('.', ',')}€
                         </Box>
                         <Box
                             fontWeight='light'
@@ -269,7 +267,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                             mb={3}
                             fontSize='md'
                         >
-                            Altri prodotti di Sartoria Rizzo Merlini
+                            Altri prodotti di [nome negozio]
                         </Box>
                         <div className="overflow-x-scroll flex w-full gap-4 ">
                             {product.photos.map((image) => {

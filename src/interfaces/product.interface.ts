@@ -2,7 +2,7 @@ export interface Product {
     id: string,
     name: string,
     price: number,
-    colors: string[],
+    colors: any[],
     sizes: string[],
     macroCategory: string,
     microCategory: string,

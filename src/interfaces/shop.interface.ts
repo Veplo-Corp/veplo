@@ -1,23 +1,26 @@
-export interface SHOP {
+export interface Shop {
     id: string,
     name:string,
-    photo:string,
     status:string,
-    
-    openingDays: number[],
-    openingHours: number[],
+    piva: string,
+    phone:string,
+    createdAt:string,
+    firebaseId: string,
+    photo:string,
+    opening:{
+        days: number[],
+        hours: string[]
+    }
     address: {
         postcode:string,
         city:string,
-        address:string,
+        street:string,
         location:{
             type:String
             coordinates:number[]
         }
-        macroCategories: string[],
-        description:string,
-        creationTime: string,
-        gender: string[],
-        firebaseId: string
+        macroCategories?: string[],
+        description?:string,
+        gender?: string[],
     }
 }

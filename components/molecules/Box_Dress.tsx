@@ -1,29 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Image } from '@chakra-ui/react'
 import Circle_Color from '../atoms/Circle_Color'
+import { Product } from '../../src/interfaces/product.interface'
+import { COLORS } from '../mook/colors'
 
 
-const Box_Dress = (props) => {
+const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> = ({ product, eventHandler, toShop }) => {
+    const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
+    useEffect(() => {
+        let colorsCSS = [];
+        for (let i = 0; i < product.colors.length; i++) {
+            const colorCSS = COLORS.filter(color => color.name === product.colors[i])[0].cssColor
+            colorsCSS.push(colorCSS)
+        }
+        setProductcolorsCSS(colorsCSS)
+    }, [product])
 
-    
     return (
-        <Box onClick={() => props.eventHandler(props.dress)} minW='20' maxW='350' mb={'5'} borderRadius='lg' overflow='hidden' className='cursor-pointer'
+        <Box minW='20' maxW='350' mb={'5'} borderRadius='lg' overflow='hidden' className='cursor-pointer'
             _active={{
-                transform: 'scale(0.99)',
+                transform: 'scale(1)', /* 'scale(0.99)' */
             }}>
-            <Image src={props.dress.photos[0]} alt={props.dress.imageAlt} />
+            <Image onClick={() => eventHandler(product)} src={product.photos[0]} alt={'immagine non disponibile'} />
             <Box py='1' px={'0'}>
                 <Box
                     mt='1'
+                    zIndex={50}
                     fontWeight='bold'
                     as='h2'
                     lineHeight='tight'
                     noOfLines={1}
                     fontSize='sm'
+                    onClick={() => toShop(product.shopId)}
                 >
-                    {props.dress.shopName}
+                    {product.shop.name}
                 </Box>
                 <Box
+                    onClick={() => eventHandler(product)}
                     fontWeight='normal'
                     as='h2'
                     noOfLines={1}
@@ -31,19 +44,21 @@ const Box_Dress = (props) => {
                     fontSize='sm'
                     className='italic'
                 >
-                    {props.dress.brand}
+                    {product.brand}
                 </Box>
                 <Box
+                    onClick={() => eventHandler(product)}
                     fontWeight='normal'
                     as='h3'
                     fontSize='sm'
                     noOfLines={1}
                     mt={-1}
                 >
-                    {props.dress.name}
+                    {product.name.toUpperCase()}
                 </Box>
                 <div className='flex justify-between mt-2'>
                     <Box
+                        onClick={() => eventHandler(product)}
                         fontWeight='bold'
                         as='h4'
                         fontSize='xs'
@@ -52,10 +67,9 @@ const Box_Dress = (props) => {
                         noOfLines={1}
                         mt={'1'}
                     >
-                        {props.dress.formattedPrice}
+                        {Number(product.price).toFixed(2).replace('.', ',')} €
                     </Box>
-                    <Circle_Color colors={props.dress.colors} dimension={'4'}  space={'1'}/>
-                    
+                    <Circle_Color eventHanlder={() => eventHandler(product)} colors={productcolorsCSS} dimension={'4'} space={'1'} />
                 </div>
             </Box>
         </Box>
