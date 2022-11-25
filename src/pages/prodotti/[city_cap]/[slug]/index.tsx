@@ -93,7 +93,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   }
 
 
-  const toShopPage = (shopId) => {
+  const toShopPage = (shopId:string) => {
     router.push(`/negozio/${shopId}`)
   }
 
