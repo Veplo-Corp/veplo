@@ -5,7 +5,7 @@ import { Shop } from '../../src/interfaces/shop.interface'
 
 const Box_Shop: React.FC<{shop:Shop, eventHandler:any, scale:string, width:number, height:string}> = ({shop, eventHandler, scale, width, height}) => {
     return (
-        <Box onClick={() => eventHandler(shop)} width={'fit-content'} mb={'2'} overflow='hidden' className='cursor-pointer border border-inherit pb-2 rounded-lg'
+        <Box onClick={() => eventHandler(shop)} width={'fit-content'} mb={'2'} overflow='hidden' className='cursor-pointer border border-inherit pb-2 rounded-md'
             _active={{
                 transform: `${scale}`,
             }}>

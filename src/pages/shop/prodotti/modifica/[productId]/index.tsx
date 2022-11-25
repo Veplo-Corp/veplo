@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout';
 import { Color, COLORS } from '../../../../../../components/mook/colors';
 import Product_Form from '../../../../../../components/organisms/Product_Form';
+import Shop_UID_Required from '../../../../../../components/utils/Shop_UID_Required';
 import { ToastOpen } from '../../../../../../components/utils/Toast';
 import uploadPhotoFirebase from '../../../../../../components/utils/uploadPhotoFirebase';
 import { Product } from '../../../../../interfaces/product.interface';
@@ -64,7 +65,7 @@ const index = () => {
             colorsToDB = colors
         }
 
-        
+
         let priceToDB = price
         if (typeof priceToDB != "number") {
             priceToDB = Number(price.replace(',', '.'))
@@ -161,19 +162,22 @@ const index = () => {
 
 
     return (
-        <Desktop_Layout>
-            {product && <Product_Form handleSubmitEvent={submitData} defaultValues={{
-                name: product.name,
-                price: product.price,
-                brand: product.brand,
-                colors: product.colors,
-                macrocategory: product.macroCategory,
-                microcategory: product.microCategory,
-                sizes: product.sizes,
-                photos: product.photos,
-                gender: product.gender
-            }} type={'edit'} disabled={true} />}
-        </Desktop_Layout>
+        <Shop_UID_Required>
+            <Desktop_Layout>
+                {product && <Product_Form handleSubmitEvent={submitData} defaultValues={{
+                    name: product.name,
+                    price: product.price,
+                    brand: product.brand,
+                    colors: product.colors,
+                    macrocategory: product.macroCategory,
+                    microcategory: product.microCategory,
+                    sizes: product.sizes,
+                    photos: product.photos,
+                    gender: product.gender
+                }} type={'edit'} disabled={true} />}
+            </Desktop_Layout>
+        </Shop_UID_Required>
+
     )
 }
 
