@@ -19,6 +19,8 @@ const Header = () => {
     const [showMenu, setshowMenu] = useState(false);
     const [openDrawer, setopenDrawer] = useState(1);
     const [openDrawerMenuMobile, setOpenDrawerMenuMobile] = useState(1);
+    const user = useSelector((state) => state.user.user);
+
 
     const toast = useToast()
 
@@ -66,12 +68,12 @@ const Header = () => {
             <Drawer_Address openDrawerMath={openDrawer} />
             <Drawer_User_Menu handleChangeAddress={() => {
                 setopenDrawer(Math.random())
-            }} address_user={address_user}  openDrawerMath={openDrawerMenuMobile} />
-            <JoinUs_Navbar />
+            }} address_user={address_user} openDrawerMath={openDrawerMenuMobile} />
+
+            {!user && <JoinUs_Navbar />}
             {/* Menu button, Search button and Dintorni Logo for screen >=md */}
             <div className=" fixed z-50 top-3 right-2 md:hidden">
                 <button
-
                     type="button" className="inline-flex mt-0.5 rounded-md px-1  active:bg-gray-100 focus:outline-none" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -90,11 +92,11 @@ const Header = () => {
 
                 </button>
             </div>
-            <div className="hidden md:flex pl-2 lg:pl-8 fixed z-50 top-10 -mt-px"> {/* lg:w-0 lg:flex-1 */}
+            <div className={`hidden md:flex pl-2 lg:pl-8 fixed z-50 ${!user ? 'top-10' : 'top-3'} -mt-px`}> {/* lg:w-0 lg:flex-1 */}
                 {!address_user && <Link href="/">
                     <a className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</a>
                 </Link>}
-                {address_user &&
+                {(!user || !user.isShop) && address_user &&
                     <>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-6 h-6 mt-1">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -110,29 +112,40 @@ const Header = () => {
 
             </div>
 
-            <div className="w-full z-10 fixed top-0 md:top-7 bg-white">
+            <div className={`w-full z-10 fixed top-0 ${!user ? 'md:top-7' : 'md:top-0'} bg-white`}>
                 <div className="mx-auto max-w-full border-b-2 border-gray-100">
                     <div className="py-3 lg:justify-start lg:space-x-10">
                         <div className='flex items-center justify-between h-8 '>
-                            <Navbar genere={genere} showCategory={showCategory.show} onShowCategory={handleShowCategory} />
-                            <div className="  w-full md:hidden">
-                                <Link href="/">
-                                    <a className="font-black mt-2 ml-5 text-2xl italic text-black-900  ">DINTORNI</a>
-                                </Link>
-                            </div>
-                            <div className="hidden md:flex gap-3 fixed top-9 right-2 lg:right-8 z-10"> {/* pr-80 */}
-                                <Input_Search_Item />
-                                <Link href={'/'}>
-                                    <a>
-                                        <Circle_Color colors={['gray.200']} dimension={10} space={'0'} />
-                                    </a>
-                                </Link>
-                                <Button variant='ghost' borderRadius={100} colorScheme={'gray'} p={0} ml={'-1'}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
-                                        <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
-                                    </svg>
+                            {user && !user.isShop &&
+                                <>
+                                    <Navbar genere={genere} showCategory={showCategory.show} onShowCategory={handleShowCategory} />
+                                    <div className="  w-full md:hidden">
+                                        <Link href="/">
+                                            <a className="font-black mt-2 ml-5 text-2xl italic text-black-900  ">DINTORNI</a>
+                                        </Link>
+                                    </div>
+                                </>
+                            }
+                            <div className={`hidden md:flex gap-3 fixed ${!user ? 'top-9' : 'top-2'} right-2 lg:right-8 z-10`}> {/* pr-80 */}
 
-                                </Button>
+                                {user && user.isShop ?
+                                    (<Button variant='ghost' borderRadius={100} colorScheme={'gray'} p={0} ml={'-1'}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z" />
+                                        </svg>
+                                    </Button>)
+                                    :
+                                    (
+                                        <>
+                                            <Input_Search_Item />
+                                            <Link href={'/'}>
+                                                <a>
+                                                    <Circle_Color colors={['gray.200']} dimension={10} space={'0'} />
+                                                </a>
+                                            </Link>
+                                        </>
+                                    )
+                                }
                             </div>
                         </div>
 

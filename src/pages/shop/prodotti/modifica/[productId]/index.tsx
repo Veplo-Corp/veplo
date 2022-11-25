@@ -18,7 +18,6 @@ const index = () => {
     const [editProduct] = useMutation(EDIT_PRODUCT)
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.user);
-
     const router = useRouter();
     const apolloClient = initApollo();
     const [product, setProduct] = useState<Product>(undefined)
