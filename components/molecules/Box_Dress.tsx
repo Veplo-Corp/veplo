@@ -21,7 +21,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> 
             _active={{
                 transform: 'scale(1)', /* 'scale(0.99)' */
             }}>
-            <Image onClick={() => eventHandler(product)} src={product.photos[0]} alt={'immagine non disponibile'} />
+            <Image fallbackSrc='https://via.placeholder.com/150' onClick={() => eventHandler(product)} src={product.photos[0]} alt={'immagine non disponibile'} />
             <Box py='1' px={'0'}>
                 <Box
                     mt='1'

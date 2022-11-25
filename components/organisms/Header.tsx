@@ -72,11 +72,11 @@ const Header = () => {
             <Drawer_User_Search handleChangeAddress={() => {
                 setopenDrawer(Math.random())
             }} address_user={address_user} openDrawerMath={openDrawerSearch} />
-            {user && <Drawer_Menu openDrawerMath={openDrawerMenu} user={user}/>}
+            {user && <Drawer_Menu openDrawerMath={openDrawerMenu} user={user} />}
 
             {!user && <JoinUs_Navbar />}
             {/* Menu button, Search button and Dintorni Logo for screen >=md */}
-            <div className=" fixed z-50 top-3 right-2 md:hidden">
+            {user && user.isShop && <div className=" fixed z-50 top-3 right-2 md:hidden">
                 <button
                     onClick={() => {
                         setOpenDrawerMenu(Math.random())
@@ -86,8 +86,8 @@ const Header = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                     </svg>
                 </button>
-            </div>
-            <div className="pl-2 md:pl-8 fixed z-50 top-3 md:top-4  right-12 md:hidden">
+            </div>}
+            {(!user || !user.isShop) && <div className={`pl-2 md:pl-8 fixed z-50 top-3 md:top-4 ${user && !user.isShop ?'right-12' : 'right-2'} md:hidden`}>
                 <button
                     onClick={() => {
                         setOpenDrawerSearch(Math.random())
@@ -98,7 +98,7 @@ const Header = () => {
                     </svg>
 
                 </button>
-            </div>
+            </div>}
             <div className={`hidden md:flex pl-2 lg:pl-8 fixed z-50 ${!user ? 'top-10' : 'top-3'} -mt-px`}> {/* lg:w-0 lg:flex-1 */}
                 {!address_user && <Link href="/">
                     <a className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</a>
@@ -123,7 +123,7 @@ const Header = () => {
                 <div className="mx-auto max-w-full border-b-2 border-gray-100">
                     <div className="py-3 lg:justify-start lg:space-x-10">
                         <div className='flex items-center justify-between h-8 '>
-                            {(!user || !user.isShop)&&
+                            {(!user || !user.isShop) &&
                                 <>
                                     <Navbar genere={genere} showCategory={showCategory.show} onShowCategory={handleShowCategory} />
                                     <div className="  w-full md:hidden">
