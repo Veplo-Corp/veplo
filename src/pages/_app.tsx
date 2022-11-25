@@ -66,14 +66,17 @@ function Auth({ children }) {
         // user is logged in, send the user's details to redux, store the current user in the state
         const isShop = tokenResult.claims.isShop ? true : false
         if (!isShop) return
-
+        let ISODate = new Date(userAuth.metadata.creationTime)        
+        let date_for_redux = ISODate.getDay() + '/' + (ISODate.getMonth()+1) + '/' + ISODate.getFullYear()
+        
         dispatch(
           login({
             email: userAuth.email,
             uid: userAuth.uid,
             idToken: idToken,
             emailVerified: userAuth.emailVerified,
-            isShop
+            isShop,
+            createdAt: date_for_redux
           })
         );
         //if(tokenResult.claims.isShop){return router.push('/shop/prodotti')}

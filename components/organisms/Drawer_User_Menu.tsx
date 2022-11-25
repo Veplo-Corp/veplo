@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { CATEGORIES } from '../mook/categories'
 import createUrlSchema from '../utils/create_url'
 
-const Drawer_User_Menu: React.FC<{ openDrawerMath: number, address_user: any, handleChangeAddress: any }> = ({ openDrawerMath, address_user, handleChangeAddress }) => {
+const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, handleChangeAddress: any }> = ({ openDrawerMath, address_user, handleChangeAddress }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [categories] = useState(CATEGORIES)
@@ -39,7 +39,7 @@ const Drawer_User_Menu: React.FC<{ openDrawerMath: number, address_user: any, ha
     return (
         <>
             <Drawer onClose={onClose} isOpen={isOpen} size={'full'}
-                placement='start'
+                placement='top'
             >
                 <DrawerOverlay />
                 <DrawerContent>
@@ -156,4 +156,4 @@ const Drawer_User_Menu: React.FC<{ openDrawerMath: number, address_user: any, ha
     )
 }
 
-export default Drawer_User_Menu
+export default Drawer_User_Search

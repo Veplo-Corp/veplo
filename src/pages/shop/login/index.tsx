@@ -21,7 +21,8 @@ import { useRouter } from 'next/router'
 
 
 const index = () => {
-  const {type}: 'registration' | 'login' | 'reset_password' = useRouter().query
+  const router = useRouter()
+  const {type}: 'registration' | 'login' | 'reset_password' = router.query
   
 
   const [showPassword, setshowPassword] = useState<boolean>(false)
@@ -32,6 +33,9 @@ const index = () => {
 
 
   useEffect(() => {
+    if(user){
+      router.push('/shop/prodotti')
+    }
     if(type){
       settypeForm(type)
     }    
@@ -215,10 +219,10 @@ const index = () => {
 
     <Desktop_Layout>
       <Modal_Error_Shop openModalMath={openModalMath} title="Accesso negato" description="il tuo account non è collegato a nessuno shop" closeText='chiudi' confirmText='chiedi aiuto' />
-      <div className='flex justify-between'>
-        <form className="p-3 w-fit space-y-4" onSubmit={handleSubmit}>
-          <div>
-            <div className="mt-1 flex rounded-sm">
+      <div className='flex justify-between w-full'>
+        <form className="p-3 space-y-4 w-full md:w-1/2" onSubmit={handleSubmit}>
+          <div >
+            <div className="mt-1 flex rounded-sm md:w-96">
               <span className="inline-flex items-center rounded-l-md border-r-0 border-2 border-gray-900  bg-black px-3 text-sm text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -228,14 +232,14 @@ const index = () => {
                 onBlur={emailErrorHandler}
                 value={email}
                 onChange={emailHandler}
-                type="text" name="email" id="email" className="block w-80 flex-1 rounded-r-md border-2 p-2 py-3 border-gray-900
+                type="text" name="email" id="email" className="block flex-1 rounded-r-md border-2 p-2 py-3 border-gray-900
                 focus:outline-none
                 sm:text-sm placeholder-black" placeholder="email" />
             </div>
             {isValidEmail === false && <p className='text-sm md:text-xs text-red-600'>email non corretta</p>}
           </div>
           {typeForm !== 'reset_password' && <div>
-            <div className="mt-1 flex rounded-sm">
+            <div className="mt-1 flex rounded-sm md:w-96">
               <span className="inline-flex items-center rounded-l-md border-r-0 border-2 border-gray-900  bg-black px-3 text-sm text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
@@ -261,10 +265,11 @@ const index = () => {
             </div>
             {isValidPassword === false && <p className='text-sm md:text-xs text-red-600'>la password deve contentere almeno 8 caratteri</p>}
           </div>}
-          {typeForm !== 'reset_password' && <div className='w-full flex justify-end pt-2 md:pt-1'>
+          {typeForm !== 'reset_password' && 
+          <div className='w-full flex md:w-96 justify-end pt-2 md:pt-1'>
             <BlackButton disabled={!isValidEmail || !isValidPassword} typeButton='submit' element={typeForm == 'registration' ? 'registrati' : 'accedi'} borderRadius={10} size={'md'}></BlackButton>
           </div>}
-          {typeForm === 'reset_password' && <div className='w-full flex justify-end pt-2 md:pt-1' onClick={() => resetPassword(email)}>
+          {typeForm === 'reset_password' && <div className='w-full flex justify-end pt-2 md:pt-1 md:w-96' onClick={() => resetPassword(email)}>
             <Button disabled={isValidEmail == null || false} onClick={() => resetPassword(email)} colorScheme={'orange'} borderRadius={10} size={'md'}>resetta password</Button>
           </div>}
           <div className='flex'>
@@ -287,10 +292,6 @@ const index = () => {
             }
           </div>
         </form>
-        {user && <div className='hidden md:flex  '>
-          <h1>{user.email}</h1>
-          {/* <button onClick={handleDeleteProductTest}>delete product</button> */}
-        </div>}
       </div>
     </Desktop_Layout>
   )
