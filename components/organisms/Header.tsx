@@ -62,6 +62,21 @@ const Header = () => {
         }
     }
 
+    const searchCategory = () => {
+        if (!address_user) {
+            toast({
+                title: 'Non hai collegato un indirizzo',
+                description: "collega un indirizzo per permetterci di trovare il meglio per te",
+                status: 'info',
+                duration: 6000,
+                isClosable: true,
+            })
+            return setopenDrawer(Math.random())
+        }
+        setOpenDrawerSearch(Math.random())
+    }
+
+
 
     return (
         <div onMouseLeave={() => setshowCategory({
@@ -87,11 +102,10 @@ const Header = () => {
                     </svg>
                 </button>
             </div>}
-            {(!user || !user.isShop) && <div className={`pl-2 md:pl-8 fixed z-50 top-3 md:top-4 ${user && !user.isShop ?'right-12' : 'right-2'} md:hidden`}>
+            {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) && <div className={`pl-2 md:pl-8 fixed z-50 top-3 md:top-4 ${user && !user.isShop ? 'right-12' : 'right-2'} md:hidden`}>
+                {/* searchButton */}
                 <button
-                    onClick={() => {
-                        setOpenDrawerSearch(Math.random())
-                    }}
+                    onClick={searchCategory}
                     type="button" className="inline-flex mt-0.5 rounded-md px-1 active:bg-gray-100 focus:outline-none" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
@@ -123,7 +137,7 @@ const Header = () => {
                 <div className="mx-auto max-w-full border-b-2 border-gray-100">
                     <div className="py-3 lg:justify-start lg:space-x-10">
                         <div className='flex items-center justify-between h-8 '>
-                            {(!user || !user.isShop) &&
+                            {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) &&
                                 <>
                                     <Navbar genere={genere} showCategory={showCategory.show} onShowCategory={handleShowCategory} />
                                     <div className="  w-full md:hidden">

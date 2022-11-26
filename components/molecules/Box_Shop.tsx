@@ -1,15 +1,22 @@
 import React from 'react'
 import { Box, Image } from '@chakra-ui/react'
 import { Shop } from '../../src/interfaces/shop.interface'
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
-
-const Box_Shop: React.FC<{shop:Shop, eventHandler:any, scale:string, width:number, height:string}> = ({shop, eventHandler, scale, width, height}) => {
+const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string, width: number, height: string }> = ({ shop, eventHandler, scale, width, height }) => {
     return (
         <Box onClick={() => eventHandler(shop)} width={'fit-content'} mb={'2'} overflow='hidden' className='cursor-pointer border border-inherit pb-2 rounded-md'
             _active={{
                 transform: `${scale}`,
             }}>
-            <Image src={shop.photo} className='object-cover'  width={width} maxHeight={height} alt={'immagine non trovata'} />
+            {/* <Image src={shop.photo} className='object-cover'  width={width} maxHeight={height} alt={'immagine non trovata'} /> */}
+                <LazyLoadImage src={shop.photo}
+                    //PlaceholderSrc={PlaceholderImage}
+                    effect="blur"
+                    alt="Immagine non trovata"
+                    className='w-96 md:w-fit'
+                />
             <Box py={1} px={4}>
                 <Box
                     mt='1'

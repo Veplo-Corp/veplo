@@ -14,7 +14,8 @@ import createUrlSchema from '../../../../../components/utils/create_url';
 import { Color, COLORS } from '../../../../../components/mook/colors';
 import { man_bottom_clothes_sizes, man_top_clothes_sizes, woman_clothes_sizes } from '../../../../../components/mook/sizes';
 import { createTextCategory } from '../../../../../components/utils/createTextCategory';
-
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 
 
@@ -155,15 +156,21 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                 <ModalContent >
                     <ModalBody padding={0}>
                         <Image
-                        onClick={onClickImageModal} src={fullImage} alt={product.imageAlt} />
+                            onClick={onClickImageModal} src={fullImage} alt={product.imageAlt} />
                     </ModalBody>
                 </ModalContent>
             </Modal>
             <Desktop_Layout>
                 <div className='md:flex justify-between w-full'>
                     <div className='flex space-x-4 w-full md:w-7/12 xl:w-1/2 '>
-                        <Box onClick={zoomImage} minW='20' maxW='450' mb={'5'}  overflow='hidden' className='cursor-pointer'>
-                            <Image borderRadius={'lg'} src={fullImage} alt='immagine non trovata' />
+                        <Box onClick={zoomImage} minW='20' maxW='450' mb={'5'} overflow='hidden' className='cursor-pointer'>
+                            {/* <Image borderRadius={'lg'} src={fullImage} alt='immagine non trovata' /> */}
+                            <LazyLoadImage src={fullImage}
+                                //PlaceholderSrc={PlaceholderImage}
+                                effect="blur"
+                                alt="Image Alt"
+                                className='rounded-lg'
+                            />
                         </Box>
                         <div>
                             {product.photos.map((image) => {
@@ -175,7 +182,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                                     xl:w-32
                                     `}
                                     >
-                                        <Image src={image} alt={product.imageAlt} />
+                                        <Image src={image} alt={'immagine non trovata'} />
                                     </Box>
                                 )
                             })}
