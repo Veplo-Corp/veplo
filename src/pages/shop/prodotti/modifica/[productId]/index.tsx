@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,7 @@ import { Product } from '../../../../../interfaces/product.interface';
 import { initApollo } from '../../../../../lib/apollo';
 import EDIT_PRODUCT from '../../../../../lib/apollo/mutations/editProduct';
 import GET_PRODUCTS_FROM_SHOP from '../../../../../lib/apollo/queries/geetProductsShop';
+import GET_SHOP_BY_FIREBASE_ID from '../../../../../lib/apollo/queries/getShopByFirebaseId';
 import { setModalTitleAndDescription } from '../../../../store/reducers/modal_error';
 
 const index = () => {
@@ -26,20 +27,25 @@ const index = () => {
 
     const { productId } = router.query
 
-    const { loading, error, data, refetch } = useQuery(GET_PRODUCTS_FROM_SHOP, {
-        fetchPolicy: 'cache-only',
-        nextFetchPolicy: 'cache-first',
-        variables: { id: '6373bb3c0742ade8758b1a97' },
+    const [loadShop, { data }] = useLazyQuery(GET_PRODUCTS_FROM_SHOP, {
+        fetchPolicy: 'cache-first',
+        //nextFetchPolicy: 'cache-first',
+        variables: { id:  user?.shopId},
         // pollInterval: 500,
         // notifyOnNetworkStatusChange: true,
     });
 
 
-    const onClick = () => {
 
-    }
+    useEffect(() => {        
+        if (user && user?.shopId) {            
+            loadShop()
+        }
+    }, [user])
 
     useEffect(() => {
+        console.log(data);
+        
         if (!data) {
             //router.push('/shop/prodotti/')
             return
@@ -47,8 +53,6 @@ const index = () => {
         const product = data.shop.products.filter((product: Product) => product.id === productId)[0]
 
         setProduct(product)
-
-
     }, [data])
 
 

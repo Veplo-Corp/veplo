@@ -10,10 +10,6 @@ const initialState = {
 }
 
 
-
-
-
-
 export const userState = createSlice({
     name: 'user',
     initialState: {

@@ -341,7 +341,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                         <div className='md:mr-16' >
                             <BlackButton
                                 onClick={() => handleClick(null)}
-                                element='aggiungi immagine'
+                                element='upload immagine'
                                 borderRadius={5}
                                 width={200}
                                 heigth={12}
@@ -411,7 +411,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                                     </Button> */}
                                                     <BlackButton
                                                         onClick={onHanldeConfirm}
-                                                        element='aggiungi'
+                                                        element='aggiungi immagine'
                                                         borderRadius={5}
 
                                                         heigth={12}

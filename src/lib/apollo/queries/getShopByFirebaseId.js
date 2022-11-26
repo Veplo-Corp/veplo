@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client'
 
-const GET_SINGLE_SHOP = gql`
-    query shop($id: ID!) {
-        shop(
-            id: $id
+const GET_SHOP_BY_FIREBASE_ID = gql`
+    query shopByFirebaseId($firebaseId: String!) {
+        shopByFirebaseId(
+            firebaseId: $firebaseId
         ){
             id
             name
@@ -26,4 +26,4 @@ const GET_SINGLE_SHOP = gql`
     }
 `
 
-export default GET_SINGLE_SHOP;
+export default GET_SHOP_BY_FIREBASE_ID;

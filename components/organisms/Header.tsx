@@ -78,6 +78,8 @@ const Header = () => {
 
 
 
+
+
     return (
         <div onMouseLeave={() => setshowCategory({
             show: false,
@@ -87,7 +89,7 @@ const Header = () => {
             <Drawer_User_Search handleChangeAddress={() => {
                 setopenDrawer(Math.random())
             }} address_user={address_user} openDrawerMath={openDrawerSearch} />
-            {user && <Drawer_Menu openDrawerMath={openDrawerMenu} user={user} />}
+            {user && <Drawer_Menu openDrawerMath={openDrawerMenu} user={user} onCloseModal={() => {setOpenDrawerMenu(1)}}/>}
 
             {!user && <JoinUs_Navbar />}
             {/* Menu button, Search button and Dintorni Logo for screen >=md */}

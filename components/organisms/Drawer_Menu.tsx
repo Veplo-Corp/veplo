@@ -17,11 +17,13 @@ const list = [
     }
 ]
 
-const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any }> = ({ openDrawerMath, user }) => {
+const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal:any }> = ({ openDrawerMath, user, onCloseModal }) => {
     const router = useRouter()
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     useEffect(() => {
+        //console.log('openDrawerMath:',openDrawerMath);
+        
         if (openDrawerMath !== 1 && openDrawerMath !== undefined) {
             onOpen()
         }
@@ -30,6 +32,8 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any }> = ({ openDraw
 
     const logout = async () => {
         await signOut(auth);
+        //set OpenModal 1 in Header
+        onCloseModal()
         onClose()
     }
 
@@ -40,7 +44,10 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any }> = ({ openDraw
             isOpen={isOpen}
             placement='right'
             size={['full', 'sm']}
-            onClose={onClose}
+            onClose={() => {
+                onClose()
+                onCloseModal()
+            }}
         >
             <DrawerOverlay />
             <DrawerContent>

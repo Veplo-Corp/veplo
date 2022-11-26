@@ -138,6 +138,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                         <Div_input_creation text='Nome del prodotto'>
                             <InputGroup >
                                 <Input
+                                    autoComplete='off'
                                     maxLength={35}
                                     rounded={10}
                                     paddingY={6}
@@ -153,6 +154,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                 <Input
                                     rounded={10}
                                     paddingY={6}
+                                    autoComplete='off'
                                     type="string"
                                     {...register("price", {
                                         required: true,

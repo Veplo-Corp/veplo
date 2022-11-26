@@ -1,7 +1,7 @@
-import { useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button } from '@chakra-ui/react';
 import { sendEmailVerification } from '@firebase/auth';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import BlackButton from '../../../../components/atoms/BlackButton';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
@@ -13,6 +13,7 @@ import { auth } from '../../../config/firebase';
 import { initApollo } from '../../../lib/apollo';
 import DELETE_PRODUCT from '../../../lib/apollo/mutations/deleteProduct';
 import GET_PRODUCTS_FROM_SHOP from '../../../lib/apollo/queries/geetProductsShop';
+import GET_SHOP_BY_FIREBASE_ID from '../../../lib/apollo/queries/getShopByFirebaseId';
 import GET_SINGLE_PRODUCT from '../../../lib/apollo/queries/getSingleProduct';
 import Verified_Email from '../../../../components/molecules/Verified_Email';
 import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required';
@@ -32,12 +33,10 @@ const index = () => {
         update(cache, el) {
             const deleteId = el.data
             console.log(deleteId.deleteProduct);
-            //mi devi dare l'id come data dalla delete
-            /* 637746060742ade8758b1aa9 */
             const { shop } = cache.readQuery<any>({
                 query: GET_PRODUCTS_FROM_SHOP,
                 variables: {
-                    id: '6373bb3c0742ade8758b1a97'//* mettere idShop,
+                    id: user.shopId //* mettere idShop,
                 },
             });
             console.log(shop);
@@ -45,17 +44,13 @@ const index = () => {
             //*Delete Product
             cache.writeQuery({
                 query: GET_PRODUCTS_FROM_SHOP,
-                variables: { id: '6373bb3c0742ade8758b1a97' }, //shopId
+                variables: { id: user.shopId  }, //shopId
                 data: {
                     shop: {
                         products: shop.products.filter(product => product.id != deleteId.deleteProduct)
                     }
                 }
             })
-
-
-
-
 
 
             //! add new product on Cache
@@ -69,7 +64,7 @@ const index = () => {
             // newProduct['name']= 'CHE COSA STA SUCCEDENDO'
             // cache.writeQuery({
             //     query: GET_PRODUCTS_FROM_SHOP,
-            //     variables: { id: '6373bb3c0742ade8758b1a97' },
+            //     variables: { id: data?.shopByFirebaseId.id },
             //     data: {
             //         shop: {
             //             products: [
@@ -93,16 +88,31 @@ const index = () => {
         }
     });
 
+    // const [loadShop, { data }] = useLazyQuery(GET_SHOP_BY_FIREBASE_ID, {
+    //     fetchPolicy: 'cache-first',
+    //     nextFetchPolicy: 'cache-first',
+    //     variables: { firebaseId: user?.uid },
+    //     // skip: user.uid
+    // });
+
+    // useEffect(() => {
+    //   if(user && user?.uid){
+    //     loadShop()
+    //   }
+    // }, [user])
+    
+
+
     const handleCache = () => {
         console.log(apolloClient.cache.extract());
-        const { shop } = apolloClient.readQuery({
-            query: GET_PRODUCTS_FROM_SHOP,
-            // Provide any required variables in this object.
-            // Variables of mismatched types will return `null`.
-            variables: {
-                id: '6373bb3c0742ade8758b1a97' //* mettere idShop,
-            },
-        });
+        // const { shop } = apolloClient.readQuery({
+        //     query: GET_PRODUCTS_FROM_SHOP,
+        //     // Provide any required variables in this object.
+        //     // Variables of mismatched types will return `null`.
+        //     variables: {
+        //         id: data?.shopByFirebaseId.id //* mettere idShop,
+        //     },
+        // });
 
 
         // let newProduct = {
@@ -115,7 +125,7 @@ const index = () => {
         // newProduct['name'] = 'CHE COSA STA SUCCEDENDO'
         // apolloClient.writeQuery({
         //     query: GET_PRODUCTS_FROM_SHOP,
-        //     variables: { id: '6373bb3c0742ade8758b1a97' },
+        //     variables: { id: data?.shopByFirebaseId.id },
         //     data: {
         //         shop: {
         //             products: [
@@ -171,11 +181,11 @@ const index = () => {
                 {user && user.emailVerified === false &&
                     <Verified_Email />
                 }
-                <Table_Products_Shop idShop={'6373bb3c0742ade8758b1a97'} deleteProduct={handleDeleteProductModal} />
+                {user && user.shopId && <Table_Products_Shop idShop={user.shopId} deleteProduct={handleDeleteProductModal} />}
                 <Modal_Error_Shop title={'Elimina prodotto'} description={'confermando eliminerai il prodotto dal tuo negozio'} closeText={'annulla'} openModalMath={mathNumber} confirmText={'conferma'} data={productToDeleteData} handleEvent={deleteProductEvent} />
-                {/* <button
+                <button
                     onClick={handleCache}
-                >handleCache</button> */}
+                >handleCache</button>
             </Desktop_Layout >
         </Shop_UID_Required>
     )
