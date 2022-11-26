@@ -22,8 +22,8 @@ import { useRouter } from 'next/router'
 
 const index = () => {
   const router = useRouter()
-  const {type}: 'registration' | 'login' | 'reset_password' = router.query
-  
+  const { type }: 'registration' | 'login' | 'reset_password' = router.query
+
 
   const [showPassword, setshowPassword] = useState<boolean>(false)
   const [email, setemail] = useState<string>('')
@@ -33,19 +33,19 @@ const index = () => {
 
 
   useEffect(() => {
-    if(user){
+    if (user) {
       router.push('/shop/prodotti')
     }
-    if(type){
+    if (type) {
       settypeForm(type)
-    }    
+    }
   }, [type])
-  
+
 
   const [password, setpassword] = useState<string>('')
   const user = useSelector((state) => state.user.user);
   const [openModalMath, setOpenModalMath] = useState(1);
-  
+
 
   const dispatch = useDispatch();
 
@@ -149,7 +149,7 @@ const index = () => {
 
     }
 
-    
+
 
   }
 
@@ -173,10 +173,12 @@ const index = () => {
   return (
 
     <Desktop_Layout>
+
       <Modal_Error_Shop openModalMath={openModalMath} title="Accesso negato" description="il tuo account non è collegato a nessuno shop" closeText='chiudi' confirmText='chiedi aiuto' />
       <div className='flex justify-between w-full'>
         <form className="p-3 space-y-4 w-full md:w-1/2" onSubmit={handleSubmit}>
-          <div >
+          <h1 className="font-black text-xl md:text-3xl italic text-black-900  ">Iscrivi il tuo negozio</h1>
+          <div>
             <div className="mt-1 flex rounded-sm md:w-96">
               <span className="inline-flex items-center rounded-l-md border-r-0 border-2 border-gray-900  bg-black px-3 text-sm text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -186,6 +188,7 @@ const index = () => {
               <input
                 onBlur={emailErrorHandler}
                 value={email}
+                autoComplete={'on'}
                 onChange={emailHandler}
                 type="text" name="email" id="email" className="block flex-1 rounded-r-md border-2 p-2 py-3 border-gray-900
                 focus:outline-none
@@ -204,6 +207,7 @@ const index = () => {
                 onBlur={passwordErrorHandler}
                 value={password}
                 onChange={passwordHandler}
+                autoComplete={'on'}
                 type={showPassword ? 'text' : 'password'} name="password" id="password" className="block md:w-80 flex-1 border-2 border-r-0	 p-2 py-3 border-gray-900
                 focus:outline-none
                 sm:text-sm placeholder-black" placeholder="password" />
@@ -220,10 +224,10 @@ const index = () => {
             </div>
             {isValidPassword === false && <p className='text-sm md:text-xs text-red-600'>la password deve contentere almeno 8 caratteri</p>}
           </div>}
-          {typeForm !== 'reset_password' && 
-          <div className='w-full flex md:w-96 justify-end pt-2 md:pt-1'>
-            <BlackButton disabled={!isValidEmail || !isValidPassword} typeButton='submit' element={typeForm == 'registration' ? 'registrati' : 'accedi'} borderRadius={10} size={'md'}></BlackButton>
-          </div>}
+          {typeForm !== 'reset_password' &&
+            <div className='w-full flex md:w-96 justify-end pt-2 md:pt-1'>
+              <BlackButton disabled={!isValidEmail || !isValidPassword} typeButton='submit' element={typeForm == 'registration' ? 'registrati' : 'accedi'} borderRadius={10} size={'md'}></BlackButton>
+            </div>}
           {typeForm === 'reset_password' && <div className='w-full flex justify-end pt-2 md:pt-1 md:w-96' onClick={() => resetPassword(email)}>
             <Button disabled={isValidEmail == null || false} onClick={() => resetPassword(email)} colorScheme={'orange'} borderRadius={10} size={'md'}>resetta password</Button>
           </div>}

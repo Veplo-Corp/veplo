@@ -104,7 +104,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
       <DintorniLogo_Below_Header city={city} gender={gender} category={category.replace(/-/g, ' ')}></DintorniLogo_Below_Header>
       <div> {/* ${products.length <= 3 ? '' : 'min-h-screen'} */}
         <div className={` flex items-center justify-center`}>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
             {products.map((product) => {
               return (
                 <Box_Dress eventHandler={toProductPage} key={product.id} product={product} toShop={toShopPage}></Box_Dress>

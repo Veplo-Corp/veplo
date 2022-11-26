@@ -17,9 +17,9 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <div className='w-full h-96 bg-cyan-900 pt-10 md:mt-20' > {/* onClick={() => setisOpen(false)} */}
+      <div className='w-full h-96 bg-pink-50 pt-10 md:mt-16' > {/* onClick={() => setisOpen(false)} */}
         <div className='hidden md:flex justify-end p-6 z-0'>
-          <Button zIndex={0} borderRadius={50} size={'md'} padding={4}>Iscrivi il tuo negozio</Button>
+          {/* <Button zIndex={0} borderRadius={50} size={'md'} padding={4}>Iscrivi il tuo negozio</Button> */}
         </div>
       </div>
       <div className='w-full p-4 md:p-6 py-8 md:flex justify-between'>
