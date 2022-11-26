@@ -13,11 +13,12 @@ import user, { login, logout } from './store/reducers/user'
 import { setAddress } from './store/reducers/address_user'
 import { useRouter } from 'next/router'
 import { ApolloProvider } from '@apollo/client'
-import { client, useApollo } from '../lib/apollo'
+import { client, initApollo, useApollo } from '../lib/apollo'
 import { getAddressFromLocalStorage } from '../../components/utils/getAddress_from_LocalStorage'
 import { setAuthTokenInLocalStorage } from '../../components/utils/setAuthTokenInLocalStorage'
 import Modal_Error_Shop, { ErrorModal } from '../../components/organisms/Modal_Error_Shop'
 import modal_error from './store/reducers/modal_error'
+import GET_SHOP_BY_FIREBASE_ID from '../lib/apollo/queries/getShopByFirebaseId'
 
 
 const theme = extendTheme({
@@ -66,9 +67,19 @@ function Auth({ children }) {
         // user is logged in, send the user's details to redux, store the current user in the state
         const isShop = tokenResult.claims.isShop ? true : false
         if (!isShop) return
-        let ISODate = new Date(userAuth.metadata.creationTime)        
-        let date_for_redux = ISODate.getDay() + '/' + (ISODate.getMonth()+1) + '/' + ISODate.getFullYear()
+        let ISODate = new Date(userAuth.metadata.creationTime)
+        let date_for_redux = ISODate.getDay() + '/' + (ISODate.getMonth() + 1) + '/' + ISODate.getFullYear()
+
+        const apolloClient = initApollo()
+        const { data, error } = await apolloClient.query({
+          query: GET_SHOP_BY_FIREBASE_ID,
+          variables: { firebaseId:  userAuth.uid},
+          //!useless
+          fetchPolicy: 'cache-first',
+          // nextFetchPolicy: 'cache-only',
+        })
         
+
         dispatch(
           login({
             email: userAuth.email,
@@ -76,7 +87,8 @@ function Auth({ children }) {
             idToken: idToken,
             emailVerified: userAuth.emailVerified,
             isShop,
-            createdAt: date_for_redux
+            createdAt: date_for_redux,
+            shopId: data?.shopByFirebaseId.id
           })
         );
         //if(tokenResult.claims.isShop){return router.push('/shop/prodotti')}

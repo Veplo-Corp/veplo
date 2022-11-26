@@ -1,5 +1,5 @@
 import { Alert, AlertIcon, Box, Button, Center, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import BlackButton from '../../../../components/atoms/BlackButton'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import Div_input_creation from '../../../../components/atoms/Div_input_creation'
@@ -18,6 +18,7 @@ import { useForm } from 'react-hook-form'
 import { useMutation } from '@apollo/client'
 import CREATE_SHOP from '../../../lib/apollo/mutations/createShop'
 import { ToastOpen } from '../../../../components/utils/Toast'
+import { useSelector } from 'react-redux'
 
 
 type Image = {
@@ -55,6 +56,10 @@ const index = () => {
 
     const [createShop, createShopElement] = useMutation(CREATE_SHOP);
     const { addToast } = ToastOpen();
+
+   
+    
+    
 
     //*useForm Registration Shop
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInput>({

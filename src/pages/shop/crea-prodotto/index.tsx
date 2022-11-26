@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client'
+import { useLazyQuery, useMutation } from '@apollo/client'
 import { CheckIcon, DownloadIcon } from '@chakra-ui/icons'
 import { Box, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
@@ -27,6 +27,7 @@ import { initApollo } from '../../../lib/apollo'
 import CREATE_PRODUCT from '../../../lib/apollo/mutations/createProduct'
 import EDIT_PRODUCT from '../../../lib/apollo/mutations/editProduct'
 import GET_PRODUCTS_FROM_SHOP from '../../../lib/apollo/queries/geetProductsShop'
+import GET_SHOP_BY_FIREBASE_ID from '../../../lib/apollo/queries/getShopByFirebaseId'
 import { setModalTitleAndDescription } from '../../store/reducers/modal_error'
 
 
@@ -50,10 +51,13 @@ const index = () => {
 
   const user = useSelector((state) => state.user.user);
   //* graphQL
+
+
+
+
   const [createProduct, Element] = useMutation(CREATE_PRODUCT, {
     update(cache, el) {
       console.log(el);
-
     }
   }
 
@@ -102,7 +106,7 @@ const index = () => {
 
       console.log(Product);
 
-      const isCreatedProduct = await createProduct({ variables: { shopId: '6373bb3c0742ade8758b1a97', options: Product } })
+      const isCreatedProduct = await createProduct({ variables: { shopId: user.shopId, options: Product } })
       //* alert to show product creation process OK!
       //upload Images to database
       console.log(isCreatedProduct);
@@ -133,7 +137,7 @@ const index = () => {
         ...Product,
         photos: photoURLForDB,
         id: productId,
-        shopId: '6373bb3c0742ade8758b1a97',
+        shopId: user.shopId,
         firebaseShopId: user.uid,
         updatedAt: 'ora',
         location: {
@@ -154,22 +158,25 @@ const index = () => {
         // Provide any required variables in this object.
         // Variables of mismatched types will return `null`.
         variables: {
-          id: '6373bb3c0742ade8758b1a97' //* mettere idShop,
+          id: user.shopId //* mettere idShop,
         },
       });
 
-      apolloClient.writeQuery({
-        query: GET_PRODUCTS_FROM_SHOP,
-        variables: { id: '6373bb3c0742ade8758b1a97' }, //*idShop
-        data: {
-          shop: {
-            products: [
-              ...shop.products,
-              prodoctForGQLCache
-            ]
+      if (shop) {
+        apolloClient.writeQuery({
+          query: GET_PRODUCTS_FROM_SHOP,
+          variables: { id: user.shopId }, //*idShop
+          data: {
+            shop: {
+              products: [
+                ...shop.products,
+                prodoctForGQLCache
+              ]
+            }
           }
-        }
-      })
+        })
+      }
+
 
       if (isCreatedProduct.data.createProduct && areImagesAdded.data.editProduct) {
         router.push('/shop/prodotti')
@@ -192,11 +199,19 @@ const index = () => {
 
 
   return (
-    <Shop_UID_Required>
-      <Desktop_Layout>
-        <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false} />
-      </Desktop_Layout>
-    </Shop_UID_Required>
+    <>
+      {user.shopId ? (
+        <Shop_UID_Required>
+          <Desktop_Layout>
+            <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false} />
+          </Desktop_Layout>
+        </Shop_UID_Required>
+        )
+      : (
+        <></>
+      )
+      }
+    </>
 
   )
 }

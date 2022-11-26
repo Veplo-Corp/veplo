@@ -16,6 +16,8 @@ import { man_bottom_clothes_sizes, man_top_clothes_sizes, woman_clothes_sizes } 
 import { createTextCategory } from '../../../../../components/utils/createTextCategory';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import GET_PRODUCTS_FROM_SHOP from '../../../../lib/apollo/queries/geetProductsShop';
+import { toProductPage } from '../../../../../components/utils/toProductPage';
 
 
 
@@ -43,23 +45,6 @@ export async function getStaticProps(ctx) {
     })
 
 
-
-
-    // //! testing
-    // const { dats } = await apolloClient.query({
-    //     query: GET_SINGLE_PRODUCT,
-    //     variables: { id: "63693558a3aab0f65e18b1c1" },
-    //     //!useless
-    //     // fetchPolicy: 'cache-first',
-    //     // nextFetchPolicy: 'cache-only',
-    // })
-
-    //!old system - you can delete it
-    // const { data, error } = await client.query({
-    //     query: GET_SINGLE_PRODUCT,
-    //     variables: { id: productId }
-    // })
-
     return {
         props: {
             product: data.product || null,
@@ -69,6 +54,7 @@ export async function getStaticProps(ctx) {
         }
     }
 }
+
 
 
 
@@ -90,8 +76,26 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
             colorsCSS.push(colorCSS)
         }
         setProductcolorsCSS(colorsCSS)
+
+        setfullImage(product.photos[0])
+
     }, [product])
 
+
+    const toProduct = (product: Product) => {
+        const newUrl = toProductPage(product)
+        if (newUrl) {
+            router.push(`/prodotto/${product.id}/${newUrl}`)
+        }
+
+    }
+    const shopProductsData = useQuery(GET_PRODUCTS_FROM_SHOP, {
+        fetchPolicy: 'cache-first',
+        nextFetchPolicy: 'cache-first',
+        variables: { id: product.shopId },
+        // pollInterval: 500,
+        // notifyOnNetworkStatusChange: true,
+    }).data;
 
 
     useEffect(() => {
@@ -273,42 +277,27 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                             mt='6'
                             mb={3}
                             fontSize='md'
+                            onClick={() => {
+                                //navigare su negozio
+                            }}
                         >
-                            Altri prodotti di [nome negozio]
+                            Altri prodotti di {product.shop.name}
                         </Box>
+
                         <div className="overflow-x-scroll flex w-full gap-4 ">
-                            {product.photos.map((image) => {
+                            {shopProductsData?.shop.products.map((element: Product) => {
                                 return (
-                                    <div key={Math.random()} className='flex  gap-4 w-fit'>
-                                        <Box key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
+                                    <div key={element.id} className={`${element.id === product.id ? 'hidden' : 'flex'}  gap-4 w-fit`}
+                                    >
+                                        <Box mb={'5'} borderRadius='lg' overflow='hidden'
                                             borderWidth={1.5}
-                                            className={`cursor-pointer
-                                    w-32
-                                    lg:w-40
-                                    `}
+                                            className={`cursor-pointerw-32 lg:w-40`}
+                                            onClick={() => toProduct(element)}
                                         >
-                                            <Image src={image} alt={product.imageAlt} />
+                                            <Image src={element.photos[0]} alt={'immagine non trovata'} />
                                         </Box>
-                                        <Box key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
-                                            borderWidth={1.5}
-                                            className={`cursor-pointer
-                                    w-32
-                                    lg:w-40
-                                    `}
-                                        >
-                                            <Image src={image} alt={product.imageAlt} />
-                                        </Box>
-                                        <Box key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
-                                            borderWidth={1.5}
-                                            className={`cursor-pointer
-                                    w-32
-                                    lg:w-40
-                                    `}
-                                        >
-                                            <Image src={image} alt={product.imageAlt} />
-                                        </Box>
-                                    </div>
-                                )
+                                    </div>)
+
                             })}
                         </div>
                     </Box>

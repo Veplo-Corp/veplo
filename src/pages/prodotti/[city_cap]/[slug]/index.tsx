@@ -13,6 +13,7 @@ import getGenderandMacrocategory from '../../../../../components/utils/get_Gende
 import GET_PRODUCTS_FROM_SHOP from '../../../../lib/apollo/queries/geetProductsShop'
 import { initApollo } from '../../../../lib/apollo'
 import { Color, COLORS } from '../../../../../components/mook/colors'
+import { toProductPage } from '../../../../../components/utils/toProductPage'
 
 
 type Router = {
@@ -81,12 +82,9 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
 
 
-  const toProductPage = (product: Product) => {
-    const category =
-      product.macroCategory.toLocaleLowerCase().includes(product.microCategory.toLocaleLowerCase())
-        ? product.microCategory
-        : product.macroCategory + '-' + product.microCategory
-    const newUrl = createUrlScheme([product.brand, product.name, category])
+  const toProductPageUrl = (product: Product) => {
+
+    const newUrl = toProductPage(product)
     if (newUrl) {
       router.push(`/prodotto/${product.id}/${newUrl}`)
     }
@@ -107,7 +105,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
             {products.map((product) => {
               return (
-                <Box_Dress eventHandler={toProductPage} key={product.id} product={product} toShop={toShopPage}></Box_Dress>
+                <Box_Dress eventHandler={toProductPageUrl} key={product.id} product={product} toShop={toShopPage}></Box_Dress>
               )
             })}
           </div>

@@ -99,7 +99,10 @@ const index = () => {
             {
               email: user.email,
               uid: user.uid,
-              idToken: await user.getIdToken(true)
+              idToken: await user.getIdToken(true),
+              emailVerified: user.emailVerified,
+              isShop: true,
+              createdAt: 'now'
             }
           )
         );
@@ -130,14 +133,27 @@ const index = () => {
           dispatch(logout({}))
           return setOpenModalMath(Math.random())
         }
-        router.push('/shop/prodotti')
         setemail('')
         setpassword('')
+        dispatch(
+          login(
+            {
+              email: userCredential.user.email,
+              uid: userCredential.user.uid,
+              idToken: await userCredential.user.getIdToken(true),
+              emailVerified: userCredential.user.emailVerified,
+              isShop: true,
+              createdAt: 'now'
+            }
+          )
+        );
+        return router.push('/shop/prodotti')
+
       } catch (error) {
         const errorCode = error.code;
         const errorMessage = error.message;
         //console.log(errorCode);
-        console.log(errorCode);
+        console.log(errorMessage);
         const errorForModal = handleErrorFirebase(errorCode)
 
         dispatch(setModalTitleAndDescription({
