@@ -13,6 +13,7 @@ import Show_Categories_NavBar from '../molecules/Show_Categories_NavBar'
 import Drawer_User_Search from './Drawer_User_Menu'
 import Drawer_Menu from './Drawer_Menu'
 import User_Popover from '../molecules/User_Popover'
+import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
 
 
 const Header = () => {
@@ -23,8 +24,9 @@ const Header = () => {
     const [openDrawerSearch, setOpenDrawerSearch] = useState(1);
     const [openDrawerMenu, setOpenDrawerMenu] = useState(1);
 
-    const user = useSelector((state) => state.user.user);
-
+    const user:Firebase_User = useSelector((state) => state.user.user);
+    console.log(user);
+    
 
     const toast = useToast()
 

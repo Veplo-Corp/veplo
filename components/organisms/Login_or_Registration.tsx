@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import BlackButton from '../atoms/BlackButton'
 import resetPassword from '../../components/utils/resetPassword'
 
-const Login_or_Registration: React.FC<{handleSubmitToPage:any, handleType:any, type:any}> = ({handleSubmitToPage, handleType, type}) => {
+const Login_or_Registration: React.FC<{handleSubmitToPage:any, handleType:any, type:any ,title: string}> = ({handleSubmitToPage, handleType, type, title}) => {
     const [showPassword, setshowPassword] = useState<boolean>(false)
     const [email, setemail] = useState<string>('')
     const [isValidEmail, setisValidEmail] = useState<boolean | null>(null)
@@ -69,7 +69,7 @@ const Login_or_Registration: React.FC<{handleSubmitToPage:any, handleType:any, t
        <>
         <div className='flex justify-between w-full'>
             <form className="p-3 space-y-4 w-full md:w-1/2" onSubmit={handleSubmitForm}>
-                <h1 className="font-black text-xl md:text-3xl italic text-black-900  ">Iscrivi il tuo negozio</h1>
+                <h1 className="font-black text-xl md:text-3xl italic text-black-900  ">{title}</h1>
                 <div>
                     <div className="mt-1 flex rounded-sm md:w-96">
                         <span className="inline-flex items-center rounded-l-md border-r-0 border-2 border-gray-900  bg-black px-3 text-sm text-white">
