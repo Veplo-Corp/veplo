@@ -39,6 +39,8 @@ const Select_multiple_options: React.FC<{ values: Color[] | undefined | Macrocat
             
         }
         if (type === 'size' && !selectedValueBefore) {
+            console.log(values);
+            
             setSelectedValue([])
         }
 
@@ -61,12 +63,29 @@ const Select_multiple_options: React.FC<{ values: Color[] | undefined | Macrocat
     }, [values])
 
     const onChangeSelectedValue = (e: any[]) => {
+
         if (type === 'day') {
             const selectedValues = e.sort((a, b) => a.dayPosition - b.dayPosition)
             setSelectedValue(selectedValues)
             handleChangeState(selectedValues, 'days_open')
-        } if (type === 'color' || type === 'size') {
+        } if (type === 'color') {
             handleChangeState(e)
+        } if (type === 'size'){
+            let sizesWithOrder = [];
+            for (let i = 0; i < e.length; i++) {
+                const position = values?.indexOf(e[i]);
+                sizesWithOrder.push({
+                    size: e[i],
+                    position: position
+                })
+            }
+            sizesWithOrder = sizesWithOrder.sort((a, b) => a.position-b.position)
+            sizesWithOrder = sizesWithOrder.map(function (obj) {
+                return obj.size;
+              });
+            
+            handleChangeState(sizesWithOrder)
+            return setSelectedValue(sizesWithOrder)
         }
         return setSelectedValue(e)
     }

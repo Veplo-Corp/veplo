@@ -16,6 +16,8 @@ import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
 import { handleErrorFirebase } from '../../../../components/utils/handleErrorFirebase'
 import { setModalTitleAndDescription, handleOpenModal } from '../../store/reducers/modal_error'
 import { useRouter } from 'next/router'
+import { Firebase_User } from '../../../interfaces/firebase_user.interface'
+import Login_or_Registration from '../../../../components/organisms/Login_or_Registration'
 
 
 
@@ -25,15 +27,17 @@ const index = () => {
   const { type }: 'registration' | 'login' | 'reset_password' = router.query
 
 
-  const [showPassword, setshowPassword] = useState<boolean>(false)
-  const [email, setemail] = useState<string>('')
-  const [isValidEmail, setisValidEmail] = useState<boolean | null>(null)
-  const [isValidPassword, setisValidPassword] = useState<boolean | null>(null)
+  // const [showPassword, setshowPassword] = useState<boolean>(false)
+  // const [email, setemail] = useState<string>('')
+  // const [isValidEmail, setisValidEmail] = useState<boolean | null>(null)
+  // const [isValidPassword, setisValidPassword] = useState<boolean | null>(null)
   const [typeForm, settypeForm] = useState<'registration' | 'login' | 'reset_password'>('registration')
+  const user: Firebase_User = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
 
 
   useEffect(() => {
-    if (user) {
+    if (user && user?.shopId) {
       router.push('/shop/prodotti')
     }
     if (type) {
@@ -42,50 +46,46 @@ const index = () => {
   }, [type])
 
 
-  const [password, setpassword] = useState<string>('')
-  const user = useSelector((state) => state.user.user);
+  // const [password, setpassword] = useState<string>('')
   const [openModalMath, setOpenModalMath] = useState(1);
 
 
-  const dispatch = useDispatch();
+  // const emailHandler = (event) => {
+  //   setemail(event.target.value)
+  //   if (/\S+@\S+\.\S+/.test(event.target.value)) {
+  //     return setisValidEmail(true)
+  //   }
+  // }
 
-  const emailHandler = (event) => {
-    setemail(event.target.value)
-    if (/\S+@\S+\.\S+/.test(event.target.value)) {
-      return setisValidEmail(true)
-    }
-  }
+  // const emailErrorHandler = () => {
+  //   if (/\S+@\S+\.\S+/.test(email)) {
+  //     return setisValidEmail(true)
+  //   }
+  //   setisValidEmail(false)
+  // }
 
-  const emailErrorHandler = () => {
-    if (/\S+@\S+\.\S+/.test(email)) {
-      return setisValidEmail(true)
-    }
-    setisValidEmail(false)
-  }
-
-  const passwordHandler = (event) => {
-    setpassword(event.target.value)
-    if (event.target.value.length >= 8) {
-      return setisValidPassword(true)
-    }
-  }
+  // const passwordHandler = (event) => {
+  //   setpassword(event.target.value)
+  //   if (event.target.value.length >= 8) {
+  //     return setisValidPassword(true)
+  //   }
+  // }
 
 
-  const passwordErrorHandler = () => {
-    if (password.length >= 8) {
-      return setisValidPassword(true)
-    } else {
-      return setisValidPassword(false)
-    }
-  }
+  // const passwordErrorHandler = () => {
+  //   if (password.length >= 8) {
+  //     return setisValidPassword(true)
+  //   } else {
+  //     return setisValidPassword(false)
+  //   }
+  // }
 
 
-  const handleSubmit = async (event) => {
-
-    event.preventDefault();
+  const handleSubmit = async (email, password) => {
 
 
     if (typeForm === 'registration') {
+
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         // Signed in 
@@ -106,8 +106,11 @@ const index = () => {
             }
           )
         );
-        setemail('')
-        setpassword('')
+
+        console.log('eccolo');
+
+        // setemail('')
+        // setpassword('')
       } catch (error) {
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -118,8 +121,6 @@ const index = () => {
           title: errorForModal?.title,
           description: errorForModal?.description
         }))
-
-
       }
     } else {
       try {
@@ -131,10 +132,14 @@ const index = () => {
           console.log('logout')
           signOut(auth)
           dispatch(logout({}))
-          return setOpenModalMath(Math.random())
+          const errorForModal = handleErrorFirebase('auth/user-not-shop')
+          return dispatch(setModalTitleAndDescription({
+            title: errorForModal?.title,
+            description: errorForModal?.description
+          }))
         }
-        setemail('')
-        setpassword('')
+        // setemail('')
+        // setpassword('')
         dispatch(
           login(
             {
@@ -162,27 +167,23 @@ const index = () => {
         }))
         dispatch(handleOpenModal)
       }
-
     }
-
-
-
   }
 
-  const LoginButton = () => {
-    return (
-      <>
-        <p className='mr-1 text-black	'>hai già un account?</p>
-        <Button className='underline' onClick={() => {
-          settypeForm('login')
-        }
-        } variant='link' colorScheme={'black'}>
-          Accedi
-        </Button>
+  // const LoginButton = () => {
+  //   return (
+  //     <>
+  //       <p className='mr-1 text-black	'>hai già un account?</p>
+  //       <Button className='underline' onClick={() => {
+  //         settypeForm('login')
+  //       }
+  //       } variant='link' colorScheme={'black'}>
+  //         Accedi
+  //       </Button>
 
-      </>
-    )
-  }
+  //     </>
+  //   )
+  // }
 
 
 
@@ -190,8 +191,7 @@ const index = () => {
 
     <Desktop_Layout>
 
-      <Modal_Error_Shop openModalMath={openModalMath} title="Accesso negato" description="il tuo account non è collegato a nessuno shop" closeText='chiudi' confirmText='chiedi aiuto' />
-      <div className='flex justify-between w-full'>
+      {/* <div className='flex justify-between w-full'>
         <form className="p-3 space-y-4 w-full md:w-1/2" onSubmit={handleSubmit}>
           <h1 className="font-black text-xl md:text-3xl italic text-black-900  ">Iscrivi il tuo negozio</h1>
           <div>
@@ -267,7 +267,8 @@ const index = () => {
             }
           </div>
         </form>
-      </div>
+      </div> */}
+      <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: string) => { settypeForm(type) }} type={typeForm} />
     </Desktop_Layout>
   )
 }
