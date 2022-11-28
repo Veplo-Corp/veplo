@@ -17,11 +17,12 @@ import GET_SHOP_BY_FIREBASE_ID from '../../../lib/apollo/queries/getShopByFireba
 import GET_SINGLE_PRODUCT from '../../../lib/apollo/queries/getSingleProduct';
 import Verified_Email from '../../../../components/molecules/Verified_Email';
 import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required';
+import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 
 
 const index = () => {
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.user);
+    const user:Firebase_User = useSelector((state) => state.user.user);
     const [mathNumber, setMathNumber] = useState(1)
     const { addToast } = ToastOpen();
     const [productToDeleteData, setProductToDeleteData] = useState({})
@@ -53,29 +54,6 @@ const index = () => {
             })
 
 
-            //! add new product on Cache
-            // let newProduct = {
-            //     ...shop.products[0],
-            //     id: 'cacca'
-            // }
-
-            // console.log(newProduct);
-            // newProduct['id'] = '637746060742ade875869100'
-            // newProduct['name']= 'CHE COSA STA SUCCEDENDO'
-            // cache.writeQuery({
-            //     query: GET_PRODUCTS_FROM_SHOP,
-            //     variables: { id: data?.shopByFirebaseId.id },
-            //     data: {
-            //         shop: {
-            //             products: [
-            //                 ...shop.products,
-            //                 newProduct
-            //             ]
-            //         }
-            //     }
-            // })
-
-
             //*delete old data, finding serialized number
             const normalizedId = cache.identify({ id: deleteId.deleteProduct, __typename: 'Product' });
             cache.evict({ id: normalizedId });
@@ -87,54 +65,11 @@ const index = () => {
             }, 2000);
         }
     });
-
-    // const [loadShop, { data }] = useLazyQuery(GET_SHOP_BY_FIREBASE_ID, {
-    //     fetchPolicy: 'cache-first',
-    //     nextFetchPolicy: 'cache-first',
-    //     variables: { firebaseId: user?.uid },
-    //     // skip: user.uid
-    // });
-
-    // useEffect(() => {
-    //   if(user && user?.uid){
-    //     loadShop()
-    //   }
-    // }, [user])
     
 
 
     const handleCache = () => {
         console.log(apolloClient.cache.extract());
-        // const { shop } = apolloClient.readQuery({
-        //     query: GET_PRODUCTS_FROM_SHOP,
-        //     // Provide any required variables in this object.
-        //     // Variables of mismatched types will return `null`.
-        //     variables: {
-        //         id: data?.shopByFirebaseId.id //* mettere idShop,
-        //     },
-        // });
-
-
-        // let newProduct = {
-        //     ...shop.products[0],
-        //     id: 'cacca',
-        //     __typename: 'Product'
-        // }
-        // console.log(newProduct);
-        // newProduct['id'] = '637746060742ade875869100'
-        // newProduct['name'] = 'CHE COSA STA SUCCEDENDO'
-        // apolloClient.writeQuery({
-        //     query: GET_PRODUCTS_FROM_SHOP,
-        //     variables: { id: data?.shopByFirebaseId.id },
-        //     data: {
-        //         shop: {
-        //             products: [
-        //                 ...shop.products,
-        //                 newProduct
-        //             ]
-        //         }
-        //     }
-        // })
     }
 
 
@@ -178,14 +113,14 @@ const index = () => {
     return (
         <Shop_UID_Required>
             <Desktop_Layout>
-                {user && user.emailVerified === false &&
+                {user && user?.emailVerified === false &&
                     <Verified_Email />
                 }
-                {user && user.shopId && <Table_Products_Shop idShop={user.shopId} deleteProduct={handleDeleteProductModal} />}
+                {user && !user?.Not_yet_Authenticated_Request && user?.shopId && <Table_Products_Shop idShop={user.shopId} deleteProduct={handleDeleteProductModal} />}
                 <Modal_Error_Shop title={'Elimina prodotto'} description={'confermando eliminerai il prodotto dal tuo negozio'} closeText={'annulla'} openModalMath={mathNumber} confirmText={'conferma'} data={productToDeleteData} handleEvent={deleteProductEvent} />
-                <button
+                {/* <button
                     onClick={handleCache}
-                >handleCache</button>
+                >handleCache</button> */}
             </Desktop_Layout >
         </Shop_UID_Required>
     )

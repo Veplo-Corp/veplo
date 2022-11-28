@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation } from '@apollo/client'
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import { CheckIcon, DownloadIcon } from '@chakra-ui/icons'
 import { Box, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
@@ -23,6 +23,7 @@ import Product_Form from '../../../../components/organisms/Product_Form'
 import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required'
 import { ToastOpen } from '../../../../components/utils/Toast'
 import uploadPhotoFirebase from '../../../../components/utils/uploadPhotoFirebase'
+import { Firebase_User } from '../../../interfaces/firebase_user.interface'
 import { initApollo } from '../../../lib/apollo'
 import CREATE_PRODUCT from '../../../lib/apollo/mutations/createProduct'
 import EDIT_PRODUCT from '../../../lib/apollo/mutations/editProduct'
@@ -49,9 +50,24 @@ const index = () => {
   const apolloClient = initApollo();
   const router = useRouter()
 
-  const user = useSelector((state) => state.user.user);
+  const user:Firebase_User = useSelector((state) => state.user.user);
   //* graphQL
+  
 
+
+  const { loading, error, data, refetch } = useQuery(GET_PRODUCTS_FROM_SHOP, {
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-first',
+    variables: { id: user?.shopId },
+    // pollInterval: 500,
+    // notifyOnNetworkStatusChange: true,
+  });
+  
+  
+  //redirect to createShop,whether there is not a Shop
+  if (error && user.Not_yet_Authenticated_Request === false) {
+    router.push('/shop/crea-shop')
+  }
 
 
 
@@ -70,6 +86,10 @@ const index = () => {
     // if (!brand || !colors || !macrocategory || !microcategory || !sizes || !photos[2] || !gender) {
     //   return setOpenModalMath(Math.random())
     // }
+
+
+
+
 
     try {
       if (photos.length < 2) {
@@ -200,16 +220,16 @@ const index = () => {
 
   return (
     <>
-      {user.shopId ? (
+      {user?.shopId ? (
         <Shop_UID_Required>
           <Desktop_Layout>
             <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false} />
           </Desktop_Layout>
         </Shop_UID_Required>
-        )
-      : (
-        <></>
       )
+        : (
+          <></>
+        )
       }
     </>
 

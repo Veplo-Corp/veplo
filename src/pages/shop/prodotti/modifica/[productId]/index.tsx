@@ -8,6 +8,7 @@ import Product_Form from '../../../../../../components/organisms/Product_Form';
 import Shop_UID_Required from '../../../../../../components/utils/Shop_UID_Required';
 import { ToastOpen } from '../../../../../../components/utils/Toast';
 import uploadPhotoFirebase from '../../../../../../components/utils/uploadPhotoFirebase';
+import { Firebase_User } from '../../../../../interfaces/firebase_user.interface';
 import { Product } from '../../../../../interfaces/product.interface';
 import { initApollo } from '../../../../../lib/apollo';
 import EDIT_PRODUCT from '../../../../../lib/apollo/mutations/editProduct';
@@ -19,7 +20,7 @@ const index = () => {
     const { addToast } = ToastOpen();
     const [editProduct] = useMutation(EDIT_PRODUCT)
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.user);
+    const user: Firebase_User = useSelector((state) => state.user.user);
     const router = useRouter();
     const apolloClient = initApollo();
     const [product, setProduct] = useState<Product>(undefined)
@@ -27,13 +28,18 @@ const index = () => {
 
     const { productId } = router.query
 
-    const [loadShop, { data }] = useLazyQuery(GET_PRODUCTS_FROM_SHOP, {
+    const [loadShop, { data, error }] = useLazyQuery(GET_PRODUCTS_FROM_SHOP, {
         fetchPolicy: 'cache-first',
         //nextFetchPolicy: 'cache-first',
         variables: { id:  user?.shopId},
         // pollInterval: 500,
         // notifyOnNetworkStatusChange: true,
     });
+
+    //redirect to createShop,whether there is not a Shop
+  if (error) {
+    router.push('/shop/crea-shop')
+  }
 
 
 
