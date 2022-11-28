@@ -48,6 +48,24 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                         <p className="font-black text-2xl italic text-black-900  ">DINTORNI</p>
                     </DrawerHeader>
                     <DrawerBody p={0}>
+                        {/* //! regitra impresa */}
+                        {/* <Box
+                            borderBottomWidth={1} borderColor={'gray.200'}
+                            height={14}
+                            className='flex justify-between'
+                            fontSize={'lg'}
+                            backgroundColor={'facebook.800'}
+                            color={'white'}
+                            fontWeight={'semibold'}
+                            onClick={() => {
+                                onClose()
+                                router.push('/shop/login')
+                            }}
+                        >
+                            <Box className='m-auto'>
+                                Registra gratis la tua impresa
+                            </Box>
+                        </Box> */}
                         <InputGroup>
                             <InputLeftElement
                                 height={14}

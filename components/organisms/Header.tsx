@@ -12,6 +12,7 @@ import redirectToAddressForm from '../utils/redirect_to_address_form'
 import Show_Categories_NavBar from '../molecules/Show_Categories_NavBar'
 import Drawer_User_Search from './Drawer_User_Menu'
 import Drawer_Menu from './Drawer_Menu'
+import User_Popover from '../molecules/User_Popover'
 
 
 const Header = () => {
@@ -89,7 +90,7 @@ const Header = () => {
             <Drawer_User_Search handleChangeAddress={() => {
                 setopenDrawer(Math.random())
             }} address_user={address_user} openDrawerMath={openDrawerSearch} />
-            {user && <Drawer_Menu openDrawerMath={openDrawerMenu} user={user} onCloseModal={() => {setOpenDrawerMenu(1)}}/>}
+            {user && <Drawer_Menu openDrawerMath={openDrawerMenu} user={user} onCloseModal={() => { setOpenDrawerMenu(1) }} />}
 
             {!user && <JoinUs_Navbar />}
             {/* Menu button, Search button and Dintorni Logo for screen >=md */}
@@ -106,14 +107,18 @@ const Header = () => {
             </div>}
             {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) && <div className={`pl-2 md:pl-8 fixed z-50 top-3 md:top-4 ${user && !user.isShop ? 'right-12' : 'right-2'} md:hidden`}>
                 {/* searchButton */}
-                <button
-                    onClick={searchCategory}
-                    type="button" className="inline-flex mt-0.5 rounded-md px-1 active:bg-gray-100 focus:outline-none" aria-expanded="false">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                    </svg>
+                <div className='flex gap-0.5'>
+                    <button
+                        onClick={searchCategory}
+                        type="button" className="inline-flex mt-0.5 rounded-md px-1 active:bg-gray-100 focus:outline-none" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                        </svg>
 
-                </button>
+                    </button>
+                    <User_Popover />
+                </div>
+
             </div>}
             <div className={`hidden md:flex pl-2 lg:pl-8 fixed z-50 ${!user ? 'top-10' : 'top-3'} -mt-px`}> {/* lg:w-0 lg:flex-1 */}
                 {!address_user && <Link href="/">
@@ -149,7 +154,7 @@ const Header = () => {
                                     </div>
                                 </>
                             }
-                            <div className={`hidden md:flex gap-3 fixed ${!user ? 'top-9' : 'top-2'} right-2 lg:right-8 z-10`}> {/* pr-80 */}
+                            <div className={`hidden md:flex gap-2 fixed ${!user ? 'top-9' : 'top-2'} right-2 lg:right-8 z-10`}> {/* pr-80 */}
                                 {user && user.isShop ?
                                     (
                                         <button
@@ -166,11 +171,10 @@ const Header = () => {
                                     (
                                         <>
                                             <Input_Search_Item />
-                                            <Link href={'/'}>
-                                                <a>
-                                                    <Circle_Color colors={['gray.200']} dimension={10} space={'0'} />
-                                                </a>
-                                            </Link>
+                                            <div className='mt-1' onClick={() => { router.push('/') }}>
+                                                <Circle_Color colors={['gray.200']} dimension={8} space={'0'} />
+                                            </div>
+                                            <User_Popover />
                                         </>
                                     )
                                 }

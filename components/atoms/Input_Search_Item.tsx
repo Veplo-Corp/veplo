@@ -10,7 +10,7 @@ const Input_Search_Item = () => {
                     placeholder={'Cerca negozi o vestiti'}
                     _placeholder={{ color: 'gray.500', opacity: 1 }}
                     borderRadius={12}
-                    py={3}
+                    py={2}
                     pl={4}
                     size='md' 
                     focusBorderColor='gray.300'

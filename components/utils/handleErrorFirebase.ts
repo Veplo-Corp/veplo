@@ -15,6 +15,11 @@ export const handleErrorFirebase = (error) => {
                 title: 'Email errata',
                 description: "l'email inserita non è collegata a nessun account"
             }
+        case 'auth/user-not-shop':
+            return {
+                title: 'Accesso negato',
+                description: "il tuo account non è abilitato come negozio"
+            }
         default:
             return {
                 title: 'Si è verificato un errore!',

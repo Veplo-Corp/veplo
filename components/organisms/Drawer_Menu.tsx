@@ -54,7 +54,6 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal:an
                 <DrawerCloseButton size={'lg'} mt={'0'} />
                 <DrawerHeader borderWidth={0} borderBottomWidth={1} borderColor={'gray.200'} py={'3'} px={4}>Menu</DrawerHeader>
                 <DrawerBody px={4} py={3}>
-
                     <Box maxW='sm' overflow='hidden'>
                         {user && user.emailVerified === true ? (
 

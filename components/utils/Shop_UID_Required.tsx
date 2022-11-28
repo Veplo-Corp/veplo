@@ -4,9 +4,7 @@ import { useSelector } from 'react-redux';
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface';
 
 const Shop_UID_Required = ({ children }) => {
-
     const user: Firebase_User = useSelector((state) => state.user.user);
-    //console.log(user);
     const router = useRouter();
 
     useEffect(() => {
