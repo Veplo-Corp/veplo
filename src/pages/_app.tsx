@@ -77,7 +77,10 @@ function Auth({ children }) {
           //!useless
           fetchPolicy: 'cache-first',
           // nextFetchPolicy: 'cache-only',
-        })
+        })        
+
+        // console.log(userAuth.uid);
+        // console.log(data);
         
 
         dispatch(
@@ -88,11 +91,11 @@ function Auth({ children }) {
             emailVerified: userAuth.emailVerified,
             isShop,
             createdAt: date_for_redux,
-            shopId: data?.shopByFirebaseId.id
+            shopId: data?.shopByFirebaseId?.id || null
           })
         );
         //if(tokenResult.claims.isShop){return router.push('/shop/prodotti')}
-      } else {
+      } else {        
         dispatch(logout())
       }
     });

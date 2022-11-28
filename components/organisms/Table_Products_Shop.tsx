@@ -32,6 +32,11 @@ const Table_Products_Shop: React.FC<{ idShop: string, deleteProduct: any }> = ({
         // notifyOnNetworkStatusChange: true,
     });
 
+    //redirect to createShop,whether there is not a Shop
+    if(error){
+        router.push('/shop/crea-shop')
+    }
+    
 
 
 

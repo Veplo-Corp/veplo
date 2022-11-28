@@ -5,9 +5,6 @@ import { useEffect } from 'react'
 
 
 // Define the initial state using that type
-const initialState = {
-    
-}
 
 
 export const userState = createSlice({

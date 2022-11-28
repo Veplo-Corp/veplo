@@ -51,6 +51,7 @@ export async function getStaticProps(ctx) {
   console.log(data);
 
 
+
   return {
     props: {
       city: elementCityCap.city,
@@ -58,8 +59,7 @@ export async function getStaticProps(ctx) {
       category: elementGenderMacrocategory.macrocategory,
       postcode: elementCityCap.postcode,
       //products: [data.shop.products[0]]
-      products: data.shop.products
-
+      products: data?.shop.products
     }
   }
 }
@@ -103,7 +103,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
       <div> {/* ${products.length <= 3 ? '' : 'min-h-screen'} */}
         <div className={` flex items-center justify-center`}>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
-            {products.map((product) => {
+            {products[0] !== null && products.map((product) => {
               return (
                 <Box_Dress eventHandler={toProductPageUrl} key={product.id} product={product} toShop={toShopPage}></Box_Dress>
               )
