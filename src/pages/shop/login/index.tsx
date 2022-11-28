@@ -47,7 +47,7 @@ const index = () => {
 
 
   // const [password, setpassword] = useState<string>('')
-  const [openModalMath, setOpenModalMath] = useState(1);
+  //const [openModalMath, setOpenModalMath] = useState(1);
 
 
   // const emailHandler = (event) => {
@@ -85,6 +85,7 @@ const index = () => {
 
 
     if (typeForm === 'registration') {
+      console.log('passa qui');
 
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
@@ -107,8 +108,6 @@ const index = () => {
           )
         );
 
-        console.log('eccolo');
-
         // setemail('')
         // setpassword('')
       } catch (error) {
@@ -122,21 +121,22 @@ const index = () => {
           description: errorForModal?.description
         }))
       }
-    } else {
+    } else if(typeForm === 'login'){
+      console.log('passa qui');
+
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
         const tokenResult = await userCredential.user.getIdTokenResult();
         const isShop = tokenResult.claims.isShop ? true : false
 
         if (!isShop) {
-          console.log('logout')
-          signOut(auth)
           dispatch(logout({}))
           const errorForModal = handleErrorFirebase('auth/user-not-shop')
-          return dispatch(setModalTitleAndDescription({
+           dispatch(setModalTitleAndDescription({
             title: errorForModal?.title,
             description: errorForModal?.description
           }))
+          return router.push('/')
         }
         // setemail('')
         // setpassword('')
@@ -148,7 +148,7 @@ const index = () => {
               idToken: await userCredential.user.getIdToken(true),
               emailVerified: userCredential.user.emailVerified,
               isShop: true,
-              createdAt: 'now'
+              createdAt: 'now',
             }
           )
         );
@@ -268,7 +268,7 @@ const index = () => {
           </div>
         </form>
       </div> */}
-      <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: string) => { settypeForm(type) }} type={typeForm} />
+      <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: string) => { settypeForm(type) }} type={typeForm} title={'Iscrivi il tuo negozio'} />
     </Desktop_Layout>
   )
 }

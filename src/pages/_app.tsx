@@ -66,37 +66,51 @@ function Auth({ children }) {
         const tokenResult = await userAuth.getIdTokenResult()
         // user is logged in, send the user's details to redux, store the current user in the state
         const isShop = tokenResult.claims.isShop ? true : false
-        if (!isShop) return
-        let ISODate = new Date(userAuth.metadata.creationTime)
-        let date_for_redux = ISODate.getDay() + '/' + (ISODate.getMonth() + 1) + '/' + ISODate.getFullYear()
+        if (!isShop && userAuth.uid) {
+          console.log(userAuth.uid);
+          dispatch(
+            login({
+              email: userAuth.email,
+              uid: userAuth.uid,
+              idToken: idToken,
+              isShop: false,
+            })
+          );
+          return
+        } else if (isShop === true) {
 
-        const apolloClient = initApollo()
-        const { data, error } = await apolloClient.query({
-          query: GET_SHOP_BY_FIREBASE_ID,
-          variables: { firebaseId:  userAuth.uid},
-          //!useless
-          fetchPolicy: 'cache-first',
-          // nextFetchPolicy: 'cache-only',
-        })        
+          let ISODate = new Date(userAuth.metadata.creationTime)
+          let date_for_redux = ISODate.getDay() + '/' + (ISODate.getMonth() + 1) + '/' + ISODate.getFullYear()
 
-        // console.log(userAuth.uid);
-        // console.log(data);
-        
-
-        dispatch(
-          login({
-            email: userAuth.email,
-            uid: userAuth.uid,
-            idToken: idToken,
-            emailVerified: userAuth.emailVerified,
-            isShop,
-            createdAt: date_for_redux,
-            shopId: data?.shopByFirebaseId?.id || null
+          const apolloClient = initApollo()
+          const { data, error } = await apolloClient.query({
+            query: GET_SHOP_BY_FIREBASE_ID,
+            variables: { firebaseId: userAuth.uid },
+            //!useless
+            fetchPolicy: 'cache-first',
+            // nextFetchPolicy: 'cache-only',
           })
-        );
-        //if(tokenResult.claims.isShop){return router.push('/shop/prodotti')}
-      } else {        
-        dispatch(logout())
+
+          // console.log(userAuth.uid);
+          // console.log(data);
+
+
+          dispatch(
+            login({
+              email: userAuth.email,
+              uid: userAuth.uid,
+              idToken: idToken,
+              emailVerified: userAuth.emailVerified,
+              isShop,
+              createdAt: date_for_redux,
+              shopId: data?.shopByFirebaseId?.id || null
+            })
+          );
+        }
+      } else {
+        console.log('cazzo di logout');
+        
+        return dispatch(logout())
       }
     });
   }, []);

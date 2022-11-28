@@ -17,7 +17,7 @@ export const handleErrorFirebase = (error) => {
             }
         case 'auth/user-not-shop':
             return {
-                title: 'Accesso negato',
+                title: 'Accesso da utente',
                 description: "il tuo account non è abilitato come negozio"
             }
         default:

@@ -4,17 +4,21 @@ import { Popover, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Box } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
+import { useSelector } from 'react-redux'
+import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
+import { signOut } from 'firebase/auth'
+import { auth } from '../../src/config/firebase'
 
-const actions = [
+const actionsNotLogged = [
     {
         name: 'Accedi',
         description: 'accedi al tuo account',
-        href: '/shop/login?type=login',
+        href: '/user/login?type=login',
     },
     {
         name: 'Registrati',
         description: 'registrati per poter usufruire di tutti i servizi',
-        href: '/shop/login?type=registration',
+        href: '/user/login?type=registration',
     },
     {
         name: 'Sei un negozio?',
@@ -23,9 +27,19 @@ const actions = [
     },
 ]
 
+const actionsLogged = [
+    {
+        name: 'Disconnetti',
+        description: 'accedi al tuo account',
+        href: '/user/login?type=login',
+    },
+]
+
 const User_Popover = () => {
 
-    const router = useRouter()
+    const router = useRouter();
+    const user: Firebase_User = useSelector((state) => state.user.user);
+
 
     return (
         <Popover className="relative ">
@@ -36,7 +50,8 @@ const User_Popover = () => {
             </Popover.Button>
             <Popover.Panel
                 className="absolute grid grid-cols-1 gap-3 cursor-pointer z-10 w-48 right-0.5 p-4 bg-gray-50 border border-gray-200 rounded-xl">
-                {actions.map((action, id) => {
+                {!user ? 
+                (actionsNotLogged.map((action, id) => {
                     return (
                         <Popover.Button key={id} className='text-left'>
                             <Box
@@ -65,7 +80,36 @@ const User_Popover = () => {
                             </Box>
                         </Popover.Button>
                     )
-                })}
+                })) : (actionsLogged.map((action, id) => {
+                    return (
+                        <Popover.Button key={id} className='text-left'>
+                            <Box
+
+                                onClick={() => {
+                                    router.push(action.href)
+                                    signOut(auth)
+                                }}
+                            >
+                                <Box
+                                    fontSize={'md'}
+                                    fontWeight={'medium'}
+                                    lineHeight={'none'}
+                                    mb={'0.5'}
+                                >
+                                    {action.name}
+                                </Box>
+                                <Box
+                                    fontSize={'2xs'}
+                                    fontWeight={'base'}
+                                    lineHeight={'1.1'}
+                                    color={'gray.400'}
+                                >
+                                    {action.description}
+                                </Box>
+                            </Box>
+                        </Popover.Button>
+                    )
+                })) }
                 
             </Popover.Panel>
         </Popover >
