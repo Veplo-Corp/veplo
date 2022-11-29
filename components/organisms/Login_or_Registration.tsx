@@ -58,9 +58,7 @@ const Login_or_Registration: React.FC<{handleSubmitToPage:any, handleType:any, t
     }
 
     const handleSubmitForm = (event) => {
-        event.preventDefault();
-        console.log(email, password);
-        
+        event.preventDefault();        
         handleSubmitToPage(email, password)
     }
 

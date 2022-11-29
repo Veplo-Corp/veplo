@@ -121,51 +121,32 @@ const index = () => {
           description: errorForModal?.description
         }))
       }
-    } else if(typeForm === 'login'){
-      console.log('passa qui');
-
+    } else if (typeForm === 'login') {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
         const tokenResult = await userCredential.user.getIdTokenResult();
         const isShop = tokenResult.claims.isShop ? true : false
-
         if (!isShop) {
-          dispatch(logout({}))
-          const errorForModal = handleErrorFirebase('auth/user-not-shop')
-           dispatch(setModalTitleAndDescription({
-            title: errorForModal?.title,
-            description: errorForModal?.description
-          }))
-          return router.push('/')
+          // const errorForModal = handleErrorFirebase('auth/user-not-shop')
+          // dispatch(setModalTitleAndDescription({
+          //   title: errorForModal?.title,
+          //   description: errorForModal?.description
+          // }))
+          router.push('/')
+          throw new Error('auth/user-not-shop', { cause: 'err' })
+        } else {
+          return router.push('/shop/prodotti')
         }
-        // setemail('')
-        // setpassword('')
-        dispatch(
-          login(
-            {
-              email: userCredential.user.email,
-              uid: userCredential.user.uid,
-              idToken: await userCredential.user.getIdToken(true),
-              emailVerified: userCredential.user.emailVerified,
-              isShop: true,
-              createdAt: 'now',
-            }
-          )
-        );
-        return router.push('/shop/prodotti')
 
       } catch (error) {
-        const errorCode = error.code;
         const errorMessage = error.message;
         //console.log(errorCode);
-        console.log(errorMessage);
-        const errorForModal = handleErrorFirebase(errorCode)
-
+        const errorForModal = handleErrorFirebase(errorMessage)
         dispatch(setModalTitleAndDescription({
           title: errorForModal?.title,
           description: errorForModal?.description
         }))
-        dispatch(handleOpenModal)
+        dispatch(handleOpenModal);
       }
     }
   }

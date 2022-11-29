@@ -32,30 +32,14 @@ const index = () => {
 
   const handleSubmit = async (email, password) => {
     if (typeForm === 'registration') {
-
-      try {
-        console.log('passa qui');
-        
+      try {        
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         // Signed in 
         const user = userCredential.user;
         const idToken = await userCredential.user.getIdToken(true);
         setAuthTokenInLocalStorage(idToken)
         console.log(user);
-        dispatch(
-          login(
-            {
-              email: user.email,
-              uid: user.uid,
-              idToken: idToken,
-              isShop: false,
-              createdAt: 'now'
-            }
-          )
-        );
         return router.push('/')
-
-
       } catch (error) {
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -68,26 +52,13 @@ const index = () => {
         }))
       }
     } else{
-      console.log('passa qui');
-      console.log(email);
-      
+
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
         const tokenResult = await userCredential.user.getIdTokenResult();
         const isShop = tokenResult.claims.isShop ? true : false
         // setemail('')
         // setpassword('')
-        dispatch(
-          login(
-            {
-              email: userCredential.user.email,
-              uid: userCredential.user.uid,
-              idToken: tokenResult,
-              isShop: false,
-              createdAt: 'now'
-            }
-          )
-        );
         return router.push('/')
 
       } catch (error) {
@@ -95,7 +66,7 @@ const index = () => {
         const errorMessage = error.message;
         //console.log(errorCode);
         console.log(error);
-        const errorForModal = handleErrorFirebase(errorCode)
+        const errorForModal = handleErrorFirebase(errorMessage)
 
         dispatch(setModalTitleAndDescription({
           title: errorForModal?.title,
@@ -108,7 +79,7 @@ const index = () => {
 
   return (
     <Desktop_Layout>
-      <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: string) => { settypeForm(type) }} type={typeForm} title={'Registra il tuo account'} />
+      <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: string) => { settypeForm(type) }} type={typeForm} title={`${type==='login'? 'Accedi al tuo account' : 'Registra il tuo account'}`} />
     </Desktop_Layout>
   )
 }

@@ -60,29 +60,31 @@ function Auth({ children }) {
     );
 
     onAuthStateChanged(auth, async (userAuth) => {
+      const apolloClient = initApollo()
       if (userAuth) {
+        console.log(userAuth);
+        
         const idToken = await userAuth.getIdToken(true)
         setAuthTokenInLocalStorage(idToken)
         const tokenResult = await userAuth.getIdTokenResult()
         // user is logged in, send the user's details to redux, store the current user in the state
         const isShop = tokenResult.claims.isShop ? true : false
+        let ISODate = new Date(userAuth.metadata.creationTime)
+        let date_for_redux = ISODate.getDay() + '/' + (ISODate.getMonth() + 1) + '/' + ISODate.getFullYear();
         if (!isShop && userAuth.uid) {
-          console.log(userAuth.uid);
           dispatch(
             login({
               email: userAuth.email,
               uid: userAuth.uid,
               idToken: idToken,
+              emailVerified: userAuth.emailVerified,
               isShop: false,
+              createdAt: date_for_redux,
+              shopId: undefined
             })
           );
           return
         } else if (isShop === true) {
-
-          let ISODate = new Date(userAuth.metadata.creationTime)
-          let date_for_redux = ISODate.getDay() + '/' + (ISODate.getMonth() + 1) + '/' + ISODate.getFullYear()
-
-          const apolloClient = initApollo()
           const { data, error } = await apolloClient.query({
             query: GET_SHOP_BY_FIREBASE_ID,
             variables: { firebaseId: userAuth.uid },
@@ -93,8 +95,6 @@ function Auth({ children }) {
 
           // console.log(userAuth.uid);
           // console.log(data);
-
-
           dispatch(
             login({
               email: userAuth.email,
@@ -108,12 +108,16 @@ function Auth({ children }) {
           );
         }
       } else {
-        console.log('cazzo di logout');
-        
-        return dispatch(logout())
+        console.log('effettua il logout');
+        apolloClient.clearStore()
+        return dispatch(logout({}))
+
       }
     });
   }, []);
+
+
+
   return (
     <>
       {children}
