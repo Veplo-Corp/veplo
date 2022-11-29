@@ -24,10 +24,8 @@ const Header = () => {
     const [openDrawerSearch, setOpenDrawerSearch] = useState(1);
     const [openDrawerMenu, setOpenDrawerMenu] = useState(1);
 
-    const user:Firebase_User = useSelector((state) => state.user.user);
-    console.log(user);
+    const user:Firebase_User = useSelector((state) => state.user.user);    
     
-
     const toast = useToast()
 
     const [showCategory, setshowCategory] = useState({
