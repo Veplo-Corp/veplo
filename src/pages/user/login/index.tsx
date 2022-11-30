@@ -8,8 +8,8 @@ import { handleErrorFirebase } from '../../../../components/utils/handleErrorFir
 import { setAuthTokenInLocalStorage } from '../../../../components/utils/setAuthTokenInLocalStorage';
 import { auth } from '../../../config/firebase';
 import { Firebase_User } from '../../../interfaces/firebase_user.interface';
-import { handleOpenModal, setModalTitleAndDescription } from '../../store/reducers/modal_error';
-import { login } from '../../store/reducers/user';
+import { handleOpenModal, setModalTitleAndDescription } from '../../../store/reducers/modal_error';
+import { login } from '../../../store/reducers/user';
 
 const index = () => {
   const router = useRouter()

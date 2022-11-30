@@ -14,7 +14,7 @@ import { initApollo } from '../../../../../lib/apollo';
 import EDIT_PRODUCT from '../../../../../lib/apollo/mutations/editProduct';
 import GET_PRODUCTS_FROM_SHOP from '../../../../../lib/apollo/queries/geetProductsShop';
 import GET_SHOP_BY_FIREBASE_ID from '../../../../../lib/apollo/queries/getShopByFirebaseId';
-import { setModalTitleAndDescription } from '../../../../store/reducers/modal_error';
+import { setModalTitleAndDescription } from '../../../../../store/reducers/modal_error';
 
 const index = () => {
     const { addToast } = ToastOpen();

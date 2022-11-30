@@ -105,7 +105,8 @@ const Header = () => {
                     </svg>
                 </button>
             </div>}
-            {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) && <div className={`pl-2 md:pl-8 fixed z-50 top-3 md:top-4 ${user && !user.isShop ? 'right-12' : 'right-2'} md:hidden`}>
+            {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) && 
+            <div className={`pl-2 md:pl-8 fixed z-50 top-3 md:top-4 ${user && !user.isShop ? 'right-4' : 'right-2'} md:hidden`}>
                 {/* searchButton */}
                 <div className='flex gap-0.5'>
                     <button
@@ -114,7 +115,6 @@ const Header = () => {
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
-
                     </button>
                     <User_Popover />
                 </div>

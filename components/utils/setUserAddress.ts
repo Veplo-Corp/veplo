@@ -1,5 +1,5 @@
 import { stringify } from 'querystring';
-import { setAddress } from '../../src/pages/store/reducers/address_user';
+import { setAddress } from '../../src/store/reducers/address_user';
 import { Mapbox_Result } from './../../src/interfaces/mapbox_result.interface';
 
 const setUserAddress = async (element: any, type: string) => {

@@ -1,4 +1,4 @@
-import { ErrorModal } from './../../../../components/organisms/Modal_Error_Shop';
+import { ErrorModal } from '../../../components/organisms/Modal_Error_Shop';
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
