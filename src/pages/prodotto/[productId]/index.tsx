@@ -6,7 +6,7 @@ import createUrlScheme from '../../../../components/utils/create_url'
 import { useRouter } from 'next/router';
 
 
-export async function getServerSideProps(ctx) {
+export async function getServerSideProps(ctx:any) {
 
     const apolloClient = initApollo()
     
@@ -37,7 +37,7 @@ const index: React.FC<{ product: Product, error: string }> = ({product}) => {
         ? product.microCategory
         : product.macroCategory + '-' + product.microCategory
     const newUrl = createUrlScheme([product.brand, product.name, category])    
-    const navigate = (url) => {}
+    const navigate = (url:string) => {}
     useEffect(() => {
         if(newUrl){  
             router.push(`/prodotto/${router.query.productId}/${newUrl}`)

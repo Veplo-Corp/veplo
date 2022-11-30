@@ -18,11 +18,11 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
         }
     }, [openDrawerMath])
 
-    const classNames = (...classes) => {
+    const classNames = (...classes:any[]) => {
         return classes.filter(Boolean).join(' ')
     }
 
-    const handleCategoryClicked = (catObject, indexArray) => {
+    const handleCategoryClicked = (catObject:any, indexArray:any) => {
         let gender: string = 'donna'
         if (indexArray === 1) {
             gender = 'uomo'
