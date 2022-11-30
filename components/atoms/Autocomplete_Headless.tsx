@@ -9,14 +9,14 @@ const Autocomplete: React.FC<{ values: string[], handleChangeValues?: any, selec
 
     const [selected, setSelected] = useState(selectedValue ||'')
     const [query, setQuery] = useState('')
-    const [filteredValues, setFilteredValues] = useState([])
+    const [filteredValues, setFilteredValues] = useState<any>([])
 
 
 
     useEffect(() => {
 
 
-        setFilteredValues((): string[] => {
+        setFilteredValues((prevstate:any) => {
             return query === '' || query.length < 3
                 ? values.filter((value) =>
                 value
@@ -31,10 +31,6 @@ const Autocomplete: React.FC<{ values: string[], handleChangeValues?: any, selec
                 )
         })
 
-
-        return () => {
-
-        }
     }, [query])
 
 
@@ -49,7 +45,7 @@ const Autocomplete: React.FC<{ values: string[], handleChangeValues?: any, selec
                     <div className="border border-gray rounded-lg">
                         {values[0] && <Combobox.Input
                             className="w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0"
-                            displayValue={(value) => value}
+                            //displayValue={(value) => value}
                             onChange={(event) => setQuery(event.target.value)}
                         />}
                         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -74,7 +70,7 @@ const Autocomplete: React.FC<{ values: string[], handleChangeValues?: any, selec
 
                             ) : (
 
-                                filteredValues.map((value, valueId) => (
+                                filteredValues.map((value:any, valueId:any) => (
                                     <Combobox.Option
                                         key={valueId}
                                         className={({ active }) =>

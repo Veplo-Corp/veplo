@@ -3,7 +3,7 @@
 
 
 
-export const BRANDS : string[] = [
+export const BRANDS : any = [
 "A fish named fred",
 "a&o FEEL THE LIFE",
 "A-LAB",

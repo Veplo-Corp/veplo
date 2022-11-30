@@ -16,7 +16,7 @@ import { CATEGORIES, Categories, Category } from '../../../../components/mook/ca
 import { Color, COLORS } from '../../../../components/mook/colors'
 import { MACROCATEGORY, Macrocategory } from '../../../../components/mook/macrocategories'
 import { MICROCATEGORY, Microcategory } from '../../../../components/mook/microcategories'
-import { man_bottom_clothes_sizes, man_top_clothes_sizes, SIZES, Sizes, woman_clothes_sizes } from '../../../../components/mook/sizes'
+import { man_bottom_clothes_sizes, man_top_clothes_sizes, woman_clothes_sizes } from '../../../../components/mook/sizes'
 import Drawer_Add_Image from '../../../../components/organisms/Drawer_Add_Image'
 import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
 import Product_Form from '../../../../components/organisms/Product_Form'
@@ -50,7 +50,7 @@ const index = () => {
   const apolloClient = initApollo();
   const router = useRouter()
 
-  const user:Firebase_User = useSelector((state) => state.user.user);
+  const user:Firebase_User = useSelector((state:any) => state.user.user);
   //* graphQL
   
 
@@ -206,7 +206,7 @@ const index = () => {
         return addToast({ position: 'top', title: 'Impossibile creare il prodotto', description: "c'è stato un errore durante la creazione del prodotto, riprova più tardi", status: 'error', duration: 5000, isClosable: true })
       }
 
-    } catch (e) {
+    } catch (e:any) {
       console.log(e);
       console.log(e.code);
       console.log(e.message);

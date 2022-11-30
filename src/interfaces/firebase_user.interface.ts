@@ -2,7 +2,7 @@ export interface Firebase_User {
     email: string,
     uid: string,
     idToken: string,
-    emailVerified?: string,
+    emailVerified?: boolean,
     isShop?: boolean,
     createdAt?: string,
     shopId?:string,

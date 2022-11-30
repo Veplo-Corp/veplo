@@ -11,7 +11,7 @@ const uploadPhotoFirebase = async(name:string, blob:any, productId:any , shopId:
         const url = await getDownloadURL(storageRef)
         console.log(url);
         return url
-    } catch(e){
+    } catch(e:any){
         throw new Error(e);
     }
 

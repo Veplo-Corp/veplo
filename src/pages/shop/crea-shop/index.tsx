@@ -31,21 +31,21 @@ type Image = {
 }
 
 interface IFormInput {
-    name: string;
-    postcode: string
-    address: {
-        city: string
+    name?: string;
+    postcode?: string
+    address?: {
+        city: string | undefined
         street: string
         location: {
             type: string,
             coordinates: number[]
         }
-        postcode: string
     }
-    opening: {
+    opening?: {
         days: number[],
         hours: string[]
-    }
+    },
+    description?: ''
 
     //! togliere description (obbligatoria), macrocategories e gendere in createProduct
     //!deve inserire tommaso
@@ -59,7 +59,7 @@ const index = () => {
 
     const [createShop, createShopElement] = useMutation(CREATE_SHOP);
     const { addToast } = ToastOpen();
-    const user: Firebase_User = useSelector((state) => state.user.user);
+    const user: Firebase_User = useSelector((state: any) => state.user.user);
     const router = useRouter()
 
 
@@ -83,7 +83,7 @@ const index = () => {
     const days = useRef<Day[]>(DAYS)
 
 
-    const customizeTime = (time) => {
+    const customizeTime = (time: any) => {
         const minutes = time.split(':')[1];
         let roundUp_minutes: number | string = (Math.round(minutes / 15) * 15) % 60;
         roundUp_minutes = ('0' + roundUp_minutes).slice(-2)
@@ -98,15 +98,15 @@ const index = () => {
 
 
     //*handle image upload and crop
-    const hiddenFileInput = useRef(null);
-    const [imgSrc, setImgSrc] = useState('')
+    const hiddenFileInput = useRef<any>(null);
+    const [imgSrc, setImgSrc] = useState<any>('')
     const imgRef = useRef<HTMLImageElement>(null)
-    const [url, setUrl] = useState()
-    const [blob, setBlob] = useState()
+    const [url, setUrl] = useState<any>()
+    const [blob, setBlob] = useState<any>()
     const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
     const previewCanvasRef = useRef<HTMLCanvasElement>(null)
     const [isDisabledButton, setIsDisabledButton] = useState(true)
-    const [crop, setCrop] = useState<Crop>(
+    const [crop, setCrop] = useState<Crop | any>(
         {
             unit: '%', // Can be 'px' or '%'
             x: 17.53,
@@ -198,13 +198,19 @@ const index = () => {
 
     const [addresses, setAddresses] = useState([]);
     const [address, setAddress] = useState<Mapbox_Result>({
+        placeType: '',
+        location: {
+            type: 'Point',
+            coordinates: [1,1]
+        },
+        CAP_Location: {
+            type: 'Point',
+            coordinates: [1,1]
+        },
+        postcode: '',
+        city: '',
         address: '',
-        city: "",
-        latitude: 0,
-        longitude: 0,
-        placeType: "address",
-        postcode: "",
-        streetNumber: "",
+        streetNumber: ''
     })
     const [isValid_shop_streetNumber, setisValid_shop_streetNumber] = useState<boolean | null>(null)
     const [showAddress, setShowAddress] = useState(false)
@@ -229,7 +235,7 @@ const index = () => {
             // If server returns the name submitted, that means the form works.
             const result = await response.json()
             console.log(result);
-            
+
             return setAddresses(result.data)
         }, 500)
     }
@@ -262,7 +268,7 @@ const index = () => {
 
     //* handle input change
 
-    const changeInput = (e, type: string) => {
+    const changeInput = (e:any, type: string) => {
         let newTime: string;
         let value: string = e;
         if (type !== 'days_open') {
@@ -364,7 +370,7 @@ const index = () => {
             return router.push('/shop/prodotti')
         } catch (e) {
             console.log(e);
-            
+
             addToast({ position: 'top', title: 'Errore durante la creazione dello Shop', description: "non siamo riusciti a creare il tuo shop. riprova più tardi o contattaci", status: 'error', duration: 5000, isClosable: false })
         }
     }
@@ -581,7 +587,7 @@ const index = () => {
                                             value={address.address}
                                             isInvalid={false}
                                             readOnly
-                                            disabled={address.address.length > 0}
+                                            disabled={address?.address === undefined || address.address.length>0}
                                             _disabled={{
                                                 opacity: '1'
                                             }}
@@ -631,7 +637,7 @@ const index = () => {
                                                 type="text"
                                                 value={address.city}
                                                 readOnly
-                                                disabled={address.city.length > 0}
+                                                disabled={address?.city === undefined || address.city.length > 0}
                                                 _disabled={{
                                                     opacity: '1'
                                                 }}
@@ -693,7 +699,9 @@ const index = () => {
                             <Div_input_creation text='giorni di apertura'>
                                 <Select_multiple_options
                                     handleChangeState={changeInput}
-                                    values={days.current} type={'day'} />
+                                    values={days.current} type={'day'}
+                                    selectedValueBefore={undefined}
+                                    />
                             </Div_input_creation>
                             <div className='flex justify-end mt-4'>
                                 <BlackButton

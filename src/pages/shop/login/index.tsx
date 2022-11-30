@@ -24,7 +24,7 @@ import Login_or_Registration from '../../../../components/organisms/Login_or_Reg
 
 const index = () => {
   const router = useRouter()
-  const { type }: 'registration' | 'login' | 'reset_password' = router.query
+  const { type }: any /* 'registration' | 'login' | 'reset_password' */ = router.query
 
 
   // const [showPassword, setshowPassword] = useState<boolean>(false)
@@ -32,7 +32,7 @@ const index = () => {
   // const [isValidEmail, setisValidEmail] = useState<boolean | null>(null)
   // const [isValidPassword, setisValidPassword] = useState<boolean | null>(null)
   const [typeForm, settypeForm] = useState<'registration' | 'login' | 'reset_password'>('registration')
-  const user: Firebase_User = useSelector((state) => state.user.user);
+  const user: Firebase_User = useSelector((state:any) => state.user.user);
   
   const dispatch = useDispatch();
 
@@ -82,7 +82,7 @@ const index = () => {
   // }
 
 
-  const handleSubmit = async (email, password) => {
+  const handleSubmit = async (email:string, password:string) => {
 
 
     if (typeForm === 'registration') {
@@ -111,7 +111,7 @@ const index = () => {
 
         // setemail('')
         // setpassword('')
-      } catch (error) {
+      } catch (error:any) {
         const errorCode = error.code;
         const errorMessage = error.message;
         //console.log(errorCode);
@@ -139,7 +139,7 @@ const index = () => {
           return router.push('/shop/prodotti')
         }
 
-      } catch (error) {
+      } catch (error:any) {
         const errorMessage = error.message;
         //console.log(errorCode);
         const errorForModal = handleErrorFirebase(errorMessage)
@@ -250,7 +250,7 @@ const index = () => {
           </div>
         </form>
       </div> */}
-      <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: string) => { settypeForm(type) }} type={typeForm} title={'Iscrivi il tuo negozio'} />
+      <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={'Iscrivi il tuo negozio'} />
     </Desktop_Layout>
   )
 }

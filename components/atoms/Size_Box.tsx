@@ -7,7 +7,7 @@ const ARRAY_woman_clothes_sizes = woman_clothes_sizes
 const ARRAY_man_top_clothes_sizes = man_top_clothes_sizes
 const ARRAY_man_bottom_clothes_sizes = man_bottom_clothes_sizes
 
-const Size_Box = ({ borderWidth, py, borderRadius, fontSize, fontWeight, sizes, gender, macrocategory }) => {
+const Size_Box: React.FC<any> = ({ borderWidth, py, borderRadius, fontSize, fontWeight, sizes, gender, macrocategory }) => {
 
     const [Sizes, setSizes] = useState<any[]>([])
 
@@ -60,7 +60,7 @@ const Size_Box = ({ borderWidth, py, borderRadius, fontSize, fontWeight, sizes, 
 
     return (
         <div className='grid grid-cols-3 xl:grid-cols-4  w-fit gap-3 '>
-            {sizes.map((sizes) => {
+            {sizes.map((sizes:string) => {
 
                 return (<Box
                     key={sizes}

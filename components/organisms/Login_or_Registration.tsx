@@ -12,7 +12,7 @@ const Login_or_Registration: React.FC<{handleSubmitToPage:any, handleType:any, t
     
     
 
-    const emailHandler = (event) => {
+    const emailHandler = (event:any) => {
         setemail(event.target.value)
         if (/\S+@\S+\.\S+/.test(event.target.value)) {
             return setisValidEmail(true)
@@ -26,7 +26,7 @@ const Login_or_Registration: React.FC<{handleSubmitToPage:any, handleType:any, t
         setisValidEmail(false)
     }
 
-    const passwordHandler = (event) => {
+    const passwordHandler = (event:any) => {
         setpassword(event.target.value)
         if (event.target.value.length >= 8) {
             return setisValidPassword(true)
@@ -57,7 +57,7 @@ const Login_or_Registration: React.FC<{handleSubmitToPage:any, handleType:any, t
         )
     }
 
-    const handleSubmitForm = (event) => {
+    const handleSubmitForm = (event:any) => {
         event.preventDefault();        
         handleSubmitToPage(email, password)
     }

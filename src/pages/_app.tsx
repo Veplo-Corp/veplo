@@ -13,7 +13,7 @@ import user, { login, logout } from './store/reducers/user'
 import { setAddress } from './store/reducers/address_user'
 import { useRouter } from 'next/router'
 import { ApolloProvider } from '@apollo/client'
-import { client, initApollo, useApollo } from '../lib/apollo'
+import { initApollo, useApollo } from '../lib/apollo'
 import { getAddressFromLocalStorage } from '../../components/utils/getAddress_from_LocalStorage'
 import { setAuthTokenInLocalStorage } from '../../components/utils/setAuthTokenInLocalStorage'
 import Modal_Error_Shop, { ErrorModal } from '../../components/organisms/Modal_Error_Shop'
@@ -35,10 +35,10 @@ const theme = extendTheme({
   },
 })
 
-function Auth({ children }) {
+const Auth: React.FC<{children:any}> = ({ children }) => {
   const router = useRouter()
   // console.log(address_user);
-  const modal: ErrorModal = useSelector((state) => state.modal.modal);
+  const modal: ErrorModal = useSelector((state:any) => state.modal.modal);
 
 
   const dispatch = useDispatch();
@@ -68,8 +68,11 @@ function Auth({ children }) {
         setAuthTokenInLocalStorage(idToken)
         const tokenResult = await userAuth.getIdTokenResult()
         // user is logged in, send the user's details to redux, store the current user in the state
-        const isShop = tokenResult.claims.isShop ? true : false
-        let ISODate = new Date(userAuth.metadata.creationTime)
+        const isShop = tokenResult.claims.isShop ? true : false;
+        let ISODate: any= userAuth.metadata.creationTime
+        if(userAuth.metadata.creationTime){
+          ISODate = new Date(userAuth.metadata.creationTime)
+        }
         let date_for_redux = ISODate.getDay() + '/' + (ISODate.getMonth() + 1) + '/' + ISODate.getFullYear();
         if (!isShop && userAuth.uid) {
           dispatch(
@@ -110,7 +113,7 @@ function Auth({ children }) {
       } else {
         console.log('effettua il logout');
         apolloClient.clearStore()
-        return dispatch(logout({}))
+        return dispatch(logout())
 
       }
     });
@@ -126,7 +129,7 @@ function Auth({ children }) {
   )
 }
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: any /* AppProps */) {
 
 
 

@@ -3,7 +3,7 @@ import React from 'react'
 interface Props {
     city: string | undefined,
     gender?: string | undefined,
-    category?: string | undefined
+    category?: string | undefined | null
 }
 
 const DintorniLogo_Below_Header: React.FC<Props> = ({ city, category, gender }) => {

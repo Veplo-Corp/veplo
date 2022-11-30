@@ -8,13 +8,13 @@ import { Categories, Category } from '../mook/categories'
 
 
 
-const Select_options: React.FC<{ values: Category , handleClick?: any, type: string, disabled?:boolean, selectedValueBefore?:any }> = ({ values, handleClick, type, disabled, selectedValueBefore }) => {
+const Select_options: React.FC<{ values: any , handleClick?: any, type: string, disabled?:boolean, selectedValueBefore?:any }> = ({ values, handleClick, type, disabled, selectedValueBefore }) => {
     const [selected, setSelected] = useState<any>(selectedValueBefore || null);
     const [isListboxDisabled, setIsListboxDisabled] = useState(disabled || false)        
     
 
 
-    const handleEvent = (value) => {
+    const handleEvent = (value:any) => {
         setSelected(value)
         handleClick(value)
     }
@@ -60,7 +60,7 @@ const Select_options: React.FC<{ values: Category , handleClick?: any, type: str
                         >
                             Donna
                         </span>}
-                        {type === 'macrocategory' && values.donna.abbigliamento.map((value, valueIdx) => {
+                        {type === 'macrocategory' && values.donna.abbigliamento.map((value:any, valueIdx:number) => {
                             return (
                                 <Listbox.Option
                                     key={valueIdx}
@@ -94,7 +94,7 @@ const Select_options: React.FC<{ values: Category , handleClick?: any, type: str
                         >
                             Uomo
                         </span>}
-                        {type === 'macrocategory' && values.uomo.abbigliamento.map((value, valueIdx) => {
+                        {type === 'macrocategory' && values.uomo.abbigliamento.map((value:any, valueIdx:any) => {
                             return (
                                 <Listbox.Option
                                     key={valueIdx}
@@ -127,7 +127,7 @@ const Select_options: React.FC<{ values: Category , handleClick?: any, type: str
 
 
 
-                        {type === 'microcategory' && values && values.map((value, valueIdx) => {
+                        {type === 'microcategory' && values && values.map((value:any, valueIdx:number) => {
                             return (
                                 <Listbox.Option
                                     key={valueIdx}
