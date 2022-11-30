@@ -25,6 +25,7 @@ const Header = () => {
     const [openDrawerMenu, setOpenDrawerMenu] = useState(1);
 
     const user:Firebase_User = useSelector((state) => state.user.user);    
+    console.log(user);
     
     const toast = useToast()
 

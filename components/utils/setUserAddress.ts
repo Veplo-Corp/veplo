@@ -15,7 +15,10 @@ const setUserAddress = async (element: any, type: string) => {
     }
 
     if (mapbox_result.placeType === 'address') {
-        mapbox_result.location = element.geometry;
+        mapbox_result.location = {
+            coordinates: element.geometry.coordinates,
+            type: element.geometry.type
+        }
         mapbox_result.postcode = element.context[0].text_it;
         if (element.context[1].id.split('.')[0] === 'place') {
             mapbox_result.city = element.context[1].text_it;
@@ -24,10 +27,14 @@ const setUserAddress = async (element: any, type: string) => {
         }
         mapbox_result.address = element.text_it;
         mapbox_result.streetNumber = element.address !== undefined ? (element.address) : undefined;
-
     }
     else if (mapbox_result.placeType === 'place') {
-        mapbox_result.location = element.geometry
+        console.log('eccolo');
+        
+        mapbox_result.location = {
+            coordinates: element.geometry.coordinates,
+            type: element.geometry.type
+        }
         mapbox_result.city = element.text_it
     }
 

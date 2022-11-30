@@ -21,6 +21,7 @@ import { ToastOpen } from '../../../../components/utils/Toast'
 import { useSelector } from 'react-redux'
 import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required'
 import { Firebase_User } from '../../../interfaces/firebase_user.interface'
+import { useRouter } from 'next/router'
 
 
 type Image = {
@@ -59,7 +60,7 @@ const index = () => {
     const [createShop, createShopElement] = useMutation(CREATE_SHOP);
     const { addToast } = ToastOpen();
     const user: Firebase_User = useSelector((state) => state.user.user);
-
+    const router = useRouter()
 
 
 
@@ -227,6 +228,8 @@ const index = () => {
             // Get the response data from server as JSON.
             // If server returns the name submitted, that means the form works.
             const result = await response.json()
+            console.log(result);
+            
             return setAddresses(result.data)
         }, 500)
     }
@@ -355,7 +358,13 @@ const index = () => {
         try {
             const isCreatedShop = await createShop({ variables: { options: Shop } })
             console.log(isCreatedShop.data.createShop)
+            //TODO
+            //add shopId to user in Redux with function
+            addToast({ position: 'top', title: 'Shop creato con successo', description: "inizia a inserire i tuoi prodotti in Dintorni!", status: 'success', duration: 5000, isClosable: false })
+            return router.push('/shop/prodotti')
         } catch (e) {
+            console.log(e);
+            
             addToast({ position: 'top', title: 'Errore durante la creazione dello Shop', description: "non siamo riusciti a creare il tuo shop. riprova più tardi o contattaci", status: 'error', duration: 5000, isClosable: false })
         }
     }
