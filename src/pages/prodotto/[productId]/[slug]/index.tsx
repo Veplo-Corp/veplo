@@ -33,7 +33,7 @@ export async function getStaticPaths() {
     }
 }
 
-export async function getStaticProps(ctx:any) {
+export async function getStaticProps(ctx: any) {
     const { productId } = ctx.params
     // Call an external API endpoint to get posts.
     // You can use any data fetching library
@@ -138,7 +138,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
         setisOpen(true)
     }
 
-    const changeImageFull = (url:string) => {
+    const changeImageFull = (url: string) => {
         setfullImage(url)
     }
 
@@ -165,43 +165,119 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                 />
                 <ModalContent >
                     <ModalBody padding={0}>
-                        <TransformWrapper
-                            maxScale={3}
-                            minScale={1}
-                            //wheel={{ disabled: true }}
-                            //doubleClick={{ mode: 'zoomIn' }}
-                            centerOnInit
-                            centerZoomedOut
-                            doubleClick={{ step: doubleStep }}
-                            initialScale={1}
-                            onPanningStop={(e) => {
-                                if (e.state.scale !== 1) {
-                                    setDoubleStep(-1);
-                                }
-                                else {
-                                    setDoubleStep(+1);
-                                }
-                            }}
-                        >
-                            <TransformComponent
+                        <div className='hidden md:flex'>
+                            <TransformWrapper
+                                maxScale={3}
+                                minScale={1}
+                                wheel={{ disabled: false }}
+                                //doubleClick={{ mode: 'zoomIn' }}
+                                pinch={{ disabled: true }}
+                                //doubleClick={{ disabled: true }}
+                                centerOnInit
+                                centerZoomedOut
+                                //!old style
+                                doubleClick={{ step: doubleStep }}
+
+                                initialScale={1}
+                                onPanningStop={(e) => {
+                                    console.log(e.state.scale);
+                                    //1.65 is fot setDoubleStep = 3 onMouseEnter        
+                                    if (e.state.scale !== 1 && e.state.scale !== 1.65) {
+                                        setDoubleStep(-1);
+                                    }
+                                    else {
+                                        setDoubleStep(+1);
+                                    }
+                                }}
                             >
-                                <Image
-                                    /* onClick={onClickImageModal} */ src={fullImage} alt={'immagine non trovata'} />                            </TransformComponent>
-                        </TransformWrapper>
+                                {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+                                    <React.Fragment>
+                                        <div
+                                            onMouseEnter={((e) => {
+                                                setDoubleStep(3);
+                                                zoomIn(0.3)
+                                            })}
+                                            onMouseLeave={() => {
+                                                resetTransform()
+                                            }}
+                                        >
+                                            <TransformComponent
+                                            >
+                                                <Image
+                                                    /* onClick={onClickImageModal} */
+                                                    src={fullImage} alt={'immagine non trovata'} />
+                                            </TransformComponent>
+                                        </div>
+                                    </React.Fragment>
+                                )}
+                            </TransformWrapper>
+                        </div>
+                        <div className='flex md:hidden'>
+                            <TransformWrapper
+                                maxScale={3}
+                                minScale={1}
+                                wheel={{ disabled: false }}
+                                //doubleClick={{ mode: 'zoomIn' }}
+                                pinch={{ disabled: true }}
+                                //doubleClick={{ disabled: true }}
+                                centerOnInit
+                                centerZoomedOut
+                                //!old style
+                                doubleClick={{ disabled: true }}
+                            >
+                                <TransformComponent
+                                >
+                                    <Image
+                                        /* onClick={onClickImageModal} */
+                                        src={fullImage} alt={'immagine non trovata'} />
+                                </TransformComponent>
+                            </TransformWrapper>
+                        </div>
                     </ModalBody>
                 </ModalContent>
             </Modal>
             <Desktop_Layout>
                 <div className='md:flex justify-between w-full'>
                     <div className='flex space-x-4 w-full md:w-7/12 xl:w-1/2 '>
+
                         <Box onClick={zoomImage} minW='20' maxW='450' mb={'5'} overflow='hidden' className='cursor-pointer'>
-                            {/* <Image borderRadius={'lg'} src={fullImage} alt='immagine non trovata' /> */}
-                            <LazyLoadImage src={fullImage}
-                                //PlaceholderSrc={PlaceholderImage}
-                                effect="blur"
-                                alt="Image Alt"
-                                className='rounded-lg'
-                            />
+                            <TransformWrapper
+                                maxScale={3}
+                                minScale={1}
+                                wheel={{ disabled: true }}
+                                doubleClick={ { disabled: true }}
+                                pinch={{ disabled: true }}
+                                //doubleClick={{ disabled: true }}
+                                centerOnInit
+                                centerZoomedOut
+                                //!old style
+                                
+                            >
+                                {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+                                    <React.Fragment>
+                                        <div
+                                            onMouseEnter={((e) => {
+                                                zoomIn(0.1)
+                                            })}
+                                            onMouseLeave={() => {
+                                                resetTransform()
+                                            }}
+                                        >
+                                            <TransformComponent
+                                            >
+                                                {/* <Image borderRadius={'lg'} src={fullImage} alt='immagine non trovata' /> */}
+                                                <LazyLoadImage src={fullImage}
+                                                    //PlaceholderSrc={PlaceholderImage}
+                                                    effect="blur"
+                                                    alt="Image Alt"
+                                                    className='rounded-lg'
+                                                />
+                                            </TransformComponent>
+                                        </div>
+                                    </React.Fragment>
+                                )}
+                            </TransformWrapper>
+
                         </Box>
                         <div>
                             {product.photos.map((image) => {
@@ -209,11 +285,13 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                                     <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
                                         borderWidth={1.5}
                                         className={` ${image == fullImage ? "border-black" : "border-white"} cursor-pointer
-                                    w-20
-                                    xl:w-32
+                                        w-20
+                                        xl:w-32
                                     `}
                                     >
-                                        <Image src={image} alt={'immagine non trovata'} />
+                                        <Image src={image} alt={'immagine non trovata'}
+                                            // className='hover:scale-105'
+                                        />
                                     </Box>
                                 )
                             })}
@@ -317,11 +395,12 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                                     <div key={element.id} className={`${element.id === product.id ? 'hidden' : 'flex'}  gap-4 w-fit`}
                                     >
                                         <Box mb={'5'} borderRadius='lg' overflow='hidden'
+                                            width={36}
                                             borderWidth={1.5}
                                             className={`cursor-pointerw-32 lg:w-40`}
                                             onClick={() => toProduct(element)}
                                         >
-                                            <Image src={element.photos[0]} alt={'immagine non trovata'} />
+                                            <Image className='hover:scale-105' src={element.photos[0]} alt={'immagine non trovata'} />
                                         </Box>
                                     </div>)
 

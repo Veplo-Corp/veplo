@@ -118,7 +118,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
 
 
     useEffect(() => {
-        if (!openDraw) {
+        if (!openDraw || openDraw == 1) {
             return
         }
         setisOpen(true)
@@ -129,11 +129,11 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     //     console.log(imgSrc);
     // }, [imgSrc])
 
-    // useEffect(() => {
-    //     if (imagesUploadedBefore != []) {
-    //         setImages(imagesUploadedBefore)
-    //     }
-    // }, [imagesUploadedBefore])
+    useEffect(() => {
+        if (imagesUploadedBefore && imagesUploadedBefore.length > 0) {
+            setImages(imagesUploadedBefore)
+        }
+    }, [imagesUploadedBefore])
 
     const [crop, setCrop] = useState<Crop | null>(
         {
@@ -157,7 +157,6 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                 url: url,
                 position: positionPhoto === null ? prevstate.length : positionPhoto
             }
-
 
             if (positionPhoto !== null) {
                 let prevstateImages = [...prevstate]
@@ -219,9 +218,10 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
             try {
                 const file = e.target.files[0];
                 const image = await resizeFile(file);
-                if(image) {
-                    setImgSrc(image)
-                }
+                console.log(image);
+
+                setImgSrc(image)
+
             } catch (err) {
                 console.log(err);
             }
@@ -371,9 +371,21 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                                     <AlertIcon />
                                                     Ritaglia la foto
                                                 </Alert>
-                                                {crop && <ReactCrop
+                                                <ReactCrop
                                                     className='w-full h-full'
-                                                    crop={crop}
+                                                    crop={crop || {
+                                                        unit: '%', // Can be 'px' or '%'
+                                                        x: 0,
+                                                        y: 0,
+                                                        width: 0,  //762 diviso 5
+                                                        height: 0,//1100 diviso 5
+
+                                                        // unit: '%', // Can be 'px' or '%'
+                                                        // x: 17.53,
+                                                        // y: 11.00,
+                                                        // width: 65.99,  //762 diviso 5
+                                                        // height: 76.209,//1100 diviso 5
+                                                    }}
                                                     onChange={(_, percentCrop) => setCrop(percentCrop)}
                                                     onComplete={(c) => {
                                                         setIsDisabledButton(true)
@@ -385,7 +397,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                                         className='max-w-full' /* min-w-full */
                                                         src={imgSrc} ref={imgRef} />
                                                 </ReactCrop>
-                                                }
+
                                                 <div className='flex justify-between mt-2 mb-2 gap-2'>
                                                     <Button
                                                         onClick={() => setShowCroppedImage(false)}
@@ -444,7 +456,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                 </div>
                                 <div className="min-h-screen items-center justify-center mb-96 ">
                                     <div className='w-full md:mr-11 md:w-fit grid gap-5 grid-cols-2 justify-items-start mt-8'>
-                                        {images.map((image: any, position:any) => {
+                                        {images.map((image: any, position: any) => {
                                             return (
                                                 <div key={position} className='md:w-44 lg:w-56 h-fit'>
                                                     <div className='flex justify-between mb-1'>
