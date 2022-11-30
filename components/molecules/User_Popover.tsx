@@ -53,7 +53,7 @@ const User_Popover = () => {
                 {!user ? 
                 (actionsNotLogged.map((action, id) => {
                     return (
-                        <Popover.Button key={id} className='text-left'>
+                        <Popover.Button key={id} className='text-left hover:scale-95'>
                             <Box
 
                                 onClick={() => {
