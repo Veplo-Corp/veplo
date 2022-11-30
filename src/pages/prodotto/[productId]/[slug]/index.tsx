@@ -33,7 +33,7 @@ export async function getStaticPaths() {
     }
 }
 
-export async function getStaticProps(ctx) {
+export async function getStaticProps(ctx:any) {
     const { productId } = ctx.params
     // Call an external API endpoint to get posts.
     // You can use any data fetching library
@@ -138,7 +138,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
         setisOpen(true)
     }
 
-    const changeImageFull = (url) => {
+    const changeImageFull = (url:string) => {
         setfullImage(url)
     }
 
@@ -186,7 +186,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                             <TransformComponent
                             >
                                 <Image
-                                    /* onClick={onClickImageModal} */ src={fullImage} alt={product.imageAlt} />                            </TransformComponent>
+                                    /* onClick={onClickImageModal} */ src={fullImage} alt={'immagine non trovata'} />                            </TransformComponent>
                         </TransformWrapper>
                     </ModalBody>
                 </ModalContent>
@@ -275,7 +275,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                             {product.colors.length > 1 && <span className='ml-1'>colorazioni disponibili</span>}
                         </Box>
                         <div className='mt-2'>
-                            <Circle_Color colors={productcolorsCSS} dimension={10} space={'4'} />
+                            <Circle_Color colors={productcolorsCSS} dimension={10} space={4} />
                         </div>
                         <Box
                             fontWeight='light'
