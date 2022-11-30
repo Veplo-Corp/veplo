@@ -38,7 +38,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
     const [sizesSelected, setSizesSelected] = useState<string[]>();
 
     //openDraw
-    const [openDrawNumber, setOpenDrawNumber] = useState()
+    const [openDrawNumber, setOpenDrawNumber] = useState<number>(1)
     const brands = useRef<string[]>(BRANDS)
     const colors = useRef<Color[]>(COLORS)
     const microcategories = useRef<Microcategory[]>(MICROCATEGORY)
@@ -104,7 +104,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
         }
     }
 
-    const onChangePrice = (e) => {
+    const onChangePrice = (e:any) => {
         let inputValue: string = e.target.value.replace(',', '.');
         inputValue = inputValue.replace(/[^0-9\.|]/g, '')
         if (inputValue === '.') {
@@ -125,7 +125,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
 
     }
 
-    const submitData = (e) => {
+    const submitData = (e:any) => {
         handleSubmitEvent(e)
     }
 
@@ -159,7 +159,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                     {...register("price", {
                                         required: true,
                                     })}
-                                    onWheel={(e) => e.target.blur()}
+                                    onWheel={(e:any) => e.target.blur()}
                                     placeholder={'34,99'}
                                     textAlign={"end"}
                                     isInvalid={false}
@@ -176,7 +176,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <Autocomplete values={brands.current}
                                         selectedValue={watch('brand')}
-                                        handleChangeValues={(brand) => {
+                                        handleChangeValues={(brand:any) => {
                                             setValue('brand', brand);
                                         }} />
                                 )}
@@ -191,7 +191,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                 render={() => (
                                     <Select_multiple_options values={colors.current} type={'color'}
                                         selectedValueBefore={watch('colors')}
-                                        handleChangeState={(colors) => {
+                                        handleChangeState={(colors:any) => {
                                             setValue('colors', colors);
                                         }} />
                                 )}
@@ -206,7 +206,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                     <Select_options values={categories.current} type={'macrocategory'}
                                         disabled={disabled}
                                         selectedValueBefore={watch('macrocategory')}
-                                        handleClick={(macrocategory) => {
+                                        handleClick={(macrocategory:any) => {
                                             setValue('macrocategory', macrocategory);
                                         }}
                                     />
@@ -225,7 +225,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                         disabled={disabled}
                                         selectedValueBefore={watch('microcategory')}
                                         type={'microcategory'}
-                                        handleClick={(microCategory) => {
+                                        handleClick={(microCategory:any) => {
                                             console.log(microCategory);
 
                                             setValue('microcategory', microCategory);
@@ -243,7 +243,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                 render={() => (
                                     <Select_multiple_options values={sizesSelected} type={'size'}
                                         selectedValueBefore={watch('sizes')}
-                                        handleChangeState={(sizes) => {
+                                        handleChangeState={(sizes:any) => {
                                             setValue('sizes', sizes);
                                         }}
                                     />

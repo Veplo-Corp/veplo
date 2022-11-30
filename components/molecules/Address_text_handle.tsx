@@ -3,7 +3,7 @@ import React from 'react';
 
 
 
-const Address_text_handle = ({ element }) => {
+const Address_text_handle: React.FC<{element:any}> = ({ element }) => {
     if (element.place_type[0] === 'address') {
         if (element.context[1].id.split('.')[0] === 'place') {
             return (

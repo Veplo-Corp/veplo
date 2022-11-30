@@ -6,15 +6,17 @@ import { useEffect } from 'react'
 
 // Define the initial state using that type
 
+const initialState : any = {
+  user:{
+    email:null,
+    Not_yet_Authenticated_Request: true
+  }
+
+}
 
 export const userState = createSlice({
     name: 'user',
-    initialState: {
-      user: {
-        email:null,
-        Not_yet_Authenticated_Request: true
-      },
-    },
+    initialState: initialState,
     reducers: {
       login: (state, action) => {          
         state.user = action.payload;       

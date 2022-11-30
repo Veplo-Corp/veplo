@@ -8,7 +8,6 @@ import Input_Search_Item from '../atoms/Input_Search_Item'
 import Circle_Color from '../atoms/Circle_Color'
 import { useSelector } from 'react-redux'
 import Drawer_Address from './Drawer_Address'
-import redirectToAddressForm from '../utils/redirect_to_address_form'
 import Show_Categories_NavBar from '../molecules/Show_Categories_NavBar'
 import Drawer_User_Search from './Drawer_User_Menu'
 import Drawer_Menu from './Drawer_Menu'
@@ -18,13 +17,13 @@ import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
 
 const Header = () => {
     const router: NextRouter = useRouter()
-    const genere: 'uomo' | 'donna' | undefined = router.query.genere
+    const genere: any = router.query.genere
     const [showMenu, setshowMenu] = useState(false);
     const [openDrawer, setopenDrawer] = useState(1);
     const [openDrawerSearch, setOpenDrawerSearch] = useState(1);
     const [openDrawerMenu, setOpenDrawerMenu] = useState(1);
 
-    const user:Firebase_User = useSelector((state) => state.user.user);    
+    const user:Firebase_User = useSelector((state:any) => state.user.user);    
     console.log(user);
     
     const toast = useToast()
@@ -33,10 +32,10 @@ const Header = () => {
         show: false,
         gender: ''
     });
-    const address_user = useSelector((state) => state.address.address);
+    const address_user = useSelector((state:any) => state.address.address);
     // console.log(address_user);
 
-    const handleShowCategory = (value?, gender?) => {
+    const handleShowCategory = (value?:any, gender?:any) => {
         if (address_user) {
             if (value === false) {
                 setshowCategory({
@@ -173,7 +172,7 @@ const Header = () => {
                                         <>
                                             <Input_Search_Item />
                                             <div className='mt-1' onClick={() => { router.push('/') }}>
-                                                <Circle_Color colors={['gray.200']} dimension={8} space={'0'} />
+                                                <Circle_Color colors={['gray.200']} dimension={8} space={0} />
                                             </div>
                                             <User_Popover />
                                         </>

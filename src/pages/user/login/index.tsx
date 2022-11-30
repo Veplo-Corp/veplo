@@ -13,10 +13,10 @@ import { login } from '../../store/reducers/user';
 
 const index = () => {
   const router = useRouter()
-  const { type }: 'registration' | 'login' | 'reset_password' = router.query;
+  const { type }: any /* 'registration' | 'login' | 'reset_password' */ = router.query;
 
   const [typeForm, settypeForm] = useState<'registration' | 'login' | 'reset_password'>('registration')
-  const user: Firebase_User = useSelector((state) => state.user.user);
+  const user: Firebase_User = useSelector((state:any) => state.user.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const index = () => {
     }
   }, [type])
 
-  const handleSubmit = async (email, password) => {
+  const handleSubmit = async (email:string, password:string) => {
     if (typeForm === 'registration') {
       try {        
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
@@ -40,7 +40,7 @@ const index = () => {
         setAuthTokenInLocalStorage(idToken)
         console.log(user);
         return router.push('/')
-      } catch (error) {
+      } catch (error:any) {
         const errorCode = error.code;
         const errorMessage = error.message;
         //console.log(errorCode);
@@ -61,7 +61,7 @@ const index = () => {
         // setpassword('')
         return router.push('/')
 
-      } catch (error) {
+      } catch (error:any) {
         const errorCode = error.code;
         const errorMessage = error.message;
         //console.log(errorCode);
@@ -79,7 +79,7 @@ const index = () => {
 
   return (
     <Desktop_Layout>
-      <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: string) => { settypeForm(type) }} type={typeForm} title={`${type==='login'? 'Accedi al tuo account' : 'Registra il tuo account'}`} />
+      <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${type==='login'? 'Accedi al tuo account' : 'Registra il tuo account'}`} />
     </Desktop_Layout>
   )
 }

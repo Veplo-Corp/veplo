@@ -1,4 +1,4 @@
-export const handleErrorFirebase = (error) => {
+export const handleErrorFirebase = (error:string) => {
     switch (error) {
         case 'auth/email-already-in-use':
             return {

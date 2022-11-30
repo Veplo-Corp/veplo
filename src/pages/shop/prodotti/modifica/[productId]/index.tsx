@@ -20,10 +20,10 @@ const index = () => {
     const { addToast } = ToastOpen();
     const [editProduct] = useMutation(EDIT_PRODUCT)
     const dispatch = useDispatch();
-    const user: Firebase_User = useSelector((state) => state.user.user);
+    const user: Firebase_User = useSelector((state:any) => state.user.user);
     const router = useRouter();
     const apolloClient = initApollo();
-    const [product, setProduct] = useState<Product>(undefined)
+    const [product, setProduct] = useState<Product | undefined>(undefined)
     const [openModalMath, setOpenModalMath] = useState(1);
 
     const { productId } = router.query
@@ -63,11 +63,11 @@ const index = () => {
 
 
 
-    const submitData = async ({ name, price, brand, colors, macrocategory, microcategory, sizes, photos, gender }: IFormInput) => {
+    const submitData = async ({ name, price, brand, colors, macrocategory, microcategory, sizes, photos, gender }: any) => {
         //console.log(photos);
 
         let colorsToDB;
-        colorsToDB = colors.map((color) => {
+        colorsToDB = colors.map((color:any) => {
             return color.name
         })
 
@@ -107,7 +107,8 @@ const index = () => {
         }
         //console.log(photoURLForDB);
 
-
+        if(!product){return(<></>)}
+        
         const options = {
             name: product.name != name ? name : product.name,
             price: product.price != price ? priceToDB : product.price,

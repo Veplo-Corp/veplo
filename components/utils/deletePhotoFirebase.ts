@@ -9,7 +9,7 @@ const deletePhotoFirebase = async(name:string, productId:any , shopId:string) =>
     try{
         await deleteObject(storageRef)
         return true
-    } catch(e){
+    } catch(e:any){
         throw new Error(e);
     }
 

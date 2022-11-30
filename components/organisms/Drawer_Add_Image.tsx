@@ -81,7 +81,7 @@ const ImageTextFormat: string[] = [
     'opzionale'
 ]
 
-const resizeFile = (file) =>
+const resizeFile = (file: any) =>
     new Promise((resolve) => {
         Resizer.imageFileResizer(
             file,
@@ -98,23 +98,23 @@ const resizeFile = (file) =>
     });
 
 
-const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: any, imagesUploadedBefore?: string[] }> = ({ openDraw, confirmPhotos, imagesUploadedBefore }) => {
+const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: any, imagesUploadedBefore?: string[] | [] }> = ({ openDraw, confirmPhotos, imagesUploadedBefore }) => {
 
 
     //* react image crop
     const [isOpen, setisOpen] = useState(false);
-    const hiddenFileInput = useRef(null);
+    const hiddenFileInput = useRef<any>(null);
     const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
     const [aspect, setAspect] = useState<number | undefined>(762 / 1100);
     const previewCanvasRef = useRef<HTMLCanvasElement>(null)
-    const [imgSrc, setImgSrc] = useState('')
+    const [imgSrc, setImgSrc] = useState<any>('')
     const imgRef = useRef<HTMLImageElement>(null)
-    const [url, setUrl] = useState()
-    const [blob, setBlob] = useState()
+    const [url, setUrl] = useState<any>()
+    const [blob, setBlob] = useState<any>()
     const [images, setImages] = useState<Image[] | string[]>([])
-    const [isDisabledButton, setIsDisabledButton] = useState(true)
-    const [positionPhoto, setPositionPhoto] = useState(null);
-    const [showCroppedImage, setShowCroppedImage] = useState(false);
+    const [isDisabledButton, setIsDisabledButton] = useState<any>(true)
+    const [positionPhoto, setPositionPhoto] = useState<any>(null);
+    const [showCroppedImage, setShowCroppedImage] = useState<any>(false);
 
 
     useEffect(() => {
@@ -129,13 +129,13 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     //     console.log(imgSrc);
     // }, [imgSrc])
 
-    useEffect(() => {
-        if (imagesUploadedBefore != []) {
-            setImages(imagesUploadedBefore)
-        }
-    }, [imagesUploadedBefore])
+    // useEffect(() => {
+    //     if (imagesUploadedBefore != []) {
+    //         setImages(imagesUploadedBefore)
+    //     }
+    // }, [imagesUploadedBefore])
 
-    const [crop, setCrop] = useState<Crop>(
+    const [crop, setCrop] = useState<Crop | null>(
         {
             unit: '%', // Can be 'px' or '%'
             x: 17.53,
@@ -148,23 +148,23 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     const onHanldeConfirm = async () => {
 
         //add image Blob in the array of images
-        setImages((prevstate: Image[] | string[]) => {
+        setImages((prevstate: any) => {
             console.log('position photo: ', positionPhoto);
-            
+
             const newImage: Image = {
                 type: 'test',
                 blob: blob,
                 url: url,
                 position: positionPhoto === null ? prevstate.length : positionPhoto
             }
-            
+
 
             if (positionPhoto !== null) {
                 let prevstateImages = [...prevstate]
                 //prevstateImages = prevstateImages.filter(image => image.position !== positionPhoto)
-                prevstateImages.splice(positionPhoto,1,newImage)
+                prevstateImages.splice(positionPhoto, 1, newImage)
                 console.log(prevstateImages);
-                
+
                 let updateImages = [
                     ...prevstateImages,
                     //*vecchio modello
@@ -202,7 +202,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
         setShowCroppedImage(true)
         //set the posizion of the cropp
         setPositionPhoto(position)
-        
+
     };
 
 
@@ -219,7 +219,9 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
             try {
                 const file = e.target.files[0];
                 const image = await resizeFile(file);
-                setImgSrc(image)
+                if(image) {
+                    setImgSrc(image)
+                }
             } catch (err) {
                 console.log(err);
             }
@@ -369,7 +371,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                                     <AlertIcon />
                                                     Ritaglia la foto
                                                 </Alert>
-                                                <ReactCrop
+                                                {crop && <ReactCrop
                                                     className='w-full h-full'
                                                     crop={crop}
                                                     onChange={(_, percentCrop) => setCrop(percentCrop)}
@@ -383,6 +385,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                                         className='max-w-full' /* min-w-full */
                                                         src={imgSrc} ref={imgRef} />
                                                 </ReactCrop>
+                                                }
                                                 <div className='flex justify-between mt-2 mb-2 gap-2'>
                                                     <Button
                                                         onClick={() => setShowCroppedImage(false)}
@@ -441,7 +444,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                 </div>
                                 <div className="min-h-screen items-center justify-center mb-96 ">
                                     <div className='w-full md:mr-11 md:w-fit grid gap-5 grid-cols-2 justify-items-start mt-8'>
-                                        {images.map((image: Image, position) => {
+                                        {images.map((image: any, position:any) => {
                                             return (
                                                 <div key={position} className='md:w-44 lg:w-56 h-fit'>
                                                     <div className='flex justify-between mb-1'>
@@ -466,12 +469,12 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                                         <img
                                                             className='rounded'
                                                             src={image} alt="" />
-                                                    ): 
-                                                    (
-                                                        <img
-                                                            className='rounded'
-                                                            src={image.url} alt="" />
-                                                    )
+                                                    ) :
+                                                        (
+                                                            <img
+                                                                className='rounded'
+                                                                src={image.url} alt="" />
+                                                        )
                                                     }
 
                                                 </div>

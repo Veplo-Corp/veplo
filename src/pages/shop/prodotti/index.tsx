@@ -18,11 +18,12 @@ import GET_SINGLE_PRODUCT from '../../../lib/apollo/queries/getSingleProduct';
 import Verified_Email from '../../../../components/molecules/Verified_Email';
 import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required';
 import { Firebase_User } from '../../../interfaces/firebase_user.interface';
+import { Product } from '../../../interfaces/product.interface';
 
 
 const index = () => {
     const dispatch = useDispatch();
-    const user:Firebase_User = useSelector((state) => state.user.user);
+    const user:Firebase_User = useSelector((state:any) => state.user.user);
     const [mathNumber, setMathNumber] = useState(1)
     const { addToast } = ToastOpen();
     const [productToDeleteData, setProductToDeleteData] = useState({})
@@ -48,7 +49,7 @@ const index = () => {
                 variables: { id: user.shopId  }, //shopId
                 data: {
                     shop: {
-                        products: shop.products.filter(product => product.id != deleteId.deleteProduct)
+                        products: shop.products.filter((product:Product) => product.id != deleteId.deleteProduct)
                     }
                 }
             })
@@ -113,7 +114,7 @@ const index = () => {
     return (
         <Shop_UID_Required>
             <Desktop_Layout>
-                {user && user?.emailVerified === false &&
+                {user && user.emailVerified === false &&
                     <Verified_Email />
                 }
                 {user && !user?.Not_yet_Authenticated_Request && user?.shopId && <Table_Products_Shop idShop={user.shopId} deleteProduct={handleDeleteProductModal} />}

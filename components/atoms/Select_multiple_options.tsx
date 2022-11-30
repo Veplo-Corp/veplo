@@ -22,7 +22,7 @@ import { Day } from '../mook/days'
 // }
 
 
-const Select_multiple_options: React.FC<{ values: Color[] | undefined | Macrocategory[] | Day[] | String[], type: string, handleChangeState?: any, selectedValueBefore: any }> = ({ values, type, handleChangeState, selectedValueBefore }) => {
+const Select_multiple_options: React.FC<{ values: any, type: string, handleChangeState?: any, selectedValueBefore?: any }> = ({ values, type, handleChangeState, selectedValueBefore }) => {
     const [selectedValue, setSelectedValue] = useState<Color[]>([])
     const [isListboxDisabled, setIsListboxDisabled] = useState(false)
 
@@ -110,7 +110,7 @@ const Select_multiple_options: React.FC<{ values: Color[] | undefined | Macrocat
                     leaveTo="opacity-0"
                 >
                     <Listbox.Options className="z-10 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                        {values && values.map((value, valueIdx) =>
+                        {values && values.map((value:any, valueIdx:any) =>
 
 
                         (

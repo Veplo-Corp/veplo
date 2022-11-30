@@ -77,7 +77,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> 
                     >
                         {Number(product.price).toFixed(2).replace('.', ',')} €
                     </Box>
-                    <Circle_Color eventHanlder={() => eventHandler(product)} colors={productcolorsCSS} dimension={'4'} space={'1'} />
+                    <Circle_Color eventHanlder={() => eventHandler(product)} colors={productcolorsCSS} dimension={4} space={1} />
                 </div>
             </Box>
         </Box>

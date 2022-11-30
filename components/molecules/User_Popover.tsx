@@ -38,7 +38,7 @@ const actionsLogged = [
 const User_Popover = () => {
 
     const router = useRouter();
-    const user: Firebase_User = useSelector((state) => state.user.user);
+    const user: Firebase_User = useSelector((state:any) => state?.user.user);
 
 
     return (

@@ -12,7 +12,7 @@ type Props = {
 
 const navbar: React.FC<Props> = ({ genere, showCategory, onShowCategory }) => {
     const router = useRouter();
-    const address_user = useSelector((state) => state.address.address);
+    const address_user = useSelector((state:any) => state.address.address);
     // console.log(address_user);
     
 

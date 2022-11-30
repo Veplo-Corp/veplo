@@ -6,7 +6,7 @@ const Circle_Color: React.FC<{colors:any, dimension:number, space:number, eventH
     
     return (
         <div className={`flex space-x-${space}`}>
-            {colors.map((color) => {
+            {colors.map((color:any) => {
                 return (
                     <Box onClick={()=> {
                         if(eventHanlder){

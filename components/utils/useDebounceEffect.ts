@@ -3,7 +3,7 @@ import { useEffect, DependencyList } from 'react'
 export function useDebounceEffect(
   fn: () => void,
   waitTime: number,
-  deps?: DependencyList,
+  deps?: DependencyList | any,
 ) {
   useEffect(() => {
     const t = setTimeout(() => {
