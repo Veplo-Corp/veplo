@@ -9,7 +9,7 @@ import {
 import Input_Search_Address from '../atoms/Input_Search_Address';
 import { useDispatch } from 'react-redux';
 import setUserAddress from '../utils/setUserAddress';
-import { setAddress } from '../../src/pages/store/reducers/address_user';
+import { setAddress } from '../../src/store/reducers/address_user';
 import Address_text_handle from '../molecules/Address_text_handle';
 
 

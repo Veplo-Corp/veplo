@@ -7,7 +7,7 @@ import { Product } from '../../../../interfaces/product.interface'
 import createUrlScheme from '../../../../../components/utils/create_url'
 
 
-import user from '../../../store/reducers/user'
+import user from '../../../../store/reducers/user'
 import getCityAndPostcodeFromSlug from '../../../../../components/utils/get_City_and_Postcode_from_Slug'
 import getGenderandMacrocategory from '../../../../../components/utils/get_Gender_and_Macrocategory'
 import GET_PRODUCTS_FROM_SHOP from '../../../../lib/apollo/queries/geetProductsShop'
