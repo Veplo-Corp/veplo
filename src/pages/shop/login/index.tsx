@@ -33,6 +33,7 @@ const index = () => {
   // const [isValidPassword, setisValidPassword] = useState<boolean | null>(null)
   const [typeForm, settypeForm] = useState<'registration' | 'login' | 'reset_password'>('registration')
   const user: Firebase_User = useSelector((state) => state.user.user);
+  
   const dispatch = useDispatch();
 
 
@@ -43,7 +44,7 @@ const index = () => {
     if (type) {
       settypeForm(type)
     }
-  }, [type])
+  }, [type, user])
 
 
   // const [password, setpassword] = useState<string>('')
