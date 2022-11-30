@@ -19,6 +19,11 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import GET_PRODUCTS_FROM_SHOP from '../../../../lib/apollo/queries/geetProductsShop';
 import { toProductPage } from '../../../../../components/utils/toProductPage';
 
+//!pronestor - not the original library! because it doesn't work with react 18
+import {
+    TransformComponent,
+    TransformWrapper,
+} from "@pronestor/react-zoom-pan-pinch";
 
 
 export async function getStaticPaths() {
@@ -62,6 +67,7 @@ export async function getStaticProps(ctx) {
 
 const index: React.FC<{ product: Product, error: string, initialApolloState: any }> = ({ product, error, initialApolloState }) => {
     const colors = useRef<Color[]>(COLORS)
+    const [doubleStep, setDoubleStep] = useState(1);
 
     const router = useRouter();
     const { slug } = router.query
@@ -159,8 +165,29 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                 />
                 <ModalContent >
                     <ModalBody padding={0}>
-                        <Image
-                            onClick={onClickImageModal} src={fullImage} alt={product.imageAlt} />
+                        <TransformWrapper
+                            maxScale={3}
+                            minScale={1}
+                            //wheel={{ disabled: true }}
+                            //doubleClick={{ mode: 'zoomIn' }}
+                            centerOnInit
+                            centerZoomedOut
+                            doubleClick={{ step: doubleStep }}
+                            initialScale={1}
+                            onPanningStop={(e) => {
+                                if (e.state.scale !== 1) {
+                                    setDoubleStep(-1);
+                                }
+                                else {
+                                    setDoubleStep(+1);
+                                }
+                            }}
+                        >
+                            <TransformComponent
+                            >
+                                <Image
+                                    /* onClick={onClickImageModal} */ src={fullImage} alt={product.imageAlt} />                            </TransformComponent>
+                        </TransformWrapper>
                     </ModalBody>
                 </ModalContent>
             </Modal>
