@@ -1,12 +1,28 @@
 import { ChevronUpIcon, SearchIcon } from '@chakra-ui/icons'
 import { Box, Button, Center, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Input, InputGroup, InputLeftElement, useDisclosure } from '@chakra-ui/react'
 import { Disclosure, Tab } from '@headlessui/react'
+import MobileDetect from 'mobile-detect'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { CATEGORIES } from '../mook/categories'
 import createUrlSchema from '../utils/create_url'
 
 const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, handleChangeAddress: any }> = ({ openDrawerMath, address_user, handleChangeAddress }) => {
+    const [isAndroid, setIsAndroid] = useState(false)
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            let type = new MobileDetect(window.navigator.userAgent)
+            console.log(type);
+            if(type.os() === "AndroidOS"){ 
+                setIsAndroid(true)           
+            }
+        }
+    }, [])
+    
+    
+
+
+
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [categories] = useState(CATEGORIES)
@@ -18,11 +34,11 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
         }
     }, [openDrawerMath])
 
-    const classNames = (...classes:any[]) => {
+    const classNames = (...classes: any[]) => {
         return classes.filter(Boolean).join(' ')
     }
 
-    const handleCategoryClicked = (catObject:any, indexArray:any) => {
+    const handleCategoryClicked = (catObject: any, indexArray: any) => {
         let gender: string = 'donna'
         if (indexArray === 1) {
             gender = 'uomo'
@@ -155,7 +171,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                             </Tab.Panels>
                         </Tab.Group>
                     </DrawerBody>
-                    <DrawerFooter background={'#355CC1'} height={'24'} borderTopRadius={'3xl'} >
+                    <DrawerFooter background={'#355CC1'} pb={`${isAndroid ? '20' : '6'}`} borderTopRadius={'3xl'} >
                         <Center width={'full'} >
                             <div className='text-center	'>
                                 {address_user && <p className='text-white text-lg font-semibold mb-1'>
