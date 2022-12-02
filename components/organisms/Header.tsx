@@ -23,19 +23,19 @@ const Header = () => {
     const [openDrawerSearch, setOpenDrawerSearch] = useState(1);
     const [openDrawerMenu, setOpenDrawerMenu] = useState(1);
 
-    const user:Firebase_User = useSelector((state:any) => state.user.user);    
+    const user: Firebase_User = useSelector((state: any) => state.user.user);
     console.log(user);
-    
+
     const toast = useToast()
 
     const [showCategory, setshowCategory] = useState({
         show: false,
         gender: ''
     });
-    const address_user = useSelector((state:any) => state.address.address);
+    const address_user = useSelector((state: any) => state.address.address);
     // console.log(address_user);
 
-    const handleShowCategory = (value?:any, gender?:any) => {
+    const handleShowCategory = (value?: any, gender?: any) => {
         if (address_user) {
             if (value === false) {
                 setshowCategory({
@@ -86,11 +86,13 @@ const Header = () => {
             show: false,
             gender: ''
         })} >
-            <Drawer_Address openDrawerMath={openDrawer} />
-            <Drawer_User_Search handleChangeAddress={() => {
-                setopenDrawer(Math.random())
-            }} address_user={address_user} openDrawerMath={openDrawerSearch} />
-            {user && <Drawer_Menu openDrawerMath={openDrawerMenu} user={user} onCloseModal={() => { setOpenDrawerMenu(1) }} />}
+            <Drawer_Address openDrawerMath={openDrawer} changeAddressHandler={() => {setOpenDrawerSearch(Math.random())}} />
+            
+                <Drawer_User_Search handleChangeAddress={() => {
+                    setopenDrawer(Math.random())
+                }} address_user={address_user} openDrawerMath={openDrawerSearch} />
+
+            {user?.isShop && <Drawer_Menu openDrawerMath={openDrawerMenu} user={user} onCloseModal={() => { setOpenDrawerMenu(1) }} />}
 
             {!user && <JoinUs_Navbar />}
             {/* Menu button, Search button and Dintorni Logo for screen >=md */}
@@ -105,21 +107,21 @@ const Header = () => {
                     </svg>
                 </button>
             </div>}
-            {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) && 
-            <div className={`pl-2 md:pl-8 fixed z-50 top-3 md:top-4 right-2 md:hidden`}>
-                {/* searchButton */}
-                <div className='flex gap-0.5'>
-                    <button
-                        onClick={searchCategory}
-                        type="button" className="inline-flex mt-0.5 rounded-md px-1 active:bg-gray-100 focus:outline-none" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                        </svg>
-                    </button>
-                    <User_Popover />
-                </div>
+            {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) &&
+                <div className={`pl-2 md:pl-8 fixed z-50 top-3 md:top-4 right-2 md:hidden`}>
+                    {/* searchButton */}
+                    <div className='flex gap-0.5'>
+                        <button
+                            onClick={searchCategory}
+                            type="button" className="inline-flex mt-0.5 rounded-md px-1 active:bg-gray-100 focus:outline-none" aria-expanded="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                            </svg>
+                        </button>
+                        <User_Popover />
+                    </div>
 
-            </div>}
+                </div>}
             <div className={`hidden md:flex pl-2 lg:pl-8 fixed z-50 ${!user ? 'top-10' : 'top-3'} -mt-px`}> {/* lg:w-0 lg:flex-1 */}
                 {!address_user && <Link href="/">
                     <a className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</a>

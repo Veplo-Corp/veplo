@@ -54,9 +54,8 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
 
     return (
         <>
-            <Drawer onClose={onClose} isOpen={isOpen} size={'full'}
-                placement='top'
-            >
+            <Drawer onClose={onClose} isOpen={isOpen} size={['full', 'md']}
+                placement={'right'}>
                 <DrawerOverlay />
                 <DrawerContent>
                     <DrawerCloseButton size={'lg'} mt={'0'} />

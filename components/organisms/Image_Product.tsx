@@ -89,16 +89,10 @@ const Image_Product: React.FC<{product:Product | undefined}> = ({product}) => {
                         </div>
                         <div className='flex md:hidden'>
                             <TransformWrapper
-                                maxScale={3}
-                                minScale={1}
-                                wheel={{ disabled: false }}
-                                //doubleClick={{ mode: 'zoomIn' }}
-                                pinch={{ disabled: true }}
-                                //doubleClick={{ disabled: true }}
-                                centerOnInit
-                                centerZoomedOut
-                                //!old style
-                                doubleClick={{ disabled: true }}
+                                 maxScale={3}
+                                 minScale={1}
+                                 centerOnInit
+                                 centerZoomedOut
                             >
                                 <TransformComponent
                                 >
