@@ -23,13 +23,13 @@ const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> 
                 transform: 'scale(1)', /* 'scale(0.99)' */
             }}>
             {/* <Image fallbackSrc='https://via.placeholder.com/150' onClick={() => eventHandler(product)} src={product.photos[0]} alt={'immagine non disponibile'} /> */}
-            <LazyLoadImage src={product.photos[0]}
+            {product?.photos && <LazyLoadImage src={product.photos[0]}
                 onClick={() => eventHandler(product)}
                 //PlaceholderSrc={PlaceholderImage}
                 effect="blur"
                 alt="Image Alt"
                 className="w-fit"
-            />
+            />}
             <Box py='1' px={'0'}>
                 <Box
                     mt='1'

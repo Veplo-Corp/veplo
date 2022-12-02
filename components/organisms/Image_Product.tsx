@@ -13,7 +13,7 @@ const Image_Product: React.FC<{product:Product | undefined}> = ({product}) => {
     }
     const [doubleStep, setDoubleStep] = useState(1);
     const [isOpen, setisOpen] = useState(false)
-    const [fullImage, setfullImage] = useState(product.photos[0])
+    const [fullImage, setfullImage] = useState<any>(undefined)
 
     const zoomImage = () => {
         setisOpen(true)
@@ -24,8 +24,10 @@ const Image_Product: React.FC<{product:Product | undefined}> = ({product}) => {
     }
 
     useEffect(() => {
+        if(product?.photos){
+            setfullImage(product.photos[0])
 
-        setfullImage(product.photos[0])
+        }
 
     }, [product])
 
@@ -150,7 +152,7 @@ const Image_Product: React.FC<{product:Product | undefined}> = ({product}) => {
 
                 </Box>
                 <div>
-                    {product.photos.map((image) => {
+                    {product?.photos &&  product.photos.map((image) => {
                         return (
                             <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
                                 borderWidth={1.5}
