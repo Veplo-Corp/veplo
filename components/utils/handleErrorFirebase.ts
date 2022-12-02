@@ -6,6 +6,7 @@ export const handleErrorFirebase = (error:string) => {
                 description: "impossibile registrare la mail perchè hai già effettuato l'accesso"
             }
         case 'auth/wrong-password':
+        case 'Firebase: Error (auth/wrong-password).':
             return {
                 title: 'Password errata',
                 description: "la password inserita non è corretta"
@@ -19,6 +20,13 @@ export const handleErrorFirebase = (error:string) => {
             return {
                 title: 'Accesso da utente',
                 description: "il tuo account non è abilitato come negozio"
+            }
+
+        case 'auth/too-many-requests':
+        case 'Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests).':
+            return {
+                title: 'troppi tentativi errati, account temporaneamente disabilitato',
+                description: "hai inserito troppe volte la password errata, riprova più tardi o resetta la password"
             }
         default:
             return {

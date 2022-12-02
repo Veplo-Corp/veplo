@@ -21,7 +21,7 @@ import Modal_Error_Shop from './Modal_Error_Shop';
 
 
 
-const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?: string, disabled: boolean }> = ({ handleSubmitEvent, defaultValues, type, disabled }) => {
+const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?: string, disabled: boolean, titleText: string, confirmButtonText:string, toParentPhoto?:any }> = ({ handleSubmitEvent, defaultValues, type, disabled, titleText, confirmButtonText, toParentPhoto }) => {
     //*UseForm
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<any>({
         mode: "all",
@@ -131,10 +131,10 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
 
     return (
         <>
-            <div className='flex justify-between w-full mb-96'>
-                <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-6/12 xl:w-5/12" onSubmit={handleSubmit(submitData)}>
+            <div className='w-full md:w-1/2  mb-96'>
+                <form className="p-3 px-4 lg:px-16 xl:px-24 w-full" onSubmit={handleSubmit(submitData)}>
                     <div className='w-full'>
-                        <h1 className='italic text-lg lg:text-xl font-extrabold mb-4'>Aggiungi un capo di abbigliamento</h1>
+                        <h1 className='italic text-lg lg:text-xl font-extrabold mb-4'>{titleText}</h1>
                         <Div_input_creation text='Nome del prodotto'>
                             <InputGroup >
                                 <Input
@@ -289,7 +289,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                         <div className='flex justify-end mt-3'>
                             <BlackButton
                                 typeButton='submit'
-                                element='aggiungi'
+                                element={confirmButtonText}
                                 borderRadius={10}
                                 size={'sm'}
                                 width={200}
@@ -308,8 +308,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                 rules={{ required: false }}
                 render={() => (
                     <Drawer_Add_Image openDraw={openDrawNumber} imagesUploadedBefore={watch('photos')} confirmPhotos={(images: string[]) => {
-                        console.log(images);
-                        
+                        toParentPhoto(images)
                         setValue('photos', images);
                     }} />
                 )}

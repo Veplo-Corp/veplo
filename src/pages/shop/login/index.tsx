@@ -87,7 +87,6 @@ const index = () => {
 
     if (typeForm === 'registration') {
       console.log('passa qui');
-
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         // Signed in 
@@ -141,7 +140,7 @@ const index = () => {
 
       } catch (error:any) {
         const errorMessage = error.message;
-        //console.log(errorCode);
+        console.log(errorMessage);
         const errorForModal = handleErrorFirebase(errorMessage)
         dispatch(setModalTitleAndDescription({
           title: errorForModal?.title,

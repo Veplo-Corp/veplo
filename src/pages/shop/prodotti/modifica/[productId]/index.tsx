@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout';
 import { Color, COLORS } from '../../../../../../components/mook/colors';
+import Image_Product from '../../../../../../components/organisms/Image_Product';
 import Product_Form from '../../../../../../components/organisms/Product_Form';
 import Shop_UID_Required from '../../../../../../components/utils/Shop_UID_Required';
 import { ToastOpen } from '../../../../../../components/utils/Toast';
@@ -20,7 +21,7 @@ const index = () => {
     const { addToast } = ToastOpen();
     const [editProduct] = useMutation(EDIT_PRODUCT)
     const dispatch = useDispatch();
-    const user: Firebase_User = useSelector((state:any) => state.user.user);
+    const user: Firebase_User = useSelector((state: any) => state.user.user);
     const router = useRouter();
     const apolloClient = initApollo();
     const [product, setProduct] = useState<Product | undefined>(undefined)
@@ -31,27 +32,27 @@ const index = () => {
     const [loadShop, { data, error }] = useLazyQuery(GET_PRODUCTS_FROM_SHOP, {
         fetchPolicy: 'cache-first',
         //nextFetchPolicy: 'cache-first',
-        variables: { id:  user?.shopId},
+        variables: { id: user?.shopId },
         // pollInterval: 500,
         // notifyOnNetworkStatusChange: true,
     });
 
     //redirect to createShop,whether there is not a Shop
-  if (error) {
-    router.push('/shop/crea-shop')
-  }
+    if (error) {
+        router.push('/shop/crea-shop')
+    }
 
 
 
-    useEffect(() => {        
-        if (user && user?.shopId) {            
+    useEffect(() => {
+        if (user && user?.shopId) {
             loadShop()
         }
     }, [user])
 
     useEffect(() => {
         console.log(data);
-        
+
         if (!data) {
             //router.push('/shop/prodotti/')
             return
@@ -67,7 +68,7 @@ const index = () => {
         //console.log(photos);
 
         let colorsToDB;
-        colorsToDB = colors.map((color:any) => {
+        colorsToDB = colors.map((color: any) => {
             return color.name
         })
 
@@ -107,8 +108,8 @@ const index = () => {
         }
         //console.log(photoURLForDB);
 
-        if(!product){return(<></>)}
-        
+        if (!product) { return (<></>) }
+
         const options = {
             name: product.name != name ? name : product.name,
             price: product.price != price ? priceToDB : product.price,
@@ -158,34 +159,70 @@ const index = () => {
             console.log(e);
         }
 
-
-
-
-
         // if (!brand || !colors || !macrocategory || !microcategory || !sizes || !photos[2] || !gender) {
         //   return setOpenModalMath(Math.random())
         // }
+    }
 
-
-
-
+    const setNewImages = (images:any) => {        
+        if(product){
+            setProduct((prevstate:any) => {
+                return{
+                    ...prevstate,
+                    photos: images
+                }
+            })
+            
+        }
     }
 
 
     return (
         <Shop_UID_Required>
             <Desktop_Layout>
-                {product && <Product_Form handleSubmitEvent={submitData} defaultValues={{
-                    name: product.name,
-                    price: product.price,
-                    brand: product.brand,
-                    colors: product.colors,
-                    macrocategory: product.macroCategory,
-                    microcategory: product.microCategory,
-                    sizes: product.sizes,
-                    photos: product.photos,
-                    gender: product.gender
-                }} type={'edit'} disabled={true} />}
+
+                {product &&
+                    <>
+                        <div className='md:flex justify-center'>
+                            <div className='w-full  md:w-fit grid gap-5 grid-cols-2 mt-8'>
+                                {product.photos?.map((image: any, id: number) => {
+                                    console.log(image);
+                                    
+                                    return (
+                                        <div key={id} className='flex w-fit md:w-40 h-fit'>
+                                            {!image.url ? (
+                                                <img
+                                                    className='rounded'
+                                                    src={image} alt="" />
+                                            ) :
+                                                (
+                                                    <img
+                                                        className='rounded'
+                                                        src={image.url} alt="" />
+                                                )
+                                            }
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                            <Product_Form handleSubmitEvent={submitData} defaultValues={{
+                                name: product.name,
+                                price: product.price,
+                                brand: product.brand,
+                                colors: product.colors,
+                                macrocategory: product.macroCategory,
+                                microcategory: product.microCategory,
+                                sizes: product.sizes,
+                                photos: product.photos,
+                                gender: product.gender
+                            }} type={'edit'} disabled={true}
+                                titleText={''}
+                                confirmButtonText={'modifica'} 
+                                toParentPhoto={setNewImages}
+                                />
+                        </div>
+                    </>
+                }
             </Desktop_Layout>
         </Shop_UID_Required>
 
