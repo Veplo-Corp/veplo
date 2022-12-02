@@ -10,7 +10,7 @@ export interface Product {
     brand: string,
     shopId: string,
     firebaseShopId: string,
-    photos?: string[],
+    photos: string[],
     updatedAt: string,
     location: {
         type: string,

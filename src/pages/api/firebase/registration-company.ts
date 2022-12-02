@@ -9,7 +9,7 @@ type Req = {
     }
 }
 
-export default function handler(req: Req, res) {
+export default function handler(req: Req, res:any) {
     // Get data submitted in request's body.
     const body = req.body
     // Optional logging to see the responses

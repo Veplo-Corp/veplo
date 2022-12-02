@@ -32,7 +32,7 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps(ctx) {
+export async function getStaticProps(ctx:any) {
 
   let { city_cap, slug } = ctx.params;
   const elementCityCap: { city: string, postcode: string | null } = getCityAndPostcodeFromSlug(city_cap);
