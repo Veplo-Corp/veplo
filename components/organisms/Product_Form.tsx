@@ -308,7 +308,10 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                 rules={{ required: false }}
                 render={() => (
                     <Drawer_Add_Image openDraw={openDrawNumber} imagesUploadedBefore={watch('photos')} confirmPhotos={(images: string[]) => {
-                        toParentPhoto(images)
+                        
+                        if(toParentPhoto){
+                            toParentPhoto(images)
+                        }
                         setValue('photos', images);
                     }} />
                 )}
