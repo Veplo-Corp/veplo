@@ -73,6 +73,7 @@ const Auth: React.FC<{children:any}> = ({ children }) => {
         if(userAuth.metadata.creationTime){
           ISODate = new Date(userAuth.metadata.creationTime)
         }
+        console.log('token: ', tokenResult);
         console.log('userUid: ', userAuth.uid);
         console.log('userUid: ', userAuth);
         let date_for_redux = ISODate.getDay() + '/' + (ISODate.getMonth() + 1) + '/' + ISODate.getFullYear();
