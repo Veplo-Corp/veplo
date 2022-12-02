@@ -1,29 +1,21 @@
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
-import { Box, Image, Modal, ModalBody, ModalContent, ModalOverlay } from '@chakra-ui/react';
+import { Box, Image} from '@chakra-ui/react';
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
 import { useQuery } from '@apollo/client';
 import { Product } from '../../../../interfaces/product.interface';
 import { initApollo } from '../../../../lib/apollo';
 import Circle_Color from '../../../../../components/atoms/Circle_Color';
 import Size_Box from '../../../../../components/atoms/Size_Box';
-import { isMobile } from 'react-device-detect';
 import Horizontal_Line from '../../../../../components/atoms/Horizontal_Line';
 import createUrlSchema from '../../../../../components/utils/create_url';
 import { Color, COLORS } from '../../../../../components/mook/colors';
-import { man_bottom_clothes_sizes, man_top_clothes_sizes, woman_clothes_sizes } from '../../../../../components/mook/sizes';
 import { createTextCategory } from '../../../../../components/utils/createTextCategory';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import GET_PRODUCTS_FROM_SHOP from '../../../../lib/apollo/queries/geetProductsShop';
 import { toProductPage } from '../../../../../components/utils/toProductPage';
-
-//!pronestor - not the original library! because it doesn't work with react 18
-import {
-    TransformComponent,
-    TransformWrapper,
-} from "@pronestor/react-zoom-pan-pinch";
+import Image_Product from '../../../../../components/organisms/Image_Product';
 
 
 export async function getStaticPaths() {
@@ -67,8 +59,6 @@ export async function getStaticProps(ctx: any) {
 
 const index: React.FC<{ product: Product, error: string, initialApolloState: any }> = ({ product, error, initialApolloState }) => {
     const colors = useRef<Color[]>(COLORS)
-    const [doubleStep, setDoubleStep] = useState(1);
-
     const router = useRouter();
     const { slug } = router.query
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
@@ -83,7 +73,6 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
         }
         setProductcolorsCSS(colorsCSS)
 
-        setfullImage(product.photos[0])
 
     }, [product])
 
@@ -120,8 +109,6 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
     }, [product])
 
 
-    const [fullImage, setfullImage] = useState(product.photos[0])
-    const [isOpen, setisOpen] = useState(false)
     //!handle error case
 
     //const router = useRouter();
@@ -134,170 +121,15 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
 
 
 
-    const zoomImage = () => {
-        setisOpen(true)
-    }
 
-    const changeImageFull = (url: string) => {
-        setfullImage(url)
-    }
-
-
-    const onClickImageModal = () => {
-        if (isOpen) {
-            const i = product.photos.indexOf(fullImage) + 1
-
-            if (product.photos[i] !== undefined) {
-                setfullImage(product.photos[i])
-            } else {
-                setfullImage(product.photos[0])
-            }
-        }
-    }
 
 
     return (
         <>
-            <Modal size={'lg'} isCentered={true} isOpen={isOpen} onClose={() => setisOpen(false)}>
-                <ModalOverlay
-                    bg='blackAlpha.300'
-                    backdropFilter='blur(10px) '
-                />
-                <ModalContent >
-                    <ModalBody padding={0}>
-                        <div className='hidden md:flex'>
-                            <TransformWrapper
-                                maxScale={3}
-                                minScale={1}
-                                wheel={{ disabled: false }}
-                                //doubleClick={{ mode: 'zoomIn' }}
-                                pinch={{ disabled: true }}
-                                //doubleClick={{ disabled: true }}
-                                centerOnInit
-                                centerZoomedOut
-                                //!old style
-                                doubleClick={{ step: doubleStep }}
 
-                                initialScale={1}
-                                onPanningStop={(e) => {
-                                    console.log(e.state.scale);
-                                    //1.65 is fot setDoubleStep = 3 onMouseEnter        
-                                    if (e.state.scale !== 1 && e.state.scale !== 1.65) {
-                                        setDoubleStep(-1);
-                                    }
-                                    else {
-                                        setDoubleStep(+1);
-                                    }
-                                }}
-                            >
-                                {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
-                                    <React.Fragment>
-                                        <div
-                                            onMouseEnter={((e) => {
-                                                setDoubleStep(3);
-                                                zoomIn(0.3)
-                                            })}
-                                            onMouseLeave={() => {
-                                                resetTransform()
-                                            }}
-                                        >
-                                            <TransformComponent
-                                            >
-                                                <Image
-                                                    /* onClick={onClickImageModal} */
-                                                    src={fullImage} alt={'immagine non trovata'} />
-                                            </TransformComponent>
-                                        </div>
-                                    </React.Fragment>
-                                )}
-                            </TransformWrapper>
-                        </div>
-                        <div className='flex md:hidden'>
-                            <TransformWrapper
-                                maxScale={3}
-                                minScale={1}
-                                wheel={{ disabled: false }}
-                                //doubleClick={{ mode: 'zoomIn' }}
-                                pinch={{ disabled: true }}
-                                //doubleClick={{ disabled: true }}
-                                centerOnInit
-                                centerZoomedOut
-                                //!old style
-                                doubleClick={{ disabled: true }}
-                            >
-                                <TransformComponent
-                                >
-                                    <Image
-                                        /* onClick={onClickImageModal} */
-                                        src={fullImage} alt={'immagine non trovata'} />
-                                </TransformComponent>
-                            </TransformWrapper>
-                        </div>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
             <Desktop_Layout>
                 <div className='md:flex justify-between w-full'>
-                    <div className='flex space-x-4 w-full md:w-7/12 xl:w-1/2 '>
-
-                        <Box onClick={zoomImage} minW='20' maxW='450' mb={'5'} overflow='hidden' className='cursor-pointer'>
-                            <TransformWrapper
-                                maxScale={3}
-                                minScale={1}
-                                wheel={{ disabled: true }}
-                                doubleClick={ { disabled: true }}
-                                pinch={{ disabled: true }}
-                                //doubleClick={{ disabled: true }}
-                                centerOnInit
-                                centerZoomedOut
-                                //!old style
-                                
-                            >
-                                {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
-                                    <React.Fragment>
-                                        <div
-                                            onMouseEnter={((e) => {
-                                                zoomIn(0.1)
-                                            })}
-                                            onMouseLeave={() => {
-                                                resetTransform()
-                                            }}
-                                        >
-                                            <TransformComponent
-                                            >
-                                                {/* <Image borderRadius={'lg'} src={fullImage} alt='immagine non trovata' /> */}
-                                                <LazyLoadImage src={fullImage}
-                                                    //PlaceholderSrc={PlaceholderImage}
-                                                    effect="blur"
-                                                    alt="Image Alt"
-                                                    className='rounded-lg'
-                                                />
-                                            </TransformComponent>
-                                        </div>
-                                    </React.Fragment>
-                                )}
-                            </TransformWrapper>
-
-                        </Box>
-                        <div>
-                            {product.photos.map((image) => {
-                                return (
-                                    <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
-                                        borderWidth={1.5}
-                                        className={` ${image == fullImage ? "border-black" : "border-white"} cursor-pointer
-                                        w-20
-                                        xl:w-32
-                                    `}
-                                    >
-                                        <Image src={image} alt={'immagine non trovata'}
-                                            // className='hover:scale-105'
-                                        />
-                                    </Box>
-                                )
-                            })}
-
-                        </div>
-                    </div>
+                    <Image_Product product={product} />
                     <Box className='md:block md:w-5/12 xl:w-1/2 md:pl-4 lg:pl-0 xl:pr-10'>
                         <Box
                             fontWeight='normal'

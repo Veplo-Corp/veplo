@@ -223,7 +223,10 @@ const index = () => {
       {user?.shopId ? (
         <Shop_UID_Required>
           <Desktop_Layout>
-            <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false} />
+            <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false} 
+            titleText={'Aggiungi un capo di abbigliamento'}
+            confirmButtonText={'aggiungi'}
+            />
           </Desktop_Layout>
         </Shop_UID_Required>
       )
