@@ -13,7 +13,7 @@ import { setAddress } from '../../src/store/reducers/address_user';
 import Address_text_handle from '../molecules/Address_text_handle';
 
 
-const Drawer_Address: React.FC<{openDrawerMath:number}> = ({openDrawerMath}) => {
+const Drawer_Address: React.FC<{openDrawerMath:number, changeAddressHandler:any}> = ({openDrawerMath, changeAddressHandler}) => {
     const dispatch = useDispatch();
     let filterTimeout: any;
     const [addresses, setAddresses] = useState([]);
@@ -61,7 +61,9 @@ const Drawer_Address: React.FC<{openDrawerMath:number}> = ({openDrawerMath}) => 
                 address: result
             })
         );
+        changeAddressHandler()
         return setisOpen(false)
+
     }
     return (
         <Drawer
