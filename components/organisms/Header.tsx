@@ -106,7 +106,7 @@ const Header = () => {
                 </button>
             </div>}
             {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) && 
-            <div className={`pl-2 md:pl-8 fixed z-50 top-3 md:top-4 ${user && !user.isShop ? 'right-4' : 'right-2'} md:hidden`}>
+            <div className={`pl-2 md:pl-8 fixed z-50 top-3 md:top-4 right-2 md:hidden`}>
                 {/* searchButton */}
                 <div className='flex gap-0.5'>
                     <button
