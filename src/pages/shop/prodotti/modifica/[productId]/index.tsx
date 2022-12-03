@@ -184,7 +184,7 @@ const index = () => {
                 {product &&
                     <>
                         <div className='md:flex justify-center'>
-                            <div className='w-full  md:w-fit grid gap-5 grid-cols-2 mt-8'>
+                            <div className='w-full  md:w-fit h-fit grid gap-5 grid-cols-2 mt-8'>
                                 {product.photos?.map((image: any, id: number) => {
                                     console.log(image);
                                     
