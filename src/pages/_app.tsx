@@ -21,7 +21,6 @@ import modal_error from '../store/reducers/modal_error'
 import GET_SHOP_BY_FIREBASE_ID from '../lib/apollo/queries/getShopByFirebaseId'
 import Router from "next/router";
 
-
 const theme = extendTheme({
   colors: {
     black: {
