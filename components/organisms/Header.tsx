@@ -157,9 +157,9 @@ const Header = () => {
                             {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) &&
                                 <>
                                     <Navbar genere={genere} showCategory={showCategory.show} onShowCategory={handleShowCategory} />
-                                    <div className="  w-full md:hidden">
-                                        <Link href="/">
-                                            <a className="font-black mt-2 ml-5 text-2xl italic text-black-900  ">DINTORNI</a>
+                                    <div className="  w-full md:hidden mt-1">
+                                        <Link href="/" >
+                                            <a className="font-black ml-5 text-2xl italic text-black-900  ">DINTORNI</a>
                                         </Link>
                                     </div>
                                 </>
