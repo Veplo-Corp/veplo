@@ -60,7 +60,8 @@ export async function getStaticProps(ctx:any) {
       postcode: elementCityCap.postcode,
       //products: [data.shop.products[0]]
       products: data?.shop.products
-    }
+    },
+    revalidate: 60 //seconds
   }
 }
 

@@ -3,11 +3,11 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Header from '../../components/organisms/Header'
 // 1. import `ChakraProvider` component
-import { ChakraProvider } from '@chakra-ui/react'
+import { Center, ChakraProvider, CircularProgress } from '@chakra-ui/react'
 import { extendTheme } from "@chakra-ui/react"
 import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from '../store/store'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { auth, onAuthStateChanged, signOut } from '../config/firebase'
 import user, { login, logout } from '../store/reducers/user'
 import { setAddress } from '../store/reducers/address_user'
@@ -19,6 +19,7 @@ import { setAuthTokenInLocalStorage } from '../../components/utils/setAuthTokenI
 import Modal_Error_Shop, { ErrorModal } from '../../components/organisms/Modal_Error_Shop'
 import modal_error from '../store/reducers/modal_error'
 import GET_SHOP_BY_FIREBASE_ID from '../lib/apollo/queries/getShopByFirebaseId'
+import Router from "next/router";
 
 
 const theme = extendTheme({
@@ -35,10 +36,10 @@ const theme = extendTheme({
   },
 })
 
-const Auth: React.FC<{children:any}> = ({ children }) => {
+const Auth: React.FC<{ children: any }> = ({ children }) => {
   const router = useRouter()
   // console.log(address_user);
-  const modal: ErrorModal = useSelector((state:any) => state.modal.modal);
+  const modal: ErrorModal = useSelector((state: any) => state.modal.modal);
 
 
   const dispatch = useDispatch();
@@ -63,14 +64,14 @@ const Auth: React.FC<{children:any}> = ({ children }) => {
       const apolloClient = initApollo()
       if (userAuth) {
         console.log(userAuth);
-        
+
         const idToken = await userAuth.getIdToken(true)
         setAuthTokenInLocalStorage(idToken)
         const tokenResult = await userAuth.getIdTokenResult()
         // user is logged in, send the user's details to redux, store the current user in the state
         const isShop = tokenResult.claims.isShop ? true : false;
-        let ISODate: any= userAuth.metadata.creationTime
-        if(userAuth.metadata.creationTime){
+        let ISODate: any = userAuth.metadata.creationTime
+        if (userAuth.metadata.creationTime) {
           ISODate = new Date(userAuth.metadata.creationTime)
         }
         console.log('token: ', tokenResult);
@@ -132,8 +133,30 @@ const Auth: React.FC<{children:any}> = ({ children }) => {
   )
 }
 
+
+
+
 function MyApp({ Component, pageProps }: any /* AppProps */) {
 
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const start = () => {
+      console.log("start");
+      setLoading(true);
+    };
+    const end = () => {
+      console.log("finished");
+      setLoading(false);
+    };
+    Router.events.on("routeChangeStart", start);
+    Router.events.on("routeChangeComplete", end);
+    Router.events.on("routeChangeError", end);
+    return () => {
+      Router.events.off("routeChangeStart", start);
+      Router.events.off("routeChangeComplete", end);
+      Router.events.off("routeChangeError", end);
+    };
+  }, []);
 
 
   const apolloClient = useApollo(pageProps.initialApolloState)
@@ -146,7 +169,17 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
         <ChakraProvider theme={theme}>
           <Auth>
             <Header></Header>
-            <Component {...pageProps} />
+            {loading ? (
+              <Center className='mt-40 h-96 m-auto' color='white'>
+                <CircularProgress
+                  size='50px'
+                  isIndeterminate color='gray.300' />
+              </Center>
+            ) : (
+              <>
+                <Component {...pageProps} />
+              </>
+            )}
           </Auth>
         </ChakraProvider>
       </ApolloProvider>

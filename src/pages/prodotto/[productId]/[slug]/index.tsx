@@ -48,7 +48,8 @@ export async function getStaticProps(ctx: any) {
             error: error || null,
             //?understand cache in GraphQL
             initialApolloState: apolloClient.cache.extract(),
-        }
+        },
+        revalidate: 60, // In seconds
     }
 }
 
@@ -62,6 +63,8 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
     const router = useRouter();
     const { slug } = router.query
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
+
+    
 
     const [textCategory, setTextCategory] = useState('vestito')
 

@@ -3,13 +3,14 @@ import React from 'react';
 
 
 
-const Address_text_handle: React.FC<{element:any}> = ({ element }) => {
+const Address_text_handle: React.FC<{ element: any }> = ({ element }) => {
+
     if (element.place_type[0] === 'address') {
         if (element.context[1].id.split('.')[0] === 'place') {
             return (
                 <>
                     <p className='pl-2  text-md font-medium text-gray-800'>
-                        {element.address !== undefined ? <span >{element.text_it + ' ' + element.address}</span> : <span>{element.text_it}</span>}, <span>{element.context[1].text_it}</span>
+                        <span>{element.context[0].text_it}, </span>{element.address !== undefined ? <span>{element.text_it + ' ' + element.address}</span> : <span>{element.text_it}</span>}, <span>{element.context[1].text_it}</span>
                     </p>
                     <Divider p={1} orientation='horizontal' />
                 </>
@@ -18,14 +19,14 @@ const Address_text_handle: React.FC<{element:any}> = ({ element }) => {
             return (
                 <>
                     <p className='pl-2  text-md font-medium text-gray-800'>
-                        {element.address !== undefined ? <span >{element.text_it + ' ' + element.address}</span> : <span>{element.text_it}</span>}, <span>{element.context[2].text_it}, {element.context[1].text_it}</span>
+                        <span>{element.context[0].text_it}, </span>{element.address !== undefined ? <span >{element.text_it + ' ' + element.address}</span> : <span>{element.text_it}</span>}, <span>{element.context[2].text_it}, {element.context[1].text_it}</span>
                     </p>
                     <Divider p={1} orientation='horizontal' />
                 </>
             )
         }
 
-    } else if(element.place_type[0] === 'place'){
+    } else if (element.place_type[0] === 'place') {
         return (
             <>
                 <p className='pl-2  text-md font-medium text-gray-800'>
