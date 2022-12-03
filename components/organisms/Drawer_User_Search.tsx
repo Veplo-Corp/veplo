@@ -214,7 +214,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                             </div>
                         </Center>
                     </DrawerFooter> */}
-                    <Slide direction='bottom' in={isOpen} style={{ zIndex: 10 }} ù
+                    <Slide direction='bottom' in={isOpen} style={{ zIndex: 10 }}
                         className={`${isAndroid ? '' : 'hidden'}`}
                     >
                         <Box
