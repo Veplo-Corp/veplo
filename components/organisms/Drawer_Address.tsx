@@ -33,7 +33,6 @@ const Drawer_Address: React.FC<{ openDrawerMath: number }> = ({ openDrawerMath }
 
                 setLng_lat(coords.longitude + ',' + coords.latitude)
             }, (error) => {
-
             })
             setisOpen(true)
         }
