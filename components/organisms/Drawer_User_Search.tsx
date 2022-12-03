@@ -27,9 +27,9 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [categories] = useState(CATEGORIES)
     const router = useRouter()
-    useEffect(() => {
+    useEffect(() => {        
         //console.log(openDrawerMath);
-        if (openDrawerMath !== 1 && openDrawerMath !== undefined) {
+        if (openDrawerMath !== 1 && openDrawerMath>0 && openDrawerMath !== undefined) {            
             onOpen()
         }
     }, [openDrawerMath])

@@ -9,7 +9,7 @@ import Circle_Color from '../atoms/Circle_Color'
 import { useSelector } from 'react-redux'
 import Drawer_Address from './Drawer_Address'
 import Show_Categories_NavBar from '../molecules/Show_Categories_NavBar'
-import Drawer_User_Search from './Drawer_User_Menu'
+import Drawer_User_Search from './Drawer_User_Search'
 import Drawer_Menu from './Drawer_Menu'
 import User_Popover from '../molecules/User_Popover'
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
@@ -20,11 +20,13 @@ const Header = () => {
     const genere: any = router.query.genere
     const [showMenu, setshowMenu] = useState(false);
     const [openDrawer, setopenDrawer] = useState(1);
-    const [openDrawerSearch, setOpenDrawerSearch] = useState(1);
+    const [openDrawerSearch, setOpenDrawerSearch] = useState(0);
     const [openDrawerMenu, setOpenDrawerMenu] = useState(1);
 
     const user: Firebase_User = useSelector((state: any) => state.user.user);
-    console.log(user);
+
+
+
 
     const toast = useToast()
 
@@ -34,6 +36,14 @@ const Header = () => {
     });
     const address_user = useSelector((state: any) => state.address.address);
     // console.log(address_user);
+
+    useEffect(() => {
+        if(openDrawerSearch === 0){
+            setOpenDrawerSearch(1)
+        } else {
+            setOpenDrawerSearch(Math.random())
+        }
+    }, [address_user])
 
     const handleShowCategory = (value?: any, gender?: any) => {
         if (address_user) {
@@ -79,18 +89,16 @@ const Header = () => {
 
 
 
-
-
     return (
         <div onMouseLeave={() => setshowCategory({
             show: false,
             gender: ''
         })} >
-            <Drawer_Address openDrawerMath={openDrawer} changeAddressHandler={() => {setOpenDrawerSearch(Math.random())}} />
-            
-                <Drawer_User_Search handleChangeAddress={() => {
-                    setopenDrawer(Math.random())
-                }} address_user={address_user} openDrawerMath={openDrawerSearch} />
+            <Drawer_Address openDrawerMath={openDrawer}/>
+
+            <Drawer_User_Search handleChangeAddress={() => {
+                setopenDrawer(Math.random())
+            }} address_user={address_user} openDrawerMath={openDrawerSearch} />
 
             {user?.isShop && <Drawer_Menu openDrawerMath={openDrawerMenu} user={user} onCloseModal={() => { setOpenDrawerMenu(1) }} />}
 
