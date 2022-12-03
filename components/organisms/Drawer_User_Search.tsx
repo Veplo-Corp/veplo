@@ -100,6 +100,28 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                                 focusBorderColor='none'
                                 height={14} borderRadius={0} borderWidth={0} borderBottomWidth={1} type='text' placeholder='Cerca negozi o vestiti' />
                         </InputGroup>
+                        <Box
+                            onClick={() => {
+                                onClose()
+                                handleChangeAddress()
+                            }}
+                            p={2}
+                            background={'#355CC1'}
+                            className={`${isAndroid ? 'hidden' : ''}`}
+                        >
+                            <Center width={'full'}
+                            >
+                                <div className='text-center w-11/12 flex justify-between py-2'>
+                                    {address_user && <p className='text-white text-lg font-semibold my-auto'>
+                                        {address_user.placeType === 'address' && <span>{address_user.address}{address_user.streetNumber && <span> {address_user.streetNumber}</span>}, </span>}  {address_user.city}
+                                    </p>}
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w- h-6 my-auto text-white">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                    </svg>
+                                </div>
+                            </Center>
+                        </Box>
                         <Tab.Group
 
                         >
@@ -126,6 +148,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                                     Negozi
                                 </Tab>
                             </Tab.List>
+
                             <Tab.Panels
                                 className={`${isAndroid ? 'mb-56' : 'mb-40'}`}
                             >
@@ -191,10 +214,12 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                             </div>
                         </Center>
                     </DrawerFooter> */}
-                    <Slide direction='bottom' in={isOpen} style={{ zIndex: 10 }}>
+                    <Slide direction='bottom' in={isOpen} style={{ zIndex: 10 }} ù
+                        className={`${isAndroid ? '' : 'hidden'}`}
+                    >
                         <Box
                             pt='20px'
-                            pb={`${isAndroid ? '20' : '6'}`}
+                            pb={'20'}
                             background={'#355CC1'}
                             roundedTop='xl'
                             shadow='md'
