@@ -10,7 +10,6 @@ import {
 const Input_Search_Address: React.FC<{handleEvent:any}> = ({handleEvent}) => {
 
     const  mapboxSearchHandle = async(event:any) => {
-        
         handleEvent(event.target.value)
     }
 

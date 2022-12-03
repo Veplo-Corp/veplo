@@ -1,5 +1,5 @@
 import { ChevronUpIcon, SearchIcon } from '@chakra-ui/icons'
-import { Box, Button, Center, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Input, InputGroup, InputLeftElement, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, Center, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Input, InputGroup, InputLeftElement, Slide, useDisclosure } from '@chakra-ui/react'
 import { Disclosure, Tab } from '@headlessui/react'
 import MobileDetect from 'mobile-detect'
 import { useRouter } from 'next/router'
@@ -13,13 +13,13 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
         if (typeof window !== 'undefined') {
             let type = new MobileDetect(window.navigator.userAgent)
             console.log(type);
-            if(type.os() === "AndroidOS"){ 
-                setIsAndroid(true)           
+            if (type.os() === "AndroidOS") {
+                setIsAndroid(true)
             }
         }
     }, [])
-    
-    
+
+
 
 
 
@@ -27,9 +27,9 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [categories] = useState(CATEGORIES)
     const router = useRouter()
-    useEffect(() => {        
+    useEffect(() => {
         //console.log(openDrawerMath);
-        if (openDrawerMath !== 1 && openDrawerMath>0 && openDrawerMath !== undefined) {            
+        if (openDrawerMath !== 1 && openDrawerMath > 0 && openDrawerMath !== undefined) {
             onOpen()
         }
     }, [openDrawerMath])
@@ -57,12 +57,16 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
             <Drawer onClose={onClose} isOpen={isOpen} size={['full', 'md']}
                 placement={'right'}>
                 <DrawerOverlay />
-                <DrawerContent>
+                <DrawerContent
+                >
                     <DrawerCloseButton size={'lg'} mt={'0'} />
                     <DrawerHeader borderWidth={0} borderBottomWidth={1} borderColor={'gray.200'} py={'3'} px={'4'}>
                         <p className="font-black text-2xl italic text-black-900  ">DINTORNI</p>
                     </DrawerHeader>
-                    <DrawerBody p={0}>
+                    <DrawerBody
+                        p={0}
+
+                    >
                         {/* //! regitra impresa */}
                         {/* <Box
                             borderBottomWidth={1} borderColor={'gray.200'}
@@ -96,8 +100,10 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                                 focusBorderColor='none'
                                 height={14} borderRadius={0} borderWidth={0} borderBottomWidth={1} type='text' placeholder='Cerca negozi o vestiti' />
                         </InputGroup>
-                        <Tab.Group >
-                            <Tab.List className='w-full flex justify-between h-12 border-0	border-b border-inherit	'>
+                        <Tab.Group
+
+                        >
+                            <Tab.List className='w-full flex justify-between h-12 border-0	border-b border-inherit'>
                                 {Object.keys(categories).map((category) => (
                                     <Tab
                                         key={category}
@@ -120,7 +126,9 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                                     Negozi
                                 </Tab>
                             </Tab.List>
-                            <Tab.Panels>
+                            <Tab.Panels
+                                className={`${isAndroid ? 'mb-56' : 'mb-40'}`}
+                            >
                                 {Object.values(categories).map((categories, indexArray) => {
                                     return (
                                         <Tab.Panel key={indexArray}>
@@ -170,7 +178,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                             </Tab.Panels>
                         </Tab.Group>
                     </DrawerBody>
-                    <DrawerFooter background={'#355CC1'} pb={`${isAndroid ? '20' : '6'}`} borderTopRadius={'3xl'} >
+                    {/* <DrawerFooter background={'#355CC1'} pb={`${isAndroid ? '20' : '6'}`} borderTopRadius={'3xl'} >
                         <Center width={'full'} >
                             <div className='text-center	'>
                                 {address_user && <p className='text-white text-lg font-semibold mb-1'>
@@ -182,7 +190,29 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                                 }} colorScheme={'gray'} borderRadius={'3xl'} width={100}>cambia</Button>
                             </div>
                         </Center>
-                    </DrawerFooter>
+                    </DrawerFooter> */}
+                    <Slide direction='bottom' in={isOpen} style={{ zIndex: 10 }}>
+                        <Box
+                            pt='20px'
+                            pb={`${isAndroid ? '20' : '6'}`}
+                            background={'#355CC1'}
+                            roundedTop='xl'
+                            shadow='md'
+                        >
+                            <Center width={'full'}
+                            >
+                                <div className='text-center	'>
+                                    {address_user && <p className='text-white text-lg font-semibold mb-1'>
+                                        {address_user.placeType === 'address' && <span>{address_user.address}{address_user.streetNumber && <span> {address_user.streetNumber}</span>}, </span>}  {address_user.city}
+                                    </p>}
+                                    <Button onClick={() => {
+                                        onClose()
+                                        handleChangeAddress()
+                                    }} colorScheme={'gray'} borderRadius={'3xl'} width={100}>cambia</Button>
+                                </div>
+                            </Center>
+                        </Box>
+                    </Slide>
                 </DrawerContent>
             </Drawer>
         </>
