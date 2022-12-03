@@ -9,37 +9,43 @@ import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../src/config/firebase'
 
-const actionsNotLogged = [
-    {
-        name: 'Accedi',
-        description: 'accedi al tuo account',
-        href: '/user/login?type=login',
-    },
-    {
-        name: 'Registrati',
-        description: 'registrati per poter usufruire di tutti i servizi',
-        href: '/user/login?type=registration',
-    },
-    {
-        name: 'Sei un negozio?',
-        description: 'accedi o registra gratis il tuo account',
-        href: '/shop/login?type=registration',
-    },
-]
 
-const actionsLogged = [
-    {
-        name: 'Disconnetti',
-        description: 'accedi al tuo account',
-        href: '/user/login?type=login',
-    },
-]
 
 const User_Popover = () => {
 
     const router = useRouter();
     const user: Firebase_User = useSelector((state:any) => state?.user.user);
 
+    const actionsNotLogged = [
+        {
+            name: 'Accedi',
+            description: 'accedi al tuo account',
+            href: '/user/login?type=login',
+        },
+        {
+            name: 'Registrati',
+            description: 'registrati per poter usufruire di tutti i servizi',
+            href: '/user/login?type=registration',
+        },
+        {
+            name: 'Sei un negozio?',
+            description: 'accedi o registra gratis il tuo account',
+            href: '/shop/login?type=registration',
+        },
+    ]
+    
+    const actionsLogged = [
+        {
+            name: 'Profilo',
+            description: user?.email || '',
+            href: undefined,
+        },
+        {
+            name: 'Disconnetti',
+            description: 'accedi al tuo account',
+            href: '/user/login?type=login',
+        },
+    ]
 
     return (
         <Popover className="relative ">
@@ -84,10 +90,12 @@ const User_Popover = () => {
                     return (
                         <Popover.Button key={id} className='text-left'>
                             <Box
-
                                 onClick={() => {
+                                    if(!action.href)return
                                     router.push(action.href)
-                                    signOut(auth)
+                                    if(action.name === 'Disconnetti'){
+                                        signOut(auth)
+                                    }
                                 }}
                             >
                                 <Box
