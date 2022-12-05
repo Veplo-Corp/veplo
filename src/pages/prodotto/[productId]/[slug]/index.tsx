@@ -133,7 +133,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
             <Desktop_Layout>
                 <div className='md:flex justify-between w-full'>
                     <Image_Product product={product} />
-                    <Box className='md:block md:w-5/12 xl:w-1/2 md:pl-4 lg:pl-0 xl:pr-10'>
+                    <Box className='md:block md:w-5/12 xl:w-1/2 md:pl-4 xl:pr-10'>
                         <Box
                             fontWeight='normal'
                             as='h2'
