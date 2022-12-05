@@ -70,8 +70,7 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
 
     return (
         <Desktop_Layout>
-            <Box_Shop shop={shop} width={96} height={60} scale={'1'} eventHandler={() => { }}>
-            </Box_Shop>
+            <Box_Shop shop={shop} width={96} height={60} scale={'1'} eventHandler={() => { }} />
             <Horizontal_Line />
             <Box
                 fontWeight='medium'
