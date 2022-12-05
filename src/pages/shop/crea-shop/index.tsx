@@ -215,18 +215,49 @@ const index = () => {
     const [isValid_shop_streetNumber, setisValid_shop_streetNumber] = useState<boolean | null>(null)
     const [showAddress, setShowAddress] = useState(false)
     const [streetNumberDisabled, setStreetNumberDisabled] = useState(false)
-
+    const [address_searched, setAddress_searched] = useState('')
 
 
     const onChangeAddress = async (address_searched: string) => {
-        clearTimeout(filterTimeout)
-        filterTimeout = setTimeout(async () => {
-            if (address_searched === undefined || address_searched.length < 3) {
-                return
-            }
+        setAddress_searched(address_searched)
+        // clearTimeout(filterTimeout)
+        // filterTimeout = setTimeout(async () => {
+        //     if (address_searched === undefined || address_searched.length < 3) {
+        //         return
+        //     }
+        //     // Send the data to the server in JSON format.
+        //     // API endpoint where we send form data.
+        //     const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}&type=shop&lng_lat=0,0`
+
+        //     // Send the form data to our forms API on Vercel and get a response.
+        //     const response = await fetch(endpoint)
+
+        //     // Get the response data from server as JSON.
+        //     // If server returns the name submitted, that means the form works.
+        //     const result = await response.json()
+        //     console.log(result);
+
+        //     //return setAddresses(result.data)
+        // }, 500)
+    }
+    
+
+    useDebounceEffect(async () => {
+
+        if (address_searched === undefined || address_searched.length < 3) {
+            return 
+        } else {
+            //get IP
+            // const res = await axios.get('https://geolocation-db.com/json/')
+            // console.log(res.data);
+            // console.log(res.data.IPv4)
+            // const ip = res.data.IPv4
             // Send the data to the server in JSON format.
             // API endpoint where we send form data.
-            const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}&type=shop`
+            //const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}&type=user&user_ip=${ip}`
+
+
+            const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}&type=user&lng_lat=0,0`
 
             // Send the form data to our forms API on Vercel and get a response.
             const response = await fetch(endpoint)
@@ -234,11 +265,16 @@ const index = () => {
             // Get the response data from server as JSON.
             // If server returns the name submitted, that means the form works.
             const result = await response.json()
-            console.log(result);
+            //console.log(result.data);
 
             return setAddresses(result.data)
-        }, 500)
-    }
+        }
+
+
+    },
+        600,
+        [address_searched],
+    )
 
     const handleEventSetAddress = async (element: Mapbox_Result) => {
         const result = await setUserAddress(element, 'shop');
