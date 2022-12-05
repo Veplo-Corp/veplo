@@ -105,7 +105,7 @@ const Image_Product: React.FC<{product:Product | undefined}> = ({product}) => {
                     </ModalBody>
                 </ModalContent>
             </Modal>
-            <div className='flex space-x-4 w-full md:w-7/12 xl:w-1/2 '>
+            <div className='flex space-x-4 w-full md:w-7/12 xl:w-5/12 '>
                 <Box onClick={zoomImage} minW='20' maxW='450' mb={'5'} overflow='hidden' className='cursor-pointer'>
                     <TransformWrapper
                         maxScale={3}
