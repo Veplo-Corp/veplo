@@ -51,11 +51,9 @@ const Home: NextPage = () => {
           </Box>
         </div> */}
       </div>
-      <img className='w-full md:hidden object-cover h-full md:h-full md:mt-20' 
+      <img className='w-full  object-cover h-full md:h-full' 
       src="https://img01.ztat.net/outfit/d2bbc3015626416fa0f33450b7295d97/9586c74af338488da7215817f83e1bb6.jpg?imwidth=1800" 
       alt="" />
-      <div className='w-full h-96 bg-gray-100'>
-      </div>
       <Drawer_Address openDrawerMath={openDrawer}/>
     </>
   )
