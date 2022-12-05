@@ -18,7 +18,9 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <img className='w-full object-cover h-full md:h-full mt-12 md:mt-20' src="https://firebasestorage.googleapis.com/v0/b/dintorni-dev.appspot.com/o/Schermata%202022-12-03%20alle%2018.11.21.png?alt=media&token=cdd6bfc6-7e54-4c2d-a5ef-80c72a60cac8" alt="" />
+      <img className='w-full object-cover h-full md:h-full mt-12' 
+      src="/static/homeImg.png" 
+      alt="non trovata" />
       <div className='w-full p-4 md:p-6  md:flex justify-between'>
         <div className='mb-0 md:mb-0'>
           <h1 className='font-extrabold cursor-pointer italic text-xl text-black-900'>Alcune città che utilizzano Dintorni</h1>

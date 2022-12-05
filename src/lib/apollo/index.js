@@ -18,7 +18,7 @@ function createApolloClient() {
     let authorization_token;
 
     const httpLink = createHttpLink({
-        uri: 'http://164.92.189.36/graphql',
+        uri: 'https://api.theblackbird.it/graphql',
         credentials: 'same-origin',
     });
 
