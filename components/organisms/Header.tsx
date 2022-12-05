@@ -121,7 +121,7 @@ const Header = () => {
                     <div className='flex gap-0.5'>
                         <button
                             onClick={searchCategory}
-                            type="button" className="inline-flex mt-0.5 rounded-md px-1 active:bg-gray-100 focus:outline-none" aria-expanded="false">
+                            type="button" className="inline-flex m-auto mb-2 rounded-md px-1 active:bg-gray-100 focus:outline-none" aria-expanded="false">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                             </svg>

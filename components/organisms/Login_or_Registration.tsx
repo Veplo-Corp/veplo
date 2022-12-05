@@ -65,7 +65,7 @@ const Login_or_Registration: React.FC<{ handleSubmitToPage: any, handleType: any
     return (
 
         <>
-            <div className='flex justify-between w-full'>
+            <div className='flex justify-between w-full px-2 py-6'>
                 <form className="md:p-3 space-y-4 w-full md:w-1/2" onSubmit={handleSubmitForm}>
                     <h1 className="font-black text-xl md:text-3xl italic text-black-900  ">{title}</h1>
                     <div>

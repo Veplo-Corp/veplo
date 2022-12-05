@@ -79,7 +79,7 @@ const index = () => {
 
   return (
     <Desktop_Layout>
-      <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${type==='login'? 'Accedi al tuo account' : 'Registra il tuo account'}`} />
+      <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm ==='login' ? 'Accedi al ' : ''}${typeForm ==='registration' ? 'Registra il ': ''}${typeForm ==='reset_password' ? 'Resetta la password del ' : ''}tuo account`} />
     </Desktop_Layout>
   )
 }
