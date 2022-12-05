@@ -23,7 +23,7 @@ export async function getStaticProps(ctx:any) {
     //console.log(productId);
     const { data, error } = await apolloClient.query({
         query: GET_SINGLE_SHOP,
-        variables: { id: '6373bb3c0742ade8758b1a97' },
+        variables: { id: '63865fa3f99ea8fe07a27a86' },
     })
 
     console.log(data);
@@ -39,7 +39,6 @@ export async function getStaticProps(ctx:any) {
 
 const index: React.FC<{ city: string, postcode: null | string, shops:Shop[] }> = ({ city, postcode, shops }) => {
     const router = useRouter()
-
    
     const toStore = (shop: Shop) => {
         console.log(shop);
@@ -57,7 +56,7 @@ const index: React.FC<{ city: string, postcode: null | string, shops:Shop[] }> =
             <div className="grid grid-cols-1 md:pt-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 w-full m-auto justify-items-center	">
                 {shops[0] != null && shops.map((shop) => {
                     return (
-                        <Box_Shop key={shop.id} scale={'scale(0.99)'}  eventHandler={toStore} shop={shop} width={420} height={'250'} />
+                        <Box_Shop key={shop.id} scale={'scale(0.99)'}  eventHandler={toStore} shop={shop} width={96} height={60} />
                     )
                 })}
             </div>

@@ -12,7 +12,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
     useEffect(() => {
         if (typeof window !== 'undefined') {
             let type = new MobileDetect(window.navigator.userAgent)
-            console.log(type);
+            //console.log(type);
             if (type.os() === "AndroidOS") {
                 setIsAndroid(true)
             }

@@ -22,7 +22,7 @@ const Drawer_Address: React.FC<{ openDrawerMath: number }> = ({ openDrawerMath }
     const [isOpen, setisOpen] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [lng_lat, setLng_lat] = useState<string>('0,0'); /* 12.6450501048306,42.5626616098155 */
-    const [address_searched, setAddress_searched] = useState<string>('0,0'); /* 12.6450501048306,42.5626616098155 */
+    const [address_searched, setAddress_searched] = useState<string>(''); /* 12.6450501048306,42.5626616098155 */
     useEffect(() => {
         //console.log(openDrawerMath);
         if (openDrawerMath !== 1 && openDrawerMath !== undefined) {
@@ -47,37 +47,35 @@ const Drawer_Address: React.FC<{ openDrawerMath: number }> = ({ openDrawerMath }
 
     useDebounceEffect(async () => {
         setLoading(true)
-        console.log('ricerca indirizzi');
 
         if (address_searched === undefined || address_searched.length < 3) {
             return setLoading(false)
+        } else {
+            //get IP
+            // const res = await axios.get('https://geolocation-db.com/json/')
+            // console.log(res.data);
+            // console.log(res.data.IPv4)
+            // const ip = res.data.IPv4
+            // Send the data to the server in JSON format.
+            // API endpoint where we send form data.
+            //const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}&type=user&user_ip=${ip}`
+
+
+            const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}&type=user&lng_lat=${lng_lat}`
+
+            // Send the form data to our forms API on Vercel and get a response.
+            const response = await fetch(endpoint)
+
+            // Get the response data from server as JSON.
+            // If server returns the name submitted, that means the form works.
+            const result = await response.json()
+            //console.log(result.data);
+
+            setLoading(false)
+            return setAddresses(result.data)
         }
 
-        //get IP
-        // const res = await axios.get('https://geolocation-db.com/json/')
-        // console.log(res.data);
-        // console.log(res.data.IPv4)
-        // const ip = res.data.IPv4
-        // Send the data to the server in JSON format.
-        // API endpoint where we send form data.
-        //const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}&type=user&user_ip=${ip}`
-        console.log(lng_lat);
 
-
-        const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}&type=user&lng_lat=${lng_lat}`
-
-        // Send the form data to our forms API on Vercel and get a response.
-        const response = await fetch(endpoint)
-
-        // Get the response data from server as JSON.
-        // If server returns the name submitted, that means the form works.
-        const result = await response.json()
-        console.log(result.data);
-
-
-
-        setLoading(false)
-        return setAddresses(result.data)
     },
         600,
         [address_searched],
@@ -112,7 +110,7 @@ const Drawer_Address: React.FC<{ openDrawerMath: number }> = ({ openDrawerMath }
                     </svg>
                 </DrawerHeader>
                 <DrawerBody className='md:m-auto '>
-                    <Input_Search_Address handleEvent={onChangeAddress}  />
+                    <Input_Search_Address handleEvent={onChangeAddress} />
                     <div className=''>
                         {addresses[0] && !loading &&
                             <div className='py-3 ml-8'>
