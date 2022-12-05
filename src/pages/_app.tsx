@@ -99,6 +99,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             // nextFetchPolicy: 'cache-only',
           })
 
+          console.log(data?.shopByFirebaseId?.id);
           // console.log(userAuth.uid);
           // console.log(data);
           dispatch(
@@ -112,6 +113,9 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               shopId: data?.shopByFirebaseId?.id || null
             })
           );
+            if(!data?.shopByFirebaseId?.id){
+              router.push('/shop/crea-shop')
+            }
         }
       } else {
         console.log('effettua il logout');

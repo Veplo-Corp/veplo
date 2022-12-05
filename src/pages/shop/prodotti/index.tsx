@@ -119,9 +119,9 @@ const index = () => {
                 }
                 {user && !user?.Not_yet_Authenticated_Request && user?.shopId && <Table_Products_Shop idShop={user.shopId} deleteProduct={handleDeleteProductModal} />}
                 <Modal_Error_Shop title={'Elimina prodotto'} description={'confermando eliminerai il prodotto dal tuo negozio'} closeText={'annulla'} openModalMath={mathNumber} confirmText={'conferma'} data={productToDeleteData} handleEvent={deleteProductEvent} />
-                {/* <button
+                <button
                     onClick={handleCache}
-                >handleCache</button> */}
+                >handleCache</button>
             </Desktop_Layout >
         </Shop_UID_Required>
     )

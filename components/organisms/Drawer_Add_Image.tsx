@@ -263,7 +263,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
             )
                 .then(canvas => {
                     const yourBase64String = imgSrc.substring(imgSrc.indexOf(',') + 1);
-                    const kb = Math.ceil(((yourBase64String.length * 6) / 8) / 1000); // 426 kb
+                    const kb = Math.ceil(((yourBase64String.length * 6) / 8) / 1000); //es. 426 kb
                     console.log(kb);
                     //set quality based on dimension photo
                     if (kb < 600) {
