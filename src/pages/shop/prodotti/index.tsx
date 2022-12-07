@@ -19,6 +19,7 @@ import Verified_Email from '../../../../components/molecules/Verified_Email';
 import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required';
 import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 import { Product } from '../../../interfaces/product.interface';
+import Create_Shop_Alert from '../../../../components/molecules/Create_Shop_Alert';
 
 
 const index = () => {
@@ -116,6 +117,9 @@ const index = () => {
             <Desktop_Layout>
                 {user && user.emailVerified === false &&
                     <Verified_Email />
+                }
+                {user && !user.shopId &&
+                    <Create_Shop_Alert />
                 }
                 {user && !user?.Not_yet_Authenticated_Request && user?.shopId && <Table_Products_Shop idShop={user.shopId} deleteProduct={handleDeleteProductModal} />}
                 <Modal_Error_Shop title={'Elimina prodotto'} description={'confermando eliminerai il prodotto dal tuo negozio'} closeText={'annulla'} openModalMath={mathNumber} confirmText={'conferma'} data={productToDeleteData} handleEvent={deleteProductEvent} />
