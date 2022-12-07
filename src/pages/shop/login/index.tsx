@@ -133,8 +133,10 @@ const index = () => {
           //   description: errorForModal?.description
           // }))
           router.push('/')
+          
           throw new Error('auth/user-not-shop', { cause: 'err' })
         } else {
+          console.log('va qui');
           return router.push('/shop/prodotti')
         }
 
