@@ -12,6 +12,7 @@ export const handleErrorFirebase = (error:string) => {
                 description: "la password inserita non è corretta"
             }
         case 'auth/user-not-found':
+        case 'Firebase: Error (auth/user-not-found).':
             return {
                 title: 'Email errata',
                 description: "l'email inserita non è collegata a nessun account"

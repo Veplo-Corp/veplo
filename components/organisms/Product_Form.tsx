@@ -38,7 +38,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
     const [sizesSelected, setSizesSelected] = useState<string[]>();
 
     //openDraw
-    const [openDrawNumber, setOpenDrawNumber] = useState<number>(1)
+    const [openDrawNumber, setOpenDrawNumber] = useState<number>(0.9)
     const brands = useRef<string[]>(BRANDS)
     const colors = useRef<Color[]>(COLORS)
     const microcategories = useRef<Microcategory[]>(MICROCATEGORY)

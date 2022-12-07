@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button } from '@chakra-ui/react'
+import { DownloadIcon } from '@chakra-ui/icons'
 
 type Props = {
     element: string,
@@ -9,10 +10,11 @@ type Props = {
     disabled: boolean,
     width?: number,
     heigth?: number,
-    onClick?: any
+    onClick?: any,
+    leftIcon?: any
 }
 
-const BlackButton: React.FC<Props> = ({ element, borderRadius, size, typeButton, disabled, width, heigth, onClick }) => {
+const BlackButton: React.FC<Props> = ({ element, borderRadius, size, typeButton, disabled, width, heigth, onClick, leftIcon }) => {
 
     return (
         <Button
@@ -34,6 +36,7 @@ const BlackButton: React.FC<Props> = ({ element, borderRadius, size, typeButton,
             _active={{
                 transform: 'scale(0.98)',
             }}
+            leftIcon={leftIcon}
         >{element}</Button>
     )
 }

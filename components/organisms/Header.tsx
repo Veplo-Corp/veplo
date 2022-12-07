@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { NextRouter, useRouter } from 'next/router'
 import Navbar from '../molecules/Home_Navbar'
@@ -13,6 +13,7 @@ import Drawer_User_Search from './Drawer_User_Search'
 import Drawer_Menu from './Drawer_Menu'
 import User_Popover from '../molecules/User_Popover'
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
+import { Transition } from '@headlessui/react'
 
 
 const Header = () => {
@@ -38,7 +39,7 @@ const Header = () => {
     // console.log(address_user);
 
     useEffect(() => {
-        if(openDrawerSearch === 0){
+        if (openDrawerSearch === 0) {
             setOpenDrawerSearch(1)
         } else {
             setOpenDrawerSearch(Math.random())
@@ -87,22 +88,29 @@ const Header = () => {
         setOpenDrawerSearch(Math.random())
     }
 
-
+    /* <Transition show={!user?.Not_yet_Authenticated_Request}
+                    enter="transition-opacity duration-[750ms]"
+                    enterFrom="opacity-0"
+                    enterTo="opacity-100"
+                > */
 
     return (
         <div onMouseLeave={() => setshowCategory({
             show: false,
             gender: ''
         })} >
-            <Drawer_Address openDrawerMath={openDrawer}/>
+
+            <Drawer_Address openDrawerMath={openDrawer} />
 
             <Drawer_User_Search handleChangeAddress={() => {
                 setopenDrawer(Math.random())
             }} address_user={address_user} openDrawerMath={openDrawerSearch} />
-
             {user?.isShop && <Drawer_Menu openDrawerMath={openDrawerMenu} user={user} onCloseModal={() => { setOpenDrawerMenu(1) }} />}
 
             {!user && <JoinUs_Navbar />}
+
+
+
             {/* Menu button, Search button and Dintorni Logo for screen >=md */}
             {user && user.isShop && <div className=" fixed z-50 top-3 right-2 md:hidden">
                 <button
@@ -115,21 +123,7 @@ const Header = () => {
                     </svg>
                 </button>
             </div>}
-            {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) &&
-                <div className={`pl-2 md:pl-8 fixed z-50 top-3 md:top-4 right-2 md:hidden`}>
-                    {/* searchButton */}
-                    <div className='flex gap-0.5'>
-                        <button
-                            onClick={searchCategory}
-                            type="button" className="inline-flex m-auto mb-2 rounded-md px-1 active:bg-gray-100 focus:outline-none" aria-expanded="false">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                            </svg>
-                        </button>
-                        <User_Popover />
-                    </div>
 
-                </div>}
             <div className={`hidden md:flex pl-2 lg:pl-8 fixed z-50 ${!user ? 'top-10' : 'top-3'} -mt-px`}> {/* lg:w-0 lg:flex-1 */}
                 {!address_user && <Link href="/">
                     <a className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</a>
@@ -154,16 +148,45 @@ const Header = () => {
                 <div className="mx-auto max-w-full border-b-2 border-gray-100">
                     <div className="py-3 lg:justify-start lg:space-x-10">
                         <div className='flex items-center justify-between h-8 '>
+
                             {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) &&
                                 <>
                                     <Navbar genere={genere} showCategory={showCategory.show} onShowCategory={handleShowCategory} />
-                                    <div className="  w-full md:hidden mt-1">
-                                        <Link href="/" >
-                                            <a className="font-black ml-5 text-2xl italic text-black-900  ">DINTORNI</a>
-                                        </Link>
-                                    </div>
+
                                 </>
                             }
+                            <Transition show={!user?.Not_yet_Authenticated_Request}
+                                enter="transition-opacity duration-[200ms]"
+                                enterFrom="opacity-0"
+                                enterTo="opacity-100"
+                            >
+                                <div className="  w-full md:hidden mt-1">
+                                    <Link href="/" >
+                                        <a className="font-black ml-5 text-2xl italic text-black-900  ">DINTORNI</a>
+                                    </Link>
+                                </div>
+                                {/* button for Mobile */}
+                                {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) &&
+                                    <div className={`pl-2 md:pl-8 fixed z-50 top-3 md:top-4 right-2 md:hidden`}>
+                                        {/* searchButton */}
+                                        <div className='flex gap-0.5'>
+                                            <button
+                                                onClick={searchCategory}
+                                                type="button" className="inline-flex m-auto mb-2 rounded-md px-1 active:bg-gray-100 focus:outline-none" aria-expanded="false">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                                                </svg>
+                                            </button>
+                                            <User_Popover />
+                                        </div>
+
+                                    </div>
+                                }
+                            </Transition>
+
+
+
+
                             <div className={`hidden md:flex gap-2 fixed ${!user ? 'top-9' : 'top-2'} right-2 lg:right-8 z-10`}> {/* pr-80 */}
                                 {user && user.isShop ?
                                     (
@@ -197,7 +220,8 @@ const Header = () => {
                     }
                 </div>
             </div>
-        </div>
+
+        </div >
 
     )
 }

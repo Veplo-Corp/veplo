@@ -20,6 +20,7 @@ import Modal_Error_Shop, { ErrorModal } from '../../components/organisms/Modal_E
 import modal_error from '../store/reducers/modal_error'
 import GET_SHOP_BY_FIREBASE_ID from '../lib/apollo/queries/getShopByFirebaseId'
 import Router from "next/router";
+import { Firebase_User } from '../interfaces/firebase_user.interface'
 
 const theme = extendTheme({
   colors: {
@@ -63,7 +64,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
       const apolloClient = initApollo()
       if (userAuth) {
         console.log(userAuth);
-
         const idToken = await userAuth.getIdToken(true)
         setAuthTokenInLocalStorage(idToken)
         const tokenResult = await userAuth.getIdTokenResult()
@@ -123,6 +123,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         return dispatch(logout())
 
       }
+      return 
     });
   }, []);
 
@@ -140,8 +141,8 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
 
 function MyApp({ Component, pageProps }: any /* AppProps */) {
-
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const start = () => {
       console.log("start");
@@ -160,6 +161,8 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
       Router.events.off("routeChangeError", end);
     };
   }, []);
+
+  
 
 
   const apolloClient = useApollo(pageProps.initialApolloState)
