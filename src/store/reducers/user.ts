@@ -22,7 +22,7 @@ export const userState = createSlice({
         state.user = action.payload;       
       },
       logout: (state) => {
-        state.user = null
+        state.user = undefined
         // state.user = {
         //   email:null,
         //   Not_yet_Authenticated_Request: false
