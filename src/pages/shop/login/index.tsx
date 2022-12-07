@@ -147,9 +147,10 @@ const index = () => {
           // }))
           router.push('/')
           throw new Error('auth/user-not-shop', { cause: 'err' })
-        } else {
-          //return router.push('/shop/prodotti')
-        }
+        } 
+        // else {
+        //   //return router.push('/shop/prodotti')
+        // }
 
       } catch (error:any) {
         const errorMessage = error.message;
