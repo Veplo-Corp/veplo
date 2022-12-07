@@ -45,14 +45,15 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
             if (type.os() === "AndroidOS" || type.os() === 'iOS') {
                 const newHeight = window.innerHeight;
                 const screenHeight = screen.availHeight;
-                setbottomPadding(screenHeight - newHeight - 40)
+                
+                setbottomPadding(screenHeight - newHeight - (type.os() === 'iOS' ? 60 : 40))
                 const updateWindowDimensions = () => {
                     const newHeight = window.innerHeight;
                     const screenHeight = screen.availHeight;
                     console.log(newHeight);
                     console.log(screenHeight);
                     console.log(screenHeight - newHeight);
-                    setbottomPadding(screenHeight - newHeight - 40)
+                    setbottomPadding(screenHeight - newHeight - (type.os() === 'iOS' ? 60 : 40))
                     console.log("updating height");
                 };
                 window.addEventListener("resize", updateWindowDimensions);
