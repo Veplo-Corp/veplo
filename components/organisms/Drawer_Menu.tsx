@@ -1,10 +1,11 @@
 import { Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, useDisclosure } from '@chakra-ui/react'
 import { signOut } from 'firebase/auth'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { auth } from '../../src/config/firebase'
 import { Tooltip } from '@chakra-ui/react'
 import Verified_Email from '../molecules/Verified_Email'
 import { useRouter } from 'next/router'
+import MobileDetect from 'mobile-detect'
 
 const list = [
     {
@@ -17,13 +18,13 @@ const list = [
     }
 ]
 
-const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal:any }> = ({ openDrawerMath, user, onCloseModal }) => {
+const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: any }> = ({ openDrawerMath, user, onCloseModal }) => {
     const router = useRouter()
-
+    const [bottomPadding, setbottomPadding] = useState(5)
     const { isOpen, onOpen, onClose } = useDisclosure()
     useEffect(() => {
         //console.log('openDrawerMath:',openDrawerMath);
-        
+
         if (openDrawerMath !== 1 && openDrawerMath !== undefined) {
             onOpen()
         }
@@ -37,6 +38,27 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal:an
         onClose()
     }
 
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            let type = new MobileDetect(window.navigator.userAgent)
+            //console.log(type);            
+            if (type.os() === "AndroidOS" || type.os() === 'iOS') {
+                const updateWindowDimensions = () => {
+                    const newHeight = window.innerHeight;
+                    const screenHeight = window.outerHeight;
+                    console.log(newHeight);
+                    console.log(screenHeight);
+                    console.log(screenHeight - newHeight);
+                    setbottomPadding(screenHeight - newHeight)
+                    console.log("updating height");
+                };
+                window.addEventListener("resize", updateWindowDimensions);
+                return () => window.removeEventListener("resize", updateWindowDimensions)
+            }
+        }
+
+
+    }, []);
 
 
     return (
@@ -92,7 +114,7 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal:an
                             account creato in data: {user.createdAt}
                         </Box>
                         {list.map(element => {
-                            return(<Box
+                            return (<Box
                                 key={element.title}
                                 _active={{
                                     transform: `scale(0.99)`,
@@ -118,12 +140,12 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal:an
                     </Box>
 
                 </DrawerBody>
-                <DrawerFooter>
+                <DrawerFooter paddingBottom={`${bottomPadding}px`}>
                     <Button w={'full'} onClick={logout}>
                         Disconnetti Account
                     </Button>
                 </DrawerFooter>
-                
+
             </DrawerContent>
         </Drawer>
     )

@@ -17,10 +17,9 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                 setIsAndroid(true)
             }
         }
+        
+
     }, [])
-
-
-
 
 
 
