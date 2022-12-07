@@ -38,12 +38,25 @@ const index = () => {
 
 
   useEffect(() => {
-    // if (user && user?.shopId && user?.shopId) {
-    //   router.push('/shop/prodotti')
-    // }
+    const abortController = new AbortController();
+    console.log(user);
+
+    if (user && !user.Not_yet_Authenticated_Request) {
+      console.log(user);
+      
+      if(typeof user.shopId === 'string'){
+        router.push('/shop/prodotti')
+      } else {
+        router.push('/shop/crea-shop')
+      }
+    }
     if (type) {
       settypeForm(type)
     }
+
+    return () => {
+      abortController.abort();
+  };
   }, [type, user])
 
 
@@ -133,10 +146,8 @@ const index = () => {
           //   description: errorForModal?.description
           // }))
           router.push('/')
-          
           throw new Error('auth/user-not-shop', { cause: 'err' })
         } else {
-          console.log('va qui');
           return router.push('/shop/prodotti')
         }
 
@@ -251,7 +262,7 @@ const index = () => {
           </div>
         </form>
       </div> */}
-      <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={'Iscrivi il tuo negozio'} />
+      <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm ==='login' ? 'Accedi al ' : ''}${typeForm ==='registration' ? 'Registra il ': ''}${typeForm ==='reset_password' ? 'Resetta la password del ' : ''}tuo negozio`} />
     </Desktop_Layout>
   )
 }

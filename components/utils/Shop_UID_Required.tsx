@@ -11,9 +11,9 @@ const Shop_UID_Required: React.FC<{children:any}> = ({ children }) => {
         const abortController = new AbortController();
         if(user && user.Not_yet_Authenticated_Request === true) return
         if ( !user || !user.isShop) {            
-             router.push('/shop/login')
+             router.push('/shop/login?type=login')
             //return console.log('redirect to login');
-        } 
+        }
         // else if(user && user.shopId === null) {
         //     //  router.push('/shop/crea-shop')
         // }
