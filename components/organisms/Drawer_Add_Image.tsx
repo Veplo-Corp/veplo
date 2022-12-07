@@ -16,6 +16,7 @@ import ReactCrop, { Crop, PixelCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { canvasPreview } from '../molecules/Canva_previews'
 import { useDebounceEffect } from '../utils/useDebounceEffect';
+import { DownloadIcon } from '@chakra-ui/icons';
 
 
 
@@ -146,7 +147,6 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     )
 
     const onHanldeConfirm = async () => {
-
         //add image Blob in the array of images
         setImages((prevstate: any) => {
             console.log('position photo: ', positionPhoto);
@@ -197,16 +197,16 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     // Programatically click the hidden file input element
     // when the Button component is clicked
     const handleClick = (position: null | number) => {
+        
         hiddenFileInput.current.click();
         setShowCroppedImage(true)
         //set the posizion of the cropp
         setPositionPhoto(position)
-
     };
 
 
 
-    async function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
+    async function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {        
         setBlob(null)
         setUrl(null)
         setCrop(null)
@@ -214,7 +214,6 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
         setShowCroppedImage(true)
 
         if (e.target.files /* && e.target.files.length > 0 */) {
-
             try {
                 const file = e.target.files[0];
                 const image = await resizeFile(file);
@@ -336,7 +335,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                             </span>}
                         </h3>
 
-                        <svg onClick={() => setisOpen(false)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-10 h-10 md:hidden my-auto">
+                        <svg onClick={closeModal} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-10 h-10 md:hidden my-auto">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
 
@@ -349,6 +348,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                 heigth={12}
                                 size={'sm'}
                                 typeButton={'button'}
+                                leftIcon={<DownloadIcon />}
                                 disabled={false} />
                         </div>
                         <input
@@ -363,7 +363,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                     <DrawerBody className='grid md:flex justify-between '>
                         {imgSrc || images[0] ? (
                             <>
-                                <div className='w-full h-fit md:ml-8 md:w-2/5 grid '>
+                                <div className='w-full px-3 md:px-0 h-fit md:ml-8 md:w-4/12 grid '>
                                     <div className='grid'>
                                         {showCroppedImage && imgSrc && (
                                             <>
@@ -530,7 +530,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
 
 
                     </DrawerBody>
-                    {/* !showCroppedImage */ true && <DrawerFooter padding={0}>
+                    {/* !showCroppedImage */ !showCroppedImage && <DrawerFooter padding={0}>
                         <footer className="w-full bg-whith items-center py-4 px-6 md:px-10 border-t	border-inherit	">
                             <div className='flex justify-between'>
                                 <div className='hidden md:flex'>
@@ -552,15 +552,19 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                     <p className='my-auto	italic text-sm md:text-base	font-medium	'>
                                         aggiungi minimo 2 foto per confermare
                                     </p>
-                                    <BlackButton
-                                        element='conferma'
+                                    <Button
+                                        bgGradient='linear(to-r, green.200, pink.500)'
+                                        _hover={{ bg: 'linear(to-r, green.200, pink.500)' }}
+                                        _active={{ bg: 'linear(to-r, green.200, pink.500)' }}
                                         borderRadius={5}
                                         width={200}
-                                        heigth={12}
+                                        height={12}
                                         size={'sm'}
-                                        typeButton={'button'}
+                                        type={'button'}
                                         onClick={closeModal}
-                                        disabled={images.length < 2} />
+                                        disabled={images.length < 2}>
+                                        prosegui
+                                    </Button>
                                 </div>
                             </div>
                         </footer>
