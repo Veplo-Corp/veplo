@@ -17,6 +17,7 @@ import 'react-image-crop/dist/ReactCrop.css'
 import { canvasPreview } from '../molecules/Canva_previews'
 import { useDebounceEffect } from '../utils/useDebounceEffect';
 import { DownloadIcon } from '@chakra-ui/icons';
+import MobileDetect from 'mobile-detect';
 
 
 
@@ -117,6 +118,8 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     const [positionPhoto, setPositionPhoto] = useState<any>(null);
     const [showCroppedImage, setShowCroppedImage] = useState<any>(false);
 
+    //padding for Mobile
+    const [bottomPadding, setbottomPadding] = useState(0)
 
     useEffect(() => {
         if (!openDraw || openDraw == 1) {
@@ -135,6 +138,30 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
             setImages(imagesUploadedBefore)
         }
     }, [imagesUploadedBefore])
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            let type = new MobileDetect(window.navigator.userAgent)
+            //console.log(type);            
+            if (type.os() === "AndroidOS" || type.os() === 'iOS') {
+                const newHeight = window.innerHeight;
+                const screenHeight = screen.availHeight;
+
+                setbottomPadding(screenHeight - newHeight - (type.os() === 'iOS' ? 60 : 40))
+                const updateWindowDimensions = () => {
+                    const newHeight = window.innerHeight;
+                    const screenHeight = screen.availHeight;
+                    console.log(newHeight);
+                    console.log(screenHeight);
+                    console.log(screenHeight - newHeight);
+                    setbottomPadding(screenHeight - newHeight - (type.os() === 'iOS' ? 60 : 40))
+                    console.log("updating height");
+                };
+                window.addEventListener("resize", updateWindowDimensions);
+                return () => window.removeEventListener("resize", updateWindowDimensions)
+            }
+        }
+    }, []);
 
     const [crop, setCrop] = useState<Crop | null>(
         {
@@ -197,7 +224,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     // Programatically click the hidden file input element
     // when the Button component is clicked
     const handleClick = (position: null | number) => {
-        
+
         hiddenFileInput.current.click();
         setShowCroppedImage(true)
         //set the posizion of the cropp
@@ -206,7 +233,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
 
 
 
-    async function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {        
+    async function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
         setBlob(null)
         setUrl(null)
         setCrop(null)
@@ -530,8 +557,12 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
 
 
                     </DrawerBody>
-                    {/* !showCroppedImage */ !showCroppedImage && <DrawerFooter padding={0}>
-                        <footer className="w-full bg-whith items-center py-4 px-6 md:px-10 border-t	border-inherit	">
+                    {/* !showCroppedImage */ !showCroppedImage && 
+                    <DrawerFooter 
+                    paddingX={0}
+                    paddingBottom={bottomPadding}
+                    >
+                        <footer className={`w-full bg-whith items-center py-4 pb-${bottomPadding}px px-6 md:px-10 border-t border-inherit	`}>
                             <div className='flex justify-between'>
                                 <div className='hidden md:flex'>
                                     <Button

@@ -60,8 +60,6 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                 return () => window.removeEventListener("resize", updateWindowDimensions)
             }
         }
-
-
     }, []);
 
 
