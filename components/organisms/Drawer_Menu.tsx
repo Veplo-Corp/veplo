@@ -20,7 +20,7 @@ const list = [
 
 const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: any }> = ({ openDrawerMath, user, onCloseModal }) => {
     const router = useRouter()
-    const [bottomPadding, setbottomPadding] = useState(15)
+    const [bottomPadding, setbottomPadding] = useState(25)
     const { isOpen, onOpen, onClose } = useDisclosure()
     useEffect(() => {
         //console.log('openDrawerMath:',openDrawerMath);
@@ -45,14 +45,14 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
             if (type.os() === "AndroidOS" || type.os() === 'iOS') {
                 const newHeight = window.innerHeight;
                 const screenHeight = screen.availHeight;
-                setbottomPadding(screenHeight - newHeight - 20)
+                setbottomPadding(screenHeight - newHeight - 40)
                 const updateWindowDimensions = () => {
                     const newHeight = window.innerHeight;
                     const screenHeight = screen.availHeight;
                     console.log(newHeight);
                     console.log(screenHeight);
                     console.log(screenHeight - newHeight);
-                    setbottomPadding(screenHeight - newHeight - 20)
+                    setbottomPadding(screenHeight - newHeight - 40)
                     console.log("updating height");
                 };
                 window.addEventListener("resize", updateWindowDimensions);
