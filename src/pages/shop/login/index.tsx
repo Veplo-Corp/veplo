@@ -38,9 +38,9 @@ const index = () => {
 
 
   useEffect(() => {
-    if (user && user?.shopId) {
-      router.push('/shop/prodotti')
-    }
+    // if (user && user?.shopId && user?.shopId) {
+    //   router.push('/shop/prodotti')
+    // }
     if (type) {
       settypeForm(type)
     }
