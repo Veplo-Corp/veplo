@@ -13,9 +13,10 @@ const Shop_UID_Required: React.FC<{children:any}> = ({ children }) => {
         if ( !user || !user.isShop) {            
              router.push('/shop/login')
             //return console.log('redirect to login');
-        } else if(user && user.shopId === null) {
-             router.push('/shop/crea-shop')
-        }
+        } 
+        // else if(user && user.shopId === null) {
+        //     //  router.push('/shop/crea-shop')
+        // }
         return () => {
             abortController.abort();
         };
