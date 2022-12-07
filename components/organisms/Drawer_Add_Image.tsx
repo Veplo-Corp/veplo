@@ -147,14 +147,14 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                 const newHeight = window.innerHeight;
                 const screenHeight = screen.availHeight;
 
-                setbottomPadding(screenHeight - newHeight - (type.os() === 'iOS' ? 60 : 40))
+                setbottomPadding(screenHeight - newHeight - (type.os() === 'iOS' ? 45 : 30))
                 const updateWindowDimensions = () => {
                     const newHeight = window.innerHeight;
                     const screenHeight = screen.availHeight;
                     console.log(newHeight);
                     console.log(screenHeight);
                     console.log(screenHeight - newHeight);
-                    setbottomPadding(screenHeight - newHeight - (type.os() === 'iOS' ? 60 : 40))
+                    setbottomPadding(screenHeight - newHeight - (type.os() === 'iOS' ? 45 : 30))
                     console.log("updating height");
                 };
                 window.addEventListener("resize", updateWindowDimensions);
