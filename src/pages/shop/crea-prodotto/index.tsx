@@ -49,13 +49,14 @@ const index = () => {
   const dispatch = useDispatch();
   const apolloClient = initApollo();
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
 
   const user:Firebase_User = useSelector((state:any) => state.user.user);
   //* graphQL
   
 
 
-  const { loading, error, data, refetch } = useQuery(GET_PRODUCTS_FROM_SHOP, {
+  const { error, data, refetch } = useQuery(GET_PRODUCTS_FROM_SHOP, {
     fetchPolicy: 'cache-first',
     nextFetchPolicy: 'cache-first',
     variables: { id: user?.shopId },
@@ -86,7 +87,7 @@ const index = () => {
     // if (!brand || !colors || !macrocategory || !microcategory || !sizes || !photos[2] || !gender) {
     //   return setOpenModalMath(Math.random())
     // }
-
+    setLoading(true)
 
 
 
@@ -213,7 +214,8 @@ const index = () => {
       addToast({ position: 'top', title: 'Impossibile creare il prodotto', description: "c'è stato un errore durante la creazione del prodotto, riprova più tardi", status: 'error', duration: 5000, isClosable: true })
     }
 
-
+  
+    setLoading(false)
 
   }
 
@@ -226,6 +228,7 @@ const index = () => {
             <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false} 
             titleText={'Aggiungi un capo di abbigliamento'}
             confirmButtonText={'aggiungi'}
+            loading={loading}
             />
           </Desktop_Layout>
         </Shop_UID_Required>

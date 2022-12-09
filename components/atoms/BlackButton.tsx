@@ -3,7 +3,7 @@ import { Button } from '@chakra-ui/react'
 import { DownloadIcon } from '@chakra-ui/icons'
 
 type Props = {
-    element: string,
+    element: string | JSX.Element,
     borderRadius: number,
     size: string,
     typeButton: "button" | "submit" | "reset",

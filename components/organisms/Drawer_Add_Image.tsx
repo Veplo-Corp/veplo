@@ -18,6 +18,7 @@ import { canvasPreview } from '../molecules/Canva_previews'
 import { useDebounceEffect } from '../utils/useDebounceEffect';
 import { DownloadIcon } from '@chakra-ui/icons';
 import MobileDetect from 'mobile-detect';
+import Loading from '../molecules/Loading';
 
 
 
@@ -117,6 +118,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     const [isDisabledButton, setIsDisabledButton] = useState<any>(true)
     const [positionPhoto, setPositionPhoto] = useState<any>(null);
     const [showCroppedImage, setShowCroppedImage] = useState<any>(false);
+    const [loading, setLoading] = useState(false)
 
     //padding for Mobile
     const [bottomPadding, setbottomPadding] = useState(0)
@@ -234,6 +236,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
 
 
     async function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
+        setLoading(true)
         setBlob(null)
         setUrl(null)
         setCrop(null)
@@ -266,6 +269,8 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
         else {
             return console.log('non trovata immagine caricata');
         }
+
+        setLoading(false)
     }
 
     useDebounceEffect(async () => {
@@ -340,6 +345,8 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     }
 
 
+   
+
 
 
     return (
@@ -387,7 +394,8 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                 onSelectFile(e);
                             }} />
                     </DrawerHeader>
-                    <DrawerBody className='grid md:flex justify-between '>
+                    {!loading ? 
+                    (<DrawerBody className='grid md:flex justify-between '>
                         {imgSrc || images[0] ? (
                             <>
                                 <div className='w-full px-3 md:px-0 h-fit md:ml-8 md:w-4/12 grid '>
@@ -556,7 +564,11 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                         )}
 
 
-                    </DrawerBody>
+                    </DrawerBody>) :
+                    (
+                        <Loading />
+                    )
+                    }
                     {/* !showCroppedImage */ !showCroppedImage && 
                     <DrawerFooter 
                     paddingX={0}
