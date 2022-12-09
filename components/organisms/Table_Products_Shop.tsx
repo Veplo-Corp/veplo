@@ -19,6 +19,7 @@ import { initApollo } from '../../src/lib/apollo';
 import EDIT_PRODUCT from '../../src/lib/apollo/mutations/editProduct';
 import { useRouter } from 'next/router';
 import Link from 'next/link'
+import Loading from '../molecules/Loading';
 
 // const Table_Products_Shop: React.FC<{ idShop: string, deleteProduct: any }> = ({ idShop, deleteProduct }) => {
 
@@ -56,9 +57,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
 
 
     if (loading) return (
-        <div>
-            'Loading...'
-        </div>);
+        <Loading />)
     if (error) return (
         <div>
             {`Error!${error.message}`}
