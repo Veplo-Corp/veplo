@@ -21,6 +21,7 @@ import modal_error from '../store/reducers/modal_error'
 import GET_SHOP_BY_FIREBASE_ID from '../lib/apollo/queries/getShopByFirebaseId'
 import Router from "next/router";
 import { Firebase_User } from '../interfaces/firebase_user.interface'
+import Loading from '../../components/molecules/Loading'
 
 const theme = extendTheme({
   colors: {
@@ -176,11 +177,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
           <Auth>
             <Header></Header>
             {loading ? (
-              <Center className='mt-40 h-96 m-auto' color='white'>
-                <CircularProgress
-                  size='50px'
-                  isIndeterminate color='gray.300' />
-              </Center>
+              <Loading />
             ) : (
               <>
                 <Component {...pageProps} />

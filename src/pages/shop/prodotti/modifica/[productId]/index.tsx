@@ -26,6 +26,7 @@ const index = () => {
     const apolloClient = initApollo();
     const [product, setProduct] = useState<Product | undefined>(undefined)
     const [openModalMath, setOpenModalMath] = useState(1);
+    const [loading, setLoading] = useState(false)
 
     const { productId } = router.query
 
@@ -66,7 +67,7 @@ const index = () => {
 
     const submitData = async ({ name, price, brand, colors, macrocategory, microcategory, sizes, photos, gender }: any) => {
         //console.log(photos);
-
+        setLoading(true)
         let colorsToDB;
         colorsToDB = colors.map((color: any) => {
             return color.name
@@ -107,8 +108,7 @@ const index = () => {
             }
         }
         //console.log(photoURLForDB);
-
-        if (!product) { return (<></>) }
+        if(!product)return setLoading(false)
 
         const options = {
             name: product.name != name ? name : product.name,
@@ -155,13 +155,13 @@ const index = () => {
                 broadcast: false // Include this to prevent automatic query refresh
             });
             router.push('/shop/prodotti')
-        } catch (e) {
-            console.log(e);
+            addToast({ position: 'top', title: 'Prodotto aggiornato con successo', description: `${options.name.toUpperCase()} è stato aggiornato con successo. Controla nella sezione dedicata`, status: 'success', duration: 5000, isClosable: true })
+
+        } catch (e) {            
+            addToast({ position: 'top', title: 'Impossibile aggiornare il prodotto', description: "c'è stato un errore durante l'aggiornamento del prodotto, riprova più tardi", status: 'error', duration: 5000, isClosable: true })
         }
 
-        // if (!brand || !colors || !macrocategory || !microcategory || !sizes || !photos[2] || !gender) {
-        //   return setOpenModalMath(Math.random())
-        // }
+        setLoading(false)
     }
 
     const setNewImages = (images:any) => {        
@@ -176,6 +176,8 @@ const index = () => {
         }
     }
 
+    if (!product) { return (<></>) }
+
 
     return (
         <Shop_UID_Required>
@@ -185,9 +187,7 @@ const index = () => {
                     <>
                         <div className='md:flex justify-center'>
                             <div className='w-full  md:w-fit h-fit grid gap-5 grid-cols-2 mt-8'>
-                                {product.photos?.map((image: any, id: number) => {
-                                    console.log(image);
-                                    
+                                {product.photos?.map((image: any, id: number) => {                                    
                                     return (
                                         <div key={id} className='flex w-fit md:w-40 h-fit'>
                                             {!image.url ? (
@@ -219,6 +219,7 @@ const index = () => {
                                 titleText={''}
                                 confirmButtonText={'modifica'} 
                                 toParentPhoto={setNewImages}
+                                loading={loading}
                                 />
                         </div>
                     </>

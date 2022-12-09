@@ -1,5 +1,5 @@
 import { CheckIcon, DownloadIcon } from '@chakra-ui/icons';
-import { Box, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react';
+import { Box, CircularProgress, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form';
 import { IFormInput } from '../../src/pages/shop/crea-prodotto';
@@ -21,7 +21,7 @@ import Modal_Error_Shop from './Modal_Error_Shop';
 
 
 
-const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?: string, disabled: boolean, titleText: string, confirmButtonText:string, toParentPhoto?:any }> = ({ handleSubmitEvent, defaultValues, type, disabled, titleText, confirmButtonText, toParentPhoto }) => {
+const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?: string, disabled: boolean, titleText: string, confirmButtonText: string, toParentPhoto?: any, loading?: boolean }> = ({ handleSubmitEvent, defaultValues, type, disabled, titleText, confirmButtonText, toParentPhoto, loading }) => {
     //*UseForm
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<any>({
         mode: "all",
@@ -76,7 +76,6 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
             }
 
             if (product_macrocategory.sizes.split('_')[0] === 'man') {
-                console.log('eccolo cazzo');
                 setValue('gender', 'M');
             } else if (product_macrocategory.sizes.split('_')[0] === 'woman') {
                 setValue('gender', 'F');
@@ -104,7 +103,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
         }
     }
 
-    const onChangePrice = (e:any) => {
+    const onChangePrice = (e: any) => {
         let inputValue: string = e.target.value.replace(',', '.');
         inputValue = inputValue.replace(/[^0-9\.|]/g, '')
         if (inputValue === '.') {
@@ -125,7 +124,8 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
 
     }
 
-    const submitData = (e:any) => {
+    const submitData = (e: any) => {        
+        if(loading)return        
         handleSubmitEvent(e)
     }
 
@@ -159,7 +159,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                     {...register("price", {
                                         required: true,
                                     })}
-                                    onWheel={(e:any) => e.target.blur()}
+                                    onWheel={(e: any) => e.target.blur()}
                                     placeholder={'34,99'}
                                     textAlign={"end"}
                                     isInvalid={false}
@@ -176,7 +176,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <Autocomplete values={brands.current}
                                         selectedValue={watch('brand')}
-                                        handleChangeValues={(brand:any) => {
+                                        handleChangeValues={(brand: any) => {
                                             setValue('brand', brand);
                                         }} />
                                 )}
@@ -191,7 +191,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                 render={() => (
                                     <Select_multiple_options values={colors.current} type={'color'}
                                         selectedValueBefore={watch('colors')}
-                                        handleChangeState={(colors:any) => {
+                                        handleChangeState={(colors: any) => {
                                             setValue('colors', colors);
                                         }} />
                                 )}
@@ -206,7 +206,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                     <Select_options values={categories.current} type={'macrocategory'}
                                         disabled={disabled}
                                         selectedValueBefore={watch('macrocategory')}
-                                        handleClick={(macrocategory:any) => {
+                                        handleClick={(macrocategory: any) => {
                                             setValue('macrocategory', macrocategory);
                                         }}
                                     />
@@ -225,7 +225,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                         disabled={disabled}
                                         selectedValueBefore={watch('microcategory')}
                                         type={'microcategory'}
-                                        handleClick={(microCategory:any) => {
+                                        handleClick={(microCategory: any) => {
                                             console.log(microCategory);
 
                                             setValue('microcategory', microCategory);
@@ -243,7 +243,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                 render={() => (
                                     <Select_multiple_options values={sizesSelected} type={'size'}
                                         selectedValueBefore={watch('sizes')}
-                                        handleChangeState={(sizes:any) => {
+                                        handleChangeState={(sizes: any) => {
                                             setValue('sizes', sizes);
                                         }}
                                     />
@@ -288,14 +288,19 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                         </Div_input_creation>
                         <div className='flex justify-end mt-3'>
                             <BlackButton
-                                typeButton='submit'
-                                element={confirmButtonText}
+                                typeButton={'submit'}
+                                element={!loading ? confirmButtonText :
+                                    <CircularProgress
+                                        size='25px'
+                                        isIndeterminate color='black'
+                                        />
+                                }
                                 borderRadius={10}
                                 size={'sm'}
                                 width={200}
                                 heigth={12}
-                                disabled={false}
-                            //disabled={!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0] || !watch('photos')[1]}
+                                //disabled={false}
+                                disabled={type === 'edit' ? false : (!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0] || !watch('photos')[1])}
                             />
                         </div>
 
@@ -308,8 +313,8 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                 rules={{ required: false }}
                 render={() => (
                     <Drawer_Add_Image openDraw={openDrawNumber} imagesUploadedBefore={watch('photos')} confirmPhotos={(images: string[]) => {
-                        
-                        if(toParentPhoto){
+
+                        if (toParentPhoto) {
                             toParentPhoto(images)
                         }
                         setValue('photos', images);
