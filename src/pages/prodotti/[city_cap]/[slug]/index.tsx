@@ -101,7 +101,6 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
   return (
     <>
-      <FIlter_Button />
       <Desktop_Layout>
         <DintorniLogo_Below_Header city={city} gender={gender} category={category.replace(/-/g, ' ')}></DintorniLogo_Below_Header>
         <div> {/* ${products.length <= 3 ? '' : 'min-h-screen'} */}
@@ -116,6 +115,8 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
           </div>
         </div>
       </Desktop_Layout>
+      <FIlter_Button />
+
     </>
 
   )
