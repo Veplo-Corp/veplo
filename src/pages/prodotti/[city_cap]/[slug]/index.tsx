@@ -14,6 +14,7 @@ import GET_PRODUCTS_FROM_SHOP from '../../../../lib/apollo/queries/geetProductsS
 import { initApollo } from '../../../../lib/apollo'
 import { Color, COLORS } from '../../../../../components/mook/colors'
 import { toProductPage } from '../../../../../components/utils/toProductPage'
+import FIlter_Button from '../../../../../components/molecules/FIlter_Button'
 
 
 type Router = {
@@ -32,7 +33,7 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps(ctx:any) {
+export async function getStaticProps(ctx: any) {
 
   let { city_cap, slug } = ctx.params;
   const elementCityCap: { city: string, postcode: string | null } = getCityAndPostcodeFromSlug(city_cap);
@@ -75,7 +76,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
     if (gender === null) {
       router.push('/')
     }
-    
+
 
 
   }, [])
@@ -92,27 +93,31 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   }
 
 
-  const toShopPage = (shopId:string) => {
+  const toShopPage = (shopId: string) => {
     router.push(`/negozio/${shopId}`)
   }
 
 
 
   return (
-    <Desktop_Layout>
-      <DintorniLogo_Below_Header city={city} gender={gender} category={category.replace(/-/g, ' ')}></DintorniLogo_Below_Header>
-      <div> {/* ${products.length <= 3 ? '' : 'min-h-screen'} */}
-        <div className={` flex items-center justify-center`}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
-            {products[0] !== null && products.map((product) => {
-              return (
-                <Box_Dress eventHandler={toProductPageUrl} key={product.id} product={product} toShop={toShopPage}></Box_Dress>
-              )
-            })}
+    <>
+      <FIlter_Button />
+      <Desktop_Layout>
+        <DintorniLogo_Below_Header city={city} gender={gender} category={category.replace(/-/g, ' ')}></DintorniLogo_Below_Header>
+        <div> {/* ${products.length <= 3 ? '' : 'min-h-screen'} */}
+          <div className={` flex items-center justify-center`}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
+              {products[0] !== null && products.map((product) => {
+                return (
+                  <Box_Dress eventHandler={toProductPageUrl} key={product.id} product={product} toShop={toShopPage}></Box_Dress>
+                )
+              })}
+            </div>
           </div>
         </div>
-      </div>
-    </Desktop_Layout>
+      </Desktop_Layout>
+    </>
+
   )
 }
 
