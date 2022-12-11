@@ -384,6 +384,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                                 background={`${sizeSelected.find(element => element === size) ? 'gray.300' : 'white'}`}
                                                 textAlign={'center'}
                                                 fontSize={['xs', 'md']}
+                                                fontWeight={'medium'}
                                                 className='cursor-pointer relative'
                                                 _active={{
                                                     transform: 'scale(0.98)',
