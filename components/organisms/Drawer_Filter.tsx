@@ -339,7 +339,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                                             borderRadius='full'
                                                             variant='solid'
                                                             bg={`${colorSelected.find(element => element.name === color.name) ? 'gray.300' : 'white'}`}
-                                                            color={`${colorSelected.find(element => element.name === color.name) ? 'white' : 'black'}`}
+                                                            color={`${colorSelected.find(element => element.name === color.name) ? 'black' : 'black'}`}
                                                             borderColor={'gray.200'}
                                                             borderWidth={1}
                                                             _hover={{
