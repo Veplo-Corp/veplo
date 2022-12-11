@@ -137,7 +137,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
     return (
         <Drawer
             placement={'left'}
-            onClose={onClose} isOpen={isOpen} size={['xs', 'md']}
+            onClose={onClose} isOpen={isOpen} size={['sm', 'md']}
             >
             <DrawerOverlay />
             <DrawerContent
@@ -188,7 +188,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                         py={[2, 3]}
                                         px={[4]}
                                         key={id}
-                                        fontSize={['xs', 'md']}
+                                        fontSize={['sm', 'md']}
                                         borderRadius='full'
                                         variant='solid'
                                         bg={'white'}
@@ -291,9 +291,9 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                                         marginRight={1}
                                                         marginBottom={2}
                                                         size={'lg'}
-                                                        py={[2, 3]}
+                                                        py={[2.5, 3]}
                                                         px={[4]}
-                                                        fontSize={['xs', 'md']}
+                                                        fontSize={['sm', 'md']}
                                                         borderRadius='full'
                                                         variant='solid'
                                                         bg={`${colorSelected.find(element => element.name === color.name) ? 'gray.300' : 'white'}`}
@@ -333,9 +333,9 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                                             marginRight={1}
                                                             marginBottom={2}
                                                             size={'lg'}
-                                                            py={[2, 3]}
+                                                            py={[2.5, 3]}
                                                             px={[4]}
-                                                            fontSize={['xs', 'md']}
+                                                            fontSize={['sm', 'md']}
                                                             borderRadius='full'
                                                             variant='solid'
                                                             bg={`${colorSelected.find(element => element.name === color.name) ? 'gray.300' : 'white'}`}
@@ -383,12 +383,13 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                                 borderColor={'gray.200'}
                                                 background={`${sizeSelected.find(element => element === size) ? 'gray.300' : 'white'}`}
                                                 textAlign={'center'}
-                                                fontSize={['xs', 'md']}
+                                                fontSize={['sm', 'md']}
                                                 fontWeight={'medium'}
                                                 className='cursor-pointer relative'
                                                 _active={{
                                                     transform: 'scale(0.98)',
                                                 }}
+
 
                                             >
                                                 {/* {sizeSelected.find(element => element === size) &&

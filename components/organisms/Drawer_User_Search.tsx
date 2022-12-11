@@ -61,7 +61,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                 >
                     <DrawerCloseButton size={'lg'} mt={'0'} />
                     <DrawerHeader borderWidth={0} borderBottomWidth={1} borderColor={'gray.200'} py={'3'} px={'4'}>
-                        <p className="font-black text-2xl italic text-black-900  ">DINTORNI</p>
+                    <p className="font-black text-2xl italic text-black-900 my-auto ">Categorie</p>
                     </DrawerHeader>
                     <DrawerBody
                         p={0}
