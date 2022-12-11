@@ -54,7 +54,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
 
     return (
         <>
-            <Drawer onClose={onClose} isOpen={isOpen} size={['full', 'md']}
+            <Drawer onClose={onClose} isOpen={isOpen} size={['xs', 'md']}
                 placement={'right'}>
                 <DrawerOverlay />
                 <DrawerContent
@@ -93,7 +93,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                             }}
                             p={2}
                             background={'#355CC1'}
-                            className={`${isAndroid ? 'hidden' : ''}`}
+                            className={`${isAndroid ? '' : ''}`}
                         >
                             <Center width={'full'}
                             >
@@ -205,7 +205,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                             </div>
                         </Center>
                     </DrawerFooter> */}
-                    <Slide direction='bottom' in={isOpen} style={{ zIndex: 10 }}
+                    {/* <Slide direction='bottom' in={isOpen} style={{ zIndex: 10 }}
                         className={`${isAndroid ? '' : 'hidden'}`}
                     >
                         <Box
@@ -228,7 +228,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                                 </div>
                             </Center>
                         </Box>
-                    </Slide>
+                    </Slide> */}
                 </DrawerContent>
             </Drawer>
         </>
