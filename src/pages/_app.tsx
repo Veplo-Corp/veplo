@@ -35,6 +35,9 @@ const theme = extendTheme({
       900: "#D91818",
     },
   },
+  zIndex: {
+    drawer: '1'
+  }
 })
 
 const Auth: React.FC<{ children: any }> = ({ children }) => {

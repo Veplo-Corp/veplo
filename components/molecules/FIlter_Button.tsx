@@ -1,12 +1,13 @@
 import { Box, Center, HStack, VStack } from '@chakra-ui/react'
 import MobileDetect from 'mobile-detect';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import Drawer_Filter from '../organisms/Drawer_Filter';
 
 const FIlter_Button = () => {
     const [bottomPadding, setbottomPadding] = useState([4, 8])
     const [openDrawer, setOpenDrawer] = useState(1)
-
+    const router = useRouter();
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -48,8 +49,10 @@ const FIlter_Button = () => {
                 bottom={[4, 8]}
                 right={[4, 10]}
                 onClick={() => {
-                    console.log('eccolo');
+                    console.log(router.asPath);
+
                     setOpenDrawer(Math.random())
+                    
                 }}
             >
                 <Center height={'full'} color={'white'}
