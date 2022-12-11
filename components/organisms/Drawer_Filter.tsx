@@ -271,6 +271,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                         <h5 className='font-medium text-sm lg:text-md mb-0'>Max</h5>
                                         <Select value={maxAmount} size={['md', 'lg']} width={'fit-content'}
                                             onChange={(event) => {
+                                                if(event.target.value === 'Max' ) return setMaxAmount('Max')
                                                 setMaxAmount(Number(event.target.value))
                                             }}
                                         >
@@ -379,7 +380,6 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                                             _active={{
                                                                 transform: 'scale(0.98)',
                                                             }}
-
                                                         >
                                                             <TagLabel>{color.name}</TagLabel>
                                                             <Box h={[5, 6]} w={[5, 6]} borderRadius={'100%'} bg={color.cssColor} borderWidth={1} borderColor={'gray.200'} ml={2}>
