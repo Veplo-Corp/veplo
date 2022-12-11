@@ -195,11 +195,12 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                         variant='solid'
                                         bg={'white'}
                                         color={'gray.900'}
-                                        borderColor={'gray.900'}
+                                        // borderColor={'gray.900'}
+                                        background={'gray.300'}
                                         borderWidth={1}
-                                        _hover={{ bg: 'white' }}
+                                        _hover={{ bg: 'gray.300' }}
                                         _focus={{
-                                            bg: 'black.900'
+                                            bg: 'gray.300'
                                         }}
                                         _active={{
                                             transform: 'scale(0.98)',
@@ -297,15 +298,15 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                                         fontSize={['xs', 'md']}
                                                         borderRadius='full'
                                                         variant='solid'
-                                                        bg={`${colorSelected.find(element => element.name === color.name) ? 'gray.600' : 'white'}`}
-                                                        color={`${colorSelected.find(element => element.name === color.name) ? 'white' : 'black'}`}
+                                                        bg={`${colorSelected.find(element => element.name === color.name) ? 'gray.300' : 'white'}`}
+                                                        color={`${colorSelected.find(element => element.name === color.name) ? 'black' : 'black'}`}
                                                         borderColor={'gray.200'}
                                                         borderWidth={1}
                                                         _hover={{
-                                                            bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.600' : 'white'}`
+                                                            bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.300' : 'white'}`
                                                         }}
                                                         _focus={{
-                                                            bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.600' : 'white'}`
+                                                            bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.300' : 'white'}`
                                                         }}
                                                         _active={{
                                                             transform: 'scale(0.98)',
@@ -381,7 +382,8 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                                 width={'full'}
                                                 key={size}
                                                 borderWidth={Number(`${sizeSelected.find(element => element === size) ? '1.5' : '1'}`)}
-                                                borderColor={`${sizeSelected.find(element => element === size) ? 'gray.500' : 'gray.200'}`}
+                                                borderColor={'gray.200'}
+                                                background={`${sizeSelected.find(element => element === size) ? 'gray.300' : 'white'}`}
                                                 textAlign={'center'}
                                                 fontSize={['xs', 'md']}
                                                 className='cursor-pointer relative'
@@ -390,11 +392,11 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                                 }}
 
                                             >
-                                                {sizeSelected.find(element => element === size) &&
+                                                {/* {sizeSelected.find(element => element === size) &&
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                                     className="w-3 h-3 md:w-4 md:h-4 absolute top-1 right-1 md:top-1.5 md:right-1.5"><path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
                                                 </svg>
-                                            }
+                                            } */}
 
 
 
