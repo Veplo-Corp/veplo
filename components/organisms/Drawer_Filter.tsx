@@ -40,11 +40,9 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
         //console.log(openDrawerMath);
         if (openDrawerMath !== 1 && openDrawerMath > 0 && openDrawerMath !== undefined) {
             onOpen()
-            console.log();
 
             const category = Object.values(CATEGORIES)[Object.keys(CATEGORIES).indexOf(gender)]
             const sizeType = category.abbigliamento.find(element => element.url === 'cappotti')?.sizes
-            console.log(sizeType);
 
             //da migliorare
             if (sizeType === 'woman_clothes_sizes') {
@@ -179,7 +177,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                     }
                     {showFilter &&
                         <>
-                            <Box py={3} px={4} pb={2} borderBottomWidth={1} borderColor={'gray.200'}
+                            {brandSelected.length > 0 && <Box py={3} px={4} pb={2} borderBottomWidth={1} borderColor={'gray.200'}
                             >
                                 <h3 className='font-bold lg:text-lg text-md mb-2'>Brand</h3>
                                 {brandSelected.map((brand, id) => (
@@ -215,7 +213,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                         />
                                     </Tag>
                                 ))}
-                            </Box>
+                            </Box>}
                             <Box py={3} px={4} pb={4} borderBottomWidth={1} borderColor={'gray.200'}>
                                 <h3 className='font-bold text-md lg:text-lg mb-2'>Prezzo</h3>
                                 <Flex gap={3}>

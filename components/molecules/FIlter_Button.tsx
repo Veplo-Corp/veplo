@@ -49,8 +49,6 @@ const FIlter_Button: FC<{gender:string, macrocategory:string}> = ({gender, macro
                 bottom={[4, 8]}
                 right={[4, 10]}
                 onClick={() => {
-                    console.log(router.asPath);
-
                     setOpenDrawer(Math.random())
                     
                 }}
