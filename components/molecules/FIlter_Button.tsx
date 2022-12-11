@@ -1,10 +1,10 @@
 import { Box, Center, HStack, VStack } from '@chakra-ui/react'
 import MobileDetect from 'mobile-detect';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import Drawer_Filter from '../organisms/Drawer_Filter';
 
-const FIlter_Button = () => {
+const FIlter_Button: FC<{gender:string, macrocategory:string}> = ({gender, macrocategory}) => {
     const [bottomPadding, setbottomPadding] = useState([4, 8])
     const [openDrawer, setOpenDrawer] = useState(1)
     const router = useRouter();
@@ -34,7 +34,7 @@ const FIlter_Button = () => {
 
     return (
         <>
-            <Drawer_Filter openDrawerMath={openDrawer} />
+            <Drawer_Filter openDrawerMath={openDrawer} gender={gender} macrocategory={macrocategory} />
             <Box
                 boxShadow={'rgba(0, 0, 0, 0.35) 0px 5px 15px'}
                 width={70}
