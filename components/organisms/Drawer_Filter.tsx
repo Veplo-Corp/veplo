@@ -1,4 +1,4 @@
-import { Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay, Flex, HStack, Select, Stack, Tag, TagCloseButton, TagLabel, Text, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, HStack, Select, Stack, Tag, TagCloseButton, TagLabel, Text, useDisclosure } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { FC, useEffect, useRef, useState } from 'react'
 import Input_Drawer from '../atoms/Input_Drawer'
@@ -7,6 +7,7 @@ import { BRANDS } from '../mook/brands'
 import { CATEGORIES } from '../mook/categories'
 import { woman_clothes_sizes, man_bottom_clothes_sizes, man_top_clothes_sizes } from '../mook/sizes'
 import { Color, COLORS } from '../mook/colors'
+import MobileDetect from 'mobile-detect'
 
 
 const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory: string }> = ({ openDrawerMath, gender, macrocategory }) => {
@@ -16,10 +17,11 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
     const [brandSelected, setBrandSelected] = useState<string[] | []>([])
     const [colorSelected, setColorSelected] = useState<Color[] | []>([])
     const [sizeSelected, setSizeSelected] = useState<string[] | []>([])
-
     const [minAmount, setMinAmount] = useState<number>(0)
     const [maxAmount, setMaxAmount] = useState<number | 'Max'>('Max')
     const [sizes, setSizes] = useState<string[] | []>([])
+    //padding for Mobile
+    const [bottomPadding, setbottomPadding] = useState([4, 8])
 
     const router = useRouter();
     const colors = useRef<Color[]>(COLORS)
@@ -57,6 +59,32 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
         }
 
     }, [openDrawerMath])
+
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            let type = new MobileDetect(window.navigator.userAgent)
+            //console.log(type);            
+            if (type.os() === "AndroidOS" || type.os() === 'iOS') {
+                const newHeight = window.innerHeight;
+                const screenHeight = screen.availHeight;
+                setbottomPadding([screenHeight - newHeight, 20])
+                console.log([screenHeight - newHeight, 8]);
+                
+                const updateWindowDimensions = () => {
+                    const newHeight = window.innerHeight;
+                    const screenHeight = screen.availHeight;
+                    console.log(newHeight);
+                    console.log(screenHeight);
+                    console.log(screenHeight - newHeight);
+                    setbottomPadding([screenHeight - newHeight, 20])
+                    console.log("updating height");
+                };
+                window.addEventListener("resize", updateWindowDimensions);
+                return () => window.removeEventListener("resize", updateWindowDimensions)
+            }
+        }
+    }, []);
 
 
     const onChangeText = (query: string) => {
@@ -137,23 +165,23 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
     return (
         <Drawer
             placement={'left'}
-            onClose={onClose} isOpen={isOpen} size={['sm', 'md']}
-            >
+            onClose={onClose} isOpen={isOpen} size={['xs', 'md']}
+        >
             <DrawerOverlay />
             <DrawerContent
             >
-                {/* <DrawerCloseButton size={'lg'} mt={'0'} /> */}
+                <DrawerCloseButton size={'lg'} mt={'0'} />
                 <DrawerHeader borderWidth={0} borderBottomWidth={1} borderColor={'gray.200'} py={'3'} px={'4'}
                     className='flex justify-between'
                 >
                     <p className="font-black text-2xl italic text-black-900 my-auto ">Filtri</p>
-                    <Button
+                    {/* <Button
                         colorScheme={'green'}
                         borderRadius={30}
                         onClick={onClose}
                     >
                         APPLICA
-                    </Button>
+                    </Button> */}
                 </DrawerHeader>
                 <DrawerBody
                     p={0}
@@ -397,9 +425,6 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                                     className="w-3 h-3 md:w-4 md:h-4 absolute top-1 right-1 md:top-1.5 md:right-1.5"><path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
                                                 </svg>
                                             } */}
-
-
-
                                                 {size}
                                             </Box>
                                         )
@@ -410,7 +435,21 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                         </>
                     }
                 </DrawerBody>
-
+                <DrawerFooter /*  */
+                    position={'absolute'}
+                    className='bottom-0'
+                    padding={0}
+                    width={'full'}
+                >
+                    <Button w={'full'} onClick={() => { onClose() }}
+                        borderRadius={0}
+                        padding={7}
+                        colorScheme={'whatsapp'}
+                        fontSize={'xl'}
+                    >
+                        APPLICA
+                    </Button>
+                </DrawerFooter>
             </DrawerContent>
         </Drawer>
     )
