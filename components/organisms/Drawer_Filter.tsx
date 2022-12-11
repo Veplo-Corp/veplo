@@ -222,11 +222,11 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                         bg={'white'}
                                         color={'gray.900'}
                                         // borderColor={'gray.900'}
-                                        background={'gray.300'}
+                                        background={'gray.200'}
                                         borderWidth={1}
-                                        _hover={{ bg: 'gray.300' }}
+                                        _hover={{ bg: 'gray.200' }}
                                         _focus={{
-                                            bg: 'gray.300'
+                                            bg: 'gray.200'
                                         }}
                                         _active={{
                                             transform: 'scale(0.98)',
@@ -325,15 +325,15 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                                         fontSize={['sm', 'md']}
                                                         borderRadius='full'
                                                         variant='solid'
-                                                        bg={`${colorSelected.find(element => element.name === color.name) ? 'gray.300' : 'white'}`}
+                                                        bg={`${colorSelected.find(element => element.name === color.name) ? 'gray.200' : 'white'}`}
                                                         color={`${colorSelected.find(element => element.name === color.name) ? 'black' : 'black'}`}
                                                         borderColor={'gray.200'}
                                                         borderWidth={1}
                                                         _hover={{
-                                                            bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.300' : 'white'}`
+                                                            bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.200' : 'white'}`
                                                         }}
                                                         _focus={{
-                                                            bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.300' : 'white'}`
+                                                            bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.200' : 'white'}`
                                                         }}
                                                         _active={{
                                                             transform: 'scale(0.98)',
@@ -367,15 +367,15 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                                             fontSize={['sm', 'md']}
                                                             borderRadius='full'
                                                             variant='solid'
-                                                            bg={`${colorSelected.find(element => element.name === color.name) ? 'gray.300' : 'white'}`}
+                                                            bg={`${colorSelected.find(element => element.name === color.name) ? 'gray.200' : 'white'}`}
                                                             color={`${colorSelected.find(element => element.name === color.name) ? 'black' : 'black'}`}
                                                             borderColor={'gray.200'}
                                                             borderWidth={1}
                                                             _hover={{
-                                                                bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.300' : 'white'}`
+                                                                bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.200' : 'white'}`
                                                             }}
                                                             _focus={{
-                                                                bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.300' : 'white'}`
+                                                                bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.200' : 'white'}`
                                                             }}
                                                             _active={{
                                                                 transform: 'scale(0.98)',
@@ -409,7 +409,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                                 key={size}
                                                 borderWidth={Number(`${sizeSelected.find(element => element === size) ? '1.5' : '1'}`)}
                                                 borderColor={'gray.200'}
-                                                background={`${sizeSelected.find(element => element === size) ? 'gray.300' : 'white'}`}
+                                                background={`${sizeSelected.find(element => element === size) ? 'gray.200' : 'white'}`}
                                                 textAlign={'center'}
                                                 fontSize={['sm', 'md']}
                                                 fontWeight={'medium'}
