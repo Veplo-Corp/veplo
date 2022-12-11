@@ -338,15 +338,15 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                                             fontSize={['xs', 'md']}
                                                             borderRadius='full'
                                                             variant='solid'
-                                                            bg={`${colorSelected.find(element => element.name === color.name) ? 'gray.600' : 'white'}`}
+                                                            bg={`${colorSelected.find(element => element.name === color.name) ? 'gray.300' : 'white'}`}
                                                             color={`${colorSelected.find(element => element.name === color.name) ? 'white' : 'black'}`}
                                                             borderColor={'gray.200'}
                                                             borderWidth={1}
                                                             _hover={{
-                                                                bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.600' : 'white'}`
+                                                                bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.300' : 'white'}`
                                                             }}
                                                             _focus={{
-                                                                bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.600' : 'white'}`
+                                                                bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.300' : 'white'}`
                                                             }}
                                                             _active={{
                                                                 transform: 'scale(0.98)',
