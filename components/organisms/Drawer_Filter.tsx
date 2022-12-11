@@ -4,18 +4,22 @@ import React, { FC, useEffect, useRef, useState } from 'react'
 import Input_Drawer from '../atoms/Input_Drawer'
 import Select_multiple_options from '../atoms/Select_multiple_options'
 import { BRANDS } from '../mook/brands'
+import { CATEGORIES } from '../mook/categories'
+import { woman_clothes_sizes, man_bottom_clothes_sizes, man_top_clothes_sizes } from '../mook/sizes'
 import { Color, COLORS } from '../mook/colors'
 
 
-const Drawer_Filter: FC<{ openDrawerMath: number }> = ({ openDrawerMath }) => {
+const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory: string }> = ({ openDrawerMath, gender, macrocategory }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [showFilter, setshowFilter] = useState(true)
     const [filteredBrand, setFilteredBrand] = useState([])
     const [brandSelected, setBrandSelected] = useState<string[] | []>([])
     const [colorSelected, setColorSelected] = useState<Color[] | []>([])
+    const [sizeSelected, setSizeSelected] = useState<string[] | []>([])
+
     const [minAmount, setMinAmount] = useState<number>(0)
     const [maxAmount, setMaxAmount] = useState<number | 'Max'>('Max')
-    const [normalHeightForBox, setNormalHeightForBox] = useState(true)
+    const [sizes, setSizes] = useState<string[] | []>([])
 
     const router = useRouter();
     const colors = useRef<Color[]>(COLORS)
@@ -32,12 +36,28 @@ const Drawer_Filter: FC<{ openDrawerMath: number }> = ({ openDrawerMath }) => {
     ]
 
 
-
     useEffect(() => {
         //console.log(openDrawerMath);
         if (openDrawerMath !== 1 && openDrawerMath > 0 && openDrawerMath !== undefined) {
             onOpen()
+            console.log();
+
+            const category = Object.values(CATEGORIES)[Object.keys(CATEGORIES).indexOf(gender)]
+            const sizeType = category.abbigliamento.find(element => element.url === 'cappotti')?.sizes
+            console.log(sizeType);
+
+            //da migliorare
+            if (sizeType === 'woman_clothes_sizes') {
+                setSizes(woman_clothes_sizes)
+            } else if (sizeType === 'man_bottom_clothes_sizes') {
+
+            } else if (sizeType === 'man_top_clothes_sizes') {
+                setSizes(man_top_clothes_sizes)
+            }
+
+
         }
+
     }, [openDrawerMath])
 
 
@@ -47,7 +67,6 @@ const Drawer_Filter: FC<{ openDrawerMath: number }> = ({ openDrawerMath }) => {
             if (query.length === 0) {
                 setshowFilter(true)
                 setFilteredBrand([])
-
             }
 
             return query === '' || query.length < 3
@@ -93,20 +112,27 @@ const Drawer_Filter: FC<{ openDrawerMath: number }> = ({ openDrawerMath }) => {
     // }
 
     const selectColor = (color: Color) => {
-        console.log(colorSelected);
-
         setColorSelected(prevstate => {
             const colorAldreadyExist = prevstate.filter(state => state.name === color.name)[0]
             if (colorAldreadyExist) return prevstate.filter(state => state.name !== color.name)
-
             return [
                 ...prevstate,
                 color
             ]
         })
-
-
     }
+
+    const selectSize = (size: string) => {
+        setSizeSelected(prevstate => {
+            const sizeAldreadyExist = prevstate.filter(state => state === size)[0]
+            if (sizeAldreadyExist) return prevstate.filter(state => state !== size)
+            return [
+                ...prevstate,
+                size
+            ]
+        })
+    }
+
 
 
 
@@ -133,6 +159,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number }> = ({ openDrawerMath }) => {
                 </DrawerHeader>
                 <DrawerBody
                     p={0}
+
                 >
                     <Input_Drawer title='seleziona uno o più brand' onChangeText={onChangeText} />
                     {filteredBrand.length > 0 && !showFilter &&
@@ -152,7 +179,8 @@ const Drawer_Filter: FC<{ openDrawerMath: number }> = ({ openDrawerMath }) => {
                     }
                     {showFilter &&
                         <>
-                            <Box py={3} px={4} pb={2} borderBottomWidth={1} borderColor={'gray.200'}>
+                            <Box py={3} px={4} pb={2} borderBottomWidth={1} borderColor={'gray.200'}
+                            >
                                 <h3 className='font-bold lg:text-lg text-md mb-2'>Brand</h3>
                                 {brandSelected.map((brand, id) => (
                                     <Tag
@@ -253,7 +281,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number }> = ({ openDrawerMath }) => {
                                 <h3 className='font-bold text-md lg:text-lg mb-3'>Colore</h3>
                                 <div>
                                     <div className='flex overflow-x-auto'>
-                                        {COLORS.slice(0, 6).map((color: Color, id) => {
+                                        {COLORS.slice(0, 10).map((color: Color, id) => {
                                             return (
                                                 <div className=" w-full cursor-pointer mr-2 "
                                                     key={id}
@@ -269,15 +297,15 @@ const Drawer_Filter: FC<{ openDrawerMath: number }> = ({ openDrawerMath }) => {
                                                         fontSize={['xs', 'md']}
                                                         borderRadius='full'
                                                         variant='solid'
-                                                        bg={`${colorSelected.find(element => element.name === color.name) ? 'black' : 'white'}`}
+                                                        bg={`${colorSelected.find(element => element.name === color.name) ? 'gray.600' : 'white'}`}
                                                         color={`${colorSelected.find(element => element.name === color.name) ? 'white' : 'black'}`}
-                                                        borderColor={'gray.900'}
+                                                        borderColor={'gray.200'}
                                                         borderWidth={1}
                                                         _hover={{
-                                                            bg: `${colorSelected.find(element => element.name === color.name) ? 'black' : 'white'}`
+                                                            bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.600' : 'white'}`
                                                         }}
                                                         _focus={{
-                                                            bg: `${colorSelected.find(element => element.name === color.name) ? 'black' : 'white'}`
+                                                            bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.600' : 'white'}`
                                                         }}
                                                         _active={{
                                                             transform: 'scale(0.98)',
@@ -295,7 +323,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number }> = ({ openDrawerMath }) => {
                                     </div>
                                     <div className='mt-1'>
                                         <div className='flex overflow-x-auto'>
-                                            {COLORS.slice(6).map((color: Color, id) => {
+                                            {COLORS.slice(10).map((color: Color, id) => {
                                                 return (
                                                     <div className=" w-full cursor-pointer mr-2 "
                                                         key={id}
@@ -311,15 +339,15 @@ const Drawer_Filter: FC<{ openDrawerMath: number }> = ({ openDrawerMath }) => {
                                                             fontSize={['xs', 'md']}
                                                             borderRadius='full'
                                                             variant='solid'
-                                                            bg={`${colorSelected.find(element => element.name === color.name) ? 'black' : 'white'}`}
+                                                            bg={`${colorSelected.find(element => element.name === color.name) ? 'gray.600' : 'white'}`}
                                                             color={`${colorSelected.find(element => element.name === color.name) ? 'white' : 'black'}`}
-                                                            borderColor={'gray.900'}
+                                                            borderColor={'gray.200'}
                                                             borderWidth={1}
                                                             _hover={{
-                                                                bg: `${colorSelected.find(element => element.name === color.name) ? 'black' : 'white'}`
+                                                                bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.600' : 'white'}`
                                                             }}
                                                             _focus={{
-                                                                bg: `${colorSelected.find(element => element.name === color.name) ? 'black' : 'white'}`
+                                                                bg: `${colorSelected.find(element => element.name === color.name) ? 'gray.600' : 'white'}`
                                                             }}
                                                             _active={{
                                                                 transform: 'scale(0.98)',
@@ -336,7 +364,45 @@ const Drawer_Filter: FC<{ openDrawerMath: number }> = ({ openDrawerMath }) => {
                                         </div>
                                     </div>
                                 </div>
+                            </Box>
+                            <Box py={3} px={4} pb={2} borderBottomWidth={1} borderColor={'gray.200'}
+                                marginBottom={200}
+                            >
+                                <h3 className='font-bold lg:text-lg text-md mb-2'>Taglia</h3>
+                                <div
+                                    className='grid grid-cols-3 gap-2 md:gap-3 mr-4 md:mr-20'
+                                >
+                                    {sizes.map((size) => {
+                                        return (
+                                            <Box
+                                                onClick={() => selectSize(size)}
+                                                borderRadius={5}
+                                                paddingY={[3, 4]}
+                                                width={'full'}
+                                                key={size}
+                                                borderWidth={Number(`${sizeSelected.find(element => element === size) ? '1.5' : '1'}`)}
+                                                borderColor={`${sizeSelected.find(element => element === size) ? 'gray.500' : 'gray.200'}`}
+                                                textAlign={'center'}
+                                                fontSize={['xs', 'md']}
+                                                className='cursor-pointer relative'
+                                                _active={{
+                                                    transform: 'scale(0.98)',
+                                                }}
 
+                                            >
+                                                {sizeSelected.find(element => element === size) &&
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                                    className="w-3 h-3 md:w-4 md:h-4 absolute top-1 right-1 md:top-1.5 md:right-1.5"><path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
+                                                </svg>
+                                            }
+
+
+
+                                                {size}
+                                            </Box>
+                                        )
+                                    })}
+                                </div>
 
                             </Box>
                         </>

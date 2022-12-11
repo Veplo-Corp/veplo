@@ -6,7 +6,7 @@ export const woman_clothes_sizes = [
     "l (44)",
     "xl (46)",
     "xxl (48)",
-    "3xl (50/52/54)",
+    "3xl (50)",
   ];
   
 export  const man_top_clothes_sizes = [
@@ -16,7 +16,7 @@ export  const man_top_clothes_sizes = [
     "l (50)",
     "xl (52)",
     "xxl (54)",
-    "3xl (56/58)",
+    "3xl (56)",
   ];
   
 export const man_bottom_clothes_sizes = [
@@ -27,5 +27,5 @@ export const man_bottom_clothes_sizes = [
     "l (50)",
     "xl (52)",
     "xxl (54)",
-    "3xl (56/58)",
+    "3xl (56)",
   ];
