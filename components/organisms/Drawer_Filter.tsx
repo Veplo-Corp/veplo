@@ -256,7 +256,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                             })}
                                             <option
                                                 value={'Max'}
-                                            >MAX</option>
+                                            >Max</option>
                                         </Select>
                                     </Box>
                                 </Flex>
