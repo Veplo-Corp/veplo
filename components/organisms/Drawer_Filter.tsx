@@ -136,9 +136,9 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
 
     return (
         <Drawer
-
+            placement={'left'}
             onClose={onClose} isOpen={isOpen} size={['xs', 'md']}
-            placement={'right'}>
+            >
             <DrawerOverlay />
             <DrawerContent
             >
