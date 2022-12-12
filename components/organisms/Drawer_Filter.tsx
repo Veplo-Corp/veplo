@@ -1,4 +1,4 @@
-import { Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, HStack, Select, Stack, Tag, TagCloseButton, TagLabel, Text, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, color, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, HStack, Select, Stack, Tag, TagCloseButton, TagLabel, Text, useDisclosure } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { FC, useEffect, useRef, useState } from 'react'
 import Input_Drawer from '../atoms/Input_Drawer'
@@ -8,6 +8,7 @@ import { CATEGORIES } from '../mook/categories'
 import { Color, COLORS } from '../mook/colors'
 import MobileDetect from 'mobile-detect'
 import { Sizes, SIZES } from '../mook/sizes'
+import { findMacrocategoryName } from '../utils/find_macrocategory_name'
 
 
 const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory: string }> = ({ openDrawerMath, gender, macrocategory }) => {
@@ -23,6 +24,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
     //padding for Mobile
     const [bottomPadding, setbottomPadding] = useState([4, 8])
     const ContSizes = useRef<Sizes>(SIZES)
+    const [macrocategoryName, setMacrocategoryName] = useState()
 
     const router = useRouter();
     const colors = useRef<Color[]>(COLORS)
@@ -51,9 +53,9 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
             if(!sizeType) return
             const index = Object.keys(ContSizes.current).indexOf(sizeType)
             setSizes(Object.values(ContSizes.current)[index])
-            
-
         }
+        setMacrocategoryName(findMacrocategoryName(macrocategory, gender) || 'Filtri')
+
 
     }, [openDrawerMath])
 
@@ -171,7 +173,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                 <DrawerHeader borderWidth={0} borderBottomWidth={1} borderColor={'gray.200'} py={'3'} px={'4'}
                     className='flex justify-between'
                 >
-                    <p className="font-black text-2xl italic text-black-900 my-auto ">Filtri</p>
+                    <p className="font-black text-2xl italic text-black-900 my-auto ">{macrocategoryName}</p>
                     {/* <Button
                         colorScheme={'green'}
                         borderRadius={30}
@@ -303,7 +305,12 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                 
 
                                 </div> */}
-                                <h3 className='font-bold text-md lg:text-lg mb-3'>Colore</h3>
+                                <h3 className='font-bold text-md lg:text-lg mb-3'>Colore
+                                {colorSelected.length > 0 && 
+                                <span className='ml-1 font-normal'>
+                                    ({colorSelected.map((value) => { return (value.name || value) }).join(', ')})
+                                    </span>}
+                                </h3>
                                 <div>
                                     <div className='flex overflow-x-auto'>
                                         {COLORS.slice(0, 10).map((color: Color, id) => {
