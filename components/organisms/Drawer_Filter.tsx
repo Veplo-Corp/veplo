@@ -24,7 +24,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
     //padding for Mobile
     const [bottomPadding, setbottomPadding] = useState([4, 8])
     const ContSizes = useRef<Sizes>(SIZES)
-    const [macrocategoryName, setMacrocategoryName] = useState()
+    const [macrocategoryName, setMacrocategoryName] = useState<string>()
 
     const router = useRouter();
     const colors = useRef<Color[]>(COLORS)
