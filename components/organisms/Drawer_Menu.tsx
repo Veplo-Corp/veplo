@@ -79,9 +79,7 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                 <DrawerHeader borderWidth={0} borderBottomWidth={1} borderColor={'gray.200'} py={'3'} px={4}>Menu</DrawerHeader>
                 <DrawerBody px={4} py={3}>
                     <Box maxW='sm' overflow='hidden'>
-                        {user && !user.emailVerified &&
-                            <Verified_Email />
-                        }
+                        
 
                         <Tooltip label={!user.emailVerified ? 'email non verificata' : 'email verificata'}>
                             <Box
