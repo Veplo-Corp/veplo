@@ -18,10 +18,11 @@ import { useForm } from 'react-hook-form'
 import { useMutation } from '@apollo/client'
 import CREATE_SHOP from '../../../lib/apollo/mutations/createShop'
 import { ToastOpen } from '../../../../components/utils/Toast'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required'
 import { Firebase_User } from '../../../interfaces/firebase_user.interface'
 import { useRouter } from 'next/router'
+import { addShopId } from '../../../store/reducers/user'
 
 
 type Image = {
@@ -216,6 +217,7 @@ const index = () => {
     const [showAddress, setShowAddress] = useState(false)
     const [streetNumberDisabled, setStreetNumberDisabled] = useState(false)
     const [address_searched, setAddress_searched] = useState('')
+    const dispatch = useDispatch();
 
 
     const onChangeAddress = async (address_searched: string) => {
@@ -400,13 +402,15 @@ const index = () => {
         try {
             const isCreatedShop = await createShop({ variables: { options: Shop } })
             console.log(isCreatedShop.data.createShop)
+            dispatch(
+                addShopId(isCreatedShop.data.createShop)
+              );
             //TODO
             //add shopId to user in Redux with function
             addToast({ position: 'top', title: 'Shop creato con successo', description: "inizia a inserire i tuoi prodotti in Dintorni!", status: 'success', duration: 5000, isClosable: false })
             return router.push('/shop/prodotti')
         } catch (e) {
             console.log(e);
-
             addToast({ position: 'top', title: 'Errore durante la creazione dello Shop', description: "non siamo riusciti a creare il tuo shop. riprova più tardi o contattaci", status: 'error', duration: 5000, isClosable: false })
         }
     }
@@ -644,6 +648,8 @@ const index = () => {
                                                 rounded={10}
                                                 paddingY={6}
                                                 type="number"
+                                                min={1}
+                                                max={999}
                                                 value={address.streetNumber}
                                                 onChange={(event) => {
                                                     const value = event.target.value

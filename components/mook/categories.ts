@@ -177,11 +177,6 @@ export const CATEGORIES: Categories = {
     },
     uomo: {
         abbigliamento: [
-            // "Tutto l'abbigliamento",
-            //! non ho capito
-            // //"Completi",
-            // "Pantaloni",
-            // "Bermuda",
             {
                 name: "T-shirt & Polo",
                 url: "t-shirt-e-polo",

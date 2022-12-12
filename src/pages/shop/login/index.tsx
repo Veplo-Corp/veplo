@@ -18,6 +18,7 @@ import { setModalTitleAndDescription, handleOpenModal } from '../../../store/red
 import { useRouter } from 'next/router'
 import { Firebase_User } from '../../../interfaces/firebase_user.interface'
 import Login_or_Registration from '../../../../components/organisms/Login_or_Registration'
+import SET_IS_SHOP from '../../../lib/apollo/mutations/setIsShop';
 
 
 
@@ -25,7 +26,7 @@ import Login_or_Registration from '../../../../components/organisms/Login_or_Reg
 const index = () => {
   const router = useRouter()
   const { type }: any /* 'registration' | 'login' | 'reset_password' */ = router.query
-
+  const [setIsShop] = useMutation(SET_IS_SHOP)
 
   // const [showPassword, setshowPassword] = useState<boolean>(false)
   // const [email, setemail] = useState<string>('')
@@ -39,14 +40,15 @@ const index = () => {
 
   useEffect(() => {
     const abortController = new AbortController();
-    console.log(user);
 
     if (user && !user.Not_yet_Authenticated_Request) {
       console.log(user);
       
       if(typeof user.shopId === 'string'){
         router.push('/shop/prodotti')
-      } else {
+      } else if(user.isShop === false) {
+        
+      } else if(user?.isShop === true) {
         router.push('/shop/crea-shop')
       }
     }
@@ -106,21 +108,27 @@ const index = () => {
         const user = userCredential.user;
         const idToken = await userCredential.user.getIdToken(true);
         setAuthTokenInLocalStorage(idToken)
-        console.log(user);
+        console.log(idToken);
         sendEmailVerificationHanlder()
-        dispatch(
-          login(
-            {
-              email: user.email,
-              uid: user.uid,
-              idToken: await user.getIdToken(true),
-              emailVerified: user.emailVerified,
-              isShop: true,
-              createdAt: 'now'
-            }
-          )
-        );
-
+        // dispatch(
+        //   login(
+        //     {
+        //       email: user.email,
+        //       uid: user.uid,
+        //       idToken: idToken,
+        //       emailVerified: user.emailVerified,
+        //       isShop: true,
+        //       createdAt: 'now'
+        //     }
+        //   )
+        // );
+        
+        await setIsShop({
+          variables: {
+            isShop:true
+          }
+        })
+        router.reload()
         // setemail('')
         // setpassword('')
       } catch (error:any) {

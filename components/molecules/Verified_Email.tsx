@@ -5,7 +5,7 @@ import { sendEmailVerificationHanlder } from '../utils/emailVerification';
 
 const Verified_Email = () => {
     return (
-        <Alert status='warning' maxW={1000} className='m-auto' >
+        <Alert status='warning' maxW={1000} className='m-auto mb-2' >
             <AlertIcon />
             <Box className='w-full'>
                 <AlertTitle className='hidden md:flex'>Convalida la tua mail!</AlertTitle>

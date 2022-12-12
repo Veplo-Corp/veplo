@@ -67,9 +67,10 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
     onAuthStateChanged(auth, async (userAuth) => {
       const apolloClient = initApollo()
       if (userAuth) {
-        console.log(userAuth);
         const idToken = await userAuth.getIdToken(true)        
         setAuthTokenInLocalStorage(idToken)
+        //console.log(idToken);
+        
         const tokenResult = await userAuth.getIdTokenResult()
         // user is logged in, send the user's details to redux, store the current user in the state
         const isShop = tokenResult.claims.isShop ? true : false;
@@ -100,7 +101,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             // nextFetchPolicy: 'cache-only',
           })
 
-          console.log(data?.shopByFirebaseId?.id);
+          //console.log(data?.shopByFirebaseId?.id);
           // console.log(userAuth.uid);
           // console.log(data);
           dispatch(
