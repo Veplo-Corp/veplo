@@ -19,6 +19,7 @@ import { useRouter } from 'next/router'
 import { Firebase_User } from '../../../interfaces/firebase_user.interface'
 import Login_or_Registration from '../../../../components/organisms/Login_or_Registration'
 import SET_IS_SHOP from '../../../lib/apollo/mutations/setIsShop';
+import Loading from '../../../../components/molecules/Loading'
 
 
 
@@ -27,14 +28,14 @@ const index = () => {
   const router = useRouter()
   const { type }: any /* 'registration' | 'login' | 'reset_password' */ = router.query
   const [setIsShop] = useMutation(SET_IS_SHOP)
-
+  const [loading, setLoading] = useState(false)
   // const [showPassword, setshowPassword] = useState<boolean>(false)
   // const [email, setemail] = useState<string>('')
   // const [isValidEmail, setisValidEmail] = useState<boolean | null>(null)
   // const [isValidPassword, setisValidPassword] = useState<boolean | null>(null)
   const [typeForm, settypeForm] = useState<'registration' | 'login' | 'reset_password'>('registration')
-  const user: Firebase_User = useSelector((state:any) => state.user.user);
-  
+  const user: Firebase_User = useSelector((state: any) => state.user.user);
+
   const dispatch = useDispatch();
 
 
@@ -43,22 +44,25 @@ const index = () => {
 
     if (user && !user.Not_yet_Authenticated_Request) {
       console.log(user);
-      
-      if(typeof user.shopId === 'string'){
+
+      if (typeof user.shopId === 'string') {
         router.push('/shop/prodotti')
-      } else if(user.isShop === false) {
-        
-      } else if(user?.isShop === true) {
+      } else if (user.isShop === false) {
+
+      } else if (user?.isShop === true) {
         router.push('/shop/crea-shop')
       }
+      
     }
     if (type) {
       settypeForm(type)
+      
+
     }
 
     return () => {
       abortController.abort();
-  };
+    };
   }, [type, user])
 
 
@@ -97,19 +101,18 @@ const index = () => {
   // }
 
 
-  const handleSubmit = async (email:string, password:string) => {
-
+  const handleSubmit = async (email: string, password: string) => {
+    setLoading(true)
 
     if (typeForm === 'registration') {
       console.log('passa qui');
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         // Signed in 
-        const user = userCredential.user;
         const idToken = await userCredential.user.getIdToken(true);
         setAuthTokenInLocalStorage(idToken)
         console.log(idToken);
-        sendEmailVerificationHanlder()
+        await sendEmailVerificationHanlder()
         // dispatch(
         //   login(
         //     {
@@ -122,16 +125,17 @@ const index = () => {
         //     }
         //   )
         // );
-        
+
         await setIsShop({
           variables: {
-            isShop:true
+            isShop: true
           }
         })
+        await router.push('/shop/crea-shop')
         router.reload()
         // setemail('')
         // setpassword('')
-      } catch (error:any) {
+      } catch (error: any) {
         const errorCode = error.code;
         const errorMessage = error.message;
         //console.log(errorCode);
@@ -141,7 +145,10 @@ const index = () => {
           title: errorForModal?.title,
           description: errorForModal?.description
         }))
+        setLoading(false)
+
       }
+      setLoading(false)
     } else if (typeForm === 'login') {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
@@ -155,12 +162,12 @@ const index = () => {
           // }))
           router.push('/')
           throw new Error('auth/user-not-shop', { cause: 'err' })
-        } 
+        }
         // else {
         //   //return router.push('/shop/prodotti')
         // }
 
-      } catch (error:any) {
+      } catch (error: any) {
         const errorMessage = error.message;
         console.log(errorMessage);
         const errorForModal = handleErrorFirebase(errorMessage)
@@ -169,6 +176,8 @@ const index = () => {
           description: errorForModal?.description
         }))
         dispatch(handleOpenModal);
+        setLoading(false)
+
       }
     }
   }
@@ -271,7 +280,15 @@ const index = () => {
           </div>
         </form>
       </div> */}
-      <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm ==='login' ? 'Accedi al ' : ''}${typeForm ==='registration' ? 'Registra il ': ''}${typeForm ==='reset_password' ? 'Resetta la password del ' : ''}tuo negozio`} />
+      { loading ?
+        (
+          <Loading />
+        )
+        :
+        (
+          <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo negozio`} />
+        )
+      }
     </Desktop_Layout>
   )
 }
