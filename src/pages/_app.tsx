@@ -68,7 +68,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
       const apolloClient = initApollo()
       if (userAuth) {
         console.log(userAuth);
-        const idToken = await userAuth.getIdToken(true)
+        const idToken = await userAuth.getIdToken(true)        
         setAuthTokenInLocalStorage(idToken)
         const tokenResult = await userAuth.getIdTokenResult()
         // user is logged in, send the user's details to redux, store the current user in the state
@@ -77,9 +77,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         if (userAuth.metadata.creationTime) {
           ISODate = new Date(userAuth.metadata.creationTime)
         }
-        console.log('token: ', tokenResult);
-        console.log('userUid: ', userAuth.uid);
-        console.log('userUid: ', userAuth);
         let date_for_redux = ISODate.getDay() + '/' + (ISODate.getMonth() + 1) + '/' + ISODate.getFullYear();
         if (!isShop && userAuth.uid) {
           dispatch(

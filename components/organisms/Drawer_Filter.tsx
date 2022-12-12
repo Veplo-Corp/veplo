@@ -397,7 +397,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                     </div>
                                 </div>
                             </Box>
-                            <Box py={3} px={4} pb={2} borderBottomWidth={1} borderColor={'gray.200'}
+                            <Box py={3} px={4} pb={2} borderBottomWidth={0} borderColor={'gray.200'}
                                 marginBottom={200}
                             >
                                 <h3 className='font-bold lg:text-lg text-md mb-2'>Taglia</h3>
@@ -449,7 +449,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                     <Button w={'full'} onClick={() => { onClose() }}
                         borderRadius={0}
                         padding={7}
-                        colorScheme={'whatsapp'}
+                        colorScheme={'green'}
                         fontSize={'xl'}
                     >
                         APPLICA
