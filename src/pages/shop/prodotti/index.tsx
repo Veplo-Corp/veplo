@@ -117,6 +117,7 @@ const index = () => {
             <Desktop_Layout>
                 {user && user.emailVerified === false &&
                     <Verified_Email />
+                    
                 }
                 {user && !user.shopId && !user?.Not_yet_Authenticated_Request &&
                     <Create_Shop_Alert />
