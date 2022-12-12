@@ -18,7 +18,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                 setIsAndroid(true)
             }
         }
-        
+
 
     }, [])
 
@@ -43,7 +43,11 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
         if (indexArray === 1) {
             gender = 'uomo'
         }
-        const categorySelectedUrl = createUrlSchema([gender, catObject])
+        console.log(catObject);
+        const categoryForUrl = Object.values(categories)[indexArray].abbigliamento.find(category => category.name === catObject)?.url
+        
+        if(!categoryForUrl) return
+        const categorySelectedUrl = createUrlSchema([gender, categoryForUrl])
         router.push(`/prodotti/${address_user.city?.toLocaleLowerCase()}-${address_user.postcode}/${categorySelectedUrl}`)
         onClose()
     }
@@ -61,7 +65,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                 >
                     <DrawerCloseButton size={'lg'} mt={'0'} />
                     <DrawerHeader borderWidth={0} borderBottomWidth={1} borderColor={'gray.200'} py={'3'} px={'4'}>
-                    <p className="font-black text-2xl italic text-black-900 my-auto ">Categorie</p>
+                        <p className="font-black text-2xl italic text-black-900 my-auto ">Categorie</p>
                     </DrawerHeader>
                     <DrawerBody
                         p={0}
@@ -85,7 +89,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                                 Registra gratis la tua impresa
                             </Box>
                         </Box> */}
-                        <Input_Drawer title='Cerca negozi o vestiti' onChangeText={()=> {}}/>
+                        <Input_Drawer title='Cerca negozi o vestiti' onChangeText={() => { }} />
                         <Box
                             onClick={() => {
                                 onClose()

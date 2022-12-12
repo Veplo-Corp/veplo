@@ -13,7 +13,7 @@ import { Categories, CATEGORIES } from '../mook/categories';
 import { Color, COLORS } from '../mook/colors';
 import { Macrocategory, MACROCATEGORY } from '../mook/macrocategories';
 import { Microcategory, MICROCATEGORY } from '../mook/microcategories';
-import { man_bottom_clothes_sizes, man_top_clothes_sizes, woman_clothes_sizes } from '../mook/sizes';
+import { Sizes, SIZES } from '../mook/sizes';
 import { ToastOpen } from '../utils/Toast';
 import Drawer_Add_Image from './Drawer_Add_Image';
 import Modal_Error_Shop from './Modal_Error_Shop';
@@ -43,9 +43,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
     const colors = useRef<Color[]>(COLORS)
     const microcategories = useRef<Microcategory[]>(MICROCATEGORY)
     const categories = useRef<Categories>(CATEGORIES)
-    const ARRAY_woman_clothes_sizes = useRef<string[]>(woman_clothes_sizes)
-    const ARRAY_man_top_clothes_sizes = useRef<string[]>(man_top_clothes_sizes)
-    const ARRAY_man_bottom_clothes_sizes = useRef<string[]>(man_bottom_clothes_sizes)
+    const sizes = useRef<Sizes>(SIZES)
 
 
 
@@ -90,17 +88,8 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
     }, [watch('macrocategory')])
 
     const handleSizeType = (sizetype: string) => {
-        //* da migliorare logica
-        if (sizetype === 'woman_clothes_sizes') {
-            setSizesSelected(ARRAY_woman_clothes_sizes.current)
-        }
-        else if (sizetype === 'man_top_clothes_sizes') {
-            setSizesSelected(ARRAY_man_top_clothes_sizes.current)
-
-        }
-        else if (sizetype === 'man_bottom_clothes_sizes') {
-            setSizesSelected(ARRAY_man_bottom_clothes_sizes.current)
-        }
+        const index = Object.keys(sizes.current).indexOf(sizetype)
+        setSizesSelected((Object.values(sizes.current)[index]))
     }
 
     const onChangePrice = (e: any) => {
