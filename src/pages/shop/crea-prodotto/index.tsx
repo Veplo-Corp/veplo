@@ -16,7 +16,6 @@ import { CATEGORIES, Categories, Category } from '../../../../components/mook/ca
 import { Color, COLORS } from '../../../../components/mook/colors'
 import { MACROCATEGORY, Macrocategory } from '../../../../components/mook/macrocategories'
 import { MICROCATEGORY, Microcategory } from '../../../../components/mook/microcategories'
-import { man_bottom_clothes_sizes, man_top_clothes_sizes, woman_clothes_sizes } from '../../../../components/mook/sizes'
 import Drawer_Add_Image from '../../../../components/organisms/Drawer_Add_Image'
 import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
 import Product_Form from '../../../../components/organisms/Product_Form'

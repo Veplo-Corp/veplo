@@ -5,9 +5,9 @@ import Input_Drawer from '../atoms/Input_Drawer'
 import Select_multiple_options from '../atoms/Select_multiple_options'
 import { BRANDS } from '../mook/brands'
 import { CATEGORIES } from '../mook/categories'
-import { woman_clothes_sizes, man_bottom_clothes_sizes, man_top_clothes_sizes } from '../mook/sizes'
 import { Color, COLORS } from '../mook/colors'
 import MobileDetect from 'mobile-detect'
+import { Sizes, SIZES } from '../mook/sizes'
 
 
 const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory: string }> = ({ openDrawerMath, gender, macrocategory }) => {
@@ -22,6 +22,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
     const [sizes, setSizes] = useState<string[] | []>([])
     //padding for Mobile
     const [bottomPadding, setbottomPadding] = useState([4, 8])
+    const ContSizes = useRef<Sizes>(SIZES)
 
     const router = useRouter();
     const colors = useRef<Color[]>(COLORS)
@@ -42,19 +43,15 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
         //console.log(openDrawerMath);
         if (openDrawerMath !== 1 && openDrawerMath > 0 && openDrawerMath !== undefined) {
             onOpen()
-
             const category = Object.values(CATEGORIES)[Object.keys(CATEGORIES).indexOf(gender)]
-            const sizeType = category.abbigliamento.find(element => element.url === 'cappotti')?.sizes
-
+            console.log(macrocategory);                             
+            
+            const sizeType = category.abbigliamento.find(element => element.url === macrocategory)?.sizes
             //da migliorare
-            if (sizeType === 'woman_clothes_sizes') {
-                setSizes(woman_clothes_sizes)
-            } else if (sizeType === 'man_bottom_clothes_sizes') {
-
-            } else if (sizeType === 'man_top_clothes_sizes') {
-                setSizes(man_top_clothes_sizes)
-            }
-
+            if(!sizeType) return
+            const index = Object.keys(ContSizes.current).indexOf(sizeType)
+            setSizes(Object.values(ContSizes.current)[index])
+            
 
         }
 
@@ -70,7 +67,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                 const screenHeight = screen.availHeight;
                 setbottomPadding([screenHeight - newHeight, 20])
                 console.log([screenHeight - newHeight, 8]);
-                
+
                 const updateWindowDimensions = () => {
                     const newHeight = window.innerHeight;
                     const screenHeight = screen.availHeight;
@@ -271,7 +268,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                         <h5 className='font-medium text-sm lg:text-md mb-0'>Max</h5>
                                         <Select value={maxAmount} size={['md', 'lg']} width={'fit-content'}
                                             onChange={(event) => {
-                                                if(event.target.value === 'Max' ) return setMaxAmount('Max')
+                                                if (event.target.value === 'Max') return setMaxAmount('Max')
                                                 setMaxAmount(Number(event.target.value))
                                             }}
                                         >

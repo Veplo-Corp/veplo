@@ -18,6 +18,9 @@ export type Categories = {
 
 
 
+
+
+
 export const CATEGORIES: Categories = {
     donna: {
         abbigliamento: [
@@ -43,6 +46,16 @@ export const CATEGORIES: Categories = {
                 name: "Camicie & Bluse",
                 url: "camicie-e-bluse",
                 types: ["camicie", "camiciette", "bluse"],
+                sizes: "woman_clothes_sizes",
+            },
+            //!aggiunto costume: ["costumi"],
+            {
+                name: "Costume",
+                url: "costume",
+                types: [
+                    "Costumi interi",
+                    "Bikini"
+                ],
                 sizes: "woman_clothes_sizes",
             },
             {
@@ -102,6 +115,28 @@ export const CATEGORIES: Categories = {
                 sizes: "woman_clothes_sizes",
             },
             {
+                //!aggiunte scarpe donna
+                name: "Scarpe",
+                url: "scarpe",
+                types: [
+                    "Sneakers",
+                    "Sandali",
+                    "Scarpe piatte",
+                    "Ciabatte e zoccoli",
+                    "Scarpe con tacco",
+                    "Tacchi alti",
+                    "Ballerine",
+                    "Stivaletti",
+                    "Stivali",
+                    "Scarpe sportive",
+                    "Per il mare",
+                    "Da sposa",
+                    "Pantofole",
+                    "Scarpe da trekking",
+                    "Cura delle scarpe"],
+                sizes: "shoes_sizes",
+            },
+            {
                 name: "Shorts",
                 url: "shorts",
                 types: ["jeans", "sportivi"],
@@ -151,19 +186,30 @@ export const CATEGORIES: Categories = {
                 name: "T-shirt & Polo",
                 url: "t-shirt-e-polo",
                 types: ["basic", "stampate", "canotte", "polo", "a maniche lunghe"],
-                sizes: "man_top_clothes_sizes",
+                sizes: "man_clothes_sizes",
             },
             {
                 name: "Camicie",
                 url: "camicie",
                 types: ["casual", "eleganti"],
-                sizes: "man_top_clothes_sizes",
+                sizes: "man_clothes_sizes",
+            },
+            //!aggiunto costume: ["costumi"],
+            {
+                name: "Costume",
+                url: "costume",
+                types: [
+                    "Bermuda & Pantaloncini",
+                    "Boxer mare",
+                    "Slip"
+                ],
+                sizes: "man_clothes_sizes",
             },
             {
                 name: "Felpe & Maglieria",
                 url: "felpe-e-maglieria",
                 types: ["con il cappuccio", "felpe", "con la zip", "di pile"],
-                sizes: "man_top_clothes_sizes",
+                sizes: "man_clothes_sizes",
             },
             {
                 name: "Giacche",
@@ -178,13 +224,13 @@ export const CATEGORIES: Categories = {
                     "di pile",
                     "gilet",
                 ],
-                sizes: "man_top_clothes_sizes",
+                sizes: "man_clothes_sizes",
             },
             {
                 name: "Cappotti",
                 url: "cappotti",
                 types: ["trench", "parka", "corti", "invernali", "classici", "piumini"],
-                sizes: "man_top_clothes_sizes",
+                sizes: "man_clothes_sizes",
             },
             {
                 name: "Jeans",
@@ -197,22 +243,39 @@ export const CATEGORIES: Categories = {
                     "larghi",
                     "a zampa d'elefente",
                 ],
-                sizes: "man_bottom_clothes_sizes",
+                sizes: "man_clothes_sizes",
             },
             {
                 name: "Pantaloni",
                 url: "pantaloni",
                 types: ["chino", "classici", "tuta", "cargo", "salopette"],
-                sizes: "man_bottom_clothes_sizes",
+                sizes: "man_clothes_sizes",
+            },
+
+            {
+                name: "Scarpe",
+                url: "scarpe",
+                types: [
+                    "Sneaker",
+                    "Scarpe sportive",
+                    "Scarpe aperte",
+                    "Scarpe con i lacci",
+                    "Scarpe basse",
+                    "Scarpe eleganti",
+                    "Scarpe per outdoor",
+                    "Stivaletti/Stivali",
+                    "Pantofole",
+                    "Accessori per le scarpe",
+                ],
+                sizes: "shoes_sizes",
             },
             {
                 name: "Bermuda",
                 url: "bermuda",
                 types: ["casual", "sportivi", "cargo"],
-                sizes: "man_bottom_clothes_sizes",
+                sizes: "man_clothes_sizes",
             },
         ],
-        //costumi: ["costumi"],
-        //accessori: ["accessori"],
+
     },
 };
