@@ -78,7 +78,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         if (userAuth.metadata.creationTime) {
           ISODate = new Date(userAuth.metadata.creationTime)
         }
-        let date_for_redux = ISODate.getDay() + '/' + (ISODate.getMonth() + 1) + '/' + ISODate.getFullYear();
+        let date_for_redux = ISODate.getDate() + '/' + (ISODate.getMonth() + 1) + '/' + ISODate.getFullYear();
         if (!isShop && userAuth.uid) {
           dispatch(
             login({
@@ -87,7 +87,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               idToken: idToken,
               emailVerified: userAuth.emailVerified,
               isShop: false,
-              createdAt: date_for_redux,
+              createdAt: date_for_redux || new Date(),
               shopId: undefined
             })
           );
