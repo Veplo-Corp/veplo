@@ -46,11 +46,11 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
         if (openDrawerMath !== 1 && openDrawerMath > 0 && openDrawerMath !== undefined) {
             onOpen()
             const category = Object.values(CATEGORIES)[Object.keys(CATEGORIES).indexOf(gender)]
-            console.log(macrocategory);                             
-            
+            console.log(macrocategory);
+
             const sizeType = category.abbigliamento.find(element => element.url === macrocategory)?.sizes
             //da migliorare
-            if(!sizeType) return
+            if (!sizeType) return
             const index = Object.keys(ContSizes.current).indexOf(sizeType)
             setSizes(Object.values(ContSizes.current)[index])
         }
@@ -171,9 +171,10 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
             >
                 <DrawerCloseButton size={'lg'} mt={'0'} />
                 <DrawerHeader borderWidth={0} borderBottomWidth={1} borderColor={'gray.200'} py={'3'} px={'4'}
-                    className='flex justify-between'
+                /* className='flex justify-between' */
                 >
-                    <p className="font-black text-2xl italic text-black-900 my-auto ">{macrocategoryName}</p>
+                    <p className="font-medium text-xs md:text-sm italic text-black-900 ">{gender.charAt(0).toUpperCase() + gender.slice(1)}</p>
+                    <p className="font-black text-2xl italic text-black-900 my-auto mt-[-7px] ">{macrocategoryName}</p>
                     {/* <Button
                         colorScheme={'green'}
                         borderRadius={30}
@@ -306,10 +307,10 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
 
                                 </div> */}
                                 <h3 className='font-bold text-md lg:text-lg mb-3'>Colore
-                                {colorSelected.length > 0 && 
-                                <span className='ml-1 font-normal'>
-                                    ({colorSelected.map((value) => { return (value.name || value) }).join(', ')})
-                                    </span>}
+                                    {colorSelected.length > 0 &&
+                                        <span className='ml-1 font-normal'>
+                                            ({colorSelected.map((value) => { return (value.name || value) }).join(', ')})
+                                        </span>}
                                 </h3>
                                 <div>
                                     <div className='flex overflow-x-auto'>
