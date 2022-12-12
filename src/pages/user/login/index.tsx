@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
+import Loading from '../../../../components/molecules/Loading';
 import Login_or_Registration from '../../../../components/organisms/Login_or_Registration'
 import { handleErrorFirebase } from '../../../../components/utils/handleErrorFirebase';
 import { setAuthTokenInLocalStorage } from '../../../../components/utils/setAuthTokenInLocalStorage';
@@ -14,9 +15,9 @@ import { login } from '../../../store/reducers/user';
 const index = () => {
   const router = useRouter()
   const { type }: any /* 'registration' | 'login' | 'reset_password' */ = router.query;
-
+  const [loading, setLoading] = useState(false)
   const [typeForm, settypeForm] = useState<'registration' | 'login' | 'reset_password'>('registration')
-  const user: Firebase_User = useSelector((state:any) => state.user.user);
+  const user: Firebase_User = useSelector((state: any) => state.user.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,9 +31,11 @@ const index = () => {
     }
   }, [type])
 
-  const handleSubmit = async (email:string, password:string) => {
+  const handleSubmit = async (email: string, password: string) => {
+    setLoading(true)
+
     if (typeForm === 'registration') {
-      try {        
+      try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         // Signed in 
         const user = userCredential.user;
@@ -40,7 +43,8 @@ const index = () => {
         setAuthTokenInLocalStorage(idToken)
         console.log(user);
         return router.push('/')
-      } catch (error:any) {
+      } catch (error: any) {
+        setLoading(true)
         const errorCode = error.code;
         const errorMessage = error.message;
         //console.log(errorCode);
@@ -51,7 +55,7 @@ const index = () => {
           description: errorForModal?.description
         }))
       }
-    } else{
+    } else {
 
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
@@ -61,7 +65,8 @@ const index = () => {
         // setpassword('')
         return router.push('/')
 
-      } catch (error:any) {
+      } catch (error: any) {
+        setLoading(true)
         const errorCode = error.code;
         const errorMessage = error.message;
         //console.log(errorCode);
@@ -79,7 +84,15 @@ const index = () => {
 
   return (
     <Desktop_Layout>
-      <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm ==='login' ? 'Accedi al ' : ''}${typeForm ==='registration' ? 'Registra il ': ''}${typeForm ==='reset_password' ? 'Resetta la password del ' : ''}tuo account`} />
+      {loading ?
+        (
+          <Loading />
+        )
+        :
+        (
+          <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo account`} />
+        )
+      }
     </Desktop_Layout>
   )
 }
