@@ -52,11 +52,11 @@ const index = () => {
       } else if (user?.isShop === true) {
         router.push('/shop/crea-shop')
       }
-      
+
     }
     if (type) {
       settypeForm(type)
-      
+
 
     }
 
@@ -200,10 +200,21 @@ const index = () => {
 
 
   return (
-
-    <Desktop_Layout>
-
-      {/* <div className='flex justify-between w-full'>
+    <>
+      {
+        loading ?
+          (
+            <Loading />
+          )
+          :
+          (
+            <Desktop_Layout>
+              <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo negozio`} />
+            </Desktop_Layout>
+          )
+      }
+    </>
+      /* <div className='flex justify-between w-full'>
         <form className="p-3 space-y-4 w-full md:w-1/2" onSubmit={handleSubmit}>
           <h1 className="font-black text-xl md:text-3xl italic text-black-900  ">Iscrivi il tuo negozio</h1>
           <div>
@@ -279,18 +290,11 @@ const index = () => {
             }
           </div>
         </form>
-      </div> */}
-      { loading ?
-        (
-          <Loading />
-        )
-        :
-        (
-          <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo negozio`} />
-        )
-      }
-    </Desktop_Layout>
+      </div> */
   )
+  
+
+
 }
 
 export default index;

@@ -128,7 +128,7 @@ const Header = () => {
                 {!address_user && <Link href="/">
                     <a className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</a>
                 </Link>}
-                {(!user || !user.isShop) && address_user &&
+                {(!user || !user.Not_yet_Authenticated_Request) && !user?.isShop && address_user &&
                     <>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-6 h-6 mt-1">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -188,28 +188,25 @@ const Header = () => {
 
 
                             <div className={`hidden md:flex gap-2 fixed ${!user ? 'top-9' : 'top-2'} right-2 lg:right-8 z-10`}> {/* pr-80 */}
-                                {user && user.isShop ?
-                                    (
-                                        <button
-                                            onClick={() => {
-                                                setOpenDrawerMenu(Math.random())
-                                            }}
-                                            type="button" className="inline-flex mt-1 rounded-md px-1  active:bg-gray-100 focus:outline-none" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                                            </svg>
-                                        </button>
-                                    )
-                                    :
-                                    (
-                                        <>
-                                            <Input_Search_Item />
-                                            <div className='mt-1' onClick={() => { router.push('/') }}>
-                                                <Circle_Color colors={['gray.200']} dimension={8} space={0} />
-                                            </div>
-                                            <User_Popover />
-                                        </>
-                                    )
+                                {(!user || !user.Not_yet_Authenticated_Request) && !user?.isShop && address_user &&
+                                    <>
+                                        <Input_Search_Item />
+                                        <div className='mt-1' onClick={() => { router.push('/') }}>
+                                            <Circle_Color colors={['gray.200']} dimension={8} space={0} />
+                                        </div>
+                                        <User_Popover />
+                                    </>
+                                }
+                                {user && user.isShop &&
+                                    <button
+                                        onClick={() => {
+                                            setOpenDrawerMenu(Math.random())
+                                        }}
+                                        type="button" className="inline-flex mt-1 rounded-md px-1  active:bg-gray-100 focus:outline-none" aria-expanded="false">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                        </svg>
+                                    </button>
                                 }
                             </div>
                         </div>

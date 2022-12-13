@@ -69,8 +69,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
       if (userAuth) {
         const idToken = await userAuth.getIdToken(true)        
         setAuthTokenInLocalStorage(idToken)
-        //console.log(idToken);
-        
         const tokenResult = await userAuth.getIdTokenResult()
         // user is logged in, send the user's details to redux, store the current user in the state
         const isShop = tokenResult.claims.isShop ? true : false;
