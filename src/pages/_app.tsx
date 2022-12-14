@@ -22,7 +22,7 @@ import GET_SHOP_BY_FIREBASE_ID from '../lib/apollo/queries/getShopByFirebaseId'
 import Router from "next/router";
 import { Firebase_User } from '../interfaces/firebase_user.interface'
 import Loading from '../../components/molecules/Loading'
-import { getAnalytics, logEvent } from "firebase/analytics";
+import { getAnalytics, logEvent, setUserId, setUserProperties } from "firebase/analytics";
 
 const theme = extendTheme({
   colors: {
@@ -68,6 +68,8 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
     onAuthStateChanged(auth, async (userAuth) => {
       const apolloClient = initApollo()
       if (userAuth) {
+        setUserId(analytics, userAuth.uid);
+        setUserProperties(analytics, { favorite_food: 'apples' });
         const idToken = await userAuth.getIdToken(true)
         setAuthTokenInLocalStorage(idToken)
         const tokenResult = await userAuth.getIdTokenResult()
@@ -100,11 +102,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             // nextFetchPolicy: 'cache-only',
           })
 
-          
-
-          //console.log(data?.shopByFirebaseId?.id);
-          // console.log(userAuth.uid);
-          // console.log(data);
           dispatch(
             login({
               email: userAuth.email,
@@ -147,7 +144,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
   const [loading, setLoading] = useState(false);
   const router = useRouter()
   useEffect(() => {
-
+      
 
 
     const start = () => {
@@ -181,14 +178,18 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
           firebase_screen: url,
           firebase_screen_class: url
         });
+        logEvent(analytics, 'select_content', {
+          content_type: 'image',
+          content_id: 'P12453'
+        });
       };
+      
 
       return () => {
         router.events.off('routeChangeComplete', EventLog);
       };
     }
   }, []);
-  console.log(process.env.NODE_ENV);
 
 
 
