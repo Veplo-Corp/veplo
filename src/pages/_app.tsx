@@ -140,7 +140,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
 
 
-function MyApp({ Component, pageProps }: any /* AppProps */) {
+function MyApp({ Component, pageProps }: any /* AppProps */) {  
   const [loading, setLoading] = useState(false);
   const router = useRouter()
   useEffect(() => {
