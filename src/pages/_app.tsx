@@ -8,7 +8,7 @@ import { extendTheme } from "@chakra-ui/react"
 import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from '../store/store'
 import { useEffect, useState } from 'react'
-import { auth, onAuthStateChanged, signOut } from '../config/firebase'
+import { analytics, auth, onAuthStateChanged, signOut } from '../config/firebase'
 import user, { login, logout } from '../store/reducers/user'
 import { setAddress } from '../store/reducers/address_user'
 import { useRouter } from 'next/router'
@@ -67,7 +67,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
     onAuthStateChanged(auth, async (userAuth) => {
       const apolloClient = initApollo()
       if (userAuth) {
-        const idToken = await userAuth.getIdToken(true)        
+        const idToken = await userAuth.getIdToken(true)
         setAuthTokenInLocalStorage(idToken)
         const tokenResult = await userAuth.getIdTokenResult()
         // user is logged in, send the user's details to redux, store the current user in the state
@@ -113,9 +113,9 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               shopId: data?.shopByFirebaseId?.id || null
             })
           );
-            // if(!data?.shopByFirebaseId?.id){
-            //   router.push('/shop/crea-shop')
-            // }
+          // if(!data?.shopByFirebaseId?.id){
+          //   router.push('/shop/crea-shop')
+          // }
         }
       } else {
         console.log('effettua il logout');
@@ -123,7 +123,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         return dispatch(logout())
 
       }
-      return 
+      return
     });
   }, []);
 
@@ -142,8 +142,11 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
 function MyApp({ Component, pageProps }: any /* AppProps */) {
   const [loading, setLoading] = useState(false);
-
+  const router = useRouter()
   useEffect(() => {
+
+
+
     const start = () => {
       console.log("start");
       setLoading(true);
@@ -162,7 +165,25 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
     };
   }, []);
 
-  
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production') {
+      const logEvent = (url:string) => {
+        analytics().setCurrentScreen(url);
+        analytics().logEvent('screen_view');
+      };
+
+      router.events.on('routeChangeComplete', logEvent);
+      //For First Page
+      logEvent(window.location.pathname);
+
+      //Remvove Event Listener after un-mount
+      return () => {
+        router.events.off('routeChangeComplete', logEvent);
+      };
+    }
+  }, []);
+  console.log(process.env.NODE_ENV);
+
 
 
   const apolloClient = useApollo(pageProps.initialApolloState)
