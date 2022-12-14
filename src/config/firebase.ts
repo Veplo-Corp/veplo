@@ -1,15 +1,16 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { getStorage } from "firebase/storage";
+import { getAnalytics } from "firebase/analytics";
 
-import { 
-    getAuth, 
-    createUserWithEmailAndPassword, 
-    onAuthStateChanged, 
-    signInWithEmailAndPassword, 
-    signOut,
-    sendPasswordResetEmail
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  sendPasswordResetEmail
 } from 'firebase/auth';
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -30,8 +31,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-//const app = initializeApp(firebaseConfig);
-//const analytics = getAnalytics(app);
+
+
 
 // Initialize Cloud Storage and get a reference to the service
 const storage = getStorage(app);
@@ -39,14 +40,20 @@ const storage = getStorage(app);
 //init services
 const auth = getAuth();
 auth.languageCode = 'it';
+let analytics:any = () => {};
+// Initialize Analytics and get a reference to the service
+if (typeof window !== 'undefined') {
+  analytics = getAnalytics(app);
+}
 
 
 export {
-auth,
-createUserWithEmailAndPassword,
-onAuthStateChanged,
-signInWithEmailAndPassword,
-signOut,
-sendPasswordResetEmail,
-storage
+  auth,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  sendPasswordResetEmail,
+  storage,
+  analytics
 }
