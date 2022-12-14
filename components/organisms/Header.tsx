@@ -160,11 +160,11 @@ const Header = () => {
                                 enterFrom="opacity-0"
                                 enterTo="opacity-100"
                             >
-                                <div className="  w-full md:hidden mt-1">
+                                {(!user || !user?.isShop) && <div className="  w-full md:hidden mt-1">
                                     <Link href="/" >
                                         <a className="font-black ml-5 text-2xl italic text-black-900  ">DINTORNI</a>
                                     </Link>
-                                </div>
+                                </div>}
                                 {/* button for Mobile */}
                                 {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) &&
                                     <div className={`pl-2 md:pl-8 fixed z-50 top-3 md:top-4 right-2 md:hidden`}>
