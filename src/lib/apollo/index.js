@@ -18,6 +18,7 @@ function createApolloClient() {
     // Declare variable to store authToken
     let authorization_token;
 
+    
     const httpLink = createHttpLink({
         uri: process.env.NEXT_PUBLIC_APOLLO_URI ,
         credentials: 'same-origin',
