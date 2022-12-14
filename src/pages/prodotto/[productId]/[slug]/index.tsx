@@ -235,7 +235,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                                             className={`cursor-pointerw-32 lg:w-40`}
                                             onClick={() => toProduct(element)}
                                         >
-                                            <Image className='hover:scale-105' src={element.photos[0]} alt={'immagine non trovata'} />
+                                            <Image className='hover:scale-105 w-full aspect-[8/12] object-cover' src={element.photos[0]} alt={'immagine non trovata'} />
                                         </Box>
                                     </div>)
 

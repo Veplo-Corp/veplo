@@ -79,6 +79,8 @@ const Image_Product: React.FC<{product:Product | undefined}> = ({product}) => {
                                             <TransformComponent
                                             >
                                                 <Image
+                                                    height={'full'}
+                                                    width={'full'}
                                                     /* onClick={onClickImageModal} */
                                                     src={fullImage} alt={'immagine non trovata'} />
                                             </TransformComponent>
@@ -132,11 +134,11 @@ const Image_Product: React.FC<{product:Product | undefined}> = ({product}) => {
                                     <TransformComponent
                                     >
                                         {/* <Image borderRadius={'lg'} src={fullImage} alt='immagine non trovata' /> */}
-                                        <LazyLoadImage src={fullImage}
+                                        <LazyLoadImage src={fullImage}                                            
                                             //PlaceholderSrc={PlaceholderImage}
                                             effect="blur"
                                             alt="Image Alt"
-                                            className='rounded-lg'
+                                            className='rounded-lg w-full aspect-[8/12] object-cover	'
                                         />
                                     </TransformComponent>
                                 </div>
