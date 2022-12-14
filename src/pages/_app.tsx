@@ -22,6 +22,7 @@ import GET_SHOP_BY_FIREBASE_ID from '../lib/apollo/queries/getShopByFirebaseId'
 import Router from "next/router";
 import { Firebase_User } from '../interfaces/firebase_user.interface'
 import Loading from '../../components/molecules/Loading'
+import { getAnalytics, logEvent } from "firebase/analytics";
 
 const theme = extendTheme({
   colors: {
@@ -167,18 +168,18 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') {
-      const logEvent = (url:string) => {
-        analytics().setCurrentScreen(url);
-        analytics().logEvent('screen_view');
+      const analytics = getAnalytics();
+
+      const EventLog = (url: string) => {
+        logEvent(analytics, 'notification_received');
+        logEvent(analytics, 'screen_view', {
+          firebase_screen: url,
+          firebase_screen_class: url
+        });
       };
 
-      router.events.on('routeChangeComplete', logEvent);
-      //For First Page
-      logEvent(window.location.pathname);
-
-      //Remvove Event Listener after un-mount
       return () => {
-        router.events.off('routeChangeComplete', logEvent);
+        router.events.off('routeChangeComplete', EventLog);
       };
     }
   }, []);
