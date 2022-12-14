@@ -192,7 +192,7 @@ const Header = () => {
 
 
                             <div className={`hidden md:flex gap-2 fixed ${!user ? 'top-9' : 'top-2'} right-2 lg:right-8 z-10`}> {/* pr-80 */}
-                                {(!user || !user.Not_yet_Authenticated_Request) && !user?.isShop && address_user &&
+                                {(!user || !user.Not_yet_Authenticated_Request) && !user?.isShop &&
                                     <>
                                         <Input_Search_Item />
                                         <div className='mt-1' onClick={() => { router.push('/') }}>
