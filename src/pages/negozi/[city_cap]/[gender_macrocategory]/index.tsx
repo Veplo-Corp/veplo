@@ -27,7 +27,8 @@ export async function getStaticProps(ctx:any) {
             postcode: CITY_CAP.postcode,
             gender: GENDER_MACROCATEGORY.gender,
             macrocategory: GENDER_MACROCATEGORY.macrocategory
-        }
+        },
+        revalidate: 60, // In seconds
     }
 }
 

@@ -18,8 +18,9 @@ function createApolloClient() {
     // Declare variable to store authToken
     let authorization_token;
 
+    const uri = process.env.APOLLO_URI
     const httpLink = createHttpLink({
-        uri: process.env.APOLLO_URI,
+        uri: uri /* || 'https://api.theblackbird.it/graphql' */,
         credentials: 'same-origin',
     });
 

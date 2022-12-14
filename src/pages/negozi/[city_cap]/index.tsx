@@ -33,7 +33,8 @@ export async function getStaticProps(ctx:any) {
             city: element.city,
             postcode: element.postcode,
             shops: [data.shop]
-        }
+        },
+        revalidate: 60, // In seconds
     }
 }
 
