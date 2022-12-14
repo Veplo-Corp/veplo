@@ -117,7 +117,10 @@ const Header = () => {
                     onClick={() => {
                         setOpenDrawerMenu(Math.random())
                     }}
-                    type="button" className="inline-flex mt-0.5 rounded-md px-1  active:bg-gray-100 focus:outline-none" aria-expanded="false">
+
+                    type="button"
+                    aria-label="menu"
+                    className="inline-flex mt-0.5 rounded-md px-1  active:bg-gray-100 focus:outline-none" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                     </svg>
@@ -171,6 +174,7 @@ const Header = () => {
                                         {/* searchButton */}
                                         <div className='flex gap-0.5'>
                                             <button
+                                                aria-label="search"
                                                 onClick={searchCategory}
                                                 type="button" className="inline-flex m-auto mb-2 rounded-md px-1 active:bg-gray-100 focus:outline-none" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
@@ -202,6 +206,7 @@ const Header = () => {
                                         onClick={() => {
                                             setOpenDrawerMenu(Math.random())
                                         }}
+                                        aria-label="menu"
                                         type="button" className="inline-flex mt-1 rounded-md px-1  active:bg-gray-100 focus:outline-none" aria-expanded="false">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
