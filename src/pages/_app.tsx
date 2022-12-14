@@ -169,8 +169,11 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') {
       const analytics = getAnalytics();
-
+      console.log(process.env.NODE_ENV );
+      
       const EventLog = (url: string) => {
+        console.log(url);
+        
         logEvent(analytics, 'notification_received');
         logEvent(analytics, 'screen_view', {
           firebase_screen: url,
