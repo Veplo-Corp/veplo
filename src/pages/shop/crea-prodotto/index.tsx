@@ -23,6 +23,7 @@ import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required'
 import { ToastOpen } from '../../../../components/utils/Toast'
 import uploadPhotoFirebase from '../../../../components/utils/uploadPhotoFirebase'
 import { Firebase_User } from '../../../interfaces/firebase_user.interface'
+import { Shop } from '../../../interfaces/shop.interface'
 import { initApollo } from '../../../lib/apollo'
 import CREATE_PRODUCT from '../../../lib/apollo/mutations/createProduct'
 import EDIT_PRODUCT from '../../../lib/apollo/mutations/editProduct'
@@ -62,6 +63,17 @@ const index = () => {
     // pollInterval: 500,
     // notifyOnNetworkStatusChange: true,
   });
+
+  const Shop: Shop = useQuery(GET_SHOP_BY_FIREBASE_ID, {
+    fetchPolicy: 'cache-only',
+    nextFetchPolicy: 'cache-only',
+    variables: { firebaseId: user.uid },
+  }).data?.shopByFirebaseId;
+
+  
+
+
+
   
   
   //redirect to createShop,whether there is not a Shop
@@ -89,8 +101,6 @@ const index = () => {
     setLoading(true)
 
 
-
-
     try {
       if (photos.length < 2) {
         throw new Error('poche immagini')
@@ -109,11 +119,10 @@ const index = () => {
           description: "Impossibile creare il prodotto. Controlla di aver inserito tutti dati in maniera corretta"
         }))
         return setOpenModalMath(Math.random())
-
       }
 
-      let Product = {
-        name,
+      const Product = {
+        name: name,
         price: priceToDB,
         colors: colorsToDB,
         sizes: sizes,
@@ -123,9 +132,7 @@ const index = () => {
         brand: brand,
         photos: [''],
       }
-
-      console.log(Product);
-
+      
       const isCreatedProduct = await createProduct({ variables: { shopId: user.shopId, options: Product } })
       //* alert to show product creation process OK!
       //upload Images to database
@@ -159,19 +166,22 @@ const index = () => {
         id: productId,
         shopId: user.shopId,
         firebaseShopId: user.uid,
-        updatedAt: 'ora',
+        updatedAt: 'right now',
         location: {
           type: 'Points',
           coordinates: [1, 1],
           __typename: 'Location'
         },
         shop: {
-          city: "Terni",
-          name: "Sartoria Rizzo Merlini",
+          city: Shop.address.city,
+          name: Shop.name,
           __typename: "Lightshop",
         },
         __typename: 'Product'
       }
+
+      console.log(prodoctForGQLCache);
+      
 
       const { shop } = apolloClient.readQuery({
         query: GET_PRODUCTS_FROM_SHOP,
