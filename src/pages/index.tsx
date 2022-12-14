@@ -13,7 +13,8 @@ const Home: NextPage = () => {
   const ARRAY_CITY = ['Terni', 'Rieti', 'Perugia'];
   /* drawer */
   const [openDrawer, setopenDrawer] = useState(1)
-
+  console.log(process.env);
+  
 
 
   return (

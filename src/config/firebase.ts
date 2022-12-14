@@ -18,8 +18,22 @@ import {
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDs607C9zpuZjhM9H9lA48QRkFX4nZwi9o",
+// const firebaseConfigNotReal  =  {
+//   apiKey: process.env.FIREBASE_API,
+//   authDomain: process.env.FIREBASE_AUTHDOMAIN,
+//   projectId: process.env.FIREBASE_PROJECTID,
+//   storageBucket: process.env.FIREBASE_STRORAGE_BUCKET,
+//   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+//   appId: process.env.FIREBASE_APPID,
+//   measurementId: process.env.FIREBASE_MEASUREMENTID
+// } 
+
+// console.log(firebaseConfigNotReal);
+
+const api = process.env.FIREBASE_API
+
+let firebaseConfig = {
+  apiKey: 'AIzaSyDs607C9zpuZjhM9H9lA48QRkFX4nZwi9o',
   authDomain: "dintorni-dev.firebaseapp.com",
   projectId: "dintorni-dev",
   storageBucket: "dintorni-dev.appspot.com",
@@ -27,6 +41,21 @@ const firebaseConfig = {
   appId: "1:519973926988:web:8570da91f33a1b6b2d9ce9",
   measurementId: "G-FJ9863RJ7L"
 };
+
+if (process.env.NODE_ENV === 'production') {
+  firebaseConfig = {
+    apiKey: 'AIzaSyDs607C9zpuZjhM9H9lA48QRkFX4nZwi9o',
+    authDomain: "dintorni-dev.firebaseapp.com",
+    projectId: "dintorni-dev",
+    storageBucket: "dintorni-dev.appspot.com",
+    messagingSenderId: "519973926988",
+    appId: "1:519973926988:web:8570da91f33a1b6b2d9ce9",
+    measurementId: "G-FJ9863RJ7L"
+  };
+}
+
+
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -40,7 +69,7 @@ const storage = getStorage(app);
 //init services
 const auth = getAuth();
 auth.languageCode = 'it';
-let analytics:any = () => {};
+let analytics: any = () => { };
 // Initialize Analytics and get a reference to the service
 if (typeof window !== 'undefined') {
   analytics = getAnalytics(app);

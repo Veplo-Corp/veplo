@@ -9,7 +9,7 @@ export default async function handler(
     res: NextApiResponse<any>
 ) {
     const search_text = req.query.search_text
-    const uri_mapbox = 'pk.eyJ1Ijoibmljb2xvbGVnYWN5IiwiYSI6ImNsOWVkaGsxZzFzdjEzd3A4eGlubDdnZ3cifQ.G9KaZlNas4WvUgnZiL-d7w';
+    const uri_mapbox = process.env.MAPBOX_API;
     const endpoint = 'mapbox.place';
     let types = ['address', 'place'];
     let center = ['12.645330', '42.562490']

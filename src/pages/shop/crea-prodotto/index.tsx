@@ -59,7 +59,7 @@ const index = () => {
   const { error, data, refetch } = useQuery(GET_PRODUCTS_FROM_SHOP, {
     fetchPolicy: 'cache-first',
     nextFetchPolicy: 'cache-first',
-    variables: { id: user?.shopId },
+    variables: { id: (user?.shopId || '') },
     // pollInterval: 500,
     // notifyOnNetworkStatusChange: true,
   });
@@ -67,7 +67,7 @@ const index = () => {
   const Shop: Shop = useQuery(GET_SHOP_BY_FIREBASE_ID, {
     fetchPolicy: 'cache-only',
     nextFetchPolicy: 'cache-only',
-    variables: { firebaseId: user.uid },
+    variables: { firebaseId: (user?.uid || '' ) },
   }).data?.shopByFirebaseId;
 
   

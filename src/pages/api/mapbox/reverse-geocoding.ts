@@ -8,7 +8,7 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<any>
 ) {
-    const uri_mapbox = 'pk.eyJ1Ijoibmljb2xvbGVnYWN5IiwiYSI6ImNsOWVkaGsxZzFzdjEzd3A4eGlubDdnZ3cifQ.G9KaZlNas4WvUgnZiL-d7w';
+    const uri_mapbox = process.env.MAPBOX_API; 
     const endpoint = 'mapbox.place';
     const types = ['postcode', 'poi', 'place']
     const longitude = '12.632041'

@@ -5,6 +5,7 @@ import {
 } from '@apollo/client'
 
 import { setContext } from '@apollo/client/link/context';
+import { env } from "process";
 
 
 
@@ -18,7 +19,7 @@ function createApolloClient() {
     let authorization_token;
 
     const httpLink = createHttpLink({
-        uri: 'https://api.theblackbird.it/graphql',
+        uri: process.env.APOLLO_URI,
         credentials: 'same-origin',
     });
 
