@@ -17,23 +17,21 @@ import {
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// const firebaseConfigNotReal  =  {
-//   apiKey: process.env.FIREBASE_API,
-//   authDomain: process.env.FIREBASE_AUTHDOMAIN,
-//   projectId: process.env.FIREBASE_PROJECTID,
-//   storageBucket: process.env.FIREBASE_STRORAGE_BUCKET,
-//   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-//   appId: process.env.FIREBASE_APPID,
-//   measurementId: process.env.FIREBASE_MEASUREMENTID
+
+
+// const firebaseConfig  =  {
+//   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API,
+//   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTHDOMAIN,
+//   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECTID,
+//   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STRORAGE_BUCKET,
+//   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+//   appId: process.env.NEXT_PUBLIC_FIREBASE_APPID,
+//   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENTID
 // } 
 
-// console.log(firebaseConfigNotReal);
-
-const api = process.env.FIREBASE_API
 
 let firebaseConfig = {
-  apiKey: 'AIzaSyDs607C9zpuZjhM9H9lA48QRkFX4nZwi9o',
+  apiKey:  'AIzaSyDs607C9zpuZjhM9H9lA48QRkFX4nZwi9o',
   authDomain: "dintorni-dev.firebaseapp.com",
   projectId: "dintorni-dev",
   storageBucket: "dintorni-dev.appspot.com",
