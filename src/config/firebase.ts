@@ -31,7 +31,7 @@ import {
 
 
 let firebaseConfig = {
-  apiKey:  process.env.NEXT_PUBLIC_FIREBASE_APIKEY ||'AIzaSyDs607C9zpuZjhM9H9lA48QRkFX4nZwi9o',
+  apiKey:  'AIzaSyDs607C9zpuZjhM9H9lA48QRkFX4nZwi9o',
   authDomain: "dintorni-dev.firebaseapp.com",
   projectId: "dintorni-dev",
   storageBucket: "dintorni-dev.appspot.com",
