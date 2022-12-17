@@ -1,4 +1,4 @@
-import { Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, Center, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, useDisclosure } from '@chakra-ui/react'
 import { signOut } from 'firebase/auth'
 import React, { useEffect, useState } from 'react'
 import { auth } from '../../src/config/firebase'
@@ -20,7 +20,6 @@ const list = [
 
 const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: any }> = ({ openDrawerMath, user, onCloseModal }) => {
     const router = useRouter()
-    const [bottomPadding, setbottomPadding] = useState(25)
     const { isOpen, onOpen, onClose } = useDisclosure()
     useEffect(() => {
         //console.log('openDrawerMath:',openDrawerMath);
@@ -38,29 +37,7 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
         onClose()
     }
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            let type = new MobileDetect(window.navigator.userAgent)
-            //console.log(type);            
-            if (type.os() === "AndroidOS" || type.os() === 'iOS') {
-                const newHeight = window.innerHeight;
-                const screenHeight = screen.availHeight;
 
-                setbottomPadding(screenHeight - newHeight - (type.os() === 'iOS' ? 60 : 40))
-                const updateWindowDimensions = () => {
-                    const newHeight = window.innerHeight;
-                    const screenHeight = screen.availHeight;
-                    console.log(newHeight);
-                    console.log(screenHeight);
-                    console.log(screenHeight - newHeight);
-                    setbottomPadding(screenHeight - newHeight - (type.os() === 'iOS' ? 60 : 40))
-                    console.log("updating height");
-                };
-                window.addEventListener("resize", updateWindowDimensions);
-                return () => window.removeEventListener("resize", updateWindowDimensions)
-            }
-        }
-    }, []);
 
 
     return (
@@ -79,7 +56,7 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                 <DrawerHeader borderWidth={0} borderBottomWidth={1} borderColor={'gray.200'} py={'3'} px={4}>Menu</DrawerHeader>
                 <DrawerBody px={4} py={3}>
                     <Box maxW='sm' overflow='hidden'>
-                        
+
 
                         <Tooltip label={!user.emailVerified ? 'email non verificata' : 'email verificata'}>
                             <Box
@@ -135,10 +112,18 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                     </Box>
 
                 </DrawerBody>
-                <DrawerFooter paddingBottom={`${bottomPadding}px`}>
-                    <Button w={'full'} onClick={logout}>
-                        Disconnetti Account
-                    </Button>
+                <DrawerFooter
+                    position={'absolute'}
+                    className='bottom-0'
+                    padding={0}
+                    width={'full'}
+                >
+                    <Center width={'full'} >
+                        <Button className='w-11/12 mb-4' onClick={logout}>
+                            Disconnetti Account
+                        </Button>
+                    </Center>
+
                 </DrawerFooter>
 
             </DrawerContent>
