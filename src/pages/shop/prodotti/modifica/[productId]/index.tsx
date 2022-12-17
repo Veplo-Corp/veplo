@@ -84,8 +84,9 @@ const index = () => {
             if (!priceToDB || priceToDB <= 0.01) {
                 dispatch(setModalTitleAndDescription({
                     title: 'Manca qualcosa',
-                    description: "Impossibile creare il prodotto. Controlla di aver inserito tutti dati in maniera corretta"
+                    description: "Impossibile creare il prodotto. Controlla di aver inserito tutti i dati in maniera corretta"
                 }))
+                setLoading(false)
                 return setOpenModalMath(Math.random())
             }
         }
@@ -154,11 +155,15 @@ const index = () => {
                 },
                 broadcast: false // Include this to prevent automatic query refresh
             });
-            router.push('/shop/prodotti')
+            
             addToast({ position: 'top', title: 'Prodotto aggiornato con successo', description: `${options.name.toUpperCase()} è stato aggiornato con successo. Controla nella sezione dedicata`, status: 'success', duration: 5000, isClosable: true })
 
-        } catch (e) {            
-            addToast({ position: 'top', title: 'Impossibile aggiornare il prodotto', description: "c'è stato un errore durante l'aggiornamento del prodotto, riprova più tardi", status: 'error', duration: 5000, isClosable: true })
+        } catch (e) { 
+            if(e?.message === "you didn't edit any fields"){
+
+            } else {
+                addToast({ position: 'top', title: 'Impossibile aggiornare il prodotto', description: "c'è stato un errore durante l'aggiornamento del prodotto, riprova più tardi", status: 'error', duration: 5000, isClosable: true })
+            }
         }
 
         setLoading(false)
