@@ -158,7 +158,8 @@ const index = () => {
             
             addToast({ position: 'top', title: 'Prodotto aggiornato con successo', description: `${options.name.toUpperCase()} è stato aggiornato con successo. Controla nella sezione dedicata`, status: 'success', duration: 5000, isClosable: true })
 
-        } catch (e) { 
+        } catch (e:any) { 
+
             console.log(e?.message);
             
             if(e?.message === "you didn't edit any fields"){
