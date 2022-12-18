@@ -28,11 +28,6 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
         defaultValues: defaultValues
     });
 
-
-
-
-
-
     //* create product form
     const [microcategorySelected, setMicrocategorySelected] = useState<Microcategory>();
     const [sizesSelected, setSizesSelected] = useState<string[]>();
@@ -45,10 +40,10 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
     const categories = useRef<Categories>(CATEGORIES)
     const sizes = useRef<Sizes>(SIZES)
 
-
-
     useEffect(() => {
         if (type === 'edit') {
+            console.log(watch('sizes'));
+            
             if (watch('gender') === 'F') {
                 const sizetype = categories.current.donna.abbigliamento.filter(category => category.name === watch('macrocategory'))[0].sizes;
                 console.log(sizetype);
@@ -56,23 +51,22 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
             } else if (watch('gender') === 'M') {
                 const sizetype = categories.current.uomo.abbigliamento.filter(category => category.name === watch('macrocategory'))[0].sizes;
                 console.log(sizetype);
+                
                 handleSizeType(sizetype)
             }
         }
 
 
         if (type !== 'edit') {
-
-
+            console.log(watch('sizes'));
+            
             const product_macrocategory = watch('macrocategory')
 
             if (!product_macrocategory) {
-
                 setMicrocategorySelected(undefined);
-                setSizesSelected(undefined)
+                setSizesSelected(undefined);
                 return
             }
-
             if (product_macrocategory.sizes.split('_')[0] === 'man') {
                 setValue('gender', 'M');
             } else if (product_macrocategory.sizes.split('_')[0] === 'woman') {
@@ -80,16 +74,17 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
             }
             setMicrocategorySelected(watch('macrocategory').types)
 
-            //* da migliorare logica
             handleSizeType(watch('macrocategory').sizes)
         }
-
 
     }, [watch('macrocategory')])
 
     const handleSizeType = (sizetype: string) => {
         const index = Object.keys(sizes.current).indexOf(sizetype)
         setSizesSelected((Object.values(sizes.current)[index]))
+        if(type !== 'edit'){
+            setValue('sizes', []);
+        }
     }
 
     const onChangePrice = (e: any) => {
@@ -113,8 +108,8 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
 
     }
 
-    const submitData = (e: any) => {        
-        if(loading)return        
+    const submitData = (e: any) => {
+        if (loading) return
         handleSubmitEvent(e)
     }
 
@@ -215,8 +210,6 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                         selectedValueBefore={watch('microcategory')}
                                         type={'microcategory'}
                                         handleClick={(microCategory: any) => {
-                                            console.log(microCategory);
-
                                             setValue('microcategory', microCategory);
                                         }}
                                     />
@@ -282,7 +275,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                     <CircularProgress
                                         size='25px'
                                         isIndeterminate color='black'
-                                        />
+                                    />
                                 }
                                 borderRadius={10}
                                 size={'sm'}
