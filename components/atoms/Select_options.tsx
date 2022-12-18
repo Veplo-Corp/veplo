@@ -3,8 +3,7 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import { Macrocategory } from '../mook/macrocategories'
-import { Categories, Category } from '../mook/categories'
+import {CATEGORIES } from '../mook/categories'
 
 
 
@@ -26,7 +25,7 @@ const Select_options: React.FC<{ values: any , handleClick?: any, type: string, 
         } else if (values) {
             setIsListboxDisabled(false)
         }
-        if (type === 'microcategory' && !selectedValueBefore) {
+        if (type === 'microcategory' && selectedValueBefore) {    
             setSelected(undefined)
         }
     }, [values])

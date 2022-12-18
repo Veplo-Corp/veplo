@@ -23,7 +23,7 @@ import { Day } from '../mook/days'
 
 
 const Select_multiple_options: React.FC<{ values: any, type: string, handleChangeState?: any, selectedValueBefore?: any }> = ({ values, type, handleChangeState, selectedValueBefore }) => {
-    const [selectedValue, setSelectedValue] = useState<Color[]>([])
+    const [selectedValue, setSelectedValue] = useState<any[]>([])
     const [isListboxDisabled, setIsListboxDisabled] = useState(false)
 
     
@@ -31,7 +31,8 @@ const Select_multiple_options: React.FC<{ values: any, type: string, handleChang
 
 
     useEffect(() => {
-
+        console.log('type', type ,selectedValueBefore);
+        
         if (values === undefined) {
             setIsListboxDisabled(true)
         } else if (values) {
@@ -40,11 +41,11 @@ const Select_multiple_options: React.FC<{ values: any, type: string, handleChang
         }
         if (type === 'size' && !selectedValueBefore) {
             console.log(values);
-            
             setSelectedValue([])
         }
 
-        if(selectedValueBefore){
+        if(selectedValueBefore){    
+                    
             if (type == 'color') {
                 let productColors = [];
                 for (let i = 0; i < selectedValueBefore.length; i++) {
@@ -52,7 +53,8 @@ const Select_multiple_options: React.FC<{ values: any, type: string, handleChang
                     productColors.push(values[index])
                 }
                 setSelectedValue(productColors)
-            } if (type == 'size'){
+            } 
+            if (type == 'size'){                
                 setSelectedValue(selectedValueBefore)                
             }
         }
