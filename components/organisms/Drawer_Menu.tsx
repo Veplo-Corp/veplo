@@ -44,7 +44,7 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
         <Drawer
             isOpen={isOpen}
             placement='right'
-            size={['full', 'sm']}
+            size={['xs', 'sm']}
             onClose={() => {
                 onClose()
                 onCloseModal()
@@ -119,11 +119,11 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                     padding={0}
                     width={'full'}
                 >
-                    <Center width={'full'} >
-                        <Button className='w-11/12 mb-4' onClick={logout}>
+                        <Button
+                        
+                        className='w-11/12 m-auto mb-4 ' onClick={logout}>
                             Disconnetti Account
                         </Button>
-                    </Center>
                 </DrawerFooter>
             </DrawerContent>
         </Drawer >
