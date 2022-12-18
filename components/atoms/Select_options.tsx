@@ -25,8 +25,13 @@ const Select_options: React.FC<{ values: any , handleClick?: any, type: string, 
         } else if (values) {
             setIsListboxDisabled(false)
         }
-        if (type === 'microcategory' && selectedValueBefore) {    
-            setSelected(undefined)
+        if (type === 'microcategory' && selectedValueBefore) {   
+            console.log(values);
+            console.log(selectedValueBefore);
+            if(!values.find((value: string) => value === selectedValueBefore)){
+                setSelected(undefined)
+            }
+            
         }
     }, [values])
 
