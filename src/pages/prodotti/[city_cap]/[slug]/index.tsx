@@ -1,5 +1,5 @@
 import Router, { useRouter } from 'next/router'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout'
 import DintorniLogo_Below_Header from '../../../../../components/molecules/DintorniLogo_Below_Header'
 import Box_Dress from '../../../../../components/molecules/Box_Dress'
@@ -15,6 +15,9 @@ import { initApollo } from '../../../../lib/apollo'
 import { Color, COLORS } from '../../../../../components/mook/colors'
 import { toProductPage } from '../../../../../components/utils/toProductPage'
 import FIlter_Button from '../../../../../components/molecules/FIlter_Button'
+import InfiniteScroll from 'react-infinite-scroll-component';
+import Loading from '../../../../../components/molecules/Loading'
+import { Center, CircularProgress, Spinner, Text } from '@chakra-ui/react'
 
 
 type Router = {
@@ -69,14 +72,8 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   const router = useRouter();
   const colors = useRef<Color[]>(COLORS);
 
-  useEffect(() => {
-    if (gender === null) {
-      router.push('/')
-    }
-
-
-
-  }, [])
+  const [hasMoreData, setHasMoreData] = useState(true)
+  const [productsFounded, setproductsFounded] = useState<Product[]>(products)
 
 
 
@@ -94,23 +91,67 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
     router.push(`/negozio/${shopId}`)
   }
 
+  const fetchMoreData = () => {
+    // if (page === 100) {
+    //   setHasMoreData(true)
+    // }
+    console.log('passa');
+    setproductsFounded((prevstate: Product[]) => {
+
+      return [
+        ...prevstate,
+        ...prevstate.slice(0, 4)
+      ]
+    })
+
+  }
+
+
 
 
   return (
     <>
       <Desktop_Layout>
         <DintorniLogo_Below_Header city={city} gender={gender} category={category.replace(/-/g, ' ')}></DintorniLogo_Below_Header>
-        <div> {/* ${products.length <= 3 ? '' : 'min-h-screen'} */}
+
+        <InfiniteScroll
+          dataLength={productsFounded.length}
+          next={fetchMoreData}
+          hasMore={hasMoreData}
+          loader={
+
+            <>
+              {/* <Center color='white'>
+              <Spinner
+                size='lg'
+                emptyColor='gray.100'
+                color='grey.300'
+              />
+            </Center> */}
+              <Text textAlign={'center'}
+              fontWeight={'bold'}
+              >
+                caricamento
+              </Text>
+            </>
+          }
+          endMessage={
+            <p style={{ textAlign: 'center' }}>
+              <b>Yay! You have seen it all</b>
+            </p>
+          }
+        >
           <div className={` flex items-center justify-center`}>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
-              {products[0] !== null && products.map((product) => {
+
+              {productsFounded[0] !== null && productsFounded.map((product, key) => {
                 return (
-                  <Box_Dress eventHandler={toProductPageUrl} key={product.id} product={product} toShop={toShopPage}></Box_Dress>
+                  <Box_Dress eventHandler={toProductPageUrl} key={key} product={product} toShop={toShopPage}></Box_Dress>
                 )
               })}
             </div>
           </div>
-        </div>
+        </InfiniteScroll>
       </Desktop_Layout>
       <FIlter_Button gender={gender} macrocategory={category} />
 
