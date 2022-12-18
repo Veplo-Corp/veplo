@@ -112,7 +112,8 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                     </Box>
 
                 </DrawerBody>
-                <DrawerFooter
+
+                <DrawerFooter /*  */
                     position={'absolute'}
                     className='bottom-0'
                     padding={0}
@@ -123,9 +124,7 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                             Disconnetti Account
                         </Button>
                     </Center>
-
                 </DrawerFooter>
-
             </DrawerContent>
         </Drawer >
     )
