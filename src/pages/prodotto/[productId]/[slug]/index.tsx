@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
-import { Box, Image} from '@chakra-ui/react';
+import { Box, Image } from '@chakra-ui/react';
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
 import { useQuery } from '@apollo/client';
 import { Product } from '../../../../interfaces/product.interface';
@@ -64,7 +64,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
     const { slug } = router.query
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
 
-    
+
 
     const [textCategory, setTextCategory] = useState('vestito')
 
@@ -218,10 +218,12 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                             mb={3}
                             fontSize='md'
                             onClick={() => {
-                                //navigare su negozio
+                                const slug = createUrlSchema([product.shop.city, product.shop.name])
+                                router.push(`/negozio/${product.shopId}/${slug}`)
                             }}
+                            
                         >
-                            Altri prodotti di {product.shop.name}
+                            Altri prodotti di <span className='underline underline-offset-2 cursor-pointer'>{product.shop.name}</span>
                         </Box>
 
                         <div className="overflow-x-scroll flex w-full gap-4 ">
