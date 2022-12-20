@@ -60,8 +60,6 @@ const index = () => {
     fetchPolicy: 'cache-first',
     nextFetchPolicy: 'cache-first',
     variables: { id: (user?.shopId || '') },
-    // pollInterval: 500,
-    // notifyOnNetworkStatusChange: true,
   });
 
 
