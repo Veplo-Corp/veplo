@@ -20,7 +20,7 @@ const GET_PRODUCTS_FROM_SHOP = gql`
                 shopId
                 firebaseShopId
                 photos
-                updatedAt
+                
                 location {
                     type
                     coordinates
