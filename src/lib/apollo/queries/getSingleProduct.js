@@ -12,7 +12,6 @@ const GET_SINGLE_PRODUCT = gql`
             sizes
             macroCategory
             microCategory
-            gender
             brand
             shopId
             firebaseShopId

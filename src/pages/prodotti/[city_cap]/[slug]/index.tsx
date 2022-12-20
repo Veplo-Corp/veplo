@@ -11,6 +11,8 @@ import user from '../../../../store/reducers/user'
 import getCityAndPostcodeFromSlug from '../../../../../components/utils/get_City_and_Postcode_from_Slug'
 import getGenderandMacrocategory from '../../../../../components/utils/get_Gender_and_Macrocategory'
 import GET_PRODUCTS_FROM_SHOP from '../../../../lib/apollo/queries/geetProductsShop'
+import GET_PRODUCTS from '../../../../lib/apollo/queries/getProducts'
+
 import { initApollo } from '../../../../lib/apollo'
 import { Color, COLORS } from '../../../../../components/mook/colors'
 import { toProductPage } from '../../../../../components/utils/toProductPage'
@@ -18,6 +20,9 @@ import FIlter_Button from '../../../../../components/molecules/FIlter_Button'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Loading from '../../../../../components/molecules/Loading'
 import { Center, CircularProgress, Spinner, Text } from '@chakra-ui/react'
+import { useQuery } from '@apollo/client'
+import { findMacrocategoryName } from '../../../../../components/utils/find_macrocategory_name'
+import Error_page from '../../../../../components/organisms/Error_page'
 
 
 type Router = {
@@ -43,33 +48,59 @@ export async function getStaticProps(ctx: any) {
   const elementGenderMacrocategory: { gender: string | null, macrocategory: string | null } = getGenderandMacrocategory(slug);
 
   const apolloClient = initApollo()
-  const { data, error } = await apolloClient.query({
-    query: GET_PRODUCTS_FROM_SHOP,
-    variables: { id: '63865fa3f99ea8fe07a27a86' },
-  })
+  // const { data, error } = await apolloClient.query({
+  //   query: GET_PRODUCTS_FROM_SHOP,
+  //   variables: { id: '63865fa3f99ea8fe07a27a86' },
+  // })
 
-  console.log(data);
+  try {
+    if (!elementGenderMacrocategory.gender || !elementGenderMacrocategory.macrocategory) {
+      throw new Error("categoria o gender non trovato");
+    }
+    const macrogategoryName = findMacrocategoryName(elementGenderMacrocategory.macrocategory, elementGenderMacrocategory.gender)
+    const { data, error } = await apolloClient.query({
+      query: GET_PRODUCTS,
+      variables: {
+        cap: elementCityCap.postcode,
+        range: 10000,
+        gender: elementGenderMacrocategory.gender === 'uomo' ? "M" : "F",
+        macroCategory: macrogategoryName,
+      }
+    })
 
-
-
-  return {
-    props: {
-      city: elementCityCap.city,
-      gender: elementGenderMacrocategory.gender,
-      category: elementGenderMacrocategory.macrocategory,
-      postcode: elementCityCap.postcode,
-      //products: [data.shop.products[0]]
-      products: data?.shop.products
-    },
-    revalidate: 60 //seconds
+    return {
+      props: {
+        city: elementCityCap.city,
+        gender: elementGenderMacrocategory.gender,
+        category: elementGenderMacrocategory.macrocategory,
+        postcode: elementCityCap.postcode,
+        products: data?.products,
+      },
+      revalidate: 60 //seconds
+    }
+  } catch (e: any) {
+    return {
+      props: {
+        city: elementCityCap.city,
+        gender: elementGenderMacrocategory.gender,
+        category: elementGenderMacrocategory.macrocategory,
+        postcode: elementCityCap.postcode,
+        products: [],
+        errorMessage: e.message
+      },
+      revalidate: 60 //seconds
+    }
   }
+
+
 }
 
 
 
-const index: React.FC<{ city: any, gender: any, category: any, postcode: any, products: Product[] }> = ({ city, gender, category, postcode, products }) => {
+const index: React.FC<{ city: any, gender: any, category: any, postcode: any, products: Product[], errorMessage: string, }> = ({ city, gender, category, postcode, products, errorMessage }) => {
   const router = useRouter();
   const colors = useRef<Color[]>(COLORS);
+
 
   const [hasMoreData, setHasMoreData] = useState(true)
   const [productsFounded, setproductsFounded] = useState<Product[]>(products)
@@ -105,6 +136,13 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
   }
 
+  if (errorMessage === `cap ${postcode} does not exists`) {
+    return (
+      <div className='mt-40 text-center'>
+        <Error_page errorMessage='cap-does-not-exist' />
+      </div>
+    )
+  }
 
 
 
@@ -118,7 +156,6 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
           next={fetchMoreData}
           hasMore={hasMoreData}
           loader={
-
             <>
               {/* <Center color='white'>
               <Spinner
@@ -127,11 +164,11 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
                 color='grey.300'
               />
             </Center> */}
-              <Text textAlign={'center'}
-              fontWeight={'bold'}
+              {productsFounded[1] && <Text textAlign={'center'}
+                fontWeight={'bold'}
               >
                 caricamento
-              </Text>
+              </Text>}
             </>
           }
           endMessage={

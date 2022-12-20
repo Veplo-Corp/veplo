@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 const GET_PRODUCTS = gql`
-    query getProducts(
+    query products(
         $name: String
         $cap: String
         $range: Float!
@@ -9,11 +9,11 @@ const GET_PRODUCTS = gql`
         $macroCategory: String
         ) {
         products(
-            name: $name
-            cap: $cap
-            range: $range
-            gender: $gender
-            macroCategory: $macrocategory
+            name: $name,
+            cap: $cap,
+            range: $range,
+            gender: $gender,
+            macroCategory: $macroCategory
         ){
             id
             name
@@ -27,7 +27,6 @@ const GET_PRODUCTS = gql`
             shopId
             firebaseShopId
             photos
-            updatedAt
             location {
                 type
                 coordinates
