@@ -41,8 +41,7 @@ export async function getStaticProps(ctx: any) {
   let { city_cap, slug } = ctx.params;
   const elementCityCap: { city: string, postcode: string | null } = getCityAndPostcodeFromSlug(city_cap);
   const elementGenderMacrocategory: { gender: string | null, macrocategory: string | null } = getGenderandMacrocategory(slug);
-  let gender: null | string = null;
-  let category: null | string = null;
+
   const apolloClient = initApollo()
   const { data, error } = await apolloClient.query({
     query: GET_PRODUCTS_FROM_SHOP,

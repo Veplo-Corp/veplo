@@ -45,10 +45,12 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
         }
         console.log(catObject);
         const categoryForUrl = Object.values(categories)[indexArray].abbigliamento.find(category => category.name === catObject)?.url
-        
-        if(!categoryForUrl) return
-        const categorySelectedUrl = createUrlSchema([gender, categoryForUrl])
-        router.push(`/prodotti/${address_user.city?.toLocaleLowerCase()}-${address_user.postcode}/${categorySelectedUrl}`)
+        if (!categoryForUrl) {
+            router.push(`/prodotti/${address_user.city?.toLocaleLowerCase()}-${address_user.postcode}/${gender}-abbigliamento`)
+        } else {
+            const categorySelectedUrl = createUrlSchema([gender, categoryForUrl])
+            router.push(`/prodotti/${address_user.city?.toLocaleLowerCase()}-${address_user.postcode}/${categorySelectedUrl}`)
+        }
         onClose()
     }
 
@@ -145,6 +147,16 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                                 {Object.values(categories).map((categories, indexArray) => {
                                     return (
                                         <Tab.Panel key={indexArray}>
+                                            <div
+                                                className="py-2 px-6 w-full flex justify-between h-12 border-0 border-b cursor-pointer"
+                                                onClick={() => {                                                    
+                                                    handleCategoryClicked('tutto l’abbigliamento', indexArray)
+                                                }}
+                                            >
+                                                <p className='my-auto text-lg font-medium'>
+                                                    Tutto l'abbigliamento
+                                                </p>
+                                            </div>
                                             <ul>
                                                 {categories.abbigliamento.map((catObject, idx) => {
                                                     return (
@@ -152,10 +164,10 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                                                             {({ open }) => (
                                                                 <>
                                                                     <Disclosure.Button className="py-2 px-6 w-full flex my-auto justify-between h-12 border-0 border-b"
-                                                                    /* delete when you filter by microcategory */
-                                                                    onClick={() => {
-                                                                        handleCategoryClicked(catObject.name, indexArray)
-                                                                    }}
+                                                                        /* delete when you filter by microcategory */
+                                                                        onClick={() => {
+                                                                            handleCategoryClicked(catObject.name, indexArray)
+                                                                        }}
                                                                     >
 
                                                                         <p className='text-lg font-medium my-auto'>
@@ -168,6 +180,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                                                                         </svg> */}
                                                                     </Disclosure.Button>
                                                                     <Disclosure.Panel>
+
                                                                         {catObject.types.map((type: string, idx) => {
                                                                             return (
                                                                                 <div
