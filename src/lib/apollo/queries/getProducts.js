@@ -2,18 +2,16 @@ import { gql } from '@apollo/client'
 
 const GET_PRODUCTS = gql`
     query products(
-        $name: String
-        $cap: String
         $range: Float!
-        $gender: String
-        $macroCategory: String
+        $limit: Int!
+        $offset: Int!
+        $filters: Filters    
         ) {
         products(
-            name: $name,
-            cap: $cap,
             range: $range,
-            gender: $gender,
-            macroCategory: $macroCategory
+            limit: $limit
+            offset: $offset
+            filters: $filters    
         ){
             id
             name
