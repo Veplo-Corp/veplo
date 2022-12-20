@@ -61,14 +61,13 @@ export async function getStaticProps(ctx: any) {
     const { data, error } = await apolloClient.query({
       query: GET_PRODUCTS,
       variables: {
-        cap: "05100",
-        range: 1000000000,
-        gender: "F",
-        macroCategory: "",
+        cap: elementCityCap.postcode,
+        range: 10000,
+        gender: elementGenderMacrocategory.gender === 'uomo' ? "M" : "F",
+        macroCategory: macrogategoryName,
       }
     })
 
-    console.log(data.products);
     
 
     return {
