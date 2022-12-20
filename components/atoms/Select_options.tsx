@@ -31,7 +31,6 @@ const Select_options: React.FC<{ values: any , handleClick?: any, type: string, 
             if(!values.find((value: string) => value === selectedValueBefore)){
                 setSelected(undefined)
             }
-            
         }
     }, [values])
 

@@ -1,18 +1,19 @@
 import { gql } from '@apollo/client'
 
 const GET_PRODUCTS = gql`
-    query GetSingleProduct(
-        $name: String!
-        $coordinates: [Float]!
+    query getProducts(
+        $name: String
+        $cap: String
         $range: Float!
-        $filters: Filters
+        $gender: String
+        $macroCategory: String
         ) {
-        product(
-            id: $id
+        products(
             name: $name
-            coordinates: $coordinates
+            cap: $cap
             range: $range
-            filters: $filter
+            gender: $gender
+            macroCategory: $macrocategory
         ){
             id
             name
