@@ -61,12 +61,15 @@ export async function getStaticProps(ctx: any) {
     const { data, error } = await apolloClient.query({
       query: GET_PRODUCTS,
       variables: {
-        cap: elementCityCap.postcode,
-        range: 10000,
-        gender: elementGenderMacrocategory.gender === 'uomo' ? "M" : "F",
-        macroCategory: macrogategoryName,
+        cap: "05100",
+        range: 1000000000,
+        gender: "F",
+        macroCategory: "",
       }
     })
+
+    console.log(data.products);
+    
 
     return {
       props: {
@@ -100,7 +103,8 @@ export async function getStaticProps(ctx: any) {
 const index: React.FC<{ city: any, gender: any, category: any, postcode: any, products: Product[], errorMessage: string, }> = ({ city, gender, category, postcode, products, errorMessage }) => {
   const router = useRouter();
   const colors = useRef<Color[]>(COLORS);
-
+  console.log(products);
+  
 
   const [hasMoreData, setHasMoreData] = useState(true)
   const [productsFounded, setproductsFounded] = useState<Product[]>(products)

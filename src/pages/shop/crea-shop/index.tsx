@@ -380,7 +380,6 @@ const index = () => {
     }
 
     const submitData = async (e: IFormInput) => {
-
         const Shop: IFormInput = {
             name: e.name,
             address: {
@@ -650,6 +649,7 @@ const index = () => {
                                                 type="number"
                                                 min={1}
                                                 max={999}
+                                                onWheel={(e: any) => e.target.blur()}
                                                 value={address.streetNumber}
                                                 onChange={(event) => {
                                                     const value = event.target.value

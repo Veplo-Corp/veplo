@@ -64,11 +64,6 @@ const index = () => {
     // notifyOnNetworkStatusChange: true,
   });
 
-  const Shop: Shop = useQuery(GET_SHOP_BY_FIREBASE_ID, {
-    fetchPolicy: 'cache-only',
-    nextFetchPolicy: 'cache-only',
-    variables: { firebaseId: (user?.uid || '' ) },
-  }).data?.shopByFirebaseId;
 
   
 
@@ -173,8 +168,8 @@ const index = () => {
           __typename: 'Location'
         },
         shop: {
-          city: Shop.address.city,
-          name: Shop.name,
+          city: 'city',
+          name: 'name',
           __typename: "Lightshop",
         },
         __typename: 'Product'
