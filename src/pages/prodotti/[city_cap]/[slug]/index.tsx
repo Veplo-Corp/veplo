@@ -23,6 +23,7 @@ import { Center, CircularProgress, Spinner, Text } from '@chakra-ui/react'
 import { useQuery } from '@apollo/client'
 import { findMacrocategoryName } from '../../../../../components/utils/find_macrocategory_name'
 import Error_page from '../../../../../components/organisms/Error_page'
+import createUrlSchema from '../../../../../components/utils/create_url'
 
 
 type Router = {
@@ -57,28 +58,28 @@ export async function getStaticProps(ctx: any) {
     if (!elementGenderMacrocategory.gender || !elementGenderMacrocategory.macrocategory) {
       throw new Error("categoria o gender non trovato");
     }
-    const macrogategoryName = findMacrocategoryName(elementGenderMacrocategory.macrocategory, elementGenderMacrocategory.gender)
+    const macrogategoryName = findMacrocategoryName(elementGenderMacrocategory.macrocategory, elementGenderMacrocategory.gender) || ''
     const { data, error } = await apolloClient.query({
       query: GET_PRODUCTS,
       variables: {
         range: 10000,
         offset: 0,
-        limit: 10,
+        limit: 2,
         filters: {
           cap: elementCityCap.postcode,
-          macroCategory:macrogategoryName,
+          macroCategory: macrogategoryName,
           gender: elementGenderMacrocategory.gender === 'uomo' ? 'M' : 'F'
         }
       }
     })
 
-    
+
 
     return {
       props: {
         city: elementCityCap.city,
         gender: elementGenderMacrocategory.gender,
-        category: elementGenderMacrocategory.macrocategory,
+        category: macrogategoryName,
         postcode: elementCityCap.postcode,
         products: data?.products,
       },
@@ -106,13 +107,9 @@ export async function getStaticProps(ctx: any) {
 const index: React.FC<{ city: any, gender: any, category: any, postcode: any, products: Product[], errorMessage: string, }> = ({ city, gender, category, postcode, products, errorMessage }) => {
   const router = useRouter();
   const colors = useRef<Color[]>(COLORS);
-  console.log(products);
-  
-
   const [hasMoreData, setHasMoreData] = useState(true)
   const [productsFounded, setproductsFounded] = useState<Product[]>(products)
-
-
+  const [offset, setOffset] = useState<number>(products.length)
 
 
   const toProductPageUrl = (product: Product) => {
@@ -124,22 +121,53 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   }
 
 
-  const toShopPage = (shopId: string) => {
-    router.push(`/negozio/${shopId}`)
+  const toShopPage = (shopId: string,city:string, name:string ) => {
+    const slug = createUrlSchema([city, name])
+    router.push(`/negozio/${shopId}/${slug}`)
   }
 
-  const fetchMoreData = () => {
-    // if (page === 100) {
-    //   setHasMoreData(true)
-    // }
-    console.log('passa');
-    setproductsFounded((prevstate: Product[]) => {
+  const fetchMoreData = async () => {
+    try {
+      const plus_for_limit = 2
+      const apolloClient = initApollo()
+      const { data, error } = await apolloClient.query({
+        query: GET_PRODUCTS,
+        variables: {
+          range: 10000,
+          offset: offset,
+          limit: offset + plus_for_limit,
+          filters: {
+            cap: postcode,
+            macroCategory: category,
+            gender: gender === 'uomo' ? 'M' : 'F'
+          }
+        }
+      })
 
-      return [
-        ...prevstate,
-        ...prevstate.slice(0, 4)
-      ]
-    })
+
+
+      setproductsFounded((prevstate: Product[]) => {
+        return [
+          ...prevstate,
+          ...data?.products
+        ]
+      })
+
+      if (data?.products.length !== plus_for_limit) {
+        setHasMoreData(false)
+      }
+
+      setOffset((prevstate: number) => {
+        return prevstate + data.products.length
+      })
+    } catch (e: any) {
+      console.log(e.message);
+
+      setHasMoreData(false)
+    }
+
+
+
 
   }
 
@@ -179,9 +207,11 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
             </>
           }
           endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>Yay! You have seen it all</b>
-            </p>
+            <Text textAlign={'center'}
+              fontWeight={'bold'}
+            >
+              caricamento
+            </Text>
           }
         >
           <div className={` flex items-center justify-center`}>
