@@ -128,7 +128,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
   const fetchMoreData = async () => {
     try {
-      const plus_for_limit = 2
+      const plus_for_limit = 3
       const apolloClient = initApollo()
       const { data, error } = await apolloClient.query({
         query: GET_PRODUCTS,
