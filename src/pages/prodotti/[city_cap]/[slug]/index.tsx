@@ -64,7 +64,7 @@ export async function getStaticProps(ctx: any) {
       variables: {
         range: 10000,
         offset: 0,
-        limit: 2,
+        limit: 4,
         filters: {
           cap: elementCityCap.postcode,
           macroCategory: macrogategoryName,
@@ -199,7 +199,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
                 color='grey.300'
               />
             </Center> */}
-              {productsFounded[1] && <Text textAlign={'center'}
+              {productsFounded[3] && <Text textAlign={'center'}
                 fontWeight={'bold'}
               >
                 caricamento
