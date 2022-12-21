@@ -154,6 +154,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
       })
 
       if (data?.products.length !== plus_for_limit) {
+        console.log('eccolo');
         setHasMoreData(false)
       }
 
@@ -207,11 +208,12 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
             </>
           }
           endMessage={
-            <Text textAlign={'center'}
-              fontWeight={'bold'}
-            >
-              caricamento
-            </Text>
+            <></>
+            // <Text textAlign={'center'}
+            //   fontWeight={'bold'}
+            // >
+            //   Hai visualizzato tutti i prodotti
+            // </Text>
           }
         >
           <div className={` flex items-center justify-center`}>
