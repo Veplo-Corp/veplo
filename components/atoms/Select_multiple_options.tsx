@@ -22,7 +22,7 @@ import { Day } from '../mook/days'
 // }
 
 
-const Select_multiple_options: React.FC<{ values: any, type: string, handleChangeState?: any, selectedValueBefore?: any }> = ({ values, type, handleChangeState, selectedValueBefore }) => {
+const Select_multiple_options: React.FC<{ values: any, type: string, typeOperation:string, handleChangeState?: any, selectedValueBefore?: any }> = ({ values, type, typeOperation, handleChangeState, selectedValueBefore }) => {
     const [selectedValue, setSelectedValue] = useState<any[]>([])
     const [isListboxDisabled, setIsListboxDisabled] = useState(false)
 
@@ -31,6 +31,8 @@ const Select_multiple_options: React.FC<{ values: any, type: string, handleChang
 
 
     useEffect(() => {
+        setSelectedValue([])
+        
         console.log('type', type ,selectedValueBefore);
         
         if (values === undefined) {
@@ -39,13 +41,16 @@ const Select_multiple_options: React.FC<{ values: any, type: string, handleChang
             setIsListboxDisabled(false)
             
         }
-        if (type === 'size' && !selectedValueBefore) {
-            console.log(values);
-            setSelectedValue([])
-        }
 
-        if(selectedValueBefore){    
-                    
+
+
+        //!in fase di test, se tutto ok, si può eliminare
+        // if (type === 'size' && !selectedValueBefore) {
+        //     console.log('passa');
+        //     setSelectedValue([])
+        // }
+
+        if(typeOperation === 'edit'){       
             if (type == 'color') {
                 let productColors = [];
                 for (let i = 0; i < selectedValueBefore.length; i++) {
