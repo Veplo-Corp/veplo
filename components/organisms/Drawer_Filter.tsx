@@ -24,7 +24,6 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
     //padding for Mobile
     const [bottomPadding, setbottomPadding] = useState([4, 8])
     const ContSizes = useRef<Sizes>(SIZES)
-    const [macrocategoryName, setMacrocategoryName] = useState<string>()
 
     const router = useRouter();
     const colors = useRef<Color[]>(COLORS)
@@ -44,17 +43,15 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
     useEffect(() => {
         //console.log(openDrawerMath);
         if (openDrawerMath !== 1 && openDrawerMath > 0 && openDrawerMath !== undefined) {
+            
             onOpen()
             const category = Object.values(CATEGORIES)[Object.keys(CATEGORIES).indexOf(gender)]
-            console.log(macrocategory);
-
-            const sizeType = category.abbigliamento.find(element => element.url === macrocategory)?.sizes
+            const sizeType = category.abbigliamento.find(element => element.name === macrocategory)?.sizes
             //da migliorare
             if (!sizeType) return
             const index = Object.keys(ContSizes.current).indexOf(sizeType)
             setSizes(Object.values(ContSizes.current)[index])
         }
-        setMacrocategoryName(findMacrocategoryName(macrocategory, gender) || 'Filtri')
 
 
     }, [openDrawerMath])
@@ -174,7 +171,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                 /* className='flex justify-between' */
                 >
                     <p className="font-medium text-xs md:text-sm italic text-black-900 ">{gender.charAt(0).toUpperCase() + gender.slice(1)}</p>
-                    <p className="font-black text-2xl italic text-black-900 my-auto mt-[-7px] ">{macrocategoryName}</p>
+                    <p className="font-black text-2xl italic text-black-900 my-auto mt-[-7px] ">{macrocategory}</p>
                     {/* <Button
                         colorScheme={'green'}
                         borderRadius={30}
@@ -291,8 +288,6 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                             </Box>
                             <Box py={3} px={4}
                                 pb={2} borderBottomWidth={1} borderColor={'gray.200'}
-
-
                             // height={'full'}
                             >
                                 {/* <h3 className='font-bold lg:text-lg text-md mb-2'>Colore</h3>

@@ -101,9 +101,9 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
                                 {shop.name}
                             </Box>
                             <Box
-                                fontWeight='medium'
+                                fontWeight='base'
                                 as='h2'
-                                fontSize='12px'
+                                fontSize='11px'
                                 mt={-1}
                             >
                                 {shop.address.street}, {shop.address.city}
@@ -141,7 +141,7 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
                 I prodotti di {shop.name}
             </Box>
             <Box
-                fontWeight='normal'
+                fontWeight='base'
                 as='h1'
                 noOfLines={1}
                 mb={3}

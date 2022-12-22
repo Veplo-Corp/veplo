@@ -1,7 +1,8 @@
 import { CATEGORIES } from './../mook/categories';
 
 
-export const findMacrocategoryName = (urlName:string, gender:string) => {
+export const findMacrocategoryName = (name:string, gender:string) => {
     const index = gender === 'donna' ? 0 : 1
-    return Object.values(CATEGORIES)[index].abbigliamento.find(category => category.url === urlName)?.name
+    console.log(Object.values(CATEGORIES)[index].abbigliamento.find(category => category.url === name)?.name);
+    return Object.values(CATEGORIES)[index].abbigliamento.find(category => category.url === name)?.name
 }

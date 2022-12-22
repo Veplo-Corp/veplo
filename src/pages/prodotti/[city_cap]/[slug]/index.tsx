@@ -110,7 +110,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   const [hasMoreData, setHasMoreData] = useState(true)
   const [productsFounded, setproductsFounded] = useState<Product[]>(products)
   const [offset, setOffset] = useState<number>(products.length)
-
+  
 
   const toProductPageUrl = (product: Product) => {
 
