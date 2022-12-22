@@ -7,7 +7,7 @@ import createUrlSchema from '../utils/create_url';
 
 
 
-const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any }> = ({ gender, closeCategory }) => {
+const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any, closeShowCategory:any }> = ({ gender, closeCategory, closeShowCategory }) => {
     const address_user: Mapbox_Result = useSelector((state: any) => state.address.address);
     const router = useRouter();
     const [categories] = useState(CATEGORIES);
@@ -30,6 +30,7 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any }> =
             const categorySelectedUrl = createUrlSchema([gender, categoryForUrl])
             router.push(`/prodotti/${address_user.city?.toLocaleLowerCase()}-${address_user.postcode}/${categorySelectedUrl}`)
         }
+        closeShowCategory()
     }
     // console.log(Object.keys(categories).indexOf(gender));
     // console.log(Object.values(categories));
