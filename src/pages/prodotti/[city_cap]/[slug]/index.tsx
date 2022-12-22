@@ -64,7 +64,7 @@ export async function getStaticProps(ctx: any) {
       variables: {
         range: 10000,
         offset: 0,
-        limit: 4,
+        limit: 6,
         filters: {
           cap: elementCityCap.postcode,
           macroCategory: macrogategoryName,
