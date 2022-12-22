@@ -43,7 +43,6 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
     useEffect(() => {
         if (type === 'edit') {
             console.log(watch('sizes'));
-            
             if (watch('gender') === 'F') {
                 const sizetype = categories.current.donna.abbigliamento.filter(category => category.name === watch('macrocategory'))[0].sizes;
                 console.log(sizetype);
@@ -51,7 +50,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
             } else if (watch('gender') === 'M') {
                 const sizetype = categories.current.uomo.abbigliamento.filter(category => category.name === watch('macrocategory'))[0].sizes;
                 console.log(sizetype);
-                
+
                 handleSizeType(sizetype)
             }
         }
@@ -59,7 +58,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
 
         if (type !== 'edit') {
             console.log(watch('sizes'));
-            
+
             const product_macrocategory = watch('macrocategory')
 
             if (!product_macrocategory) {
@@ -82,9 +81,9 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
     const handleSizeType = (sizetype: string) => {
         const index = Object.keys(sizes.current).indexOf(sizetype)
         setSizesSelected((Object.values(sizes.current)[index]))
-        if(type !== 'edit'){
-            setValue('sizes', []);
-        }
+        // if(type !== 'edit'){
+        //     setValue('sizes', []);
+        // }
     }
 
     const onChangePrice = (e: any) => {
@@ -174,6 +173,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                 rules={{ required: false }}
                                 render={() => (
                                     <Select_multiple_options values={colors.current} type={'color'}
+                                        typeOperation={type}
                                         selectedValueBefore={watch('colors')}
                                         handleChangeState={(colors: any) => {
                                             setValue('colors', colors);
@@ -224,6 +224,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                 rules={{ required: false }}
                                 render={() => (
                                     <Select_multiple_options values={sizesSelected} type={'size'}
+                                        typeOperation={type}
                                         selectedValueBefore={watch('sizes')}
                                         handleChangeState={(sizes: any) => {
                                             setValue('sizes', sizes);
