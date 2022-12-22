@@ -8,6 +8,8 @@ const FIlter_Button: FC<{gender:string, macrocategory:string}> = ({gender, macro
     const [bottomPadding, setbottomPadding] = useState([4, 8])
     const [openDrawer, setOpenDrawer] = useState(1)
     const router = useRouter();
+    console.log(gender, macrocategory);
+    
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
