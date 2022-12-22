@@ -24,6 +24,7 @@ import { useQuery } from '@apollo/client'
 import { findMacrocategoryName } from '../../../../../components/utils/find_macrocategory_name'
 import Error_page from '../../../../../components/organisms/Error_page'
 import createUrlSchema from '../../../../../components/utils/create_url'
+import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter'
 
 
 type Router = {
@@ -74,12 +75,11 @@ export async function getStaticProps(ctx: any) {
     })
 
 
-
     return {
       props: {
         city: elementCityCap.city,
-        gender: elementGenderMacrocategory.gender,
-        category: macrogategoryName,
+        gender: toUpperCaseFirstLetter(elementGenderMacrocategory.gender),
+        category: macrogategoryName || 'Tutto',
         postcode: elementCityCap.postcode,
         products: data?.products,
       },

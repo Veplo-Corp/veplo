@@ -218,7 +218,12 @@ const Header = () => {
 
                     </div>
                     {showCategory.show &&
-                        <Show_Categories_NavBar gender={showCategory.gender} closeCategory={handleShowCategory} />
+                        <Show_Categories_NavBar gender={showCategory.gender} closeCategory={handleShowCategory} closeShowCategory={() => {
+                            setshowCategory({
+                                show: false,
+                                gender: ''
+                            })
+                        }} />
                     }
                 </div>
             </div>
