@@ -62,7 +62,7 @@ const Select_options: React.FC<{ values: Categories | any, handleClick?: any, ty
                         {type === 'macrocategory' && typeof Object.values(values)[0] === 'object' && Object.keys(values).map((gender: string, indexObject: number) => {
                             const category: Categories = values;
                             return (
-                                <>
+                                <div key={indexObject}>
                                     <span
                                         key={indexObject}
                                         className="z-10  px-10 py-2 block font-extrabold text-base bg-gray-100"
@@ -96,7 +96,7 @@ const Select_options: React.FC<{ values: Categories | any, handleClick?: any, ty
                                             </Listbox.Option>
                                         )
                                     })}
-                                </>
+                                </div>
 
 
                             )

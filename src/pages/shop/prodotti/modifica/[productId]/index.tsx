@@ -96,7 +96,9 @@ const index = () => {
         for await (let photo of photos) {
             try {
                 if (photo.blob) {
-                    const url = await uploadPhotoFirebase('photo' + i, photo.blob, productId, user.uid)
+                    //const url = await uploadPhotoFirebase('photo' + i, photo.blob, productId, user.uid)
+                    const url = await uploadPhotoFirebase(photo.blob, `/${user.uid}/prodotti/${productId}/${'photo' + i}`)
+
                     photoURLForDB.push(url)
                 } else {
                     //console.log('passa');

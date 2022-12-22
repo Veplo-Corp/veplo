@@ -136,7 +136,9 @@ const index = () => {
       console.log(photos);
       for await (let photo of photos) {
         try {
-          const url = await uploadPhotoFirebase('photo' + i, photo.blob, productId, user.uid)
+          //const url = await uploadPhotoFirebase('photo' + i, photo.blob, productId, user.uid)
+          const url = await uploadPhotoFirebase(photo.blob, `/${user.uid}/prodotti/${productId}/${'photo' + i}`)
+
           photoURLForDB.push(url)
           i++
         } catch {

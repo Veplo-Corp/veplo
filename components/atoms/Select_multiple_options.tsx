@@ -22,7 +22,7 @@ import { Day } from '../mook/days'
 // }
 
 
-const Select_multiple_options: React.FC<{ values: any, type: string, typeOperation:string, handleChangeState?: any, selectedValueBefore?: any }> = ({ values, type, typeOperation, handleChangeState, selectedValueBefore }) => {
+const Select_multiple_options: React.FC<{ values: any, type: string, typeOperation?:string, handleChangeState?: any, selectedValueBefore?: any }> = ({ values, type, typeOperation, handleChangeState, selectedValueBefore }) => {
     const [selectedValue, setSelectedValue] = useState<any[]>([])
     const [isListboxDisabled, setIsListboxDisabled] = useState(false)
 
@@ -33,7 +33,7 @@ const Select_multiple_options: React.FC<{ values: any, type: string, typeOperati
     useEffect(() => {
         setSelectedValue([])
         
-        console.log('type', type ,selectedValueBefore);
+        //console.log('type', type ,selectedValueBefore);
         
         if (values === undefined) {
             setIsListboxDisabled(true)
