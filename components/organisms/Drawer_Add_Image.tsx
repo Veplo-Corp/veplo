@@ -19,6 +19,7 @@ import { useDebounceEffect } from '../utils/useDebounceEffect';
 import { DownloadIcon } from '@chakra-ui/icons';
 import MobileDetect from 'mobile-detect';
 import Loading from '../molecules/Loading';
+import { resizeFile } from '../utils/resizeFile';
 
 
 
@@ -84,21 +85,21 @@ const ImageTextFormat: string[] = [
     'opzionale'
 ]
 
-const resizeFile = (file: any) =>
-    new Promise((resolve) => {
-        Resizer.imageFileResizer(
-            file,
-            3000,
-            3000,
-            "WEBP",
-            100,
-            0,
-            (uri) => {
-                resolve(uri.toString());
-            },
-            "base64"
-        );
-    });
+// const resizeFile = (file: any) =>
+//     new Promise((resolve) => {
+//         Resizer.imageFileResizer(
+//             file,
+//             3000,
+//             3000,
+//             "WEBP",
+//             100,
+//             0,
+//             (uri) => {
+//                 resolve(uri.toString());
+//             },
+//             "base64"
+//         );
+// });
 
 
 const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: any, imagesUploadedBefore?: string[] | [] }> = ({ openDraw, confirmPhotos, imagesUploadedBefore }) => {
@@ -297,42 +298,15 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                     const kb = Math.ceil(((yourBase64String.length * 6) / 8) / 1000); //es. 426 kb
                     console.log(kb);
                     //set quality based on dimension photo
-                    if (kb < 600) {
-                        canvas.toBlob(function (blob) {
-                            if (!blob) { return }
-                            const url = URL.createObjectURL(blob);
-                            setUrl(url)
-                            setBlob(blob)
-                            setIsDisabledButton(false)
-                        }, 'image/webp', 0.8);
-                    } else if (kb > 3000) {
-                        canvas.toBlob(function (blob) {
-                            if (!blob) { return }
-                            const url = URL.createObjectURL(blob);
-                            setUrl(url)
-                            setBlob(blob)
-                            setIsDisabledButton(false)
-                        }, 'image/webp', 0.3);
-                    } else if (kb > 600 && kb <= 3000) {
-                        canvas.toBlob(function (blob) {
-                            if (!blob) { return }
-                            const url = URL.createObjectURL(blob);
-                            setUrl(url)
-                            setBlob(blob)
-                            setIsDisabledButton(false)
-                        }, 'image/webp', 0.5);
-                    } else {
-                        canvas.toBlob(function (blob) {
-                            if (!blob) { return }
-                            const url = URL.createObjectURL(blob);
-                            setUrl(url)
-                            setBlob(blob)
-                            setIsDisabledButton(false)
-                        }, 'image/webp', 1);
-                    }
-
+                    const quality = kb > 3000 ? 0.3 : 0.8;
+                    canvas.toBlob(function (blob) {
+                        if (!blob) { return }
+                        const url = URL.createObjectURL(blob);
+                        setUrl(url)
+                        setBlob(blob)
+                        setIsDisabledButton(false)
+                    }, 'image/webp', quality);
                 })
-
         }
     },
         300,
@@ -345,7 +319,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
     }
 
 
-   
+
 
 
 
@@ -394,61 +368,61 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                 onSelectFile(e);
                             }} />
                     </DrawerHeader>
-                    {!loading ? 
-                    (<DrawerBody className='grid md:flex justify-between '>
-                        {imgSrc || images[0] ? (
-                            <>
-                                <div className='w-full px-3 md:px-0 h-fit md:ml-8 md:w-4/12 grid '>
-                                    <div className='grid'>
-                                        {showCroppedImage && imgSrc && (
-                                            <>
-                                                <Alert status='info' variant='solid' className='mb-2'>
-                                                    <AlertIcon />
-                                                    Ritaglia la foto
-                                                </Alert>
-                                                <ReactCrop
-                                                    className='w-full h-full'
-                                                    crop={crop || {
-                                                        unit: '%', // Can be 'px' or '%'
-                                                        x: 0,
-                                                        y: 0,
-                                                        width: 0,  //762 diviso 5
-                                                        height: 0,//1100 diviso 5
+                    {!loading ?
+                        (<DrawerBody className='grid md:flex justify-between '>
+                            {imgSrc || images[0] ? (
+                                <>
+                                    <div className='w-full px-3 md:px-0 h-fit md:ml-8 md:w-4/12 grid '>
+                                        <div className='grid'>
+                                            {showCroppedImage && imgSrc && (
+                                                <>
+                                                    <Alert status='info' variant='solid' className='mb-2'>
+                                                        <AlertIcon />
+                                                        Ritaglia la foto
+                                                    </Alert>
+                                                    <ReactCrop
+                                                        className='w-full h-full'
+                                                        crop={crop || {
+                                                            unit: '%', // Can be 'px' or '%'
+                                                            x: 0,
+                                                            y: 0,
+                                                            width: 0,  //762 diviso 5
+                                                            height: 0,//1100 diviso 5
 
-                                                        // unit: '%', // Can be 'px' or '%'
-                                                        // x: 17.53,
-                                                        // y: 11.00,
-                                                        // width: 65.99,  //762 diviso 5
-                                                        // height: 76.209,//1100 diviso 5
-                                                    }}
-                                                    onChange={(_, percentCrop) => setCrop(percentCrop)}
-                                                    onComplete={(c) => {
-                                                        setIsDisabledButton(true)
-                                                        setCompletedCrop(c)
-                                                    }}
-                                                    aspect={762 / 1100}
-                                                >
-                                                    <img
-                                                        className='max-w-full' /* min-w-full */
-                                                        src={imgSrc} ref={imgRef} />
-                                                </ReactCrop>
+                                                            // unit: '%', // Can be 'px' or '%'
+                                                            // x: 17.53,
+                                                            // y: 11.00,
+                                                            // width: 65.99,  //762 diviso 5
+                                                            // height: 76.209,//1100 diviso 5
+                                                        }}
+                                                        onChange={(_, percentCrop) => setCrop(percentCrop)}
+                                                        onComplete={(c) => {
+                                                            setIsDisabledButton(true)
+                                                            setCompletedCrop(c)
+                                                        }}
+                                                        aspect={762 / 1100}
+                                                    >
+                                                        <img
+                                                            className='max-w-full' /* min-w-full */
+                                                            src={imgSrc} ref={imgRef} />
+                                                    </ReactCrop>
 
-                                                <div className='flex justify-between mt-2 mb-2 gap-2'>
-                                                    <Button
-                                                        onClick={() => setShowCroppedImage(false)}
-                                                        borderRadius={5}
-                                                        width={'fit-content'}
-                                                        height={12}
-                                                        size={'sm'}
-                                                        variant='outline'
-                                                        colorScheme={'blackAlpha'}
-                                                        color={'blackAlpha.900'}
-                                                        disabled={false} >
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                                                            <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clipRule="evenodd" />
-                                                        </svg>
-                                                    </Button>
-                                                    {/* <Button
+                                                    <div className='flex justify-between mt-2 mb-2 gap-2'>
+                                                        <Button
+                                                            onClick={() => setShowCroppedImage(false)}
+                                                            borderRadius={5}
+                                                            width={'fit-content'}
+                                                            height={12}
+                                                            size={'sm'}
+                                                            variant='outline'
+                                                            colorScheme={'blackAlpha'}
+                                                            color={'blackAlpha.900'}
+                                                            disabled={false} >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                                                                <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clipRule="evenodd" />
+                                                            </svg>
+                                                        </Button>
+                                                        {/* <Button
                                                         onClick={() => handleClick(null)}
                                                         borderRadius={5}
                                                         height={12}
@@ -459,159 +433,159 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                                         disabled={false} >
                                                         cambia
                                                     </Button> */}
-                                                    <BlackButton
-                                                        onClick={onHanldeConfirm}
-                                                        element='aggiungi immagine'
-                                                        borderRadius={5}
+                                                        <BlackButton
+                                                            onClick={onHanldeConfirm}
+                                                            element='aggiungi immagine'
+                                                            borderRadius={5}
 
-                                                        heigth={12}
-                                                        size={'sm'}
-                                                        typeButton={'button'}
-                                                        disabled={isDisabledButton} />
-                                                </div>
-                                            </>
+                                                            heigth={12}
+                                                            size={'sm'}
+                                                            typeButton={'button'}
+                                                            disabled={isDisabledButton} />
+                                                    </div>
+                                                </>
 
-                                        )}
-
-
-                                        <div className='hidden'>
-                                            {!!completedCrop && (
-                                                <canvas
-                                                    ref={previewCanvasRef}
-                                                    style={{
-                                                        border: '1px solid black',
-                                                        objectFit: 'contain',
-                                                        width: completedCrop.width,
-                                                        height: completedCrop.height,
-                                                    }}
-                                                />
                                             )}
+
+
+                                            <div className='hidden'>
+                                                {!!completedCrop && (
+                                                    <canvas
+                                                        ref={previewCanvasRef}
+                                                        style={{
+                                                            border: '1px solid black',
+                                                            objectFit: 'contain',
+                                                            width: completedCrop.width,
+                                                            height: completedCrop.height,
+                                                        }}
+                                                    />
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="min-h-screen items-center justify-center mb-96 ">
-                                    <div className='w-full md:mr-11 md:w-fit grid gap-5 grid-cols-2 justify-items-start mt-8'>
-                                        {images.map((image: any, position: any) => {
-                                            return (
-                                                <div key={position} className='md:w-44 lg:w-56 h-fit'>
-                                                    <div className='flex justify-between mb-1'>
-                                                        <p>{ImageTextFormat[position]}</p>
-                                                        <Box
-                                                            className='my-auto cursor-pointer'
-                                                            _active={{
-                                                                transform: 'scale(0.90)',
-                                                            }}
-                                                            onClick={() => handleClick(position)}
-                                                        >
-                                                            <svg
-                                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-                                                                <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
-                                                            </svg>
-                                                        </Box>
+                                    <div className="min-h-screen items-center justify-center mb-96 ">
+                                        <div className='w-full md:mr-11 md:w-fit grid gap-5 grid-cols-2 justify-items-start mt-8'>
+                                            {images.map((image: any, position: any) => {
+                                                return (
+                                                    <div key={position} className='md:w-44 lg:w-56 h-fit'>
+                                                        <div className='flex justify-between mb-1'>
+                                                            <p>{ImageTextFormat[position]}</p>
+                                                            <Box
+                                                                className='my-auto cursor-pointer'
+                                                                _active={{
+                                                                    transform: 'scale(0.90)',
+                                                                }}
+                                                                onClick={() => handleClick(position)}
+                                                            >
+                                                                <svg
+                                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                                                    <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
+                                                                </svg>
+                                                            </Box>
 
 
 
-                                                    </div>
-                                                    {!image.url ? (
-                                                        <img
-                                                            className='rounded'
-                                                            src={image} alt="" />
-                                                    ) :
-                                                        (
+                                                        </div>
+                                                        {!image.url ? (
                                                             <img
                                                                 className='rounded'
-                                                                src={image.url} alt="" />
-                                                        )
-                                                    }
+                                                                src={image} alt="" />
+                                                        ) :
+                                                            (
+                                                                <img
+                                                                    className='rounded'
+                                                                    src={image.url} alt="" />
+                                                            )
+                                                        }
 
-                                                </div>
-                                            )
-                                        })}
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <Box className='mt-5 md:mt-20 md:ml-20 w-full md:w-3/5'>
+                                    <h1 className='text-2xl font-bold mb-2'>
+                                        <Highlight
+                                            query={['perfetta!']}
+                                            styles={{ px: '2', py: '1', bg: 'gray.900', color: 'white', fontStyle: 'italic' }}
+                                        >
+                                            Mostra i tuoi prodotti in maniera perfetta!
+                                        </Highlight>
+                                    </h1>
+
+                                    <h3 className='text-sm font-medium leading-4	'>inserisci le immagini secondo uno schema preciso, migliorando l’esperienza
+                                        che vivranno gli utenti nel tuo store</h3>
+                                    {list_explanation_photos_format.map(list => {
+                                        return (
+                                            <div key={list.type}><h2 className='text-lg font-bold mt-2'>{list.type}:</h2>
+                                                <List spacing={1} marginLeft={30}>
+                                                    <UnorderedList >
+                                                        {
+                                                            list.list.map((value, id) => {
+                                                                return (
+                                                                    <ListItem key={id}>{value}</ListItem>
+                                                                )
+                                                            })
+                                                        }
+                                                    </UnorderedList>
+                                                </List>
+                                            </div>
+                                        )
+                                    })}
+                                </Box>
+                            )}
+
+
+                        </DrawerBody>) :
+                        (
+                            <Loading />
+                        )
+                    }
+                    {/* !showCroppedImage */ !showCroppedImage &&
+                        <DrawerFooter
+                            paddingX={0}
+                            paddingBottom={bottomPadding}
+                        >
+                            <footer className={`w-full bg-whith items-center py-4 pb-${bottomPadding}px px-6 md:px-10 border-t border-inherit	`}>
+                                <div className='flex justify-between'>
+                                    <div className='hidden md:flex'>
+                                        <Button
+                                            onClick={closeModal}
+                                            borderRadius={5}
+                                            width={200}
+                                            height={12}
+                                            size={'sm'}
+                                            variant='outline'
+                                            colorScheme={'blackAlpha'}
+                                            color={'blackAlpha.900'}
+                                            disabled={false} >
+                                            indietro
+                                        </Button>
+                                    </div>
+
+                                    <div className='flex justify-between gap-6  md:gap-4'>
+                                        <p className='my-auto	italic text-sm md:text-base	font-medium	'>
+                                            aggiungi minimo 2 foto per confermare
+                                        </p>
+                                        <Button
+                                            bgGradient='linear(to-r, green.200, pink.500)'
+                                            _hover={{ bg: 'linear(to-r, green.200, pink.500)' }}
+                                            _active={{ bg: 'linear(to-r, green.200, pink.500)' }}
+                                            borderRadius={5}
+                                            width={200}
+                                            height={12}
+                                            size={'sm'}
+                                            type={'button'}
+                                            onClick={closeModal}
+                                            disabled={images.length < 2}>
+                                            prosegui
+                                        </Button>
                                     </div>
                                 </div>
-                            </>
-                        ) : (
-                            <Box className='mt-5 md:mt-20 md:ml-20 w-full md:w-3/5'>
-                                <h1 className='text-2xl font-bold mb-2'>
-                                    <Highlight
-                                        query={['perfetta!']}
-                                        styles={{ px: '2', py: '1', bg: 'gray.900', color: 'white', fontStyle: 'italic' }}
-                                    >
-                                        Mostra i tuoi prodotti in maniera perfetta!
-                                    </Highlight>
-                                </h1>
-
-                                <h3 className='text-sm font-medium leading-4	'>inserisci le immagini secondo uno schema preciso, migliorando l’esperienza
-                                    che vivranno gli utenti nel tuo store</h3>
-                                {list_explanation_photos_format.map(list => {
-                                    return (
-                                        <div key={list.type}><h2 className='text-lg font-bold mt-2'>{list.type}:</h2>
-                                            <List spacing={1} marginLeft={30}>
-                                                <UnorderedList >
-                                                    {
-                                                        list.list.map((value, id) => {
-                                                            return (
-                                                                <ListItem key={id}>{value}</ListItem>
-                                                            )
-                                                        })
-                                                    }
-                                                </UnorderedList>
-                                            </List>
-                                        </div>
-                                    )
-                                })}
-                            </Box>
-                        )}
-
-
-                    </DrawerBody>) :
-                    (
-                        <Loading />
-                    )
-                    }
-                    {/* !showCroppedImage */ !showCroppedImage && 
-                    <DrawerFooter 
-                    paddingX={0}
-                    paddingBottom={bottomPadding}
-                    >
-                        <footer className={`w-full bg-whith items-center py-4 pb-${bottomPadding}px px-6 md:px-10 border-t border-inherit	`}>
-                            <div className='flex justify-between'>
-                                <div className='hidden md:flex'>
-                                    <Button
-                                        onClick={closeModal}
-                                        borderRadius={5}
-                                        width={200}
-                                        height={12}
-                                        size={'sm'}
-                                        variant='outline'
-                                        colorScheme={'blackAlpha'}
-                                        color={'blackAlpha.900'}
-                                        disabled={false} >
-                                        indietro
-                                    </Button>
-                                </div>
-
-                                <div className='flex justify-between gap-6  md:gap-4'>
-                                    <p className='my-auto	italic text-sm md:text-base	font-medium	'>
-                                        aggiungi minimo 2 foto per confermare
-                                    </p>
-                                    <Button
-                                        bgGradient='linear(to-r, green.200, pink.500)'
-                                        _hover={{ bg: 'linear(to-r, green.200, pink.500)' }}
-                                        _active={{ bg: 'linear(to-r, green.200, pink.500)' }}
-                                        borderRadius={5}
-                                        width={200}
-                                        height={12}
-                                        size={'sm'}
-                                        type={'button'}
-                                        onClick={closeModal}
-                                        disabled={images.length < 2}>
-                                        prosegui
-                                    </Button>
-                                </div>
-                            </div>
-                        </footer>
-                    </DrawerFooter>}
+                            </footer>
+                        </DrawerFooter>}
                 </DrawerContent>
             </Drawer >
         </>

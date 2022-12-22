@@ -23,6 +23,8 @@ import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required'
 import { Firebase_User } from '../../../interfaces/firebase_user.interface'
 import { useRouter } from 'next/router'
 import { addShopId } from '../../../store/reducers/user'
+import { resizeFile } from '../../../../components/utils/resizeFile'
+import uploadPhotoFirebase from '../../../../components/utils/uploadPhotoFirebase'
 
 
 type Image = {
@@ -62,15 +64,11 @@ const index = () => {
     const { addToast } = ToastOpen();
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     const router = useRouter()
-
-
-
-
     //*useForm Registration Shop
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInput>({
         mode: "all",
         defaultValues: {
-            photo: 'https://image.shutterstock.com/image-photo/image-260nw-1668282118.jpg'
+            photo: ''
         }
     });
 
@@ -96,7 +94,7 @@ const index = () => {
     const [isValid_shop_piva, setIsValid_Shop_piva] = useState<boolean | null>(null)
     const [isValid_open_hour, setIsValid_Open_hour] = useState<boolean | null>(null)
     const [isValid_close_hour, setIsValid_Close_hour] = useState<boolean | null>(null)
-
+   
 
     //*handle image upload and crop
     const hiddenFileInput = useRef<any>(null);
@@ -117,31 +115,44 @@ const index = () => {
         }
     )
     const [image, setImage] = useState<Image>()
-
+    const [loading, setLoading] = useState(false)
+    const [showCroppedImage, setShowCroppedImage] = useState<any>(false);
 
     // Programatically click the hidden file input element
     // when the Button component is clicked
     const handleClick = (position: null | number) => {
         hiddenFileInput.current.click();
+        setShowCroppedImage(true)
+        //set the posizion of the cropp
     };
 
-    function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const onSelectFile = async(e: React.ChangeEvent<HTMLInputElement>)=> {
+        
+
+        setLoading(true)
         setBlob(null)
         setUrl(null)
-        setCrop(null)
-        setImgSrc(null)
-        if (e.target.files && e.target.files.length > 0) {
+        setCrop(null)        
+        setShowCroppedImage(true)
 
-            //setCrop(undefined) // Makes crop preview update between images.
-            const reader = new FileReader()
-            reader.addEventListener('load', () =>
-                setImgSrc(reader.result?.toString() || '')
-            )
-            reader.readAsDataURL(e.target.files[0])
+        if (e.target.files /* && e.target.files.length > 0 */) {
+            try {
+                const file = e.target.files[0];
+                const image = await resizeFile(file);
+                console.log(image);
+
+                setImgSrc(image)
+
+            } catch (err) {
+                console.log(err);
+            }
+        
         }
         else {
             return console.log('non trovata immagine caricata');
         }
+
+        setLoading(false)
     }
 
     useDebounceEffect(async () => {
@@ -161,16 +172,19 @@ const index = () => {
 
             )
                 .then(canvas => {
+                    const yourBase64String = imgSrc.substring(imgSrc.indexOf(',') + 1);
+                    const kb = Math.ceil(((yourBase64String.length * 6) / 8) / 1000); //es. 426 kb
+                    console.log(kb);
+                    //set quality based on dimension photo
+                    const quality = kb > 3000 ? 0.3 : 0.8;
                     canvas.toBlob(function (blob) {
                         if (!blob) { return }
                         const url = URL.createObjectURL(blob);
                         setUrl(url)
                         setBlob(blob)
                         setIsDisabledButton(false)
-                        console.log(url); // this line should be here
-                    }, 'image/webp');
+                    }, 'image/webp', quality);
                 })
-
         }
     },
         300,
@@ -189,8 +203,9 @@ const index = () => {
         setBlob(null)
         setUrl(null)
         setCrop(null)
-        setImgSrc(null)
+        //setImgSrc(null)
         setIsDisabledButton(true)
+        setShowCroppedImage(false)
     }
 
     //* address parameters
@@ -380,6 +395,9 @@ const index = () => {
     }
 
     const submitData = async (e: IFormInput) => {
+        const url = await uploadPhotoFirebase(image?.blob, `/${user.uid}/shop_image/immagine`)
+        console.log(url);
+        
         const Shop: IFormInput = {
             name: e.name,
             address: {
@@ -393,12 +411,13 @@ const index = () => {
                 hours: [open_hour, close_hour]
             },
             piva: watch('piva'),
-            photo: watch('photo'),
+            photo: url,
             phone: watch('phone'),
             description: ''
         }
         console.log(Shop);
         try {
+            //return the mongoID of the Shop
             const isCreatedShop = await createShop({ variables: { options: Shop } })
             console.log(isCreatedShop.data.createShop)
             dispatch(
@@ -421,7 +440,7 @@ const index = () => {
                     <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-6/12 xl:w-5/12" onSubmit={handleSubmit(submitData)}>
                         <div className='w-full'>
                             <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>parlaci di te!</h1>
-                            {!imgSrc && !image && <Center
+                            {imgSrc !== '' || !image && <Center
                                 onClick={() => handleClick(null)}
                                 marginBottom={1}
                                 width={'full'}
@@ -440,7 +459,7 @@ const index = () => {
                                     <h2>immagine negozio</h2>
                                 </div>
                             </Center>}
-                            {imgSrc && (
+                            {imgSrc && showCroppedImage && (
                                 <>
                                     <Alert status='warning' variant='solid' className='mb-2'>
                                         <AlertIcon />
@@ -464,7 +483,8 @@ const index = () => {
                                     </ReactCrop>
                                     <div className='flex justify-between mt-2 mb-2 gap-2'>
                                         <Button
-                                            onClick={() => setImgSrc(null)}
+                                            //onClick={() => setImgSrc(null)}
+                                            onClick={() => setShowCroppedImage(false)}
                                             borderRadius={5}
                                             width={'fit-content'}
                                             height={12}
@@ -502,7 +522,7 @@ const index = () => {
                                     </div>
                                 </>
                             )}
-                            {image && !imgSrc && <Image
+                            {image && !showCroppedImage && <Image
                                 width={'full'}
                                 height={'52'}
                                 borderRadius={10}

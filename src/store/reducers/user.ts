@@ -28,7 +28,7 @@ export const userState = createSlice({
         //   Not_yet_Authenticated_Request: false
         // };
       },
-      addShopId : (state, action) => {        
+      addShopId : (state, action) => {                
         state.user = {
           ...state.user,
           shopId: action.payload

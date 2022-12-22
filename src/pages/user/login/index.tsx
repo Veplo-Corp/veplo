@@ -44,7 +44,7 @@ const index = () => {
         console.log(user);
         return router.push('/')
       } catch (error: any) {
-        setLoading(true)
+        setLoading(false)
         const errorCode = error.code;
         const errorMessage = error.message;
         //console.log(errorCode);
@@ -64,6 +64,7 @@ const index = () => {
         // setemail('')
         // setpassword('')
         return router.push('/')
+        setLoading(false)
 
       } catch (error: any) {
         setLoading(true)
@@ -72,11 +73,12 @@ const index = () => {
         //console.log(errorCode);
         console.log(error);
         const errorForModal = handleErrorFirebase(errorMessage)
-
         dispatch(setModalTitleAndDescription({
           title: errorForModal?.title,
           description: errorForModal?.description
         }))
+        setLoading(false)
+
         dispatch(handleOpenModal)
       }
     }
