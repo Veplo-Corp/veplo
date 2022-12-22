@@ -79,7 +79,7 @@ export async function getStaticProps(ctx: any) {
       props: {
         city: elementCityCap.city,
         gender: toUpperCaseFirstLetter(elementGenderMacrocategory.gender),
-        category: macrogategoryName || 'Tutto',
+        category: macrogategoryName,
         postcode: elementCityCap.postcode,
         products: data?.products,
       },
@@ -127,6 +127,9 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   }
 
   const fetchMoreData = async () => {
+    console.log('moredata');
+    console.log(offset);
+    
     try {
       const plus_for_limit = 3
       const apolloClient = initApollo()
@@ -138,13 +141,14 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
           limit: offset + plus_for_limit,
           filters: {
             cap: postcode,
-            macroCategory: category,
-            gender: gender === 'uomo' ? 'M' : 'F'
+            macroCategory: '',
+            gender: gender === 'Uomo' ? 'M' : 'F'
           }
         }
       })
 
-
+      console.log(data?.products);
+      
 
       setproductsFounded((prevstate: Product[]) => {
         return [
@@ -185,7 +189,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   return (
     <>
       <Desktop_Layout>
-        <DintorniLogo_Below_Header city={city} gender={gender} category={category.replace(/-/g, ' ')}></DintorniLogo_Below_Header>
+        <DintorniLogo_Below_Header city={city} gender={gender} category={category.replace(/-/g, ' ') || 'Tutto'}></DintorniLogo_Below_Header>
 
         <InfiniteScroll
           dataLength={productsFounded.length}
