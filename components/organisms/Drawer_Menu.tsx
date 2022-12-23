@@ -14,7 +14,7 @@ const list = [
     },
     {
         title: 'il tuo negozio',
-        url: '/shop'
+        url: '/shop/info-generali'
     }
 ]
 

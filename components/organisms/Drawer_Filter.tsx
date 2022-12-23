@@ -45,9 +45,13 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
         if (openDrawerMath !== 1 && openDrawerMath > 0 && openDrawerMath !== undefined) {
             
             onOpen()
-            const category = Object.values(CATEGORIES)[Object.keys(CATEGORIES).indexOf(gender)]
-            const sizeType = category.abbigliamento.find(element => element.name === macrocategory)?.sizes
-            //da migliorare
+            const category = Object.values(CATEGORIES)[Object.keys(CATEGORIES).indexOf(gender.toLocaleLowerCase())]
+            console.log(macrocategory);
+            console.log(category);
+            
+            if(!macrocategory)return
+            const sizeType = category?.abbigliamento.find(element => element.name === macrocategory)?.sizes
+            // //da migliorare
             if (!sizeType) return
             const index = Object.keys(ContSizes.current).indexOf(sizeType)
             setSizes(Object.values(ContSizes.current)[index])
@@ -171,7 +175,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                 /* className='flex justify-between' */
                 >
                     <p className="font-medium text-xs md:text-sm italic text-black-900 ">{gender.charAt(0).toUpperCase() + gender.slice(1)}</p>
-                    <p className="font-black text-2xl italic text-black-900 my-auto mt-[-7px] ">{macrocategory}</p>
+                    <p className="font-black text-lg md:text-2xl italic text-black-900 my-auto mt-[-7px] ">{macrocategory}</p>
                     {/* <Button
                         colorScheme={'green'}
                         borderRadius={30}
@@ -180,10 +184,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                         APPLICA
                     </Button> */}
                 </DrawerHeader>
-                <DrawerBody
-                    p={0}
-
-                >
+                <DrawerBody p={0}>
                     <Input_Drawer title='seleziona uno o più brand' onChangeText={onChangeText} />
                     {filteredBrand.length > 0 && !showFilter &&
                         filteredBrand.map((brand, id) => {
@@ -392,7 +393,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                     </div>
                                 </div>
                             </Box>
-                            <Box py={3} px={4} pb={2} borderBottomWidth={0} borderColor={'gray.200'}
+                            {sizes.length > 0 && <Box py={3} px={4} pb={2} borderBottomWidth={0} borderColor={'gray.200'}
                                 marginBottom={200}
                             >
                                 <h3 className='font-bold lg:text-lg text-md mb-2'>Taglia</h3>
@@ -431,7 +432,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                     })}
                                 </div>
 
-                            </Box>
+                            </Box>}
                         </>
                     }
                 </DrawerBody>
