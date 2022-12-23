@@ -20,7 +20,7 @@ export interface Shop {
             coordinates:number[]
         }
         macroCategories?: string[],
-        description?:string,
         gender?: string[],
-    }
+    },
+    description: string
 }
