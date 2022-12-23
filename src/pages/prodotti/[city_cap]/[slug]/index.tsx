@@ -65,7 +65,7 @@ export async function getStaticProps(ctx: any) {
       variables: {
         range: 10000,
         offset: 0,
-        limit: 6,
+        limit: 8,
         filters: {
           cap: elementCityCap.postcode,
           macroCategory: macrogategoryName,
@@ -131,7 +131,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
     console.log(offset);
     
     try {
-      const plus_for_limit = 3
+      const plus_for_limit = 8;
       const apolloClient = initApollo()
       const { data, error } = await apolloClient.query({
         query: GET_PRODUCTS,
@@ -148,7 +148,6 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
       })
 
       console.log(data?.products);
-      
 
       setproductsFounded((prevstate: Product[]) => {
         return [
@@ -163,6 +162,8 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
       }
 
       setOffset((prevstate: number) => {
+        console.log(prevstate);
+        
         return prevstate + data.products.length
       })
     } catch (e: any) {
