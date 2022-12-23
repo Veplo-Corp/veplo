@@ -49,7 +49,8 @@ export async function getStaticProps(ctx: any) {
         props: {
             shop: data.shop,
             products: products?.data?.shop.products
-        }
+        },
+        revalidate: 60, // In seconds
     }
 }
 
