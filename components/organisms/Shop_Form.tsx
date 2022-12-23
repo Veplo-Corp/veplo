@@ -10,7 +10,7 @@ import Div_input_creation from '../atoms/Div_input_creation'
 const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
     console.log(shop);
 
-    const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm({
+    const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<Shop>({
         mode: "all",
         defaultValues: shop
     });
