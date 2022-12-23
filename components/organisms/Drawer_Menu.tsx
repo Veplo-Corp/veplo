@@ -15,6 +15,10 @@ const list = [
     {
         title: 'il tuo negozio',
         url: '/shop/info-generali'
+    },
+    {
+        title: 'hai bisogno di assistenza?',
+        url: '/shop/assistenza'
     }
 ]
 

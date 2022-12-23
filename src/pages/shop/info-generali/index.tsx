@@ -9,6 +9,7 @@ import { useQuery } from '@apollo/client'
 import { useSelector } from 'react-redux'
 import { Shop } from '../../../interfaces/shop.interface'
 import Shop_Form from '../../../../components/organisms/Shop_Form'
+import Customer_Care_Contacts from '../../../../components/organisms/Customer_Care_Contacts'
 
 
 const index: FC<{}> = () => {
@@ -29,6 +30,7 @@ const index: FC<{}> = () => {
   return (
     <Desktop_Layout>
       {Shop && <Shop_Form shop={Shop}/>}
+      {/* <Customer_Care_Contacts /> */}
     </Desktop_Layout>
   )
 }
