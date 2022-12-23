@@ -96,9 +96,7 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
 
                     <InputGroup
                     >
-                        <InputLeftAddon children='+39' paddingY={6}
-
-                        />
+                        <InputLeftAddon children='+39' paddingY={6} />
                         <Input
                             maxLength={12}
                             rounded={10}
