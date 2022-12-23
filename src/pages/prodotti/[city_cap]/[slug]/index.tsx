@@ -232,7 +232,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
           </div>
         </InfiniteScroll>
       </Desktop_Layout>
-      <FIlter_Button gender={gender} macrocategory={category} />
+      <FIlter_Button gender={gender} macrocategory={category ? category : "Tutto l'abbligliamento"} />
 
     </>
 
