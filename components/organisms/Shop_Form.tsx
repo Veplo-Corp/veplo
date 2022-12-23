@@ -17,7 +17,7 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
 
 
     return (
-        <form className="w-full flex mb-96 " onSubmit={() => { }}>
+        <form className="w-full flex" onSubmit={() => { }}>
             <div className='p-3 w-full sm:w-7/12 lg:w-5/12 m-auto'>
                 <h1 className='italic text-xl lg:text-2xl font-extrabold mb-3 md:mb-4'>la tua azienda</h1>
                 <Div_input_creation text='Nome (visualizzato dagli utenti)'>
