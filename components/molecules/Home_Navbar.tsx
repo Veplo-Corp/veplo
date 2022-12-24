@@ -1,22 +1,19 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import createUrlSchema from '../utils/create_url';
+import getGenderandMacrocategory from '../utils/get_Gender_and_Macrocategory';
 
 type Props = {
-    genere?: 'uomo' | 'donna' | undefined | String[],
     showCategory: boolean,
     onShowCategory: (value?: boolean | '', gender?: string) => void
 }
 
-const navbar: React.FC<Props> = ({ genere, showCategory, onShowCategory }) => {
-    const router = useRouter();
-    const address_user = useSelector((state: any) => state.address.address);
-    // console.log(address_user);
 
 
 
+const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
     const pushToStores = () => {
         onShowCategory(false)
         if (address_user) {
@@ -33,15 +30,101 @@ const navbar: React.FC<Props> = ({ genere, showCategory, onShowCategory }) => {
         return
     }
 
+    // const types = [
+    //     {
+    //         name: 'Donna',
+    //         action: onShowCategory('', 'donna'),
+    //     },
+    //     {
+    //         name: 'Uomo',
+    //         action: onShowCategory('', 'uomo'),
+    //     },
+    //     {
+    //         name: 'Negozi',
+    //         action: pushToStores(),
+    //     },
+    // ]
+    const router = useRouter()
+    const [gender, setGender] = useState('')
+    useEffect(() => {
+        const pathname = router.pathname;
+        if (pathname.includes('negozi')) {
+            return setGender('negozi')
+
+        }
+
+        const slug = router.query.slug;
+        if (typeof slug !== 'string') return
+        const elementGenderMacrocategory: { gender: string | null, macrocategory: string | null } = getGenderandMacrocategory(slug);
+        if (!elementGenderMacrocategory?.gender) { return }
+        setGender(elementGenderMacrocategory.gender)
+        return () => {
+
+        }
+    }, [router])
+
+
+    const address_user = useSelector((state: any) => state.address.address);
+    // console.log(address_user);
+
+
+
+
+
     return (
 
-        <nav className="fixed justify-center w-full hidden md:flex pr-20 lg:pr-0 z-10 "> {/* pr-80 */}
-            <a className={` ${genere == "donna" && !showCategory ? "underline underline-offset-4" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-8 py-0.5`} onClick={() => onShowCategory('', 'donna')}>Donna</a>
-            <a className={` ${genere == "uomo" && !showCategory ? "underline underline-offset-4" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-8 py-0.5`} onClick={() => onShowCategory('', 'uomo')} >Uomo</a>
-            <a className="cursor-pointer text-sm lg:text-base font-medium text-white hover:text-white-900 rounded-2xl bg-rose-800 py-px px-4"
-                onClick={pushToStores}
-            >Negozi</a>
+        <nav className="fixed justify-center w-full hidden md:flex pr-20 lg:pr-0 gap-4">  {/* z-10 */}
+
+            <div className={` ${gender === 'donna' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 `}>
+                <a
+                    className={` ${gender === 'donna' && !showCategory ? "relative z-50" : ""}`}
+                    onClick={() => onShowCategory('', 'donna')}>
+                    <div className='z-[100]'>
+                        Donna
+                    </div>
+                </a>
+                {gender === 'donna' && !showCategory && <div className={` absolute w-full h-[8px] bottom-[3px] bg-red-500 z-0`}>
+                </div>}
+            </div>
+            <div className={` ${gender === 'uomo' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 `}>
+                <a
+                    className={` ${gender === 'uomo' && !showCategory ? "relative z-50" : ""}`}
+                    onClick={() => onShowCategory('', 'uomo')}>
+                    <div className='z-[100]'>
+                        Uomo
+                    </div>
+                </a>
+                {gender === 'uomo' && !showCategory && <div className={` absolute w-full h-[8px] bottom-[3px] bg-red-500 z-0`}>
+                </div>}
+            </div>
+            <div className={` ${gender === 'negozi' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 `}>
+                <a
+                    className={` ${gender === 'negozi' && !showCategory ? "relative z-50" : ""}`}
+                    onClick={pushToStores}>
+                    <div className='z-[100]'>
+                        Negozi
+                    </div>
+                </a>
+                {gender === 'negozi' && !showCategory && <div className={` absolute w-full h-[8px] bottom-[3px] bg-red-500 z-0`}>
+                </div>}
+            </div>
+           
         </nav>
+
+        /* types.map(((type: { name: string, action: any }) => {
+                    <div key={type.name} className={` ${gender === 'donna' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 `}>
+                        <a
+                            className={` ${gender === 'donna' && !showCategory ? "relative z-50" : ""}`}
+                            onClick={() => onShowCategory('', 'donna')}>
+                            <div className='z-[100]'>
+                                Donna
+                            </div>
+                        </a>
+                        <div className='absolute w-full h-[8px] bottom-[3px] bg-red-500 z-0'>
+                        </div>
+                    </div>
+                }))
+            } */
 
     )
 }

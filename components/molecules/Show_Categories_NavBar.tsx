@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { Mapbox_Result } from '../../src/interfaces/mapbox_result.interface';
 import { CATEGORIES, Categories } from '../mook/categories';
 import createUrlSchema from '../utils/create_url';
+import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
 
 
 
@@ -39,7 +40,7 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any, clo
     return (
         //da aggiustare
         <div className='border-b-2 border-gray-100 bg-white w-screen fixed z-50 top-30 pt-4 pb-10 px-10'>
-            <h1 className='font-bold text-lg'>Abbigliamento {gender}</h1>
+            <h1 className='font-bold text-lg'>Abbigliamento {toUpperCaseFirstLetter(gender)}</h1>
             <div className='grid grid-cols-2 mr-96 mt-3 lg:w-5/12'>
                 <p className='text-base font-medium mb-1 w-fit cursor-pointer hover:underline underline-offset-2'
                     onClick={() => handleClickCategory('abbigliamento')}
