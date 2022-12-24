@@ -31,8 +31,6 @@ export async function getStaticProps(ctx: any) {
         variables: { id: shopId },
     })
 
-
-
     const products = await apolloClient.query({
         query: GET_PRODUCTS_FROM_SHOP,
         variables: { id: shopId },
@@ -40,10 +38,6 @@ export async function getStaticProps(ctx: any) {
         fetchPolicy: 'cache-first',
         // nextFetchPolicy: 'cache-only',
     })
-
-    console.log(data);
-
-    console.log(data);
 
     return {
         props: {
