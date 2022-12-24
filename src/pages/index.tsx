@@ -4,6 +4,7 @@ import BlackButton from '../../components/atoms/BlackButton'
 import { useState } from 'react'
 import Drawer_Address from '../../components/organisms/Drawer_Address'
 import Image from 'next/image'
+import Shop_not_Allowed from '../../components/utils/Shop_not_Allowed'
 
 
 const Home: NextPage = () => {
@@ -18,7 +19,7 @@ const Home: NextPage = () => {
 
 
   return (
-    <>
+    <Shop_not_Allowed>
       <img className='w-full object-cover h-full md:h-full mt-12' 
       src="/static/homeImg.png" 
       alt="non trovata" />
@@ -58,7 +59,7 @@ const Home: NextPage = () => {
       src="https://img01.ztat.net/outfit/d2bbc3015626416fa0f33450b7295d97/9586c74af338488da7215817f83e1bb6.jpg?imwidth=1800" 
       alt="" />
       <Drawer_Address openDrawerMath={openDrawer}/>
-    </>
+    </Shop_not_Allowed>
   )
 }
 

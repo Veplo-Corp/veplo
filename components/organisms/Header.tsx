@@ -128,7 +128,7 @@ const Header = () => {
             </div>}
 
             <div className={`hidden md:flex pl-2 lg:pl-8 fixed z-50 ${!user ? 'top-10' : 'top-3'} -mt-px`}> {/* lg:w-0 lg:flex-1 */}
-                {!address_user && <Link href="/">
+                {!address_user && !user?.shopId && <Link href="/">
                     <a className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</a>
                 </Link>}
                 {(!user || !user.Not_yet_Authenticated_Request) && !user?.isShop && address_user &&
