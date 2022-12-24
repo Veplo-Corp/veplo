@@ -160,7 +160,7 @@ const Header = () => {
 
                             {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) &&
                                 <>
-                                    <Navbar genere={genere} showCategory={showCategory.show} onShowCategory={handleShowCategory} />
+                                    <Navbar showCategory={showCategory.show} onShowCategory={handleShowCategory} />
 
                                 </>
                             }
