@@ -47,10 +47,10 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
     const router = useRouter()
     const [gender, setGender] = useState('')
     useEffect(() => {
+        setGender('')
         const pathname = router.pathname;
         if (pathname.includes('negozi')) {
             return setGender('negozi')
-
         }
 
         const slug = router.query.slug;
@@ -59,8 +59,8 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
         if (!elementGenderMacrocategory?.gender) { return }
         setGender(elementGenderMacrocategory.gender)
         return () => {
-
         }
+
     }, [router])
 
 
@@ -108,7 +108,7 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                 {gender === 'negozi' && !showCategory && <div className={` absolute w-full h-[8px] bottom-[3px] bg-red-500 z-0`}>
                 </div>}
             </div>
-           
+
         </nav>
 
         /* types.map(((type: { name: string, action: any }) => {
