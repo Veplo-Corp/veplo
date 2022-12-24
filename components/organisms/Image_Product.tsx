@@ -161,7 +161,6 @@ const Image_Product: React.FC<{product:Product | undefined}> = ({product}) => {
                                 width={'full'}
                                 maxH={'52'}
                                 className='object-cover'
-                                // className='hover:scale-105'
                                 />
                             </Box>
                         )
