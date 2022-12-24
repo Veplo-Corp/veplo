@@ -230,6 +230,7 @@ const index = () => {
                                 confirmButtonText={'modifica'} 
                                 toParentPhoto={setNewImages}
                                 loading={loading}
+                                backbutton={true}
                                 />
                         </div>
                     </>

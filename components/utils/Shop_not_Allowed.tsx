@@ -10,7 +10,7 @@ const Shop_not_Allowed: React.FC<{children:any}> = ({ children }) => {
     useEffect(() => {
         const abortController = new AbortController();
         if(user && user.Not_yet_Authenticated_Request === true) return
-        if ( user.isShop) {            
+        if ( user?.isShop) {            
             router.push('/shop/prodotti')
         } 
         return () => {
