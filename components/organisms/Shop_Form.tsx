@@ -23,6 +23,7 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                 <Div_input_creation text='Nome (visualizzato dagli utenti)'>
                     <InputGroup>
                         <Input
+                            autoComplete='off'
                             maxLength={35}
                             rounded={10}
                             paddingY={6}
@@ -41,6 +42,7 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                 <Div_input_creation text='Partita Iva'>
                     <InputGroup>
                         <Input
+                            autoComplete='off'
                             maxLength={35}
                             rounded={10}
                             paddingY={6}
