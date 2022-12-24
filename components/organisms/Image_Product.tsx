@@ -159,8 +159,8 @@ const Image_Product: React.FC<{product:Product | undefined}> = ({product}) => {
                             >
                                 <Image src={image} alt={'immagine non trovata'}
                                 width={'full'}
-                                height={'fit-content'}
-                                
+                                maxH={'52'}
+                                className='object-cover'
                                 // className='hover:scale-105'
                                 />
                             </Box>
