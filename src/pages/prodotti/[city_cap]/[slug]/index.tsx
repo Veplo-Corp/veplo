@@ -110,6 +110,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   const [hasMoreData, setHasMoreData] = useState(true)
   const [productsFounded, setproductsFounded] = useState<Product[]>(products)
   const [offset, setOffset] = useState<number>(products.length)
+  console.log(offset);
   
 
   const toProductPageUrl = (product: Product) => {
@@ -133,12 +134,15 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
     try {
       const plus_for_limit = 8;
       const apolloClient = initApollo()
+      if(productsFounded.length % plus_for_limit !== 0) {
+        return setHasMoreData(false)
+      }
       const { data, error } = await apolloClient.query({
         query: GET_PRODUCTS,
         variables: {
           range: 10000,
-          offset: offset,
-          limit: offset + plus_for_limit,
+          offset: productsFounded.length,
+          limit: productsFounded.length + plus_for_limit,
           filters: {
             cap: postcode,
             macroCategory: '',
@@ -156,8 +160,8 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         ]
       })
 
-      if (data?.products.length !== plus_for_limit) {
-        console.log('eccolo');
+
+      if (data?.products % plus_for_limit !== 0) {
         setHasMoreData(false)
       }
 
@@ -223,7 +227,6 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         >
           <div className={` flex items-center justify-center`}>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
-
               {productsFounded[0] !== null && productsFounded.map((product, key) => {
                 return (
                   <Box_Dress eventHandler={toProductPageUrl} key={key} product={product} toShop={toShopPage}></Box_Dress>
