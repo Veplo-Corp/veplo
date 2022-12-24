@@ -4,10 +4,10 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 // import { Brand } from '../mook/brands'
 
 
-const Autocomplete: React.FC<{ values: string[], handleChangeValues?: any, selectedValue?:string }> = ({ values, handleChangeValues, selectedValue }) => {
+const Autocomplete: React.FC<{ values: string[], handleChangeValues?: any, selectedValue?: string }> = ({ values, handleChangeValues, selectedValue }) => {
     //console.log(values);
 
-    const [selected, setSelected] = useState(selectedValue ||'')
+    const [selected, setSelected] = useState(selectedValue || '')
     const [query, setQuery] = useState('')
     const [filteredValues, setFilteredValues] = useState<any>([])
 
@@ -16,13 +16,13 @@ const Autocomplete: React.FC<{ values: string[], handleChangeValues?: any, selec
     useEffect(() => {
 
 
-        setFilteredValues((prevstate:any) => {
+        setFilteredValues((prevstate: any) => {
             return query === '' || query.length < 3
                 ? values.filter((value) =>
-                value
-                    .toLowerCase()
-                    .replace(/\s+/g, '')
-                    .startsWith(query.toLowerCase().replace(/\s+/g, ''))
+                    value
+                        .toLowerCase()
+                        .replace(/\s+/g, '')
+                        .startsWith(query.toLowerCase().replace(/\s+/g, ''))
                 ).slice(0, 700) : values.filter((value) =>
                     value
                         .toLowerCase()
@@ -44,6 +44,7 @@ const Autocomplete: React.FC<{ values: string[], handleChangeValues?: any, selec
                 <div className="relative mt-1">
                     <div className="border border-gray rounded-lg">
                         {values[0] && <Combobox.Input
+                            autoComplete='off'
                             className="w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0"
                             //displayValue={(value) => value}
                             onChange={(event) => setQuery(event.target.value)}
@@ -70,7 +71,7 @@ const Autocomplete: React.FC<{ values: string[], handleChangeValues?: any, selec
 
                             ) : (
 
-                                filteredValues.map((value:any, valueId:any) => (
+                                filteredValues.map((value: any, valueId: any) => (
                                     <Combobox.Option
                                         key={valueId}
                                         className={({ active }) =>

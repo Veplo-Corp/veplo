@@ -155,7 +155,6 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                             <Controller
                                 control={control}
                                 name="brand"
-                                autoComplete='off'
                                 rules={{ required: false }}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <Autocomplete values={brands.current}
