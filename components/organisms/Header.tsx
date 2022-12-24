@@ -14,6 +14,7 @@ import Drawer_Menu from './Drawer_Menu'
 import User_Popover from '../molecules/User_Popover'
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
 import { Transition } from '@headlessui/react'
+import To_Home_Logo from '../molecules/To_Home_Logo'
 
 
 const Header = () => {
@@ -127,12 +128,17 @@ const Header = () => {
                 </button>
             </div>}
 
-            <div className={`hidden md:flex pl-2 lg:pl-8 fixed z-50 ${!user ? 'top-10' : 'top-3'} -mt-px`}> {/* lg:w-0 lg:flex-1 */}
-                {!address_user && !user?.shopId && <Link href="/">
-                    <a className="font-black text-xl md:text-3xl italic text-black-900  ">DINTORNI</a>
-                </Link>}
+            <div className={` pl-2 lg:pl-8 fixed z-50 ${!user ? 'top-3 md:top-10' : 'top-3'} `}> {/* lg:w-0 lg:flex-1 */}
+                    {!user?.isShop &&
+                        <div className={`flex ${address_user ? 'md:hidden' : 'flex'}`}>
+                        <To_Home_Logo href='/' />
+                        </div>
+                    }
+                    {user?.isShop &&
+                        <To_Home_Logo href='/shop/prodotti' />
+                    }
                 {(!user || !user.Not_yet_Authenticated_Request) && !user?.isShop && address_user &&
-                    <>
+                    <div className='hidden md:flex'>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-6 h-6 mt-1">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
@@ -142,7 +148,7 @@ const Header = () => {
                         >
                             {address_user.placeType === 'address' && <span>{address_user.address}{address_user.streetNumber && <span> {address_user.streetNumber}</span>}, </span>}  {address_user.city}
                         </p>
-                    </>
+                    </div>
                 }
 
             </div>
@@ -163,11 +169,7 @@ const Header = () => {
                                 enterFrom="opacity-0"
                                 enterTo="opacity-100"
                             >
-                                {(!user || !user?.isShop) && <div className="  w-full md:hidden mt-1">
-                                    <Link href="/" >
-                                        <a className="font-black ml-5 text-2xl italic text-black-900  ">DINTORNI</a>
-                                    </Link>
-                                </div>}
+
                                 {/* button for Mobile */}
                                 {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) &&
                                     <div className={`pl-2 md:pl-8 fixed z-50 top-3 md:top-4 right-2 md:hidden`}>

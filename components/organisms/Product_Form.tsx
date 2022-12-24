@@ -1,5 +1,6 @@
 import { CheckIcon, DownloadIcon } from '@chakra-ui/icons';
-import { Box, CircularProgress, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react';
+import { Box, Button, CircularProgress, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form';
 import { IFormInput } from '../../src/pages/shop/crea-prodotto';
@@ -21,13 +22,13 @@ import Modal_Error_Shop from './Modal_Error_Shop';
 
 
 
-const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?: string, disabled: boolean, titleText: string, confirmButtonText: string, toParentPhoto?: any, loading?: boolean }> = ({ handleSubmitEvent, defaultValues, type, disabled, titleText, confirmButtonText, toParentPhoto, loading }) => {
+const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?: string, disabled: boolean, titleText: string, confirmButtonText: string, toParentPhoto?: any, loading?: boolean, backbutton?: boolean }> = ({ handleSubmitEvent, defaultValues, type, disabled, titleText, confirmButtonText, toParentPhoto, loading, backbutton }) => {
     //*UseForm
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<any>({
         mode: "all",
         defaultValues: defaultValues
     });
-
+    const router = useRouter()
     //* create product form
     const [microcategorySelected, setMicrocategorySelected] = useState<Microcategory>();
     const [sizesSelected, setSizesSelected] = useState<string[]>();
@@ -269,7 +270,23 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                 </div>
                             </Box>
                         </Div_input_creation>
-                        <div className='flex justify-end mt-3'>
+                        <div className={`flex ${!backbutton ? 'justify-end' : 'justify-between'} mt-3`}>
+                            {backbutton && <Button
+                                onClick={() => { 
+                                    router.back()
+                                }}
+                                borderRadius={5}
+                                width={'fit-content'}
+                                height={12}
+                                size={'sm'}
+                                variant='outline'
+                                colorScheme={'blackAlpha'}
+                                color={'blackAlpha.900'}
+                                disabled={false} >
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                                    <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clipRule="evenodd" />
+                                </svg>
+                            </Button>}
                             <BlackButton
                                 typeButton={'submit'}
                                 element={!loading ? confirmButtonText :
@@ -285,6 +302,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                 //disabled={false}
                                 disabled={type === 'edit' ? false : (!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0] || !watch('photos')[1])}
                             />
+
                         </div>
 
                     </div>
