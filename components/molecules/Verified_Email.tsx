@@ -15,7 +15,7 @@ const Verified_Email = () => {
                     </span>
                     <br />
                     <div className='flex lg:hidden mt-2 '>
-                        <Button colorScheme={'black'} variant='link'>
+                        <Button colorScheme={'black'} variant='link' onClick={sendEmailVerificationHanlder}>
                             <span className='underline'>invia mail di nuovo</span>
                         </Button>
                     </div>
