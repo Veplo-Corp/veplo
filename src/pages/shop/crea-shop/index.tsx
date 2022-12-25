@@ -555,7 +555,7 @@ const index = () => {
                                         maxLength={35}
                                         rounded={10}
                                         paddingY={6}
-                                        autoComplete='off'
+                                        autoComplete="new-password"
                                         type="text"
                                         // value={shop_name}
                                         {...register("name", { required: true, maxLength: 30 })}
@@ -606,8 +606,7 @@ const index = () => {
                                         rounded={10}
                                         paddingY={6}
                                         type='text'
-                                        autoComplete='off'
-                                        //value={address_Mapbox}
+                                        autoComplete="new-password"                                        //value={address_Mapbox}
                                         isInvalid={false}
                                         //onChange={(event) => changeInput(event, 'search_address')}
                                         onChange={(e) => {

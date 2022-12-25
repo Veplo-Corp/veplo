@@ -30,15 +30,9 @@ import {
 // } 
 
 
-let firebaseConfig = {
-  apiKey: 'AIzaSyDs607C9zpuZjhM9H9lA48QRkFX4nZwi9o',
-  authDomain: "dintorni-dev.firebaseapp.com",
-  projectId: "dintorni-dev",
-  storageBucket: "dintorni-dev.appspot.com",
-  messagingSenderId: "519973926988",
-  appId: "1:519973926988:web:8570da91f33a1b6b2d9ce9",
-  measurementId: "G-FJ9863RJ7L"
-};
+let firebaseConfig;
+
+
 
 if (process.env.NODE_ENV === 'production') {
   firebaseConfig = {
@@ -50,9 +44,20 @@ if (process.env.NODE_ENV === 'production') {
     appId: "1:890670080840:web:1c04dd1f4e6a29d4c5497d",
     measurementId: "G-EETDDVBRRY"
   };
+} else {
+  firebaseConfig = {
+    apiKey: 'AIzaSyDs607C9zpuZjhM9H9lA48QRkFX4nZwi9o',
+    authDomain: "dintorni-dev.firebaseapp.com",
+    projectId: "dintorni-dev",
+    storageBucket: "dintorni-dev.appspot.com",
+    messagingSenderId: "519973926988",
+    appId: "1:519973926988:web:8570da91f33a1b6b2d9ce9",
+    measurementId: "G-FJ9863RJ7L"
+  };
 }
 
 
+//console.log(firebaseConfig);
 
 
 // Initialize Firebase

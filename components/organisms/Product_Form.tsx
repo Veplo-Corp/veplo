@@ -133,7 +133,9 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                             </InputGroup>
                         </Div_input_creation>
                         <Div_input_creation text='Prezzo'>
-                            <InputGroup >
+                            <InputGroup 
+                            
+                            >
                                 <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} />
                                 <Input
                                     rounded={10}
