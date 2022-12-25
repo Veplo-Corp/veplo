@@ -555,6 +555,7 @@ const index = () => {
                                         maxLength={35}
                                         rounded={10}
                                         paddingY={6}
+                                        autoComplete='off'
                                         type="text"
                                         // value={shop_name}
                                         {...register("name", { required: true, maxLength: 30 })}
@@ -572,6 +573,7 @@ const index = () => {
                                     />
                                     <Input
                                         maxLength={12}
+                                        autoComplete='off'
                                         rounded={10}
                                         paddingY={6}
                                         type='tel'
@@ -604,6 +606,7 @@ const index = () => {
                                         rounded={10}
                                         paddingY={6}
                                         type='text'
+                                        autoComplete='off'
                                         //value={address_Mapbox}
                                         isInvalid={false}
                                         //onChange={(event) => changeInput(event, 'search_address')}
@@ -717,6 +720,7 @@ const index = () => {
                                         maxLength={11}
                                         rounded={10}
                                         paddingY={6}
+                                        autoComplete='off'
                                         type='tel'
                                         isInvalid={false}
                                         {...register("piva", { required: true, minLength: 11, maxLength: 11 })}
