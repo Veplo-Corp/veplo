@@ -88,7 +88,7 @@ export async function getStaticProps(ctx: any) {
   } catch (e: any) {    
     return {
       props: {
-        city: e.message/* elementCityCap.city */,
+        city: elementCityCap.city,
         gender: elementGenderMacrocategory.gender,
         category: elementGenderMacrocategory.macrocategory,
         postcode: elementCityCap.postcode,
@@ -181,7 +181,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
   }
 
-  if (errorMessage === `cap ${postcode} does not exists`) {
+  if (errorMessage /* === `cap ${postcode} does not exists` */) {
     return (
       <div className='mt-40 text-center'>
         <Error_page errorMessage='cap-does-not-exist' />
