@@ -85,10 +85,10 @@ export async function getStaticProps(ctx: any) {
       },
       revalidate: 60 //seconds
     }
-  } catch (e: any) {
+  } catch (e: any) {    
     return {
       props: {
-        city: elementCityCap.city,
+        city: 'elementCityCap.city',
         gender: elementGenderMacrocategory.gender,
         category: elementGenderMacrocategory.macrocategory,
         postcode: elementCityCap.postcode,
@@ -195,7 +195,6 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
     <>
       <Desktop_Layout>
         <DintorniLogo_Below_Header city={city} gender={gender} category={category.replace(/-/g, ' ') || 'Tutto'}></DintorniLogo_Below_Header>
-
         <InfiniteScroll
           dataLength={productsFounded.length}
           next={fetchMoreData}
