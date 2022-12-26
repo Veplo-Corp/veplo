@@ -88,7 +88,7 @@ export async function getStaticProps(ctx: any) {
   } catch (e: any) {    
     return {
       props: {
-        city: 'elementCityCap.city',
+        city: e.message/* elementCityCap.city */,
         gender: elementGenderMacrocategory.gender,
         category: elementGenderMacrocategory.macrocategory,
         postcode: elementCityCap.postcode,
