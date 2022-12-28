@@ -71,7 +71,7 @@ const index: React.FC<{ city: string, postcode: null | string, macrocategory: nu
             <div className="grid grid-cols-1 md:pt-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 w-full m-auto justify-items-center	">
                 {shops.map((shop) => {
                     return (
-                        <Box_Shop key={shop.id} scale={'scale(0.99)'}  eventHandler={toStore} shop={shop} width={420} height={250} />
+                        <Box_Shop key={shop.id} scale={'scale(0.99)'}  eventHandler={toStore} shop={shop} />
                     )
                 })}
             </div>
