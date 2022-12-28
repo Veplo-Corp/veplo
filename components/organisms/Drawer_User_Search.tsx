@@ -7,9 +7,13 @@ import React, { useEffect, useState } from 'react'
 import Input_Drawer from '../atoms/Input_Drawer'
 import { CATEGORIES } from '../mook/categories'
 import createUrlSchema from '../utils/create_url'
+import getGenderandMacrocategory from '../utils/get_Gender_and_Macrocategory'
 
 const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, handleChangeAddress: any }> = ({ openDrawerMath, address_user, handleChangeAddress }) => {
-    const [isAndroid, setIsAndroid] = useState(false)
+    const [isAndroid, setIsAndroid] = useState(false);
+    const [selectedIndex, setSelectedIndex] = useState(2)
+
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
             let type = new MobileDetect(window.navigator.userAgent)
@@ -26,12 +30,24 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [categories] = useState(CATEGORIES)
-    const router = useRouter()
+    const router = useRouter();
+
+
     useEffect(() => {
         //console.log(openDrawerMath);
         if (openDrawerMath !== 1 && openDrawerMath > 0 && openDrawerMath !== undefined) {
             onOpen()
+            const slug = router.query.slug;
+            if (typeof slug !== 'string') return
+            const elementGenderMacrocategory: { gender: string | null, macrocategory: string | null } = getGenderandMacrocategory(slug);
+            if(elementGenderMacrocategory.gender !== null) {
+                //preselect the Gender if exist
+                setSelectedIndex(Object.keys(categories).indexOf(elementGenderMacrocategory.gender))
+            }
+          
         }
+
+
     }, [openDrawerMath])
 
     const classNames = (...classes: any[]) => {
@@ -115,9 +131,10 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                             </Center>
                         </Box>
                         <Tab.Group
-
+                            selectedIndex={selectedIndex} onChange={setSelectedIndex}
                         >
                             <Tab.List className='w-full flex justify-between h-12 border-0	border-b border-inherit'>
+                                {/* <Tab></Tab> */}
                                 {Object.keys(categories).map((category) => (
                                     <Tab
                                         key={category}
@@ -144,12 +161,13 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                             <Tab.Panels
                                 className={`${isAndroid ? 'mb-56' : 'mb-40'}`}
                             >
+                                {/* <Tab.Panel></Tab.Panel> */}
                                 {Object.values(categories).map((categories, indexArray) => {
                                     return (
                                         <Tab.Panel key={indexArray}>
                                             <div
                                                 className="py-2 px-6 w-full flex justify-between h-12 border-0 border-b cursor-pointer"
-                                                onClick={() => {                                                    
+                                                onClick={() => {
                                                     handleCategoryClicked('tutto l’abbigliamento', indexArray)
                                                 }}
                                             >

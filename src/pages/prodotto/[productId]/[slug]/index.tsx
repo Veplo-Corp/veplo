@@ -16,6 +16,7 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import GET_PRODUCTS_FROM_SHOP from '../../../../lib/apollo/queries/geetProductsShop';
 import { toProductPage } from '../../../../../components/utils/toProductPage';
 import Image_Product from '../../../../../components/organisms/Image_Product';
+import GET_SINGLE_SHOP from '../../../../lib/apollo/queries/getSingleShop';
 
 
 export async function getStaticPaths() {
@@ -120,7 +121,25 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
     //console.log(decodeURIComponent(query.nome));
 
 
+    const chatWithStore = async () => {
+        const apolloClient = initApollo()
+        //get Shop phone number
+        try {
+            const { data, error } = await apolloClient.query({
+                query: GET_SINGLE_SHOP,
+                variables: { id: product.shopId },
+            })
+            if (error) return
+            window.open(
+                `https://wa.me/+39${data.shop.phone}?text=ciao, ero su Dintorni.it e stavo visitando il tuo negozio ${product.shopOptions.name}. Avrei bisogno di una informazione sul prodotto *${product.name} - ${product.brand}*`
+                , '_blank')
+        } catch (e) {
+            console.log(e);
 
+        }
+
+
+    }
 
 
 
@@ -210,42 +229,64 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                             gender={product.gender}
                             macrocategory={product.macroCategory}
                         />
+
                         <Box
                             fontWeight='light'
                             as='h1'
-                            noOfLines={1}
+                            noOfLines={2}
                             mt='6'
                             mb={3}
                             fontSize='md'
                             onClick={() => {
-                                const slug = createUrlSchema([product.shopOptions.city, product.shopOptions.name])
-                                router.push(`/negozio/${product.shopId}/${slug}`)
+
                             }}
-                            
+
                         >
-                            Altri prodotti di <span className='underline underline-offset-2 cursor-pointer'>{product.shopOptions.name}</span>
+                            Hai bisogno di più informazioni sul prodotto? <span className='underline underline-offset-2 cursor-pointer'
+                                onClick={chatWithStore}
+                            >contatta il titolare del negozio</span>
                         </Box>
 
-                        <div className="overflow-x-scroll flex w-full gap-4 ">
-                            {shopProductsData?.shop.products.map((element: Product) => {
-                                return (
-                                    <div key={element.id} className={`${element.id === product.id ? 'hidden' : 'flex'}  gap-4 w-fit`}
-                                    >
-                                        <Box mb={'5'} borderRadius='lg' overflow='hidden'
-                                            width={36}
-                                            borderWidth={1.5}
-                                            className={`w-32 lg:w-40`}
-                                            onClick={() => toProduct(element)}
-                                        >
-                                            <Image className=' cursor-pointer hover:scale-105 w-full aspect-[8/12] object-cover' src={element.photos[0]} alt={'immagine non trovata'} />
-                                        </Box>
-                                    </div>)
+                        {shopProductsData?.shop.products.length > 1 &&
+                            <>
+                                <Box
+                                    fontWeight='light'
+                                    as='h1'
+                                    noOfLines={1}
+                                    mt='6'
+                                    mb={3}
+                                    fontSize='md'
+                                    onClick={() => {
+                                        const slug = createUrlSchema([product.shopOptions.city, product.shopOptions.name])
+                                        router.push(`/negozio/${product.shopId}/${slug}`)
+                                    }}
 
-                            })}
-                        </div>
+                                >
+                                    Altri prodotti di <span className='underline underline-offset-2 cursor-pointer'>{product.shopOptions.name}</span>
+                                </Box>
+
+                                <div className="overflow-x-scroll flex w-full gap-4 ">
+                                    {shopProductsData?.shop.products.map((element: Product) => {
+                                        return (
+                                            <div key={element.id} className={`${element.id === product.id ? 'hidden' : 'flex'}  gap-4 w-fit`}
+                                            >
+                                                <Box mb={'5'} borderRadius='lg' overflow='hidden'
+                                                    width={36}
+                                                    borderWidth={1.5}
+                                                    className={`w-32 lg:w-40`}
+                                                    onClick={() => toProduct(element)}
+                                                >
+                                                    <Image className=' cursor-pointer hover:scale-105 w-full aspect-[8/12] object-cover' src={element.photos[0]} alt={'immagine non trovata'} />
+                                                </Box>
+                                            </div>)
+
+                                    })}
+                                </div>
+                            </>
+                        }
                     </Box>
                 </div>
-                <Horizontal_Line />
+                {/* <Horizontal_Line />
                 <Box
                     fontWeight='medium'
                     as='h1'
@@ -264,7 +305,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                     lineHeight={'normal'}
                 >
                     scopri altri negozi con prodotti simili
-                </Box>
+                </Box> */}
             </Desktop_Layout>
         </>
 
