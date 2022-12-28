@@ -24,7 +24,6 @@ import Loading from '../molecules/Loading';
 // const Table_Products_Shop: React.FC<{ idShop: string, deleteProduct: any }> = ({ idShop, deleteProduct }) => {
 
 const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ idShop, deleteProduct }) => {
-
     const router = useRouter()
     //const [products, SetProducts] = useState<Product[] | []>([])
 
@@ -98,7 +97,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
                         </Tr>
                     </Thead>
                     <Tbody >
-                        {data && data.shop.products.map((product: Product) => {
+                        {data && data?.shop.products.map((product: Product) => {
                             return (
                                 <Tr key={product.id} fontSize={['xs', 'medium']} >
                                     <Td className='hidden md:table-cell'>

@@ -16,7 +16,7 @@ export interface Product {
         type: string,
         coordinates: number[]
     },
-    shop: {
+    shopOptions: {
         city: string,
         name: string,
     }

@@ -7,6 +7,7 @@ const GET_PRODUCTS_FROM_SHOP = gql`
         shop(
             id: $id
         ){
+            id
             products {
                 id
                 name
@@ -25,7 +26,7 @@ const GET_PRODUCTS_FROM_SHOP = gql`
                     type
                     coordinates
                 }
-                shop {
+                shopOptions {
                     city
                     name
                 }

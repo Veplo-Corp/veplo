@@ -36,7 +36,6 @@ export async function getStaticProps(ctx: any) {
         variables: { id: shopId },
         //!useless
         fetchPolicy: 'cache-first',
-        // nextFetchPolicy: 'cache-only',
     })
 
     return {

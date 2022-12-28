@@ -43,19 +43,13 @@ function createApolloClient() {
         link: authLink.concat(httpLink),/* new HttpLink({ uri }) */
         cache: new InMemoryCache({
             typePolicies: {
+                Shop: {
+                    keyFields: [/* "name",  */'id']
+                },
                 Product: {
                     keyFields: ["id"],
-                    //!non funzionano
-                    //*opzione 1
-                    // merge(existing, incoming, { mergeObjects }) {
-                    //     return mergeObjects(existing, incoming);
-                    // },
-                    //*opzione 2
-                    // merge: true,
-                },
-                // Shop: {
-                //     keyFields: ["id"]
-                // }
+                }
+               
                 
             }
             

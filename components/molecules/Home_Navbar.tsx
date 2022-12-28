@@ -77,8 +77,10 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
 
             <div className={` ${gender === 'donna' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 `}>
                 <a
-                    className={` ${gender === 'donna' && !showCategory ? "relative z-50" : ""}`}
-                    onClick={() => onShowCategory('', 'donna')}>
+                    className={` 
+                    ${gender === 'donna' && !showCategory ? "relative z-50" : ""}
+                    `}
+                    onMouseOver={() => onShowCategory('', 'donna')}>
                     <div className='z-[100]'>
                         Donna
                     </div>
@@ -89,7 +91,7 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
             <div className={` ${gender === 'uomo' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 `}>
                 <a
                     className={` ${gender === 'uomo' && !showCategory ? "relative z-50" : ""}`}
-                    onClick={() => onShowCategory('', 'uomo')}>
+                    onMouseOver={() => onShowCategory('', 'uomo')}>
                     <div className='z-[100]'>
                         Uomo
                     </div>
@@ -97,10 +99,17 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                 {gender === 'uomo' && !showCategory && <div className={` absolute w-full h-[8px] bottom-[3px] bg-red-500 z-0`}>
                 </div>}
             </div>
-            <div className={` ${gender === 'negozi' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 `}>
+            
+            <div className={` ${gender === 'negozi' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 
+            
+            `}>
                 <a
-                    className={` ${gender === 'negozi' && !showCategory ? "relative z-50" : ""}`}
-                    onClick={pushToStores}>
+                    className={` ${gender === 'negozi' && !showCategory ? "relative z-50" : ""}
+                    
+                    `}
+                    onClick={pushToStores}
+                    onMouseOver={() => onShowCategory(false)}
+                    >
                     <div className='z-[100]'>
                         Negozi
                     </div>

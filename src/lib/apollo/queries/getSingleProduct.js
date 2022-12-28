@@ -21,7 +21,7 @@ const GET_SINGLE_PRODUCT = gql`
                 type
                 coordinates
             }
-            shop {
+            shopOptions {
                 city
                 name
             }
