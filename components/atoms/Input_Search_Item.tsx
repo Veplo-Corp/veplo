@@ -4,21 +4,22 @@ import React, { FC, useRef } from 'react'
 const Input_Search_Item: FC<{ placeholder: string, onConfirmText: any, textInput?: string }> = ({ placeholder, onConfirmText, textInput }) => {
     const inputText = useRef<HTMLInputElement | null>(null)
 
-    const onConfirm = () => {
-        if (inputText.current?.value !== null) {
-            onConfirmText(inputText?.current?.value);
-            inputText.current!.value = ''
-        }
-
-
+    const onConfirm = (e:any) => {
+        if (e.key === 'Enter' || e.key === undefined) {
+            if (inputText.current?.value !== null) {
+                onConfirmText(inputText?.current?.value);
+                inputText.current!.value = ''
+            }
+        } 
     }
 
     return (
-        <div className='w-auto md:w-56 lg:w-56 xl:w-72'>
+        <form className='w-auto md:w-56 lg:w-56 xl:w-72' >
             <InputGroup>
                 <Input
                     type='text'
                     ref={inputText}
+                    
                     onKeyDown={onConfirm}
                     placeholder={placeholder}
                     _placeholder={{ color: 'gray.500', opacity: 1 }}
@@ -40,7 +41,7 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: any, textInput
                     }
                 />
             </InputGroup>
-        </div>
+        </form>
     )
 }
 
