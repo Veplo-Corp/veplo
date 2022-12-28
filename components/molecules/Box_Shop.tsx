@@ -14,7 +14,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                 transform: `${scale}`,
             }}>
             <Box
-            minHeight={'60'}
+            minHeight={'52'}
             >
                 <LazyLoadImage src={shop.photo}
                     //placeholderSrc={'/static/grayScreen.png'}
