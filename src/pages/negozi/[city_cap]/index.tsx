@@ -97,10 +97,11 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
                     borderRadius='full'
                     variant='solid'
                     colorScheme='green'
+                    marginTop={3}
                 >
                     <TagLabel>
                         <p
-                            className='font-medium pt:10 md:mt-0 text-base md:text-lg'
+                            className='font-medium pt:10 md:mt-0 text-sm md:text-lg'
                         >Risultati per {inputSearchShop}</p>
                     </TagLabel>
                     <TagCloseButton
