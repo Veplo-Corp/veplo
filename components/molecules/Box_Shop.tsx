@@ -3,23 +3,29 @@ import { Box, Image } from '@chakra-ui/react'
 import { Shop } from '../../src/interfaces/shop.interface'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
 
-const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string, width: number, height: number }> = ({ shop, eventHandler, scale, width, height }) => {
+const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ shop, eventHandler, scale }) => {
     return (
-        <Box onClick={() => eventHandler(shop)} width={'fit-content'} mb={'2'} overflow='hidden' className='cursor-pointer border border-inherit pb-2 rounded-md'
+        <Box onClick={() => eventHandler(shop)} width={'full'}
+
+            mb={'2'} overflow='hidden' className='cursor-pointer border border-inherit pb-2 rounded-lg'
             _active={{
                 transform: `${scale}`,
             }}>
-            {/* <Image src={shop.photo} className='object-cover'  width={width} maxHeight={height} alt={'immagine non trovata'} /> */}
+            <Box
+            minHeight={'60'}
+            >
                 <LazyLoadImage src={shop.photo}
-                    //PlaceholderSrc={PlaceholderImage}
+                    //placeholderSrc={'/static/grayScreen.png'}
                     effect="blur"
-                    alt="Immagine non trovata"
-                    //className='w-96 h-60 md:w-96 md:h-60 object-cover'
-                    className={`w-${width} h-${height} object-cover`}
-
+                    alt="immagine non trovata"
+                    width={'full'}
+                    className='aspect-[4.8/3]'
                 />
-            <Box py={1} px={4}>
+            </Box>
+
+            <Box pb={1} px={3}>
                 <Box
                     mt='1'
                     fontWeight='semibold'
@@ -27,24 +33,13 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string, width: 
                     noOfLines={1}
                     fontSize='medium'
                 >
-                    {shop.name}
+                    {toUpperCaseFirstLetter(shop.name)}
                 </Box>
-                {/* categorires */}
-                {/* <Box
-                                    fontWeight='medium'
-                                    as='h2'
-                                    noOfLines={1}
-                                    fontSize='14px'
-                                    className='italic'
-                                >
-                                    {shop.categories}
-                                    
-                                </Box> */}
                 <Box
-                    fontWeight='medium'
+                    fontWeight='base'
                     as='h2'
-                    fontSize='12px'
-                    mt={-0.5}
+                    fontSize='11px'
+                    mt={-1}
                 >
                     {shop.address.street}, {shop.address.city}
                 </Box>

@@ -474,7 +474,8 @@ const index = () => {
                                             setCompletedCrop(c)
                                         }}
 
-                                        aspect={1100 / 762}
+                                        aspect={4.8/3}
+                                        
                                     >
                                         <img
                                             className='min-w-full'

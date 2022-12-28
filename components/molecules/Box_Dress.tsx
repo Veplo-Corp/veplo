@@ -39,9 +39,9 @@ const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> 
                     lineHeight='tight'
                     noOfLines={1}
                     fontSize='sm'
-                    onClick={() => toShop(product.shopId, product.shop.city, product.shop.name)}
+                    onClick={() => toShop(product.shopId, product.shopOptions.city, product.shopOptions.name)}
                 >
-                    {product.shop.name}
+                    {product.shopOptions.name}
                 </Box>
                 <Box
                     onClick={() => eventHandler(product)}

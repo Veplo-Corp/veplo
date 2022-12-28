@@ -123,7 +123,7 @@ const index = () => {
         microCategory: microcategory,
         gender: gender,
         brand: brand,
-        photos: [''],
+        photos: ['https://www.macmillandictionary.com/us/external/slideshow/thumb/Grey_thumb.png'],
       }
       
       const isCreatedProduct = await createProduct({ variables: { shopId: user.shopId, options: Product } })
@@ -167,7 +167,7 @@ const index = () => {
           coordinates: [1, 1],
           __typename: 'Location'
         },
-        shop: {
+        shopOptions: {
           city: 'city',
           name: 'name',
           __typename: "Lightshop",
@@ -213,7 +213,6 @@ const index = () => {
 
     } catch (e:any) {
       console.log(e);
-      console.log(e.code);
       console.log(e.message);
       addToast({ position: 'top', title: 'Impossibile creare il prodotto', description: "c'è stato un errore durante la creazione del prodotto, riprova più tardi", status: 'error', duration: 5000, isClosable: true })
     }

@@ -218,12 +218,12 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                             mb={3}
                             fontSize='md'
                             onClick={() => {
-                                const slug = createUrlSchema([product.shop.city, product.shop.name])
+                                const slug = createUrlSchema([product.shopOptions.city, product.shopOptions.name])
                                 router.push(`/negozio/${product.shopId}/${slug}`)
                             }}
                             
                         >
-                            Altri prodotti di <span className='underline underline-offset-2 cursor-pointer'>{product.shop.name}</span>
+                            Altri prodotti di <span className='underline underline-offset-2 cursor-pointer'>{product.shopOptions.name}</span>
                         </Box>
 
                         <div className="overflow-x-scroll flex w-full gap-4 ">
