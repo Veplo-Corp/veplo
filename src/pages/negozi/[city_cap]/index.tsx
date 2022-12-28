@@ -60,7 +60,8 @@ export async function getStaticProps(ctx: any) {
 const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], error?: string }> = ({ city, postcode, shops, error }) => {
     const router = useRouter()
     const [inputSearchShop, setInputSearchShop] = useState('')
-
+    console.log(shops);
+    
     const toStore = (shop: Shop) => {
         const url = createUrlSchema([shop.address.city, shop.name])
         router.push({
@@ -69,8 +70,6 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
     }
 
     useEffect(() => {
-        console.log(inputSearchShop);
-
         return () => {
 
         }
