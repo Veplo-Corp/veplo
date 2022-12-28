@@ -6,7 +6,7 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: any, textInput
 
     const onConfirm = (e:any) => {
         if (e.key === 'Enter' || e.key === undefined) {
-            if (inputText.current?.value !== null) {
+            if (inputText.current?.value !== null && inputText.current?.value.length > 3) {
                 onConfirmText(inputText?.current?.value);
                 inputText.current!.value = ''
             }
@@ -14,7 +14,7 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: any, textInput
     }
 
     return (
-        <form className='w-auto md:w-56 lg:w-56 xl:w-72' >
+        <div className='w-auto md:w-56 lg:w-56 xl:w-72' >
             <InputGroup>
                 <Input
                     type='text'
@@ -41,7 +41,7 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: any, textInput
                     }
                 />
             </InputGroup>
-        </form>
+        </div>
     )
 }
 

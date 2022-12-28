@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
 import DintorniLogo_Below_Header from '../../../../components/molecules/DintorniLogo_Below_Header';
-import { Box, Image } from '@chakra-ui/react'
+import { Box, Image, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/react'
 import Box_Shop from '../../../../components/molecules/Box_Shop';
 import { Shop } from '../../../interfaces/shop.interface';
 import createUrlSchema from '../../../../components/utils/create_url';
@@ -59,15 +59,25 @@ export async function getStaticProps(ctx: any) {
 
 const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], error?: string }> = ({ city, postcode, shops, error }) => {
     const router = useRouter()
-    console.log(error);
+    const [inputSearchShop, setInputSearchShop] = useState('')
 
     const toStore = (shop: Shop) => {
-        console.log(shop);
         const url = createUrlSchema([shop.address.city, shop.name])
         router.push({
             pathname: `/negozio/${shop.id}/${url}`,
         })
     }
+
+    useEffect(() => {
+        console.log(inputSearchShop);
+
+        return () => {
+
+        }
+    }, [inputSearchShop])
+
+
+
 
 
     return (
@@ -75,10 +85,31 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
             <div className='md:flex justify-between'>
                 <DintorniLogo_Below_Header city={city} />
                 <div className='my-auto mt-2'>
-                    <Input_Search_Item placeholder='cerca negozio' onConfirmText={() => { }} />
+                    <Input_Search_Item placeholder='cerca negozio' onConfirmText={(textInput: string) => {
+                        setInputSearchShop(textInput)
+                    }} />
                 </div>
             </div>
+            {
+                inputSearchShop.length > 3 &&
+                <Tag
+                    size={['sm', 'lg']}
+                    padding={'2'}
+                    borderRadius='full'
+                    variant='solid'
+                    colorScheme='green'
+                >
+                    <TagLabel>
+                        <p
+                            className='font-medium pt:10 md:mt-0 text-base md:text-lg'
+                        >Risultati per {inputSearchShop}</p>
+                    </TagLabel>
+                    <TagCloseButton
+                    onClick={() => {setInputSearchShop('')}}
+                    />
+                </Tag>
 
+            }
             <div className="grid grid-cols-1 md:pt-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 w-full m-auto justify-items-center mt-4	">
                 {shops.length > 0 && shops.map((shop) => {
                     return (
