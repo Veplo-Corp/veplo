@@ -1,27 +1,41 @@
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/react'
-import React from 'react'
+import React, { FC, useRef } from 'react'
 
-const Input_Search_Item = () => {
+const Input_Search_Item: FC<{ placeholder: string, onConfirmText: any, textInput?: string }> = ({ placeholder, onConfirmText, textInput }) => {
+    const inputText = useRef<HTMLInputElement | null>(null)
+
+    const onConfirm = () => {
+        if (inputText.current?.value !== null) {
+            onConfirmText(inputText?.current?.value);
+            inputText.current!.value = ''
+        }
+
+
+    }
+
     return (
-        <div className='w-auto md:w-48 lg:w-56 xl:w-72'>
-            <InputGroup
-            >
-                <Input 
-                    placeholder={'Cerca negozi o vestiti'}
+        <div className='w-auto md:w-56 lg:w-56 xl:w-72'>
+            <InputGroup>
+                <Input
+                    type='text'
+                    ref={inputText}
+                    onKeyDown={onConfirm}
+                    placeholder={placeholder}
                     _placeholder={{ color: 'gray.500', opacity: 1 }}
                     borderRadius={12}
                     py={2}
                     pl={4}
-                    size='md' 
+                    size='md'
                     focusBorderColor='gray.300'
                     bg={'gray.100'} />
                 <InputRightElement
-                    ml={3}
-                    className='mt-px cursor-pointer'
+                    mr={1}
+                    className='cursor-pointer'
                     color={'gray.500'}
+                    onClick={onConfirm}
                     children={
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
                     }
                 />
