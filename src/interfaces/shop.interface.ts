@@ -22,5 +22,5 @@ export interface Shop {
         macroCategories?: string[],
         gender?: string[],
     },
-    description: string
+    description: string,
 }

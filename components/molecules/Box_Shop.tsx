@@ -1,49 +1,53 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Image } from '@chakra-ui/react'
 import { Shop } from '../../src/interfaces/shop.interface'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
+import isShopOpen from '../utils/isShopOpen';
 
 const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ shop, eventHandler, scale }) => {
+    const [isOpen, setisOpen] = useState(isShopOpen(shop.opening.days, shop.opening.hours))
+
     return (
         <Box onClick={() => eventHandler(shop)} width={'full'}
-            mb={'2'} overflow='hidden' className='cursor-pointer border border-inherit pb-2 rounded-xl'
+            mb={'2'} overflow='hidden' className='cursor-pointer border border-inherit pb-3 rounded-xl'
             _active={{
                 transform: `${scale}`,
             }}>
             <Box
-            minHeight={['40', '52']}
+                
             >
                 <LazyLoadImage src={shop.photo}
                     //placeholderSrc={'/static/grayScreen.png'}
                     effect="blur"
                     alt="immagine non trovata"
                     width={'full'}
-                    className='aspect-[4.8/3]'
+                    height={'full'}
+                    className='aspect-[4.8/3] object-cover'
                 />
             </Box>
+            <div className='flex justify-between mt-2'>
+                <Box pb={1} px={3}>
+                    <Box
+                        mt='1'
+                        fontWeight='semibold'
+                        as='h2'
+                        noOfLines={1}
+                        fontSize='medium'
+                    >
+                        {toUpperCaseFirstLetter(shop.name)}
+                    </Box>
+                    <Box
+                        fontWeight='base'
+                        as='h2'
+                        fontSize='11px'
+                        mt={-1}
+                    >
+                        {shop.address.street}, {shop.address.city}
+                    </Box>
 
-            <Box pb={1} px={3}>
-                <Box
-                    mt='1'
-                    fontWeight='semibold'
-                    as='h2'
-                    noOfLines={1}
-                    fontSize='medium'
-                >
-                    {toUpperCaseFirstLetter(shop.name)}
-                </Box>
-                <Box
-                    fontWeight='base'
-                    as='h2'
-                    fontSize='11px'
-                    mt={-1}
-                >
-                    {shop.address.street}, {shop.address.city}
-                </Box>
-
-                {/* <div className='flex justify-between mt-2'>
+                    {/* <div className='flex justify-between mt-2'>
                         <Box
                             fontWeight='bold'
                             as='h4'
@@ -64,7 +68,14 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                             })}
                         </div>
                     </div> */}
-            </Box>
+                </Box>
+                <Box className={`${isOpen ? '' : 'hidden'} my-auto px-7 py-2 bg-[#32CD32] mr-3 rounded-xl`}
+                fontSize={'md'}
+                >
+                    Aperto
+                </Box>
+            </div>
+
         </Box>
     )
 }
