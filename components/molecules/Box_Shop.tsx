@@ -69,7 +69,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                         </div>
                     </div> */}
                 </Box>
-                <Box className={`${isOpen ? '' : 'hidden'} my-auto px-7 py-2 bg-[#32CD32] mr-3 rounded-xl`}
+                <Box className={`${isOpen ? '' : 'hidden'} my-auto px-5 py-[6px] bg-[#32CD32] mr-3 rounded-xl`}
                 fontSize={'md'}
                 >
                     Aperto
