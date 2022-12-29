@@ -27,10 +27,12 @@ export async function getStaticProps(ctx: any) {
         const { data, error } = await apolloClient.query({
             query: GET_SHOPS_BY_LOCATION,
             variables: {
-                cap: element.postcode,
                 range: 5000,
                 limit: 10,
-                offset: 0
+                offset: 0,
+                filters: {
+                    cap: element.postcode
+                }
             },
         })
         return {
