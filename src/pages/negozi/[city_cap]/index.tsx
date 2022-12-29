@@ -54,9 +54,6 @@ export async function getStaticProps(ctx: any) {
             revalidate: 60, // In seconds
         }
     }
-
-
-
 }
 
 const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], error?: string }> = ({ city, postcode, shops, error }) => {
@@ -64,7 +61,6 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
     const [inputSearchShop, setInputSearchShop] = useState('')
     console.log(shops);
     const [shopsFilterByName, setshopsFilterByName] = useState<Shop[]>([])
-    
     const toStore = (shop: Shop) => {
         const url = createUrlSchema([shop.address.city, shop.name])
         router.push({

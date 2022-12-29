@@ -30,6 +30,10 @@ const GET_SHOPS_BY_LOCATION = gql`
             }
             createdAt
             photo
+            opening{
+                days
+                hours
+            }
         } 
     }
 `

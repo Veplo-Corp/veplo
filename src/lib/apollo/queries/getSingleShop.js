@@ -22,6 +22,10 @@ const GET_SINGLE_SHOP = gql`
             }
             createdAt
             photo
+            opening{
+                days
+                hours
+            }
         } 
     }
 `
