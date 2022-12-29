@@ -8,7 +8,7 @@ import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
 const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ shop, eventHandler, scale }) => {
     return (
         <Box onClick={() => eventHandler(shop)} width={'full'}
-            mb={'2'} overflow='hidden' className='cursor-pointer border border-inherit pb-2 rounded-lg'
+            mb={'2'} overflow='hidden' className='cursor-pointer border border-inherit pb-2 rounded-xl'
             _active={{
                 transform: `${scale}`,
             }}>
