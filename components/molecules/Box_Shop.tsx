@@ -8,13 +8,12 @@ import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
 const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ shop, eventHandler, scale }) => {
     return (
         <Box onClick={() => eventHandler(shop)} width={'full'}
-
             mb={'2'} overflow='hidden' className='cursor-pointer border border-inherit pb-2 rounded-lg'
             _active={{
                 transform: `${scale}`,
             }}>
             <Box
-            minHeight={'52'}
+            minHeight={['40', '52']}
             >
                 <LazyLoadImage src={shop.photo}
                     //placeholderSrc={'/static/grayScreen.png'}

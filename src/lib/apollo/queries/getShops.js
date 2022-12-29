@@ -2,16 +2,16 @@ import { gql } from '@apollo/client'
 
 const GET_SHOPS_BY_LOCATION = gql`
     query shops(
-        $cap: String!
         $range: Int!
         $limit: Int!
         $offset: Int!
+        $filters: ShopFilters!
     ) {
         shops(
-            cap: $cap
             range: $range
             limit: $limit
             offset: $offset
+            filters: $filters
         ){
             id
             name

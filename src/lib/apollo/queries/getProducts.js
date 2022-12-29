@@ -5,7 +5,7 @@ const GET_PRODUCTS = gql`
         $range: Float!
         $limit: Int!
         $offset: Int!
-        $filters: Filters    
+        $filters: ProductFilters!   
         ) {
         products(
             range: $range,

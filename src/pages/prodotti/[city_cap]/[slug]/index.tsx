@@ -182,6 +182,8 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   }
 
   if (errorMessage /* === `cap ${postcode} does not exists` */) {
+    console.log(errorMessage);
+    
     return (
       <div className='mt-40 text-center'>
         <Error_page errorMessage='cap-does-not-exist' />
