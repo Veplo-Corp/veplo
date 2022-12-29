@@ -70,7 +70,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
       if (userAuth) {
         setUserId(analytics, userAuth.uid);
         setUserProperties(analytics, { favorite_food: 'apples' });
-        const idToken = await userAuth.getIdToken(true)
+        const idToken = await userAuth.getIdToken(true)        
         setAuthTokenInLocalStorage(idToken)
         const tokenResult = await userAuth.getIdTokenResult()
         // user is logged in, send the user's details to redux, store the current user in the state

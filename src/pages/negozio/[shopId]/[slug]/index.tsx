@@ -14,6 +14,9 @@ import GET_PRODUCTS_FROM_SHOP from '../../../../lib/apollo/queries/geetProductsS
 import { toProductPage } from '../../../../../components/utils/toProductPage'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import Link from 'next/link'
+import { Disclosure } from '@headlessui/react'
+import { ChevronUpIcon } from '@chakra-ui/icons'
+import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter'
 
 export async function getStaticPaths() {
     return {
@@ -92,23 +95,28 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
                                 noOfLines={1}
                                 fontSize='medium'
                                 display={'flex'}
-                                className='cursor-pointer'
                             >
                                 <span>
-                                    {shop.name}
+                                    {toUpperCaseFirstLetter(shop.name)}
                                 </span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 my-auto ml-1">
+                                {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 my-auto ml-1">
                                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clipRule="evenodd" />
-                                </svg>
+                                </svg> */}
 
                             </Box>
+
                             <Box
                                 fontWeight='base'
                                 as='h2'
                                 fontSize='11px'
                                 mt={-1}
+                                display={'flex'}
+                                className='cursor-pointer'
                             >
-                                {shop.address.street}, {shop.address.city}
+                                <span>
+                                {shop.address.city}, {shop.address.street}
+                                </span>
+                                
                             </Box>
                         </Box>
                         <Box display='flex' className='my-auto'>
