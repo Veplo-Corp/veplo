@@ -63,6 +63,7 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
     const router = useRouter()
     const [inputSearchShop, setInputSearchShop] = useState('')
     console.log(shops);
+    const [shopsFilterByName, setshopsFilterByName] = useState<Shop[]>([])
     
     const toStore = (shop: Shop) => {
         const url = createUrlSchema([shop.address.city, shop.name])
@@ -72,6 +73,30 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
     }
 
     useEffect(() => {
+        if(inputSearchShop.length <= 3)return
+        const apolloClient = initApollo()
+        const fetchData = async () => {
+            return await apolloClient.query({
+                query: GET_SHOPS_BY_LOCATION,
+                variables: {
+                    range: 5000,
+                    limit: 10,
+                    offset: 0,
+                    filters: {
+                        cap: postcode,
+                        name: inputSearchShop
+                    }
+                },
+            })
+        }
+        fetchData().then((shops) => {
+            console.log(shops?.data.shops);
+            setshopsFilterByName(shops?.data.shops);
+        })
+        
+        
+
+
         return () => {
 
         }
@@ -113,11 +138,17 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
 
             }
             <div className="grid grid-cols-1 md:pt-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 w-full m-auto justify-items-center mt-4	">
-                {shops.length > 0 && shops.map((shop) => {
+                {((shops.length > 0 && inputSearchShop.length < 1) && setInputSearchShop.length <= 3) ?
+                shops.map((shop) => {
                     return (
                         <Box_Shop key={shop.id} scale={'scale(0.99)'} eventHandler={toStore} shop={shop} />
                     )
-                })}
+                }) : shopsFilterByName.map((shop) => {
+                    return (
+                        <Box_Shop key={shop.id} scale={'scale(0.99)'} eventHandler={toStore} shop={shop} />
+                    )
+                })
+                }
             </div>
 
         </Desktop_Layout>
