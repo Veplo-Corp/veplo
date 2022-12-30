@@ -99,9 +99,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
             }
 
 
-            if (!sizeType) return {
-                
-            }
+            if (!sizeType) return
             const index = Object.keys(ContSizes.current).indexOf(sizeType)
             setSizes(Object.values(ContSizes.current)[index]);
 
