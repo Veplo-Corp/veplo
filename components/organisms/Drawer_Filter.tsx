@@ -9,6 +9,7 @@ import { Color, COLORS } from '../mook/colors'
 import MobileDetect from 'mobile-detect'
 import { Sizes, SIZES } from '../mook/sizes'
 import { findMacrocategoryName } from '../utils/find_macrocategory_name'
+import createFilterObject from '../utils/create_fiter_products_object'
 
 
 const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory: string }> = ({ openDrawerMath, gender, macrocategory }) => {
@@ -36,26 +37,78 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
         25,
         50,
         100,
-        150
+        150,
+        200,
+        250,
+        300
     ]
+
+
 
 
     useEffect(() => {
         //console.log(openDrawerMath);
         if (openDrawerMath !== 1 && openDrawerMath > 0 && openDrawerMath !== undefined) {
-            
+
             onOpen()
             const category = Object.values(CATEGORIES)[Object.keys(CATEGORIES).indexOf(gender.toLocaleLowerCase())]
             console.log(macrocategory);
             console.log(category);
-            
-            if(!macrocategory)return
+
+            if (!macrocategory) return
             const sizeType = category?.abbigliamento.find(element => element.name === macrocategory)?.sizes
             // //da migliorare
-            if (!sizeType) return
+            const { brands, minPrice, maxPrice, colors, sizes } = router.query;
+            console.log(brands, minPrice, maxPrice, colors, sizes);
+
+            if (brands || minPrice || maxPrice || colors || sizes) {
+                let filters: any = createFilterObject(
+                    brands,
+                    minPrice,
+                    maxPrice,
+                    colors,
+                    sizes
+                )
+                if (filters?.brands) {
+                    setBrandSelected(filters?.brands)
+                }
+                if (filters?.minPrice && filters?.minPrice < 500) {
+                    console.log('passa');
+
+                    setMinAmount(filters?.minPrice)
+                }
+                if (filters?.maxPrice && filters?.maxPrice < 500) {
+                    setMaxAmount(filters?.maxPrice)
+                }
+                if (filters?.sizes) {                    
+                    setSizeSelected(filters?.sizes)
+                }
+                COLORS
+                if (filters?.colors) {  
+                    let colors = [];
+                    for (const colorName of filters?.colors) {
+                        const colorToAdd = COLORS.find(color => color.name === colorName);
+                        if(colorToAdd){
+                            colors.push(colorToAdd)
+                        }
+                    }   
+                        setColorSelected(colors)
+                                  
+                }
+                console.log(filters);
+            }
+
+
+            if (!sizeType) return {
+                
+            }
             const index = Object.keys(ContSizes.current).indexOf(sizeType)
-            setSizes(Object.values(ContSizes.current)[index])
+            setSizes(Object.values(ContSizes.current)[index]);
+
+
+
         }
+
 
 
     }, [openDrawerMath])
@@ -159,6 +212,42 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
         })
     }
 
+    const HandleConfirmButton = () => {
+
+        let slug = '?';
+        if (brandSelected.length > 0) {
+
+            slug += ('brands=' + brandSelected)
+        }
+        if (minAmount > 0) {
+            slug !== '' ? slug += '&' : ''
+            slug += ('minPrice=' + minAmount)
+        }
+        if (maxAmount > 0) {
+            slug !== '' ? slug += '&' : ''
+            slug += ('maxPrice=' + maxAmount)
+        }
+        if (colorSelected.length > 0) {
+            slug !== '' ? slug += '&' : ''
+            const colorsToDB = colorSelected.map((color) => {
+                return color.name
+            })
+            slug += ('colors=' + colorsToDB)
+        }
+        if (sizeSelected.length > 0) {
+            slug !== '' ? slug += '&' : ''
+            slug += ('sizes=' + sizeSelected)
+        }
+
+        if (slug === '?') {
+            slug = ''
+        }
+
+
+        router.push(`${router.asPath.split('?')[0]}${slug}`)
+        onClose();
+
+    }
 
 
 
@@ -245,17 +334,20 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                 <Flex gap={3}>
                                     <Box>
                                         <h5 className='font-medium text-sm lg:text-md mb-0'>Min</h5>
-                                        <Select size={['md', 'lg']} width={'fit-content'}
+                                        <Select
+                                            value={minAmount}
+                                            size={['md', 'lg']} width={'fit-content'}
                                             onChange={(event) => {
-
+                                                if (event.target.value === 'Max') return setMaxAmount('Max')
                                                 setMinAmount(Number(event.target.value))
                                                 if (Number(event.target.value) > Number(maxAmount)) {
                                                     setMaxAmount('Max')
+
                                                 }
                                             }}
                                         >
                                             <option
-                                                value={'0'}
+                                                value={0}
                                             >0 €</option>
                                             {priceGap.map((price) => {
                                                 return (<option
@@ -263,7 +355,9 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                                     value={price}
                                                 >{price} €</option>)
                                             })}
+
                                         </Select>
+
                                     </Box>
                                     <Box>
                                         <h5 className='font-medium text-sm lg:text-md mb-0'>Max</h5>
@@ -285,6 +379,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                                             >Max</option>
                                         </Select>
                                     </Box>
+
                                 </Flex>
                             </Box>
                             <Box py={3} px={4}
@@ -442,7 +537,9 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                     padding={0}
                     width={'full'}
                 >
-                    <Button w={'full'} onClick={() => { onClose() }}
+                    <Button w={'full'} onClick={() => {
+                        HandleConfirmButton()
+                    }}
                         borderRadius={0}
                         padding={7}
                         colorScheme={'green'}
