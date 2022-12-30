@@ -20,11 +20,12 @@ import FIlter_Button from '../../../../../components/molecules/FIlter_Button'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Loading from '../../../../../components/molecules/Loading'
 import { Center, CircularProgress, Spinner, Text } from '@chakra-ui/react'
-import { useQuery } from '@apollo/client'
+import { useLazyQuery, useQuery } from '@apollo/client'
 import { findMacrocategoryName } from '../../../../../components/utils/find_macrocategory_name'
 import Error_page from '../../../../../components/organisms/Error_page'
 import createUrlSchema from '../../../../../components/utils/create_url'
 import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter'
+import createFilterObject from '../../../../../components/utils/create_fiter_products_object'
 
 
 type Router = {
@@ -44,16 +45,28 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(ctx: any) {
-
   let { city_cap, slug } = ctx.params;
   const elementCityCap: { city: string, postcode: string | null } = getCityAndPostcodeFromSlug(city_cap);
   const elementGenderMacrocategory: { gender: string | null, macrocategory: string | null } = getGenderandMacrocategory(slug);
-
   const apolloClient = initApollo()
   // const { data, error } = await apolloClient.query({
   //   query: GET_PRODUCTS_FROM_SHOP,
   //   variables: { id: '63865fa3f99ea8fe07a27a86' },
   // })
+
+  const { brands, minPrice, maxPrice, colors, sizes } = ctx.params
+  if (brands || minPrice || maxPrice || colors || sizes) {
+    return {
+      props: {
+        city: elementCityCap.city,
+        gender: elementGenderMacrocategory.gender,
+        category: elementGenderMacrocategory.macrocategory,
+        postcode: elementCityCap.postcode,
+        products: [],
+      },
+      //revalidate: 60 //seconds
+    }
+  }
 
   try {
     if (!elementGenderMacrocategory.gender || !elementGenderMacrocategory.macrocategory) {
@@ -85,7 +98,7 @@ export async function getStaticProps(ctx: any) {
       },
       revalidate: 60 //seconds
     }
-  } catch (e: any) {    
+  } catch (e: any) {
     return {
       props: {
         city: elementCityCap.city,
@@ -106,12 +119,14 @@ export async function getStaticProps(ctx: any) {
 
 const index: React.FC<{ city: any, gender: any, category: any, postcode: any, products: Product[], errorMessage: string, }> = ({ city, gender, category, postcode, products, errorMessage }) => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false)
+
   const colors = useRef<Color[]>(COLORS);
   const [hasMoreData, setHasMoreData] = useState(true)
   const [productsFounded, setproductsFounded] = useState<Product[]>(products)
   const [offset, setOffset] = useState<number>(products.length)
   console.log(offset);
-  
+
 
   const toProductPageUrl = (product: Product) => {
 
@@ -122,7 +137,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   }
 
 
-  const toShopPage = (shopId: string,city:string, name:string ) => {
+  const toShopPage = (shopId: string, city: string, name: string) => {
     const slug = createUrlSchema([city, name])
     router.push(`/negozio/${shopId}/${slug}`)
   }
@@ -130,11 +145,11 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   const fetchMoreData = async () => {
     console.log('moredata');
     console.log(offset);
-    
+
     try {
       const plus_for_limit = 8;
       const apolloClient = initApollo()
-      if(productsFounded.length % plus_for_limit !== 0) {
+      if (productsFounded.length % plus_for_limit !== 0) {
         return setHasMoreData(false)
       }
       const { data, error } = await apolloClient.query({
@@ -167,7 +182,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
       setOffset((prevstate: number) => {
         console.log(prevstate);
-        
+
         return prevstate + data.products.length
       })
     } catch (e: any) {
@@ -175,15 +190,103 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
       setHasMoreData(false)
     }
-
-
-
-
   }
+
+  const [getFilterProduct, { error, data }] = useLazyQuery(GET_PRODUCTS);
+
+  console.log(data);
+  console.log(typeof category);
+
+
+
+
+  useEffect(() => {
+    console.log('categoria, ', category);
+
+    const { brands, minPrice, maxPrice, colors, sizes } = router.query
+    console.log(brands, minPrice, maxPrice, colors, sizes);
+    if (!brands && !minPrice && !maxPrice && !colors && !sizes) return
+    if (brands || minPrice || maxPrice || colors || sizes) {
+     let filters: any = createFilterObject(
+      brands,
+      minPrice,
+      maxPrice,
+      colors,
+      sizes
+    )
+
+    console.log(filters);
+    
+
+
+      setLoading(true)
+      console.log('parte la query');
+      //TODO: find best way than timeout
+      setTimeout(() => {
+        getFilterProduct({
+          variables: {
+            range: 10000,
+            offset: 0,
+            limit: 8,
+            filters: {
+              cap: postcode,
+              macroCategory: category,
+              gender: 'M',
+              ...filters
+            }
+          }
+        })
+      }, 500);
+    }
+
+
+
+
+
+    // else {
+    //   console.log(brands, minPrice, maxPrice, colors, sizes);
+    //   const apolloClient = initApollo()
+    //   const fetchData = async () => {
+    //     return await apolloClient.query({
+    //       query: GET_PRODUCTS,
+    //       variables: {
+    //         range: 10000,
+    //         offset: 0,
+    //         limit: 8,
+    //         filters: {
+    //           cap: postcode,
+    //           macroCategory: category === 'tutto' ? "" : category,
+    //           gender: 'M',
+    //           maxPrice: Number(maxPrice)
+    //         }
+    //       }
+    //     })
+    //   }
+
+    //   fetchData().then((products) => {
+    //     console.log(products.data.products);
+    //     console.log('eccolo');
+    //     //abortController.signal(),
+
+    //     setproductsFounded(products.data.products)
+    //   }).catch(e => {
+    //     console.log(e);
+
+    //   })
+    // }
+
+  }, [router.query])
+
+  useEffect(() => {
+    if (data) {
+      setproductsFounded(data?.products)
+      setLoading(false)
+    }
+  }, [data])
 
   if (errorMessage /* === `cap ${postcode} does not exists` */) {
     console.log(errorMessage);
-    
+
     return (
       <div className='mt-40 text-center'>
         <Error_page errorMessage='cap-does-not-exist' />
@@ -197,7 +300,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
     <>
       <Desktop_Layout>
         <DintorniLogo_Below_Header city={city} gender={gender} category={category.replace(/-/g, ' ') || 'Tutto'}></DintorniLogo_Below_Header>
-        <InfiniteScroll
+        {!loading && <InfiniteScroll
           dataLength={productsFounded.length}
           next={fetchMoreData}
           hasMore={hasMoreData}
@@ -235,7 +338,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
               })}
             </div>
           </div>
-        </InfiniteScroll>
+        </InfiniteScroll>}
       </Desktop_Layout>
       <FIlter_Button gender={gender} macrocategory={category ? category : "Tutto l'abbligliamento"} />
 

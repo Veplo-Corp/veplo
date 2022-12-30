@@ -34,9 +34,12 @@ const FIlter_Button: FC<{gender:string, macrocategory:string}> = ({gender, macro
         }
     }, []);
 
+
+
     return (
         <>
-            <Drawer_Filter openDrawerMath={openDrawer} gender={gender} macrocategory={macrocategory} />
+            <Drawer_Filter openDrawerMath={openDrawer} gender={gender} macrocategory={macrocategory} 
+            />
             <Box
                 boxShadow={'rgba(0, 0, 0, 0.35) 0px 5px 15px'}
                 width={70}

@@ -92,8 +92,6 @@ const index = () => {
     //   return setOpenModalMath(Math.random())
     // }
     setLoading(true)
-
-
     try {
       if (photos.length < 2) {
         throw new Error('poche immagini')
