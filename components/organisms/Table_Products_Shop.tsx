@@ -79,7 +79,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
                     NUOVO PRODOTTO
                 </Button>
                 <Table variant='simple'>
-                    <TableCaption>i tuoi prodotti in dintorni</TableCaption>
+                    <TableCaption>i tuoi prodotti in Veplo</TableCaption>
                     <Thead
                         bg={'gray.100'}
                     >

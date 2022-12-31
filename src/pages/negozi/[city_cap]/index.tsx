@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
-import DintorniLogo_Below_Header from '../../../../components/molecules/DintorniLogo_Below_Header';
+import Logo_Below_Header from '../../../../components/molecules/Logo_Below_Header';
 import { Box, Image, Tag, TagCloseButton, TagLabel, Text } from '@chakra-ui/react'
 import Box_Shop from '../../../../components/molecules/Box_Shop';
 import { Shop } from '../../../interfaces/shop.interface';
@@ -105,7 +105,7 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
     return (
         <Desktop_Layout>
             <div className='md:flex justify-between'>
-                <DintorniLogo_Below_Header city={city} />
+                <Logo_Below_Header city={city} />
                 <div className='my-auto mt-2'>
                     <Input_Search_Item placeholder='cerca negozio' onConfirmText={(textInput: string) => {
                         setInputSearchShop(textInput)

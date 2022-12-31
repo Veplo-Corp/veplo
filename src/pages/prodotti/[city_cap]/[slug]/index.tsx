@@ -1,7 +1,7 @@
 import Router, { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout'
-import DintorniLogo_Below_Header from '../../../../../components/molecules/DintorniLogo_Below_Header'
+import Logo_Below_Header from '../../../../../components/molecules/Logo_Below_Header'
 import Box_Dress from '../../../../../components/molecules/Box_Dress'
 import { Product } from '../../../../interfaces/product.interface'
 import createUrlScheme from '../../../../../components/utils/create_url'
@@ -299,7 +299,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   return (
     <>
       <Desktop_Layout>
-        <DintorniLogo_Below_Header city={city} gender={gender} category={category.replace(/-/g, ' ') || 'Tutto'}></DintorniLogo_Below_Header>
+        <Logo_Below_Header city={city} gender={gender} category={category.replace(/-/g, ' ') || 'Tutto'}></Logo_Below_Header>
         {!loading && <InfiniteScroll
           dataLength={productsFounded.length}
           next={fetchMoreData}
