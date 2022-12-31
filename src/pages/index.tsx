@@ -25,7 +25,7 @@ const Home: NextPage = () => {
       alt="non trovata" />
       <div className='w-full p-4 md:p-6  md:flex justify-between'>
         <div className='mb-0 md:mb-0'>
-          <h1 className='font-extrabold cursor-pointer italic text-xl text-black-900'>Alcune città che utilizzano Dintorni</h1>
+          <h1 className='font-extrabold cursor-pointer italic text-xl text-black-900'>Alcune città che utilizzano Veplo</h1>
           <Stack direction='row' spacing={4} align='center' className='mt-2'>
             {ARRAY_CITY.map((city: string) => {
               return (

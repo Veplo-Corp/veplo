@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
-import DintorniLogo_Below_Header from '../../../../../components/molecules/DintorniLogo_Below_Header';
+import Logo_Below_Header from '../../../../../components/molecules/Logo_Below_Header';
 import { Box, Image } from '@chakra-ui/react'
 import Box_Shop from '../../../../../components/molecules/Box_Shop';
 import { Shop } from '../../../../interfaces/shop.interface';
@@ -67,7 +67,7 @@ const index: React.FC<{ city: string, postcode: null | string, macrocategory: nu
 
     return (
         <Desktop_Layout>
-            <DintorniLogo_Below_Header city={city} category={macrocategory} gender={gender} />
+            <Logo_Below_Header city={city} category={macrocategory} gender={gender} />
             <div className="grid grid-cols-1 md:pt-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 w-full m-auto justify-items-center	">
                 {shops.map((shop) => {
                     return (

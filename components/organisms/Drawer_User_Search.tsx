@@ -121,7 +121,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                             >
                                 <div className='text-center w-11/12 flex justify-between py-2'>
                                     {address_user && <p className='text-white text-lg font-semibold my-auto'>
-                                        {address_user.placeType === 'address' && <span>{address_user.address}{address_user.streetNumber && <span> {address_user.streetNumber}</span>}, </span>}  {address_user.city}
+                                        {address_user.city}{address_user.placeType === 'address' && <span>, {address_user.address}{address_user.streetNumber && <span> {address_user.streetNumber}</span>}</span>}
                                     </p>}
 
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w- h-6 my-auto text-white">

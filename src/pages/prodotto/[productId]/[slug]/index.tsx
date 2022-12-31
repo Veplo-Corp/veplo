@@ -131,7 +131,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
             })
             if (error) return
             window.open(
-                `https://wa.me/+39${data.shop.phone}?text=ciao, ero su Dintorni.it e stavo visitando il tuo negozio ${product.shopOptions.name}. Avrei bisogno di una informazione sul prodotto *${product.name} - ${product.brand}*`
+                `https://wa.me/+39${data.shop.phone}?text=ciao, ero su Veplo.it e stavo visitando il tuo negozio ${product.shopOptions.name}. Avrei bisogno di una informazione sul prodotto *${product.name} - ${product.brand}*`
                 , '_blank')
         } catch (e) {
             console.log(e);

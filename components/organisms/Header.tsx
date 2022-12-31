@@ -112,7 +112,7 @@ const Header = () => {
 
 
 
-            {/* Menu button, Search button and Dintorni Logo for screen >=md */}
+            {/* Menu button, Search button and Veplo Logo for screen >=md */}
             {user && user.isShop && <div className=" fixed z-50 top-3 right-2 md:hidden">
                 <button
                     onClick={() => {
@@ -146,7 +146,7 @@ const Header = () => {
                         <p className="font-sm text-sm mt-2 ml-1 cursor-pointer"
                             onClick={() => setopenDrawer(Math.random())}
                         >
-                            {address_user.placeType === 'address' && <span>{address_user.address}{address_user.streetNumber && <span> {address_user.streetNumber}</span>}, </span>}  {address_user.city}
+                            {address_user.city}{address_user.placeType === 'address' && <span>, {address_user.address}{address_user.streetNumber && <span> {address_user.streetNumber}</span>}</span>}
                         </p>
                     </div>
                 }

@@ -6,10 +6,10 @@ interface Props {
     category?: string | undefined | null
 }
 
-const DintorniLogo_Below_Header: React.FC<Props> = ({ city, category, gender }) => {
+const Logo_Below_Header: React.FC<Props> = ({ city, category, gender }) => {
     return (
         <div className='md:flex justify-between mb-5 mt-2 md:mt-0'>
-            <h1 className="hidden md:flex font-black text-xl md:text-5xl italic text-black-900 ">Dintorni {
+            <h1 className="hidden md:flex font-black text-xl md:text-5xl italic text-black-900 ">Veplo {
                 city &&
                 <>
                     <span className='ml-1 hidden md:flex my-auto mb-0 text-base md:text-2xl'>per</span>
@@ -28,4 +28,4 @@ const DintorniLogo_Below_Header: React.FC<Props> = ({ city, category, gender }) 
     )
 }
 
-export default DintorniLogo_Below_Header
+export default Logo_Below_Header
