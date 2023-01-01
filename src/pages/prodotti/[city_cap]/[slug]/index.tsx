@@ -177,7 +177,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         })
 
         console.log(data?.products);
-
+        
         setproductsFounded((prevstate: Product[]) => {
           return [
             ...prevstate,
@@ -186,7 +186,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         })
 
 
-        if (data?.products % plus_for_limit !== 0) {
+        if (data?.products % plus_for_limit !== 0 || data?.products.length === 0) {
           setHasMoreData(false)
         }
 
@@ -231,7 +231,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         })
 
 
-        if (data?.products % plus_for_limit !== 0) {
+        if (data?.products % plus_for_limit !== 0 || data?.products.length === 0) {
           setHasMoreData(false)
         }
 
