@@ -3,12 +3,20 @@ import { gql } from '@apollo/client'
 
 //TODO!
 const GET_PRODUCTS_FROM_SHOP = gql`
-    query GetSingleShop($id: ID!) {
+    query GetSingleShop(
+        $id: ID!
+        $limit: Int!
+        $offset: Int!
+        ) {
         shop(
             id: $id
+            
         ){
             id
-            products {
+            products(
+                limit: $limit
+                offset: $offset
+            ) {
                 id
                 name
                 price

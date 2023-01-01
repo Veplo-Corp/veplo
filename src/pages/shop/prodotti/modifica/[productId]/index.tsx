@@ -33,10 +33,13 @@ const index = () => {
     const [loadShop, { data, error }] = useLazyQuery(GET_PRODUCTS_FROM_SHOP, {
         fetchPolicy: 'cache-first',
         //nextFetchPolicy: 'cache-first',
-        variables: { id: user?.shopId },
+        variables: { id: user?.shopId, limit:100, offset:0  },
         // pollInterval: 500,
         // notifyOnNetworkStatusChange: true,
     });
+
+    console.log(error);
+    
 
     //redirect to createShop,whether there is not a Shop
     if (error) {

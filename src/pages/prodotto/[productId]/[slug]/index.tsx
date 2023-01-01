@@ -17,6 +17,8 @@ import GET_PRODUCTS_FROM_SHOP from '../../../../lib/apollo/queries/geetProductsS
 import { toProductPage } from '../../../../../components/utils/toProductPage';
 import Image_Product from '../../../../../components/organisms/Image_Product';
 import GET_SINGLE_SHOP from '../../../../lib/apollo/queries/getSingleShop';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 
 export async function getStaticPaths() {
@@ -91,7 +93,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
     const shopProductsData = useQuery(GET_PRODUCTS_FROM_SHOP, {
         fetchPolicy: 'cache-first',
         nextFetchPolicy: 'cache-first',
-        variables: { id: product.shopId },
+        variables: { id: product.shopId, limit: 100, offset: 0 },
         // pollInterval: 500,
         // notifyOnNetworkStatusChange: true,
     }).data;
@@ -268,15 +270,20 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                                 <div className="overflow-x-scroll flex w-full gap-4 ">
                                     {shopProductsData?.shop.products.map((element: Product) => {
                                         return (
-                                            <div key={element.id} className={`${element.id === product.id ? 'hidden' : 'flex'}  gap-4 w-fit`}
-                                            >
-                                                <Box mb={'5'} borderRadius='lg' overflow='hidden'
-                                                    width={36}
+                                            <div key={element.id} className={`  gap-4 w-fit`} /* ${element.id === product.id ? 'hidden' : 'flex'} */
+                                            > 
+                                                <Box borderRadius='lg' overflow='hidden'
                                                     borderWidth={1.5}
-                                                    className={`w-32 lg:w-40`}
+                                                    className={`w-28 lg:w-36 aspect-[8.5/12] object-cover`}
                                                     onClick={() => toProduct(element)}
                                                 >
-                                                    <Image className=' cursor-pointer hover:scale-105 w-full aspect-[8/12] object-cover' src={element.photos[0]} alt={'immagine non trovata'} />
+                                                    <LazyLoadImage
+                                                        src={element.photos[0]}
+                                                        //placeholderSrc={'/static/grayScreen.png'}
+                                                        effect="blur"
+                                                        alt="immagine non trovata"
+                                                        className=' cursor-pointer hover:scale-105 w-ful h-fit object-cover'
+                                                    />
                                                 </Box>
                                             </div>)
 

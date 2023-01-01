@@ -39,7 +39,7 @@ const index = () => {
             const { shop } = cache.readQuery<any>({
                 query: GET_PRODUCTS_FROM_SHOP,
                 variables: {
-                    id: user.shopId //* mettere idShop,
+                    id: user.shopId, limit:100, offset:0  //* mettere idShop,
                 },
             });
             console.log(shop);
@@ -47,7 +47,7 @@ const index = () => {
             //*Delete Product
             cache.writeQuery({
                 query: GET_PRODUCTS_FROM_SHOP,
-                variables: { id: user.shopId  }, //shopId
+                variables: { id: user.shopId, limit:100, offset:0   }, //shopId
                 data: {
                     shop: {
                         products: shop.products.filter((product:Product) => product.id != deleteId.deleteProduct)

@@ -59,7 +59,7 @@ const index = () => {
   const { error, data, refetch } = useQuery(GET_PRODUCTS_FROM_SHOP, {
     fetchPolicy: 'cache-first',
     nextFetchPolicy: 'cache-first',
-    variables: { id: (user?.shopId || '') },
+    variables: { id: (user?.shopId || ''), limit:100, offset:0  },
   });
 
 
@@ -181,14 +181,15 @@ const index = () => {
         // Provide any required variables in this object.
         // Variables of mismatched types will return `null`.
         variables: {
-          id: user.shopId //* mettere idShop,
+          id: user.shopId, //* mettere idShop,
+          limit:100, offset:0 
         },
       });
 
       if (shop) {
         apolloClient.writeQuery({
           query: GET_PRODUCTS_FROM_SHOP,
-          variables: { id: user.shopId }, //*idShop
+          variables: { id: user.shopId, limit:100, offset:0  }, //*idShop
           data: {
             shop: {
               products: [

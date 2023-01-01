@@ -102,9 +102,6 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
             if (!sizeType) return
             const index = Object.keys(ContSizes.current).indexOf(sizeType)
             setSizes(Object.values(ContSizes.current)[index]);
-
-
-
         }
 
 
@@ -211,7 +208,6 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
     }
 
     const HandleConfirmButton = () => {
-
         let slug = '?';
         if (brandSelected.length > 0) {
 
@@ -236,15 +232,11 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
             slug !== '' ? slug += '&' : ''
             slug += ('sizes=' + sizeSelected)
         }
-
         if (slug === '?') {
             slug = ''
         }
-
-
         router.push(`${router.asPath.split('?')[0]}${slug}`)
         onClose();
-
     }
 
 

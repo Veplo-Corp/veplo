@@ -30,7 +30,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
     const { loading, error, data, refetch } = useQuery(GET_PRODUCTS_FROM_SHOP, {
         fetchPolicy: 'cache-first',
         nextFetchPolicy: 'cache-first',
-        variables: { id: idShop },
+        variables: { id: idShop, limit:100, offset:0 },
         // pollInterval: 500,
         // notifyOnNetworkStatusChange: true,
     });

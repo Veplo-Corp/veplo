@@ -231,7 +231,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
             filters: {
               cap: postcode,
               macroCategory: category,
-              gender: 'M',
+              gender: gender === 'Uomo' ? 'M' : 'F',
               ...filters
             }
           }
