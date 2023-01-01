@@ -210,9 +210,10 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
             ) : (
               <>
                 <Component {...pageProps} />
+                <Footer />
               </>
             )}
-            <Footer />
+            
           </Auth>
         </ChakraProvider>
       </ApolloProvider>

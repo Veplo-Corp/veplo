@@ -270,10 +270,11 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                                 <div className="overflow-x-scroll flex w-full gap-4 ">
                                     {shopProductsData?.shop.products.map((element: Product) => {
                                         return (
-                                            <div key={element.id} className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} 
+                                            <div key={element.id} className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`}
                                             > 
                                                 <Box borderRadius='lg' overflow='hidden'
                                                     borderWidth={1.5}
+                                                    marginBottom={4}
                                                     className={`w-28 lg:w-36 aspect-[8.5/12] object-cover`}
                                                     onClick={() => toProduct(element)}
                                                 >
