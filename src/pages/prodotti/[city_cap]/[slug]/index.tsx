@@ -119,7 +119,8 @@ export async function getStaticProps(ctx: any) {
 
 const index: React.FC<{ city: any, gender: any, category: any, postcode: any, products: Product[], errorMessage: string, }> = ({ city, gender, category, postcode, products, errorMessage }) => {
   const router = useRouter();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [useFilter, setUseFilter] = useState(false)
 
   const colors = useRef<Color[]>(COLORS);
   const [hasMoreData, setHasMoreData] = useState(true)
@@ -145,6 +146,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   const fetchMoreData = async () => {
     console.log('moredata');
     console.log(offset);
+    if(useFilter)return
 
     try {
       const plus_for_limit = 8;
@@ -223,6 +225,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
       console.log('parte la query');
       //TODO: find best way than timeout
       setTimeout(() => {
+        setUseFilter(true)
         getFilterProduct({
           variables: {
             range: 10000,
@@ -303,7 +306,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         {!loading && <InfiniteScroll
           dataLength={productsFounded.length}
           next={fetchMoreData}
-          hasMore={hasMoreData}
+          hasMore={hasMoreData && !useFilter}
           loader={
             <>
               {/* <Center color='white'>
