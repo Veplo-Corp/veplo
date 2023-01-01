@@ -331,9 +331,9 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         >
           <div className={` flex items-center justify-center`}>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
-              {productsFounded[0] !== null && productsFounded.map((product, key) => {
+              {productsFounded[0] !== null && productsFounded.map((product) => {
                 return (
-                  <Box_Dress eventHandler={toProductPageUrl} key={key} product={product} toShop={toShopPage}></Box_Dress>
+                  <Box_Dress eventHandler={toProductPageUrl} key={product.id} product={product} toShop={toShopPage}></Box_Dress>
                 )
               })}
             </div>
