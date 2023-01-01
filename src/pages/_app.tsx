@@ -23,6 +23,7 @@ import Router from "next/router";
 import { Firebase_User } from '../interfaces/firebase_user.interface'
 import Loading from '../../components/molecules/Loading'
 import { getAnalytics, logEvent, setUserId, setUserProperties } from "firebase/analytics";
+import Footer from '../../components/organisms/Footer'
 
 const theme = extendTheme({
   colors: {
@@ -211,6 +212,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
                 <Component {...pageProps} />
               </>
             )}
+            <Footer />
           </Auth>
         </ChakraProvider>
       </ApolloProvider>
