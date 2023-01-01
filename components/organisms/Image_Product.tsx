@@ -5,9 +5,9 @@ import React, { useEffect, useState } from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Product } from '../../src/interfaces/product.interface'
 
-const Image_Product: React.FC<{product:Product | undefined}> = ({product}) => {
-    if(!product){
-        return(
+const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) => {
+    if (!product) {
+        return (
             <></>
         )
     }
@@ -24,7 +24,7 @@ const Image_Product: React.FC<{product:Product | undefined}> = ({product}) => {
     }
 
     useEffect(() => {
-        if(product?.photos){
+        if (product?.photos) {
             setfullImage(product.photos[0])
 
         }
@@ -91,10 +91,10 @@ const Image_Product: React.FC<{product:Product | undefined}> = ({product}) => {
                         </div>
                         <div className='flex md:hidden'>
                             <TransformWrapper
-                                 maxScale={3}
-                                 minScale={1}
-                                 centerOnInit
-                                 centerZoomedOut
+                                maxScale={3}
+                                minScale={1}
+                                centerOnInit
+                                centerZoomedOut
                             >
                                 <TransformComponent
                                 >
@@ -134,7 +134,7 @@ const Image_Product: React.FC<{product:Product | undefined}> = ({product}) => {
                                     <TransformComponent
                                     >
                                         {/* <Image borderRadius={'lg'} src={fullImage} alt='immagine non trovata' /> */}
-                                        <LazyLoadImage src={fullImage}                                            
+                                        <LazyLoadImage src={fullImage}
                                             //PlaceholderSrc={PlaceholderImage}
                                             effect="blur"
                                             alt="Image Alt"
@@ -148,7 +148,7 @@ const Image_Product: React.FC<{product:Product | undefined}> = ({product}) => {
 
                 </Box>
                 <div>
-                    {product?.photos &&  product.photos.map((image) => {
+                    {product?.photos && product.photos.map((image) => {
                         return (
                             <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
                                 borderWidth={1.5}
@@ -158,10 +158,12 @@ const Image_Product: React.FC<{product:Product | undefined}> = ({product}) => {
                                     `}
                             >
                                 <Image src={image} alt={'immagine non trovata'}
-                                width={'full'}
-                                maxH={'52'}
-                                className='object-cover'
+                                    width={'full'}
+                                    maxH={'52'}
+                                    className='object-cover'
+                                    loading="lazy"
                                 />
+                                
                             </Box>
                         )
                     })}
