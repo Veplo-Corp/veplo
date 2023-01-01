@@ -146,51 +146,105 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   const fetchMoreData = async () => {
     console.log('moredata');
     console.log(offset);
-    if(useFilter)return
-
-    try {
-      const plus_for_limit = 8;
-      const apolloClient = initApollo()
-      if (productsFounded.length % plus_for_limit !== 0) {
-        return setHasMoreData(false)
-      }
-      const { data, error } = await apolloClient.query({
-        query: GET_PRODUCTS,
-        variables: {
-          range: 10000,
-          offset: productsFounded.length,
-          limit: productsFounded.length + plus_for_limit,
-          filters: {
-            cap: postcode,
-            macroCategory: '',
-            gender: gender === 'Uomo' ? 'M' : 'F'
-          }
+    if (useFilter) {
+      const { brands, minPrice, maxPrice, colors, sizes } = router.query
+      let filters: any = createFilterObject(
+        brands,
+        minPrice,
+        maxPrice,
+        colors,
+        sizes
+      )
+      try {
+        const plus_for_limit = 8;
+        const apolloClient = initApollo()
+        if (productsFounded.length % plus_for_limit !== 0) {
+          return setHasMoreData(false)
         }
-      })
+        const { data, error } = await apolloClient.query({
+          query: GET_PRODUCTS,
+          variables: {
+            range: 10000,
+            offset: productsFounded.length,
+            limit: productsFounded.length + plus_for_limit,
+            filters: {
+              cap: postcode,
+              macroCategory: '',
+              gender: gender === 'Uomo' ? 'M' : 'F',
+              ...filters
+            }
+          }
+        })
 
-      console.log(data?.products);
+        console.log(data?.products);
 
-      setproductsFounded((prevstate: Product[]) => {
-        return [
-          ...prevstate,
-          ...data?.products
-        ]
-      })
+        setproductsFounded((prevstate: Product[]) => {
+          return [
+            ...prevstate,
+            ...data?.products
+          ]
+        })
 
 
-      if (data?.products % plus_for_limit !== 0) {
+        if (data?.products % plus_for_limit !== 0) {
+          setHasMoreData(false)
+        }
+
+        setOffset((prevstate: number) => {
+          console.log(prevstate);
+
+          return prevstate + data.products.length
+        })
+      } catch (e: any) {
+        console.log(e.message);
+
         setHasMoreData(false)
       }
+    } else {
+      try {
+        const plus_for_limit = 8;
+        const apolloClient = initApollo()
+        if (productsFounded.length % plus_for_limit !== 0) {
+          return setHasMoreData(false)
+        }
+        const { data, error } = await apolloClient.query({
+          query: GET_PRODUCTS,
+          variables: {
+            range: 10000,
+            offset: productsFounded.length,
+            limit: productsFounded.length + plus_for_limit,
+            filters: {
+              cap: postcode,
+              macroCategory: '',
+              gender: gender === 'Uomo' ? 'M' : 'F'
+            }
+          }
+        })
 
-      setOffset((prevstate: number) => {
-        console.log(prevstate);
+        console.log(data?.products);
 
-        return prevstate + data.products.length
-      })
-    } catch (e: any) {
-      console.log(e.message);
+        setproductsFounded((prevstate: Product[]) => {
+          return [
+            ...prevstate,
+            ...data?.products
+          ]
+        })
 
-      setHasMoreData(false)
+
+        if (data?.products % plus_for_limit !== 0) {
+          setHasMoreData(false)
+        }
+
+        setOffset((prevstate: number) => {
+          console.log(prevstate);
+
+          return prevstate + data.products.length
+        })
+      } catch (e: any) {
+        console.log(e.message);
+
+        setHasMoreData(false)
+      }
     }
   }
 
@@ -209,16 +263,16 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
     console.log(brands, minPrice, maxPrice, colors, sizes);
     if (!brands && !minPrice && !maxPrice && !colors && !sizes) return
     if (brands || minPrice || maxPrice || colors || sizes) {
-     let filters: any = createFilterObject(
-      brands,
-      minPrice,
-      maxPrice,
-      colors,
-      sizes
-    )
+      let filters: any = createFilterObject(
+        brands,
+        minPrice,
+        maxPrice,
+        colors,
+        sizes
+      )
 
-    console.log(filters);
-    
+      console.log(filters);
+
 
 
       setLoading(true)
