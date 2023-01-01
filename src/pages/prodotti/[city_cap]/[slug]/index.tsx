@@ -360,7 +360,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         {!loading && <InfiniteScroll
           dataLength={productsFounded.length}
           next={fetchMoreData}
-          hasMore={hasMoreData && !useFilter}
+          hasMore={hasMoreData}
           loader={
             <>
               {/* <Center color='white'>
