@@ -127,16 +127,18 @@ const Header = () => {
                     </svg>
                 </button>
             </div>}
-
-            <div className={` pl-2 lg:pl-8 fixed z-50 ${!user ? 'top-3 md:top-10' : 'top-3'} `}> {/* lg:w-0 lg:flex-1 */}
-                    {!user?.isShop &&
-                        <div className={`flex ${address_user ? 'md:hidden' : 'flex'}`}>
+            <div className={` md:pl-2 fixed z-50 ${!user ? 'top-3 md:top-10' : 'top-3'} left-2 `}> {/* lg:w-0 lg:flex-1 */}
+                {!user?.isShop &&
+                    <div className={`flex `}>
                         <To_Home_Logo href='/' />
-                        </div>
-                    }
-                    {user?.isShop &&
-                        <To_Home_Logo href='/shop/prodotti' />
-                    }
+                    </div>
+                }
+                {user?.isShop &&
+                    <To_Home_Logo href='/shop/prodotti' />
+                }
+            </div>
+
+            <div className={` pl-2 lg:pl-8 fixed z-50 ${!user ? 'top-3 md:top-10' : 'top-3'} right-20 `}> {/* lg:w-0 lg:flex-1 */}
                 {(!user || !user.Not_yet_Authenticated_Request) && !user?.isShop && address_user &&
                     <div className='hidden md:flex'>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-6 h-6 mt-1">
@@ -185,7 +187,6 @@ const Header = () => {
                                             </button>
                                             <User_Popover />
                                         </div>
-
                                     </div>
                                 }
                             </Transition>
@@ -193,13 +194,9 @@ const Header = () => {
 
 
 
-                            <div className={`hidden md:flex gap-2 fixed ${!user ? 'top-9' : 'top-2'} right-2 lg:right-8 z-10`}> {/* pr-80 */}
+                            <div className={`hidden md:flex gap-2 fixed ${!user ? 'top-9' : 'top-2'} right-8 z-10`}> {/* pr-80 */}
                                 {(!user || !user.Not_yet_Authenticated_Request) && !user?.isShop &&
                                     <>
-                                       {/*  <Input_Search_Item /> */}
-                                        <div className='mt-1' onClick={() => { router.push('/') }}>
-                                            <Circle_Color colors={['gray.200']} dimension={8} space={0} />
-                                        </div>
                                         <User_Popover />
                                     </>
                                 }

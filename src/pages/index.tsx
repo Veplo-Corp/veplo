@@ -23,7 +23,7 @@ const Home: NextPage = () => {
 
   return (
     <Shop_not_Allowed>
-      <div className='w-full justify-between px-1 md:px-4 lg:px-8 mt-16 md:mt-24'>
+      <div className='w-full justify-between px-1 md:px-4 lg:px-8 mt-16 md:mt-28'>
         <Gradient_Component_home display='flex'>
           <h1 className='text-6xl md:text-7xl lg:text-8xl font-black text-white md:w-7/12 my-auto md:leading-[90px] lg:leading-[110px] '>
             SCOPRI I<br></br> TUOI<br></br> DINTORNI
@@ -81,7 +81,7 @@ const Home: NextPage = () => {
             di mostrare online i propri prodotti.
           </h2>
           <div
-            className='grid md:flex gap-5 md:justify-between md:8/12  xl:w-6/12 mt-10 m-auto justify-center'>
+            className='grid md:flex gap-5 xl:gap-10 md:justify-between md:w-8/12  xl:w-6/12 mt-10 m-auto justify-center'>
             <Button
               border='2px'
               borderColor='gray.900'
@@ -111,7 +111,7 @@ const Home: NextPage = () => {
               }}
             >
               cerca i vestiti nella tua zona
-              
+
             </Button>
 
           </div>
@@ -120,6 +120,19 @@ const Home: NextPage = () => {
             a tutti i tuoi vestiti!
           </h2>
         </Gradient_Component_home>
+        <div className='md:flex md:justify-between px-5 md:px-20 md:gap-20 md:my-20'>
+
+          <div className='my-5 md:m-auto lg:w-4/12 '>
+            <h1
+              className='text-4xl xl:text-5xl font-black mb-3'
+            >Migliora il tuo acquisto in negozio...</h1>
+            <h2 className='text-lg font-medium'>
+              con Veplo puoi visitare tutti i negozi della tua città e scegliere in anticipo quali andrai a trovare di persona            </h2>
+          </div>
+          <img className='md:w-1/2 object-cover mt-8 md:mt-'
+            src="/home_svg/home_second.svg"
+            alt="non trovata" />
+        </div>
       </div>
 
       {/* <img className='w-full object-cover h-full md:h-full mt-12' 
