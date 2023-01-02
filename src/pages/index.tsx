@@ -111,6 +111,7 @@ const Home: NextPage = () => {
               }}
             >
               cerca i vestiti nella tua zona
+              
             </Button>
 
           </div>
@@ -135,7 +136,6 @@ const Home: NextPage = () => {
             })}
           </Stack>
         </div>
-        
       </div>
       <img className='w-full  object-cover h-full md:h-full' 
       src="https://img01.ztat.net/outfit/d2bbc3015626416fa0f33450b7295d97/9586c74af338488da7215817f83e1bb6.jpg?imwidth=1800" 
