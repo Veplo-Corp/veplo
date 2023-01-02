@@ -64,7 +64,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> 
                 >
                     {product.name.toUpperCase()}
                 </Box>
-                <div className='flex justify-between mt-2'>
+                <div className='flex justify-between mt-2 mr-1'>
                     <Box
                         onClick={() => eventHandler(product)}
                         fontWeight='bold'
