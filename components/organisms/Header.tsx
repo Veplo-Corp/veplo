@@ -118,7 +118,6 @@ const Header = () => {
                     onClick={() => {
                         setOpenDrawerMenu(Math.random())
                     }}
-
                     type="button"
                     aria-label="menu"
                     className="inline-flex mt-0.5 rounded-md px-1  active:bg-gray-100 focus:outline-none" aria-expanded="false">

@@ -8,6 +8,8 @@ import Shop_not_Allowed from '../../components/utils/Shop_not_Allowed'
 import Desktop_Layout from '../../components/atoms/Desktop_Layout'
 import Gradient_Component_home from '../../components/molecules/Gradient_Component_home'
 import { useRouter } from 'next/router'
+import { useSelector } from 'react-redux'
+import createUrlSchema from '../../components/utils/create_url'
 
 
 const Home: NextPage = () => {
@@ -19,6 +21,7 @@ const Home: NextPage = () => {
   const [openDrawer, setopenDrawer] = useState(1)
   console.log(process.env);
   const router = useRouter()
+  const address_user = useSelector((state: any) => state.address.address);
 
 
   return (
@@ -31,14 +34,22 @@ const Home: NextPage = () => {
           <div
             className='mt-8 md:m-auto'
           >
-            <p
+            {!address_user && <p
               className='font-bold text-md text-white ml-1'
-            >Inizia la ricerca</p>
+            >Inizia la ricerca</p>}
             <Button
               rightIcon={
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                  <path fillRule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
-                </svg>
+                <>
+                  {
+                    !address_user ? (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                      <path fillRule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
+                    </svg>) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                      </svg>
+                    )
+                  }
+                </>
               }
               border='2px'
               borderColor='gray.900'
@@ -51,10 +62,16 @@ const Home: NextPage = () => {
               justifyContent={'space-between'}
               backgroundColor={'white'}
               onClick={() => {
-                setopenDrawer(Math.random())
+                if (!address_user) {
+                  setopenDrawer(Math.random())
+                } else {
+                  const url = createUrlSchema([address_user.city, address_user.postcode])
+                  router.push(`/negozi/${url}`)
+                }
               }}
             >
-              Inserisci città o indirizzo
+              {address_user ? 'I negozi della tua città' : 'Inserisci città o indirizzo'}
+
             </Button>
           </div>
         </Gradient_Component_home>
