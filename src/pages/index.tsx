@@ -102,7 +102,7 @@ const Home: NextPage = () => {
             <Button
               border='2px'
               borderColor='gray.900'
-              rounded={'3xl'}
+              rounded={'2xl'}
               colorScheme='white'
               textColor={'gray.100'}
               height={'16'}
@@ -117,7 +117,7 @@ const Home: NextPage = () => {
             <Button
               border='2px'
               borderColor='gray.900'
-              rounded={'3xl'}
+              rounded={'2xl'}
               colorScheme='white'
               textColor={'gray.900'}
               height={'16'}
