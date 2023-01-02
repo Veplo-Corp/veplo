@@ -126,7 +126,7 @@ const Header = () => {
                     </svg>
                 </button>
             </div>}
-            <div className={` md:pl-2 fixed z-50 ${!user ? 'top-3 md:top-10' : 'top-3'} left-2 `}> {/* lg:w-0 lg:flex-1 */}
+            <div className={` md:pl-2 fixed z-50 ${!user ? 'top-3 md:top-10' : 'top-3'} left-3 `}> {/* lg:w-0 lg:flex-1 */}
                 {!user?.isShop &&
                     <div className={`flex `}>
                         <To_Home_Logo href='/' />
@@ -137,15 +137,17 @@ const Header = () => {
                 }
             </div>
 
-            <div className={` pl-2 lg:pl-8 fixed z-50 ${!user ? 'top-3 md:top-10' : 'top-3'} right-20 `}> {/* lg:w-0 lg:flex-1 */}
+            <div className={` pl-2 lg:pl-8 fixed z-50 ${!user ? 'top-3 md:top-10' : 'top-3'} right-16 `}> {/* lg:w-0 lg:flex-1 */}
                 {(!user || !user.Not_yet_Authenticated_Request) && !user?.isShop && address_user &&
-                    <div className='hidden md:flex'>
+                    <div className='hidden md:flex cursor-pointer'
+                    onClick={() => setopenDrawer(Math.random())}
+                    >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-6 h-6 mt-1">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                         </svg>
-                        <p className="font-sm text-sm mt-2 ml-1 cursor-pointer"
-                            onClick={() => setopenDrawer(Math.random())}
+                        <p className="font-sm text-sm mt-2 ml-1"
+                            
                         >
                             {address_user.city}{address_user.placeType === 'address' && <span>, {address_user.address}{address_user.streetNumber && <span> {address_user.streetNumber}</span>}</span>}
                         </p>
@@ -155,7 +157,7 @@ const Header = () => {
             </div>
 
             <div className={`w-full z-10 fixed top-0 ${!user ? 'md:top-7' : 'md:top-0'} bg-white`}>
-                <div className="mx-auto max-w-full border-b-2 border-gray-100">
+                <div className="mx-auto max-w-full ">
                     <div className="py-3 lg:justify-start lg:space-x-10">
                         <div className='flex items-center justify-between h-8 '>
 
@@ -193,7 +195,7 @@ const Header = () => {
 
 
 
-                            <div className={`hidden md:flex gap-2 fixed ${!user ? 'top-9' : 'top-2'} right-8 z-10`}> {/* pr-80 */}
+                            <div className={`hidden md:flex gap-2 fixed ${!user ? 'top-9' : 'top-2'} right-4 z-10`}> {/* pr-80 */}
                                 {(!user || !user.Not_yet_Authenticated_Request) && !user?.isShop &&
                                     <>
                                         <User_Popover />
