@@ -26,7 +26,7 @@ const Home: NextPage = () => {
 
   return (
     <Shop_not_Allowed>
-      <div className='w-full justify-between px-1 md:px-4 lg:px-8 mt-16 md:mt-28'>
+      <div className='w-full justify-between px-1 md:px-4 mt-16 md:mt-[85px]'>
         <Gradient_Component_home display='flex'>
           <h1 className='text-6xl md:text-7xl lg:text-8xl font-black text-white md:w-7/12 my-auto md:leading-[90px] lg:leading-[110px] '>
             SCOPRI I<br></br> TUOI<br></br> DINTORNI
@@ -98,7 +98,7 @@ const Home: NextPage = () => {
             di mostrare online i propri prodotti.
           </h2>
           <div
-            className='grid md:flex gap-5 xl:gap-10 md:justify-between md:w-8/12  xl:w-6/12 mt-10 m-auto justify-center'>
+            className='grid md:flex gap-5 xl:gap-10 md:justify-between md:w-10/12 lg:w-8/12  xl:w-6/12 mt-10 m-auto justify-center'>
             <Button
               border='2px'
               borderColor='gray.900'
