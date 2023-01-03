@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { Box, Image } from '@chakra-ui/react'
 import Circle_Color from '../atoms/Circle_Color'
 import { Product } from '../../src/interfaces/product.interface'
 import { COLORS } from '../mook/colors'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import useWindowSize from '../Hooks/useWindowSize'
+
 
 const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> = ({ product, eventHandler, toShop }) => {
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
+    const [width, height] = useWindowSize();
+    const [dimensionUrl, setDimensionUrl] = useState('&tr=w-571,h-825')
+
     useEffect(() => {
         let colorsCSS = [];
         for (let i = 0; i < product.colors.length; i++) {
@@ -17,6 +22,14 @@ const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> 
         setProductcolorsCSS(colorsCSS)
     }, [product])
 
+    useEffect(() => {
+      if(width > 1000){
+        setDimensionUrl('&tr=w-457,h-660')
+      }
+    }, [width])
+    
+
+
     return (
         <Box minW='20' /* maxW='350' */ mb={'5'} borderRadius='lg' overflow='hidden' className='cursor-pointer'
             _active={{
@@ -24,8 +37,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> 
             }}>
             {/* <Image fallbackSrc='https://via.placeholder.com/150' onClick={() => eventHandler(product)} src={product.photos[0]} alt={'immagine non disponibile'} /> */}
             {product?.photos && <LazyLoadImage src={product.photos[0].replace(
-                
-                `https://firebasestorage.googleapis.com/v0/b/dintorni-${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}.appspot.com`, 'https://ik.imagekit.io/veplo')+'&tr=w-381,h-550'}
+                `https://firebasestorage.googleapis.com/v0/b/dintorni-${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}.appspot.com`, 'https://ik.imagekit.io/veplo') + dimensionUrl}
                 onClick={() => eventHandler(product)}
                 //PlaceholderSrc={PlaceholderImage}
                 effect="blur"
@@ -65,6 +77,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> 
                     mt={-1}
                 >
                     {product.name.toUpperCase()}
+                    {height} - {width}
                 </Box>
                 <div className='flex justify-between mt-2 mr-1'>
                     <Box
