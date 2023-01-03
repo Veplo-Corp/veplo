@@ -10,6 +10,7 @@ const uploadPhotoFirebase = async(blob:any, positionInStorage:string) => {
     try{
         await uploadBytes(storageRef, blob)
         const url = await getDownloadURL(storageRef)
+        
         console.log(url);
         return url
     } catch(e:any){
