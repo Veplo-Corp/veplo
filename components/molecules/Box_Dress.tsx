@@ -23,7 +23,9 @@ const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> 
                 transform: 'scale(1)', /* 'scale(0.99)' */
             }}>
             {/* <Image fallbackSrc='https://via.placeholder.com/150' onClick={() => eventHandler(product)} src={product.photos[0]} alt={'immagine non disponibile'} /> */}
-            {product?.photos && <LazyLoadImage src={product.photos[0].replace('https://firebasestorage.googleapis.com/v0/b/dintorni-dev.appspot.com', 'https://ik.imagekit.io/veplo/')+'&tr=w-381,h-550'}
+            {product?.photos && <LazyLoadImage src={product.photos[0].replace(
+                
+                `https://firebasestorage.googleapis.com/v0/b/dintorni-${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}.appspot.com`, 'https://ik.imagekit.io/veplo')+'&tr=w-381,h-550'}
                 onClick={() => eventHandler(product)}
                 //PlaceholderSrc={PlaceholderImage}
                 effect="blur"
