@@ -25,7 +25,9 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
 
     useEffect(() => {
         if (product?.photos) {
-            setfullImage(product.photos[0])
+            setfullImage(product.photos[0].replace(
+                `https://firebasestorage.googleapis.com/v0/b/dintorni-${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}.appspot.com`, 'https://ik.imagekit.io/veplo') + '&tr=w-762,h-1100' 
+            )
 
         }
 
@@ -157,13 +159,17 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                         xl:w-32
                                     `}
                             >
-                                <Image src={image} alt={'immagine non trovata'}
-                                    width={'full'}
-                                    maxH={'52'}
-                                    className='object-cover'
-                                    loading="lazy"
+                                <Image src={image.replace(
+                                    `https://firebasestorage.googleapis.com/v0/b/dintorni-${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}.appspot.com`, 'https://ik.imagekit.io/veplo') + '&tr=w-171,h-247'
+                                }
+
+                                alt={'immagine non trovata'}
+                                width={'full'}
+                                maxH={'52'}
+                                className='object-cover'
+                                loading="lazy"
                                 />
-                                
+
                             </Box>
                         )
                     })}

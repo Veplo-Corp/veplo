@@ -271,7 +271,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                                     {shopProductsData?.shop.products.map((element: Product) => {
                                         return (
                                             <div key={element.id} className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`}
-                                            > 
+                                            >
                                                 <Box borderRadius='lg' overflow='hidden'
                                                     borderWidth={1.5}
                                                     marginBottom={4}
@@ -279,11 +279,12 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                                                     onClick={() => toProduct(element)}
                                                 >
                                                     <LazyLoadImage
-                                                        src={element.photos[0]}
+                                                        src={element.photos[0].replace(
+                                                            `https://firebasestorage.googleapis.com/v0/b/dintorni-${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}.appspot.com`, 'https://ik.imagekit.io/veplo') + '&tr=w-171,h-247'}
                                                         //placeholderSrc={'/static/grayScreen.png'}
-                                                        effect="blur"
-                                                        alt="immagine non trovata"
-                                                        className=' cursor-pointer hover:scale-105 w-ful h-fit object-cover'
+                                                    effect="blur"
+                                                    alt="immagine non trovata"
+                                                    className=' cursor-pointer hover:scale-105 w-ful h-fit object-cover'
                                                     />
                                                 </Box>
                                             </div>)

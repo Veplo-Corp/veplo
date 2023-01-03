@@ -24,7 +24,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> 
 
     useEffect(() => {
       if(width > 1000){
-        setDimensionUrl('&tr=w-457,h-660')
+        setDimensionUrl('&tr=w-447,h-660')
       }
     }, [width])
     
