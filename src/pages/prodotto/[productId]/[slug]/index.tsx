@@ -19,6 +19,7 @@ import Image_Product from '../../../../../components/organisms/Image_Product';
 import GET_SINGLE_SHOP from '../../../../lib/apollo/queries/getSingleShop';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import { imageKitUrl } from '../../../../../components/utils/imageKitUrl';
 
 
 export async function getStaticPaths() {
@@ -279,9 +280,9 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                                                     onClick={() => toProduct(element)}
                                                 >
                                                     <LazyLoadImage
-                                                        src={element.photos[0].replace(
-                                                            `https://firebasestorage.googleapis.com/v0/b/dintorni-${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}.appspot.com`, 'https://ik.imagekit.io/veplo') + '&tr=w-171,h-247'}
-                                                        //placeholderSrc={'/static/grayScreen.png'}
+                                                        src={
+                                                            imageKitUrl(element.photos[0],171, 247 )
+                                                        }//placeholderSrc={'/static/grayScreen.png'}
                                                     effect="blur"
                                                     alt="immagine non trovata"
                                                     className=' cursor-pointer hover:scale-105 w-ful h-fit object-cover'

@@ -4,6 +4,7 @@ import { TransformComponent, TransformWrapper } from '@pronestor/react-zoom-pan-
 import React, { useEffect, useState } from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Product } from '../../src/interfaces/product.interface'
+import { imageKitUrl } from '../utils/imageKitUrl'
 
 const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) => {
     if (!product) {
@@ -159,9 +160,9 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                         xl:w-32
                                     `}
                             >
-                                <Image src={image.replace(
-                                    `https://firebasestorage.googleapis.com/v0/b/dintorni-${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}.appspot.com`, 'https://ik.imagekit.io/veplo') + '&tr=w-171,h-247'
-                                }
+                                <Image src={
+                                    imageKitUrl(image,171, 247 )
+                                          }
 
                                 alt={'immagine non trovata'}
                                 width={'full'}
