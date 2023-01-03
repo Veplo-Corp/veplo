@@ -5,6 +5,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
 import isShopOpen from '../utils/isShopOpen';
+import { imageKitUrl } from '../utils/imageKitUrl';
 
 const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ shop, eventHandler, scale }) => {
     const [isOpen, setisOpen] = useState(isShopOpen(shop.opening.days, shop.opening.hours))
@@ -16,9 +17,11 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                 transform: `${scale}`,
             }}>
             <Box
-                
+
             >
-                <LazyLoadImage src={shop.photo}
+                <LazyLoadImage src={
+                    imageKitUrl(shop.photo, 480, 300)
+                }
                     //placeholderSrc={'/static/grayScreen.png'}
                     effect="blur"
                     alt="immagine non trovata"
@@ -70,7 +73,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                     </div> */}
                 </Box>
                 <Box className={`${isOpen ? '' : 'hidden'} my-auto px-5 py-[6px] bg-[#32CD32] mr-3 rounded-xl`}
-                fontSize={'md'}
+                    fontSize={'md'}
                 >
                     Aperto
                 </Box>

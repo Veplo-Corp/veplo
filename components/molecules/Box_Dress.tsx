@@ -6,6 +6,7 @@ import { COLORS } from '../mook/colors'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import useWindowSize from '../Hooks/useWindowSize'
+import { imageKitUrl } from '../utils/imageKitUrl'
 
 
 const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> = ({ product, eventHandler, toShop }) => {
@@ -23,9 +24,9 @@ const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> 
     }, [product])
 
     useEffect(() => {
-      if(width > 1000){
-        setDimensionUrl('&tr=w-447,h-660')
-      }
+    //   if(width > 1000){
+    //     setDimensionUrl('&tr=w-447,h-660')
+    //   }
     }, [width])
     
 
@@ -36,8 +37,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> 
                 transform: 'scale(1)', /* 'scale(0.99)' */
             }}>
             {/* <Image fallbackSrc='https://via.placeholder.com/150' onClick={() => eventHandler(product)} src={product.photos[0]} alt={'immagine non disponibile'} /> */}
-            {product?.photos && <LazyLoadImage src={product.photos[0].replace(
-                `https://firebasestorage.googleapis.com/v0/b/dintorni-${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}.appspot.com`, 'https://ik.imagekit.io/veplo') + dimensionUrl}
+            {product?.photos && <LazyLoadImage src={imageKitUrl(product.photos[0],447, 660 )}
                 onClick={() => eventHandler(product)}
                 //PlaceholderSrc={PlaceholderImage}
                 effect="blur"

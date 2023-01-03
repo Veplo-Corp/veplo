@@ -17,6 +17,7 @@ import Link from 'next/link'
 import { Disclosure } from '@headlessui/react'
 import { ChevronUpIcon } from '@chakra-ui/icons'
 import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter'
+import { imageKitUrl } from '../../../../../components/utils/imageKitUrl'
 
 export async function getStaticPaths() {
     return {
@@ -36,7 +37,7 @@ export async function getStaticProps(ctx: any) {
 
     const products = await apolloClient.query({
         query: GET_PRODUCTS_FROM_SHOP,
-        variables: { id: shopId, limit:100, offset:0 },
+        variables: { id: shopId, limit: 100, offset: 0 },
         //!useless
         fetchPolicy: 'cache-first',
     })
@@ -80,7 +81,10 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
         <Desktop_Layout>
             <div className='md:flex w-full'>
                 <Box className='w-fit'>
-                    <LazyLoadImage src={shop.photo}
+                    <LazyLoadImage src={
+                        imageKitUrl(shop.photo, 720, 450)
+                    }
+
                         //PlaceholderSrc={PlaceholderImage}
                         effect="blur"
                         alt="Immagine non trovata"
@@ -114,9 +118,9 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
                                 className='cursor-pointer'
                             >
                                 <span>
-                                {shop.address.city}, {shop.address.street}
+                                    {shop.address.city}, {shop.address.street}
                                 </span>
-                                
+
                             </Box>
                         </Box>
                         <Box display='flex' className='my-auto'>
