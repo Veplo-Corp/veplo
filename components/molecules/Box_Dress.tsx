@@ -77,7 +77,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> 
                     mt={-1}
                 >
                     {product.name.toUpperCase()}
-                    {height} - {width}
+                    {/* {height} - {width} */}
                 </Box>
                 <div className='flex justify-between mt-2 mr-1'>
                     <Box
