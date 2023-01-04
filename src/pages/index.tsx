@@ -27,7 +27,7 @@ const Home: NextPage = () => {
 
   return (
     <Shop_not_Allowed>
-      <PostMeta title={'Veplo'} subtitle={"Veplo è il sito dove trovare tutti i negozi di vestiti della tua città online"} image={'/home_svg/home_first.svg'} description={'veplo ti fa volare'} />
+      <PostMeta title={'Veplo'} subtitle={"Veplo è il sito dove trovare tutti i negozi di vestiti della tua città online"} image={'https://www.wildlifetrusts.org/sites/default/files/styles/node_hero_default/public/third_light/Blackbird%252034.jpg?h=02ab4bae&itok=B65b2rR_'} description={'veplo ti fa volare'} />
       <div className='w-full justify-between px-1 md:px-4 mt-16 md:mt-[85px]'>
         <Gradient_Component_home display='flex'>
           <h1 className='text-6xl md:text-7xl lg:text-8xl font-black text-white md:w-7/12 my-auto md:leading-[90px] lg:leading-[110px] '>
