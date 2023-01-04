@@ -20,6 +20,7 @@ import GET_SINGLE_SHOP from '../../../../lib/apollo/queries/getSingleShop';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { imageKitUrl } from '../../../../../components/utils/imageKitUrl';
+import PostMeta from '../../../../../components/organisms/PostMeta';
 
 
 export async function getStaticPaths() {
@@ -151,8 +152,13 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
 
     return (
         <>
-
             <Desktop_Layout>
+                <PostMeta 
+                title={`${product.brand} ${product.name.toUpperCase()} - ${product.macroCategory} - Veplo.it`} 
+                subtitle={`${product.brand} ${product.name.toUpperCase()} - ${product.macroCategory} a ${product.price} | vivi Veplo`} 
+                image={product.photos[0]} 
+                description={`${product.brand} ${product.name.toUpperCase()} - ${product.macroCategory} - Veplo.it`} />
+                
                 <div className='md:flex justify-between w-full'>
                     <Image_Product product={product} />
                     <Box className='md:block md:w-5/12 xl:w-1/2 md:pl-4 xl:pr-10'>
@@ -281,11 +287,11 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                                                 >
                                                     <LazyLoadImage
                                                         src={
-                                                            imageKitUrl(element.photos[0],171, 247 )
+                                                            imageKitUrl(element.photos[0], 171, 247)
                                                         }//placeholderSrc={'/static/grayScreen.png'}
-                                                    effect="blur"
-                                                    alt="immagine non trovata"
-                                                    className=' cursor-pointer hover:scale-105 w-ful h-fit object-cover'
+                                                        effect="blur"
+                                                        alt="immagine non trovata"
+                                                        className=' cursor-pointer hover:scale-105 w-ful h-fit object-cover'
                                                     />
                                                 </Box>
                                             </div>)
