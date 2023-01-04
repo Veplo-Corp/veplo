@@ -10,6 +10,7 @@ import Gradient_Component_home from '../../components/molecules/Gradient_Compone
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import createUrlSchema from '../../components/utils/create_url'
+import PostMeta from '../../components/organisms/PostMeta'
 
 
 const Home: NextPage = () => {
@@ -26,6 +27,7 @@ const Home: NextPage = () => {
 
   return (
     <Shop_not_Allowed>
+      <PostMeta title={'Veplo'} subtitle={"Veplo è il sito dove trovare tutti i negozi di vestiti della tua città online"} image={'/home_svg/home_first.svg'} description={'veplo ti fa volare'} />
       <div className='w-full justify-between px-1 md:px-4 mt-16 md:mt-[85px]'>
         <Gradient_Component_home display='flex'>
           <h1 className='text-6xl md:text-7xl lg:text-8xl font-black text-white md:w-7/12 my-auto md:leading-[90px] lg:leading-[110px] '>
