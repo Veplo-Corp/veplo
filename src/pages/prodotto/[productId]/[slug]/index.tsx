@@ -290,7 +290,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                                                         }//placeholderSrc={'/static/grayScreen.png'}
                                                         effect="blur"
                                                         alt="immagine non trovata"
-                                                        className=' cursor-pointer hover:scale-105 w-ful h-fit object-cover'
+                                                        className=' cursor-pointer hover:scale-105 w-full h-full object-cover'
                                                     />
                                                 </Box>
                                             </div>)
