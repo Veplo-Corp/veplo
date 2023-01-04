@@ -146,7 +146,8 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
     }
 
 
-
+    //console.log(imageKitUrl(product.photos[0], 171, 247));
+    
 
 
 
@@ -156,7 +157,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                 <PostMeta 
                 title={`${product.brand} ${product.name.toUpperCase()} - ${product.macroCategory} - Veplo.it`} 
                 subtitle={`${product.brand} ${product.name.toUpperCase()} - ${product.macroCategory} a ${product.price} | vivi Veplo`} 
-                image={product.photos[0]} 
+                image={imageKitUrl(product.photos[0], 171, 247)}
                 description={`${product.brand} ${product.name.toUpperCase()} - ${product.macroCategory} - Veplo.it`} />
                 
                 <div className='md:flex justify-between w-full'>
