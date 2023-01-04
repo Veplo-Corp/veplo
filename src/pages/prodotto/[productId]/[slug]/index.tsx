@@ -93,8 +93,6 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
 
     }
     const shopProductsData = useQuery(GET_PRODUCTS_FROM_SHOP, {
-        fetchPolicy: 'cache-first',
-        nextFetchPolicy: 'cache-first',
         variables: { id: product.shopId, limit: 100, offset: 0 },
         // pollInterval: 500,
         // notifyOnNetworkStatusChange: true,
@@ -156,7 +154,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
             <Desktop_Layout>
                 <PostMeta 
                 title={`${product.brand} ${product.name.toUpperCase()} - ${product.macroCategory} - Veplo.it`} 
-                subtitle={`${product.brand} ${product.name.toUpperCase()} - ${product.macroCategory} a ${product.price} | vivi Veplo`} 
+                subtitle={`${product.brand} ${product.name.toUpperCase()} - ${product.macroCategory} a ${product.price}€ | vivi Veplo`} 
                 image={imageKitUrl(product.photos[0], 171, 247)}
                 description={`${product.brand} ${product.name.toUpperCase()} - ${product.macroCategory} - Veplo.it`} />
                 
