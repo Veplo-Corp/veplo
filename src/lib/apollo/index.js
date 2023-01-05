@@ -6,6 +6,7 @@ import {
 
 import { setContext } from '@apollo/client/link/context';
 import { env } from "process";
+import { createUploadLink } from 'apollo-upload-client'
 
 
 
@@ -22,7 +23,13 @@ function createApolloClient() {
     const httpLink = createHttpLink({
         uri: process.env.NEXT_PUBLIC_APOLLO_URI ,
         credentials: 'same-origin',
+
     });
+
+    const link = createUploadLink({
+        uri: process.env.NEXT_PUBLIC_APOLLO_URI ,
+        credentials: 'same-origin',
+    })
 
     const authLink = setContext((_, { headers }) => {
         // get the authentication token from local storage if it exists
@@ -40,7 +47,7 @@ function createApolloClient() {
 
     return new ApolloClient({
         ssrMode: typeof window !== 'undefined',
-        link: authLink.concat(httpLink),/* new HttpLink({ uri }) */
+        link: authLink.concat(link) /* authLink.concat(httpLink) */,
         cache: new InMemoryCache({
             typePolicies: {
                 Shop: {

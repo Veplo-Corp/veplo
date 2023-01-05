@@ -10,6 +10,7 @@ import getCityAndPostcodeFromSlug from '../../../../components/utils/get_City_an
 import { initApollo } from '../../../lib/apollo';
 import GET_SHOPS_BY_LOCATION from '../../../lib/apollo/queries/getShops'
 import Input_Search_Item from '../../../../components/atoms/Input_Search_Item';
+import PostMeta from '../../../../components/organisms/PostMeta';
 export async function getStaticPaths() {
     return {
         paths: [],
@@ -69,7 +70,7 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
     }
 
     useEffect(() => {
-        if(inputSearchShop.length <= 3)return
+        if (inputSearchShop.length <= 3) return
         const apolloClient = initApollo()
         const fetchData = async () => {
             return await apolloClient.query({
@@ -89,8 +90,8 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
             console.log(shops?.data.shops);
             setshopsFilterByName(shops?.data.shops);
         })
-        
-        
+
+
 
 
         return () => {
@@ -104,6 +105,12 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
 
     return (
         <Desktop_Layout>
+            <PostMeta
+                title={`Negozi abbigliamento ${city} vicino a te - Veplo.it`}
+                subtitle={`Tutti i Negozi di abbigliamento a ${city} | cerca tutti i negozi di Abbiglimento nella tua zona | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
+                image={''}
+                description={`Tutti i Negozi di abbigliamento a ${city} | cerca tutti i negozi di Abbiglimento nella tua zona | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
+                 />
             <div className='md:flex justify-between'>
                 <Logo_Below_Header city={city} />
                 <div className='my-auto mt-2'>
@@ -128,22 +135,22 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
                         >Risultati per {inputSearchShop}</p>
                     </TagLabel>
                     <TagCloseButton
-                    onClick={() => {setInputSearchShop('')}}
+                        onClick={() => { setInputSearchShop('') }}
                     />
                 </Tag>
 
             }
             <div className="grid grid-cols-1 md:pt-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 w-full m-auto justify-items-center mt-4	">
                 {((shops.length > 0 && inputSearchShop.length < 1) && setInputSearchShop.length <= 3) ?
-                shops.map((shop) => {
-                    return (
-                        <Box_Shop key={shop.id} scale={'scale(0.99)'} eventHandler={toStore} shop={shop} />
-                    )
-                }) : shopsFilterByName.map((shop) => {
-                    return (
-                        <Box_Shop key={shop.id} scale={'scale(0.99)'} eventHandler={toStore} shop={shop} />
-                    )
-                })
+                    shops.map((shop) => {
+                        return (
+                            <Box_Shop key={shop.id} scale={'scale(0.99)'} eventHandler={toStore} shop={shop} />
+                        )
+                    }) : shopsFilterByName.map((shop) => {
+                        return (
+                            <Box_Shop key={shop.id} scale={'scale(0.99)'} eventHandler={toStore} shop={shop} />
+                        )
+                    })
                 }
             </div>
 

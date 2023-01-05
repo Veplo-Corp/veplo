@@ -21,15 +21,12 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
     }
 
     const changeImageFull = (url: string) => {
-        setfullImage(url)
+        setfullImage(imageKitUrl(url, 762, 1100))
     }
 
     useEffect(() => {
         if (product?.photos) {
-            setfullImage(product.photos[0].replace(
-                `https://firebasestorage.googleapis.com/v0/b/dintorni-${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}.appspot.com`, 'https://ik.imagekit.io/veplo') + '&tr=w-762,h-1100' 
-            )
-
+            setfullImage(imageKitUrl(product.photos[0], 762, 1100))
         }
 
     }, [product])

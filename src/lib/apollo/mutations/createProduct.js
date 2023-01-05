@@ -8,7 +8,10 @@ const CREATE_PRODUCT = gql`
         createProduct(
             shopId: $shopId
             options: $options
-        )
+        ){
+            id,
+            photos
+          }
     }
 `
 
@@ -18,4 +21,3 @@ export default CREATE_PRODUCT;
 
 
 
-  

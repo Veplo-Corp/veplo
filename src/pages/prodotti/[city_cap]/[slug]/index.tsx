@@ -26,6 +26,7 @@ import Error_page from '../../../../../components/organisms/Error_page'
 import createUrlSchema from '../../../../../components/utils/create_url'
 import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter'
 import createFilterObject from '../../../../../components/utils/create_fiter_products_object'
+import PostMeta from '../../../../../components/organisms/PostMeta'
 
 
 type Router = {
@@ -177,7 +178,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         })
 
         console.log(data?.products);
-        
+
         setproductsFounded((prevstate: Product[]) => {
           return [
             ...prevstate,
@@ -356,6 +357,12 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   return (
     <>
       <Desktop_Layout>
+        <PostMeta
+          title={`Abbigliamento a ${city} | Abbigliamento · ${category === '' ? 'Vestiti' : category}  - Veplo.it`}
+          subtitle={`Tutto l'abbligliamento a ${city} - ${category === '' ? 'Vestiti' : category} a ${city}, vicino e te - CAP ${postcode} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
+          image={''}
+          description={`Tutto l'abbligliamento a ${city} - ${category === '' ? 'Vestiti' : category} a ${city}, vicino e te - CAP ${postcode} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
+        />
         <Logo_Below_Header city={city} gender={gender} category={category.replace(/-/g, ' ') || 'Tutto'}></Logo_Below_Header>
         {!loading && <InfiniteScroll
           dataLength={productsFounded.length}

@@ -111,6 +111,13 @@ const index = () => {
         }))
         return setOpenModalMath(Math.random())
       }
+      
+      const Photos = photos.map((photo: any) => {
+        return photo.file
+      })
+
+      console.log(Photos);
+      
 
       const Product = {
         name: name,
@@ -121,41 +128,36 @@ const index = () => {
         microCategory: microcategory,
         gender: gender,
         brand: brand,
-        photos: ['https://www.macmillandictionary.com/us/external/slideshow/thumb/Grey_thumb.png'],
+        photos: Photos,
       }
       
       const isCreatedProduct = await createProduct({ variables: { shopId: user.shopId, options: Product } })
       //* alert to show product creation process OK!
       //upload Images to database
       console.log(isCreatedProduct);
-      const productId = isCreatedProduct.data.createProduct;
-      let photoURLForDB = [];
-      let i = 1;
-      console.log(photos);
-      for await (let photo of photos) {
-        try {
-          //const url = await uploadPhotoFirebase('photo' + i, photo.blob, productId, user.uid)
-          const url = await uploadPhotoFirebase(photo.blob, `/${user.uid}/prodotti/${productId}/${'photo' + i}`)
+       
+      const productId = isCreatedProduct.data.createProduct.id;
+      const photosUpdated = isCreatedProduct.data.createProduct.photos
+      // let photoURLForDB = [];
+      // let i = 1;
+      // console.log(photos);
+      // for await (let photo of photos) {
+      //   try {
+      //     //const url = await uploadPhotoFirebase('photo' + i, photo.blob, productId, user.uid)
+      //     const url = await uploadPhotoFirebase(photo.blob, `/${user.uid}/prodotti/${productId}/${'photo' + i}`)
 
-          photoURLForDB.push(url)
-          i++
-        } catch {
-          addToast({ position: 'top', title: 'Errore upload immagine', description: "errore durante l'upload dell'immagini", status: 'error', duration: 5000, isClosable: false })
-          break;
-        }
-      }
-
-      const areImagesAdded = await editProduct({
-        variables: {
-          id: productId, options: {
-            photos: photoURLForDB
-          }
-        }
-      })
+      //     photoURLForDB.push(url)
+      //     i++
+      //   } catch {
+      //     addToast({ position: 'top', title: 'Errore upload immagine', description: "errore durante l'upload dell'immagini", status: 'error', duration: 5000, isClosable: false })
+      //     break;
+      //   }
+      // }
+      
 
       const prodoctForGQLCache = {
         ...Product,
-        photos: photoURLForDB,
+        photos: photosUpdated,
         id: productId,
         shopId: user.shopId,
         firebaseShopId: user.uid,
@@ -192,6 +194,7 @@ const index = () => {
           variables: { id: user.shopId, limit:100, offset:0  }, //*idShop
           data: {
             shop: {
+              id: user.shopId,
               products: [
                 ...shop.products,
                 prodoctForGQLCache
@@ -202,7 +205,7 @@ const index = () => {
       }
 
 
-      if (isCreatedProduct.data.createProduct && areImagesAdded.data.editProduct) {
+      if (isCreatedProduct.data.createProduct /* && areImagesAdded.data.editProduct */) {
         router.push('/shop/prodotti')
         return addToast({ position: 'top', title: 'Prodotto creato con successo', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
       }

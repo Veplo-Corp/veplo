@@ -18,6 +18,7 @@ import { Disclosure } from '@headlessui/react'
 import { ChevronUpIcon } from '@chakra-ui/icons'
 import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter'
 import { imageKitUrl } from '../../../../../components/utils/imageKitUrl'
+import PostMeta from '../../../../../components/organisms/PostMeta'
 
 export async function getStaticPaths() {
     return {
@@ -79,6 +80,12 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
 
     return (
         <Desktop_Layout>
+            <PostMeta
+                title={`${toUpperCaseFirstLetter(shop.name)} a ${shop.address.city}, ${shop.address.street} - CAP ${shop.address.postcode} - Veplo.it`}
+                subtitle={`Visita il negozio di abbligliamento ${shop.name} a ${shop.address.city}, ${shop.address.street} - CAP ${shop.address.postcode} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
+                image={shop.photo}
+                description={`Visita il negozio di abbligliamento ${shop.name} a ${shop.address.city}, ${shop.address.street} - CAP ${shop.address.postcode} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
+            />
             <div className='md:flex w-full'>
                 <Box className='w-fit'>
                     <LazyLoadImage src={

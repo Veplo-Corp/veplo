@@ -6,6 +6,7 @@ import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout';
 import { Color, COLORS } from '../../../../../../components/mook/colors';
 import Image_Product from '../../../../../../components/organisms/Image_Product';
 import Product_Form from '../../../../../../components/organisms/Product_Form';
+import { imageKitUrl } from '../../../../../../components/utils/imageKitUrl';
 import Shop_UID_Required from '../../../../../../components/utils/Shop_UID_Required';
 import { ToastOpen } from '../../../../../../components/utils/Toast';
 import uploadPhotoFirebase from '../../../../../../components/utils/uploadPhotoFirebase';
@@ -33,13 +34,13 @@ const index = () => {
     const [loadShop, { data, error }] = useLazyQuery(GET_PRODUCTS_FROM_SHOP, {
         fetchPolicy: 'cache-first',
         //nextFetchPolicy: 'cache-first',
-        variables: { id: user?.shopId, limit:100, offset:0  },
+        variables: { id: user?.shopId, limit: 100, offset: 0 },
         // pollInterval: 500,
         // notifyOnNetworkStatusChange: true,
     });
 
     console.log(error);
-    
+
 
     //redirect to createShop,whether there is not a Shop
     if (error) {
@@ -114,7 +115,7 @@ const index = () => {
             }
         }
         //console.log(photoURLForDB);
-        if(!product)return setLoading(false)
+        if (!product) return setLoading(false)
 
         const options = {
             name: product.name != name ? name : product.name,
@@ -160,14 +161,14 @@ const index = () => {
                 },
                 broadcast: false // Include this to prevent automatic query refresh
             });
-            
+
             addToast({ position: 'top', title: 'Prodotto aggiornato con successo', description: `${options.name.toUpperCase()} è stato aggiornato con successo. Controla nella sezione dedicata`, status: 'success', duration: 5000, isClosable: true })
 
-        } catch (e:any) { 
+        } catch (e: any) {
 
             console.log(e?.message);
-            
-            if(e?.message === "you didn't edit any fields"){
+
+            if (e?.message === "you didn't edit any fields") {
 
             } else {
                 addToast({ position: 'top', title: 'Impossibile aggiornare il prodotto', description: "c'è stato un errore durante l'aggiornamento del prodotto, riprova più tardi", status: 'error', duration: 5000, isClosable: true })
@@ -177,15 +178,15 @@ const index = () => {
         setLoading(false)
     }
 
-    const setNewImages = (images:any) => {        
-        if(product){
-            setProduct((prevstate:any) => {
-                return{
+    const setNewImages = (images: any) => {
+        if (product) {
+            setProduct((prevstate: any) => {
+                return {
                     ...prevstate,
                     photos: images
                 }
             })
-            
+
         }
     }
 
@@ -199,22 +200,26 @@ const index = () => {
                 {product &&
                     <>
                         <div className='md:flex justify-center'>
-                            <div className='w-full  md:w-fit h-fit grid gap-5 grid-cols-2 mt-8'>
-                                {product.photos?.map((image: any, id: number) => {                                    
+                            <div className='w-full sm:w-fit lg:w-4/12 h-fit grid gap-5 grid-cols-2 mt-8'>
+                                {product.photos?.map((image: any, id: number) => {
                                     return (
-                                        <div key={id} className='flex w-fit md:w-40 h-fit'>
-                                            {!image.url ? (
-                                                <img
-                                                    className='rounded'
-                                                    src={image} alt="" />
-                                            ) :
-                                                (
-                                                    <img
-                                                        className='rounded'
-                                                        src={image.url} alt="" />
-                                                )
-                                            }
-                                        </div>
+                                        // <div key={id} className='flex w-fit md:w-40 h-fit'>
+                                        //     {!image.url ? (
+                                        //         <img
+                                        //             className='rounded'
+                                        //             src={image} alt="" />
+                                        //     ) :
+                                        //         (
+                                        //             <img
+                                        //                 className='rounded'
+                                        //                 src={image.url} alt="" />
+                                        //         )
+                                        //     }
+                                        // </div>
+                                            <img
+                                                key={image}
+                                                className='rounded'
+                                                src={imageKitUrl(image, 305, 440)} alt="immagine non trovata" />
                                     )
                                 })}
                             </div>
@@ -230,11 +235,11 @@ const index = () => {
                                 gender: product.gender
                             }} type={'edit'} disabled={true}
                                 titleText={''}
-                                confirmButtonText={'modifica'} 
+                                confirmButtonText={'modifica'}
                                 toParentPhoto={setNewImages}
                                 loading={loading}
                                 backbutton={true}
-                                />
+                            />
                         </div>
                     </>
                 }
