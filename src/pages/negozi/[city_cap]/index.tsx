@@ -106,10 +106,10 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
     return (
         <Desktop_Layout>
             <PostMeta
-                title={`Negozi abbigliamento ${city} vicino a te - Veplo.it`}
-                subtitle={`Tutti i Negozi di abbigliamento a ${city} | cerca tutti i negozi di Abbiglimento nella tua zona | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
+                title={`Negozi Abbigliamento a ${city} | vicino a te - Veplo.it`}
+                subtitle={`Tutti i Negozi di abbigliamento a ${city} | cerca tra tutti i negozi di Abbiglimento vicino a te a ${city} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
                 image={''}
-                description={`Tutti i Negozi di abbigliamento a ${city} | cerca tutti i negozi di Abbiglimento nella tua zona | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
+                description={`Tutti i Negozi di abbigliamento a ${city} | cerca tra tutti i negozi di Abbiglimento vicino a te a ${city} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
                  />
             <div className='md:flex justify-between'>
                 <Logo_Below_Header city={city} />
