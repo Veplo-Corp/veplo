@@ -50,6 +50,7 @@ const index = () => {
                 variables: { id: user.shopId, limit:100, offset:0   }, //shopId
                 data: {
                     shop: {
+                        id: user.shopId,
                         products: shop.products.filter((product:Product) => product.id != deleteId.deleteProduct)
                     }
                 }
@@ -89,17 +90,17 @@ const index = () => {
         try {
             await deleteProduct({ variables: { id: productId } })
             //*delete product's images from firebase
-            let i = 1;
-            for await (let photo of productPhotos) {
-                try {
-                    await deletePhotoFirebase('photo' + i, productId, user.uid)
-                    i++
-                } catch (e) {
-                    console.log(e);
-                    addToast({ position: 'top', title: 'Errore eliminazione prodotto', description: "errore durante l'upload dell'immagini", status: 'error', duration: 5000, isClosable: false })
-                    break;
-                }
-            }
+            // let i = 1;
+            // for await (let photo of productPhotos) {
+            //     try {
+            //         await deletePhotoFirebase('photo' + i, productId, user.uid)
+            //         i++
+            //     } catch (e) {
+            //         console.log(e);
+            //         addToast({ position: 'top', title: 'Errore eliminazione prodotto', description: "errore durante l'upload dell'immagini", status: 'error', duration: 5000, isClosable: false })
+            //         break;
+            //     }
+            // }
             return addToast({ position: 'top', title: 'Prodotto eliminato', description: `${productName} è stato eliminato con successo`, status: 'success', duration: 5000, isClosable: true })
         }
         catch (e) {

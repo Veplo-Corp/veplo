@@ -20,6 +20,7 @@ import { DownloadIcon } from '@chakra-ui/icons';
 import MobileDetect from 'mobile-detect';
 import Loading from '../molecules/Loading';
 import { resizeFile } from '../utils/resizeFile';
+import { imageKitUrl } from '../utils/imageKitUrl';
 
 
 
@@ -27,7 +28,8 @@ type Image = {
     type: string,
     blob: any,
     url: any,
-    position: number
+    position: number,
+    file: any
 }
 
 const ImageFormat: { position: number, text: string }[] = [
@@ -181,13 +183,20 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
         setImages((prevstate: any) => {
             console.log('position photo: ', positionPhoto);
 
+            const file = new File([blob], "photo1", {
+                type: 'image/webp'
+            });
+
             const newImage: Image = {
-                type: 'test',
+                type: 'image/webp',
                 blob: blob,
                 url: url,
+                file: file,
                 position: positionPhoto === null ? prevstate.length : positionPhoto
             }
-
+            
+            
+            console.log(file);
             if (positionPhoto !== null) {
                 let prevstateImages = [...prevstate]
                 //prevstateImages = prevstateImages.filter(image => image.position !== positionPhoto)
@@ -233,7 +242,6 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
         //set the posizion of the cropp
         setPositionPhoto(position)
     };
-
 
 
     async function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -297,19 +305,17 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                     const yourBase64String = imgSrc.substring(imgSrc.indexOf(',') + 1);
                     const kb = Math.ceil(((yourBase64String.length * 6) / 8) / 1000); //es. 426 kb
                     console.log(kb);
-                    //set quality based on dimension photo
-                    const quality = kb > 3000 ? 0.3 : 0.8;
                     canvas.toBlob(function (blob) {
                         if (!blob) { return }
                         const url = URL.createObjectURL(blob);
                         setUrl(url)
                         setBlob(blob)
                         setIsDisabledButton(false)
-                    }, 'image/webp', quality);
+                    }, 'image/webp', 1);
                 })
         }
     },
-        300,
+        0,
         [completedCrop],
     )
 
@@ -489,12 +495,13 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                                         {!image.url ? (
                                                             <img
                                                                 className='rounded'
-                                                                src={image} alt="" />
+                                                                src={imageKitUrl(image, 305, 440)} alt="immagine non trovata"
+                                                                />
                                                         ) :
                                                             (
                                                                 <img
                                                                     className='rounded'
-                                                                    src={image.url} alt="" />
+                                                                    src={image.url} alt="immagine non trovata" />
                                                             )
                                                         }
 

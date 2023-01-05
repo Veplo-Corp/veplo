@@ -20,6 +20,8 @@ import EDIT_PRODUCT from '../../src/lib/apollo/mutations/editProduct';
 import { useRouter } from 'next/router';
 import Link from 'next/link'
 import Loading from '../molecules/Loading';
+import addAWSPath from '../utils/add_path_aws';
+import { imageKitUrl } from '../utils/imageKitUrl';
 
 // const Table_Products_Shop: React.FC<{ idShop: string, deleteProduct: any }> = ({ idShop, deleteProduct }) => {
 
@@ -97,14 +99,23 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
                         </Tr>
                     </Thead>
                     <Tbody >
-                        {data && data?.shop.products.map((product: Product) => {
+                        {data && data?.shop.products.map((product: any) => {
                             return (
                                 <Tr key={product.id} fontSize={['xs', 'medium']} >
                                     <Td className='hidden md:table-cell'>
-                                        <Image
+                                        {product?.photos[0]?.src ? 
+                                        (<Image
                                             className='w-20'
-                                            src={product.photos[0]}>
-                                        </Image>
+                                            src={
+                                                product.photos[0]?.src
+                                            }>
+                                        </Image>) : 
+                                        (<Image
+                                            className='w-20'
+                                            src={
+                                                imageKitUrl(product.photos[0], 80, 115)
+                                            }>
+                                        </Image>)}
                                     </Td>
 
                                     <Td px={[0.5, 4]} >
