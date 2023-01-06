@@ -41,6 +41,7 @@ function createApolloClient() {
             headers: {
                 ...headers,
                 Authorization: authorization_token ? `${authorization_token}` : "",
+                'Apollo-Require-Preflight': 'true'
             }
         }
     });
