@@ -31,6 +31,7 @@ type Image = {
     type: string,
     blob: any,
     url: any,
+    file: any
 }
 
 interface IFormInput {
@@ -53,7 +54,7 @@ interface IFormInput {
     //! togliere description (obbligatoria), macrocategories e gendere in createProduct
     //!deve inserire tommaso
     piva: string
-    photo: string
+    photo: string[]
     phone: string
 }
 
@@ -68,7 +69,7 @@ const index = () => {
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInput>({
         mode: "all",
         defaultValues: {
-            photo: ''
+            photo: ['']
         }
     });
 
@@ -187,17 +188,21 @@ const index = () => {
                 })
         }
     },
-        300,
+        0,
         [completedCrop],
     )
 
 
     const onHanldeConfirm = () => {
-        console.log(blob);
+        const file = new File([blob], "photo1", {
+            type: 'image/webp'
+        });
+
         const newImage: Image = {
-            type: 'test',
+            type: 'image/webp',
             blob: blob,
             url: url,
+            file: file
         }
         setImage(newImage)
         setBlob(null)
@@ -411,7 +416,7 @@ const index = () => {
                 hours: [open_hour, close_hour]
             },
             piva: watch('piva'),
-            photo: url,
+            photo: [image?.file],
             phone: watch('phone'),
             description: ''
         }
@@ -603,7 +608,7 @@ const index = () => {
                                 </div>
                                 <InputGroup >
                                     <Input
-                                        maxLength={30}
+                                        maxLength={50}
                                         rounded={10}
                                         paddingY={6}
                                         type='text'

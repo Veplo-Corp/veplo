@@ -70,8 +70,8 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
       const apolloClient = initApollo()
       if (userAuth) {
         setUserId(analytics, userAuth.uid);
-        setUserProperties(analytics, { favorite_food: 'apples' });
-        const idToken = await userAuth.getIdToken(true)        
+        //setUserProperties(analytics, { favorite_food: 'apples' });
+        const idToken = await userAuth.getIdToken(true)
         setAuthTokenInLocalStorage(idToken)
         //console.log(idToken);
         const tokenResult = await userAuth.getIdTokenResult()
@@ -96,34 +96,51 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
           );
           return
         } else if (isShop === true) {
-          const { data, error } = await apolloClient.query({
-            query: GET_SHOP_BY_FIREBASE_ID,
-            variables: { firebaseId: userAuth.uid },
-            //!useless
-            fetchPolicy: 'cache-first',
-            // nextFetchPolicy: 'cache-only',
-          })
 
-          dispatch(
-            login({
-              email: userAuth.email,
-              uid: userAuth.uid,
-              idToken: idToken,
-              emailVerified: userAuth.emailVerified,
-              isShop,
-              createdAt: date_for_redux,
-              shopId: data?.shopByFirebaseId?.id || null
+          try {
+            const { data, error } = await apolloClient.query({
+              query: GET_SHOP_BY_FIREBASE_ID,
+              variables: { firebaseId: userAuth.uid },
+              //!useless
+              fetchPolicy: 'cache-first',
+              // nextFetchPolicy: 'cache-only',
             })
-          );
-          // if(!data?.shopByFirebaseId?.id){
-          //   router.push('/shop/crea-shop')
-          // }
+
+
+
+            dispatch(
+              login({
+                email: userAuth.email,
+                uid: userAuth.uid,
+                idToken: idToken,
+                emailVerified: userAuth.emailVerified,
+                isShop,
+                createdAt: date_for_redux,
+                shopId: data?.shopByFirebaseId?.id || null
+              })
+            );
+            // if(!data?.shopByFirebaseId?.id){
+            //   router.push('/shop/crea-shop')
+            // }
+          } catch (e:any) {
+            dispatch(
+              login({
+                email: userAuth.email,
+                uid: userAuth.uid,
+                idToken: idToken,
+                emailVerified: userAuth.emailVerified,
+                isShop,
+                createdAt: date_for_redux,
+                shopId: null
+              })
+            );
+          }
+
         }
       } else {
         console.log('effettua il logout');
         apolloClient.clearStore()
         return dispatch(logout())
-
       }
       return
     });
@@ -142,11 +159,11 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
 
 
-function MyApp({ Component, pageProps }: any /* AppProps */) {  
+function MyApp({ Component, pageProps }: any /* AppProps */) {
   const [loading, setLoading] = useState(false);
   const router = useRouter()
   useEffect(() => {
-      
+
 
 
     const start = () => {
@@ -171,10 +188,10 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
     if (process.env.NODE_ENV === 'production') {
       const analytics = getAnalytics();
       //console.log(process.env.NODE_ENV );
-      
+
       const EventLog = (url: string) => {
         console.log(url);
-        
+
         logEvent(analytics, 'notification_received');
         logEvent(analytics, 'screen_view', {
           firebase_screen: url,
@@ -185,7 +202,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
           content_id: 'P12453'
         });
       };
-      
+
 
       return () => {
         router.events.off('routeChangeComplete', EventLog);
@@ -213,7 +230,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
                 <Footer />
               </>
             )}
-            
+
           </Auth>
         </ChakraProvider>
       </ApolloProvider>

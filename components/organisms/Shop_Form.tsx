@@ -3,6 +3,7 @@ import React, { FC } from 'react'
 import { useForm } from 'react-hook-form';
 import { Shop } from '../../src/interfaces/shop.interface';
 import Div_input_creation from '../atoms/Div_input_creation'
+import { imageKitUrl } from '../utils/imageKitUrl';
 
 
 
@@ -117,7 +118,7 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                 </Div_input_creation>
                 <h1 className='italic text-xl lg:text-2xl font-extrabold mt-6 mb-2 md:mb-4'>Informazioni aggiuntive</h1>
                 <Div_input_creation text='Immagine negozio'>
-                    <img src={shop.photo}
+                    <img src={imageKitUrl(shop.photo, 480, 300)}
                         className='w-full aspect-[4.8/3] object-cover rounded-md mb-4'
                     />
                 </Div_input_creation>
