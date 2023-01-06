@@ -118,7 +118,7 @@ export async function getStaticProps(ctx: any) {
 
 
 
-const index: React.FC<{ city: any, gender: any, category: any, postcode: any, products: Product[], errorMessage: string, }> = ({ city, gender, category, postcode, products, errorMessage }) => {
+const index: React.FC<{ city: any, gender: any, category: any, postcode: any, products: Product[], errorMessage?: string, }> = ({ city, gender, category, postcode, products, errorMessage }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [useFilter, setUseFilter] = useState(false)
@@ -298,56 +298,26 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
     }
 
 
-
-
-
-    // else {
-    //   console.log(brands, minPrice, maxPrice, colors, sizes);
-    //   const apolloClient = initApollo()
-    //   const fetchData = async () => {
-    //     return await apolloClient.query({
-    //       query: GET_PRODUCTS,
-    //       variables: {
-    //         range: 10000,
-    //         offset: 0,
-    //         limit: 8,
-    //         filters: {
-    //           cap: postcode,
-    //           macroCategory: category === 'tutto' ? "" : category,
-    //           gender: 'M',
-    //           maxPrice: Number(maxPrice)
-    //         }
-    //       }
-    //     })
-    //   }
-
-    //   fetchData().then((products) => {
-    //     console.log(products.data.products);
-    //     console.log('eccolo');
-    //     //abortController.signal(),
-
-    //     setproductsFounded(products.data.products)
-    //   }).catch(e => {
-    //     console.log(e);
-
-    //   })
-    // }
-
   }, [router.query])
 
   useEffect(() => {
+    if(errorMessage){
+      router.push({
+        pathname: '/404',
+        query: { errorText: 'Nessun negozio in questo Cap' },
+      })
+    }
     if (data) {
       setproductsFounded(data?.products)
       setLoading(false)
     }
-  }, [data])
+  }, [data, errorMessage])
 
   if (errorMessage /* === `cap ${postcode} does not exists` */) {
-    console.log(errorMessage);
-
+    
     return (
       <div className='mt-40 text-center'>
-        <Error_page errorMessage='cap-does-not-exist' />
+        {/* <Error_page errorMessage='cap-does-not-exist' /> */}
       </div>
     )
   }
