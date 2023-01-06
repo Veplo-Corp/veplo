@@ -37,6 +37,7 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
     const logout = async () => {
         await signOut(auth);
         //set OpenModal 1 in Header
+        router.push('/shop/login?type=login')
         onCloseModal()
         onClose()
     }

@@ -152,7 +152,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                         return (
                             <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
                                 borderWidth={1.5}
-                                className={` ${image == fullImage ? "border-black" : "border-white"} cursor-pointer
+                                className={` ${imageKitUrl(image, 762, 1100) == fullImage ? "border-black border-8" : "border-white"}   cursor-pointer
                                         w-20
                                         xl:w-32
                                     `}
