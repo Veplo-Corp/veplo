@@ -123,11 +123,11 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                             <InputGroup >
                                 <Input
                                     autoComplete='off'
-                                    maxLength={35}
+                                    maxLength={40}
                                     rounded={10}
                                     paddingY={6}
                                     type="text"
-                                    {...register("name", { required: true, maxLength: 30 })}
+                                    {...register("name", { required: true })}
                                     isInvalid={false}
                                 />
                             </InputGroup>

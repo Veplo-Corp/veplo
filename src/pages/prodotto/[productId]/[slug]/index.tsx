@@ -153,10 +153,10 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
         <>
             <Desktop_Layout>
                 <PostMeta 
-                title={`${product.brand} ${product.name.toUpperCase()} - ${product.macroCategory} - ${product.shopOptions.city} - Veplo.it`} 
-                subtitle={`${product.brand} ${product.name.toUpperCase()} - ${product.macroCategory} a ${product.price}€ | vivi Veplo`} 
+                title={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} - ${product.shopOptions.city} - Veplo.it`} 
+                subtitle={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} a ${product.price}€ | vivi Veplo`} 
                 image={imageKitUrl(product.photos[0], 171, 247)}
-                description={`${product.brand} ${product.name.toUpperCase()} - ${product.macroCategory} - Veplo.it`} />
+                description={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} - Veplo.it`} />
                 
                 <div className='md:flex justify-between w-full'>
                     <Image_Product product={product} />
