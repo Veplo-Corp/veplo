@@ -29,6 +29,7 @@ function createApolloClient() {
     const link = createUploadLink({
         uri: process.env.NEXT_PUBLIC_APOLLO_URI ,
         credentials: 'same-origin',
+        // 'Apollo-Require-Preflight': 'true'
     })
 
     const authLink = setContext((_, { headers }) => {
@@ -41,6 +42,7 @@ function createApolloClient() {
             headers: {
                 ...headers,
                 Authorization: authorization_token ? `${authorization_token}` : "",
+                'Apollo-Require-Preflight': 'true'
             }
         }
     });
