@@ -31,7 +31,7 @@ const index: FC<{}> = () => {
   return (
     <Desktop_Layout>
       <PostMeta
-        title={`Negozio | Veplo Shop`}
+        title={`Il tuo Negozio | Veplo Shop`}
         subtitle={`Informazioni del tuo negozio | Veplo.it`}
         image={''}
         description={`Informazioni del tuo negozio | Veplo.it`}
