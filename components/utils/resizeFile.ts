@@ -3,14 +3,16 @@ export const resizeFile = (file: any) =>
     new Promise((resolve) => {
         Resizer.imageFileResizer(
             file,
-            3000,
-            3000,
+            762,
+            1100,
             "WEBP",
-            100,
+            80,
             0,
             (uri) => {
                 resolve(uri.toString());
             },
-            "base64"
+            "base64",
+            762,
+            1100,
         );
 });

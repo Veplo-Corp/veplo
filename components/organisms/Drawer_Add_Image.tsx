@@ -270,16 +270,16 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                 console.log(file);
 
                 //!don't use resize image
-                // const image = await resizeFile(file);
-                // console.log(image);
-                // setImgSrc(image)
+                const image = await resizeFile(file);
+                console.log(image);
+                setImgSrc(image)
 
-                const reader = new FileReader()
-                reader.addEventListener('load', () =>
-                    setImgSrc(reader.result?.toString() || '')
-                )
-               
-                reader.readAsDataURL(e.target.files[0])
+                // const reader = new FileReader()
+                // reader.addEventListener('load', () =>
+                //     setImgSrc(reader.result?.toString() || '')
+                // )
+
+                // reader.readAsDataURL(e.target.files[0])
 
             } catch (err) {
                 console.log(err);
