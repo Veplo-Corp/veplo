@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout';
 import { Color, COLORS } from '../../../../../../components/mook/colors';
 import Image_Product from '../../../../../../components/organisms/Image_Product';
+import PostMeta from '../../../../../../components/organisms/PostMeta';
 import Product_Form from '../../../../../../components/organisms/Product_Form';
 import { imageKitUrl } from '../../../../../../components/utils/imageKitUrl';
 import Shop_UID_Required from '../../../../../../components/utils/Shop_UID_Required';
@@ -196,7 +197,12 @@ const index = () => {
     return (
         <Shop_UID_Required>
             <Desktop_Layout>
-
+                <PostMeta
+                    title={`Modifica | Veplo Shop`}
+                    subtitle={`modifica il prodotto  | Veplo.it`}
+                    image={''}
+                    description={`modifica il prodotto  | Veplo.it`}
+                />
                 {product &&
                     <>
                         <div className='md:flex justify-center'>
@@ -216,10 +222,10 @@ const index = () => {
                                         //         )
                                         //     }
                                         // </div>
-                                            <img
-                                                key={image}
-                                                className='rounded'
-                                                src={imageKitUrl(image, 305, 440)} alt="immagine non trovata" />
+                                        <img
+                                            key={image}
+                                            className='rounded'
+                                            src={imageKitUrl(image, 305, 440)} alt="immagine non trovata" />
                                     )
                                 })}
                             </div>

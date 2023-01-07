@@ -18,6 +18,7 @@ import { MACROCATEGORY, Macrocategory } from '../../../../components/mook/macroc
 import { MICROCATEGORY, Microcategory } from '../../../../components/mook/microcategories'
 import Drawer_Add_Image from '../../../../components/organisms/Drawer_Add_Image'
 import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
+import PostMeta from '../../../../components/organisms/PostMeta'
 import Product_Form from '../../../../components/organisms/Product_Form'
 import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required'
 import { ToastOpen } from '../../../../components/utils/Toast'
@@ -114,6 +115,8 @@ const index = () => {
       })
 
       console.log(Photos);
+      const productProva = Array.from({ length: 100 }, (_, i) => photos[0].file)
+      console.log(productProva);
 
 
       const Product = {
@@ -125,7 +128,7 @@ const index = () => {
         microCategory: microcategory,
         gender: gender,
         brand: brand,
-        photos: Photos,
+        photos: productProva,
       }
 
       //!loop to test array of photo
@@ -237,6 +240,12 @@ const index = () => {
       {user?.shopId ? (
         <Shop_UID_Required>
           <Desktop_Layout>
+            <PostMeta
+              title={`Negozio | Veplo Shop`}
+              subtitle={`Crea un prodotto | Veplo.it`}
+              image={''}
+              description={`Crea un prodotto | Veplo.it`}
+            />
             <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false}
               titleText={'Aggiungi un capo di abbigliamento'}
               confirmButtonText={'aggiungi'}

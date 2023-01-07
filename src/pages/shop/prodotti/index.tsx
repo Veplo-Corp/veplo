@@ -20,11 +20,12 @@ import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required';
 import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 import { Product } from '../../../interfaces/product.interface';
 import Create_Shop_Alert from '../../../../components/molecules/Create_Shop_Alert';
+import PostMeta from '../../../../components/organisms/PostMeta';
 
 
 const index = () => {
     const dispatch = useDispatch();
-    const user:Firebase_User = useSelector((state:any) => state.user.user);
+    const user: Firebase_User = useSelector((state: any) => state.user.user);
     const [mathNumber, setMathNumber] = useState(1)
     const { addToast } = ToastOpen();
     const [productToDeleteData, setProductToDeleteData] = useState({})
@@ -39,7 +40,7 @@ const index = () => {
             const { shop } = cache.readQuery<any>({
                 query: GET_PRODUCTS_FROM_SHOP,
                 variables: {
-                    id: user.shopId, limit:100, offset:0  //* mettere idShop,
+                    id: user.shopId, limit: 100, offset: 0  //* mettere idShop,
                 },
             });
             console.log(shop);
@@ -47,11 +48,11 @@ const index = () => {
             //*Delete Product
             cache.writeQuery({
                 query: GET_PRODUCTS_FROM_SHOP,
-                variables: { id: user.shopId, limit:100, offset:0   }, //shopId
+                variables: { id: user.shopId, limit: 100, offset: 0 }, //shopId
                 data: {
                     shop: {
                         id: user.shopId,
-                        products: shop.products.filter((product:Product) => product.id != deleteId.deleteProduct)
+                        products: shop.products.filter((product: Product) => product.id != deleteId.deleteProduct)
                     }
                 }
             })
@@ -68,7 +69,7 @@ const index = () => {
             }, 2000);
         }
     });
-    
+
 
 
     const handleCache = () => {
@@ -77,7 +78,7 @@ const index = () => {
 
 
 
-    const handleDeleteProductModal = (productId: string, productName: string, productPhotos: string, products?:any) => {
+    const handleDeleteProductModal = (productId: string, productName: string, productPhotos: string, products?: any) => {
         // for (let i = 0; i < products.length; i++) {
         //     deleteProduct({ variables: { id: products[i].id } })
         // }
@@ -92,7 +93,7 @@ const index = () => {
 
     const deleteProductEvent = async ({ productId, productName, productPhotos }: { productId: string, productName: string, productPhotos: string[] }) => {
         try {
-            
+
             await deleteProduct({ variables: { id: productId } })
             //*delete product's images from firebase
             // let i = 1;
@@ -121,15 +122,21 @@ const index = () => {
     return (
         <Shop_UID_Required>
             <Desktop_Layout>
+                <PostMeta
+                    title={`Prodotti | Veplo Shop`}
+                    subtitle={`Visualizza i tuoi prodotti | Veplo.it`}
+                    image={''}
+                    description={`Visualizza i tuoi prodotti | Veplo.it`}
+                />
                 {user && user.emailVerified === false &&
                     <Verified_Email />
-                    
+
                 }
                 {user && !user.shopId && !user?.Not_yet_Authenticated_Request &&
                     <Create_Shop_Alert />
                 }
                 {user && !user?.Not_yet_Authenticated_Request && user?.shopId &&
-                <Table_Products_Shop idShop={user.shopId} deleteProduct={handleDeleteProductModal} />}
+                    <Table_Products_Shop idShop={user.shopId} deleteProduct={handleDeleteProductModal} />}
                 <Modal_Error_Shop title={'Elimina prodotto'} description={'confermando eliminerai il prodotto dal tuo negozio'} closeText={'annulla'} openModalMath={mathNumber} confirmText={'conferma'} data={productToDeleteData} handleEvent={deleteProductEvent} />
                 {/* <button
                     onClick={handleCache}
