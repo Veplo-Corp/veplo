@@ -129,15 +129,15 @@ const index = () => {
       }
 
       //!loop to test array of photo
-      const array = Array.from(Array(100).keys())
+      // const array = Array.from(Array(100).keys())
 
-      for (const test of array) {
-        const isCreatedProduct = await createProduct({ variables: { shopId: user.shopId, options: Product } })
-        //* alert to show product creation process OK!
-        //upload Images to database
-        console.log(isCreatedProduct);
-      }
-      return
+      // for (const test of array) {
+      //   const isCreatedProduct = await createProduct({ variables: { shopId: user.shopId, options: Product } })
+      //   //* alert to show product creation process OK!
+      //   //upload Images to database
+      //   console.log(isCreatedProduct);
+      // }
+      // return
       const isCreatedProduct = await createProduct({ variables: { shopId: user.shopId, options: Product } })
       //* alert to show product creation process OK!
       //upload Images to database
