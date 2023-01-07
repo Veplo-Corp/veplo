@@ -336,7 +336,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                 })
         }
     },
-        1000,
+        300,
         [completedCrop],
     )
 
