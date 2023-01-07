@@ -21,6 +21,8 @@ import MobileDetect from 'mobile-detect';
 import Loading from '../molecules/Loading';
 import { resizeFile } from '../utils/resizeFile';
 import { imageKitUrl } from '../utils/imageKitUrl';
+import { useMutation } from '@apollo/client';
+import CREATE_IMAGE from '../../src/lib/apollo/mutations/createImage';
 
 
 
@@ -105,6 +107,8 @@ const ImageTextFormat: string[] = [
 
 
 const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: any, imagesUploadedBefore?: string[] | [] }> = ({ openDraw, confirmPhotos, imagesUploadedBefore }) => {
+    //create image test
+    const [createImage] = useMutation(CREATE_IMAGE);
 
 
     //* react image crop
@@ -183,7 +187,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
         setImages((prevstate: any) => {
             console.log('position photo: ', positionPhoto);
 
-            const file = new File([blob], "photo1", {
+            const file = new File([blob], "photo" + positionPhoto, {
                 type: 'image/webp'
             });
 
@@ -194,9 +198,8 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                 file: file,
                 position: positionPhoto === null ? prevstate.length : positionPhoto
             }
-            
-            
-            console.log(file);
+
+
             if (positionPhoto !== null) {
                 let prevstateImages = [...prevstate]
                 //prevstateImages = prevstateImages.filter(image => image.position !== positionPhoto)
@@ -245,6 +248,8 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
 
 
     async function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
+
+
         setLoading(true)
         setBlob(null)
         setUrl(null)
@@ -252,13 +257,29 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
         setIsDisabledButton(true)
         setShowCroppedImage(true)
 
+
         if (e.target.files /* && e.target.files.length > 0 */) {
             try {
-                const file = e.target.files[0];
-                const image = await resizeFile(file);
-                console.log(image);
+                console.log(e.target.files);
 
-                setImgSrc(image)
+                //const isImageCreated = await createImage({ variables: { files:e.target.files[0] } })
+                //console.log(isImageCreated);
+                //return
+
+                const file = e.target.files[0];
+                console.log(file);
+
+                //!don't use resize image
+                // const image = await resizeFile(file);
+                // console.log(image);
+
+                //!depecrated
+                const reader = new FileReader()
+                reader.addEventListener('load', () =>
+                    setImgSrc(reader.result?.toString() || '')
+                )
+               
+                reader.readAsDataURL(e.target.files[0])
 
             } catch (err) {
                 console.log(err);
@@ -311,11 +332,11 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                         setUrl(url)
                         setBlob(blob)
                         setIsDisabledButton(false)
-                    }, 'image/webp', 1);
+                    }, 'image/webp');
                 })
         }
     },
-        0,
+        1000,
         [completedCrop],
     )
 
@@ -496,7 +517,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                                             <img
                                                                 className='rounded'
                                                                 src={imageKitUrl(image, 305, 440)} alt="immagine non trovata"
-                                                                />
+                                                            />
                                                         ) :
                                                             (
                                                                 <img

@@ -77,9 +77,6 @@ const index = () => {
 
 
   const [createProduct, Element] = useMutation(CREATE_PRODUCT, {
-    update(cache, el) {
-      console.log(el);
-    }
   }
 
   );
