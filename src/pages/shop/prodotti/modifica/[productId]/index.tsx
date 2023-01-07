@@ -198,7 +198,7 @@ const index = () => {
         <Shop_UID_Required>
             <Desktop_Layout>
                 <PostMeta
-                    title={`Modifica | Veplo Shop`}
+                    title={`Modifica prodotto | Veplo`}
                     subtitle={`modifica il prodotto  | Veplo.it`}
                     image={''}
                     description={`modifica il prodotto  | Veplo.it`}

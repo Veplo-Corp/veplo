@@ -443,7 +443,7 @@ const index = () => {
         <Shop_UID_Required>
             <Desktop_Layout>
                 <PostMeta
-                    title={`Negozio | Veplo Shop`}
+                    title={`Crea Negozio | Veplo`}
                     subtitle={`Crea il tuo negozio | Veplo.it`}
                     image={''}
                     description={`Crea il tuo negozio | Veplo.it`}
