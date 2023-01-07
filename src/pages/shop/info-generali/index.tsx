@@ -10,10 +10,11 @@ import { useSelector } from 'react-redux'
 import { Shop } from '../../../interfaces/shop.interface'
 import Shop_Form from '../../../../components/organisms/Shop_Form'
 import Customer_Care_Contacts from '../../../../components/organisms/Customer_Care_Contacts'
+import PostMeta from '../../../../components/organisms/PostMeta'
 
 
 const index: FC<{}> = () => {
-  const user = useSelector((state:any) => state.user.user);  
+  const user = useSelector((state: any) => state.user.user);
 
 
   const Shop: Shop = useQuery(GET_SHOP_BY_FIREBASE_ID, {
@@ -23,13 +24,19 @@ const index: FC<{}> = () => {
   }).data?.shopByFirebaseId;
 
   console.log(Shop);
-  
+
 
 
 
   return (
     <Desktop_Layout>
-      {Shop && <Shop_Form shop={Shop}/>}
+      <PostMeta
+        title={`Negozio | Veplo Shop`}
+        subtitle={`Informazioni del tuo negozio | Veplo.it`}
+        image={''}
+        description={`Informazioni del tuo negozio | Veplo.it`}
+      />
+      {Shop && <Shop_Form shop={Shop} />}
       {/* <Customer_Care_Contacts /> */}
     </Desktop_Layout>
   )

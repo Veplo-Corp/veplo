@@ -25,6 +25,7 @@ import { useRouter } from 'next/router'
 import { addShopId } from '../../../store/reducers/user'
 import { resizeFile } from '../../../../components/utils/resizeFile'
 import uploadPhotoFirebase from '../../../../components/utils/uploadPhotoFirebase'
+import PostMeta from '../../../../components/organisms/PostMeta'
 
 
 type Image = {
@@ -95,7 +96,7 @@ const index = () => {
     const [isValid_shop_piva, setIsValid_Shop_piva] = useState<boolean | null>(null)
     const [isValid_open_hour, setIsValid_Open_hour] = useState<boolean | null>(null)
     const [isValid_close_hour, setIsValid_Close_hour] = useState<boolean | null>(null)
-   
+
 
     //*handle image upload and crop
     const hiddenFileInput = useRef<any>(null);
@@ -127,13 +128,13 @@ const index = () => {
         //set the posizion of the cropp
     };
 
-    const onSelectFile = async(e: React.ChangeEvent<HTMLInputElement>)=> {
-        
+    const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+
 
         setLoading(true)
         setBlob(null)
         setUrl(null)
-        setCrop(null)        
+        setCrop(null)
         setShowCroppedImage(true)
 
         if (e.target.files /* && e.target.files.length > 0 */) {
@@ -147,7 +148,7 @@ const index = () => {
             } catch (err) {
                 console.log(err);
             }
-        
+
         }
         else {
             return console.log('non trovata immagine caricata');
@@ -222,11 +223,11 @@ const index = () => {
         placeType: '',
         location: {
             type: 'Point',
-            coordinates: [1,1]
+            coordinates: [1, 1]
         },
         CAP_Location: {
             type: 'Point',
-            coordinates: [1,1]
+            coordinates: [1, 1]
         },
         postcode: '',
         city: '',
@@ -262,12 +263,12 @@ const index = () => {
         //     //return setAddresses(result.data)
         // }, 500)
     }
-    
+
 
     useDebounceEffect(async () => {
 
         if (address_searched === undefined || address_searched.length < 3) {
-            return 
+            return
         } else {
             //get IP
             // const res = await axios.get('https://geolocation-db.com/json/')
@@ -326,7 +327,7 @@ const index = () => {
 
     //* handle input change
 
-    const changeInput = (e:any, type: string) => {
+    const changeInput = (e: any, type: string) => {
         let newTime: string;
         let value: string = e;
         if (type !== 'days_open') {
@@ -402,7 +403,7 @@ const index = () => {
     const submitData = async (e: IFormInput) => {
         const url = await uploadPhotoFirebase(image?.blob, `/${user.uid}/shop_image/immagine`)
         console.log(url);
-        
+
         const Shop: IFormInput = {
             name: e.name,
             address: {
@@ -427,7 +428,7 @@ const index = () => {
             console.log(isCreatedShop.data.createShop)
             dispatch(
                 addShopId(isCreatedShop.data.createShop)
-              );
+            );
             //TODO
             //add shopId to user in Redux with function
             addToast({ position: 'top', title: 'Shop creato con successo', description: "inizia a inserire i tuoi prodotti in Veplo!", status: 'success', duration: 5000, isClosable: false })
@@ -441,6 +442,12 @@ const index = () => {
     return (
         <Shop_UID_Required>
             <Desktop_Layout>
+                <PostMeta
+                    title={`Negozio | Veplo Shop`}
+                    subtitle={`Crea il tuo negozio | Veplo.it`}
+                    image={''}
+                    description={`Crea il tuo negozio | Veplo.it`}
+                />
                 <div className='flex justify-between w-full mb-96'>
                     <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-6/12 xl:w-5/12" onSubmit={handleSubmit(submitData)}>
                         <div className='w-full'>
@@ -479,8 +486,8 @@ const index = () => {
                                             setCompletedCrop(c)
                                         }}
 
-                                        aspect={4.8/3}
-                                        
+                                        aspect={4.8 / 3}
+
                                     >
                                         <img
                                             className='min-w-full'
@@ -654,7 +661,7 @@ const index = () => {
                                             value={address.address}
                                             isInvalid={false}
                                             readOnly
-                                            disabled={address?.address === undefined || address.address.length>0}
+                                            disabled={address?.address === undefined || address.address.length > 0}
                                             _disabled={{
                                                 opacity: '1'
                                             }}
@@ -772,7 +779,7 @@ const index = () => {
                                     handleChangeState={changeInput}
                                     values={days.current} type={'day'}
                                     selectedValueBefore={undefined}
-                                    />
+                                />
                             </Div_input_creation>
                             <div className='flex justify-end mt-4'>
                                 <BlackButton

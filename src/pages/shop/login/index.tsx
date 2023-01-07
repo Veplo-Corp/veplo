@@ -20,6 +20,7 @@ import { Firebase_User } from '../../../interfaces/firebase_user.interface'
 import Login_or_Registration from '../../../../components/organisms/Login_or_Registration'
 import SET_IS_SHOP from '../../../lib/apollo/mutations/setIsShop';
 import Loading from '../../../../components/molecules/Loading'
+import PostMeta from '../../../../components/organisms/PostMeta'
 
 
 
@@ -208,6 +209,12 @@ const index = () => {
           :
           (
             <Desktop_Layout>
+              <PostMeta
+                title={`Login Negozio | Veplo Shop`}
+                subtitle={`accedi o registra un negozio  | Veplo.it`}
+                image={''}
+                description={`accedi o registra un negozio  | Veplo.it`}
+              />
               <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo negozio`} />
             </Desktop_Layout>
           )
