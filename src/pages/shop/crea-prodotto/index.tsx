@@ -114,9 +114,9 @@ const index = () => {
         return photo.file
       })
 
-      console.log(Photos);
-      const productProva = Array.from({ length: 100 }, (_, i) => photos[0].file)
-      console.log(productProva);
+      // console.log(Photos);
+      // const productProva = Array.from({ length: 100 }, (_, i) => photos[0].file)
+      // console.log(productProva);
 
 
       const Product = {
@@ -128,14 +128,14 @@ const index = () => {
         microCategory: microcategory,
         gender: gender,
         brand: brand,
-        photos: productProva,
+        photos: Photos
       }
 
       //!loop to test array of photo
       // const array = Array.from(Array(100).keys())
 
       // for (const test of array) {
-      //   const isCreatedProduct = await createProduct({ variables: { shopId: user.shopId, options: Product } })
+      //   const isCreatedProduct = createProduct({ variables: { shopId: user.shopId, options: Product } })
       //   //* alert to show product creation process OK!
       //   //upload Images to database
       //   console.log(isCreatedProduct);
