@@ -158,14 +158,16 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                     `}
                             >
                                 <Image src={
-                                    imageKitUrl(image,171, 247 )
-                                          }
+                                    imageKitUrl(image, 171, 247)
+                                }
 
-                                alt={'immagine non trovata'}
-                                width={'full'}
-                                maxH={'52'}
-                                className='object-cover'
-                                loading="lazy"
+                                    alt={'immagine non trovata'}
+                                    width={'fit-content'}
+                                    maxH={'52'}
+                                    height={'fit-content'}
+                                    className='object-cover
+                                '
+                                    loading="lazy"
                                 />
 
                             </Box>
