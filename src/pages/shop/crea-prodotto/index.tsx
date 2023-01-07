@@ -51,24 +51,24 @@ const index = () => {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
-  const user:Firebase_User = useSelector((state:any) => state.user.user);
+  const user: Firebase_User = useSelector((state: any) => state.user.user);
   //* graphQL
-  
+
 
 
   const { error, data, refetch } = useQuery(GET_PRODUCTS_FROM_SHOP, {
     fetchPolicy: 'cache-first',
     nextFetchPolicy: 'cache-first',
-    variables: { id: (user?.shopId || ''), limit:100, offset:0  },
+    variables: { id: (user?.shopId || ''), limit: 100, offset: 0 },
   });
 
 
-  
 
 
 
-  
-  
+
+
+
   //redirect to createShop,whether there is not a Shop
   if (error && user?.Not_yet_Authenticated_Request === false) {
     router.push('/shop/crea-shop')
@@ -108,13 +108,13 @@ const index = () => {
         }))
         return setOpenModalMath(Math.random())
       }
-      
+
       const Photos = photos.map((photo: any) => {
         return photo.file
       })
 
       console.log(Photos);
-      
+
 
       const Product = {
         name: name,
@@ -127,12 +127,22 @@ const index = () => {
         brand: brand,
         photos: Photos,
       }
-      
+
+      //!loop to test array of photo
+      const array = Array.from(Array(100).keys())
+
+      for (const test of array) {
+        const isCreatedProduct = await createProduct({ variables: { shopId: user.shopId, options: Product } })
+        //* alert to show product creation process OK!
+        //upload Images to database
+        console.log(isCreatedProduct);
+      }
+      return
       const isCreatedProduct = await createProduct({ variables: { shopId: user.shopId, options: Product } })
       //* alert to show product creation process OK!
       //upload Images to database
       console.log(isCreatedProduct);
-       
+
       const productId = isCreatedProduct.data.createProduct.id;
       const photosUpdated = isCreatedProduct.data.createProduct.photos
       // let photoURLForDB = [];
@@ -150,7 +160,7 @@ const index = () => {
       //     break;
       //   }
       // }
-      
+
 
       const prodoctForGQLCache = {
         ...Product,
@@ -173,7 +183,7 @@ const index = () => {
       }
 
       console.log(prodoctForGQLCache);
-      
+
 
       const { shop } = apolloClient.readQuery({
         query: GET_PRODUCTS_FROM_SHOP,
@@ -181,14 +191,14 @@ const index = () => {
         // Variables of mismatched types will return `null`.
         variables: {
           id: user.shopId, //* mettere idShop,
-          limit:100, offset:0 
+          limit: 100, offset: 0
         },
       });
 
       if (shop) {
         apolloClient.writeQuery({
           query: GET_PRODUCTS_FROM_SHOP,
-          variables: { id: user.shopId, limit:100, offset:0  }, //*idShop
+          variables: { id: user.shopId, limit: 100, offset: 0 }, //*idShop
           data: {
             shop: {
               id: user.shopId,
@@ -210,13 +220,13 @@ const index = () => {
         return addToast({ position: 'top', title: 'Impossibile creare il prodotto', description: "c'è stato un errore durante la creazione del prodotto, riprova più tardi", status: 'error', duration: 5000, isClosable: true })
       }
 
-    } catch (e:any) {
+    } catch (e: any) {
       console.log(e);
       console.log(e.message);
       addToast({ position: 'top', title: 'Impossibile creare il prodotto', description: "c'è stato un errore durante la creazione del prodotto, riprova più tardi", status: 'error', duration: 5000, isClosable: true })
     }
 
-  
+
     setLoading(false)
 
   }
@@ -227,10 +237,10 @@ const index = () => {
       {user?.shopId ? (
         <Shop_UID_Required>
           <Desktop_Layout>
-            <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false} 
-            titleText={'Aggiungi un capo di abbigliamento'}
-            confirmButtonText={'aggiungi'}
-            loading={loading}
+            <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false}
+              titleText={'Aggiungi un capo di abbigliamento'}
+              confirmButtonText={'aggiungi'}
+              loading={loading}
             />
           </Desktop_Layout>
         </Shop_UID_Required>

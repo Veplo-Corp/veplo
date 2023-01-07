@@ -48,7 +48,8 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
 
 
     const handleButtonDelete = async (productId: string, name: string, photos: string[]) => {
-        await deleteProduct(productId, name, photos)
+        //! remove data?.shop.products
+        await deleteProduct(productId, name, photos, /* data?.shop.products */)
     }
 
     const handleButtonEdit = async (productId: string) => {

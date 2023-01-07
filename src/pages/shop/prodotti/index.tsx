@@ -77,7 +77,11 @@ const index = () => {
 
 
 
-    const handleDeleteProductModal = (productId: string, productName: string, productPhotos: string) => {
+    const handleDeleteProductModal = (productId: string, productName: string, productPhotos: string, products?:any) => {
+        // for (let i = 0; i < products.length; i++) {
+        //     deleteProduct({ variables: { id: products[i].id } })
+        // }
+        //!restart this logic in production
         setProductToDeleteData({
             productId,
             productName,
@@ -88,6 +92,7 @@ const index = () => {
 
     const deleteProductEvent = async ({ productId, productName, productPhotos }: { productId: string, productName: string, productPhotos: string[] }) => {
         try {
+            
             await deleteProduct({ variables: { id: productId } })
             //*delete product's images from firebase
             // let i = 1;
