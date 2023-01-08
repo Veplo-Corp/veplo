@@ -20,7 +20,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
         setisOpen(true)
     }
 
-    
+
 
     const changeImageFull = (url: string) => {
         setfullImage(url)
@@ -44,7 +44,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                     <ModalBody padding={0}>
                         <div className='hidden md:flex'>
                             <TransformWrapper
-                                maxScale={3}
+                                maxScale={2}
                                 minScale={1}
                                 wheel={{ disabled: false }}
                                 //doubleClick={{ mode: 'zoomIn' }}
@@ -71,8 +71,8 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                     <React.Fragment>
                                         <div
                                             onMouseEnter={((e) => {
-                                                setDoubleStep(3);
-                                                zoomIn(0.3)
+                                                setDoubleStep(2);
+                                                zoomIn(0.2)
                                             })}
                                             onMouseLeave={() => {
                                                 resetTransform()
@@ -84,7 +84,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                                     height={'full'}
                                                     width={'full'}
                                                     /* onClick={onClickImageModal} */
-                                                    src={fullImage} alt={'immagine non trovata'} />
+                                                    src={imageKitUrl(fullImage)} alt={'immagine non trovata'} />
                                             </TransformComponent>
                                         </div>
                                     </React.Fragment>
@@ -93,7 +93,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                         </div>
                         <div className='flex md:hidden'>
                             <TransformWrapper
-                                maxScale={3}
+                                maxScale={2}
                                 minScale={1}
                                 centerOnInit
                                 centerZoomedOut
@@ -102,7 +102,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                 >
                                     <Image
                                         /* onClick={onClickImageModal} */
-                                        src={fullImage} alt={'immagine non trovata'} />
+                                        src={imageKitUrl(fullImage)} alt={'immagine non trovata'} />
                                 </TransformComponent>
                             </TransformWrapper>
                         </div>
