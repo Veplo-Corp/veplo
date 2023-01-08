@@ -240,7 +240,6 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
         } else {
             slug += ('&filterProducts=' + Math.floor(Math.random() * 100000))
         }
-        
         router.push(`${router.asPath.split('?')[0]}${slug}`)
         onClose();
     }
