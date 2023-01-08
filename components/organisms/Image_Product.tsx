@@ -21,12 +21,12 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
     }
 
     const changeImageFull = (url: string) => {
-        setfullImage(imageKitUrl(url, 762, 1100))
+        setfullImage(imageKitUrl(url))
     }
 
     useEffect(() => {
         if (product?.photos) {
-            setfullImage(imageKitUrl(product.photos[0], 762, 1100))
+            setfullImage(imageKitUrl(product.photos[0]))
         }
 
     }, [product])
