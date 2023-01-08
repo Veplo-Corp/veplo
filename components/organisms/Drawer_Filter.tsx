@@ -208,6 +208,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
     }
 
     const HandleConfirmButton = () => {
+
         let slug = '?';
         if (brandSelected.length > 0) {
 
@@ -227,6 +228,8 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                 return color.name
             })
             slug += ('colors=' + colorsToDB)
+            console.log(slug);
+            
         }
         if (sizeSelected.length > 0) {
             slug !== '' ? slug += '&' : ''
@@ -234,7 +237,10 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
         }
         if (slug === '?') {
             slug = ''
+        } else {
+            slug += ('&filterProducts=' + Math.floor(Math.random() * 100000))
         }
+        
         router.push(`${router.asPath.split('?')[0]}${slug}`)
         onClose();
     }

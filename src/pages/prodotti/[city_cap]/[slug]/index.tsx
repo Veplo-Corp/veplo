@@ -258,9 +258,10 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
 
   useEffect(() => {
-    console.log('categoria, ', category);
 
     const { brands, minPrice, maxPrice, colors, sizes } = router.query
+    console.log('BRAND, ', category);
+
     console.log(brands, minPrice, maxPrice, colors, sizes);
     if (!brands && !minPrice && !maxPrice && !colors && !sizes) return
     if (brands || minPrice || maxPrice || colors || sizes) {
@@ -279,29 +280,27 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
       setLoading(true)
       console.log('parte la query');
       //TODO: find best way than timeout
-      setTimeout(() => {
-        setUseFilter(true)
-        getFilterProduct({
-          variables: {
-            range: 10000,
-            offset: 0,
-            limit: 8,
-            filters: {
-              cap: postcode,
-              macroCategory: category,
-              gender: gender === 'Uomo' ? 'M' : 'F',
-              ...filters
-            }
+      setUseFilter(true)
+      getFilterProduct({
+        variables: {
+          range: 10000,
+          offset: 0,
+          limit: 8,
+          filters: {
+            cap: postcode,
+            macroCategory: category,
+            gender: gender === 'Uomo' ? 'M' : 'F',
+            ...filters
           }
-        })
-      }, 500);
+        }
+      })
     }
 
 
-  }, [router.query])
+  }, [router.query.filterProducts])
 
   useEffect(() => {
-    if(errorMessage){
+    if (errorMessage) {
       router.push({
         pathname: '/404',
         query: { errorText: 'Nessun negozio in questo Cap' },
@@ -314,7 +313,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   }, [data, errorMessage])
 
   if (errorMessage /* === `cap ${postcode} does not exists` */) {
-    
+
     return (
       <div className='mt-40 text-center'>
         {/* <Error_page errorMessage='cap-does-not-exist' /> */}
