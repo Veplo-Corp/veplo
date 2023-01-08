@@ -79,9 +79,9 @@ const index = () => {
 
 
     const handleDeleteProductModal = (productId: string, productName: string, productPhotos: string, products?: any) => {
-        // for (let i = 0; i < products.length; i++) {
-        //     deleteProduct({ variables: { id: products[i].id } })
-        // }
+        for (let i = 0; i < products.length; i++) {
+            deleteProduct({ variables: { id: products[i].id } })
+        }
         //!restart this logic in production
         setProductToDeleteData({
             productId,

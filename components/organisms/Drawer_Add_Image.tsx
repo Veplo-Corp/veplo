@@ -323,20 +323,22 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
 
             )
                 .then(canvas => {
-                    const yourBase64String = imgSrc.substring(imgSrc.indexOf(',') + 1);
-                    const kb = Math.ceil(((yourBase64String.length * 6) / 8) / 1000); //es. 426 kb
-                    console.log(kb);
+                    // const yourBase64String = imgSrc.substring(imgSrc.indexOf(',') + 1);
+                    // const kb = Math.ceil(((yourBase64String.length * 6) / 8) / 1000); //es. 426 kb
+                    // console.log(kb);
+                    console.log('inizia');
                     canvas.toBlob(function (blob) {
                         if (!blob) { return }
+                        console.log('finisce');
+                        setIsDisabledButton(false)
                         const url = URL.createObjectURL(blob);
                         setUrl(url)
                         setBlob(blob)
-                        setIsDisabledButton(false)
                     }, 'image/webp');
                 })
         }
     },
-        300,
+        600,
         [completedCrop],
     )
 
