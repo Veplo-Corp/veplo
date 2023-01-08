@@ -20,13 +20,15 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
         setisOpen(true)
     }
 
+    
+
     const changeImageFull = (url: string) => {
-        setfullImage(imageKitUrl(url))
+        setfullImage(url)
     }
 
     useEffect(() => {
         if (product?.photos) {
-            setfullImage(imageKitUrl(product.photos[0]))
+            setfullImage(product.photos[0])
         }
 
     }, [product])
@@ -134,7 +136,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                     <TransformComponent
                                     >
                                         {/* <Image borderRadius={'lg'} src={fullImage} alt='immagine non trovata' /> */}
-                                        <LazyLoadImage src={fullImage}
+                                        <LazyLoadImage src={imageKitUrl(fullImage)}
                                             //PlaceholderSrc={PlaceholderImage}
                                             effect="blur"
                                             alt="Image Alt"
@@ -152,7 +154,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                         return (
                             <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
                                 borderWidth={1.5}
-                                className={` ${imageKitUrl(image, 762, 1100) == fullImage ? "border-black border-8" : "border-white"}   cursor-pointer
+                                className={` ${image == fullImage ? "border-black border-8" : "border-white"}   cursor-pointer
                                         w-20
                                         xl:w-32
                                     `}
