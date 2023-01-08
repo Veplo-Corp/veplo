@@ -7,6 +7,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import useWindowSize from '../Hooks/useWindowSize'
 import { imageKitUrl } from '../utils/imageKitUrl'
+import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 
 
 const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> = ({ product, eventHandler, toShop }) => {
@@ -44,34 +45,34 @@ const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> 
                 alt="Image Alt"
                 className="w-fit"
             />}
-            <Box py='1' px={'0'}>
+            <Box pb='1' px={'0'}>
                 <Box
-                    mt='1'
+                    // mt='1'
                     zIndex={50}
-                    fontWeight='bold'
+                    fontWeight='name'
                     as='h2'
                     lineHeight='tight'
                     noOfLines={1}
                     fontSize='sm'
                     onClick={() => toShop(product.shopId, product.shopOptions.city, product.shopOptions.name)}
                 >
-                    {product.shopOptions.name}
+                    {toUpperCaseFirstLetter(product.shopOptions.name)}
                 </Box>
                 <Box
                     onClick={() => eventHandler(product)}
                     fontWeight='normal'
-                    as='h2'
+                    as='h1'
                     noOfLines={1}
                     lineHeight='tight'
-                    fontSize='sm'
+                    fontSize='13px'
                     className='italic'
                 >
                     {product.brand}
                 </Box>
                 <Box
                     onClick={() => eventHandler(product)}
-                    fontWeight='normal'
-                    as='h3'
+                    fontWeight='bold'
+                    as='h1'
                     fontSize='sm'
                     noOfLines={1}
                     mt={-1}
