@@ -28,10 +28,10 @@ const Home: NextPage = () => {
   return (
     <Shop_not_Allowed>
       <PostMeta
-        title={'Veplo'}
-        subtitle={"Veplo è il sito dove trovare tutti i negozi di vestiti della tua città online"}
+        title={'Veplo | Abbigliamento & Moda '}
+        subtitle={"Scopri su Veplo i negozi di vestiti della tua città | l'abbigliamento in vendita nella tua città"}
         image={''}
-        description={"Veplo è il sito dove trovare tutti i negozi di vestiti della tua città online"}
+        description={"Scopri su Veplo i negozi di vestiti della tua città | l'abbigliamento in vendita nella tua città"}
       />
       <div className='w-full justify-between px-1 md:px-4 mt-16 md:mt-[85px]'>
         <Gradient_Component_home display='flex'>

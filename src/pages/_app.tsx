@@ -227,12 +227,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
               <Loading />
             ) : (
               <>
-                <PostMeta
-                  title={'Veplo'}
-                  subtitle={"Scopri su Veplo i negozi di vestiti della tua città | l'abbigliamento in vendita nella tua città"}
-                  image={''}
-                  description={"Scopri su Veplo i negozi di vestiti della tua città | l'abbigliamento in vendita nella tua città"}
-                />
+                
                 <Component {...pageProps} />
                 <Footer />
               </>
