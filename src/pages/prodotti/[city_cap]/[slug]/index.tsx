@@ -328,9 +328,9 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
       <Desktop_Layout>
         <PostMeta
           title={`Abbigliamento a ${city} | Abbigliamento · ${category === '' ? 'Vestiti' : category}  - Veplo.it`}
-          subtitle={`Tutto l'abbligliamento a ${city} - ${category === '' ? 'Vestiti' : category} a ${city}, vicino e te - CAP ${postcode} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
+          subtitle={`Tutto l'abbigliamento a ${city} - ${category === '' ? 'Vestiti' : category} a ${city}, vicino e te - CAP ${postcode} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
           image={''}
-          description={`Tutto l'abbligliamento a ${city} - ${category === '' ? 'Vestiti' : category} a ${city}, vicino e te - CAP ${postcode} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
+          description={`Tutto l'abbigliamento a ${city} - ${category === '' ? 'Vestiti' : category} a ${city}, vicino e te - CAP ${postcode} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
         />
         <Logo_Below_Header city={city} gender={gender} category={category.replace(/-/g, ' ') || 'Tutto'}></Logo_Below_Header>
         {!loading && <InfiniteScroll
@@ -373,7 +373,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
           </div>
         </InfiniteScroll>}
       </Desktop_Layout>
-      <FIlter_Button gender={gender} macrocategory={category ? category : "Tutto l'abbligliamento"} />
+      <FIlter_Button gender={gender} macrocategory={category ? category : "Tutto l'abbigliamento"} />
 
     </>
 

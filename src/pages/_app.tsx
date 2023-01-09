@@ -24,6 +24,7 @@ import { Firebase_User } from '../interfaces/firebase_user.interface'
 import Loading from '../../components/molecules/Loading'
 import { getAnalytics, logEvent, setUserId, setUserProperties } from "firebase/analytics";
 import Footer from '../../components/organisms/Footer'
+import PostMeta from '../../components/organisms/PostMeta'
 
 const theme = extendTheme({
   colors: {
@@ -122,7 +123,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             // if(!data?.shopByFirebaseId?.id){
             //   router.push('/shop/crea-shop')
             // }
-          } catch (e:any) {
+          } catch (e: any) {
             dispatch(
               login({
                 email: userAuth.email,
@@ -226,6 +227,12 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
               <Loading />
             ) : (
               <>
+                <PostMeta
+                  title={'Veplo'}
+                  subtitle={"Scopri su Veplo i negozi di vestiti della tua città | l'abbigliamento in vendita nella tua città"}
+                  image={''}
+                  description={"Scopri su Veplo i negozi di vestiti della tua città | l'abbigliamento in vendita nella tua città"}
+                />
                 <Component {...pageProps} />
                 <Footer />
               </>

@@ -11,7 +11,7 @@ const PostMeta: FC<{ title: string, subtitle: string, image: string, description
         <meta property="og:title" content={title} />
         <meta property="og:description" content={subtitle} />
         <meta property="og:url" content={url} />
-        {/* <meta property="og:image" content={image} /> */}
+        <meta property="og:image" content={image} />
 
         {/* twitter card meta */}
         <meta property="twitter:card" content="summary" />
