@@ -36,7 +36,8 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
     return (
         <>
 
-            <Modal size={'lg'} isCentered={true} isOpen={isOpen} onClose={() => setisOpen(false)}>
+            <Modal size={'lg'} 
+            isCentered={true} isOpen={isOpen} onClose={() => setisOpen(false)}>
                 {/* <IconButton aria-label='chiudi immagine'
                     colorScheme={'red'}
                     // position={'absolute'}
@@ -50,7 +51,9 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                     bg='blackAlpha.300'
                     backdropFilter='blur(10px) '
                 />
-                <ModalContent >
+                <ModalContent
+                width={'fit-content'}
+                >
                     <ModalCloseButton zIndex={'popover'}
                     size={'lg'}
                     onClick={()=> setisOpen(false)}
@@ -85,7 +88,8 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                 }}
                             >
                                 {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
-                                    <React.Fragment>
+                                    <React.Fragment
+                                    >
                                         <div
                                             onMouseEnter={((e) => {
                                                 setDoubleStep(2);
@@ -94,8 +98,10 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                             onMouseLeave={() => {
                                                 resetTransform()
                                             }}
+                                            className='h-screen'
                                         >
                                             <TransformComponent
+                                            
                                             >
                                                 <Image
                                                     height={'full'}
@@ -119,6 +125,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                 >
                                     <Image
                                         /* onClick={onClickImageModal} */
+                                        
                                         src={imageKitUrl(fullImage)} alt={'immagine non trovata'} />
                                 </TransformComponent>
                             </TransformWrapper>
