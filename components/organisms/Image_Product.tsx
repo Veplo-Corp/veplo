@@ -36,24 +36,21 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
     return (
         <>
 
-            <Modal size={'lg'} isCentered={true} isOpen={isOpen} onClose={() => setisOpen(false)}>
-                {/* <IconButton aria-label='chiudi immagine'
-                    colorScheme={'red'}
-                    // position={'absolute'}
-                    className='top-7 right-7'
-                    icon={
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    } /> */}
+            <Modal size={'lg'}
+                isCentered={true} isOpen={isOpen} onClose={() => setisOpen(false)}
+
+            >
+
                 <ModalOverlay
                     bg='blackAlpha.300'
                     backdropFilter='blur(10px) '
                 />
-                <ModalContent >
+                <ModalContent
+                    width={'fit-content'}
+                >
                     <ModalCloseButton zIndex={'popover'}
-                    size={'lg'}
-                    onClick={()=> setisOpen(false)}
+                        size={'lg'}
+                        onClick={() => setisOpen(false)}
                     />
 
                     <ModalBody padding={0}>
@@ -85,7 +82,8 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                 }}
                             >
                                 {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
-                                    <React.Fragment>
+                                    <React.Fragment
+                                    >
                                         <div
                                             onMouseEnter={((e) => {
                                                 setDoubleStep(2);
@@ -94,12 +92,15 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                             onMouseLeave={() => {
                                                 resetTransform()
                                             }}
+                                            className='h-2/3'
                                         >
                                             <TransformComponent
+
                                             >
                                                 <Image
                                                     height={'full'}
                                                     width={'full'}
+                                                    
                                                     /* onClick={onClickImageModal} */
                                                     src={imageKitUrl(fullImage)} alt={'immagine non trovata'} />
                                             </TransformComponent>
@@ -119,6 +120,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                 >
                                     <Image
                                         /* onClick={onClickImageModal} */
+                                        
                                         src={imageKitUrl(fullImage)} alt={'immagine non trovata'} />
                                 </TransformComponent>
                             </TransformWrapper>
