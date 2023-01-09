@@ -327,7 +327,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
     <>
       <Desktop_Layout>
         <PostMeta
-          title={`Abbigliamento a ${city} | Abbigliamento · ${category === '' ? 'Vestiti' : category}  - Veplo.it`}
+          title={`${category === '' ? 'Abbigliamento' : category} ${gender} a ${city} | Veplo`}
           subtitle={`Tutto l'abbigliamento ${gender} a ${city} - ${category === '' ? 'Vestiti' : category} a ${city}, vicino e te - CAP ${postcode} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
           image={''}
           description={`Tutto l'abbigliamento ${gender} a ${city} - ${category === '' ? 'Vestiti' : category} a ${city}, vicino e te - CAP ${postcode} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}

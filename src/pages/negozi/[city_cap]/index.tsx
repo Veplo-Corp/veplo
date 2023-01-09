@@ -106,7 +106,7 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
     return (
         <Desktop_Layout>
             <PostMeta
-                title={`Negozi Abbigliamento a ${city} | vicino a te - Veplo.it`}
+                title={`Negozi di Abbigliamento a ${city} | Veplo`}
                 subtitle={`Negozi di Abbigliamento a ${city} | Cerca tra tutto l'abbigliamento per uomo e donna in vendita vicino a te e a ${city} | Abbigliamento · Scarpe · Vestiti`}
                 image={''}
                 description={`Negozi di Abbigliamento a ${city} | Cerca tra tutto l'abbigliamento per uomo e donna in vendita vicino a te e a ${city} | Abbigliamento · Scarpe · Vestiti`}
