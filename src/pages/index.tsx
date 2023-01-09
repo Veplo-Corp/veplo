@@ -29,9 +29,9 @@ const Home: NextPage = () => {
     <Shop_not_Allowed>
       <PostMeta
         title={'Veplo | Abbigliamento & Moda '}
-        subtitle={"Scopri su Veplo i negozi di vestiti della tua città | l'abbigliamento in vendita nella tua città"}
+        subtitle={"Scopri i negozi di vestiti per uomo e donna della tua città su Veplo. Cerca tra tutto l'abbigliamento in vendita vicino a te e approfitta delle offerte"}
         image={''}
-        description={"Scopri su Veplo i negozi di vestiti della tua città | l'abbigliamento in vendita nella tua città"}
+        description={"Scopri i negozi di vestiti per uomo e donna della tua città su Veplo. Cerca tra tutto l'abbigliamento in vendita vicino a te e approfitta delle offerte"}
       />
       <div className='w-full justify-between px-1 md:px-4 mt-16 md:mt-[85px]'>
         <Gradient_Component_home display='flex'>
