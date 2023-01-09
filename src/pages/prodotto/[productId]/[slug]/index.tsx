@@ -153,6 +153,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
         <>
             <Desktop_Layout>
                 <PostMeta 
+                //riverdere length description 150 to 160
                 title={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} - ${product.shopOptions.city} - Veplo.it`} 
                 subtitle={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} a ${product.price}€ | vivi Veplo`} 
                 image={imageKitUrl(product.photos[0], 171, 247)}
