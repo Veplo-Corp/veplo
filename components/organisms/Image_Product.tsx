@@ -36,9 +36,8 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
     return (
         <>
 
-            <Modal size={'lg'}
+            <Modal size={['lg', 'lg', 'md']}
                 isCentered={true} isOpen={isOpen} onClose={() => setisOpen(false)}
-
             >
 
                 <ModalOverlay
@@ -100,7 +99,6 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                                 <Image
                                                     height={'full'}
                                                     width={'full'}
-                                                    
                                                     /* onClick={onClickImageModal} */
                                                     src={imageKitUrl(fullImage)} alt={'immagine non trovata'} />
                                             </TransformComponent>
