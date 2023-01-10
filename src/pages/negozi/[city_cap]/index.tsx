@@ -45,19 +45,24 @@ export async function getStaticProps(ctx: any) {
             revalidate: 60, // In seconds
         }
     } catch (e: any) {
+        // return {
+        //     props: {
+        //         city: element.city,
+        //         postcode: element.postcode,
+        //         shops: [],
+        //         error: e.message
+        //     },
+        //     revalidate: 60, // In seconds
+        // }
         return {
-            props: {
-                city: element.city,
-                postcode: element.postcode,
-                shops: [],
-                error: e.message
-            },
+            notFound: true, // triggers 404
             revalidate: 60, // In seconds
-        }
+        };
     }
 }
 
 const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], error?: string }> = ({ city, postcode, shops, error }) => {
+    
     const router = useRouter()
     const [inputSearchShop, setInputSearchShop] = useState('')
     console.log(shops);
