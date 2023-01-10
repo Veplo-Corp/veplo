@@ -118,7 +118,7 @@ export async function getStaticProps(ctx: any) {
 
 
 
-const index: React.FC<{ city: any, gender: any, category: any, postcode: any, products: Product[], errorMessage?: string, }> = ({ city, gender, category, postcode, products, errorMessage }) => {
+const index: React.FC<{ city: any, gender: any, category: any, postcode: any, products: Product[], errorMessage?: string, }> = ({ city, gender, category, postcode, products, errorMessage }) => {  
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [useFilter, setUseFilter] = useState(false)
