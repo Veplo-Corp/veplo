@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
 import { Box, Image } from '@chakra-ui/react';
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
-import { useQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import { Product } from '../../../../interfaces/product.interface';
 import { initApollo } from '../../../../lib/apollo';
 import Circle_Color from '../../../../../components/atoms/Circle_Color';
@@ -38,23 +38,41 @@ export async function getStaticProps(ctx: any) {
     //! old graphQL schema
     const apolloClient = initApollo()
     //console.log(productId);
-    const { data, error } = await apolloClient.query({
-        query: GET_SINGLE_PRODUCT,
-        variables: { id: productId },
-        //!useless
-        // fetchPolicy: 'cache-first',
-        // nextFetchPolicy: 'cache-only',
-    })
+    try {
+        const { data } = await apolloClient.query({
+            query: GET_SINGLE_PRODUCT,
+            variables: { id: productId },
+            //!useless
+            // fetchPolicy: 'cache-first',
+            // nextFetchPolicy: 'cache-only',
+        })
 
+
+        return {
+            props: {
+                product: data.product,
+                //?understand cache in GraphQL
+                initialApolloState: apolloClient.cache.extract(),
+            },
+            revalidate: 60, // In seconds
+        }
+
+    } catch (e: any) {
+        console.log(e);
+
+
+        return {
+            props: {
+                errorLog: e.graphQLErrors[0].name,
+                //?understand cache in GraphQL
+                initialApolloState: apolloClient.cache.extract(),
+            },
+            revalidate: 60, // In seconds
+        }
+    }
 
     return {
-        props: {
-            product: data.product || null,
-            error: error || null,
-            //?understand cache in GraphQL
-            initialApolloState: apolloClient.cache.extract(),
-        },
-        revalidate: 60, // In seconds
+
     }
 }
 
@@ -63,26 +81,44 @@ export async function getStaticProps(ctx: any) {
 
 
 
-const index: React.FC<{ product: Product, error: string, initialApolloState: any }> = ({ product, error, initialApolloState }) => {
+const index: React.FC<{ product: Product, errorLog?: string, initialApolloState: any }> = ({ product, errorLog, initialApolloState }) => {
     const colors = useRef<Color[]>(COLORS)
     const router = useRouter();
     const { slug } = router.query
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
 
+    console.log(errorLog);
 
 
     const [textCategory, setTextCategory] = useState('vestito')
 
     useEffect(() => {
-        let colorsCSS = [];
-        for (let i = 0; i < product.colors.length; i++) {
-            const colorCSS = colors.current.filter(color => color.name === product.colors[i])[0].cssColor
-            colorsCSS.push(colorCSS)
+
+        if (errorLog) {
+            console.log(errorLog);
+
+            router.push({
+                pathname: '/404',
+                query: { error: errorLog },
+            })
         }
-        setProductcolorsCSS(colorsCSS)
+        if (product) {            
+            getFilterProduct({
+                variables: { id: product.shopId, limit: 100, offset: 0 },
+
+            })
+            let colorsCSS = [];
+            for (let i = 0; i < product.colors.length; i++) {
+                const colorCSS = colors.current.filter(color => color.name === product.colors[i])[0].cssColor
+                colorsCSS.push(colorCSS)
+            }
+            setProductcolorsCSS(colorsCSS)
+        }
 
 
-    }, [product])
+
+
+    }, [product, errorLog])
 
 
     const toProduct = (product: Product) => {
@@ -92,14 +128,15 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
         }
 
     }
-    const shopProductsData = useQuery(GET_PRODUCTS_FROM_SHOP, {
-        variables: { id: product.shopId, limit: 100, offset: 0 },
-        // pollInterval: 500,
-        // notifyOnNetworkStatusChange: true,
-    }).data;
+
+
+
+
+    const [getFilterProduct, shopProductsData] = useLazyQuery(GET_PRODUCTS_FROM_SHOP);
 
 
     useEffect(() => {
+        if(!product) return
         const category = createTextCategory(product.macroCategory, product.microCategory)
         setTextCategory(category)
         const url_slug_correct = createUrlSchema([product.brand, product.name, category])
@@ -151,7 +188,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
 
     return (
         <>
-            <Desktop_Layout>
+            {product && <Desktop_Layout>
                 <PostMeta
                     canonicalUrl={'https://www.veplo.it' + router.asPath}
                     //riverdere length description 150 to 160
@@ -257,7 +294,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                             >contatta il titolare del negozio</span>
                         </Box>
 
-                        {shopProductsData?.shop.products.length > 1 &&
+                        {shopProductsData?.data?.shop.products.length > 1 &&
                             <>
                                 <Box
                                     fontWeight='light'
@@ -276,7 +313,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                                 </Box>
 
                                 <div className="overflow-x-scroll flex w-full gap-4 ">
-                                    {shopProductsData?.shop.products.map((element: Product) => {
+                                    {shopProductsData?.data?.shop.products.map((element: Product) => {
                                         return (
                                             <div key={element.id} className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`}
                                             >
@@ -323,7 +360,7 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
                 >
                     scopri altri negozi con prodotti simili
                 </Box> */}
-            </Desktop_Layout>
+            </Desktop_Layout>}
         </>
 
     )

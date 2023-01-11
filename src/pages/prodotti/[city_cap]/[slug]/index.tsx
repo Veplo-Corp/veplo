@@ -75,7 +75,7 @@ export async function getStaticProps(ctx: any) {
       throw new Error("categoria o gender non trovato");
     }
     const macrogategoryName = findMacrocategoryName(elementGenderMacrocategory.macrocategory, elementGenderMacrocategory.gender) || ''
-    const { data, error } = await apolloClient.query({
+    const { data, errors } = await apolloClient.query({
       query: GET_PRODUCTS,
       variables: {
         range: 10000,
@@ -88,7 +88,6 @@ export async function getStaticProps(ctx: any) {
         }
       }
     })
-
 
     return {
       props: {
@@ -120,8 +119,9 @@ export async function getStaticProps(ctx: any) {
         category: elementGenderMacrocategory.macrocategory,
         postcode: elementCityCap.postcode,
         products: [],
-        errorLog: 'errorLog'
+        errorLog: e.graphQLErrors[0].name
       },
+      // notFound: true,
       revalidate: 60 //seconds
     }
   }
@@ -140,8 +140,8 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   const [hasMoreData, setHasMoreData] = useState(true)
   const [productsFounded, setproductsFounded] = useState<Product[]>(products)
   const [offset, setOffset] = useState<number>(products.length)
-  console.log(offset);
-
+  console.log(errorLog);
+  
 
   const toProductPageUrl = (product: Product) => {
 
@@ -161,8 +161,10 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   }
 
   const fetchMoreData = async () => {
-    console.log('moredata');
-    console.log(offset);
+    // console.log('moredata');
+    // console.log(offset);
+    const apolloClient = initApollo()
+
     if (useFilter) {
       const { brands, minPrice, maxPrice, colors, sizes } = router.query
       let filters: any = createFilterObject(
@@ -174,7 +176,6 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
       )
       try {
         const plus_for_limit = 8;
-        const apolloClient = initApollo()
         if (productsFounded.length % plus_for_limit !== 0) {
           return setHasMoreData(false)
         }
@@ -193,7 +194,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
           }
         })
 
-        console.log(data?.products);
+        //console.log(data?.products);
 
         setproductsFounded((prevstate: Product[]) => {
           return [
@@ -208,19 +209,21 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         }
 
         setOffset((prevstate: number) => {
-          console.log(prevstate);
+          //console.log(prevstate);
 
           return prevstate + data.products.length
         })
       } catch (e: any) {
-        console.log(e);
+        //console.log(e);
 
         setHasMoreData(false)
       }
     } else {
+
+
+
       try {
         const plus_for_limit = 8;
-        const apolloClient = initApollo()
         // if (productsFounded.length % plus_for_limit !== 0) {
         //   return setHasMoreData(false)
         // }
@@ -232,17 +235,15 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
             limit: productsFounded.length + plus_for_limit,
             filters: {
               //test postcode
-              cap: 'postcode',
+              cap: postcode,
               macroCategory: '',
               gender: gender === 'Uomo' ? 'M' : 'F'
             }
           }
         })
 
-        console.log(error);
 
-
-        console.log(data?.products);
+        //console.log(data?.products);
 
         setproductsFounded((prevstate: Product[]) => {
           return [
@@ -257,12 +258,12 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         }
 
         setOffset((prevstate: number) => {
-          console.log(prevstate);
+          //console.log(prevstate);
 
           return prevstate + data.products.length
         })
       } catch (e: any) {
-        console.log(e);
+        //console.log(e);
         setHasMoreData(false)
       }
     }
@@ -270,9 +271,6 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
   const [getFilterProduct, { error, data }] = useLazyQuery(GET_PRODUCTS);
 
-
-
-  console.log('DATA:::::', data);
   console.log(typeof category);
 
 
@@ -294,7 +292,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         sizes
       )
 
-      console.log(filters);
+      //console.log(filters);
 
 
 
@@ -327,7 +325,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
       router.push({
         pathname: '/404',
-        query: { errorText: 'Nessun negozio in questo Cap' },
+        query: { error: errorLog },
       })
     }
     if (data) {
