@@ -26,6 +26,7 @@ import { addShopId } from '../../../store/reducers/user'
 import { resizeFile } from '../../../../components/utils/resizeFile'
 import uploadPhotoFirebase from '../../../../components/utils/uploadPhotoFirebase'
 import PostMeta from '../../../../components/organisms/PostMeta'
+import NoIndexSeo from '../../../../components/organisms/NoIndexSeo'
 
 
 type Image = {
@@ -442,12 +443,7 @@ const index = () => {
     return (
         <Shop_UID_Required>
             <Desktop_Layout>
-                <PostMeta
-                    title={`Crea Negozio | Veplo`}
-                    subtitle={`Crea il tuo negozio | Veplo.it`}
-                    image={''}
-                    description={`Crea il tuo negozio | Veplo.it`}
-                />
+                <NoIndexSeo title={`Crea Negozio | Veplo`} />
                 <div className='flex justify-between w-full mb-96'>
                     <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-6/12 xl:w-5/12" onSubmit={handleSubmit(submitData)}>
                         <div className='w-full'>

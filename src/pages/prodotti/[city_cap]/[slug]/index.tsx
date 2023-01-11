@@ -27,6 +27,7 @@ import createUrlSchema from '../../../../../components/utils/create_url'
 import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter'
 import createFilterObject from '../../../../../components/utils/create_fiter_products_object'
 import PostMeta from '../../../../../components/organisms/PostMeta'
+import { Error_log } from '../../../../interfaces/error_log'
 
 
 type Router = {
@@ -100,6 +101,18 @@ export async function getStaticProps(ctx: any) {
       revalidate: 60 //seconds
     }
   } catch (e: any) {
+    console.log(e);
+
+    // const errorLog: Error_log = {
+    //   message: e.messsage,
+    //   extensions: {
+    //     code: e.extensions.code,
+    //     path: e.extensions.path,
+    //     message: e.extensions.message,
+    //     id: e.extensions.id
+    // }
+    // }
+
     return {
       props: {
         city: elementCityCap.city,
@@ -107,7 +120,7 @@ export async function getStaticProps(ctx: any) {
         category: elementGenderMacrocategory.macrocategory,
         postcode: elementCityCap.postcode,
         products: [],
-        errorMessage: e.message
+        errorLog: 'errorLog'
       },
       revalidate: 60 //seconds
     }
@@ -118,7 +131,7 @@ export async function getStaticProps(ctx: any) {
 
 
 
-const index: React.FC<{ city: any, gender: any, category: any, postcode: any, products: Product[], errorMessage?: string, }> = ({ city, gender, category, postcode, products, errorMessage }) => {  
+const index: React.FC<{ city: any, gender: any, category: any, postcode: any, products: Product[], errorLog?: string, }> = ({ city, gender, category, postcode, products, errorLog }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [useFilter, setUseFilter] = useState(false)
@@ -137,6 +150,9 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
       router.push(`/prodotto/${product.id}/${newUrl}`)
     }
   }
+
+
+
 
 
   const toShopPage = (shopId: string, city: string, name: string) => {
@@ -197,7 +213,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
           return prevstate + data.products.length
         })
       } catch (e: any) {
-        console.log(e.message);
+        console.log(e);
 
         setHasMoreData(false)
       }
@@ -205,9 +221,9 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
       try {
         const plus_for_limit = 8;
         const apolloClient = initApollo()
-        if (productsFounded.length % plus_for_limit !== 0) {
-          return setHasMoreData(false)
-        }
+        // if (productsFounded.length % plus_for_limit !== 0) {
+        //   return setHasMoreData(false)
+        // }
         const { data, error } = await apolloClient.query({
           query: GET_PRODUCTS,
           variables: {
@@ -215,12 +231,16 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
             offset: productsFounded.length,
             limit: productsFounded.length + plus_for_limit,
             filters: {
-              cap: postcode,
+              //test postcode
+              cap: 'postcode',
               macroCategory: '',
               gender: gender === 'Uomo' ? 'M' : 'F'
             }
           }
         })
+
+        console.log(error);
+
 
         console.log(data?.products);
 
@@ -242,8 +262,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
           return prevstate + data.products.length
         })
       } catch (e: any) {
-        console.log(e.message);
-
+        console.log(e);
         setHasMoreData(false)
       }
     }
@@ -251,7 +270,9 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
   const [getFilterProduct, { error, data }] = useLazyQuery(GET_PRODUCTS);
 
-  console.log(data);
+
+
+  console.log('DATA:::::', data);
   console.log(typeof category);
 
 
@@ -294,13 +315,16 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
           }
         }
       })
+
     }
 
 
   }, [router.query.filterProducts])
 
   useEffect(() => {
-    if (errorMessage) {
+    if (errorLog) {
+      console.log(errorLog);
+
       router.push({
         pathname: '/404',
         query: { errorText: 'Nessun negozio in questo Cap' },
@@ -310,13 +334,13 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
       setproductsFounded(data?.products)
       setLoading(false)
     }
-  }, [data, errorMessage])
+  }, [data, errorLog])
 
-  if (errorMessage /* === `cap ${postcode} does not exists` */) {
+  if (errorLog /* === `cap ${postcode} does not exists` */) {
 
     return (
       <div className='mt-40 text-center'>
-        {/* <Error_page errorMessage='cap-does-not-exist' /> */}
+        {/* <Error_page errorLog='cap-does-not-exist' /> */}
       </div>
     )
   }
@@ -327,6 +351,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
     <>
       <Desktop_Layout>
         <PostMeta
+          canonicalUrl={'https://www.veplo.it' + router.asPath}
           title={`${category === '' ? 'Abbigliamento' : category} ${gender} a ${city} | Veplo`}
           subtitle={`Tutto l'abbigliamento ${gender} a ${city} - ${category === '' ? 'Vestiti' : category} a ${city}, vicino e te - CAP ${postcode} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
           image={''}

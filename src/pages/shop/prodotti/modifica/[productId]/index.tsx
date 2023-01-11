@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout';
 import { Color, COLORS } from '../../../../../../components/mook/colors';
 import Image_Product from '../../../../../../components/organisms/Image_Product';
+import NoIndexSeo from '../../../../../../components/organisms/NoIndexSeo';
 import PostMeta from '../../../../../../components/organisms/PostMeta';
 import Product_Form from '../../../../../../components/organisms/Product_Form';
 import { imageKitUrl } from '../../../../../../components/utils/imageKitUrl';
@@ -197,12 +198,7 @@ const index = () => {
     return (
         <Shop_UID_Required>
             <Desktop_Layout>
-                <PostMeta
-                    title={`Modifica prodotto | Veplo`}
-                    subtitle={`modifica il prodotto  | Veplo.it`}
-                    image={''}
-                    description={`modifica il prodotto  | Veplo.it`}
-                />
+                <NoIndexSeo title={`Modifica prodotto | Veplo`} />
                 {product &&
                     <>
                         <div className='md:flex justify-center'>

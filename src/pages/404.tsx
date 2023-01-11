@@ -11,7 +11,7 @@ const Error404: FC<{ errorMessage: string }> = ({ errorMessage }) => {
     console.log(router);
     return (
         <>
-            <NoIndexSeo />
+            <NoIndexSeo title='404' />
             <div className='text-center h-screen content-center'>
                 <div className='absolute w-full top-44 md:top-48'>
                     <h1 className='font-extrabold text-2xl uppercase mb-10 text-[#707070] px-9 line-clamp-2'>

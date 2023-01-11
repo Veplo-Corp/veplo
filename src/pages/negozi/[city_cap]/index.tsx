@@ -62,8 +62,9 @@ export async function getStaticProps(ctx: any) {
 }
 
 const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], error?: string }> = ({ city, postcode, shops, error }) => {
-    
+
     const router = useRouter()
+    
     const [inputSearchShop, setInputSearchShop] = useState('')
     console.log(shops);
     const [shopsFilterByName, setshopsFilterByName] = useState<Shop[]>([])
@@ -111,11 +112,12 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
     return (
         <Desktop_Layout>
             <PostMeta
+                canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`Negozi di Abbigliamento a ${city} | Veplo`}
                 subtitle={`Negozi di Abbigliamento a ${city} | Cerca tra tutto l'abbigliamento per uomo e donna in vendita vicino a te e a ${city} | Abbigliamento · Scarpe · Vestiti`}
                 image={''}
                 description={`Negozi di Abbigliamento a ${city} | Cerca tra tutto l'abbigliamento per uomo e donna in vendita vicino a te e a ${city} | Abbigliamento · Scarpe · Vestiti`}
-                 />
+            />
             <div className='md:flex justify-between'>
                 <Logo_Below_Header city={city} />
                 <div className='my-auto mt-2'>

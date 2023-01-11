@@ -145,20 +145,21 @@ const index: React.FC<{ product: Product, error: string, initialApolloState: any
 
 
     //console.log(imageKitUrl(product.photos[0], 171, 247));
-    
+
 
 
 
     return (
         <>
             <Desktop_Layout>
-                <PostMeta 
-                //riverdere length description 150 to 160
-                title={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} - ${product.shopOptions.city} - Veplo.it`} 
-                subtitle={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} a ${product.price}€ | vivi Veplo`} 
-                image={imageKitUrl(product.photos[0], 171, 247)}
-                description={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} - Veplo.it`} />
-                
+                <PostMeta
+                    canonicalUrl={'https://www.veplo.it' + router.asPath}
+                    //riverdere length description 150 to 160
+                    title={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} - ${product.shopOptions.city} - Veplo.it`}
+                    subtitle={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} a ${product.price}€ | vivi Veplo`}
+                    image={imageKitUrl(product.photos[0], 171, 247)}
+                    description={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} - Veplo.it`} />
+
                 <div className='md:flex justify-between w-full'>
                     <Image_Product product={product} />
                     <Box className='md:block md:w-5/12 xl:w-1/2 md:pl-4 xl:pr-10'>

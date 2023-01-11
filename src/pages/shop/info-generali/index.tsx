@@ -11,6 +11,7 @@ import { Shop } from '../../../interfaces/shop.interface'
 import Shop_Form from '../../../../components/organisms/Shop_Form'
 import Customer_Care_Contacts from '../../../../components/organisms/Customer_Care_Contacts'
 import PostMeta from '../../../../components/organisms/PostMeta'
+import NoIndexSeo from '../../../../components/organisms/NoIndexSeo'
 
 
 const index: FC<{}> = () => {
@@ -30,14 +31,9 @@ const index: FC<{}> = () => {
 
   return (
     <Desktop_Layout>
-      <PostMeta
-        title={`Il tuo Negozio | Veplo Shop`}
-        subtitle={`Informazioni del tuo negozio | Veplo.it`}
-        image={''}
-        description={`Informazioni del tuo negozio | Veplo.it`}
-      />
-      {Shop && <Shop_Form shop={Shop} />}
-      {/* <Customer_Care_Contacts /> */}
+      <NoIndexSeo title={`Il tuo Negozio | Veplo Shop`} />
+        {Shop && <Shop_Form shop={Shop} />}
+        {/* <Customer_Care_Contacts /> */}
     </Desktop_Layout>
   )
 }

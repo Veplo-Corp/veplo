@@ -1,16 +1,20 @@
 import Head from 'next/head'
 import React, { FC } from 'react'
 
-const PostMeta: FC<{ title: string, subtitle: string, image: string, description: string, url?:string }> = ({ title, subtitle, image, description, url }) => {
+const PostMeta: FC<{ title: string, subtitle: string, image: string, description: string, canonicalUrl: string, children?:any}> = ({ title, subtitle, image, description, canonicalUrl, children }) => {
   return (
     <Head>
         <title>{title}</title>
         <meta name="description" content={subtitle} />
-
+        <link
+          rel="canonical"
+          href={canonicalUrl}  /* "https://example.com/blog/original-post" */
+          key="canonical"
+        />
         {/* open-graph meta */}
         <meta property="og:title" content={title} />
         <meta property="og:description" content={subtitle} />
-        <meta property="og:url" content={url} />
+        <meta property="og:url" content={canonicalUrl} />
         <meta property="og:image" content={image} />
 
         {/* twitter card meta */}
@@ -18,7 +22,6 @@ const PostMeta: FC<{ title: string, subtitle: string, image: string, description
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
         <meta property="twitter:image" content={image} />
-        
     </Head>
     
   )
