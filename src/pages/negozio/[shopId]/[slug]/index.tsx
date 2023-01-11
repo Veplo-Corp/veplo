@@ -81,6 +81,7 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
     return (
         <Desktop_Layout>
             <PostMeta
+                canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`${toUpperCaseFirstLetter(shop.name)} a ${shop.address.city}, ${shop.address.street} - CAP ${shop.address.postcode} - Veplo.it`}
                 subtitle={`Visita il negozio di abbigliamento ${shop.name} a ${shop.address.city}, ${shop.address.street} - CAP ${shop.address.postcode} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
                 image={shop.photo}

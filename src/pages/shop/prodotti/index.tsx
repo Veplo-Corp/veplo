@@ -21,6 +21,7 @@ import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 import { Product } from '../../../interfaces/product.interface';
 import Create_Shop_Alert from '../../../../components/molecules/Create_Shop_Alert';
 import PostMeta from '../../../../components/organisms/PostMeta';
+import NoIndexSeo from '../../../../components/organisms/NoIndexSeo';
 
 
 const index = () => {
@@ -122,12 +123,7 @@ const index = () => {
     return (
         <Shop_UID_Required>
             <Desktop_Layout>
-                <PostMeta
-                    title={`Prodotti | Veplo Shop`}
-                    subtitle={`Visualizza i tuoi prodotti | Veplo.it`}
-                    image={''}
-                    description={`Visualizza i tuoi prodotti | Veplo.it`}
-                />
+                <NoIndexSeo title={`Prodotti | Veplo Shop`} />
                 {user && user.emailVerified === false &&
                     <Verified_Email />
 

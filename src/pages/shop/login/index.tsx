@@ -210,6 +210,7 @@ const index = () => {
           (
             <Desktop_Layout>
               <PostMeta
+                canonicalUrl='https://www.veplo.it/shop/login'
                 title={`Login Negozio | Veplo Shop`}
                 subtitle={`accedi o registra un negozio  | Veplo.it`}
                 image={''}

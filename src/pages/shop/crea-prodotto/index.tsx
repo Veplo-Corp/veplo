@@ -18,6 +18,7 @@ import { MACROCATEGORY, Macrocategory } from '../../../../components/mook/macroc
 import { MICROCATEGORY, Microcategory } from '../../../../components/mook/microcategories'
 import Drawer_Add_Image from '../../../../components/organisms/Drawer_Add_Image'
 import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
+import NoIndexSeo from '../../../../components/organisms/NoIndexSeo'
 import PostMeta from '../../../../components/organisms/PostMeta'
 import Product_Form from '../../../../components/organisms/Product_Form'
 import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required'
@@ -240,12 +241,8 @@ const index = () => {
       {user?.shopId ? (
         <Shop_UID_Required>
           <Desktop_Layout>
-            <PostMeta
-              title={`Crea prodotto | Veplo`}
-              subtitle={`Crea un prodotto | Veplo.it`}
-              image={''}
-              description={`Crea un prodotto | Veplo.it`}
-            />
+
+            <NoIndexSeo title='Crea prodotto | Veplo' />
             <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false}
               titleText={'Aggiungi un capo di abbigliamento'}
               confirmButtonText={'aggiungi'}
