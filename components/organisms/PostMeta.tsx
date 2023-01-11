@@ -21,7 +21,7 @@ const PostMeta: FC<{ title: string, subtitle: string, image: string, description
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:title" content={title} />
       <meta property="twitter:description" content={description} />
-      <meta property="twitter:image" content={image} />
+      {image && <meta property="twitter:image" content={image} />}
     </Head>
 
   )
