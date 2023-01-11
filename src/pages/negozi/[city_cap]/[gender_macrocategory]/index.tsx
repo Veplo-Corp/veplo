@@ -40,6 +40,7 @@ const index: React.FC<{ city: string, postcode: null | string, macrocategory: nu
             router.push('/')
         }
     }, [])
+    
 
     if(gender === null) {return(<></>)}
 

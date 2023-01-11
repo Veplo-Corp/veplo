@@ -18,11 +18,11 @@ const index: FC<{}> = () => {
   const user = useSelector((state: any) => state.user.user);
 
 
-  const Shop: Shop = useQuery(GET_SHOP_BY_FIREBASE_ID, {
+  const Shop: any = useQuery(GET_SHOP_BY_FIREBASE_ID, {
     variables: { firebaseId: user?.uid },
     fetchPolicy: 'cache-first',
     nextFetchPolicy: 'cache-first',
-  }).data?.shopByFirebaseId;
+  })/* .data?.shopByFirebaseId */;
 
   console.log(Shop);
 

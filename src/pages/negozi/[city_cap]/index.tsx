@@ -45,24 +45,26 @@ export async function getStaticProps(ctx: any) {
             revalidate: 60, // In seconds
         }
     } catch (e: any) {
-        // return {
-        //     props: {
-        //         city: element.city,
-        //         postcode: element.postcode,
-        //         shops: [],
-        //         error: e.message
-        //     },
-        //     revalidate: 60, // In seconds
-        // }
+        console.log(e.graphQLErrors[0].name);
+        
         return {
-            notFound: true, // triggers 404
+            props: {
+                city: element.city,
+                postcode: element.postcode,
+                shops: [],
+                errorLog: e.graphQLErrors[0].name
+            },
             revalidate: 60, // In seconds
-        };
+        }
+        // return {
+        //     notFound: true, // triggers 404
+        //     revalidate: 60, // In seconds
+        // };
     }
 }
 
-const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], error?: string }> = ({ city, postcode, shops, error }) => {
-
+const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], errorLog?: string }> = ({ city, postcode, shops, errorLog }) => {
+    
     const router = useRouter()
     
     const [inputSearchShop, setInputSearchShop] = useState('')
@@ -105,6 +107,17 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
         }
     }, [inputSearchShop])
 
+
+    useEffect(() => {
+        if (errorLog) {
+          console.log(errorLog);
+    
+          router.push({
+            pathname: '/404',
+            query: { error: errorLog },
+          })
+        }
+      }, [errorLog])
 
 
 

@@ -1,21 +1,31 @@
 import { Button } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import Desktop_Layout from '../../components/atoms/Desktop_Layout'
 import NoIndexSeo from '../../components/organisms/NoIndexSeo'
+import { handleErrorGraphQL } from '../../components/utils/handleError_graphQL'
 
-const Error404: FC<{ errorMessage: string }> = ({ errorMessage }) => {
-    console.log(errorMessage);
+const Error404: FC = () => {
 
     const router = useRouter();
-    console.log(router);
+    const [errorText, seterrorText] = useState<undefined | string>()
+
+    useEffect(() => {
+        
+      if(typeof router.query.error === 'string'){
+        seterrorText(handleErrorGraphQL(router.query.error))
+      }
+      
+    }, [router.query.error])
+    
+
     return (
         <>
             <NoIndexSeo title='404' />
             <div className='text-center h-screen content-center'>
                 <div className='absolute w-full top-44 md:top-48'>
                     <h1 className='font-extrabold text-2xl uppercase mb-10 text-[#707070] px-9 line-clamp-2'>
-                        {router.query?.errorText ? router.query?.errorText :
+                        {errorText ? errorText :
                             <span>
                                 Ci dispiace,<br />ma non troviamo la pagina
                             </span>
