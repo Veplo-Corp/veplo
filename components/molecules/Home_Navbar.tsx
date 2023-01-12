@@ -14,6 +14,10 @@ type Props = {
 
 
 const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
+
+    const address_user = useSelector((state: any) => state.address.address);
+    // console.log(address_user);
+
     const pushToStores = () => {
         onShowCategory(false)
         if (address_user) {
@@ -24,6 +28,22 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                 } else {
                     const uri = createUrlSchema([address_user.city])
                     return router.push(`/negozi/${uri}`)
+                }
+            }
+        }
+        return
+    }
+
+    const pushToProducts = (gender:string) => {
+        onShowCategory(false)
+        if (address_user) {
+            if (address_user.city && address_user.city !== 'undefined') {
+                if (address_user.postcode.length === 5) {
+                    const uriCity = createUrlSchema([address_user.city, address_user.postcode])
+                    return router.push(`/prodotti/${uriCity}/${gender}-abbigliamento`)
+                } else {
+                    const uriCity = createUrlSchema([address_user.city])
+                    return router.push(`/prodotti/${uriCity}/${gender}-abbigliamento`)
                 }
             }
         }
@@ -64,8 +84,6 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
     }, [router])
 
 
-    const address_user = useSelector((state: any) => state.address.address);
-    // console.log(address_user);
 
 
 
@@ -80,7 +98,11 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                     className={` 
                     ${gender === 'donna' && !showCategory ? "relative z-50" : ""}
                     `}
-                    onMouseOver={() => onShowCategory('', 'donna')}>
+                    onMouseOver={() => onShowCategory('', 'donna')}
+                    onClick={()=> {
+                        pushToProducts('donna')
+                    }}
+                    >
                     <div className='z-[100]'>
                         Donna
                     </div>
@@ -91,7 +113,11 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
             <div className={` ${gender === 'uomo' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 `}>
                 <a
                     className={` ${gender === 'uomo' && !showCategory ? "relative z-50" : ""}`}
-                    onMouseOver={() => onShowCategory('', 'uomo')}>
+                    onMouseOver={() => onShowCategory('', 'uomo')}
+                    onClick={()=> {
+                        pushToProducts('uomo')
+                    }}
+                    >
                     <div className='z-[100]'>
                         Uomo
                     </div>
@@ -109,6 +135,7 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                     `}
                     onClick={pushToStores}
                     onMouseOver={() => onShowCategory(false)}
+                    
                     >
                     <div className='z-[100]'>
                         Negozi
