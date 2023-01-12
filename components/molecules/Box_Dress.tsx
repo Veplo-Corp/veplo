@@ -13,7 +13,8 @@ import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> = ({ product, eventHandler, toShop }) => {
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     const [width, height] = useWindowSize();
-    const [dimensionUrl, setDimensionUrl] = useState('&tr=w-571,h-825')
+    //const [dimensionUrl, setDimensionUrl] = useState('&tr=w-571,h-825')
+    const [urlProduct, seturlProduct] = useState(product.photos[0])
 
     useEffect(() => {
         let colorsCSS = [];
@@ -38,8 +39,14 @@ const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> 
                 transform: 'scale(1)', /* 'scale(0.99)' */
             }}>
             {/* <Image fallbackSrc='https://via.placeholder.com/150' onClick={() => eventHandler(product)} src={product.photos[0]} alt={'immagine non disponibile'} /> */}
-            {product?.photos && <LazyLoadImage src={imageKitUrl(product.photos[0],447, 660 )}
+            {product?.photos && <LazyLoadImage src={imageKitUrl(urlProduct,447, 660 )}
                 onClick={() => eventHandler(product)}
+                onMouseEnter={()=> {
+                    seturlProduct(product.photos[1])
+                }}
+                onMouseLeave={()=> {
+                    seturlProduct(product.photos[0])
+                }}
                 //PlaceholderSrc={PlaceholderImage}
                 effect="blur"
                 alt="Image Alt"

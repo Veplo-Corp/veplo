@@ -8,7 +8,7 @@ import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
 
 
 
-const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any, closeShowCategory:any }> = ({ gender, closeCategory, closeShowCategory }) => {
+const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any, closeShowCategory: any }> = ({ gender, closeCategory, closeShowCategory }) => {
     const address_user: Mapbox_Result = useSelector((state: any) => state.address.address);
     const router = useRouter();
     const [categories] = useState(CATEGORIES);
@@ -24,7 +24,7 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any, clo
         if (indexCategory === 1) {
             gender = 'uomo'
         }
-        const categoryForUrl = Object.values(categories)[indexCategory].abbigliamento.find(category => category.name === categorySelected)?.url
+        const categoryForUrl = Object.values(categories)[indexCategory]?.abbigliamento.find(category => category.name === categorySelected)?.url
         if (!categoryForUrl) {
             router.push(`/prodotti/${address_user.city?.toLocaleLowerCase()}-${address_user.postcode}/${gender}-abbigliamento`)
         } else {
@@ -37,28 +37,29 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any, clo
     // console.log(Object.values(categories));
 
 
+    /* <div className='border-b-2 border-gray-100 bg-white w-screen fixed z-50 top-24 pt-4 pb-10 px-10'> */
     return (
         //da aggiustare
-        <div className='border-b-2 border-gray-100 bg-white w-screen fixed z-50 top-30 pt-4 pb-10 px-10'>
-            <h1 className='font-bold text-lg'>Abbigliamento {toUpperCaseFirstLetter(gender)}</h1>
-            <div className='grid grid-cols-2 mr-96 mt-3 lg:w-5/12'>
-                <p className='text-base font-medium mb-1 w-fit cursor-pointer hover:underline underline-offset-2'
-                    onClick={() => handleClickCategory('abbigliamento')}
-                >
-                    Tutto l'abbigliamento
-                </p>
-                {Object.values(categories)[indexCategory].abbigliamento.map((category) => {
-                    return (
-                        <p key={category.name} className='text-base font-medium mb-1 w-fit cursor-pointer hover:underline underline-offset-2'
-                            onClick={() => handleClickCategory(category.name)}
-                        >
-                            {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
-                        </p>
-                    )
-                })
-                }
-            </div>
-            {/* <div className='grid grid-cols-2 mr-96 mt-3 lg:w-5/12'>
+        <div className=' bg-white border-2 border-gray-100 w-1/2 left-1/4 xl:w-4/12 xl:left-1/3 fixed z-50 top-20 pt-4 pb-10 px-10 rounded-2xl	'>
+                <h1 className='font-bold text-lg'>Abbigliamento {toUpperCaseFirstLetter(gender)}</h1>
+                <div className='grid grid-cols-2 mt-3 gap-x-2.5 '>
+                    <p className='text-base font-medium mb-1 w-fit cursor-pointer hover:underline underline-offset-2'
+                        onClick={() => handleClickCategory('abbigliamento')}
+                    >
+                        Tutto l'abbigliamento
+                    </p>
+                    {Object.values(categories)[indexCategory]?.abbigliamento.map((category) => {
+                        return (
+                            <p key={category.name} className='text-base font-medium mb-1 w-fit cursor-pointer hover:underline underline-offset-2'
+                                onClick={() => handleClickCategory(category.name)}
+                            >
+                                {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
+                            </p>
+                        )
+                    })
+                    }
+                </div>
+                {/* <div className='grid grid-cols-2 mr-96 mt-3 lg:w-5/12'>
                 {gender === 'donna' && categories.donna.abbigliamento.map((category) => {
                     return (
                         <p key={category.name} className='text-base font-medium mb-1 w-fit cursor-pointer hover:underline underline-offset-2'
@@ -79,9 +80,9 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any, clo
                 })}
             </div> */}
 
-        </div>
+            </div>
 
-    )
+            )
 }
 
-export default Show_Categories_NavBar
+            export default Show_Categories_NavBar

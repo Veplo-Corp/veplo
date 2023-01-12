@@ -125,7 +125,9 @@ const index = () => {
             brand: product.brand != brand ? brand : product.brand,
             colors: product.colors != colorsToDB && colorsToDB[0] ? colorsToDB : product.colors,
             sizes: product.sizes != sizes ? sizes : product.sizes,
-            photos: product.photos != photos ? photoURLForDB : product.photos,
+            //!remove photos 
+            //! should use newPhotos: [Upload!] & deletedPhotos: [String!]
+            // photos: product.photos != photos ? photoURLForDB : product.photos,
         }
 
         // console.log(name, price, brand, colors, macrocategory, microcategory, sizes, photos);
