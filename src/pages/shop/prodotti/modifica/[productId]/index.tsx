@@ -159,9 +159,9 @@ const index = () => {
                     sizes(/* cachedvalue */) {
                         return options.sizes
                     },
-                    photos(/* cachedvalue */) {
-                        return options.photos
-                    },
+                    // photos(/* cachedvalue */) {
+                    //     return options.photos
+                    // },
                 },
                 broadcast: false // Include this to prevent automatic query refresh
             });
