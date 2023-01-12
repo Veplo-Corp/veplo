@@ -102,9 +102,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                 query: { error: errorLog },
             })
         }
-        if (product) {            
+        if (product) {
             getFilterProduct({
-                variables: { id: product.shopId, limit: 100, offset: 0 },
+                variables: { id: product.shopId, limit: 5, offset: 0 },
 
             })
             let colorsCSS = [];
@@ -136,7 +136,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
 
     useEffect(() => {
-        if(!product) return
+        if (!product) return
         const category = createTextCategory(product.macroCategory, product.microCategory)
         setTextCategory(category)
         const url_slug_correct = createUrlSchema([product.brand, product.name, category])
@@ -294,7 +294,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             >contatta il titolare del negozio</span>
                         </Box>
 
-                        {shopProductsData?.data?.shop.products.length > 1 &&
+                        {true &&
                             <>
                                 <Box
                                     fontWeight='light'
@@ -335,6 +335,27 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                             </div>)
 
                                     })}
+                                    <Box borderRadius='lg' overflow='hidden'
+                                        borderWidth={1.5}
+                                        marginBottom={4}
+                                        className={`w-28 lg:w-36 flex h-full aspect-[8.5/12] object-cover bg-gray-100`}
+                                        onClick={() => {
+                                            const slug = createUrlSchema([product.shopOptions.city, product.shopOptions.name])
+                                            router.push(`/negozio/${product.shopId}/${slug}`)
+                                        }
+                                        }
+                                        _active={{
+                                            transform: 'scale(0.98)',
+                                        }}
+                                    >
+                                        <div className='m-auto text-center cursor-pointer'>
+                                            vai al<br /> negozio
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 m-auto">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                                            </svg>
+                                        </div>
+
+                                    </Box>
                                 </div>
                             </>
                         }
