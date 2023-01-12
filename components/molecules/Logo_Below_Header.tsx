@@ -9,14 +9,8 @@ interface Props {
 const Logo_Below_Header: React.FC<Props> = ({ city, category, gender }) => {
     return (
         <div className='md:flex justify-between mb-5 mt-2 md:mt-0'>
-            <h1 className="hidden md:flex font-black text-xl md:text-5xl italic text-black-900 ">Veplo {
-                city &&
-                <>
-                    <span className='ml-1 hidden md:flex my-auto mb-0 text-base md:text-2xl'>per</span>
-                    <span className='ml-1 text-base md:text-2xl my-auto mb-0'> {city?.charAt(0).toUpperCase() + city?.slice(1)}</span>
-                </>
-            }</h1>
-                    {city && <h1 className="flex md:hidden font-black text-xl md:text-5xl italic text-black-900 leading-5">{city?.charAt(0).toUpperCase() + city?.slice(1)}</h1>}
+            
+                    {city && <h1 className="flex lg:hidden font-black text-xl md:text-2xl italic text-black-900 leading-5">{city?.charAt(0).toUpperCase() + city?.slice(1)}</h1>}
                     
                     {gender && category && <p className='flex leading-4 text-xs md:text-base md:font-medium my-auto mb-1 ' >{gender}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 my-auto mb-[3px]">
