@@ -294,7 +294,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             >contatta il titolare del negozio</span>
                         </Box>
 
-                        {true &&
+                        
                             <>
                                 <Box
                                     fontWeight='light'
@@ -358,7 +358,6 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                     </Box>
                                 </div>
                             </>
-                        }
                     </Box>
                 </div>
                 {/* <Horizontal_Line />
