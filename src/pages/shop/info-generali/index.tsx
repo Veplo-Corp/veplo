@@ -22,7 +22,7 @@ const index: FC<{}> = () => {
     variables: { firebaseId: user?.uid },
     fetchPolicy: 'cache-first',
     nextFetchPolicy: 'cache-first',
-  })/* .data?.shopByFirebaseId */;
+  }).data?.shopByFirebaseId;
 
   console.log(Shop);
 
