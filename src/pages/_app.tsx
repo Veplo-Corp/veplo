@@ -79,10 +79,10 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         // user is logged in, send the user's details to redux, store the current user in the state
         const isShop = tokenResult.claims.isShop ? true : false;
         let ISODate: any = userAuth.metadata.creationTime
-        if (userAuth.metadata.creationTime) {
+        if (userAuth.metadata.creationTime) {          
           ISODate = new Date(userAuth.metadata.creationTime)
         }
-        let date_for_redux = ISODate.getDate() + '/' + (ISODate.getMonth() + 1) + '/' + ISODate.getFullYear();
+        let date_for_redux = ('0' + ISODate.getDate()).slice(-2)  + '/' + ('0' + ISODate.getMonth() + 1).slice(-2)+ '/' + ISODate.getFullYear();
         if (!isShop && userAuth.uid) {
           dispatch(
             login({

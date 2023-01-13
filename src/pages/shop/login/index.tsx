@@ -216,7 +216,11 @@ const index = () => {
                 image={''}
                 description={`accedi o registra un negozio  | Veplo.it`}
               />
-              <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo negozio`} />
+              <div className='flex w-full mt-8 md:mt-10' >
+                <div className='md:p-3 space-y-4 m-auto max-w-md'>
+                  <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo negozio`} />
+                </div>
+              </div>
             </Desktop_Layout>
           )
       }

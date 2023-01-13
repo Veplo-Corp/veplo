@@ -127,9 +127,9 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`Negozi di Abbigliamento a ${city} | Veplo`}
-                subtitle={`Negozi di Abbigliamento a ${city} | Cerca tra tutto l'abbigliamento per uomo e donna in vendita vicino a te e a ${city} | Abbigliamento · Scarpe · Vestiti`}
+                subtitle={`Negozi di Abbigliamento a ${city} | Cerca tra tutto l'abbigliamento per uomo e donna in vendita a ${city} e dintorni| Abbigliamento · Scarpe · Vestiti`}
                 image={''}
-                description={`Negozi di Abbigliamento a ${city} | Cerca tra tutto l'abbigliamento per uomo e donna in vendita vicino a te e a ${city} | Abbigliamento · Scarpe · Vestiti`}
+                description={`Negozi di Abbigliamento a ${city} | Cerca tra tutto l'abbigliamento per uomo e donna in vendita a ${city} e dintorni| Abbigliamento · Scarpe · Vestiti`}
             />
             <div className='md:flex justify-between'>
                 <Logo_Below_Header city={city} />
