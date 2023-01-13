@@ -39,7 +39,6 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
             <Modal size={['lg', 'lg', 'md']}
                 isCentered={true} isOpen={isOpen} onClose={() => setisOpen(false)}
             >
-
                 <ModalOverlay
                     bg='blackAlpha.300'
                     backdropFilter='blur(10px) '
@@ -51,11 +50,8 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                         size={'lg'}
                         onClick={() => setisOpen(false)}
                     />
-
                     <ModalBody padding={0}>
-
                         <div className='hidden md:flex'>
-
                             <TransformWrapper
                                 maxScale={2}
                                 minScale={1}
@@ -187,7 +183,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                     alt={'immagine non trovata'}
                                     width={'fit-content'}
                                     maxH={'52'}
-                                    height={'fit-content'}
+                                    // height={'fit-content'}
                                     className='object-cover'
                                     loading="lazy"
                                 />
