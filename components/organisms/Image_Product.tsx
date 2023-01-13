@@ -99,8 +99,11 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                                 <Image
                                                     height={'full'}
                                                     width={'full'}
+                                                    
                                                     /* onClick={onClickImageModal} */
-                                                    src={imageKitUrl(fullImage)} alt={'immagine non trovata'} />
+                                                    src={imageKitUrl(fullImage)} alt={'immagine non trovata'} 
+                                                  
+                                                    />
                                             </TransformComponent>
                                         </div>
                                     </React.Fragment>
@@ -119,7 +122,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                     <Image
                                         /* onClick={onClickImageModal} */
                                         
-                                        src={imageKitUrl(fullImage)} alt={'immagine non trovata'} />
+                                        src={imageKitUrl(fullImage)} alt={product.name} />
                                 </TransformComponent>
                             </TransformWrapper>
                         </div>
@@ -149,6 +152,8 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                     onMouseLeave={() => {
                                         resetTransform()
                                     }}
+
+                                    className='lg:min-w-[350px]	'
                                 >
                                     <TransformComponent
                                     >
@@ -157,7 +162,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                             //PlaceholderSrc={PlaceholderImage}
                                             effect="blur"
                                             alt="Image Alt"
-                                            className='rounded-lg w-full aspect-[8/12] object-cover	'
+                                            className='rounded-lg w-full aspect-[8/12] object-cover'
                                         />
                                     </TransformComponent>
                                 </div>
