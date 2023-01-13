@@ -107,7 +107,8 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                                 Registra gratis la tua impresa
                             </Box>
                         </Box> */}
-                        <Input_Drawer title='Cerca negozi o vestiti' onChangeText={() => { }} />
+                        {/* //! cerca negozi o prodotti  */}
+                        {/* <Input_Drawer title='Cerca negozi o vestiti' onChangeText={() => { }} /> */}
                         <Box
                             onClick={() => {
                                 onClose()
