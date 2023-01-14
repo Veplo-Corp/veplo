@@ -19,7 +19,7 @@ import { toProductPage } from '../../../../../components/utils/toProductPage'
 import FIlter_Button from '../../../../../components/molecules/FIlter_Button'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Loading from '../../../../../components/molecules/Loading'
-import { Center, CircularProgress, Spinner, Text } from '@chakra-ui/react'
+import { Box, Center, CircularProgress, Spinner, Text } from '@chakra-ui/react'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { findMacrocategoryName } from '../../../../../components/utils/find_macrocategory_name'
 import Error_page from '../../../../../components/organisms/Error_page'
@@ -141,7 +141,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   const [productsFounded, setproductsFounded] = useState<Product[]>(products)
   const [offset, setOffset] = useState<number>(products.length)
   console.log(errorLog);
-  
+
 
   const toProductPageUrl = (product: Product) => {
 
@@ -158,6 +158,18 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   const toShopPage = (shopId: string, city: string, name: string) => {
     const slug = createUrlSchema([city, name])
     router.push(`/negozio/${shopId}/${slug}`)
+  }
+
+  const resetFilter = () => {
+    if (!router.query.filterProducts) return
+    console.log(router);
+
+    router.push({
+      pathname: `/prodotti/${router.query.city_cap}/${router.query.slug}`,
+    },
+      undefined, { shallow: true }
+    )
+
   }
 
   const fetchMoreData = async () => {
@@ -291,11 +303,6 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         colors,
         sizes
       )
-
-      //console.log(filters);
-
-
-
       setLoading(true)
       console.log('parte la query');
       //TODO: find best way than timeout
@@ -355,7 +362,20 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
           image={''}
           description={`Tutto l'abbigliamento ${gender} a ${city} - ${category === '' ? 'Vestiti' : category} a ${city}, vicino e te - CAP ${postcode} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
         />
-        <Logo_Below_Header city={city} gender={gender} category={category.replace(/-/g, ' ') || 'Tutto'}></Logo_Below_Header>
+        <div className='flex justify-between mb-5 mt-2 md:mt-0'>
+          <Logo_Below_Header city={city} gender={gender} category={category.replace(/-/g, ' ') || 'Tutto'}></Logo_Below_Header>
+          {router.query?.filterProducts &&
+            <Box
+              className='underline-offset-2 underline cursor-pointer text-sm text-blue-800'
+              _active={{
+                transform: 'scale(0.98)',
+              }}
+              marginY={'auto'}
+              onClick={resetFilter}
+            >
+              Resetta filtri
+            </Box>}
+        </div>
         {!loading && <InfiniteScroll
           dataLength={productsFounded.length}
           next={fetchMoreData}

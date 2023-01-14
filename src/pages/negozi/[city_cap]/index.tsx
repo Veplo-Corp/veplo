@@ -131,8 +131,8 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
                 image={''}
                 description={`Negozi di Abbigliamento a ${city} | Cerca tra tutto l'abbigliamento per uomo e donna in vendita a ${city} e dintorni| Abbigliamento · Scarpe · Vestiti`}
             />
-            <div className='md:flex justify-between'>
-                <Logo_Below_Header city={city} />
+            <div className='md:flex justify-end'>
+                {/* <Logo_Below_Header city={city} /> */}
                 <div className='my-auto mt-2'>
                     <Input_Search_Item placeholder='cerca negozio' onConfirmText={(textInput: string) => {
                         setInputSearchShop(textInput)
