@@ -21,6 +21,7 @@ import Login_or_Registration from '../../../../components/organisms/Login_or_Reg
 import SET_IS_SHOP from '../../../lib/apollo/mutations/setIsShop';
 import Loading from '../../../../components/molecules/Loading'
 import PostMeta from '../../../../components/organisms/PostMeta'
+import List_Explanation_Veplo_Shop from '../../../../components/molecules/List_Explanation_Veplo_Shop'
 
 
 
@@ -216,10 +217,16 @@ const index = () => {
                 image={''}
                 description={`accedi o registra un negozio  | Veplo.it`}
               />
-              <div className='flex w-full mt-8 md:mt-10' >
-                <div className='md:p-3 space-y-4 m-auto max-w-md'>
+              <div className='md:flex md:m-auto md:w-10/12 mt-8 md:mt-10 md:justify-between' >
+                <div className={`md:p-3  my-auto ${typeForm === 'registration' ? '' : 'space-y-4 max-w-md mx-auto'}`}>
                   <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo negozio`} />
+
                 </div>
+                {typeForm === 'registration' &&
+                  <div className='md:my-auto md:w-5/12 md:mr-10 mt-10 md:mt-0'>
+                    <List_Explanation_Veplo_Shop />
+                  </div>
+                }
               </div>
             </Desktop_Layout>
           )
