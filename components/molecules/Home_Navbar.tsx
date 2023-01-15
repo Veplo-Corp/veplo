@@ -92,7 +92,7 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
 
     return (
 
-        <nav className="fixed justify-center w-full hidden md:flex pr-20 lg:pr-0 gap-4">  {/* z-10 */}
+        <nav className="fixed justify-center w-full hidden md:flex pr-20 lg:pr-0 gap-10">  {/* z-10 */}
 
             <Link
                 href={`/prodotti/${address_user.postcode.length === 5 ? createUrlSchema([address_user.city, address_user.postcode]) : createUrlSchema([address_user.city])}/donna-abbigliamento`}
@@ -111,12 +111,13 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                     <Box
                         zIndex={'modal'}
                         fontWeight={'semibold'}
+                        fontSize={'xl'}
                     >
                         Donna
                     </Box>
                     {gender === 'donna' && !showCategory && <Box
                         zIndex={'hide'}
-                        className={` absolute w-full h-[8px] bottom-[1px] bg-red-500 z-0`}>
+                        className={` absolute w-full h-[8px] bottom-[3px] bg-red-500 z-0`}>
                     </Box>}
                 </a>
             </Link>
@@ -136,12 +137,13 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                     <Box
                         zIndex={'modal'}
                         fontWeight={'semibold'}
+                        fontSize={'xl'}
                     >
                         Uomo
                     </Box>
                     {gender === 'uomo' && !showCategory && <Box
                         zIndex={'hide'}
-                        className={` absolute w-full h-[8px] bottom-[1px] bg-red-500 z-0`}>
+                        className={` absolute w-full h-[8px] bottom-[3px] bg-red-500 z-0`}>
                     </Box>}
                 </a>
             </Link>
@@ -163,12 +165,13 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                     <Box
                         zIndex={'modal'}
                         fontWeight={'semibold'}
+                        fontSize={'xl'}
                     >
                         Negozi
                     </Box>
                     {gender === 'negozi' && !showCategory && <Box
                         zIndex={'hide'}
-                        className={` absolute w-full h-[8px] bottom-[1px] bg-red-500 z-0`}>
+                        className={` absolute w-full h-[8px] bottom-[3px] bg-red-500 z-0`}>
                     </Box>}
                 </a>
                 
