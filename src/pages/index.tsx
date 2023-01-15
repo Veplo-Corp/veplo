@@ -86,7 +86,7 @@ const Home: NextPage = () => {
         <div className='md:flex md:justify-between px-5 md:px-20 md:gap-20 md:my-20'>
           <img className='md:w-1/2 object-cover mt-8 md:mt-'
             src="/home_svg/home_first.svg"
-            alt="non trovata" />
+            alt="home image" />
           <div className='my-5 md:m-auto lg:w-4/12 '>
             <h1
               className='text-4xl xl:text-5xl font-black mb-3'
@@ -156,7 +156,7 @@ const Home: NextPage = () => {
           </div>
           <img className='md:w-1/2 object-cover mt-8 md:mt-'
             src="/home_svg/home_second.svg"
-            alt="non trovata" />
+            alt="home image" />
         </div>
       </div>
 

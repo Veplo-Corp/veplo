@@ -539,7 +539,7 @@ const index = () => {
                                 objectFit='cover'
                                 onClick={() => handleClick(null)}
                                 src={image.url} /* 'https://bit.ly/dan-abramov' */
-                                alt='Errore estrapolazione immagine'
+                                alt={shop_name}
                             />}
                             <input
                                 ref={hiddenFileInput}

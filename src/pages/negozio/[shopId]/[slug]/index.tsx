@@ -95,7 +95,7 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
 
                         //PlaceholderSrc={PlaceholderImage}
                         effect="blur"
-                        alt="Immagine non trovata"
+                        alt={shop.name}
                         className='aspect-[4.8/3] w-96 lg:w-[32rem] rounded-md object-cover'
                     />
                     <Box py={0.5} display='flex' className='justify-between	'>

@@ -49,7 +49,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> 
                 }}
                 //PlaceholderSrc={PlaceholderImage}
                 effect="blur"
-                alt="Image Alt"
+                alt={product.name}
                 className="w-fit"
             />}
             <Box pb='1' px={'0'}>

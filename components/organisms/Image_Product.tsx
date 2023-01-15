@@ -95,11 +95,12 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                                 <Image
                                                     height={'full'}
                                                     width={'full'}
-                                                    
+
                                                     /* onClick={onClickImageModal} */
-                                                    src={imageKitUrl(fullImage)} alt={'immagine non trovata'} 
-                                                  
-                                                    />
+                                                    src={imageKitUrl(fullImage)} 
+                                                    alt={product.name}
+
+                                                />
                                             </TransformComponent>
                                         </div>
                                     </React.Fragment>
@@ -117,7 +118,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                 >
                                     <Image
                                         /* onClick={onClickImageModal} */
-                                        
+
                                         src={imageKitUrl(fullImage)} alt={product.name} />
                                 </TransformComponent>
                             </TransformWrapper>
@@ -157,7 +158,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                         <LazyLoadImage src={imageKitUrl(fullImage)}
                                             //PlaceholderSrc={PlaceholderImage}
                                             effect="blur"
-                                            alt="Image Alt"
+                                            alt={product.name}
                                             className='rounded-lg w-full aspect-[8/12] object-cover'
                                         />
                                     </TransformComponent>
@@ -180,7 +181,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                 <Image src={
                                     imageKitUrl(image, 171, 247)
                                 }
-                                    alt={'immagine non trovata'}
+                                    alt={product.name}
                                     width={'fit-content'}
                                     maxH={'52'}
                                     // height={'fit-content'}

@@ -13,9 +13,14 @@ const list = [
         url: '/shop/prodotti'
     },
     {
+        title: 'aggiungi prodotto',
+        url: '/shop/crea-prodotto'
+    },
+    {
         title: 'il tuo negozio',
         url: '/shop/info-generali'
     },
+    
     {
         title: 'hai bisogno di assistenza?',
         url: '/shop/assistenza'
