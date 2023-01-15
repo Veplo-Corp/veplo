@@ -324,7 +324,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                         imageKitUrl(element.photos[0], 171, 247)
                                                     }//placeholderSrc={'/static/grayScreen.png'}
                                                     effect="blur"
-                                                    alt="immagine non trovata"
+                                                    alt={element.name}
                                                     className=' cursor-pointer hover:scale-105 w-full h-full object-cover'
                                                 />
                                             </Box>

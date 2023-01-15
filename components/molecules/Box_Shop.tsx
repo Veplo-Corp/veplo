@@ -24,7 +24,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                 }
                     //placeholderSrc={'/static/grayScreen.png'}
                     effect="blur"
-                    alt="immagine non trovata"
+                    alt={shop.name}
                     width={'full'}
                     height={'full'}
                     className='aspect-[4.8/3] object-cover'
