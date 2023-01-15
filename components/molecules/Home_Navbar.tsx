@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
@@ -34,7 +35,7 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
         return
     }
 
-    const pushToProducts = (gender:string) => {
+    const pushToProducts = (gender: string) => {
         onShowCategory(false)
         if (address_user) {
             if (address_user.city && address_user.city !== 'undefined') {
@@ -93,57 +94,85 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
 
         <nav className="fixed justify-center w-full hidden md:flex pr-20 lg:pr-0 gap-4">  {/* z-10 */}
 
-            <div className={` ${gender === 'donna' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 `}>
+            <Link
+                href={`/prodotti/${address_user.postcode.length === 5 ? createUrlSchema([address_user.city, address_user.postcode]) : createUrlSchema([address_user.city])}/donna-abbigliamento`}
+                className={` ${gender === 'donna' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 `}>
                 <a
+
                     className={` 
-                    ${gender === 'donna' && !showCategory ? "relative z-50" : ""}
+                    ${gender === 'donna' && !showCategory ? "relative" : ""}
+                    my-auto
                     `}
                     onMouseOver={() => onShowCategory('', 'donna')}
-                    onClick={()=> {
-                        pushToProducts('donna')
+                    onClick={() => {
+                        onShowCategory(false)
                     }}
+                >
+                    <Box
+                        zIndex={'modal'}
+                        fontWeight={'semibold'}
                     >
-                    <div className='z-[100]'>
                         Donna
-                    </div>
+                    </Box>
+                    {gender === 'donna' && !showCategory && <Box
+                        zIndex={'hide'}
+                        className={` absolute w-full h-[8px] bottom-[1px] bg-red-500 z-0`}>
+                    </Box>}
                 </a>
-                {gender === 'donna' && !showCategory && <div className={` absolute w-full h-[8px] bottom-[3px] bg-red-500 z-0`}>
-                </div>}
-            </div>
-            <div className={` ${gender === 'uomo' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 `}>
+            </Link>
+            <Link
+                href={`/prodotti/${address_user.postcode.length === 5 ? createUrlSchema([address_user.city, address_user.postcode]) : createUrlSchema([address_user.city])}/uomo-abbigliamento`}
+                className={` ${gender === 'uomo' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 `}>
                 <a
-                    className={` ${gender === 'uomo' && !showCategory ? "relative z-50" : ""}`}
-                    onMouseOver={() => onShowCategory('', 'uomo')}
-                    onClick={()=> {
-                        pushToProducts('uomo')
-                    }}
+                    className={` 
+                    ${gender === 'uomo' && !showCategory ? "relative" : ""}
+                    my-auto
+                    `}
+                    onMouseOver={() => onShowCategory('', 'donna')}
+                // onClick={() => {
+                //     pushToProducts('donna')
+                // }}
+                >
+                    <Box
+                        zIndex={'modal'}
+                        fontWeight={'semibold'}
                     >
-                    <div className='z-[100]'>
                         Uomo
-                    </div>
+                    </Box>
+                    {gender === 'uomo' && !showCategory && <Box
+                        zIndex={'hide'}
+                        className={` absolute w-full h-[8px] bottom-[1px] bg-red-500 z-0`}>
+                    </Box>}
                 </a>
-                {gender === 'uomo' && !showCategory && <div className={` absolute w-full h-[8px] bottom-[3px] bg-red-500 z-0`}>
-                </div>}
-            </div>
-            
-            <div className={` ${gender === 'negozi' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 
+            </Link>
+
+            <Link
+                href={`/negozi/${address_user.postcode.length === 5 ? createUrlSchema([address_user.city, address_user.postcode]) : createUrlSchema([address_user.city])}`}
+                className={` ${gender === 'negozi' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 
             
             `}>
                 <a
                     className={` ${gender === 'negozi' && !showCategory ? "relative z-50" : ""}
                     
                     `}
-                    onClick={pushToStores}
                     onMouseOver={() => onShowCategory(false)}
-                    
+                    onClick={() => {
+                        onShowCategory(false)
+                    }}
+                >
+                    <Box
+                        zIndex={'modal'}
+                        fontWeight={'semibold'}
                     >
-                    <div className='z-[100]'>
                         Negozi
-                    </div>
+                    </Box>
+                    {gender === 'negozi' && !showCategory && <Box
+                        zIndex={'hide'}
+                        className={` absolute w-full h-[8px] bottom-[1px] bg-red-500 z-0`}>
+                    </Box>}
                 </a>
-                {gender === 'negozi' && !showCategory && <div className={` absolute w-full h-[8px] bottom-[3px] bg-red-500 z-0`}>
-                </div>}
-            </div>
+                
+            </Link>
 
         </nav>
 
