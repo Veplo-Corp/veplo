@@ -11,6 +11,7 @@ import {
     TableContainer,
     Button,
     Image,
+    Box,
 } from '@chakra-ui/react'
 import GET_PRODUCTS_FROM_SHOP from '../../src/lib/apollo/queries/geetProductsShop';
 import { ApolloClient, useMutation, useQuery } from '@apollo/client';
@@ -22,17 +23,22 @@ import Link from 'next/link'
 import Loading from '../molecules/Loading';
 import addAWSPath from '../utils/add_path_aws';
 import { imageKitUrl } from '../utils/imageKitUrl';
+import Input_Search_Item from '../atoms/Input_Search_Item'
 
 // const Table_Products_Shop: React.FC<{ idShop: string, deleteProduct: any }> = ({ idShop, deleteProduct }) => {
 
 const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ idShop, deleteProduct }) => {
     const router = useRouter()
     //const [products, SetProducts] = useState<Product[] | []>([])
+    const [productsOnTextSearched, setProductsOnTextSearched] = useState<{ inputText: string, products: Product[] }>({
+        inputText: '',
+        products: []
+    })
 
     const { loading, error, data, refetch } = useQuery(GET_PRODUCTS_FROM_SHOP, {
         fetchPolicy: 'cache-first',
         nextFetchPolicy: 'cache-first',
-        variables: { id: idShop, limit:100, offset:0 },
+        variables: { id: idShop, limit: 100, offset: 0 },
         // pollInterval: 500,
         // notifyOnNetworkStatusChange: true,
     });
@@ -56,6 +62,35 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
         router.push(`/shop/prodotti/modifica/${productId}`)
     }
 
+    const textSearchProducts = (inputSearch: string) => {
+        console.log(inputSearch);
+
+        const products = data?.shop.products
+            .filter((product: Product) =>
+                product.name
+                    .toLowerCase()
+                    .replace(/\s+/g, '').includes(inputSearch.toLowerCase()
+                        .replace(/\s+/g, ''))
+                ||
+                product.brand
+                    .toLowerCase()
+                    .replace(/\s+/g, '').includes(inputSearch.toLowerCase()
+                        .replace(/\s+/g, ''))
+            )
+        console.log(products);
+        setProductsOnTextSearched({
+            inputText: inputSearch,
+            products: products
+        })
+    }
+
+    const resetSerachInput = () => {
+        setProductsOnTextSearched({
+            inputText: '',
+            products: []
+        })
+    }
+
 
 
     if (loading) return (
@@ -68,9 +103,9 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
 
     return (
         <div>
-            <TableContainer className='flex m-auto w-full '>
+            <div className='md:flex md:justify-between'>
                 <Button
-                    mb={[1.5, 4]}
+                    mb={[3, 4]}
                     fontSize={['xs', 'md']}
                     onClick={() => {
                         router.push('/shop/crea-prodotto')
@@ -81,6 +116,25 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
                     </svg>
                     NUOVO PRODOTTO
                 </Button>
+                <div className='mb-2 w-3/4 md:mb-0 md:w-fit'>
+                    <Input_Search_Item
+                        placeholder='cerca prodotto'
+                        onConfirmText={textSearchProducts}
+                    />
+                </div>
+
+            </div>
+            {productsOnTextSearched.inputText.length > 0 && <Box
+                marginBottom={'2'}
+            >
+                Risultati per: <span className='font-semibold'>
+                    {productsOnTextSearched.inputText}</span> <span
+                        className='underline text-blue-600 ml-1 cursor-pointer'
+                        onClick={resetSerachInput}
+                    >resetta ricerca</span>
+            </Box>}
+            <TableContainer className='flex m-auto w-full '>
+
                 <Table variant='simple'>
                     <TableCaption>i tuoi prodotti in Veplo</TableCaption>
                     <Thead
@@ -100,23 +154,23 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
                         </Tr>
                     </Thead>
                     <Tbody >
-                        {data && data?.shop.products.map((product: any) => {
+                        {data && (productsOnTextSearched.inputText.length > 0 ? productsOnTextSearched.products : data?.shop.products).map((product: any) => {
                             return (
                                 <Tr key={product.id} fontSize={['xs', 'medium']} >
                                     <Td className='hidden md:table-cell'>
-                                        {product?.photos[0]?.src ? 
-                                        (<Image
-                                            className='w-20'
-                                            src={
-                                                product.photos[0]?.src
-                                            }>
-                                        </Image>) : 
-                                        (<Image
-                                            className='w-20'
-                                            src={
-                                                imageKitUrl(product.photos[0], 80, 115)
-                                            }>
-                                        </Image>)}
+                                        {product?.photos[0]?.src ?
+                                            (<Image
+                                                className='w-20'
+                                                src={
+                                                    product.photos[0]?.src
+                                                }>
+                                            </Image>) :
+                                            (<Image
+                                                className='w-20'
+                                                src={
+                                                    imageKitUrl(product.photos[0], 80, 115)
+                                                }>
+                                            </Image>)}
                                     </Td>
 
                                     <Td px={[0.5, 4]} >

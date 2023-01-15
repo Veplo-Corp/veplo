@@ -6,8 +6,8 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: any, textInput
 
     const onConfirm = (e:any) => {
         if (e.key === 'Enter' || e.key === undefined) {
-            if (inputText.current?.value !== null && e.target.value.length > 3){
-                onConfirmText(inputText?.current?.value);
+            if ( inputText.current?.value !== null || undefined && inputText.current?.value > 3){
+                onConfirmText(inputText?.current?.value.trim());
                 inputText.current!.value = ''
             }
         } 
