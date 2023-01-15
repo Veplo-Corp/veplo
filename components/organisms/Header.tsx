@@ -126,11 +126,9 @@ const Header = () => {
                     </svg>
                 </button>
             </div>}
-            <div className={` md:pl-2 fixed z-50 ${!user ? 'top-3 md:top-10' : 'top-3'} left-3 `}> {/* lg:w-0 lg:flex-1 */}
+            <div className={` md:pl-2 fixed z-50 ${!user ? 'top-3 md:top-9' : 'top-3'} left-3 `}> {/* lg:w-0 lg:flex-1 */}
                 {!user?.isShop &&
-                    <div className={`flex `}>
                         <To_Home_Logo href='/' />
-                    </div>
                 }
                 {user?.isShop &&
                     <To_Home_Logo href='/shop/prodotti' />
