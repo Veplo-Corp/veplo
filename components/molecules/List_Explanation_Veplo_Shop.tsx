@@ -16,7 +16,7 @@ const Explain_Veplo: Explaination = {
     description: 'non ti preoccupare, registrarsi è gratis!',
     list: [
         {
-            title: 'crea il tuo negozio da zero in 1 minuto',
+            title: 'crea il tuo negozio da zero',
             description: 'Parlaci della tua azienda e fornisci le informazioni per poter inserire il tuo negozio'
         },
         {
@@ -38,12 +38,12 @@ const List_Explanation_Veplo_Shop = () => {
             //paddingTop={'16'}
         >
             <h1
-            className='font-semibold text-4xl'
+            className='font-bold text-3xl  leading-8'
             >
                 {Explain_Veplo.title}
             </h1>
             <h4
-            className='font-regular text-xl mb-3'
+            className='font-regular text-md mb-3'
             >
                 {Explain_Veplo.description}
             </h4>
@@ -67,7 +67,7 @@ const List_Explanation_Veplo_Shop = () => {
                         </div>
 
                         <div
-                            className='m-auto w-full ml-2 md:ml-5 mr-2'
+                            className='m-auto w-full ml-2 md:ml-3 mr-2'
                         >
                             <Box
                                 fontSize={'xl'}
