@@ -129,10 +129,10 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                     ${gender === 'uomo' && !showCategory ? "relative" : ""}
                     my-auto
                     `}
-                    onMouseOver={() => onShowCategory('', 'donna')}
-                // onClick={() => {
-                //     pushToProducts('donna')
-                // }}
+                    onMouseOver={() => onShowCategory('', 'uomo')}
+                    onClick={() => {
+                        onShowCategory(false)
+                    }}
                 >
                     <Box
                         zIndex={'modal'}
@@ -158,9 +158,7 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                     
                     `}
                     onMouseOver={() => onShowCategory(false)}
-                    onClick={() => {
-                        onShowCategory(false)
-                    }}
+                    
                 >
                     <Box
                         zIndex={'modal'}
