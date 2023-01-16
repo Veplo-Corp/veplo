@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import { Button, Box, Stack, Text } from '@chakra-ui/react'
 import BlackButton from '../../components/atoms/BlackButton'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Drawer_Address from '../../components/organisms/Drawer_Address'
 import Image from 'next/image'
 import Shop_not_Allowed from '../../components/utils/Shop_not_Allowed'
@@ -11,6 +11,10 @@ import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import createUrlSchema from '../../components/utils/create_url'
 import PostMeta from '../../components/organisms/PostMeta'
+import Section from '../../components/atoms/Section'
+
+
+
 
 
 const Home: NextPage = () => {
@@ -25,19 +29,22 @@ const Home: NextPage = () => {
   const address_user = useSelector((state: any) => state.address.address);
 
 
+
+
   return (
     <Shop_not_Allowed>
       <PostMeta
-        canonicalUrl='https://www.veplo.it' 
+        canonicalUrl='https://www.veplo.it'
         title={'Veplo | Abbigliamento & Moda '}
         subtitle={"Scopri i negozi di vestiti per uomo e donna della tua città su Veplo. Cerca tra tutto l'abbigliamento in vendita vicino a te e approfitta delle offerte"}
         image={''}
         description={"Scopri i negozi di vestiti per uomo e donna della tua città su Veplo. Cerca tra tutto l'abbigliamento in vendita vicino a te e approfitta delle offerte"}
       />
-      <div className='w-full justify-between px-1 md:px-4 mt-16 md:mt-[85px]'>
+      <div className='w-full justify-between mt-16 md:mt-[85px]'>
+
         <Gradient_Component_home display='flex'>
           <h1 className='text-6xl md:text-7xl lg:text-8xl font-black text-white md:w-7/12 my-auto md:leading-[90px] lg:leading-[110px] '>
-            SCOPRI I<br></br> TUOI<br></br> DINTORNI
+            SCOPRI <br/>I TUOI<br/> DINTORNI
           </h1>
           <div
             className='mt-8 md:m-auto'
@@ -83,22 +90,34 @@ const Home: NextPage = () => {
             </Button>
           </div>
         </Gradient_Component_home>
-        <div className='md:flex md:justify-between px-5 md:px-20 md:gap-20 md:my-20'>
-          <img className='md:w-1/2 object-cover mt-8 md:mt-'
-            src="/home_svg/home_first.svg"
-            alt="home image" />
-          <div className='my-5 md:m-auto lg:w-4/12 '>
-            <h1
-              className='text-4xl xl:text-5xl font-black mb-3'
-            >Cerca tra i negozi
-              della tua città..</h1>
-            <h2 className='text-lg font-medium'>
-              Seleziona già online i prodotti che proverai in negozio. Ogni negozio possiede una pagina dedicata con tutti i prodotti in vetrina
-            </h2>
+
+        <Section>
+          <div
+            className='md:flex md:justify-between px-5 py-20 md:px-20 md:gap-20 md:my-20'>
+            <img className='md:w-1/2 md:h-96 object-contain my-auto'
+              src="/home_svg/home_first.svg"
+              alt="home image" />
+            <div className='my-5 md:m-auto lg:w-4/12 '>
+              <h1
+                className='text-4xl xl:text-5xl font-black mb-3'
+              >Cerca tra i negozi
+                della tua città..</h1>
+              <h2 className='text-lg font-medium'>
+                Seleziona già online i prodotti che proverai in negozio. Ogni negozio possiede una pagina dedicata con tutti i prodotti in vetrina
+              </h2>
+            </div>
           </div>
-        </div>
-        <Gradient_Component_home display=''>
-          <h1 className='text-4xl md:text-5xl lg:text-6xl font-black my-auto md:leading-[90px] lg:leading-[110px] text-center mt-5 mb-5 md:mb-0'>
+        </Section>
+
+
+
+
+        <div
+          className='min-h-[60vh md:min-h-[80vh] py-5 bg-slate-100  grid content-center  align-middle
+          px-5
+         '
+        >
+          <h1 className='text-4xl md:text-5xl lg:text-6xl font-black my-auto md:leading-[90px] lg:leading-[110px] text-center mb-5 md:mb-0'>
             ESSERE VEPLO
           </h1>
           <h2 className='text-xl md:text-3xl px-4 md:px-36 text-center font-medium md:font-bold md:mt-2'>
@@ -140,24 +159,27 @@ const Home: NextPage = () => {
             </Button>
 
           </div>
-          <h2 className='text-md  md:text-xl xl:px-96 text-center font-base mt-6 md:mt-12 mb-6'>
+          <h2 className='text-md  md:text-xl xl:px-96 text-center font-base mt-6 md:mt-12'>
             Crea il tuo negozio gratuitamente e inizia a mostrare
             a tutti i tuoi vestiti!
           </h2>
-        </Gradient_Component_home>
-        <div className='md:flex md:justify-between px-5 md:px-20 md:gap-20 md:my-20'>
-
-          <div className='my-5 md:m-auto lg:w-4/12 '>
-            <h1
-              className='text-4xl xl:text-5xl font-black mb-3'
-            >Migliora il tuo acquisto in negozio...</h1>
-            <h2 className='text-lg font-medium'>
-              con Veplo puoi visitare tutti i negozi della tua città e scegliere in anticipo quali andrai a trovare di persona            </h2>
-          </div>
-          <img className='md:w-1/2 object-cover mt-8 md:mt-'
-            src="/home_svg/home_second.svg"
-            alt="home image" />
         </div>
+        <Section>
+          <div
+            className='md:flex md:justify-between pt-20 pb-10 px-5 md:px-20 md:gap-20 md:my-20'>
+
+            <div className='m-5 md:m-auto lg:w-4/12 '>
+              <h1
+                className='text-4xl xl:text-5xl font-black mb-3'
+              >Migliora il tuo acquisto in negozio...</h1>
+              <h2 className='text-lg font-medium'>
+                con Veplo puoi visitare tutti i negozi della tua città e scegliere in anticipo quali andrai a trovare di persona            </h2>
+            </div>
+            <img className='md:w-1/2 h-96 object-contain my-auto  mt-8 md:mt-'
+              src="/home_svg/home_second.svg"
+              alt="home image" />
+          </div>
+        </Section>
       </div>
 
       {/* <img className='w-full object-cover h-full md:h-full mt-12' 
@@ -179,7 +201,7 @@ const Home: NextPage = () => {
       src="https://img01.ztat.net/outfit/d2bbc3015626416fa0f33450b7295d97/9586c74af338488da7215817f83e1bb6.jpg?imwidth=1800" 
       alt="" /> */}
       <Drawer_Address openDrawerMath={openDrawer} />
-    </Shop_not_Allowed>
+    </Shop_not_Allowed >
   )
 }
 
