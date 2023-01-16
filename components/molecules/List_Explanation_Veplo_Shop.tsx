@@ -34,7 +34,7 @@ const Explain_Veplo: Explaination = {
 const List_Explanation_Veplo_Shop = () => {
     return (
         <Box 
-            marginX={['0','-2']}
+            marginX={['2','-2']}
             //paddingTop={'16'}
         >
             <h1
@@ -53,7 +53,7 @@ const List_Explanation_Veplo_Shop = () => {
                         key={key}
                         display={'flex'}
                         justifyContent={'space-between'}
-                        marginBottom={'3'}
+                        marginBottom={['1','3']}
                     >
                         <div className='w-2/12'>
                             <Box
@@ -67,12 +67,12 @@ const List_Explanation_Veplo_Shop = () => {
                         </div>
 
                         <div
-                            className='m-auto w-full ml-2 md:ml-3 mr-2'
+                            className='m-auto w-full ml-1 md:ml-3 mr-2'
                         >
                             <Box
                                 fontSize={'xl'}
                                 fontWeight={'semibold'}
-                                mb={'0.5'}
+                                mb={['0','0.5']}
                             >
                                 {item.title}
                             </Box>

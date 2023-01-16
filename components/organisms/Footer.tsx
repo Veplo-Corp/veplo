@@ -2,8 +2,8 @@ import React from 'react'
 
 const Footer = () => {
     return (
-        <footer className=" bg-white sm:p-6">
-            <hr className="my-6 border-gray-200 sm:mx-auto  lg:my-8" />
+        <footer className=" bg-white ">
+            <hr className="mb-6 border-gray-200 sm:mx-auto  lg:my-8" />
             <div className="md:flex md:justify-between p-4">
                 <div className="mb-6 md:mb-0">
                     <a href="https://veplo.it/" className="flex items-center">

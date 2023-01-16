@@ -227,7 +227,6 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
               <Loading />
             ) : (
               <>
-                
                 <Component {...pageProps} />
                 <Footer />
               </>
