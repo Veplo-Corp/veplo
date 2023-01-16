@@ -95,7 +95,7 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
         <nav className="fixed justify-center w-full hidden md:flex pr-20 lg:pr-0 gap-10">  {/* z-10 */}
 
             <Link
-                href={`/prodotti/${address_user.postcode.length === 5 ? createUrlSchema([address_user.city, address_user.postcode]) : createUrlSchema([address_user.city])}/donna-abbigliamento`}
+                href={`${address_user ? `/prodotti/${address_user.postcode.length === 5 ? createUrlSchema([address_user.city, address_user.postcode]) : createUrlSchema([address_user.city])}/donna-abbigliamento` : '/'}`}
                 className={` ${gender === 'donna' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 `}>
                 <a
 
@@ -122,7 +122,7 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                 </a>
             </Link>
             <Link
-                href={`/prodotti/${address_user.postcode.length === 5 ? createUrlSchema([address_user.city, address_user.postcode]) : createUrlSchema([address_user.city])}/uomo-abbigliamento`}
+                href={`${address_user ? `/prodotti/${address_user.postcode.length === 5 ? createUrlSchema([address_user.city, address_user.postcode]) : createUrlSchema([address_user.city])}/uomo-abbigliamento` : '/'}`}
                 className={` ${gender === 'uomo' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 `}>
                 <a
                     className={` 
@@ -149,7 +149,7 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
             </Link>
 
             <Link
-                href={`/negozi/${address_user.postcode.length === 5 ? createUrlSchema([address_user.city, address_user.postcode]) : createUrlSchema([address_user.city])}`}
+                href={`${address_user ? `/negozi/${address_user.postcode.length === 5 ? createUrlSchema([address_user.city, address_user.postcode]) : createUrlSchema([address_user.city])}` : '/'}`}
                 className={` ${gender === 'negozi' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 
             
             `}>
@@ -158,7 +158,7 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                     
                     `}
                     onMouseOver={() => onShowCategory(false)}
-                    
+
                 >
                     <Box
                         zIndex={'modal'}
@@ -172,7 +172,7 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                         className={` absolute w-full h-[8px] bottom-[3px] bg-red-500 z-0`}>
                     </Box>}
                 </a>
-                
+
             </Link>
 
         </nav>
