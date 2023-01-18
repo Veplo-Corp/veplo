@@ -6,6 +6,7 @@ import { Tooltip } from '@chakra-ui/react'
 import Verified_Email from '../molecules/Verified_Email'
 import { useRouter } from 'next/router'
 import MobileDetect from 'mobile-detect'
+import { deleteAuthTokenInSessionStorage } from '../utils/deleteAuthTokenSessionStorage'
 
 const list = [
     {
@@ -41,6 +42,7 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
 
     const logout = async () => {
         await signOut(auth);
+        deleteAuthTokenInSessionStorage()
         //set OpenModal 1 in Header
         router.push('/shop/login?type=login')
         onCloseModal()

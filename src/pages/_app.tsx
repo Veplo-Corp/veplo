@@ -15,7 +15,7 @@ import { useRouter } from 'next/router'
 import { ApolloProvider } from '@apollo/client'
 import { initApollo, useApollo } from '../lib/apollo'
 import { getAddressFromLocalStorage } from '../../components/utils/getAddress_from_LocalStorage'
-import { setAuthTokenInLocalStorage } from '../../components/utils/setAuthTokenInLocalStorage'
+import { setAuthTokenInSessionStorage } from '../../components/utils/setAuthTokenInSessionStorage'
 import Modal_Error_Shop, { ErrorModal } from '../../components/organisms/Modal_Error_Shop'
 import modal_error from '../store/reducers/modal_error'
 import GET_SHOP_BY_FIREBASE_ID from '../lib/apollo/queries/getShopByFirebaseId'
@@ -73,7 +73,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         setUserId(analytics, userAuth.uid);
         //setUserProperties(analytics, { favorite_food: 'apples' });
         const idToken = await userAuth.getIdToken(true)
-        setAuthTokenInLocalStorage(idToken)
+        setAuthTokenInSessionStorage(idToken)
         //console.log(idToken);
         const tokenResult = await userAuth.getIdTokenResult()
         // user is logged in, send the user's details to redux, store the current user in the state
