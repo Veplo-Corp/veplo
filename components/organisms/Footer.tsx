@@ -32,9 +32,8 @@ const Footer = () => {
                             {/* <li>
                                 <a href="#" className="hover:underline">Facebook</a>
                             </li>
-                            <li>
-                                <a href="#" className="hover:underline">Linkedin</a>
-                            </li> */}
+                             */}
+
 
                         </ul>
                     </div>
