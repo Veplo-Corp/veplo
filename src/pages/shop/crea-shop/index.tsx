@@ -444,15 +444,15 @@ const index = () => {
         <Shop_UID_Required>
             <Desktop_Layout>
                 <NoIndexSeo title={`Crea Negozio | Veplo`} />
-                <div className='flex justify-between w-full mb-96'>
-                    <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-6/12 xl:w-5/12" onSubmit={handleSubmit(submitData)}>
+                <div className='flex '>
+                    <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-1/2 m-auto" onSubmit={handleSubmit(submitData)}>
                         <div className='w-full'>
                             <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>parlaci di te!</h1>
                             {imgSrc !== '' || !image && <Center
                                 onClick={() => handleClick(null)}
                                 marginBottom={1}
                                 width={'full'}
-                                height={'52'}
+                                height={'64'}
                                 borderWidth={1}
                                 borderColor={'gray.200'}
                                 borderStyle={'dashed'}
@@ -533,7 +533,7 @@ const index = () => {
                             )}
                             {image && !showCroppedImage && <Image
                                 width={'full'}
-                                height={'52'}
+                                height={'64'}
                                 borderRadius={10}
                                 marginBottom={1}
                                 objectFit='cover'

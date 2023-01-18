@@ -242,11 +242,14 @@ const index = () => {
           <Desktop_Layout>
 
             <NoIndexSeo title='Crea prodotto | Veplo' />
-            <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false}
-              titleText={'Aggiungi un capo di abbigliamento'}
-              confirmButtonText={'aggiungi'}
-              loading={loading}
-            />
+            <div className='flex'>
+              <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false}
+                titleText={'Aggiungi un capo di abbigliamento'}
+                confirmButtonText={'aggiungi'}
+                loading={loading}
+              />
+            </div>
+
           </Desktop_Layout>
         </Shop_UID_Required>
       )
