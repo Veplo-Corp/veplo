@@ -115,7 +115,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
 
     return (
         <>
-            <div className='w-full md:w-8/12 lg:w-1/2  mb-96'>
+            <div className='w-full md:w-8/12 lg:w-1/2  mb-96 m-auto'>
                 <form className="p-3 px-4 lg:px-16 xl:px-24 w-full" onSubmit={handleSubmit(submitData)}>
                     <div className='w-full'>
                         <h1 className='italic text-lg lg:text-xl font-extrabold mb-4'>{titleText}</h1>
