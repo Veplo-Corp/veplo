@@ -9,7 +9,7 @@ import { sendEmailVerificationHanlder } from '../../../../components/utils/email
 import resetPassword from '../../../../components/utils/resetPassword'
 import { useMutation, useQuery } from '@apollo/client'
 import DELETE_PRODUCT from '../../../lib/apollo/mutations/deleteProduct'
-import { setAuthTokenInLocalStorage } from '../../../../components/utils/setAuthTokenInLocalStorage'
+import { setAuthTokenInSessionStorage } from '../../../../components/utils/setAuthTokenInSessionStorage'
 import GET_SINGLE_PRODUCT from '../../../lib/apollo/queries/getSingleProduct'
 import { initApollo } from '../../../lib/apollo'
 import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
@@ -111,7 +111,7 @@ const index = () => {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         // Signed in 
         const idToken = await userCredential.user.getIdToken(true);
-        setAuthTokenInLocalStorage(idToken)
+        setAuthTokenInSessionStorage(idToken)
         console.log(idToken);
         await sendEmailVerificationHanlder()
         // dispatch(

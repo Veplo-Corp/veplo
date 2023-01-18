@@ -6,7 +6,7 @@ import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
 import Loading from '../../../../components/molecules/Loading';
 import Login_or_Registration from '../../../../components/organisms/Login_or_Registration'
 import { handleErrorFirebase } from '../../../../components/utils/handleErrorFirebase';
-import { setAuthTokenInLocalStorage } from '../../../../components/utils/setAuthTokenInLocalStorage';
+import { setAuthTokenInSessionStorage } from '../../../../components/utils/setAuthTokenInSessionStorage';
 import { auth } from '../../../config/firebase';
 import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 import { handleOpenModal, setModalTitleAndDescription } from '../../../store/reducers/modal_error';
@@ -40,7 +40,7 @@ const index = () => {
         // Signed in 
         const user = userCredential.user;
         const idToken = await userCredential.user.getIdToken(true);
-        setAuthTokenInLocalStorage(idToken)
+        setAuthTokenInSessionStorage(idToken)
         console.log(user);
         return router.push('/')
       } catch (error: any) {

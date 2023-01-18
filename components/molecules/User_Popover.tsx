@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../src/config/firebase'
+import { deleteAuthTokenInSessionStorage } from '../utils/deleteAuthTokenSessionStorage'
 
 
 
@@ -93,11 +94,12 @@ const User_Popover = () => {
                     return (
                         <Popover.Button key={id} className='text-left'>
                             <Box
-                                onClick={() => {
+                                onClick={async() => {
                                     if(!action.href)return
                                     router.push(action.href)
                                     if(action.name === 'Disconnetti'){
-                                        signOut(auth)
+                                        await signOut(auth)
+                                        deleteAuthTokenInSessionStorage()
                                     }
                                 }}
                             >
