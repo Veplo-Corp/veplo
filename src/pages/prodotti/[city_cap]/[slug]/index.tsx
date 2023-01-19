@@ -19,7 +19,7 @@ import { toProductPage } from '../../../../../components/utils/toProductPage'
 import FIlter_Button from '../../../../../components/molecules/FIlter_Button'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Loading from '../../../../../components/molecules/Loading'
-import { Box, Center, CircularProgress, Spinner, Text } from '@chakra-ui/react'
+import { Box, Button, Center, CircularProgress, Spinner, Text } from '@chakra-ui/react'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { findMacrocategoryName } from '../../../../../components/utils/find_macrocategory_name'
 import Error_page from '../../../../../components/organisms/Error_page'
@@ -283,6 +283,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
   const [getFilterProduct, { error, data }] = useLazyQuery(GET_PRODUCTS);
 
+
   console.log(typeof category);
 
 
@@ -327,6 +328,9 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   }, [router.query.filterProducts])
 
   useEffect(() => {
+
+    //if (!errorLog) return
+
     if (errorLog) {
       console.log(errorLog);
 
@@ -336,6 +340,8 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
       })
     }
     if (data) {
+      console.log(data?.products.length);
+
       setproductsFounded(data?.products)
       setLoading(false)
     }
@@ -407,11 +413,31 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         >
           <div className={` flex items-center justify-center`}>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
-              {productsFounded[0] !== null && productsFounded.map((product) => {
-                return (
-                  <Box_Dress eventHandler={toProductPageUrl} key={product.id} product={product} toShop={toShopPage}></Box_Dress>
+              {productsFounded.length > 0 ?
+
+                (productsFounded.map((product) => {
+                  return (
+                    <Box_Dress eventHandler={toProductPageUrl} key={product.id} product={product} toShop={toShopPage}></Box_Dress>
+                  )
+                })) : (
+                  <div className='text-center h-screen content-center'>
+                    <div className='absolute w-full top-56'>
+                      <h1 className='font-extrabold md:8/12 lg:w-6/12 m-auto text-xl lg:text-2xl mb-10 text-[#707070] px-9 line-clamp-2'>
+                        Nessun prodotto trovato
+                      </h1>
+                      <img
+                        className='m-auto h-28 w-28 mb-6'
+                        src="/error/cryingBoy.svg"
+                        alt="non trovata" />
+                      <Button
+                        colorScheme={'blackAlpha'}
+                        mt={'1'}
+                        onClick={resetFilter}
+                      >Resetta filtri</Button>
+                    </div>
+                  </div>
                 )
-              })}
+              }
             </div>
           </div>
         </InfiniteScroll>}
