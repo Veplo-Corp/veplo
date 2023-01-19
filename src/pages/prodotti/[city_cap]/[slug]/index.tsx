@@ -28,6 +28,7 @@ import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_Fi
 import createFilterObject from '../../../../../components/utils/create_fiter_products_object'
 import PostMeta from '../../../../../components/organisms/PostMeta'
 import { Error_log } from '../../../../interfaces/error_log'
+import Link from 'next/link'
 
 
 type Router = {
@@ -145,10 +146,10 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
   const toProductPageUrl = (product: Product) => {
 
-    const newUrl = toProductPage(product)
-    if (newUrl) {
-      router.push(`/prodotto/${product.id}/${newUrl}`)
-    }
+    // const newUrl = toProductPage(product)
+    // if (newUrl) {
+    //   router.push(`/prodotto/${product.id}/${newUrl}`)
+    // }
   }
 
 
@@ -417,7 +418,11 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
                 (productsFounded.map((product) => {
                   return (
-                    <Box_Dress eventHandler={toProductPageUrl} key={product.id} product={product} toShop={toShopPage}></Box_Dress>
+                    <Link href={`/prodotto/${product.id}/${toProductPage(product)}`}>
+                      <a >
+                        <Box_Dress eventHandler={toProductPageUrl} key={product.id} product={product} toShop={toShopPage}></Box_Dress>
+                      </a>
+                    </Link>
                   )
                 })) : (
                   <div className='text-center h-screen content-center'>
