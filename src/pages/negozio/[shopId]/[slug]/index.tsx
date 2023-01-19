@@ -62,10 +62,10 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
 
     const toProductPageUrl = (product: Product) => {
 
-        const newUrl = toProductPage(product)
-        if (newUrl) {
-            router.push(`/prodotto/${product.id}/${newUrl}`)
-        }
+        // const newUrl = toProductPage(product)
+        // if (newUrl) {
+        //     router.push(`/prodotto/${product.id}/${newUrl}`)
+        // }
     }
 
     const createAddressForMAps = () => {
@@ -175,7 +175,7 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
                     return (
                         <Link href={`/prodotto/${product.id}/${toProductPage(product)}`}>
                             <a >
-                                <Box_Dress /* eventHandler={toProductPageUrl} */ key={product.id} product={product}
+                                <Box_Dress eventHandler={toProductPageUrl} key={product.id} product={product}
                                     toShop={() => { }}
                                 ></Box_Dress>
                             </a>
