@@ -11,6 +11,7 @@ import { initApollo } from '../../../lib/apollo';
 import GET_SHOPS_BY_LOCATION from '../../../lib/apollo/queries/getShops'
 import Input_Search_Item from '../../../../components/atoms/Input_Search_Item';
 import PostMeta from '../../../../components/organisms/PostMeta';
+import Link from 'next/link';
 export async function getStaticPaths() {
     return {
         paths: [],
@@ -46,7 +47,7 @@ export async function getStaticProps(ctx: any) {
         }
     } catch (e: any) {
         console.log(e.graphQLErrors[0].name);
-        
+
         return {
             props: {
                 city: element.city,
@@ -64,17 +65,17 @@ export async function getStaticProps(ctx: any) {
 }
 
 const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], errorLog?: string }> = ({ city, postcode, shops, errorLog }) => {
-    
+
     const router = useRouter()
-    
+
     const [inputSearchShop, setInputSearchShop] = useState('')
     console.log(shops);
     const [shopsFilterByName, setshopsFilterByName] = useState<Shop[]>([])
     const toStore = (shop: Shop) => {
-        const url = createUrlSchema([shop.address.city, shop.name])
-        router.push({
-            pathname: `/negozio/${shop.id}/${url}`,
-        })
+        // const url = createUrlSchema([shop.address.city, shop.name])
+        // router.push({
+        //     pathname: `/negozio/${shop.id}/${url}`,
+        // })
     }
 
     useEffect(() => {
@@ -110,14 +111,14 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
 
     useEffect(() => {
         if (errorLog) {
-          console.log(errorLog);
-    
-          router.push({
-            pathname: '/404',
-            query: { error: errorLog },
-          })
+            console.log(errorLog);
+
+            router.push({
+                pathname: '/404',
+                query: { error: errorLog },
+            })
         }
-      }, [errorLog])
+    }, [errorLog])
 
 
 
@@ -164,11 +165,19 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
                 {((shops.length > 0 && inputSearchShop.length < 1) && setInputSearchShop.length <= 3) ?
                     shops.map((shop) => {
                         return (
-                            <Box_Shop key={shop.id} scale={'scale(0.99)'} eventHandler={toStore} shop={shop} />
+                            <Link href={`/negozio/${shop.id}/${createUrlSchema([shop.address.city, shop.name])}`}>
+                                <a >
+                                    <Box_Shop key={shop.id} scale={'scale(0.99)'} eventHandler={toStore} shop={shop} />
+                                </a>
+                            </Link>
                         )
                     }) : shopsFilterByName.map((shop) => {
                         return (
-                            <Box_Shop key={shop.id} scale={'scale(0.99)'} eventHandler={toStore} shop={shop} />
+                            <Link href={`/negozio/${shop.id}/${createUrlSchema([shop.address.city, shop.name])}`}>
+                                <a >
+                                    <Box_Shop key={shop.id} scale={'scale(0.99)'} eventHandler={toStore} shop={shop} />
+                                </a>
+                            </Link>
                         )
                     })
                 }
