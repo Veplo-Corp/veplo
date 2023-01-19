@@ -21,6 +21,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { imageKitUrl } from '../../../../../components/utils/imageKitUrl';
 import PostMeta from '../../../../../components/organisms/PostMeta';
+import Link from 'next/link';
 
 
 export async function getStaticPaths() {
@@ -292,70 +293,80 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
 
                         <>
-                            <Box
-                                fontWeight='light'
-                                as='h1'
-                                noOfLines={1}
-                                mt='6'
-                                mb={3}
-                                fontSize='md'
-                                onClick={() => {
-                                    const slug = createUrlSchema([product.shopOptions.city, product.shopOptions.name])
-                                    router.push(`/negozio/${product.shopId}/${slug}`)
-                                }}
+                            <Link href={`/negozio/${product.shopId}/${createUrlSchema([product.shopOptions.city, product.shopOptions.name])}`}>
+                                <a >
+                                    <Box
+                                        fontWeight='light'
+                                        as='h1'
+                                        noOfLines={1}
+                                        mt='6'
+                                        mb={3}
+                                        fontSize='md'
+                                    >
+                                        Altri prodotti di <span className='underline underline-offset-2 cursor-pointer'>{product.shopOptions.name}</span>
+                                    </Box>
+                                </a>
+                            </Link>
 
-                            >
-                                Altri prodotti di <span className='underline underline-offset-2 cursor-pointer'>{product.shopOptions.name}</span>
-                            </Box>
 
                             <div className="overflow-x-scroll flex gap-4 ">
                                 {shopProductsData?.data?.shop.products.map((element: Product) => {
 
                                     return (
-                                        <div key={element.id} className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
+                                        <Link href={`/prodotto/${element.id}/${toProductPage(product)}`}>
+                                            <a >
+                                                <div key={element.id} className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
+                                                    <Box borderRadius='lg' overflow='hidden'
+                                                        borderWidth={1.5}
+                                                        marginBottom={4}
+                                                        className={`w-28 lg:w-36 aspect-[8.5/12] object-cover`}
+                                                    // onClick={() => toProduct(element)}
+                                                    >
+                                                        <LazyLoadImage
+                                                            src={
+                                                                imageKitUrl(element.photos[0], 171, 247)
+                                                            }//placeholderSrc={'/static/grayScreen.png'}
+                                                            effect="blur"
+                                                            alt={element.name}
+                                                            className=' cursor-pointer hover:scale-105 w-full h-full object-cover'
+                                                        />
+                                                    </Box>
+                                                </div>
+                                            </a>
+                                        </Link>
+                                    )
+                                })}
+                                <Link href={`/negozio/${product.shopId}/${createUrlSchema([product.shopOptions.city, product.shopOptions.name])}`}>
+                                    <a >
+                                        <div className={`flex gap-4 w-fit`} >
                                             <Box borderRadius='lg' overflow='hidden'
                                                 borderWidth={1.5}
                                                 marginBottom={4}
-                                                className={`w-28 lg:w-36 aspect-[8.5/12] object-cover`}
-                                                onClick={() => toProduct(element)}
+                                                className={`w-28 lg:w-36 aspect-[8.5/12] object-cover flex cursor-pointer bg-gray-100`}
+                                                // onClick={() => {
+                                                //     const slug = createUrlSchema([product.shopOptions.city, product.shopOptions.name])
+                                                //     router.push(`/negozio/${product.shopId}/${slug}`)
+                                                // }}
+                                                _active={{
+                                                    transform: 'scale(0.98)',
+                                                }}
                                             >
-                                                <LazyLoadImage
-                                                    src={
-                                                        imageKitUrl(element.photos[0], 171, 247)
-                                                    }//placeholderSrc={'/static/grayScreen.png'}
-                                                    effect="blur"
-                                                    alt={element.name}
-                                                    className=' cursor-pointer hover:scale-105 w-full h-full object-cover'
-                                                />
+                                                <div className='m-auto text-center'>
+                                                    <p>
+                                                        vai al<br /> negozio
+                                                    </p>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 m-auto">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                                                    </svg>
+
+                                                </div>
+
+
                                             </Box>
-                                        </div>)
-                                })}
-                                <div className={`flex gap-4 w-fit`} >
-                                    <Box borderRadius='lg' overflow='hidden'
-                                        borderWidth={1.5}
-                                        marginBottom={4}
-                                        className={`w-28 lg:w-36 aspect-[8.5/12] object-cover flex cursor-pointer bg-gray-100`}
-                                        onClick={() => {
-                                            const slug = createUrlSchema([product.shopOptions.city, product.shopOptions.name])
-                                            router.push(`/negozio/${product.shopId}/${slug}`)
-                                        }}
-                                        _active={{
-                                            transform: 'scale(0.98)',
-                                        }}
-                                    >
-                                        <div className='m-auto text-center'>
-                                            <p>
-                                                vai al<br /> negozio
-                                            </p>
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 m-auto">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
-                                            </svg>
-
                                         </div>
+                                    </a>
+                                </Link>
 
-
-                                    </Box>
-                                </div>
 
                             </div>
                         </>
