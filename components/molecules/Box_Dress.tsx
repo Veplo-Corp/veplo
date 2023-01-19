@@ -10,7 +10,7 @@ import { imageKitUrl } from '../utils/imageKitUrl'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 
 
-const Box_Dress: React.FC<{ product: Product; eventHandler: any, toShop: any }> = ({ product, eventHandler, toShop }) => {
+const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }> = ({ product, eventHandler, toShop }) => {
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     const [width, height] = useWindowSize();
     //const [dimensionUrl, setDimensionUrl] = useState('&tr=w-571,h-825')
