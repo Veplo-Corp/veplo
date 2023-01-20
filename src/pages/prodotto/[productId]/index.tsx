@@ -39,6 +39,8 @@ const index: React.FC<{ product: Product, error: string }> = ({product}) => {
     const newUrl = createUrlScheme([product.brand, product.name, category])    
     const navigate = (url:string) => {}
     useEffect(() => {
+        console.log(product);
+        
         if(newUrl){  
             router.push(`/prodotto/${router.query.productId}/${newUrl}`)
         }

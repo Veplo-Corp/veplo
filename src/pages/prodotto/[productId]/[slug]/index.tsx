@@ -122,6 +122,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
     useEffect(() => {
         if (!product) return
+        
         const category = createTextCategory(product.macroCategory, product.microCategory)
         setTextCategory(category)
         const url_slug_correct = createUrlSchema([product.brand, product.name, category])
@@ -313,9 +314,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                 {shopProductsData?.data?.shop.products.map((element: Product) => {
 
                                     return (
-                                        <Link href={`/prodotto/${element.id}/${toProductPage(product)}`}>
+                                        <Link key={element.id} href={`/prodotto/${element.id}/${toProductPage(element)}`}>
                                             <a >
-                                                <div key={element.id} className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
+                                                <div  className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
                                                     <Box borderRadius='lg' overflow='hidden'
                                                         borderWidth={1.5}
                                                         marginBottom={4}
