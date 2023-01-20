@@ -173,9 +173,9 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
             {products && <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
                 {products.map((product) => {
                     return (
-                        <Link href={`/prodotto/${product.id}/${toProductPage(product)}`}>
+                        <Link key={product.id} href={`/prodotto/${product.id}/${toProductPage(product)}`}>
                             <a >
-                                <Box_Dress eventHandler={toProductPageUrl} key={product.id} product={product}
+                                <Box_Dress eventHandler={toProductPageUrl}  product={product}
                                     toShop={() => { }}
                                 ></Box_Dress>
                             </a>
