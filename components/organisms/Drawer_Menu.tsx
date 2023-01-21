@@ -7,6 +7,7 @@ import Verified_Email from '../molecules/Verified_Email'
 import { useRouter } from 'next/router'
 import MobileDetect from 'mobile-detect'
 import { deleteAuthTokenInSessionStorage } from '../utils/deleteAuthTokenSessionStorage'
+import Modal_Help_Customer_Care from './Modal_Help_Customer_Care'
 
 const list = [
     {
@@ -24,13 +25,14 @@ const list = [
     
     {
         title: 'hai bisogno di assistenza?',
-        url: '/shop/assistenza'
+        url: 'assistenza'
     }
 ]
 
 const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: any }> = ({ openDrawerMath, user, onCloseModal }) => {
     const router = useRouter()
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const [isOpenHelpModal, setIsOpenHelpModal] = useState(false)
     useEffect(() => {
         //console.log('openDrawerMath:',openDrawerMath);
 
@@ -111,8 +113,12 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                                 display={'flex'}
                                 className={'cursor-pointer hover:underline'}
                                 onClick={() => {
-                                    router.push(element.url)
-                                    onClose()
+                                    if(element.url === 'assistenza'){
+                                        setIsOpenHelpModal(true)
+                                    } else {
+                                        router.push(element.url)
+                                        onClose()
+                                    }
                                 }}
                             >
                                 <p className='my-auto'>
@@ -138,6 +144,10 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                         </Button>
                 </DrawerFooter>
             </DrawerContent>
+            <Modal_Help_Customer_Care 
+            isOpen={isOpenHelpModal}
+            onClose={()=>{setIsOpenHelpModal(false)}}
+            />
         </Drawer >
     )
 }

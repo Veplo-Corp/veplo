@@ -1,10 +1,14 @@
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { EditIcon } from '@chakra-ui/icons';
+import { Box, FormControl, FormLabel, Switch, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout';
+import Div_input_creation from '../../../../../../components/atoms/Div_input_creation';
 import { Color, COLORS } from '../../../../../../components/mook/colors';
 import Image_Product from '../../../../../../components/organisms/Image_Product';
+import Modal_Edit_Discount from '../../../../../../components/organisms/Modal_Edit_Discount';
 import NoIndexSeo from '../../../../../../components/organisms/NoIndexSeo';
 import PostMeta from '../../../../../../components/organisms/PostMeta';
 import Product_Form from '../../../../../../components/organisms/Product_Form';
@@ -21,6 +25,11 @@ import GET_SHOP_BY_FIREBASE_ID from '../../../../../lib/apollo/queries/getShopBy
 import { setModalTitleAndDescription } from '../../../../../store/reducers/modal_error';
 
 const index = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [isActive, setIsActive] = useState(true);
+
+    const toast = useToast()
+
     const { addToast } = ToastOpen();
     const [editProduct] = useMutation(EDIT_PRODUCT)
     const dispatch = useDispatch();
@@ -30,6 +39,7 @@ const index = () => {
     const [product, setProduct] = useState<Product | undefined>(undefined)
     const [openModalMath, setOpenModalMath] = useState(1);
     const [loading, setLoading] = useState(false)
+    const [loadingHandleDiscount, setLoadingHandleDiscount] = useState(false)
 
     const { productId } = router.query
 
@@ -194,6 +204,40 @@ const index = () => {
         }
     }
 
+    const handleDiscountChange = () => {
+        setLoadingHandleDiscount(true)
+        setTimeout(() => {
+            setIsOpen(false)
+            setLoadingHandleDiscount(false)
+            addToast({
+                position: 'top', title: 'Sconto aggiornato con successo',
+                description:
+                    <table className='w-full font-light'>
+                        <tbody>
+                            <tr>
+                                <th className='text-left'>Prezzo Reale</th>
+                                <td className='text-right'>100€</td>
+                            </tr>
+                            <tr>
+                                <th className='text-left'>Percentuale Sconto</th>
+                                <td className='text-right'>20%</td>
+                            </tr>
+                            <tr>
+                                <th className='text-left'>Prezzo scontato</th>
+                                <td className='text-right'>80€</td>
+                            </tr>
+                        </tbody>
+
+
+                    </table>
+                ,
+                status: 'success', duration: 8000, isClosable: true
+            })
+
+        }, 2000);
+    }
+
+
     if (!product) { return (<></>) }
 
 
@@ -227,24 +271,123 @@ const index = () => {
                                     )
                                 })}
                             </div>
-                            <Product_Form handleSubmitEvent={submitData} defaultValues={{
-                                name: product.name,
-                                price: product.price,
-                                brand: product.brand,
-                                colors: product.colors,
-                                macrocategory: product.macroCategory,
-                                microcategory: product.microCategory,
-                                sizes: product.sizes,
-                                photos: product.photos,
-                                gender: product.gender
-                            }} type={'edit'} disabled={true}
-                                titleText={''}
-                                confirmButtonText={'modifica'}
-                                toParentPhoto={setNewImages}
-                                loading={loading}
-                                backbutton={true}
-                            />
+                            <div className='md:w-1/2 lg:w-5/12'>
+                                <div
+                                    className="mt-4 md:mt-0 px-4 mb-[-25px] lg:px-12 xl:px-20 w-full"
+                                >
+                                    <FormControl
+                                        rounded={10}
+                                        padding={3.5}
+                                        mb={1}
+                                        borderWidth={1}
+                                        borderColor={'gray.200'}
+                                        lineHeight='tight'
+                                        noOfLines={1}
+                                        display='flex'
+                                        justifyContent={'space-between'}
+                                        onChange={() => {
+                                            setIsActive(prevState => {
+                                                return !prevState
+                                            })
+                                        }}
+                                    >
+                                        <FormLabel htmlFor='email-alerts' mb='0'
+                                            fontWeight={'normal'}
+                                        >
+                                            Prodotto attivo
+                                        </FormLabel>
+                                        <Switch
+                                            size={'md'}
+                                            my={'auto'}
+                                            colorScheme='green'
+                                            isChecked={isActive}
+                                        />
+                                    </FormControl>
+                                    <Div_input_creation text='Applica sconto'>
+                                        <Box
+                                            rounded={10}
+                                            padding={3.5}
+                                            mt={1}
+                                            borderWidth={1}
+                                            borderColor={'gray.200'}
+                                            lineHeight='tight'
+                                            noOfLines={1}
+                                            fontSize='sm'
+                                            className='cursor-pointer'
+                                            style={{
+                                                background: 'linear-gradient(0deg, rgba(169,99,224,1) 0%, rgba(6,214,160,1) 100%)'
+                                            }}
+                                            onClick={() => {
+                                                setIsOpen(true)
+                                            }}
+                                        >
+                                            <div
+                                                className={`w-full flex justify-between text-white`}
+                                            >
+                                                <div className='w-1/4 text-start my-auto'>
+                                                    {false ?
+                                                        (<span>
+                                                            Crea sconto
+                                                        </span>)
+                                                        :
+                                                        (
+                                                            <span className='px-2 py-1 bg-white rounded-3xl text-black mr-2'>
+                                                                20%
+                                                            </span>
+
+                                                        )
+                                                    }
+                                                </div>
+
+                                                {true &&
+                                                    <span className='my-auto text-xs'>
+                                                        prezzo scontato: 80,00€
+                                                    </span>
+                                                }
+                                                <div className='w-1/4 text-end my-auto'>
+                                                    <EditIcon
+                                                        w={4} h={4}
+                                                        my={'auto'}
+                                                        aria-hidden="true"
+                                                    />
+                                                </div>
+
+                                            </div>
+                                        </Box>
+                                    </Div_input_creation>
+                                </div>
+
+                                <Product_Form handleSubmitEvent={submitData} defaultValues={{
+                                    name: product.name,
+                                    price: product.price,
+                                    brand: product.brand,
+                                    colors: product.colors,
+                                    macrocategory: product.macroCategory,
+                                    microcategory: product.microCategory,
+                                    sizes: product.sizes,
+                                    photos: product.photos,
+                                    gender: product.gender
+                                }} type={'edit'} disabled={true}
+                                    titleText={''}
+                                    confirmButtonText={'modifica'}
+                                    toParentPhoto={setNewImages}
+                                    loading={loading}
+                                    backbutton={true}
+                                />
+                            </div>
                         </div>
+                        <Modal_Edit_Discount isOpen={isOpen}
+                            onConfirm={() => {
+                                handleDiscountChange()
+                            }}
+                            onClose={
+                                () => {
+                                    setIsOpen(false)
+                                }
+                            }
+                            loading={loadingHandleDiscount}
+
+                        />
                     </>
                 }
             </Desktop_Layout>

@@ -12,6 +12,8 @@ import {
     Button,
     Image,
     Box,
+    TagLabel,
+    Tag,
 } from '@chakra-ui/react'
 import GET_PRODUCTS_FROM_SHOP from '../../src/lib/apollo/queries/geetProductsShop';
 import { ApolloClient, useMutation, useQuery } from '@apollo/client';
@@ -141,11 +143,12 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
                         bg={'gray.100'}
                     >
                         <Tr>
-                            <Th className='hidden md:table-cell' minW={[40]}></Th>
-                            <Th p={[2, 4]}>Nome</Th>
-                            <Th p={[2, 4]} className='hidden lg:table-cell'>Brand</Th>
+                            <Th className='hidden md:table-cell' minW={[20]}></Th>
+                            <Th p={[2, 4]} minW={[30]}>Nome</Th>
+                            <Th p={[2, 4]}>Status</Th>
+                            <Th p={[2, 4]} className='hidden lg:table-cell' >Brand</Th>
                             <Th p={[2, 4]} className='hidden md:table-cell'>Categoria</Th>
-                            <Th px={[0.5, 4]} isNumeric>Prezzo</Th>
+                            <Th px={[0.5, 4]} isNumeric >Prezzo</Th>
                             <Th p={[3, 4]} px={[0.5, 4]} className='flex  w-fit m-auto mr-0'>
                                 <span className='m-auto'>
                                     {/* Azioni */}
@@ -154,7 +157,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
                         </Tr>
                     </Thead>
                     <Tbody >
-                        {data && (productsOnTextSearched.inputText.length > 0 ? productsOnTextSearched.products : data?.shop.products).map((product: any) => {
+                        {data && (productsOnTextSearched.inputText.length > 0 ? productsOnTextSearched.products : data?.shop.products).map((product: Product | any) => {
                             return (
                                 <Tr key={product.id} fontSize={['xs', 'medium']} >
                                     <Td className='hidden md:table-cell'>
@@ -178,6 +181,37 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
                                             {product.name.toUpperCase()}
                                         </span>
                                     </Td>
+                                    <Td p={[2, 4]} /* className='cursor-pointer' */>
+                                        {false ?
+                                            (
+                                                <Tag size={['sm', 'md']} variant='subtle' colorScheme='green'>
+                                                    <TagLabel>
+                                                        <span className='hidden md:flex'>
+                                                            Attivo
+                                                        </span>
+                                                        <span className='flex md:hidden'>
+                                                            OK
+                                                        </span>
+                                                    </TagLabel>
+                                                </Tag>
+                                            )
+                                            :
+                                            (
+                                                <Tag size={['sm', 'md']} variant='subtle' colorScheme='red'
+                                                >
+                                                    <TagLabel>
+                                                        <span className='hidden md:flex'>
+                                                            Terminato
+                                                        </span>
+                                                        <span className='flex md:hidden'>
+                                                            TE
+                                                        </span>
+                                                    </TagLabel>
+                                                </Tag>
+                                            )
+                                        }
+
+                                    </Td>
                                     <Td p={[2, 4]} className='hidden lg:table-cell'>
                                         <span>
                                             {product.brand}
@@ -188,8 +222,15 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
                                             {product.macroCategory} - {product.microCategory}
                                         </span>
                                     </Td>
-                                    <Td px={[0.5, 4]} isNumeric>
-                                        {product.price} €
+                                    <Td px={[0.5, 4]} isNumeric >
+
+                                        <span className={`${product.price ? 'line-through text-gray-500' : ''}`}>
+                                            {product.price.toFixed(2).replace('.', ',')}€
+                                        </span>
+                                        <span className={`${product.price ? '' : ''}`}>
+                                            <br />
+                                            40€
+                                        </span>
                                     </Td>
                                     {/* <Td className='hidden md:table-cell'>
                                     <Button colorScheme={'blue'}>
