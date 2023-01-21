@@ -3,7 +3,7 @@ import { ToastPosition, useToast, UseToastOptions } from "@chakra-ui/react";
 interface toastInput {
     position?: ToastPosition | undefined,
     title: string,
-    description?: string,
+    description?: string | any,
     status: UseToastOptions["status"],
     duration: number
     isClosable: boolean
