@@ -1,5 +1,5 @@
 import { Html, Head, Main, NextScript } from 'next/document'
-import Script from 'next/script';
+import Script from 'next/script'
 
 const iubendaImplementation = `<script type="text/javascript">
 var _iub = _iub || [];
@@ -16,13 +16,14 @@ export default function Document() {
         <link rel="icon" type="image/x-icon" href="/favicon-32x32.png" sizes="32x32" />
         <link rel="icon" type="image/x-icon" href="/android-chrome-192x192.png" sizes="192x192" />
         <link rel="icon" type="image/x-icon" href="/android-chrome-512x512.png" sizes="512x512" />
-        <Script
-          id="show-banner"
-          dangerouslySetInnerHTML={{
-            __html: iubendaImplementation,
-          }}
-        />
+
       </Head>
+      <Script id="show-banner"
+        dangerouslySetInnerHTML={{
+          __html: iubendaImplementation
+        }}
+      >
+      </Script>
       <body>
         <Main />
         <NextScript />
