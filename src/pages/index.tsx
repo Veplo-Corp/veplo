@@ -37,7 +37,7 @@ const Home: NextPage = () => {
         canonicalUrl='https://www.veplo.it'
         title={'Veplo | Abbigliamento & Moda '}
         subtitle={"Scopri i negozi di vestiti per uomo e donna della tua città su Veplo. Cerca tra tutto l'abbigliamento in vendita vicino a te e approfitta delle offerte"}
-        image={''}
+        image={'/android-chrome-192x192.png'}
         description={"Scopri i negozi di vestiti per uomo e donna della tua città su Veplo. Cerca tra tutto l'abbigliamento in vendita vicino a te e approfitta delle offerte"}
       />
       <div className='w-full justify-between mt-16 md:mt-[85px]'>
