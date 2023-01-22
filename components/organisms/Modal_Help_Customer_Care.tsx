@@ -23,13 +23,14 @@ const Modal_Help_Customer_Care: FC<{ isOpen: boolean, onClose: () => void }> = (
                     </div>
                     <div className='w-full flex justify-between mt-4'>
                         <p>Scrivi o chiama:</p>
-                        <Link href="https://wa.me/+393403033922" >
+                        {/* <Link href="https://wa.me/+393403033922" >
                             <a
                                 target="_blank" rel="noopener noreferrer"
                                 className='text-blue-700 underline'
                             >+39 3403033922
                             </a>
-                        </Link>
+                        </Link> */}
+                        <p>+39 3403033922</p>
                     </div>
                 </ModalBody>
 

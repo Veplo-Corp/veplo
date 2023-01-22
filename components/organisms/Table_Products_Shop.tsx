@@ -177,7 +177,14 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
                                     </Td>
 
                                     <Td px={[0.5, 4]} >
-                                        <span >
+                                        <span className='flex md:hidden'>
+                                            {product.name.length < 10 ? 
+                                            product.name.toUpperCase()
+                                            :    
+                                            product.name.toUpperCase().substring(0, 10) + '...'
+                                        }
+                                        </span>
+                                        <span className='hidden md:flex'>
                                             {product.name.toUpperCase()}
                                         </span>
                                     </Td>
