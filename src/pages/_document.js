@@ -13,10 +13,10 @@ export default function Document() {
           'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
           })(window,document,'script','dataLayer','GTM-NC5XZVH');`}}></Script> */}
         {/* mi fa le immagini  grandi in twitter card */}
-        {/* <link rel="icon" type="image/x-icon" href="/favicon-16x16.png" sizes="16x16" />
+        <link rel="icon" type="image/x-icon" href="/favicon-16x16.png" sizes="16x16" />
         <link rel="icon" type="image/x-icon" href="/favicon-32x32.png" sizes="32x32" />
         <link rel="icon" type="image/x-icon" href="/android-chrome-192x192.png" sizes="192x192" />
-        <link rel="icon" type="image/x-icon" href="/android-chrome-512x512.png" sizes="512x512" /> */}
+        <link rel="icon" type="image/x-icon" href="/android-chrome-512x512.png" sizes="512x512" /> 
         <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
         <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async/>
         <script type="text/javascript"
