@@ -16,11 +16,7 @@ export default function Document() {
         <link rel="icon" type="image/x-icon" href="/favicon-32x32.png" sizes="32x32" />
         <link rel="icon" type="image/x-icon" href="/android-chrome-192x192.png" sizes="192x192" />
         <link rel="icon" type="image/x-icon" href="/android-chrome-512x512.png" sizes="512x512" />
-        <script
-          src="//cdn.iubenda.com/cs/iubenda_cs.js"
-          charset="UTF-8"
-          type="text/javascript"
-        />
+        <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async/>
         <script type="text/javascript"
           dangerouslySetInnerHTML={{
             __html: `
