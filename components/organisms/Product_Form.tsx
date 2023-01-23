@@ -129,7 +129,6 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                 rounded={10}
                                 paddingY={6}
                                 type="text"
-                                
                                 {...register("name", { required: true })}
                                 isInvalid={false}
                             />
