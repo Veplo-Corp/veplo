@@ -120,7 +120,7 @@ export async function getStaticProps(ctx: any) {
         category: elementGenderMacrocategory.macrocategory,
         postcode: elementCityCap.postcode,
         products: [],
-        errorLog: e.graphQLErrors[0].name
+        errorLog: e.graphQLErrors[0]?.name || 'errore'
       },
       // notFound: true,
       revalidate: 60 //seconds

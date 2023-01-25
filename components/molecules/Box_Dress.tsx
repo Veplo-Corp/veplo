@@ -26,25 +26,25 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
     }, [product])
 
     useEffect(() => {
-    //   if(width > 1000){
-    //     setDimensionUrl('&tr=w-447,h-660')
-    //   }
+        //   if(width > 1000){
+        //     setDimensionUrl('&tr=w-447,h-660')
+        //   }
     }, [width])
-    
+
 
 
     return (
-        <Box minW='20' /* maxW='350' */ mb={'5'} borderRadius='lg' overflow='hidden' className='cursor-pointer'
+        <Box minW='20' /* maxW='350' */ mb={'5'} borderRadius='lg' overflow='hidden' className='cursor-pointer relative'
             _active={{
                 transform: 'scale(1)', /* 'scale(0.99)' */
             }}>
             {/* <Image fallbackSrc='https://via.placeholder.com/150' onClick={() => eventHandler(product)} src={product.photos[0]} alt={'immagine non disponibile'} /> */}
-            {product?.photos && <LazyLoadImage src={imageKitUrl(urlProduct,447, 660 )}
+            {product?.photos && <LazyLoadImage src={imageKitUrl(urlProduct, 447, 660)}
                 onClick={() => eventHandler(product)}
-                onMouseEnter={()=> {
+                onMouseEnter={() => {
                     seturlProduct(product.photos[1])
                 }}
-                onMouseLeave={()=> {
+                onMouseLeave={() => {
                     seturlProduct(product.photos[0])
                 }}
                 //PlaceholderSrc={PlaceholderImage}
@@ -52,6 +52,23 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                 alt={product.name}
                 className="w-fit"
             />}
+            {product.price.discountPercentage && <Box
+                onClick={() => eventHandler(product)}
+                fontWeight='medium'
+                as='h1'
+                fontSize={['sm', 'xs']}
+                noOfLines={1}
+                
+                background={'green.700'}
+                color={'white'}
+                width={'fit-content'}
+                px={'3'}
+                py={'1'}
+                className='absolute mt-[-45px] right-0'
+            >
+                -{product.price.discountPercentage.toString().replace('.', ',')}%
+                {/* {height} - {width} */}
+            </Box>}
             <Box pb='1' px={'0'}>
                 <Box
                     // mt='1'
@@ -65,41 +82,69 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                 >
                     {toUpperCaseFirstLetter(product.shopOptions.name)}
                 </Box>
-                <Box
-                    onClick={() => eventHandler(product)}
-                    fontWeight='normal'
-                    as='h1'
-                    noOfLines={1}
-                    lineHeight='tight'
-                    fontSize='13px'
-                    className='italic'
-                >
-                    {product.brand}
-                </Box>
-                <Box
-                    onClick={() => eventHandler(product)}
-                    fontWeight='bold'
-                    as='h1'
-                    fontSize='sm'
-                    noOfLines={1}
-                    mt={-1}
-                >
-                    {product.name.toUpperCase()}
-                    {/* {height} - {width} */}
-                </Box>
+                <div className='flex justify-between'>
+                    <div>
+                        <Box
+                            onClick={() => eventHandler(product)}
+                            fontWeight='normal'
+                            as='h1'
+                            noOfLines={1}
+                            lineHeight='tight'
+                            fontSize='13px'
+                            className='italic'
+                        >
+                            {product.brand}
+                        </Box>
+                        <Box
+                            onClick={() => eventHandler(product)}
+                            fontWeight='bold'
+                            as='h1'
+                            fontSize='sm'
+                            noOfLines={1}
+                            mt={-1}
+                        >
+                            {product.name.toUpperCase()}
+                            {/* {height} - {width} */}
+                        </Box>
+                    </div>
+                    {/* <Box
+                        onClick={() => eventHandler(product)}
+                        fontWeight='medium'
+                        as='h1'
+                        fontSize={['sm', 'xs']}
+                        noOfLines={1}
+                        mt={-1}
+                        my={'auto'}
+                        px={'2'}
+                        py={'1'}
+                        background={'green.700'}
+                        color={'white'}
+                        rounded={'3xl'}
+                    >
+                        -{product.price.discountPercentage.toString().replace('.', ',')}%
+                       
+                    </Box> */}
+                </div>
+
                 <div className='flex justify-between mt-2 mr-1'>
                     <Box
                         onClick={() => eventHandler(product)}
-                        fontWeight='bold'
+                        fontWeight={'bold'}
                         as='h4'
-                        fontSize='xs'
-                        color='green.600'
+                        fontSize={['md', 'xs']}
+                        color={'green.600'}
                         lineHeight='none'
                         noOfLines={1}
                         mt={'1'}
                     >
-                        {Number(product.price).toFixed(2).replace('.', ',')} €
+                        <span
+                            className={`${product.price.v2 ? 'text-slate-500 font-normal line-through' : ''} mr-2`}
+                        >
+                            {Number(product.price.v1).toFixed(2).replace('.', ',')} €
+                        </span>
+                        {product.price.v2 && <span className=' text-red-700 font-extrabold'>{product.price.v2}€</span>}
                     </Box>
+
                     <Circle_Color eventHanlder={() => eventHandler(product)} colors={productcolorsCSS} dimension={4} space={1} />
                 </div>
             </Box>

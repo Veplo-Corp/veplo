@@ -122,7 +122,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
     useEffect(() => {
         if (!product) return
-        
+
         const category = createTextCategory(product.macroCategory, product.microCategory)
         setTextCategory(category)
         const url_slug_correct = createUrlSchema([product.brand, product.name, category])
@@ -234,11 +234,22 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                         <Box
                             fontWeight='medium'
                             as='h1'
-                            noOfLines={1}
+                            noOfLines={2}
                             mt='3'
-                            fontSize='medium'
+                            fontSize={['lg', 'xl']}
+                            lineHeight={['4']}
                         >
-                            {product.price.toFixed(2).replace('.', ',')}€
+                            {product.price.v2 && <span className=' text-red-700 font-bold'>{product.price.v2}€<br /></span>}
+
+                            <span
+                                className={`${product.price.v2 ? 'text-slate-500 font-normal text-sm ' : ''} mr-2`}
+                            >
+                                {product.price.v2 && <span>prima era: </span>}<span className={`${product.price.v2 ? 'line-through' : ''}`}>{Number(product.price.v1).toFixed(2).replace('.', ',')} €</span>
+                                {product.price.discountPercentage && <span className='ml-2 text-red-500'>
+                                    -{product.price.discountPercentage.toString().replace('.', ',')}%
+                                </span>}
+                            </span>
+
                         </Box>
                         <Box
                             fontWeight='light'
@@ -316,7 +327,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                     return (
                                         <Link key={element.id} href={`/prodotto/${element.id}/${toProductPage(element)}`}>
                                             <a >
-                                                <div  className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
+                                                <div className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
                                                     <Box borderRadius='lg' overflow='hidden'
                                                         borderWidth={1.5}
                                                         marginBottom={4}

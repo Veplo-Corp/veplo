@@ -114,14 +114,11 @@ const index = () => {
         return photo.file
       })
 
-      // console.log(Photos);
-      // const productProva = Array.from({ length: 100 }, (_, i) => photos[0].file)
-      // console.log(productProva);
-
-
       const Product = {
         name: name,
-        price: priceToDB,
+        price: {
+          v1:priceToDB
+        },
         colors: colorsToDB,
         sizes: sizes,
         macroCategory: macrocategory.name,
@@ -131,16 +128,7 @@ const index = () => {
         photos: Photos
       }
 
-      //!loop to test array of photo
-      // const array = Array.from(Array(100).keys())
-
-      // for (const test of array) {
-      //   const isCreatedProduct = createProduct({ variables: { shopId: user.shopId, options: Product } })
-      //   //* alert to show product creation process OK!
-      //   //upload Images to database
-      //   console.log(isCreatedProduct);
-      // }
-      // return
+      
       const isCreatedProduct = await createProduct({ variables: { shopId: user.shopId, options: Product } })
       //* alert to show product creation process OK!
       //upload Images to database
@@ -148,21 +136,6 @@ const index = () => {
 
       const productId = isCreatedProduct.data.createProduct.id;
       const photosUpdated = isCreatedProduct.data.createProduct.photos
-      // let photoURLForDB = [];
-      // let i = 1;
-      // console.log(photos);
-      // for await (let photo of photos) {
-      //   try {
-      //     //const url = await uploadPhotoFirebase('photo' + i, photo.blob, productId, user.uid)
-      //     const url = await uploadPhotoFirebase(photo.blob, `/${user.uid}/prodotti/${productId}/${'photo' + i}`)
-
-      //     photoURLForDB.push(url)
-      //     i++
-      //   } catch {
-      //     addToast({ position: 'top', title: 'Errore upload immagine', description: "errore durante l'upload dell'immagini", status: 'error', duration: 5000, isClosable: false })
-      //     break;
-      //   }
-      // }
 
 
       const prodoctForGQLCache = {

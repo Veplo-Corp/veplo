@@ -19,7 +19,11 @@ const GET_PRODUCTS_FROM_SHOP = gql`
             ) {
                 id
                 name
-                price
+                price{
+                    v1
+                    v2
+                    discountPercentage
+                }
                 colors
                 sizes
                 macroCategory
@@ -39,6 +43,7 @@ const GET_PRODUCTS_FROM_SHOP = gql`
                     name
                 }
                 gender
+                status
             }
         } 
     }

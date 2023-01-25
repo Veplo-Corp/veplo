@@ -94,7 +94,6 @@ const index = () => {
 
     const deleteProductEvent = async ({ productId, productName, productPhotos }: { productId: string, productName: string, productPhotos: string[] }) => {
         try {
-
             await deleteProduct({ variables: { id: productId } })
             //*delete product's images from firebase
             // let i = 1;
@@ -115,6 +114,8 @@ const index = () => {
         }
     }
 
+    
+
 
 
 
@@ -132,7 +133,7 @@ const index = () => {
                     <Create_Shop_Alert />
                 }
                 {user && !user?.Not_yet_Authenticated_Request && user?.shopId &&
-                    <Table_Products_Shop idShop={user.shopId} deleteProduct={handleDeleteProductModal} />}
+                    <Table_Products_Shop idShop={user.shopId} deleteProduct={handleDeleteProductModal}  />}
                 <Modal_Error_Shop title={'Elimina prodotto'} description={'confermando eliminerai il prodotto dal tuo negozio'} closeText={'annulla'} openModalMath={mathNumber} confirmText={'conferma'} data={productToDeleteData} handleEvent={deleteProductEvent} />
                 {/* <button
                     onClick={handleCache}

@@ -26,7 +26,7 @@ import { setModalTitleAndDescription } from '../../../../../store/reducers/modal
 
 const index = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [isActive, setIsActive] = useState(true);
+    const [isActive, setIsActive] = useState(false);
 
     const toast = useToast()
 
@@ -51,8 +51,6 @@ const index = () => {
         // notifyOnNetworkStatusChange: true,
     });
 
-    console.log(error);
-
 
     //redirect to createShop,whether there is not a Shop
     if (error) {
@@ -74,8 +72,9 @@ const index = () => {
             //router.push('/shop/prodotti/')
             return
         }
-        const product = data.shop.products.filter((product: Product) => product.id === productId)[0]
-
+        const product: Product = data.shop.products.filter((product: Product) => product.id === productId)[0]
+        console.log(product);
+        setIsActive(product.status === 'active')
         setProduct(product)
     }, [data])
 
@@ -107,6 +106,32 @@ const index = () => {
             }
         }
 
+
+
+        setProduct((prevstate: any) => {
+            if (!product?.price.v2 || !product?.price.discountPercentage) {
+                return {
+                    ...prevstate,
+                    price: {
+                        v1: priceToDB,
+                        v2: product?.price.v2,
+                        discountPercentage: product?.price.discountPercentage
+                    }
+                }
+            } else {
+                const v2 = priceToDB > product?.price.v2 ? product?.price.v2 : null;
+                const discountPercentage = v2 ?  Number(((priceToDB - product?.price.v2) / priceToDB * 100).toFixed(2)) : null;
+                return {
+                    ...prevstate,
+                    price: {
+                        v1: priceToDB,
+                        v2: v2,
+                        discountPercentage: discountPercentage
+                    }
+                }
+            }
+        })
+
         let photoURLForDB = [];
         let i = 1;
         for await (let photo of photos) {
@@ -131,10 +156,13 @@ const index = () => {
 
         const options = {
             name: product.name != name ? name : product.name,
-            price: product.price != price ? priceToDB : product.price,
+            price: {
+                v1: product.price != price ? priceToDB : product.price
+            },
             brand: product.brand != brand ? brand : product.brand,
             colors: product.colors != colorsToDB && colorsToDB[0] ? colorsToDB : product.colors,
             sizes: product.sizes != sizes ? sizes : product.sizes,
+            //status: isActive === true ? 'active' : 'not_active'
             //!remove photos 
             //! should use newPhotos: [Upload!] & deletedPhotos: [String!]
             // photos: product.photos != photos ? photoURLForDB : product.photos,
@@ -150,6 +178,9 @@ const index = () => {
                     options
                 }
             })
+
+
+
             const normalizedId = apolloClient.cache.identify({ id: productId, __typename: 'Product' });
             apolloClient.cache.modify({
                 id: normalizedId,
@@ -158,7 +189,11 @@ const index = () => {
                         return options.name.toUpperCase()
                     },
                     price(/* cachedvalue */) {
-                        return options.price
+                        return {
+                            v1: options.price,
+                            v2: priceToDB > product?.price.v2 ? product?.price.v2 : null,
+                            discountPercentage: priceToDB > product?.price.v2 ? Number(((priceToDB - product?.price.v2) / priceToDB * 100).toFixed(2)) : null
+                        }
                     },
                     brand(/* cachedvalue */) {
                         return options.brand
@@ -169,9 +204,9 @@ const index = () => {
                     sizes(/* cachedvalue */) {
                         return options.sizes
                     },
-                    // photos(/* cachedvalue */) {
-                    //     return options.photos
-                    // },
+                    status(/* cachedvalue */) {
+                        return isActive === true ? 'active' : 'not_active'
+                    },
                 },
                 broadcast: false // Include this to prevent automatic query refresh
             });
@@ -204,11 +239,62 @@ const index = () => {
         }
     }
 
-    const handleDiscountChange = () => {
+    const deleteDiscount = async () => {
+        console.log('sconto applicato');
+        try {
+            await editProduct({
+                variables: {
+                    id: productId,
+                    options: {
+                        price: {
+                            v2: null,
+                            discountPercentage: null
+                        }
+                    }
+                }
+            })
+        } catch (e) {
+            console.log(e);
+
+        }
+
+    }
+
+    const handleDiscountChange = async (v1: number, v2: string, discountPercentage: string) => {
+        console.log(discountPercentage);
+        console.log(typeof discountPercentage);
+
         setLoadingHandleDiscount(true)
-        setTimeout(() => {
+        try {
+            await editProduct({
+                variables: {
+                    id: productId,
+                    options: {
+                        price: {
+                            v2: Number(v2.replace(',', '.'))
+                        }
+                    }
+                }
+            })
+
+            const normalizedId = apolloClient.cache.identify({ id: productId, __typename: 'Product' });
+            apolloClient.cache.modify({
+                id: normalizedId,
+                fields: {
+                    price(/* cachedvalue */) {
+                        return {
+                            v2: Number(v2.replace(',', '.')),
+                            discountPercentage: discountPercentage
+                        }
+                    }
+                }
+            });
+
             setIsOpen(false)
             setLoadingHandleDiscount(false)
+
+
+
             addToast({
                 position: 'top', title: 'Sconto aggiornato con successo',
                 description:
@@ -216,15 +302,15 @@ const index = () => {
                         <tbody>
                             <tr>
                                 <th className='text-left'>Prezzo Reale</th>
-                                <td className='text-right'>100€</td>
+                                <td className='text-right'>{v1} €</td>
                             </tr>
                             <tr>
                                 <th className='text-left'>Percentuale Sconto</th>
-                                <td className='text-right'>20%</td>
+                                <td className='text-right'>{discountPercentage}%</td>
                             </tr>
                             <tr>
                                 <th className='text-left'>Prezzo scontato</th>
-                                <td className='text-right'>80€</td>
+                                <td className='text-right'>{v2}€</td>
                             </tr>
                         </tbody>
 
@@ -233,8 +319,14 @@ const index = () => {
                 ,
                 status: 'success', duration: 8000, isClosable: true
             })
+        }
+        catch (e) {
+            console.log(e);
+            addToast({ position: 'top', title: 'Errore durante la creazione sconto', description: "abbiamo riscontrato un errore durante la creazione dello sconto. Riprova più tardi", status: 'error', duration: 5000, isClosable: false })
 
-        }, 2000);
+        }
+
+
     }
 
 
@@ -251,19 +343,6 @@ const index = () => {
                             <div className='w-full sm:w-fit lg:w-4/12 h-fit grid gap-5 grid-cols-2 mt-8'>
                                 {product.photos?.map((image: any, id: number) => {
                                     return (
-                                        // <div key={id} className='flex w-fit md:w-40 h-fit'>
-                                        //     {!image.url ? (
-                                        //         <img
-                                        //             className='rounded'
-                                        //             src={image} alt="" />
-                                        //     ) :
-                                        //         (
-                                        //             <img
-                                        //                 className='rounded'
-                                        //                 src={image.url} alt="" />
-                                        //         )
-                                        //     }
-                                        // </div>
                                         <img
                                             key={image}
                                             className='rounded'
@@ -325,23 +404,23 @@ const index = () => {
                                                 className={`w-full flex justify-between text-white`}
                                             >
                                                 <div className='w-1/4 text-start my-auto'>
-                                                    {false ?
+                                                    {!product.price.v2 && !product.price.discountPercentage ?
                                                         (<span>
                                                             Crea sconto
                                                         </span>)
                                                         :
                                                         (
                                                             <span className='px-2 py-1 bg-white rounded-3xl text-black mr-2'>
-                                                                20%
+                                                                {product?.price?.discountPercentage.toString().replace('.', ',')}%
                                                             </span>
 
                                                         )
                                                     }
                                                 </div>
 
-                                                {true &&
+                                                {product.price.v2 && product.price.discountPercentage &&
                                                     <span className='my-auto text-xs'>
-                                                        prezzo scontato: 80,00€
+                                                        prezzo scontato: {product.price.v2}€
                                                     </span>
                                                 }
                                                 <div className='w-1/4 text-end my-auto'>
@@ -359,7 +438,7 @@ const index = () => {
 
                                 <Product_Form handleSubmitEvent={submitData} defaultValues={{
                                     name: product.name,
-                                    price: product.price,
+                                    price: product.price.v1,
                                     brand: product.brand,
                                     colors: product.colors,
                                     macrocategory: product.macroCategory,
@@ -377,8 +456,10 @@ const index = () => {
                             </div>
                         </div>
                         <Modal_Edit_Discount isOpen={isOpen}
-                            onConfirm={() => {
-                                handleDiscountChange()
+                            deleteDiscount={deleteDiscount}
+                            price={product.price}
+                            onConfirm={(v1: number, v2: string, discountPercentage: string) => {
+                                handleDiscountChange(v1, v2, discountPercentage)
                             }}
                             onClose={
                                 () => {
