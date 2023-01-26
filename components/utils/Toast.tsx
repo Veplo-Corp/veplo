@@ -1,7 +1,7 @@
 import { ToastPosition, useToast, UseToastOptions } from "@chakra-ui/react";
 
-interface toastInput {
-    position?: ToastPosition | undefined,
+export type AddToast = {
+    position?: ToastPosition,
     title: string,
     description?: string | any,
     status: UseToastOptions["status"],
@@ -13,7 +13,7 @@ export const ToastOpen = () => {
     const toast = useToast();
     // types are: "success", "info", "warning", "error"
 
-    const addToast = (newRes: toastInput) => {
+    const addToast = (newRes: AddToast) => {
         return toast({
             position: newRes.position || 'bottom',
             title: newRes.title,
