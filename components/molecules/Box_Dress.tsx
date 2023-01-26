@@ -56,17 +56,15 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                 onClick={() => eventHandler(product)}
                 fontWeight='medium'
                 as='h1'
-                fontSize={['sm', 'xs']}
+                fontSize={['md', 'xs']}
                 noOfLines={1}
-                
                 background={'green.700'}
                 color={'white'}
                 width={'fit-content'}
                 px={'3'}
                 py={'1'}
-                className='absolute mt-[-45px] right-0'
-            >
-                -{product.price.discountPercentage.toString().replace('.', ',')}%
+                className='absolute mt-[-55px] md:mt-[-48px] right-0'>
+                - {product.price.discountPercentage.toString().replace('.', ',')}%
                 {/* {height} - {width} */}
             </Box>}
             <Box pb='1' px={'0'}>
@@ -142,7 +140,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                         >
                             {Number(product.price.v1).toFixed(2).replace('.', ',')} €
                         </span>
-                        {product.price.v2 && <span className=' text-red-700 font-extrabold'>{product.price.v2}€</span>}
+                        {product.price.v2 && <span className=' text-red-700 font-extrabold'>{product.price.v2.toFixed(2).replace('.', ',')} €</span>}
                     </Box>
 
                     <Circle_Color eventHanlder={() => eventHandler(product)} colors={productcolorsCSS} dimension={4} space={1} />
