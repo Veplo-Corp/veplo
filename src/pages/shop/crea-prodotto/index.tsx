@@ -77,10 +77,7 @@ const index = () => {
 
 
 
-  const [createProduct, Element] = useMutation(CREATE_PRODUCT, {
-  }
-
-  );
+  const [createProduct, Element] = useMutation(CREATE_PRODUCT, {});
   const [editProduct, editProductResult] = useMutation(EDIT_PRODUCT);
 
   const [openModalMath, setOpenModalMath] = useState(1);
@@ -114,10 +111,10 @@ const index = () => {
         return photo.file
       })
 
-      const Product = {
+      let Product = {
         name: name,
         price: {
-          v1:priceToDB
+          v1: priceToDB,
         },
         colors: colorsToDB,
         sizes: sizes,
@@ -128,7 +125,7 @@ const index = () => {
         photos: Photos
       }
 
-      
+
       const isCreatedProduct = await createProduct({ variables: { shopId: user.shopId, options: Product } })
       //* alert to show product creation process OK!
       //upload Images to database
@@ -140,6 +137,11 @@ const index = () => {
 
       const prodoctForGQLCache = {
         ...Product,
+        price: {
+          v1: priceToDB,
+          v2: null,
+          discountPercentage: null
+        },
         photos: photosUpdated,
         id: productId,
         shopId: user.shopId,
@@ -155,7 +157,8 @@ const index = () => {
           name: 'name',
           __typename: "Lightshop",
         },
-        __typename: 'Product'
+        __typename: 'Product',
+        status: 'active'
       }
 
       console.log(prodoctForGQLCache);
@@ -215,13 +218,13 @@ const index = () => {
           <Desktop_Layout>
 
             <NoIndexSeo title='Crea prodotto | Veplo' />
-              <div className='flex w-full md:w-8/12 lg:w-1/2  mb-96 m-auto'>
-                <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false}
-                  titleText={'Aggiungi un capo di abbigliamento'}
-                  confirmButtonText={'aggiungi'}
-                  loading={loading}
-                />
-              </div>
+            <div className='flex w-full md:w-8/12 lg:w-1/2  mb-96 m-auto'>
+              <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false}
+                titleText={'Aggiungi un capo di abbigliamento'}
+                confirmButtonText={'aggiungi'}
+                loading={loading}
+              />
+            </div>
 
           </Desktop_Layout>
         </Shop_UID_Required>

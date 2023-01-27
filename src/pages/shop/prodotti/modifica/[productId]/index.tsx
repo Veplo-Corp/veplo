@@ -120,7 +120,7 @@ const index = () => {
                 }
             } else {
                 const v2 = priceToDB > product?.price.v2 ? product?.price.v2 : null;
-                const discountPercentage = v2 ?  Number(((priceToDB - product?.price.v2) / priceToDB * 100).toFixed(2)) : null;
+                const discountPercentage = v2 ? Number(((priceToDB - product?.price.v2) / priceToDB * 100).toFixed(2)) : null;
                 return {
                     ...prevstate,
                     price: {
@@ -157,7 +157,8 @@ const index = () => {
         const options = {
             name: product.name != name ? name : product.name,
             price: {
-                v1: product.price != price ? priceToDB : product.price
+                v1: product.price != price ? priceToDB : product.price,
+                v2: priceToDB > product?.price.v2 ? product?.price.v2 : null
             },
             brand: product.brand != brand ? brand : product.brand,
             colors: product.colors != colorsToDB && colorsToDB[0] ? colorsToDB : product.colors,
@@ -182,6 +183,7 @@ const index = () => {
 
 
             const normalizedId = apolloClient.cache.identify({ id: productId, __typename: 'Product' });
+
             apolloClient.cache.modify({
                 id: normalizedId,
                 fields: {
@@ -190,7 +192,7 @@ const index = () => {
                     },
                     price(/* cachedvalue */) {
                         return {
-                            v1: options.price,
+                            v1: options.price.v1,
                             v2: priceToDB > product?.price.v2 ? product?.price.v2 : null,
                             discountPercentage: priceToDB > product?.price.v2 ? Number(((priceToDB - product?.price.v2) / priceToDB * 100).toFixed(2)) : null
                         }
@@ -271,6 +273,7 @@ const index = () => {
                     id: productId,
                     options: {
                         price: {
+                            v1: product?.price.v1,
                             v2: Number(v2.replace(',', '.'))
                         }
                     }

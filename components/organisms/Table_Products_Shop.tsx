@@ -27,10 +27,11 @@ import addAWSPath from '../utils/add_path_aws';
 import { imageKitUrl } from '../utils/imageKitUrl';
 import Input_Search_Item from '../atoms/Input_Search_Item'
 import Product_Status_Popover from '../molecules/Product_Status_Popover';
+import EDIT_STATUS_PRODUCT from '../../src/lib/apollo/mutations/editStatusProduct';
 
 // const Table_Products_Shop: React.FC<{ idShop: string, deleteProduct: any }> = ({ idShop, deleteProduct }) => {
 
-const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any,}> = ({ idShop, deleteProduct }) => {
+const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ idShop, deleteProduct }) => {
     const router = useRouter()
     //const [products, SetProducts] = useState<Product[] | []>([])
     const [productsOnTextSearched, setProductsOnTextSearched] = useState<{ inputText: string, products: Product[] }>({
@@ -39,6 +40,38 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any,}> = ({ id
     })
     const apolloClient = initApollo();
     const [products, setProducts] = useState<Product[]>([])
+    const [editStatus] = useMutation(EDIT_STATUS_PRODUCT, {
+        update(cache, el, error) {
+            console.log(error.variables);
+
+            console.log(cache);
+            console.log(el.data);
+
+
+            const deleteId = el.data
+            console.log(deleteId.deleteProduct);
+            const { shop } = cache.readQuery<any>({
+                query: GET_PRODUCTS_FROM_SHOP,
+                variables: {
+                    id: idShop, limit: 100, offset: 0  //* mettere idShop,
+                },
+            });
+            console.log(cache.identify({ id: error.variables?.id, __typename: 'Product' }));
+            const ProductCacheId = cache.identify({ id: error.variables?.id, __typename: 'Product' })
+            console.log(shop);
+            apolloClient.cache.modify({
+                id: ProductCacheId, //productId
+                fields: {
+                    status(/* cachedvalue */) {
+                        return error.variables?.status //newStatus
+                    }
+                },
+                broadcast: false // Include this to prevent automatic query refresh
+            });
+
+        }
+    })
+
 
     const { loading, error, data } = useQuery(GET_PRODUCTS_FROM_SHOP, {
         fetchPolicy: 'cache-first',
@@ -47,7 +80,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any,}> = ({ id
         // notifyOnNetworkStatusChange: true,
     });
 
-    
+
 
     //redirect to createShop,whether there is not a Shop
     if (error) {
@@ -56,37 +89,12 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any,}> = ({ id
 
 
 
-    useEffect(() => {        
-      if(!data?.shop.products)return
-      setProducts(data?.shop.products)
-    }, [data])
-    
-    const handleChangeStatus = (DBstatus:string,  productId : string) => {
-        console.log(DBstatus,productId);
-        const normalizedId = apolloClient.cache.identify({ id: productId, __typename: 'Product' });
-        console.log(normalizedId);
-        apolloClient.cache.modify({
-            id: normalizedId,
-            fields: {
-                status(/* cachedvalue */) {
-                    return DBstatus
-                }
-            },
-            broadcast: false // Include this to prevent automatic query refresh
-        }); 
-        setProducts((prevstate:any) => {
-            const newProducts = prevstate.map((product: Product) => {
-                return{
-                    ...product,
-                    status: product.id === productId ? DBstatus : product.status
-                }
-            })
-            
-            return [
-                ...newProducts
-            ]
-            
-        })
+    const handleChangeStatus = async (DBstatus: string, productId: string) => {
+        try {
+            await editStatus({ variables: { id: productId, status: DBstatus } })
+        } catch (e) {
+            console.log(e);
+        }
     }
 
 
@@ -145,7 +153,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any,}> = ({ id
 
     return (
         <div>
-            
+
             <div className='md:flex md:justify-between'>
                 <Button
                     mb={[3, 4]}
@@ -198,7 +206,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any,}> = ({ id
                         </Tr>
                     </Thead>
                     <Tbody >
-                        {products && (productsOnTextSearched.inputText.length > 0 ? productsOnTextSearched.products : products).map((product: Product | any) => {
+                        {data?.shop.products && (productsOnTextSearched.inputText.length > 0 ? productsOnTextSearched.products : data?.shop.products).map((product: Product | any) => {
                             return (
                                 <Tr key={product.id} fontSize={['xs', 'medium']} >
                                     <Td className='hidden md:table-cell'>

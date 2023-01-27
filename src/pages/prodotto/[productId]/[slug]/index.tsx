@@ -339,6 +339,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                     <Box borderRadius='lg' overflow='hidden'
                                                         borderWidth={0.5}
                                                         className={`w-42`}/*  aspect-[8.5/12] */
+                                                        _active={{
+                                                            transform: 'scale(0.98)',
+                                                        }}
                                                     >
                                                         <LazyLoadImage
                                                             src={
@@ -346,8 +349,8 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                             }//placeholderSrc={'/static/grayScreen.png'}
                                                             effect="blur"
                                                             alt={element.name}
-                                                            
-                                                            
+
+
                                                             className=' cursor-pointer hover:scale-105  object-cover'
                                                         />
                                                         <Box
@@ -369,14 +372,14 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                             lineHeight='none'
                                                             noOfLines={1}
                                                             marginX={'2'}
-                                                            
+
                                                         >
                                                             <span
-                                                                className={`${product.price.v2 ? 'text-slate-500 font-normal line-through' : ''}mr-2`}
+                                                                className={`${product.price.v2 ? 'text-slate-500 font-normal line-through text-[11px]' : ''}`}
                                                             >
                                                                 {Number(product.price.v1).toFixed(2).replace('.', ',')} €
                                                             </span>
-                                                            {product.price.v2 && <span className=' text-red-700 font-extrabold'>{product.price.v2.toFixed(2).replace('.', ',')} €</span>}
+                                                            {product.price.v2 && <span className=' text-red-700 font-extrabold ml-1'>{product.price.v2.toFixed(2).replace('.', ',')} €</span>}
                                                         </Box>
                                                         <div className='text-right flex float-right my-2 mx-2'>
                                                             <Circle_Color colors={productcolorsCSS} dimension={4} space={1} />
@@ -389,13 +392,13 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                     )
                                 })}
                                 <Link href={`/negozio/${product.shopId}/${createUrlSchema([product.shopOptions.city, product.shopOptions.name])}`}
-                                className={`flex gap-4 w-36 h-full`}
+                                    className={`flex gap-4 w-36 h-full`}
                                 >
                                     <a className='my-auto'>
                                         <div >
                                             <Box borderRadius='lg' overflow='hidden'
                                                 borderWidth={0.5}
-                                               
+
                                                 paddingY={'10'}
                                                 className={`w-36 h-full flex cursor-pointer bg-gray-50`}
                                                 // onClick={() => {

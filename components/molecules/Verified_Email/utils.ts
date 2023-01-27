@@ -20,7 +20,6 @@ export const sendEmailVerification = (response: any) => {
             status: 'error',
             duration: 5000,
             isClosable: true
-
         }
     }
     return <AddToast>{
