@@ -28,10 +28,13 @@ import { imageKitUrl } from '../utils/imageKitUrl';
 import Input_Search_Item from '../atoms/Input_Search_Item'
 import Product_Status_Popover from '../molecules/Product_Status_Popover';
 import EDIT_STATUS_PRODUCT from '../../src/lib/apollo/mutations/editStatusProduct';
+import { ToastOpen } from '../utils/Toast';
 
 // const Table_Products_Shop: React.FC<{ idShop: string, deleteProduct: any }> = ({ idShop, deleteProduct }) => {
 
 const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ idShop, deleteProduct }) => {
+    const { addToast } = ToastOpen();
+
     const router = useRouter()
     //const [products, SetProducts] = useState<Product[] | []>([])
     const [productsOnTextSearched, setProductsOnTextSearched] = useState<{ inputText: string, products: Product[] }>({
@@ -39,14 +42,8 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
         products: []
     })
     const apolloClient = initApollo();
-    const [products, setProducts] = useState<Product[]>([])
-    const [editStatus] = useMutation(EDIT_STATUS_PRODUCT, {
-        update(cache, el, error) {
-            console.log(error.variables);
-
-            console.log(cache);
-            console.log(el.data);
-
+    const [editStatus, editStatusResponse] = useMutation(EDIT_STATUS_PRODUCT, {
+        update(cache, el, query) {
 
             const deleteId = el.data
             console.log(deleteId.deleteProduct);
@@ -56,14 +53,14 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                     id: idShop, limit: 100, offset: 0  //* mettere idShop,
                 },
             });
-            console.log(cache.identify({ id: error.variables?.id, __typename: 'Product' }));
-            const ProductCacheId = cache.identify({ id: error.variables?.id, __typename: 'Product' })
+            console.log(cache.identify({ id: query.variables?.id, __typename: 'Product' }));
+            const ProductCacheId = cache.identify({ id: query.variables?.id, __typename: 'Product' })
             console.log(shop);
             apolloClient.cache.modify({
                 id: ProductCacheId, //productId
                 fields: {
                     status(/* cachedvalue */) {
-                        return error.variables?.status //newStatus
+                        return query.variables?.status //newStatus
                     }
                 },
                 broadcast: false // Include this to prevent automatic query refresh
@@ -71,6 +68,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
 
         }
     })
+
 
 
     const { loading, error, data } = useQuery(GET_PRODUCTS_FROM_SHOP, {
@@ -93,7 +91,14 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
         try {
             await editStatus({ variables: { id: productId, status: DBstatus } })
         } catch (e) {
-            console.log(e);
+            addToast({
+                position: 'top',
+                title: 'Errore durante cambio status',
+                description: 'Ci dispiace, riprova più tardi',
+                status: 'error',
+                duration: 5000,
+                isClosable: true
+            })
         }
     }
 
@@ -110,7 +115,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
     const textSearchProducts = (inputSearch: string) => {
         console.log(inputSearch);
 
-        const productsFiltered = products
+        const productsFiltered = data?.shop.products
             .filter((product: Product) =>
                 product.name
                     .toLowerCase()

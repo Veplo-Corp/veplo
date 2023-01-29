@@ -148,16 +148,22 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
 
 
+
+        setProductcolorsCSS(getColorsCSS(product))
+
+
+
+    }, [product])
+
+
+    const getColorsCSS = ((product: Product) => {
         let colorsCSS = [];
         for (let i = 0; i < product.colors.length; i++) {
             const colorCSS = colors.current.filter(color => color.name === product.colors[i])[0].cssColor
             colorsCSS.push(colorCSS)
         }
-        setProductcolorsCSS(colorsCSS)
-
-
-
-    }, [product])
+        return colorsCSS
+    })
 
 
     //!handle error case
@@ -338,7 +344,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                 <div className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
                                                     <Box borderRadius='lg' overflow='hidden'
                                                         borderWidth={0.5}
-                                                        className={`w-42`}/*  aspect-[8.5/12] */
+                                                        className={`w-36`}/*  aspect-[8.5/12] */
                                                         _active={{
                                                             transform: 'scale(0.98)',
                                                         }}
@@ -361,7 +367,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                             marginX={'2'}
                                                             mt={'1'}
                                                         >
-                                                            {product.name.toUpperCase()}
+                                                            {element.name.toUpperCase()}
                                                             {/* {height} - {width} */}
                                                         </Box>
                                                         <Box
@@ -375,14 +381,14 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
                                                         >
                                                             <span
-                                                                className={`${product.price.v2 ? 'text-slate-500 font-normal line-through text-[11px]' : ''}`}
+                                                                className={`${element.price.v2 ? 'text-slate-500 font-normal line-through text-[11px]' : ''}`}
                                                             >
-                                                                {Number(product.price.v1).toFixed(2).replace('.', ',')} €
+                                                                {Number(element.price.v1).toFixed(2).replace('.', ',')} €
                                                             </span>
-                                                            {product.price.v2 && <span className=' text-red-700 font-extrabold ml-1'>{product.price.v2.toFixed(2).replace('.', ',')} €</span>}
+                                                            {element.price.v2 && <span className=' text-red-700 font-extrabold ml-1'>{element.price.v2.toFixed(2).replace('.', ',')} €</span>}
                                                         </Box>
                                                         <div className='text-right flex float-right my-2 mx-2'>
-                                                            <Circle_Color colors={productcolorsCSS} dimension={4} space={1} />
+                                                            <Circle_Color colors={getColorsCSS(element)} dimension={4} space={1} />
                                                         </div>
                                                     </Box>
 
