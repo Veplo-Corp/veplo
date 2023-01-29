@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { CheckIcon, DownloadIcon } from '@chakra-ui/icons'
 import { Box, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
@@ -77,10 +77,7 @@ const index = () => {
 
 
 
-  const [createProduct, Element] = useMutation(CREATE_PRODUCT, {
-  }
-
-  );
+  const [createProduct, Element] = useMutation(CREATE_PRODUCT, {});
   const [editProduct, editProductResult] = useMutation(EDIT_PRODUCT);
 
   const [openModalMath, setOpenModalMath] = useState(1);
@@ -114,14 +111,11 @@ const index = () => {
         return photo.file
       })
 
-      // console.log(Photos);
-      // const productProva = Array.from({ length: 100 }, (_, i) => photos[0].file)
-      // console.log(productProva);
-
-
-      const Product = {
+      let Product = {
         name: name,
-        price: priceToDB,
+        price: {
+          v1: priceToDB,
+        },
         colors: colorsToDB,
         sizes: sizes,
         macroCategory: macrocategory.name,
@@ -131,16 +125,7 @@ const index = () => {
         photos: Photos
       }
 
-      //!loop to test array of photo
-      // const array = Array.from(Array(100).keys())
 
-      // for (const test of array) {
-      //   const isCreatedProduct = createProduct({ variables: { shopId: user.shopId, options: Product } })
-      //   //* alert to show product creation process OK!
-      //   //upload Images to database
-      //   console.log(isCreatedProduct);
-      // }
-      // return
       const isCreatedProduct = await createProduct({ variables: { shopId: user.shopId, options: Product } })
       //* alert to show product creation process OK!
       //upload Images to database
@@ -148,25 +133,15 @@ const index = () => {
 
       const productId = isCreatedProduct.data.createProduct.id;
       const photosUpdated = isCreatedProduct.data.createProduct.photos
-      // let photoURLForDB = [];
-      // let i = 1;
-      // console.log(photos);
-      // for await (let photo of photos) {
-      //   try {
-      //     //const url = await uploadPhotoFirebase('photo' + i, photo.blob, productId, user.uid)
-      //     const url = await uploadPhotoFirebase(photo.blob, `/${user.uid}/prodotti/${productId}/${'photo' + i}`)
-
-      //     photoURLForDB.push(url)
-      //     i++
-      //   } catch {
-      //     addToast({ position: 'top', title: 'Errore upload immagine', description: "errore durante l'upload dell'immagini", status: 'error', duration: 5000, isClosable: false })
-      //     break;
-      //   }
-      // }
 
 
       const prodoctForGQLCache = {
         ...Product,
+        price: {
+          v1: priceToDB,
+          v2: null,
+          discountPercentage: null
+        },
         photos: photosUpdated,
         id: productId,
         shopId: user.shopId,
@@ -182,7 +157,8 @@ const index = () => {
           name: 'name',
           __typename: "Lightshop",
         },
-        __typename: 'Product'
+        __typename: 'Product',
+        status: 'active'
       }
 
       console.log(prodoctForGQLCache);
@@ -242,13 +218,13 @@ const index = () => {
           <Desktop_Layout>
 
             <NoIndexSeo title='Crea prodotto | Veplo' />
-              <div className='flex w-full md:w-8/12 lg:w-1/2  mb-96 m-auto'>
-                <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false}
-                  titleText={'Aggiungi un capo di abbigliamento'}
-                  confirmButtonText={'aggiungi'}
-                  loading={loading}
-                />
-              </div>
+            <div className='flex w-full md:w-8/12 lg:w-1/2  mb-96 m-auto'>
+              <Product_Form handleSubmitEvent={submitData} defaultValues={{ photos: [] }} disabled={false}
+                titleText={'Aggiungi un capo di abbigliamento'}
+                confirmButtonText={'aggiungi'}
+                loading={loading}
+              />
+            </div>
 
           </Desktop_Layout>
         </Shop_UID_Required>

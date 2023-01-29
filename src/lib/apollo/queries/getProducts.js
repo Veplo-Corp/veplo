@@ -15,7 +15,11 @@ const GET_PRODUCTS = gql`
         ){
             id
             name
-            price
+            price{
+                v1
+                v2
+                discountPercentage
+            }
             colors
             sizes
             macroCategory

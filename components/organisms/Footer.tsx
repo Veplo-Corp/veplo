@@ -42,8 +42,16 @@ const Footer = () => {
                         <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">Informative</h2>
                         <ul className="text-gray-600 ">
                             <li className="mb-4">
-                                <a href="#" className="hover:underline">Privacy e cookie</a>
+                                <a target="_blank" href="https://www.iubenda.com/privacy-policy/62612516" className="hover:underline">Privacy e Cookie</a>
+                                {/* <a href="https://www.iubenda.com/privacy-policy/62612516" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe " title="Privacy Policy ">Privacy Policy</a> */}
+                                <script type="text/javascript"
+                                dangerouslySetInnerHTML={{
+                                    __html:
+                                    `(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src="https://cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);`
+                                }}
+                                ></script>
                             </li>
+                            
                             <li className="mb-4">
                                 <a href="#" className="hover:underline">Termini &amp; Condizioni</a>
                             </li>
@@ -52,6 +60,7 @@ const Footer = () => {
                             </li>
                         </ul>
                     </div>
+                    
                 </div>
             </div>
             <hr className="my-6 border-gray-200 sm:mx-auto  lg:my-8" />
@@ -69,7 +78,6 @@ const Footer = () => {
                             <span className="sr-only">Instagram page</span>
                         </a>
                     </Link>
-
                 </div>
             </div>
         </footer>

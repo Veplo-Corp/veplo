@@ -1,7 +1,11 @@
 export interface Product {
     id: string,
     name: string,
-    price: number,
+    price: {
+        v1: number,
+        v2: number,
+        discountPercentage: number
+    },
     colors: any[],
     sizes: string[],
     macroCategory: string,
@@ -21,4 +25,5 @@ export interface Product {
         name: string,
     }
     description?: string,
+    status:string
 }

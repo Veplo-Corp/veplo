@@ -15,7 +15,7 @@ import DELETE_PRODUCT from '../../../lib/apollo/mutations/deleteProduct';
 import GET_PRODUCTS_FROM_SHOP from '../../../lib/apollo/queries/geetProductsShop';
 import GET_SHOP_BY_FIREBASE_ID from '../../../lib/apollo/queries/getShopByFirebaseId';
 import GET_SINGLE_PRODUCT from '../../../lib/apollo/queries/getSingleProduct';
-import Verified_Email from '../../../../components/molecules/Verified_Email';
+import Verified_Email from '../../../../components/molecules/Verified_Email/Verified_Email';
 import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required';
 import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 import { Product } from '../../../interfaces/product.interface';
@@ -94,7 +94,6 @@ const index = () => {
 
     const deleteProductEvent = async ({ productId, productName, productPhotos }: { productId: string, productName: string, productPhotos: string[] }) => {
         try {
-
             await deleteProduct({ variables: { id: productId } })
             //*delete product's images from firebase
             // let i = 1;
@@ -115,6 +114,8 @@ const index = () => {
         }
     }
 
+    
+
 
 
 
@@ -132,7 +133,7 @@ const index = () => {
                     <Create_Shop_Alert />
                 }
                 {user && !user?.Not_yet_Authenticated_Request && user?.shopId &&
-                    <Table_Products_Shop idShop={user.shopId} deleteProduct={handleDeleteProductModal} />}
+                    <Table_Products_Shop idShop={user.shopId} deleteProduct={handleDeleteProductModal}  />}
                 <Modal_Error_Shop title={'Elimina prodotto'} description={'confermando eliminerai il prodotto dal tuo negozio'} closeText={'annulla'} openModalMath={mathNumber} confirmText={'conferma'} data={productToDeleteData} handleEvent={deleteProductEvent} />
                 {/* <button
                     onClick={handleCache}

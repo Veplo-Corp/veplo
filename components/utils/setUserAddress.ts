@@ -3,6 +3,7 @@ import { setAddress } from '../../src/store/reducers/address_user';
 import { Mapbox_Result } from './../../src/interfaces/mapbox_result.interface';
 
 const setUserAddress = async (element: any, type: string) => {
+    
     let mapbox_result: Mapbox_Result = {
         placeType: element.place_type[0],
         // longitude: undefined,
@@ -14,12 +15,17 @@ const setUserAddress = async (element: any, type: string) => {
         streetNumber: undefined
     }
 
+    
+
     if (mapbox_result.placeType === 'address') {
+        
         mapbox_result.location = {
             coordinates: element.geometry.coordinates,
             type: element.geometry.type
         }
+        
         mapbox_result.postcode = element.context[0].text_it;
+        
         if (element.context[1].id.split('.')[0] === 'place') {
             mapbox_result.city = element.context[1].text_it;
         } else {

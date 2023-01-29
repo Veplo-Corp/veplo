@@ -122,7 +122,6 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
     useEffect(() => {
         if (!product) return
-        
         const category = createTextCategory(product.macroCategory, product.microCategory)
         setTextCategory(category)
         const url_slug_correct = createUrlSchema([product.brand, product.name, category])
@@ -133,24 +132,38 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                 undefined, { shallow: true }
             )
         }
+
         const fetchData = async () => {
+            console.log(product.shopId);
+
             await getFilterProduct({
                 variables: { id: product.shopId, limit: 5, offset: 0 },
             })
         }
 
-        fetchData()
+        setTimeout(() => {
+            fetchData()
+        }, 100);
 
+
+
+
+
+        setProductcolorsCSS(getColorsCSS(product))
+
+
+
+    }, [product])
+
+
+    const getColorsCSS = ((product: Product) => {
         let colorsCSS = [];
         for (let i = 0; i < product.colors.length; i++) {
             const colorCSS = colors.current.filter(color => color.name === product.colors[i])[0].cssColor
             colorsCSS.push(colorCSS)
         }
-        setProductcolorsCSS(colorsCSS)
-
-
-
-    }, [])
+        return colorsCSS
+    })
 
 
     //!handle error case
@@ -187,6 +200,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     return (
         <>
             {product && <Desktop_Layout>
+
                 <PostMeta
                     canonicalUrl={'https://www.veplo.it' + router.asPath}
                     //riverdere length description 150 to 160
@@ -234,11 +248,23 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                         <Box
                             fontWeight='medium'
                             as='h1'
-                            noOfLines={1}
+                            noOfLines={2}
                             mt='3'
-                            fontSize='medium'
+                            fontSize={['lg', 'xl']}
+                            lineHeight={['4']}
                         >
-                            {product.price.toFixed(2).replace('.', ',')}€
+                            {product.price.v2 && <span className=' text-red-700 font-bold'>{product.price.v2.toFixed(2).replace('.', ',')} €<br /></span>}
+
+                            <span
+                                className={`${product.price.v2 ? 'text-slate-500 font-normal text-sm ' : ''} mr-2`}
+                            >
+                                {product.price.v2 && <span>prima era: </span>}<span className={`${product.price.v2 ? 'line-through' : ''}`}>{product.price.v1.toFixed(2).replace('.', ',')} €</span>
+                                {product.price.discountPercentage &&
+                                    <span className='ml-2 text-red-500'>
+                                        -{product.price.discountPercentage.toString().replace('.', ',')}%
+                                    </span>}
+                            </span>
+
                         </Box>
                         <Box
                             fontWeight='light'
@@ -312,16 +338,16 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
                             <div className="overflow-x-scroll flex gap-4 ">
                                 {shopProductsData?.data?.shop.products.map((element: Product) => {
-
                                     return (
                                         <Link key={element.id} href={`/prodotto/${element.id}/${toProductPage(element)}`}>
                                             <a >
-                                                <div  className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
+                                                <div className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
                                                     <Box borderRadius='lg' overflow='hidden'
-                                                        borderWidth={1.5}
-                                                        marginBottom={4}
-                                                        className={`w-28 lg:w-36 aspect-[8.5/12] object-cover`}
-                                                    // onClick={() => toProduct(element)}
+                                                        borderWidth={0.5}
+                                                        className={`w-36`}/*  aspect-[8.5/12] */
+                                                        _active={{
+                                                            transform: 'scale(0.98)',
+                                                        }}
                                                     >
                                                         <LazyLoadImage
                                                             src={
@@ -329,21 +355,58 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                             }//placeholderSrc={'/static/grayScreen.png'}
                                                             effect="blur"
                                                             alt={element.name}
-                                                            className=' cursor-pointer hover:scale-105 w-full h-full object-cover'
+
+
+                                                            className=' cursor-pointer hover:scale-105  object-cover'
                                                         />
+                                                        <Box
+                                                            fontWeight='medium'
+                                                            as='h1'
+                                                            fontSize={['xs', 'sm']}
+                                                            noOfLines={1}
+                                                            marginX={'2'}
+                                                            mt={'1'}
+                                                        >
+                                                            {element.name.toUpperCase()}
+                                                            {/* {height} - {width} */}
+                                                        </Box>
+                                                        <Box
+                                                            fontWeight={'bold'}
+                                                            as='h4'
+                                                            fontSize={'xs'}
+                                                            color={'green.600'}
+                                                            lineHeight='none'
+                                                            noOfLines={1}
+                                                            marginX={'2'}
+
+                                                        >
+                                                            <span
+                                                                className={`${element.price.v2 ? 'text-slate-500 font-normal line-through text-[11px]' : ''}`}
+                                                            >
+                                                                {Number(element.price.v1).toFixed(2).replace('.', ',')} €
+                                                            </span>
+                                                            {element.price.v2 && <span className=' text-red-700 font-extrabold ml-1'>{element.price.v2.toFixed(2).replace('.', ',')} €</span>}
+                                                        </Box>
+                                                        <div className='text-right flex float-right my-2 mx-2'>
+                                                            <Circle_Color colors={getColorsCSS(element)} dimension={4} space={1} />
+                                                        </div>
                                                     </Box>
+
                                                 </div>
                                             </a>
                                         </Link>
                                     )
                                 })}
-                                <Link href={`/negozio/${product.shopId}/${createUrlSchema([product.shopOptions.city, product.shopOptions.name])}`}>
-                                    <a >
-                                        <div className={`flex gap-4 w-fit`} >
+                                <Link href={`/negozio/${product.shopId}/${createUrlSchema([product.shopOptions.city, product.shopOptions.name])}`}
+                                    className={`flex gap-4 w-36 h-full`}
+                                >
+                                    <a className='my-auto'>
+                                        <div >
                                             <Box borderRadius='lg' overflow='hidden'
-                                                borderWidth={1.5}
-                                                marginBottom={4}
-                                                className={`w-28 lg:w-36 aspect-[8.5/12] object-cover flex cursor-pointer bg-gray-100`}
+                                                borderWidth={0.5}
+
+                                                paddingY={'10'}
+                                                className={`w-36 h-full flex cursor-pointer bg-gray-50`}
                                                 // onClick={() => {
                                                 //     const slug = createUrlSchema([product.shopOptions.city, product.shopOptions.name])
                                                 //     router.push(`/negozio/${product.shopId}/${slug}`)
@@ -353,7 +416,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                 }}
                                             >
                                                 <div className='m-auto text-center'>
-                                                    <p>
+                                                    <p className='mb-4'>
                                                         vai al<br /> negozio
                                                     </p>
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 m-auto">

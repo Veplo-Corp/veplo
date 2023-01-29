@@ -26,24 +26,59 @@ import Loading from '../molecules/Loading';
 import addAWSPath from '../utils/add_path_aws';
 import { imageKitUrl } from '../utils/imageKitUrl';
 import Input_Search_Item from '../atoms/Input_Search_Item'
+import Product_Status_Popover from '../molecules/Product_Status_Popover';
+import EDIT_STATUS_PRODUCT from '../../src/lib/apollo/mutations/editStatusProduct';
+import { ToastOpen } from '../utils/Toast';
 
 // const Table_Products_Shop: React.FC<{ idShop: string, deleteProduct: any }> = ({ idShop, deleteProduct }) => {
 
-const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ idShop, deleteProduct }) => {
+const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ idShop, deleteProduct }) => {
+    const { addToast } = ToastOpen();
+
     const router = useRouter()
     //const [products, SetProducts] = useState<Product[] | []>([])
     const [productsOnTextSearched, setProductsOnTextSearched] = useState<{ inputText: string, products: Product[] }>({
         inputText: '',
         products: []
     })
+    const apolloClient = initApollo();
+    const [editStatus, editStatusResponse] = useMutation(EDIT_STATUS_PRODUCT, {
+        update(cache, el, query) {
 
-    const { loading, error, data, refetch } = useQuery(GET_PRODUCTS_FROM_SHOP, {
+            const deleteId = el.data
+            console.log(deleteId.deleteProduct);
+            const { shop } = cache.readQuery<any>({
+                query: GET_PRODUCTS_FROM_SHOP,
+                variables: {
+                    id: idShop, limit: 100, offset: 0  //* mettere idShop,
+                },
+            });
+            console.log(cache.identify({ id: query.variables?.id, __typename: 'Product' }));
+            const ProductCacheId = cache.identify({ id: query.variables?.id, __typename: 'Product' })
+            console.log(shop);
+            apolloClient.cache.modify({
+                id: ProductCacheId, //productId
+                fields: {
+                    status(/* cachedvalue */) {
+                        return query.variables?.status //newStatus
+                    }
+                },
+                broadcast: false // Include this to prevent automatic query refresh
+            });
+
+        }
+    })
+
+
+
+    const { loading, error, data } = useQuery(GET_PRODUCTS_FROM_SHOP, {
         fetchPolicy: 'cache-first',
         nextFetchPolicy: 'cache-first',
         variables: { id: idShop, limit: 100, offset: 0 },
-        // pollInterval: 500,
         // notifyOnNetworkStatusChange: true,
     });
+
+
 
     //redirect to createShop,whether there is not a Shop
     if (error) {
@@ -52,7 +87,20 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
 
 
 
-
+    const handleChangeStatus = async (DBstatus: string, productId: string) => {
+        try {
+            await editStatus({ variables: { id: productId, status: DBstatus } })
+        } catch (e) {
+            addToast({
+                position: 'top',
+                title: 'Errore durante cambio status',
+                description: 'Ci dispiace, riprova più tardi',
+                status: 'error',
+                duration: 5000,
+                isClosable: true
+            })
+        }
+    }
 
 
     const handleButtonDelete = async (productId: string, name: string, photos: string[]) => {
@@ -67,7 +115,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
     const textSearchProducts = (inputSearch: string) => {
         console.log(inputSearch);
 
-        const products = data?.shop.products
+        const productsFiltered = data?.shop.products
             .filter((product: Product) =>
                 product.name
                     .toLowerCase()
@@ -79,10 +127,10 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
                     .replace(/\s+/g, '').includes(inputSearch.toLowerCase()
                         .replace(/\s+/g, ''))
             )
-        console.log(products);
+        console.log(productsFiltered);
         setProductsOnTextSearched({
             inputText: inputSearch,
-            products: products
+            products: productsFiltered
         })
     }
 
@@ -91,6 +139,11 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
             inputText: '',
             products: []
         })
+    }
+
+    const onChangeStatus = (DBstatus: string, productId: string) => {
+        handleChangeStatus(DBstatus, productId)
+
     }
 
 
@@ -105,6 +158,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
 
     return (
         <div>
+
             <div className='md:flex md:justify-between'>
                 <Button
                     mb={[3, 4]}
@@ -157,7 +211,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
                         </Tr>
                     </Thead>
                     <Tbody >
-                        {data && (productsOnTextSearched.inputText.length > 0 ? productsOnTextSearched.products : data?.shop.products).map((product: Product | any) => {
+                        {data?.shop.products && (productsOnTextSearched.inputText.length > 0 ? productsOnTextSearched.products : data?.shop.products).map((product: Product | any) => {
                             return (
                                 <Tr key={product.id} fontSize={['xs', 'medium']} >
                                     <Td className='hidden md:table-cell'>
@@ -178,45 +232,21 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
 
                                     <Td px={[0.5, 4]} >
                                         <span className='flex md:hidden'>
-                                            {product.name.length < 10 ? 
-                                            product.name.toUpperCase()
-                                            :    
-                                            product.name.toUpperCase().substring(0, 10) + '...'
-                                        }
+                                            {product.name.length < 10 ?
+                                                product.name.toUpperCase()
+                                                :
+                                                product.name.toUpperCase().substring(0, 10) + '...'
+                                            }
                                         </span>
                                         <span className='hidden md:flex'>
                                             {product.name.toUpperCase()}
                                         </span>
                                     </Td>
                                     <Td p={[2, 4]} /* className='cursor-pointer' */>
-                                        {false ?
-                                            (
-                                                <Tag size={['sm', 'md']} variant='subtle' colorScheme='green'>
-                                                    <TagLabel>
-                                                        <span className='hidden md:flex'>
-                                                            Attivo
-                                                        </span>
-                                                        <span className='flex md:hidden'>
-                                                            OK
-                                                        </span>
-                                                    </TagLabel>
-                                                </Tag>
-                                            )
-                                            :
-                                            (
-                                                <Tag size={['sm', 'md']} variant='subtle' colorScheme='red'
-                                                >
-                                                    <TagLabel>
-                                                        <span className='hidden md:flex'>
-                                                            Terminato
-                                                        </span>
-                                                        <span className='flex md:hidden'>
-                                                            TE
-                                                        </span>
-                                                    </TagLabel>
-                                                </Tag>
-                                            )
-                                        }
+                                        <Tag size={['sm', 'md']} variant='subtle' colorScheme={`${product.status === 'active' ? 'green' : 'red'}`}>
+
+                                            <Product_Status_Popover status={product.status} onChangeStatus={(DBStatus: string) => onChangeStatus(DBStatus, product.id)} />
+                                        </Tag>
 
                                     </Td>
                                     <Td p={[2, 4]} className='hidden lg:table-cell'>
@@ -231,13 +261,13 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any }> = ({ id
                                     </Td>
                                     <Td px={[0.5, 4]} isNumeric >
 
-                                        <span className={`${product.price ? 'line-through text-gray-500' : ''}`}>
-                                            {product.price.toFixed(2).replace('.', ',')}€
+                                        <span className={`${product.price.v2 ? 'line-through text-gray-500' : ''}`}>
+                                            {product.price.v1.toFixed(2).replace('.', ',')}€
                                         </span>
-                                        <span className={`${product.price ? '' : ''}`}>
+                                        {product.price.v2 && <span >
                                             <br />
-                                            40€
-                                        </span>
+                                            {product.price.v2.toFixed(2).replace('.', ',')}€
+                                        </span>}
                                     </Td>
                                     {/* <Td className='hidden md:table-cell'>
                                     <Button colorScheme={'blue'}>

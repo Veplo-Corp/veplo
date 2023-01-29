@@ -14,30 +14,53 @@ import setUserAddress from '../utils/setUserAddress';
 import { setAddress } from '../../src/store/reducers/address_user';
 import Address_text_handle from '../molecules/Address_text_handle';
 import { useDebounceEffect } from '../utils/useDebounceEffect';
+import { ToastOpen } from '../utils/Toast';
 
 const Drawer_Address: React.FC<{ openDrawerMath: number }> = ({ openDrawerMath }) => {
+    const { addToast } = ToastOpen();
+
     const dispatch = useDispatch();
     let filterTimeout: any;
     const [addresses, setAddresses] = useState([]);
     const [isOpen, setisOpen] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
+    const [loadingGPS, setLoadingGPS] = useState<boolean>(false);
+
     const [lng_lat, setLng_lat] = useState<string>('0,0'); /* 12.6450501048306,42.5626616098155 */
     const [address_searched, setAddress_searched] = useState<string>(''); /* 12.6450501048306,42.5626616098155 */
     useEffect(() => {
-        //console.log(openDrawerMath);
-        if (openDrawerMath !== 1 && openDrawerMath !== undefined) {
-            const geolocationAPI = navigator.geolocation;
-            geolocationAPI.getCurrentPosition((position) => {
-                const { coords } = position;
-                console.log(coords);
 
-                setLng_lat(coords.longitude + ',' + coords.latitude)
-            }, (error) => {
-            })
+        if (openDrawerMath !== 1 && openDrawerMath !== undefined) {
+
             setisOpen(true)
         }
     }, [openDrawerMath])
 
+
+    const gpsPositionAddress = () => {
+        
+        //* handle current GPS position */
+        const geolocationAPI = navigator.geolocation;
+        setLoadingGPS(true)
+        geolocationAPI.getCurrentPosition(async (position) => {
+            const { coords } = position;
+            //setLng_lat(coords.longitude + ',' + coords.latitude)
+            const endpoint = `/api/mapbox/reverse-geocoding?latitude=${coords.latitude}&longitude=${coords.longitude}`
+            // Send the form data to our forms API on Vercel and get a response.
+            const response = await fetch(endpoint)
+
+            // Get the response data from server as JSON.
+            // If server returns the name submitted, that means the form works.
+            const result = await response.json()
+
+            handleEventSetAddress(result.data[0])
+            setLoadingGPS(false)
+
+        }, (error) => {
+            setLoadingGPS(false)
+            return addToast({ position: 'top', title: 'geolocalizzazione non autorizzata', description: 'autorizza la geolocalizzazione su questo sito', status: 'info', duration: 5000, isClosable: true })
+        })
+    }
 
 
     const onChangeAddress = async (address_searched: string) => {
@@ -83,6 +106,7 @@ const Drawer_Address: React.FC<{ openDrawerMath: number }> = ({ openDrawerMath }
 
     const handleEventSetAddress = async (element: any) => {
         const result = await setUserAddress(element, 'user');
+
         if (typeof window !== "undefined") {
             localStorage.setItem('address', JSON.stringify(result))
         } else {
@@ -110,7 +134,7 @@ const Drawer_Address: React.FC<{ openDrawerMath: number }> = ({ openDrawerMath }
                     </svg>
                 </DrawerHeader>
                 <DrawerBody className='md:m-auto '>
-                    <Input_Search_Address handleEvent={onChangeAddress} />
+                    <Input_Search_Address handleEvent={onChangeAddress} gpsPositionAddress={gpsPositionAddress} loading={loadingGPS} />
                     <div className=''>
                         {addresses[0] && !loading &&
                             <div className='py-3 ml-8'>
