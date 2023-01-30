@@ -34,7 +34,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
 
 
     return (
-        <Box minW='20' /* maxW='350' */ mb={'5'} borderRadius='lg' overflow='hidden' className='cursor-pointer relative'
+        <Box minW='20' /* maxW='350' */ borderRadius='lg' overflow='hidden' className='cursor-pointer relative'
             _active={{
                 transform: 'scale(1)', /* 'scale(0.99)' */
             }}>
@@ -124,12 +124,12 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                     </Box> */}
                 </div>
 
-                <div className='flex justify-between mt-2 mr-1'>
+                <div className='flex justify-between mr-1'>
                     <Box
                         onClick={() => eventHandler(product)}
                         fontWeight={'bold'}
                         as='h4'
-                        fontSize={['md', 'xs']}
+                        fontSize={['md', 'sm']}
                         color={'green.600'}
                         lineHeight='none'
                         noOfLines={1}
@@ -143,8 +143,11 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                         {product.price.v2 && <span className=' text-red-700 font-extrabold'>{product.price.v2.toFixed(2).replace('.', ',')} €</span>}
                     </Box>
 
+                </div>
+                <div className='mt-1 float-right'>
                     <Circle_Color eventHanlder={() => eventHandler(product)} colors={productcolorsCSS} dimension={4} space={1} />
                 </div>
+
             </Box>
         </Box>
     )
