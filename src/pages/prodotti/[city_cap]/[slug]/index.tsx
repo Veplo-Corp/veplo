@@ -413,14 +413,14 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
           }
         >
           <div className={` flex items-center justify-center`}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 gap-y-2 w-full">
               {productsFounded.length > 0 ?
 
                 (productsFounded.map((product) => {
                   return (
                     <Link key={product.id} href={`/prodotto/${product.id}/${toProductPage(product)}`}>
                       <a >
-                        <Box_Dress eventHandler={toProductPageUrl}  product={product} toShop={toShopPage}></Box_Dress>
+                        <Box_Dress eventHandler={toProductPageUrl} product={product} toShop={toShopPage}></Box_Dress>
                       </a>
                     </Link>
                   )
