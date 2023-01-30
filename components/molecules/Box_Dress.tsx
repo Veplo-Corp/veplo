@@ -56,7 +56,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                 onClick={() => eventHandler(product)}
                 fontWeight='medium'
                 as='h1'
-                fontSize={['md', 'xs']}
+                fontSize={['sm', 'xs']}
                 noOfLines={1}
                 background={'green.700'}
                 color={'white'}
