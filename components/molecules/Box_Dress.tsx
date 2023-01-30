@@ -144,7 +144,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                     </Box>
 
                 </div>
-                <div className='mt-1 float-right'>
+                <div className='mt-3 md:mt-0 float-right pb-0.5'>
                     <Circle_Color eventHanlder={() => eventHandler(product)} colors={productcolorsCSS} dimension={4} space={1} />
                 </div>
 
