@@ -413,7 +413,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
           }
         >
           <div className={` flex items-center justify-center`}>
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 gap-y-2 w-full">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 gap-y-5 w-full">
               {productsFounded.length > 0 ?
 
                 (productsFounded.map((product) => {
