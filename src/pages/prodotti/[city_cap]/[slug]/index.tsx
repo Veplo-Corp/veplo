@@ -81,7 +81,7 @@ export async function getStaticProps(ctx: any) {
       variables: {
         range: 10000,
         offset: 0,
-        limit: 2,
+        limit: 1,
         filters: {
           cap: elementCityCap.postcode,
           macroCategory: macrogategoryName,
@@ -177,7 +177,8 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
     // console.log('moredata');
     // console.log(offset);
     const apolloClient = initApollo()
-    const plus_for_limit = 2;
+    const plus_for_limit = 1;
+    console.log('RIPASSA');
 
     if (useFilter) {
       const { brands, minPrice, maxPrice, colors, sizes } = router.query
@@ -264,7 +265,8 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         })
 
 
-        if (data?.products % plus_for_limit !== 0 || data?.products.length === 0) {
+        if (data?.products.length % plus_for_limit !== 0 || data?.products.length === 0) {
+
           setHasMoreData(false)
         }
 
@@ -411,7 +413,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
           }
         >
           <div className={` flex items-center justify-center`}>
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 gap-y-5 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 gap-y-5 w-full">
               {productsFounded.length > 0 ?
 
                 (productsFounded.map((product) => {
