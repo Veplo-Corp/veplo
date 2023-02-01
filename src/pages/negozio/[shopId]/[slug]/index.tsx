@@ -249,7 +249,7 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
                 }
             >
                 {productsFounded &&
-                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
                         {productsFounded.map((product) => {
                             return (
                                 <Link key={product.id} href={`/prodotto/${product.id}/${toProductPage(product)}`}>
