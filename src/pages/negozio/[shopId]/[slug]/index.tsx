@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Box_Shop from '../../../../../components/molecules/Box_Shop'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout'
-import { Box, defineStyle, Divider } from '@chakra-ui/react'
+import { Box, defineStyle, Divider, Text } from '@chakra-ui/react'
 import Box_Dress from '../../../../../components/molecules/Box_Dress'
 import { useRouter } from 'next/router'
 import Horizontal_Line from '../../../../../components/atoms/Horizontal_Line'
@@ -19,6 +19,8 @@ import { ChevronUpIcon } from '@chakra-ui/icons'
 import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter'
 import { imageKitUrl } from '../../../../../components/utils/imageKitUrl'
 import PostMeta from '../../../../../components/organisms/PostMeta'
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useLazyQuery, useQuery } from '@apollo/client'
 
 export async function getStaticPaths() {
     return {
@@ -38,7 +40,7 @@ export async function getStaticProps(ctx: any) {
 
     const products = await apolloClient.query({
         query: GET_PRODUCTS_FROM_SHOP,
-        variables: { id: shopId, limit: 100, offset: 0 },
+        variables: { id: shopId, limit: 4, offset: 0 },
         //!useless
         fetchPolicy: 'cache-first',
     })
@@ -59,6 +61,8 @@ export async function getStaticProps(ctx: any) {
 const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }) => {
     const router = useRouter();
     const [addressForMaps, setaddressForMaps] = useState('')
+    const [productsFounded, setproductsFounded] = useState<Product[]>([])
+    const [hasMoreData, setHasMoreData] = useState(true)
 
     const toProductPageUrl = (product: Product) => {
 
@@ -68,13 +72,69 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
         // }
     }
 
+    const [getMoreProducts, { loading, error, data, fetchMore }] = useLazyQuery(GET_PRODUCTS_FROM_SHOP);
+
+    console.log(data);
+
+
     const createAddressForMAps = () => {
         setaddressForMaps(shop.address.street.replaceAll(' ', '+') + ', ' + shop.address.city.replaceAll(' ', '+'))
     }
 
     useEffect(() => {
         createAddressForMAps()
+        setproductsFounded(products)
     }, [shop])
+
+    const fetchMoreData = async () => {
+        const plus_for_limit = 4;
+
+
+
+        if (productsFounded.length % plus_for_limit !== 0) {
+            console.log('prodotti terminati');
+            return setHasMoreData(false)
+        }
+
+
+        if (productsFounded.length > plus_for_limit && productsFounded.length % plus_for_limit === 0) {
+            console.log('Passa per qui');
+            const fetchMoreProducts = await fetchMore({
+                variables: {
+                    offset: productsFounded.length,
+                    limit: productsFounded.length + plus_for_limit
+                },
+            })
+            setproductsFounded((prevstate: Product[]) => {
+                return [
+                    ...prevstate,
+                    ...fetchMoreProducts.data.shop?.products
+                ]
+            })
+            return console.log(fetchMoreProducts.data.shop?.products);
+        }
+        if (productsFounded.length === plus_for_limit) {
+
+            const fetchMoreProducts = await getMoreProducts({
+                variables: {
+                    id: shop.id,
+                    limit: plus_for_limit,
+                    offset: productsFounded.length
+                },
+            })
+            setproductsFounded((prevstate: Product[]) => {
+                return [
+                    ...prevstate,
+                    ...fetchMoreProducts.data.shop?.products
+                ]
+            })
+            return console.log(fetchMoreProducts.data.shop?.products);
+        }
+
+
+
+
+    }
 
 
 
@@ -170,19 +230,46 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
             >
                 tutti i prodotti
             </Box>
-            {products && <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
-                {products.map((product) => {
-                    return (
-                        <Link key={product.id} href={`/prodotto/${product.id}/${toProductPage(product)}`}>
-                            <a >
-                                <Box_Dress eventHandler={toProductPageUrl}  product={product}
-                                    toShop={() => { }}
-                                ></Box_Dress>
-                            </a>
-                        </Link>
-                    )
-                })}
-            </div>}
+            <InfiniteScroll
+                dataLength={productsFounded.length}
+                next={fetchMoreData}
+                hasMore={hasMoreData}
+                loader={
+                    <>
+                        {productsFounded[3] &&
+                            <Text textAlign={'center'}
+                                fontWeight={'bold'}
+                            >
+                                caricamento
+                            </Text>}
+                    </>
+                }
+                endMessage={
+                    <></>
+                    // <Text textAlign={'center'}
+                    //   fontWeight={'bold'}
+                    // >
+                    //   Hai visualizzato tutti i prodotti
+                    // </Text>
+                }
+            >
+                {productsFounded &&
+                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
+                        {productsFounded.map((product) => {
+                            return (
+                                <Link key={product.id} href={`/prodotto/${product.id}/${toProductPage(product)}`}>
+                                    <a >
+                                        <Box_Dress eventHandler={toProductPageUrl} product={product}
+                                            toShop={() => { }}
+                                        ></Box_Dress>
+                                    </a>
+                                </Link>
+                            )
+                        })}
+                    </div>}
+
+            </InfiniteScroll>
+
         </Desktop_Layout>
 
     )
