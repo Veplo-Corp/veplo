@@ -39,7 +39,7 @@ export const CATEGORIES: Categories = {
                 sizes: "woman_clothes_sizes",
             },
             {
-                name: "T-Shirt & Top",
+                name: "T-Shirt e Top",
                 url: "t-shirt-e-top",
                 types: [
                     "top",
@@ -172,14 +172,14 @@ export const CATEGORIES: Categories = {
                 url: "abbigliamento-sportivo",
                 types:
                     [
-                        "t-shirt & Polo",
+                        "t-shirt & polo",
                         "pantaloni",
                         "reggiseni",
-                        "giacche & Coprispalla",
+                        "giacche & coprispalla",
                         "felpe",
                         "tute sportive",
-                        "moda Mare",
-                        "vestiti & Gonne",
+                        "moda mare",
+                        "vestiti & gonne",
                         "calzini",
                         "intimo e strati base",
                         "merchandising ufficiale"
@@ -213,7 +213,7 @@ export const CATEGORIES: Categories = {
     uomo: {
         abbigliamento: [
             {
-                name: "T-shirt & Polo",
+                name: "T-shirt e Polo",
                 url: "t-shirt-e-polo",
                 types: [
                     "basic",
@@ -234,13 +234,20 @@ export const CATEGORIES: Categories = {
                 sizes: "man_clothes_sizes",
             },
             {
-                name: "Felpe & Maglieria",
-                url: "felpe-e-maglieria",
+                name: "Felpe",
+                url: "felpe",
                 types: [
                     "con il cappuccio",
                     "felpe",
                     "con la zip",
                     "di pile",
+                ],
+                sizes: "man_clothes_sizes",
+            },
+            {
+                name: "Maglieria",
+                url: "maglieria",
+                types: [
                     "cardigan",
                     "pullover"
                 ],
