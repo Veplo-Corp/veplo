@@ -22,5 +22,5 @@ export const COLORS: Color[] = [
     { name: "Lilla", cssColor: "#C8A2C8" },
     { name: "Oro", cssColor: "#FFD700" },
     { name: "Argento", cssColor: "#C0C0C0" },
-    { name: "multicolore", cssColor: "linear-gradient(0deg, rgba(169,99,224,1) 0%, rgba(52,190,164,1) 46%, rgba(155,214,6,1) 100%);" },
+    { name: "Multicolore", cssColor: "linear-gradient(0deg, rgba(169,99,224,1) 0%, rgba(52,190,164,1) 46%, rgba(155,214,6,1) 100%);" },
 ];

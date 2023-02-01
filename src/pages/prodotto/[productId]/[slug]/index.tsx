@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
-import { Box, Image } from '@chakra-ui/react';
+import { Box, Image, Tooltip } from '@chakra-ui/react';
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { Product } from '../../../../interfaces/product.interface';
@@ -194,6 +194,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
     //console.log(imageKitUrl(product.photos[0], 171, 247));
 
+    console.log(product);
 
 
 
@@ -278,7 +279,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             {product.colors.length > 1 && <span className='ml-1'>colorazioni disponibili</span>}
                         </Box>
                         <div className='mt-2'>
-                            <Circle_Color colors={productcolorsCSS} dimension={10} space={4} />
+                            <Circle_Color colors={productcolorsCSS} dimension={10} space={4} showTooltip={true} />
                         </div>
                         <Box
                             fontWeight='light'
