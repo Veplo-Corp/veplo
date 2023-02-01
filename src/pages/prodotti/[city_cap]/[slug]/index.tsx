@@ -81,7 +81,7 @@ export async function getStaticProps(ctx: any) {
       variables: {
         range: 10000,
         offset: 0,
-        limit: 1,
+        limit: 6,
         filters: {
           cap: elementCityCap.postcode,
           macroCategory: macrogategoryName,
@@ -177,7 +177,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
     // console.log('moredata');
     // console.log(offset);
     const apolloClient = initApollo()
-    const plus_for_limit = 1;
+    const plus_for_limit = 6;
     console.log('RIPASSA');
 
     if (useFilter) {

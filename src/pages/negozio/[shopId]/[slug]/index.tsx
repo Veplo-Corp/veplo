@@ -40,7 +40,7 @@ export async function getStaticProps(ctx: any) {
 
     const products = await apolloClient.query({
         query: GET_PRODUCTS_FROM_SHOP,
-        variables: { id: shopId, limit: 1, offset: 0 },
+        variables: { id: shopId, limit: 4, offset: 0 },
         //!useless
         fetchPolicy: 'cache-first',
     })
@@ -87,7 +87,7 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
     }, [shop])
 
     const fetchMoreData = async () => {
-        const plus_for_limit = 1;
+        const plus_for_limit = 4;
         if (productsFounded.length % plus_for_limit !== 0) {
             return setHasMoreData(false)
         }
