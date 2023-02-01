@@ -81,7 +81,7 @@ export async function getStaticProps(ctx: any) {
       variables: {
         range: 10000,
         offset: 0,
-        limit: 8,
+        limit: 2,
         filters: {
           cap: elementCityCap.postcode,
           macroCategory: macrogategoryName,
@@ -177,6 +177,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
     // console.log('moredata');
     // console.log(offset);
     const apolloClient = initApollo()
+    const plus_for_limit = 2;
 
     if (useFilter) {
       const { brands, minPrice, maxPrice, colors, sizes } = router.query
@@ -188,7 +189,6 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         sizes
       )
       try {
-        const plus_for_limit = 8;
         if (productsFounded.length % plus_for_limit !== 0) {
           return setHasMoreData(false)
         }
@@ -197,7 +197,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
           variables: {
             range: 10000,
             offset: productsFounded.length,
-            limit: productsFounded.length + plus_for_limit,
+            limit: plus_for_limit,
             filters: {
               cap: postcode,
               macroCategory: '',
@@ -235,7 +235,6 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
 
       try {
-        const plus_for_limit = 8;
         // if (productsFounded.length % plus_for_limit !== 0) {
         //   return setHasMoreData(false)
         // }
@@ -244,7 +243,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
           variables: {
             range: 10000,
             offset: productsFounded.length,
-            limit: productsFounded.length + plus_for_limit,
+            limit: plus_for_limit,
             filters: {
               //test postcode
               cap: postcode,
