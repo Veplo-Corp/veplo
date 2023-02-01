@@ -223,7 +223,6 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
         setOffset((prevstate: number) => {
           //console.log(prevstate);
-
           return prevstate + data.products.length
         })
       } catch (e: any) {
