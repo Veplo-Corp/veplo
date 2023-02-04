@@ -7,7 +7,7 @@ const JoinUs_Navbar = () => {
         /* Join us section upper navbar for Companies */
         <div className='w-full z-50  fixed top-0 hidden md:flex justify-end bg-gray-100 pt-1 pb-2 ' >
             <Link href="/shop/login?type=registration">
-                <a className=" text-xs pr-8">
+                <div className=" text-xs pr-8">
                     <span className='underline underline-offset-2 pr-1'>
                         Unisciti a noi
                     </span>
@@ -15,7 +15,7 @@ const JoinUs_Navbar = () => {
                     <span className='underline underline-offset-2 pl-1'>
                         Iscrivi gratis il tuo negozio
                     </span>
-                </a>
+                </div>
             </Link>
         </div >
     )

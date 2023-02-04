@@ -6,7 +6,7 @@ import React, { FC } from 'react'
 const Modal_Help_Customer_Care: FC<{ isOpen: boolean, onClose: () => void }> = ({ isOpen, onClose, }) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose}
-        size={['xs', 'sm']}
+            size={['xs', 'sm']}
         >
             <ModalOverlay />
             <ModalContent>
@@ -15,10 +15,12 @@ const Modal_Help_Customer_Care: FC<{ isOpen: boolean, onClose: () => void }> = (
                 <ModalBody pb={6}>
                     <div className='w-full flex justify-between'>
                         <p>Invia una mail a:</p>
-                        <Link href="mailto:business@veplo.it" >
-                            <a target="_blank" rel="noopener noreferrer"
-                                className='text-blue-700 underline'
-                            >business@veplo.it</a>
+                        <Link href="mailto:business@veplo.it"
+                            target="_blank" rel="noopener noreferrer"
+                            className='text-blue-700 underline'
+                        >
+
+                            business@veplo.it
                         </Link>
                     </div>
                     <div className='w-full flex justify-between mt-4'>

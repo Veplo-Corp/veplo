@@ -253,11 +253,9 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
                         {productsFounded.map((product) => {
                             return (
                                 <Link key={product.id} href={`/prodotto/${product.id}/${toProductPage(product)}`}>
-                                    <a >
-                                        <Box_Dress eventHandler={toProductPageUrl} product={product}
-                                            toShop={() => { }}
-                                        ></Box_Dress>
-                                    </a>
+                                    <Box_Dress eventHandler={toProductPageUrl} product={product}
+                                        toShop={() => { }}
+                                    ></Box_Dress>
                                 </Link>
                             )
                         })}

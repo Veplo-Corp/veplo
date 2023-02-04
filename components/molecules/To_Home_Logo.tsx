@@ -19,14 +19,14 @@ const To_Home_Logo: FC<{ href: string }> = ({ href }) => {
 
     return (
         <Link href={href} >
-            <a className="font-black  text-2xl md:text-3xl italic text-black-900  flex">Veplo{
-                    city.length > 0 &&
-                    <>
-                        <span className='ml-1 hidden lg:flex my-auto mb-0 text-xl'>per</span>
-                        <span className='ml-1 hidden lg:flex text-2xl my-auto mb-0'> {city?.charAt(0).toUpperCase() + city?.slice(1)}</span>
-                    </>
-                }
-            </a>
+            <div className="font-black  text-2xl md:text-3xl italic text-black-900  flex">Veplo{
+                city.length > 0 &&
+                <>
+                    <span className='ml-1 hidden lg:flex my-auto mb-0 text-xl'>per</span>
+                    <span className='ml-1 hidden lg:flex text-2xl my-auto mb-0'> {city?.charAt(0).toUpperCase() + city?.slice(1)}</span>
+                </>
+            }
+            </div>
 
         </Link>
     )
