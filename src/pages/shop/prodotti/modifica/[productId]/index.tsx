@@ -81,6 +81,7 @@ const index = () => {
 
     useEffect(() => {
         const { productId } = router.query
+        if (typeof productId !== 'string') return
         setProductId(productId)
         //find out if  discountOpen is true in urlParams
         if (router.query.editDiscount === 'true') {
