@@ -75,8 +75,6 @@ const index = () => {
         console.log(product);
         setIsActive(product.status === 'active')
         setProduct(product)
-
-
     }, [data])
 
     useEffect(() => {
@@ -175,7 +173,7 @@ const index = () => {
             brand: product.brand != brand ? brand : product.brand,
             colors: product.colors != colorsToDB && colorsToDB[0] ? colorsToDB : product.colors,
             sizes: product.sizes != sizes ? sizes : product.sizes,
-            //status: isActive === true ? 'active' : 'not_active'
+            status: isActive === true ? 'active' : 'not_active'
             //!remove photos 
             //! should use newPhotos: [Upload!] & deletedPhotos: [String!]
             // photos: product.photos != photos ? photoURLForDB : product.photos,
@@ -226,7 +224,7 @@ const index = () => {
             });
 
             addToast({ position: 'top', title: 'Prodotto aggiornato con successo', description: `${options.name.toUpperCase()} è stato aggiornato con successo. Controla nella sezione dedicata`, status: 'success', duration: 5000, isClosable: true })
-
+            router.back()
         } catch (e: any) {
 
             console.log(e?.message);
@@ -334,6 +332,7 @@ const index = () => {
                 ,
                 status: 'success', duration: 8000, isClosable: true
             })
+            router.back()
         }
         catch (e) {
             console.log(e);
