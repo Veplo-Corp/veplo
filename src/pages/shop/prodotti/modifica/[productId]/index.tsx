@@ -40,8 +40,7 @@ const index = () => {
     const [openModalMath, setOpenModalMath] = useState(1);
     const [loading, setLoading] = useState(false)
     const [loadingHandleDiscount, setLoadingHandleDiscount] = useState(false)
-
-    const { productId } = router.query
+    const [productId, setProductId] = useState('')
 
     const [loadShop, { data, error }] = useLazyQuery(GET_PRODUCTS_FROM_SHOP, {
         fetchPolicy: 'cache-first',
@@ -65,9 +64,9 @@ const index = () => {
         }
     }, [user])
 
-    useEffect(() => {
-        console.log(data);
 
+
+    useEffect(() => {
         if (!data) {
             //router.push('/shop/prodotti/')
             return
@@ -76,7 +75,19 @@ const index = () => {
         console.log(product);
         setIsActive(product.status === 'active')
         setProduct(product)
+
+
     }, [data])
+
+    useEffect(() => {
+        const { productId } = router.query
+        setProductId(productId)
+        //find out if  discountOpen is true in urlParams
+        if (router.query.editDiscount === 'true') {
+            setIsOpen(true)
+        }
+    }, [router])
+
 
 
 
@@ -326,7 +337,7 @@ const index = () => {
         catch (e) {
             console.log(e);
             addToast({ position: 'top', title: 'Errore durante la creazione sconto', description: "abbiamo riscontrato un errore durante la creazione dello sconto. Riprova più tardi", status: 'error', duration: 5000, isClosable: false })
-
+            setLoadingHandleDiscount(false)
         }
 
 
@@ -470,7 +481,6 @@ const index = () => {
                                 }
                             }
                             loading={loadingHandleDiscount}
-
                         />
                     </>
                 }

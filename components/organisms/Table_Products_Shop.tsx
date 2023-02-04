@@ -112,6 +112,10 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
         router.push(`/shop/prodotti/modifica/${productId}`)
     }
 
+    const handleButtonEditDiscount = async (productId: string) => {
+        router.push(`/shop/prodotti/modifica/${productId}?editDiscount=true`)
+    }
+
     const textSearchProducts = (inputSearch: string) => {
         console.log(inputSearch);
 
@@ -203,9 +207,9 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                             <Th p={[2, 4]} className='hidden lg:table-cell' >Brand</Th>
                             <Th p={[2, 4]} className='hidden md:table-cell'>Categoria</Th>
                             <Th px={[0.5, 4]} isNumeric >Prezzo</Th>
-                            <Th p={[3, 4]} px={[0.5, 4]} className='flex  w-fit m-auto mr-0'>
-                                <span className='m-auto'>
-                                    {/* Azioni */}
+                            <Th p={[3, 4]} px={[0.5, 4]} className='flex w-full m-auto mr-0'>
+                                <span className='m-auto hidden sm:flex'>
+                                    Gestisci
                                 </span>
                             </Th>
                         </Tr>
@@ -287,8 +291,23 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                                         <span className='hidden lg:flex ml-1'>elimina</span>
                                     </Button>
                                 </Td> */}
-                                    <Td px={[0.5, 4]} isNumeric >
-                                        <div className='m-auto mr-0'>
+                                    <Td px={[0.5, 4]} isNumeric className='w-fit' >
+                                        <div className='text-center'>
+
+                                            <Button
+                                                className='invisible xl:visible'
+                                                onClick={() =>
+                                                    handleButtonEditDiscount(product.id)
+                                                }
+                                                colorScheme={'yellow'} size={['xs', 'md']} variant={['ghost', 'outline']}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
+                                                </svg>
+
+                                                <span className='hidden xl:flex ml-1'>Sconto</span>
+
+                                            </Button>
                                             <Button
                                                 onClick={() =>
                                                     handleButtonEdit(product.id)
@@ -303,11 +322,11 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                                             <Button onClick={() =>
                                                 handleButtonDelete(product.id, product.name, product.photos)
                                             }
-                                                colorScheme={'red'} size={['xs', 'md']} variant={['ghost', 'outline']}>
+                                                colorScheme={'red'} size={['xs', 'md']} variant={['ghost', 'solid']}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                                                 </svg>
-                                                <span className='hidden xl:flex ml-1'>elimina</span>
+                                                {/* <span className='hidden xl:flex ml-1'>elimina</span> */}
 
                                             </Button>
                                         </div>
