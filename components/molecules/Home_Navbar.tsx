@@ -97,7 +97,7 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
             <Link
                 href={`${address_user ? `/prodotti/${address_user.postcode.length === 5 ? createUrlSchema([address_user.city, address_user.postcode]) : createUrlSchema([address_user.city])}/donna-abbigliamento` : '/'}`}
                 className={` ${gender === 'donna' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 `}>
-                <a
+                <div
 
                     className={` 
                     ${gender === 'donna' && !showCategory ? "relative" : ""}
@@ -119,12 +119,12 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                         zIndex={'hide'}
                         className={` absolute w-full h-[8px] bottom-[3px] bg-red-500 z-0`}>
                     </Box>}
-                </a>
+                </div>
             </Link>
             <Link
                 href={`${address_user ? `/prodotti/${address_user.postcode.length === 5 ? createUrlSchema([address_user.city, address_user.postcode]) : createUrlSchema([address_user.city])}/uomo-abbigliamento` : '/'}`}
                 className={` ${gender === 'uomo' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 `}>
-                <a
+                <div
                     className={` 
                     ${gender === 'uomo' && !showCategory ? "relative" : ""}
                     my-auto
@@ -145,7 +145,7 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                         zIndex={'hide'}
                         className={` absolute w-full h-[8px] bottom-[3px] bg-red-500 z-0`}>
                     </Box>}
-                </a>
+                </div>
             </Link>
 
             <Link
@@ -153,7 +153,7 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                 className={` ${gender === 'negozi' && !showCategory ? "relative" : ""} cursor-pointer text-sm lg:text-base font-medium text-gray-900 hover:text-gray-900 mr-4 py-0.5 
             
             `}>
-                <a
+                <div
                     className={` ${gender === 'negozi' && !showCategory ? "relative z-50" : ""}
                     
                     `}
@@ -171,7 +171,7 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory }) => {
                         zIndex={'hide'}
                         className={` absolute w-full h-[8px] bottom-[3px] bg-red-500 z-0`}>
                     </Box>}
-                </a>
+                </div>
 
             </Link>
 

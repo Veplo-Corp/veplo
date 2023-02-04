@@ -166,17 +166,17 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
                     shops.map((shop) => {
                         return (
                             <Link key={shop.id} href={`/negozio/${shop.id}/${createUrlSchema([shop.address.city, shop.name])}`}>
-                                <a >
-                                    <Box_Shop  scale={'scale(0.99)'} eventHandler={toStore} shop={shop} />
-                                </a>
+
+                                <Box_Shop scale={'scale(0.99)'} eventHandler={toStore} shop={shop} />
+
                             </Link>
                         )
                     }) : shopsFilterByName.map((shop) => {
                         return (
                             <Link key={shop.id} href={`/negozio/${shop.id}/${createUrlSchema([shop.address.city, shop.name])}`}>
-                                <a >
-                                    <Box_Shop  scale={'scale(0.99)'} eventHandler={toStore} shop={shop} />
-                                </a>
+
+                                <Box_Shop scale={'scale(0.99)'} eventHandler={toStore} shop={shop} />
+
                             </Link>
                         )
                     })

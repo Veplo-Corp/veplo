@@ -322,18 +322,16 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
                         <>
                             <Link href={`/negozio/${product.shopId}/${createUrlSchema([product.shopOptions.city, product.shopOptions.name])}`}>
-                                <a >
-                                    <Box
-                                        fontWeight='light'
-                                        as='h1'
-                                        noOfLines={1}
-                                        mt='6'
-                                        mb={3}
-                                        fontSize='md'
-                                    >
-                                        Altri prodotti di <span className='underline underline-offset-2 cursor-pointer'>{product.shopOptions.name}</span>
-                                    </Box>
-                                </a>
+                                <Box
+                                    fontWeight='light'
+                                    as='h1'
+                                    noOfLines={1}
+                                    mt='6'
+                                    mb={3}
+                                    fontSize='md'
+                                >
+                                    Altri prodotti di <span className='underline underline-offset-2 cursor-pointer'>{product.shopOptions.name}</span>
+                                </Box>
                             </Link>
 
 
@@ -341,95 +339,90 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                 {shopProductsData?.data?.shop.products.map((element: Product) => {
                                     return (
                                         <Link key={element.id} href={`/prodotto/${element.id}/${toProductPage(element)}`}>
-                                            <a >
-                                                <div className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
-                                                    <Box borderRadius='lg' overflow='hidden'
-                                                        borderWidth={0.5}
-                                                        className={`w-36`}/*  aspect-[8.5/12] */
-                                                        _active={{
-                                                            transform: 'scale(0.98)',
-                                                        }}
+                                            <div className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
+                                                <Box borderRadius='lg' overflow='hidden'
+                                                    borderWidth={0.5}
+                                                    className={`w-36`}/*  aspect-[8.5/12] */
+                                                    _active={{
+                                                        transform: 'scale(0.98)',
+                                                    }}
+                                                >
+                                                    <LazyLoadImage
+                                                        src={
+                                                            imageKitUrl(element.photos[0], 171, 247)
+                                                        }//placeholderSrc={'/static/grayScreen.png'}
+                                                        effect="blur"
+                                                        alt={element.name}
+
+
+                                                        className=' cursor-pointer hover:scale-105  object-cover'
+                                                    />
+                                                    <Box
+                                                        fontWeight='medium'
+                                                        as='h1'
+                                                        fontSize={['xs', 'sm']}
+                                                        noOfLines={1}
+                                                        marginX={'2'}
+                                                        mt={'1'}
                                                     >
-                                                        <LazyLoadImage
-                                                            src={
-                                                                imageKitUrl(element.photos[0], 171, 247)
-                                                            }//placeholderSrc={'/static/grayScreen.png'}
-                                                            effect="blur"
-                                                            alt={element.name}
-
-
-                                                            className=' cursor-pointer hover:scale-105  object-cover'
-                                                        />
-                                                        <Box
-                                                            fontWeight='medium'
-                                                            as='h1'
-                                                            fontSize={['xs', 'sm']}
-                                                            noOfLines={1}
-                                                            marginX={'2'}
-                                                            mt={'1'}
-                                                        >
-                                                            {element.name.toUpperCase()}
-                                                            {/* {height} - {width} */}
-                                                        </Box>
-                                                        <Box
-                                                            fontWeight={'bold'}
-                                                            as='h4'
-                                                            fontSize={'xs'}
-                                                            color={'green.600'}
-                                                            lineHeight='none'
-                                                            noOfLines={1}
-                                                            marginX={'2'}
-
-                                                        >
-                                                            <span
-                                                                className={`${element.price.v2 ? 'text-slate-500 font-normal line-through text-[11px]' : ''}`}
-                                                            >
-                                                                {Number(element.price.v1).toFixed(2).replace('.', ',')} €
-                                                            </span>
-                                                            {element.price.v2 && <span className=' text-red-700 font-extrabold ml-1'>{element.price.v2.toFixed(2).replace('.', ',')} €</span>}
-                                                        </Box>
-                                                        <div className='text-right flex float-right my-2 mx-2'>
-                                                            <Circle_Color colors={getColorsCSS(element)} dimension={4} space={1} />
-                                                        </div>
+                                                        {element.name.toUpperCase()}
+                                                        {/* {height} - {width} */}
                                                     </Box>
+                                                    <Box
+                                                        fontWeight={'bold'}
+                                                        as='h4'
+                                                        fontSize={'xs'}
+                                                        color={'green.600'}
+                                                        lineHeight='none'
+                                                        noOfLines={1}
+                                                        marginX={'2'}
 
-                                                </div>
-                                            </a>
+                                                    >
+                                                        <span
+                                                            className={`${element.price.v2 ? 'text-slate-500 font-normal line-through text-[11px]' : ''}`}
+                                                        >
+                                                            {Number(element.price.v1).toFixed(2).replace('.', ',')} €
+                                                        </span>
+                                                        {element.price.v2 && <span className=' text-red-700 font-extrabold ml-1'>{element.price.v2.toFixed(2).replace('.', ',')} €</span>}
+                                                    </Box>
+                                                    <div className='text-right flex float-right my-2 mx-2'>
+                                                        <Circle_Color colors={getColorsCSS(element)} dimension={4} space={1} />
+                                                    </div>
+                                                </Box>
+
+                                            </div>
                                         </Link>
                                     )
                                 })}
                                 <Link href={`/negozio/${product.shopId}/${createUrlSchema([product.shopOptions.city, product.shopOptions.name])}`}
-                                    className={`flex gap-4 w-36 h-full`}
+                                    className={`flex gap-4 w-36 max-h-max justify-center`}
                                 >
-                                    <a className='my-auto'>
-                                        <div >
-                                            <Box borderRadius='lg' overflow='hidden'
-                                                borderWidth={0.5}
+                                    <div className='my-auto'>
+                                        <Box borderRadius='lg' overflow='hidden'
+                                            borderWidth={0.5}
+                                            paddingY={'10'}
+                                            className={`w-36 h-full flex cursor-pointer bg-gray-50`}
+                                            // onClick={() => {
+                                            //     const slug = createUrlSchema([product.shopOptions.city, product.shopOptions.name])
+                                            //     router.push(`/negozio/${product.shopId}/${slug}`)
+                                            // }}
+                                            _active={{
+                                                transform: 'scale(0.98)',
+                                            }}
+                                        >
+                                            <div className='m-auto text-center'>
+                                                <p className='mb-4'>
+                                                    vai al<br /> negozio
+                                                </p>
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 m-auto">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                                                </svg>
 
-                                                paddingY={'10'}
-                                                className={`w-36 h-full flex cursor-pointer bg-gray-50`}
-                                                // onClick={() => {
-                                                //     const slug = createUrlSchema([product.shopOptions.city, product.shopOptions.name])
-                                                //     router.push(`/negozio/${product.shopId}/${slug}`)
-                                                // }}
-                                                _active={{
-                                                    transform: 'scale(0.98)',
-                                                }}
-                                            >
-                                                <div className='m-auto text-center'>
-                                                    <p className='mb-4'>
-                                                        vai al<br /> negozio
-                                                    </p>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 m-auto">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
-                                                    </svg>
-
-                                                </div>
+                                            </div>
 
 
-                                            </Box>
-                                        </div>
-                                    </a>
+                                        </Box>
+                                    </div>
                                 </Link>
 
 

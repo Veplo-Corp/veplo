@@ -419,9 +419,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
                 (productsFounded.map((product) => {
                   return (
                     <Link key={product.id} href={`/prodotto/${product.id}/${toProductPage(product)}`}>
-                      <a >
-                        <Box_Dress eventHandler={toProductPageUrl} product={product} toShop={toShopPage}></Box_Dress>
-                      </a>
+                      <Box_Dress eventHandler={toProductPageUrl} product={product} toShop={toShopPage}></Box_Dress>
                     </Link>
                   )
                 })) : (
