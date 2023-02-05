@@ -65,7 +65,7 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
     const [addressForMaps, setaddressForMaps] = useState('')
     const [productsFounded, setproductsFounded] = useState<Product[]>([])
     const [hasMoreData, setHasMoreData] = useState(true)
-    const [isOpen, setIsOpen] = useState(true)
+    const [isOpen, setIsOpen] = useState(false)
 
     const toProductPageUrl = (product: Product) => {
 
