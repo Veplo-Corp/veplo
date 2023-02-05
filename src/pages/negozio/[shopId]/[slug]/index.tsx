@@ -21,6 +21,8 @@ import { imageKitUrl } from '../../../../../components/utils/imageKitUrl'
 import PostMeta from '../../../../../components/organisms/PostMeta'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useLazyQuery, useQuery } from '@apollo/client'
+import Modal_Info_Store from '../../../../../components/organisms/Modal_Info_Store'
+import isShopOpen from '../../../../../components/utils/isShopOpen'
 
 export async function getStaticPaths() {
     return {
@@ -63,6 +65,7 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
     const [addressForMaps, setaddressForMaps] = useState('')
     const [productsFounded, setproductsFounded] = useState<Product[]>([])
     const [hasMoreData, setHasMoreData] = useState(true)
+    const [isOpen, setIsOpen] = useState(false)
 
     const toProductPageUrl = (product: Product) => {
 
@@ -153,7 +156,7 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
                         alt={shop.name}
                         className='aspect-[4.8/3] w-96 lg:w-[32rem] rounded-md object-cover'
                     />
-                    <Box py={0.5} display='flex' className='justify-between	'>
+                    <Box pt={0.5} display='flex' className='justify-between	'>
                         <Box>
                             <Box
                                 mt='1'
@@ -198,6 +201,35 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
                                     <path fillRule="evenodd" d="M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.322 0 9.75-3.97 9.75-9 0-5.03-4.428-9-9.75-9s-9.75 3.97-9.75 9c0 2.409 1.025 4.587 2.674 6.192.232.226.277.428.254.543a3.73 3.73 0 01-.814 1.686.75.75 0 00.44 1.223zM8.25 10.875a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM10.875 12a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875-1.125a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z" clipRule="evenodd" />
                                 </svg>
                             </a>
+                        </Box>
+                    </Box>
+                    <Box py={0.5} display='flex' className='justify-between	'>
+                        <Box>
+                            <Box
+                                onClick={() => setIsOpen(true)}
+                                fontWeight='base'
+                                as='h2'
+                                noOfLines={1}
+                                fontSize='12px'
+                                className='cursor-pointer underline underline-offset-2'
+                                display={'flex'}
+                            >
+                                scopri di più
+                                {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 my-auto mb-0">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                </svg> */}
+                            </Box>
+                        </Box>
+                        <Box>
+                            <Box
+                                fontWeight='base'
+                                as='h2'
+                                noOfLines={1}
+                                fontSize='12px'
+                                display={'flex'}
+                            >
+                                {isShopOpen(shop.opening.days, shop.opening.hours) ? `Aperto - chiude alle ${shop.opening.hours[1]}` : `Chiuso - apre alle ${shop.opening.hours[0]}`}
+                            </Box>
                         </Box>
                     </Box>
                 </Box>
@@ -262,7 +294,7 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
                     </div>}
 
             </InfiniteScroll>
-
+            <Modal_Info_Store isOpen={isOpen} onClose={() => setIsOpen(false)} shop={shop} />
         </Desktop_Layout>
 
     )
