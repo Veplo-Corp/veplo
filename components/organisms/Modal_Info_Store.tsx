@@ -14,7 +14,7 @@ const Modal_Info_Store: FC<{ isOpen: boolean, onClose: () => void, shop: Shop }>
             <ModalContent>
                 <ModalHeader
                     px={[4, 6]}
-                    pb={1}>Info {shop.name}</ModalHeader>
+                    pb={1}>{shop.name}</ModalHeader>
                 <ModalCloseButton size='lg'
                     px={[4, 6]}
                 />
