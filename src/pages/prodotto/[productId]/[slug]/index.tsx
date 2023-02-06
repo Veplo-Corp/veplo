@@ -220,7 +220,6 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             noOfLines={1}
                             fontSize='sm'
                         >
-
                             {product.macroCategory} - {product.microCategory}
                             {product.gender === 'F' && <span className='ml-1'>per donna</span>}
                             {product.gender === 'M' && <span className='ml-1'>per uomo</span>}
@@ -229,28 +228,28 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             fontWeight='normal'
                             as='h2'
                             noOfLines={1}
-                            mt='-2'
-                            fontSize='3xl'
+                            mt='0'
+                            fontSize='xl'
                             className='italic'
                         >
                             {product.brand}
                         </Box>
                         <Box
-                            fontWeight='semibold'
+                            fontWeight='bold'
                             as='h1'
                             noOfLines={2}
                             mt='-1'
                             fontSize='3xl'
                             lineHeight={'33px'}
+                            pb='3'
                         >
                             {`${product.name.toLocaleUpperCase()}`}
-                            <span className='font-normal'>{` - ${textCategory}`}</span>
+                            <span className='md:font-light font-extralight text-lg'>{` - ${textCategory}`}</span>
                         </Box>
                         <Box
                             fontWeight='medium'
                             as='h1'
                             noOfLines={2}
-                            mt='3'
                             fontSize={['lg', 'xl']}
                             lineHeight={['4']}
                         >
@@ -383,7 +382,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                         >
                                                             {Number(element.price.v1).toFixed(2).replace('.', ',')} €
                                                         </span>
-                                                        {element.price.v2 && <span className=' text-red-700 font-extrabold ml-1'>{element.price.v2.toFixed(2).replace('.', ',')} €</span>}
+                                                        {element.price.v2 && <span className=' text-red-700 font-bold ml-1'>{element.price.v2.toFixed(2).replace('.', ',')} €</span>}
                                                     </Box>
                                                     <div className='text-right flex float-right my-2 mx-2'>
                                                         <Circle_Color colors={getColorsCSS(element)} dimension={4} space={1} />

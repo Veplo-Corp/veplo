@@ -97,7 +97,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                                     width={'full'}
 
                                                     /* onClick={onClickImageModal} */
-                                                    src={imageKitUrl(fullImage)} 
+                                                    src={imageKitUrl(fullImage)}
                                                     alt={product.name}
 
                                                 />
@@ -127,7 +127,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                 </ModalContent>
             </Modal>
             <div className='flex space-x-4 w-full md:w-7/12 xl:w-5/12 '>
-                <Box onClick={zoomImage} minW='20' maxW='450' mb={'5'} overflow='hidden' className='cursor-pointer'>
+                <Box onClick={zoomImage} minW='20' maxW='450' mb={[2, 5]} overflow='hidden' className='cursor-pointer'>
                     <TransformWrapper
                         maxScale={3}
                         minScale={1}

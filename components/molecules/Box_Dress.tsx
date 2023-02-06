@@ -75,7 +75,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                     as='h2'
                     lineHeight='tight'
                     noOfLines={1}
-                    fontSize='sm'
+                    fontSize={['xs', 'sm']}
                     onClick={() => toShop(product.shopId, product.shopOptions.city, product.shopOptions.name)}
                 >
                     {toUpperCaseFirstLetter(product.shopOptions.name)}
@@ -88,7 +88,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                             as='h1'
                             noOfLines={1}
                             lineHeight='tight'
-                            fontSize='13px'
+                            fontSize={['xs', 'sm']}
                             className='italic'
                         >
                             {product.brand}
@@ -97,11 +97,11 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                             onClick={() => eventHandler(product)}
                             fontWeight='bold'
                             as='h1'
-                            fontSize='sm'
+                            fontSize={['xs', 'sm']}
                             noOfLines={1}
                             mt={-1}
                         >
-                            {product.name.toUpperCase()}
+                            {product.name.toUpperCase()} Giaccha impbottita
                             {/* {height} - {width} */}
                         </Box>
                     </div>
@@ -140,11 +140,11 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                         >
                             {Number(product.price.v1).toFixed(2).replace('.', ',')} €
                         </span>
-                        {product.price.v2 && <span className=' text-red-700 font-extrabold'>{product.price.v2.toFixed(2).replace('.', ',')} €</span>}
+                        {product.price.v2 && <span className=' text-red-700 font-bold'>{product.price.v2.toFixed(2).replace('.', ',')} €</span>}
                     </Box>
 
                 </div>
-                <div className='mt-2 md:mt-0 float-right pb-0.5'>
+                <div className='mt-2 md:mt-0 float-right pb-0.5 pr-0.5'>
                     <Circle_Color eventHanlder={() => eventHandler(product)} colors={productcolorsCSS} dimension={4} space={1} />
                 </div>
 
