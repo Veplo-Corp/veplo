@@ -370,7 +370,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                     <Box
                                                         fontWeight='semibold'
                                                         as='h1'
-                                                        fontSize={['xs', 'sm']}
+                                                        fontSize={['xs', 'xs']}
                                                         noOfLines={1}
                                                         marginX={'2'}
                                                     >
