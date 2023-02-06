@@ -357,9 +357,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                         className=' cursor-pointer hover:scale-105  object-cover'
                                                     />
                                                     <Box
-                                                        fontWeight='normal'
+                                                        fontWeight={['light', 'normal']}
                                                         as='h1'
-                                                        fontSize={['xs']}
+                                                        fontSize={['2xs', 'xs']}
                                                         noOfLines={1}
                                                         marginX={'2'}
                                                         mt={'1'}
