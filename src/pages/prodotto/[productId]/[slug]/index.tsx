@@ -244,7 +244,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             pb='3'
                         >
                             {`${product.name.toLocaleUpperCase()}`}
-                            <span className='md:font-light font-extralight text-lg'>{` - ${textCategory}`}</span>
+                            <span className='font-light text-lg'>{` - ${textCategory}`}</span>
                         </Box>
                         <Box
                             fontWeight='medium'
@@ -357,12 +357,22 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                         className=' cursor-pointer hover:scale-105  object-cover'
                                                     />
                                                     <Box
-                                                        fontWeight='medium'
+                                                        fontWeight='normal'
+                                                        as='h1'
+                                                        fontSize={['xs']}
+                                                        noOfLines={1}
+                                                        marginX={'2'}
+                                                        mt={'1'}
+                                                        mb={-1}
+                                                    >
+                                                        {element.brand}
+                                                    </Box>
+                                                    <Box
+                                                        fontWeight='semibold'
                                                         as='h1'
                                                         fontSize={['xs', 'sm']}
                                                         noOfLines={1}
                                                         marginX={'2'}
-                                                        mt={'1'}
                                                     >
                                                         {element.name.toUpperCase()}
                                                         {/* {height} - {width} */}
