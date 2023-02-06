@@ -12,9 +12,9 @@ const Footer = () => {
                         <span className="self-center text-2xl font-semibold whitespace-nowrap">Veplo</span>
                     </a>
                 </div>
-                <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
-                    <div>
-                        {/* <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">Chi siamo</h2>
+                <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-2">
+                    {/* <div>
+                        <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">Chi siamo</h2>
                         <ul className="text-gray-600 ">
                             <li className="mb-4">
                                 <a href="https://veplo.it" className="hover:underline">Noi</a>
@@ -22,8 +22,8 @@ const Footer = () => {
                             <li>
                                 <a href="https://veplo.it" className="hover:underline">Visione e Obiettivi</a>
                             </li>
-                        </ul> */}
-                    </div>
+                        </ul>
+                    </div> */}
                     <div>
                         <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">Seguici</h2>
                         <ul className="text-gray-600 ">
