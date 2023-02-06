@@ -22,7 +22,7 @@ const list = [
         title: 'il tuo negozio',
         url: '/shop/info-generali'
     },
-    
+
     {
         title: 'hai bisogno di assistenza?',
         url: 'assistenza'
@@ -105,7 +105,7 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                                 _active={{
                                     transform: `scale(0.99)`,
                                 }}
-                                mt={4}
+
                                 fontWeight='semibold'
                                 lineHeight='none'
                                 noOfLines={1}
@@ -113,7 +113,7 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                                 display={'flex'}
                                 className={'cursor-pointer hover:underline'}
                                 onClick={() => {
-                                    if(element.url === 'assistenza'){
+                                    if (element.url === 'assistenza') {
                                         setIsOpenHelpModal(true)
                                     } else {
                                         router.push(element.url)
@@ -121,7 +121,7 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                                     }
                                 }}
                             >
-                                <p className='my-auto'>
+                                <p className='my-auto pb-4'>
                                     {element.title}
                                 </p>
                             </Box>)
@@ -137,16 +137,16 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                     padding={0}
                     width={'full'}
                 >
-                        <Button
-                        
+                    <Button
+
                         className='w-11/12 m-auto mb-4 ' onClick={logout}>
-                            Disconnetti Account
-                        </Button>
+                        Disconnetti Account
+                    </Button>
                 </DrawerFooter>
             </DrawerContent>
-            <Modal_Help_Customer_Care 
-            isOpen={isOpenHelpModal}
-            onClose={()=>{setIsOpenHelpModal(false)}}
+            <Modal_Help_Customer_Care
+                isOpen={isOpenHelpModal}
+                onClose={() => { setIsOpenHelpModal(false) }}
             />
         </Drawer >
     )
