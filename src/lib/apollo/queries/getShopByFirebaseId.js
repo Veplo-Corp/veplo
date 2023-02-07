@@ -22,6 +22,10 @@ const GET_SHOP_BY_FIREBASE_ID = gql`
             }
             createdAt
             photo
+            opening{
+                days
+                hours
+            }
         } 
     }
 `
