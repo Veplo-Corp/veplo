@@ -194,7 +194,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
     //console.log(imageKitUrl(product.photos[0], 171, 247));
 
-    console.log(product);
+    console.log(product.price.v2 ? product.price.v2 : product.price.v1);
 
 
 
@@ -206,7 +206,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                     canonicalUrl={'https://www.veplo.it' + router.asPath}
                     //riverdere length description 150 to 160
                     title={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} - ${product.shopOptions.city} - Veplo.it`}
-                    subtitle={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} a ${product.price}€ | vivi Veplo`}
+                    subtitle={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} a ${product.price.v2 ? product.price.v2 : product.price.v1}€ | vivi Veplo`}
                     image={imageKitUrl(product.photos[0], 171, 247)}
                     description={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} - Veplo.it`} />
 
