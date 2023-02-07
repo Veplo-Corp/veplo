@@ -30,7 +30,7 @@ export async function getStaticProps(ctx: any) {
             query: GET_SHOPS_BY_LOCATION,
             variables: {
                 range: 5000,
-                limit: 10,
+                limit: 100,
                 offset: 0,
                 filters: {
                     cap: element.postcode
