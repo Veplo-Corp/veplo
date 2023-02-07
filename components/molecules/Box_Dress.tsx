@@ -101,7 +101,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                             noOfLines={1}
                             mt={-1}
                         >
-                            {product.name.toUpperCase()} Giaccha impbottita
+                            {product.name.toUpperCase()}
                             {/* {height} - {width} */}
                         </Box>
                     </div>
