@@ -45,7 +45,7 @@ const index = () => {
     const [loadShop, { data, error }] = useLazyQuery(GET_PRODUCTS_FROM_SHOP, {
         fetchPolicy: 'cache-first',
         //nextFetchPolicy: 'cache-first',
-        variables: { id: user?.shopId, limit: 100, offset: 0 },
+        variables: { id: user?.shopId, limit: 100, offset: 0, see: "everything" },
         // pollInterval: 500,
         // notifyOnNetworkStatusChange: true,
     });

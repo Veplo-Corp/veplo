@@ -41,7 +41,7 @@ const index = () => {
             const { shop } = cache.readQuery<any>({
                 query: GET_PRODUCTS_FROM_SHOP,
                 variables: {
-                    id: user.shopId, limit: 100, offset: 0  //* mettere idShop,
+                    id: user.shopId, limit: 100, offset: 0, see: "everything"  //* mettere idShop,
                 },
             });
             console.log(shop);
@@ -49,7 +49,7 @@ const index = () => {
             //*Delete Product
             cache.writeQuery({
                 query: GET_PRODUCTS_FROM_SHOP,
-                variables: { id: user.shopId, limit: 100, offset: 0 }, //shopId
+                variables: { id: user.shopId, limit: 100, offset: 0, see: "everything" }, //shopId
                 data: {
                     shop: {
                         id: user.shopId,
@@ -114,7 +114,7 @@ const index = () => {
         }
     }
 
-    
+
 
 
 
@@ -133,7 +133,7 @@ const index = () => {
                     <Create_Shop_Alert />
                 }
                 {user && !user?.Not_yet_Authenticated_Request && user?.shopId &&
-                    <Table_Products_Shop idShop={user.shopId} deleteProduct={handleDeleteProductModal}  />}
+                    <Table_Products_Shop idShop={user.shopId} deleteProduct={handleDeleteProductModal} />}
                 <Modal_Error_Shop title={'Elimina prodotto'} description={'confermando eliminerai il prodotto dal tuo negozio'} closeText={'annulla'} openModalMath={mathNumber} confirmText={'conferma'} data={productToDeleteData} handleEvent={deleteProductEvent} />
                 {/* <button
                     onClick={handleCache}

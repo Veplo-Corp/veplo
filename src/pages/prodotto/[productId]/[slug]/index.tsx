@@ -137,7 +137,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
             console.log(product.shopId);
 
             await getFilterProduct({
-                variables: { id: product.shopId, limit: 5, offset: 0 },
+                variables: { id: product.shopId, limit: 5, offset: 0, see: null },
             })
         }
 
