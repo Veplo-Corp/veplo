@@ -21,6 +21,9 @@ import { Product } from '../../../../../interfaces/product.interface';
 import { initApollo } from '../../../../../lib/apollo';
 import EDIT_PRODUCT from '../../../../../lib/apollo/mutations/editProduct';
 import GET_PRODUCTS_FROM_SHOP from '../../../../../lib/apollo/queries/geetProductsShop';
+import UPLOAD_PHOTO from '../../../../../lib/apollo/mutations/uploadPhotos';
+
+
 import GET_SHOP_BY_FIREBASE_ID from '../../../../../lib/apollo/queries/getShopByFirebaseId';
 import { setModalTitleAndDescription } from '../../../../../store/reducers/modal_error';
 
@@ -32,6 +35,8 @@ const index = () => {
 
     const { addToast } = ToastOpen();
     const [editProduct] = useMutation(EDIT_PRODUCT)
+    const [uploadPhotos] = useMutation(UPLOAD_PHOTO)
+
     const dispatch = useDispatch();
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     const router = useRouter();
@@ -142,25 +147,50 @@ const index = () => {
             }
         })
 
-        let photoURLForDB = [];
-        let i = 1;
+        let photoURLForDB: { file: any, position: number }[] = [];
+        let i = 0;
         for await (let photo of photos) {
+            if (photo.file) {
+                photoURLForDB.push({ file: photo.file, position: i })
+            }
+            i++
+        }
+        // const photoFileArray = photoURLForDB.map(photo => {
+        //     return photo.file
+        // })
+        // console.log(photoFileArray)
+        if (photoURLForDB.length > 0) {
             try {
-                if (photo.blob) {
-                    //const url = await uploadPhotoFirebase('photo' + i, photo.blob, productId, user.uid)
-                    const url = await uploadPhotoFirebase(photo.blob, `/${user.uid}/prodotti/${productId}/${'photo' + i}`)
+                const photoUploaded = await uploadPhotos({
+                    variables: {
+                        images: photoURLForDB.map(photo => {
+                            return photo.file
+                        }),
+                        proportion: "product"
+                    }
+                })
 
-                    photoURLForDB.push(url)
-                } else {
-                    //console.log('passa');
-                    photoURLForDB.push(photo)
+                for (let i = 0; i < photoURLForDB.length; i++) {
+                    photoURLForDB[i].file = photoUploaded.data.uploadImages[i]
                 }
-                i++
             } catch {
                 addToast({ position: 'top', title: 'Errore upload immagine', description: "errore durante l'upload dell'immagini", status: 'error', duration: 5000, isClosable: false })
-                break;
             }
         }
+
+
+
+        console.log(photoURLForDB);
+        let photoForDB = product?.photos
+
+        if (photoForDB) {
+            for (let i = 0; i < photoURLForDB.length; i++) {
+                photoForDB[photoURLForDB[i].position] = photoURLForDB[i].file
+            }
+        }
+
+        console.log(photoForDB);
+
         //console.log(photoURLForDB);
         if (!product) return setLoading(false)
 
@@ -173,10 +203,10 @@ const index = () => {
             brand: product.brand != brand ? brand : product.brand,
             colors: product.colors != colorsToDB && colorsToDB[0] ? colorsToDB : product.colors,
             sizes: product.sizes != sizes ? sizes : product.sizes,
-            status: isActive === true ? 'active' : 'not_active'
+            status: isActive === true ? 'active' : 'not_active',
             //!remove photos 
             //! should use newPhotos: [Upload!] & deletedPhotos: [String!]
-            // photos: product.photos != photos ? photoURLForDB : product.photos,
+            photos: photoForDB
         }
 
         // console.log(name, price, brand, colors, macrocategory, microcategory, sizes, photos);
@@ -219,6 +249,9 @@ const index = () => {
                     status(/* cachedvalue */) {
                         return isActive === true ? 'active' : 'not_active'
                     },
+                    photos(/* cachedvalue */) {
+                        return photoForDB
+                    }
                 },
                 broadcast: false // Include this to prevent automatic query refresh
             });
@@ -357,11 +390,22 @@ const index = () => {
                             <div className='w-full sm:w-fit lg:w-4/12 h-fit grid gap-5 grid-cols-2 mt-8'>
                                 {product.photos?.map((image: any, id: number) => {
                                     return (
-                                        <img
-                                            key={image}
-                                            className='rounded'
-                                            src={imageKitUrl(image, 305, 440)} alt="immagine non trovata" />
+                                        <div key={id}>
+                                            {
+                                                image?.url ? (
+                                                    <img
+                                                        className='rounded'
+                                                        src={image.url} alt="immagine non trovata" />
+                                                ) : (
+                                                    <img
+                                                        className='rounded'
+                                                        src={imageKitUrl(image, 305, 440)} alt="immagine non trovata" />
+                                                )
+                                            }
+                                        </div>
+
                                     )
+
                                 })}
                             </div>
                             <div className='md:w-1/2 lg:w-5/12'>
