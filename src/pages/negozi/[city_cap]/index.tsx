@@ -29,7 +29,7 @@ export async function getStaticProps(ctx: any) {
         const { data, error } = await apolloClient.query({
             query: GET_SHOPS_BY_LOCATION,
             variables: {
-                range: 5000,
+                range: 10000,
                 limit: 100,
                 offset: 0,
                 filters: {
@@ -85,7 +85,7 @@ const index: React.FC<{ city: string, postcode: null | string, shops: Shop[], er
             return await apolloClient.query({
                 query: GET_SHOPS_BY_LOCATION,
                 variables: {
-                    range: 5000,
+                    range: 10000,
                     limit: 10,
                     offset: 0,
                     filters: {
