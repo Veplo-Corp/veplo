@@ -44,7 +44,7 @@ const Home: NextPage = () => {
 
         <Gradient_Component_home display='flex'>
           <h1 className='text-6xl md:text-7xl lg:text-8xl font-black text-white md:w-7/12 my-auto md:leading-[90px] lg:leading-[110px] '>
-            SCOPRI <br/>I TUOI<br/> DINTORNI
+            SCOPRI <br />I TUOI<br /> DINTORNI
           </h1>
           <div
             className='mt-8 md:m-auto'
@@ -117,9 +117,9 @@ const Home: NextPage = () => {
           px-5
          '
         >
-          <h1 className='text-4xl md:text-5xl lg:text-6xl font-black my-auto md:leading-[90px] lg:leading-[110px] text-center mb-5 md:mb-0'>
+          <h3 className='text-4xl md:text-5xl lg:text-6xl font-black my-auto md:leading-[90px] lg:leading-[110px] text-center mb-5 md:mb-0'>
             ESSERE VEPLO
-          </h1>
+          </h3>
           <h2 className='text-xl md:text-3xl px-4 md:px-36 text-center font-medium md:font-bold md:mt-2'>
             Veplo è la community che permette a tutti i negozi di vestiti
             di mostrare online i propri prodotti.
@@ -135,13 +135,14 @@ const Home: NextPage = () => {
               height={'16'}
               paddingX={'20'}
               backgroundColor={'gray.900'}
+              marginX={'auto'}
               onClick={() => {
                 router.push('/shop/login?type=registration')
               }}
             >
               Crea un negozio senza costi
             </Button>
-            <Button
+            {/* <Button
               border='2px'
               borderColor='gray.900'
               rounded={'2xl'}
@@ -156,13 +157,13 @@ const Home: NextPage = () => {
             >
               cerca i vestiti nella tua zona
 
-            </Button>
+            </Button> */}
 
           </div>
-          <h2 className='text-md  md:text-xl xl:px-96 text-center font-base mt-6 md:mt-12'>
+          <h3 className='text-md  md:text-xl xl:px-96 text-center font-base mt-4 md:mt-12'>
             Crea il tuo negozio gratuitamente e inizia a mostrare
             a tutti i tuoi vestiti!
-          </h2>
+          </h3>
         </div>
         <Section>
           <div

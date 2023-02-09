@@ -256,7 +256,7 @@ const index = () => {
                 broadcast: false // Include this to prevent automatic query refresh
             });
 
-            addToast({ position: 'top', title: 'Prodotto aggiornato con successo', description: `${options.name.toUpperCase()} è stato aggiornato con successo. Controla nella sezione dedicata`, status: 'success', duration: 5000, isClosable: true })
+            addToast({ position: 'top', title: 'Prodotto aggiornato con successo', description: `${options.name.toUpperCase()} è stato aggiornato con successo`, status: 'success', duration: 5000, isClosable: true })
             router.back()
         } catch (e: any) {
 
