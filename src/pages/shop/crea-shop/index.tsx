@@ -402,8 +402,8 @@ const index = () => {
     }
 
     const submitData = async (e: IFormInput) => {
-        const url = await uploadPhotoFirebase(image?.blob, `/${user.uid}/shop_image/immagine`)
-        console.log(url);
+        // const url = await uploadPhotoFirebase(image?.blob, `/${user.uid}/shop_image/immagine`)
+        // console.log(url);
 
         const Shop: IFormInput = {
             name: e.name,

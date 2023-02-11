@@ -170,7 +170,6 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
   const [loading, setLoading] = useState(false);
   const router = useRouter()
   useEffect(() => {
-
     const start = () => {
       console.log("start");
       setLoading(true);

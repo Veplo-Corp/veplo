@@ -148,8 +148,8 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
 
     const onChangeStatus = (DBstatus: string, productId: string) => {
         handleChangeStatus(DBstatus, productId)
-
     }
+
 
 
 
@@ -217,6 +217,9 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                     </Thead>
                     <Tbody >
                         {data?.shop.products && (productsOnTextSearched.inputText.length > 0 ? productsOnTextSearched.products : data?.shop.products).map((product: Product | any) => {
+
+                            const categoryAndmicrocategory = (`${product.macroCategory} - ${product.microCategory}`).length > 20 ? (`${product.macroCategory} - ${product.microCategory}`).substring(0, 20) + '...' : (`${product.macroCategory} - ${product.microCategory}`)
+
                             return (
                                 <Tr key={product.id} fontSize={['xs', 'medium']} >
                                     <Td className='hidden md:table-cell'>
@@ -261,7 +264,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                                     </Td>
                                     <Td p={[2, 4]} className='hidden md:table-cell'>
                                         <span>
-                                            {product.macroCategory} - {product.microCategory}
+                                            {categoryAndmicrocategory}
                                         </span>
                                     </Td>
                                     <Td px={[0.5, 4]} isNumeric >
