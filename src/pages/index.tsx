@@ -125,7 +125,7 @@ const Home: NextPage = () => {
             di mostrare online i propri prodotti.
           </h2>
           <div
-            className='grid md:flex gap-5 xl:gap-10 md:justify-between md:w-10/12 lg:w-8/12  xl:w-6/12 mt-10 m-auto justify-center'>
+            className='grid md:flex gap-5 xl:gap-10 md:justify-between md:w-6/12 lg:w-4/12 mt-10 m-auto justify-center'>
             <Button
               border='2px'
               borderColor='gray.900'
@@ -133,7 +133,7 @@ const Home: NextPage = () => {
               colorScheme='white'
               textColor={'gray.100'}
               height={'16'}
-              paddingX={'20'}
+              width={'full'}
               backgroundColor={'gray.900'}
               marginX={'auto'}
               onClick={() => {
