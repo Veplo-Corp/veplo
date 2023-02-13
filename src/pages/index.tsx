@@ -71,7 +71,7 @@ const Home: NextPage = () => {
               rounded={'xl'}
               colorScheme='white'
               textColor={'gray.900'}
-              width={'80'}
+              width={['full', '80']}
               height={'16'}
               display='flex'
               justifyContent={'space-between'}
