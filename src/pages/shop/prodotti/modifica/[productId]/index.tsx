@@ -285,22 +285,36 @@ const index = () => {
     }
 
     const deleteDiscount = async () => {
-        console.log('sconto applicato');
+        setLoadingHandleDiscount(true)
+
         try {
             await editProduct({
                 variables: {
                     id: productId,
                     options: {
                         price: {
+                            v1: product?.price.v1
+                        }
+                    }
+                }
+            })
+            const normalizedId = apolloClient.cache.identify({ id: productId, __typename: 'Product' });
+            apolloClient.cache.modify({
+                id: normalizedId,
+                fields: {
+                    price(/* cachedvalue */) {
+                        return {
                             v2: null,
                             discountPercentage: null
                         }
                     }
                 }
-            })
+            });
+            setIsOpen(false)
+            setLoadingHandleDiscount(false)
+            addToast({ position: 'top', title: 'Sconto eliminato con successo', description: `${product?.name.toUpperCase()} è stato aggiornato con successo`, status: 'success', duration: 5000, isClosable: true })
         } catch (e) {
-            console.log(e);
-
+            addToast({ position: 'top', title: 'Errore durante la eliminazione sconto', description: "abbiamo riscontrato un errore durante la eliminazione dello sconto. Riprova più tardi", status: 'error', duration: 5000, isClosable: false })
         }
 
     }

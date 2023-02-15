@@ -4,7 +4,7 @@ export const imageKitUrl = (/* googleUrl */imageUid: string, width?: number, hei
     const imageKitUrlBase = 'https://ik.imagekit.io/veplo/'
     return imageKitUrlBase + imageUid + `?tr=w-${width},h-${height}`
   } else {
-    const endpoint = 'https://spaceprova1.fra1.cdn.digitaloceanspaces.com/'
+    const endpoint = 'https://veploimg.fra1.cdn.digitaloceanspaces.com'/* https://spaceprova1.fra1.cdn.digitaloceanspaces.com/ */
     return endpoint + imageUid
   }
   // return googleUrl.replace(
