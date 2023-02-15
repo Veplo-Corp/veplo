@@ -3,7 +3,7 @@ import React, { FC, useLayoutEffect, useState } from 'react'
 import Div_input_creation from '../atoms/Div_input_creation'
 import { onChangeNumberPrice } from '../utils/onChangePrice';
 
-const Modal_Edit_Discount: FC<{ isOpen: boolean, onConfirm: any, onClose: () => void, deleteDiscount: () => void, loading: boolean; price: { v1: number, v2: number | null, discountPercentage: number | null } }> = ({ isOpen, onConfirm, deleteDiscount, onClose, loading, price }) => {
+const Modal_Edit_Discount: FC<{ isOpen: boolean, onConfirm: any, onClose: () => void, deleteDiscount: any, loading: boolean; price: { v1: number, v2: number | null, discountPercentage: number | null } }> = ({ isOpen, onConfirm, deleteDiscount, onClose, loading, price }) => {
 
     const [priceNoDiscount, setPriceNoDiscount] = useState<any>('0');
     const [priceDiscounted, setpriceDiscounted] = useState<any>(0);
@@ -22,8 +22,6 @@ const Modal_Edit_Discount: FC<{ isOpen: boolean, onConfirm: any, onClose: () => 
     }
 
     useLayoutEffect(() => {
-        console.log(price);
-        
         setPriceNoDiscount(price.v1)
         if (price.v2 && price.discountPercentage) {
             setpriceDiscounted(price.v2)
@@ -32,7 +30,7 @@ const Modal_Edit_Discount: FC<{ isOpen: boolean, onConfirm: any, onClose: () => 
             setpriceDiscounted(0)
             setDiscount(0)
         }
-    }, [price.v1])
+    }, [price.v1, price.v2])
 
 
 
@@ -102,8 +100,9 @@ const Modal_Edit_Discount: FC<{ isOpen: boolean, onConfirm: any, onClose: () => 
                         </InputGroup>
                     </Div_input_creation>
                     {price.discountPercentage && <Box
-                        onClick={() =>
-                            deleteDiscount()
+                        onClick={async () => {
+                            const result = await deleteDiscount()
+                        }
                         }
                         as='h4'
                         fontSize={['xs', 'xs']}
@@ -111,7 +110,7 @@ const Modal_Edit_Discount: FC<{ isOpen: boolean, onConfirm: any, onClose: () => 
                         lineHeight='none'
                         noOfLines={1}
                         my={'2'}
-                        
+
                         textColor={'red.600'}
                         className='cursor-pointer'
                     >
@@ -154,7 +153,7 @@ const Modal_Edit_Discount: FC<{ isOpen: boolean, onConfirm: any, onClose: () => 
                     </Button>
                 </ModalFooter>
             </ModalContent>
-        </Modal>
+        </Modal >
     )
 }
 
