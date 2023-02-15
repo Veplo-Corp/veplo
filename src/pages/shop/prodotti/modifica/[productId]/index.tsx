@@ -286,7 +286,6 @@ const index = () => {
 
     const deleteDiscount = async () => {
         setLoadingHandleDiscount(true)
-
         try {
             await editProduct({
                 variables: {
@@ -314,9 +313,9 @@ const index = () => {
             setLoadingHandleDiscount(false)
             addToast({ position: 'top', title: 'Sconto eliminato con successo', description: `${product?.name.toUpperCase()} è stato aggiornato con successo`, status: 'success', duration: 5000, isClosable: true })
         } catch (e) {
+            setLoadingHandleDiscount(false)
             addToast({ position: 'top', title: 'Errore durante la eliminazione sconto', description: "abbiamo riscontrato un errore durante la eliminazione dello sconto. Riprova più tardi", status: 'error', duration: 5000, isClosable: false })
         }
-
     }
 
     const handleDiscountChange = async (v1: number, v2: string, discountPercentage: string) => {
@@ -379,7 +378,7 @@ const index = () => {
                 ,
                 status: 'success', duration: 8000, isClosable: true
             })
-            router.back()
+            //router.back()
         }
         catch (e) {
             console.log(e);
@@ -528,7 +527,7 @@ const index = () => {
                             </div>
                         </div>
                         <Modal_Edit_Discount isOpen={isOpen}
-                            deleteDiscount={deleteDiscount}
+                            deleteDiscount={async () => { await deleteDiscount() }}
                             price={product.price}
                             onConfirm={(v1: number, v2: string, discountPercentage: string) => {
                                 handleDiscountChange(v1, v2, discountPercentage)
