@@ -1,7 +1,7 @@
 
 export const imageKitUrl = (/* googleUrl */imageUid: string, width?: number, height?: number) => {
   if (typeof width !== 'undefined' && typeof height !== 'undefined') {
-    const imageKitUrlBase = 'https://ik.imagekit.io/veplo/'
+    const imageKitUrlBase = 'https://ik.imagekit.io/veploimages/'
     return imageKitUrlBase + imageUid + `?tr=w-${width},h-${height}`
   } else {
     const endpoint = 'https://veplo-images.fra1.digitaloceanspaces.com'/* https://spaceprova1.fra1.cdn.digitaloceanspaces.com/ */

@@ -234,6 +234,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                                                 className='w-20'
                                                 src={
                                                     imageKitUrl(product.photos[0], 80, 115)
+                                                    //addAWSPath(product.photos[0])
                                                 }>
                                             </Image>)}
                                     </Td>
