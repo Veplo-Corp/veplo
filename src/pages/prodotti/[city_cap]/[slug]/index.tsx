@@ -181,6 +181,13 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
     const plus_for_limit = 6;
     console.log('RIPASSA');
 
+    if (products.length % plus_for_limit !== 0 || data?.products.length === 0) {
+
+      setHasMoreData(false)
+
+      return console.log('no more data');
+
+    }
     if (useFilter) {
       const { brands, minPrice, maxPrice, colors, sizes } = router.query
       let filters: any = createFilterObject(
