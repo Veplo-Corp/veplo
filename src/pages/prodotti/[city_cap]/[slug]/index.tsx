@@ -174,7 +174,8 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
   }
 
   const fetchMoreData = async () => {
-    // console.log('moredata');
+
+    console.log(category);
     // console.log(offset);
     const apolloClient = initApollo()
     const plus_for_limit = 6;
@@ -232,9 +233,6 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
         setHasMoreData(false)
       }
     } else {
-
-
-
       try {
         // if (productsFounded.length % plus_for_limit !== 0) {
         //   return setHasMoreData(false)
@@ -248,7 +246,7 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
             filters: {
               //test postcode
               cap: postcode,
-              macroCategory: '',
+              macroCategory: category ? category : '',
               gender: gender === 'Uomo' ? 'M' : 'F'
             }
           }
@@ -266,7 +264,6 @@ const index: React.FC<{ city: any, gender: any, category: any, postcode: any, pr
 
 
         if (data?.products.length % plus_for_limit !== 0 || data?.products.length === 0) {
-
           setHasMoreData(false)
         }
 
