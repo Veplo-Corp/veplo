@@ -27,6 +27,8 @@ import Footer from '../../components/organisms/Footer'
 import PostMeta from '../../components/organisms/PostMeta'
 import Script from 'next/script'
 import { Open_Sans } from '@next/font/google'
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js'
 
 
 const theme = extendTheme({
@@ -167,6 +169,7 @@ const sans = Open_Sans({ subsets: ['latin'] })
 
 
 function MyApp({ Component, pageProps }: any /* AppProps */) {
+
   const [loading, setLoading] = useState(false);
   const router = useRouter()
   useEffect(() => {
@@ -224,6 +227,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
 
   return (
     <Provider store={store}>
+
       <ApolloProvider client={apolloClient} > {/* client={clientApollo} */}
         <ChakraProvider theme={theme}>
           <Auth>
@@ -240,6 +244,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
           </Auth>
         </ChakraProvider>
       </ApolloProvider>
+
     </Provider >
 
   )

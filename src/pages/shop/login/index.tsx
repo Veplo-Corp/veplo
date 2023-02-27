@@ -19,6 +19,8 @@ import { useRouter } from 'next/router'
 import { Firebase_User } from '../../../interfaces/firebase_user.interface'
 import Login_or_Registration from '../../../../components/organisms/Login_or_Registration'
 import SET_IS_SHOP from '../../../lib/apollo/mutations/setIsShop';
+import CREATE_BUSINESS_ACCOUNT from '../../../lib/apollo/mutations/createBusinessAccount';
+
 import Loading from '../../../../components/molecules/Loading'
 import PostMeta from '../../../../components/organisms/PostMeta'
 import List_Explanation_Veplo_Shop from '../../../../components/molecules/List_Explanation_Veplo_Shop'
@@ -29,7 +31,8 @@ import List_Explanation_Veplo_Shop from '../../../../components/molecules/List_E
 const index = () => {
   const router = useRouter()
   const { type }: any /* 'registration' | 'login' | 'reset_password' */ = router.query
-  const [setIsShop] = useMutation(SET_IS_SHOP)
+  //const [setIsShop] = useMutation(SET_IS_SHOP)
+  const [setBusinessAccount] = useMutation(CREATE_BUSINESS_ACCOUNT)
   const [loading, setLoading] = useState(false)
   // const [showPassword, setshowPassword] = useState<boolean>(false)
   // const [email, setemail] = useState<string>('')
@@ -106,7 +109,6 @@ const index = () => {
   const handleSubmit = async (email: string, password: string) => {
     setLoading(true)
     if (typeForm === 'registration') {
-      console.log('passa qui');
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         // Signed in 
@@ -114,26 +116,21 @@ const index = () => {
         setAuthTokenInSessionStorage(idToken)
         console.log(idToken);
         await sendEmailVerificationHanlder()
-        // dispatch(
-        //   login(
-        //     {
-        //       email: user.email,
-        //       uid: user.uid,
-        //       idToken: idToken,
-        //       emailVerified: user.emailVerified,
-        //       isShop: true,
-        //       createdAt: 'now'
-        //     }
-        //   )
-        // );
 
-        await setIsShop({
-          variables: {
-            isShop: true
-          }
-        })
-        await router.push('/shop/crea-shop')
-        router.reload()
+        //!deprecated
+        // await setIsShop({
+        //   variables: {
+        //     isBusiness: true
+        //   }
+        // })
+
+
+        const account = await setBusinessAccount()
+        console.log(account);
+
+
+        await router.push('/shop/crea-business-account')
+        //router.reload()
         // setemail('')
         // setpassword('')
       } catch (error: any) {
