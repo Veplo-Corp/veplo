@@ -8,6 +8,8 @@ import { useMutation } from '@apollo/client';
 import CREATE_STRIPE_BUSINESS_ACCOUNT from '../../../lib/apollo/mutations/createStripeBusinessAccount';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import BoxExplenationStripe from '../../../../components/atoms/BoxExplenationStripe'
+
 
 interface Props {
     businessName: string,
@@ -149,32 +151,7 @@ const index = () => {
                         {isValid_businessPhoneNumber === false && <p className='text-sm md:text-xs text-red-600'>Inserisci un numero corretto</p>}
                     </Div_input_creation>
                 </VStack>
-                <Box
-                    borderColor={'gray.300'}
-                    borderWidth={1}
-                    display={'flex'}
-                    justifyContent={'space-between'}
-                    paddingX={6}
-                    paddingY={4}
-                    background={'gray.50'}
-
-                    borderRadius={'10'}
-                    marginTop={6}
-                    marginBottom={8}
-                >
-                    <Box
-                        fontSize={['12px', '13px']}
-                        mr={4}
-                    >
-                        Utilizziamo Stripe per assicurarci che i pagamenti avvengano in tempo e per mantenere al sicuro i tuoi dati personali.
-                        Fai clic su <strong> Conferma informazioni </strong> per procedere alla registrazione con Stripe.
-                    </Box>
-                    <img
-                        className='w-2/12 md:1/4'
-                        src={'/static/stripeLogo.svg'}
-                        alt='Stripe'
-                    />
-                </Box>
+                <BoxExplenationStripe textBold='Conferma informazioni' />
 
                 <BlackButton
                     disabled={false}

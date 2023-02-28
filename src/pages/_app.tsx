@@ -82,26 +82,30 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         //console.log(idToken);
         const tokenResult = await userAuth.getIdTokenResult()
         // user is logged in, send the user's details to redux, store the current user in the state
-        const isShop = tokenResult.claims.isShop ? true : false;
+        const isBusiness = tokenResult.claims.isBusiness ? true : false;
+
+        console.log(tokenResult.claims);
+
+
         let ISODate: any = userAuth.metadata.creationTime
         if (userAuth.metadata.creationTime) {
           ISODate = new Date(userAuth.metadata.creationTime)
         }
         let date_for_redux = ('0' + ISODate.getDate()).slice(-2) + '/' + ('0' + ISODate.getMonth() + 1).slice(-2) + '/' + ISODate.getFullYear();
-        if (!isShop && userAuth.uid) {
+        if (!isBusiness && userAuth.uid) {
           dispatch(
             login({
               email: userAuth.email,
               uid: userAuth.uid,
               idToken: idToken,
               emailVerified: userAuth.emailVerified,
-              isShop: false,
+              isBusiness: false,
               createdAt: date_for_redux || new Date(),
               shopId: undefined
             })
           );
           return
-        } else if (isShop === true) {
+        } else if (isBusiness === true) {
 
           try {
             const { data, error } = await apolloClient.query({
@@ -112,15 +116,13 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               // nextFetchPolicy: 'cache-only',
             })
 
-
-
             dispatch(
               login({
                 email: userAuth.email,
                 uid: userAuth.uid,
                 idToken: idToken,
                 emailVerified: userAuth.emailVerified,
-                isShop,
+                isBusiness,
                 createdAt: date_for_redux,
                 shopId: data?.shopByFirebaseId?.id || null
               })
@@ -135,7 +137,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
                 uid: userAuth.uid,
                 idToken: idToken,
                 emailVerified: userAuth.emailVerified,
-                isShop,
+                isBusiness,
                 createdAt: date_for_redux,
                 shopId: null
               })
