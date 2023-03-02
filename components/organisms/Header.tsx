@@ -110,14 +110,14 @@ const Header = () => {
             <Drawer_User_Search handleChangeAddress={() => {
                 setopenDrawer(Math.random())
             }} address_user={address_user} openDrawerMath={openDrawerSearch} />
-            {user?.isShop && <Drawer_Menu openDrawerMath={openDrawerMenu} user={user} onCloseModal={() => { setOpenDrawerMenu(1) }} />}
+            {user?.isBusiness && <Drawer_Menu openDrawerMath={openDrawerMenu} user={user} onCloseModal={() => { setOpenDrawerMenu(1) }} />}
 
             {!user && <JoinUs_Navbar />}
 
 
 
             {/* Menu button, Search button and Veplo Logo for screen >=md */}
-            {user && user.isShop && <div className=" fixed z-50 top-3 right-2 md:hidden">
+            {user && user.isBusiness && <div className=" fixed z-50 top-3 right-2 md:hidden">
                 <button
                     onClick={() => {
                         setOpenDrawerMenu(Math.random())
@@ -131,16 +131,16 @@ const Header = () => {
                 </button>
             </div>}
             <div className={` md:pl-2 fixed z-50 ${!user ? 'top-3 md:top-9' : 'top-3'} left-3 `}> {/* lg:w-0 lg:flex-1 */}
-                {!user?.isShop &&
+                {!user?.isBusiness &&
                     <To_Home_Logo href='/' />
                 }
-                {user?.isShop &&
+                {user?.isBusiness &&
                     <To_Home_Logo href='/shop/prodotti' />
                 }
             </div>
 
             <div className={` pl-2 lg:pl-8 fixed z-50 ${!user ? 'top-3 md:top-10' : 'top-3'} right-16 `}> {/* lg:w-0 lg:flex-1 */}
-                {(!user || !user.Not_yet_Authenticated_Request) && !user?.isShop && address_user &&
+                {(!user || !user.Not_yet_Authenticated_Request) && !user?.isBusiness && address_user &&
                     <div className='hidden md:flex cursor-pointer'
                         onClick={() => setopenDrawer(Math.random())}
                     >
@@ -163,7 +163,7 @@ const Header = () => {
                     <div className="py-3 lg:justify-start lg:space-x-10">
                         <div className='flex items-center justify-between h-8 '>
 
-                            {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) &&
+                            {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isBusiness) &&
                                 <>
                                     <Navbar showCategory={showCategory.show} onShowCategory={handleShowCategory} openAddressModal={searchCategory} />
 
@@ -176,7 +176,7 @@ const Header = () => {
                             >
 
                                 {/* button for Mobile */}
-                                {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isShop) &&
+                                {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isBusiness) &&
                                     <div className={`pl-2 md:pl-8 fixed z-50 top-3 md:top-4 right-2 md:hidden`}>
                                         {/* searchButton */}
                                         <div className='flex gap-0.5'>
@@ -198,12 +198,12 @@ const Header = () => {
 
 
                             <div className={`hidden md:flex gap-2 fixed ${!user ? 'top-9' : 'top-2'} right-4 z-10`}> {/* pr-80 */}
-                                {(!user || !user.Not_yet_Authenticated_Request) && !user?.isShop &&
+                                {(!user || !user.Not_yet_Authenticated_Request) && !user?.isBusiness &&
                                     <>
                                         <User_Popover />
                                     </>
                                 }
-                                {user && user.isShop &&
+                                {user && user.isBusiness &&
                                     <button
                                         onClick={() => {
                                             setOpenDrawerMenu(Math.random())

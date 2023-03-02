@@ -41,7 +41,6 @@ const index = () => {
             value = e.target.value.replace(/[^0-9]+/g, '');
         }
 
-
         switch (type) {
             case 'businessVAT':
                 value = e.target.value.replace(/[^0-9]/g, '')
@@ -88,6 +87,7 @@ const index = () => {
                         const result = await response.json()
                         router.push(result.url)
                     } catch (e: any) {
+                        console.log(e);
 
                     }
                 })}
@@ -111,6 +111,7 @@ const index = () => {
                                 })}
                                 textAlign={"start"}
                                 borderColor={'gray.300'}
+                                placeholder={'boutique S.r.l.'}
                             />
                         </InputGroup>
                     </Div_input_creation>

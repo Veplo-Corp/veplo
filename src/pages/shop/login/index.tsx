@@ -18,7 +18,6 @@ import { setModalTitleAndDescription, handleOpenModal } from '../../../store/red
 import { useRouter } from 'next/router'
 import { Firebase_User } from '../../../interfaces/firebase_user.interface'
 import Login_or_Registration from '../../../../components/organisms/Login_or_Registration'
-import SET_IS_SHOP from '../../../lib/apollo/mutations/setIsShop';
 import CREATE_BUSINESS_ACCOUNT from '../../../lib/apollo/mutations/createBusinessAccount';
 
 import Loading from '../../../../components/molecules/Loading'
@@ -52,9 +51,9 @@ const index = () => {
 
       if (typeof user.shopId === 'string') {
         router.push('/shop/prodotti')
-      } else if (user.isShop === false) {
+      } else if (user.isBusiness === false) {
 
-      } else if (user?.isShop === true) {
+      } else if (user?.isBusiness === true) {
         router.push('/shop/crea-shop')
       }
 
@@ -150,8 +149,8 @@ const index = () => {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
         const tokenResult = await userCredential.user.getIdTokenResult();
-        const isShop = tokenResult.claims.isShop ? true : false
-        if (!isShop) {
+        const isBusiness = tokenResult.claims.isBusiness ? true : false
+        if (!isBusiness) {
           // const errorForModal = handleErrorFirebase('auth/user-not-shop')
           // dispatch(setModalTitleAndDescription({
           //   title: errorForModal?.title,

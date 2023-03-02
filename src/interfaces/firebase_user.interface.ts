@@ -3,8 +3,8 @@ export interface Firebase_User {
     uid: string,
     idToken: string,
     emailVerified?: boolean,
-    isShop?: boolean,
+    isBusiness?: boolean,
     createdAt?: string,
-    shopId?:string,
+    shopId?: string,
     Not_yet_Authenticated_Request?: boolean
 }

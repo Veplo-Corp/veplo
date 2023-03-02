@@ -84,14 +84,12 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         // user is logged in, send the user's details to redux, store the current user in the state
         const isBusiness = tokenResult.claims.isBusiness ? true : false;
 
-        console.log(tokenResult.claims);
-
 
         let ISODate: any = userAuth.metadata.creationTime
         if (userAuth.metadata.creationTime) {
           ISODate = new Date(userAuth.metadata.creationTime)
         }
-        let date_for_redux = ('0' + ISODate.getDate()).slice(-2) + '/' + ('0' + ISODate.getMonth() + 1).slice(-2) + '/' + ISODate.getFullYear();
+        let date_for_redux = ('0' + ISODate.getDate()).slice(-2) + '/' + ('0' + Number(ISODate.getMonth() + 1)).slice(-2) + '/' + ISODate.getFullYear();
         if (!isBusiness && userAuth.uid) {
           dispatch(
             login({
@@ -106,7 +104,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
           );
           return
         } else if (isBusiness === true) {
-
           try {
             const { data, error } = await apolloClient.query({
               query: GET_SHOP_BY_FIREBASE_ID,
@@ -115,7 +112,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               fetchPolicy: 'cache-first',
               // nextFetchPolicy: 'cache-only',
             })
-
             dispatch(
               login({
                 email: userAuth.email,

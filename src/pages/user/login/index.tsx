@@ -60,7 +60,7 @@ const index = () => {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
         const tokenResult = await userCredential.user.getIdTokenResult();
-        const isShop = tokenResult.claims.isShop ? true : false
+        const isBusiness = tokenResult.claims.isBusiness ? true : false
         // setemail('')
         // setpassword('')
         return router.push('/')
