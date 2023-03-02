@@ -90,56 +90,25 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
           ISODate = new Date(userAuth.metadata.creationTime)
         }
         let date_for_redux = ('0' + ISODate.getDate()).slice(-2) + '/' + ('0' + Number(ISODate.getMonth() + 1)).slice(-2) + '/' + ISODate.getFullYear();
-        if (!isBusiness && userAuth.uid) {
+        // const { data, error } = await apolloClient.query({
+        //   query: GET_SHOP_BY_FIREBASE_ID,
+        //   variables: { firebaseId: userAuth.uid },
+        //   //!useless
+        //   fetchPolicy: 'cache-first',
+        // })
+        if (userAuth.uid) {
           dispatch(
             login({
               email: userAuth.email,
               uid: userAuth.uid,
               idToken: idToken,
               emailVerified: userAuth.emailVerified,
-              isBusiness: false,
+              isBusiness,
               createdAt: date_for_redux || new Date(),
               shopId: undefined
             })
           );
           return
-        } else if (isBusiness === true) {
-          try {
-            const { data, error } = await apolloClient.query({
-              query: GET_SHOP_BY_FIREBASE_ID,
-              variables: { firebaseId: userAuth.uid },
-              //!useless
-              fetchPolicy: 'cache-first',
-              // nextFetchPolicy: 'cache-only',
-            })
-            dispatch(
-              login({
-                email: userAuth.email,
-                uid: userAuth.uid,
-                idToken: idToken,
-                emailVerified: userAuth.emailVerified,
-                isBusiness,
-                createdAt: date_for_redux,
-                shopId: data?.shopByFirebaseId?.id || null
-              })
-            );
-            // if(!data?.shopByFirebaseId?.id){
-            //   router.push('/shop/crea-shop')
-            // }
-          } catch (e: any) {
-            dispatch(
-              login({
-                email: userAuth.email,
-                uid: userAuth.uid,
-                idToken: idToken,
-                emailVerified: userAuth.emailVerified,
-                isBusiness,
-                createdAt: date_for_redux,
-                shopId: null
-              })
-            );
-          }
-
         }
       } else {
         console.log('effettua il logout');
