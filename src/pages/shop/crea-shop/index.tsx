@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Box, Button, Center, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, Center, Input, InputGroup, InputLeftAddon, Select } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import BlackButton from '../../../../components/atoms/BlackButton'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
@@ -27,6 +27,7 @@ import { resizeFile } from '../../../../components/utils/resizeFile'
 import uploadPhotoFirebase from '../../../../components/utils/uploadPhotoFirebase'
 import PostMeta from '../../../../components/organisms/PostMeta'
 import NoIndexSeo from '../../../../components/organisms/NoIndexSeo'
+import isShopOpen from '../../../../components/utils/isShopOpen'
 
 
 type Image = {
@@ -38,7 +39,10 @@ type Image = {
 
 interface IFormInput {
     name?: string;
-    postcode?: string
+    //! togliere description (obbligatoria), macrocategories e gendere in createProduct
+    //!deve inserire tommaso
+    photo: string[],
+    isDigitalOnly?: boolean
     address?: {
         city: string | undefined
         street: string
@@ -47,19 +51,22 @@ interface IFormInput {
             coordinates: number[]
         }
     }
-    opening?: {
-        days: number[],
-        hours: string[]
-    },
-    description?: ''
+    info?: {
+        phone?: string
+        description?: ''
+        opening?: {
+            days: number[],
+            hours: string[],
+        },
+    }
 
-    //! togliere description (obbligatoria), macrocategories e gendere in createProduct
-    //!deve inserire tommaso
-    piva: string
-    photo: string[]
-    phone: string
 }
 
+
+const typeShop = [
+    'Fisico',
+    'Digitale'
+]
 
 const index = () => {
 
@@ -78,10 +85,10 @@ const index = () => {
     //* input to create shop
     const [shop_name, setShop_name] = useState('')
     const [shop_phone, setShop_phone] = useState('')
-    const [shop_piva, setShop_piva] = useState('');
     const [open_hour, setOpen_hour] = useState('');
     const [close_hour, setClose_hour] = useState('');
     const [days_open, setDays_open] = useState<any[]>([]);
+    const [shopIsDigital, setShopIsDigital] = useState(false)
     const days = useRef<Day[]>(DAYS)
 
 
@@ -94,7 +101,6 @@ const index = () => {
     }
     //* validators
     const [isValid_shop_phone, setIsValid_Shop_phone] = useState<boolean | null>(null)
-    const [isValid_shop_piva, setIsValid_Shop_piva] = useState<boolean | null>(null)
     const [isValid_open_hour, setIsValid_Open_hour] = useState<boolean | null>(null)
     const [isValid_close_hour, setIsValid_Close_hour] = useState<boolean | null>(null)
 
@@ -319,9 +325,7 @@ const index = () => {
 
         setAddress(result);
         setAddress_Mapbox('');
-
         setShowAddress(true)
-
         console.log(result);
         return setAddresses([])
     }
@@ -343,12 +347,7 @@ const index = () => {
                 setShop_phone(value)
                 setIsValid_Shop_phone(true)
                 break;
-            case 'shop_piva':
-                let inputValue: string = e.target.value.replace(/[^0-9]/g, '')
-                setValue('piva', inputValue);
-                // setShop_piva(value)
-                // setIsValid_Shop_piva(true)
-                break;
+
             case 'days_open':
                 // setDays_open(e)
                 // console.log(value);                
@@ -359,7 +358,7 @@ const index = () => {
                 }
 
                 dayArray = dayArray.sort()
-                setValue('opening.days', dayArray);
+                setValue('info.opening.days', dayArray);
                 break;
             default:
                 console.log(`Sorry, we are out of ${type}.`);
@@ -374,11 +373,7 @@ const index = () => {
                     setIsValid_Shop_phone(false)
                 }
                 break;
-            case 'shop_piva':
-                if (shop_piva.length !== 11) {
-                    setIsValid_Shop_piva(false)
-                }
-                break;
+
             case 'open_hour':
                 newTime = customizeTime(open_hour)
                 if (newTime.length === 5) {
@@ -401,28 +396,61 @@ const index = () => {
         }
     }
 
+    const changeShopType = (event: any) => {
+        console.log(event.target.value);
+        setShopIsDigital(event.target.value === 'Digitale' ? true : false)
+    }
+
     const submitData = async (e: IFormInput) => {
         // const url = await uploadPhotoFirebase(image?.blob, `/${user.uid}/shop_image/immagine`)
         // console.log(url);
-
-        const Shop: IFormInput = {
+        let Shop: IFormInput = {
             name: e.name,
+            photo: [image?.file],
+            info: {
+                phone: watch('info.phone'),
+                description: ''
+            },
             address: {
                 city: address.city,
                 street: address.address + ' ' + address.streetNumber,
                 //postcode: address.postcode,
                 location: address.location
             },
-            opening: {
-                days: watch('opening.days'),
-                hours: [open_hour, close_hour]
-            },
-            piva: watch('piva'),
-            photo: [image?.file],
-            phone: watch('phone'),
-            description: ''
         }
+
+        if (!shopIsDigital) {
+            Shop = {
+                ...Shop,
+                isDigitalOnly: shopIsDigital,
+                photo: [image?.file],
+                info: {
+                    ...Shop.info,
+                    opening: {
+                        days: watch('info.opening.days'),
+                        hours: [open_hour, close_hour]
+                    },
+                },
+            }
+
+        }
+
+        if (shopIsDigital) {
+            Shop = {
+                ...Shop,
+                isDigitalOnly: shopIsDigital,
+                info: {
+                    ...Shop.info,
+                    opening: {
+                        days: [0, 1, 3, 4, 5, 6],
+                        hours: ["00:00", "00:00"]
+                    },
+                },
+            }
+        }
+
         console.log(Shop);
+
         try {
             //return the mongoID of the Shop
             const isCreatedShop = await createShop({ variables: { options: Shop } })
@@ -445,7 +473,7 @@ const index = () => {
             <Desktop_Layout>
                 <NoIndexSeo title={`Crea Negozio | Veplo`} />
                 <div className='flex '>
-                    <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-1/2 m-auto" onSubmit={handleSubmit(submitData)}>
+                    <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-3/4 lg:w-1/2 m-auto" onSubmit={handleSubmit(submitData)}>
                         <div className='w-full'>
                             <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>parlaci di te!</h1>
                             {imgSrc !== '' || !image &&
@@ -597,39 +625,47 @@ const index = () => {
                                         //value={shop_phone}
                                         // onBlur={() => checkInput('shop_phone')}
                                         // onChange={(event) => changeInput(event, 'shop_phone')}
-                                        {...register("phone", { required: true, minLength: 6, maxLength: 12 })}
+                                        {...register("info.phone", { required: true, minLength: 6, maxLength: 12 })}
                                     />
                                 </InputGroup>
                                 {isValid_shop_phone === false && <p className='text-sm md:text-xs text-red-600'>Inserisci un numero corretto</p>}
                             </Div_input_creation>
-                            <div className={`${showAddress ? 'hidden' : ''} mb-1 w-full`}>
-                                <div className='flex justify-between text-gray-400'>
-                                    <p className='text-xs font-normal mb-px'>
-                                        Indirizzo (es. via roma 41, Terni)
-                                    </p>
-                                    {address && <svg
-                                        onClick={() => setShowAddress(true)}
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
-                                        className="w-4 h-4 cursor-pointer my-auto">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>}
+                            <Div_input_creation text='Tipologia negozio'>
+                                <Select size='lg' marginBottom={2} onChange={changeShopType} fontSize={'md'}>
+                                    {typeShop.map((option: string) => {
+                                        return (<option
+                                            key={option} value={option}>{option}</option>)
+                                    })}
+                                </Select>
+                            </Div_input_creation>
+                            <Div_input_creation text={shopIsDigital ? 'Indirizzo sede operativa' : 'Indirizzo (es. via roma 41, Terni)'}>
+                                <div className={`${showAddress ? 'hidden' : ''} mb-1 w-full`}>
+                                    <div className='flex justify-between text-gray-400'>
 
+                                        {address.address !== '' && <svg
+                                            onClick={() => setShowAddress(true)}
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
+                                            className="w-4 h-4 cursor-pointer my-auto">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>}
+                                    </div>
+                                    <InputGroup >
+                                        <Input
+                                            maxLength={50}
+                                            rounded={10}
+                                            paddingY={6}
+                                            type='text'
+                                            autoComplete="new-password"                                        //value={address_Mapbox}
+                                            isInvalid={false}
+                                            //onChange={(event) => changeInput(event, 'search_address')}
+                                            onChange={(e) => {
+                                                onChangeAddress(e.target.value)
+                                            }}
+                                        />
+                                    </InputGroup>
                                 </div>
-                                <InputGroup >
-                                    <Input
-                                        maxLength={50}
-                                        rounded={10}
-                                        paddingY={6}
-                                        type='text'
-                                        autoComplete="new-password"                                        //value={address_Mapbox}
-                                        isInvalid={false}
-                                        //onChange={(event) => changeInput(event, 'search_address')}
-                                        onChange={(e) => {
-                                            onChangeAddress(e.target.value)
-                                        }}
-                                    />
-                                </InputGroup>
-                            </div>
+                            </Div_input_creation>
+
 
                             <div className={` my-3`}>
                                 {addresses.map((element: any) => {
@@ -727,62 +763,50 @@ const index = () => {
                                 </Div_input_creation>
                             </div>
 
-                            <Div_input_creation text='Partita Iva'>
-                                <InputGroup >
-                                    <Input
-                                        borderColor={`${isValid_shop_piva === false ? 'red.900' : 'gray.200'}`}
-                                        maxLength={11}
-                                        rounded={10}
-                                        paddingY={6}
-                                        autoComplete='off'
-                                        type='tel'
-                                        isInvalid={false}
-                                        {...register("piva", { required: true, minLength: 11, maxLength: 11 })}
-                                        onChange={(event) => changeInput(event, 'shop_piva')}
 
-                                    />
-                                </InputGroup>
-                                {isValid_shop_piva === false && <p className='text-sm md:text-xs text-red-600'>la Partita Iva deve contenere 11 numeri</p>}
-                            </Div_input_creation>
-                            <Div_input_creation text=''>
-                                <InputGroup className='flex justify-between gap-2'>
-                                    <Div_input_creation text='orario apertura'>
-                                        <Input
-                                            rounded={10}
-                                            paddingY={6}
-                                            type="time"
-                                            value={open_hour}
-                                            onChange={(event) => {
-                                                setIsValid_Open_hour(true)
-                                                setOpen_hour(event.target.value)
-                                            }}
-                                            onBlur={() => checkInput('open_hour')}
-                                            borderColor={`${isValid_open_hour === false ? 'red.900' : 'gray.200'}`}
+                            {!shopIsDigital &&
+                                <>
+                                    <Div_input_creation text=''>
+                                        <InputGroup className='flex justify-between gap-2'>
+                                            <Div_input_creation text='orario apertura'>
+                                                <Input
+                                                    rounded={10}
+                                                    paddingY={6}
+                                                    type="time"
+                                                    value={open_hour}
+                                                    onChange={(event) => {
+                                                        setIsValid_Open_hour(true)
+                                                        setOpen_hour(event.target.value)
+                                                    }}
+                                                    onBlur={() => checkInput('open_hour')}
+                                                    borderColor={`${isValid_open_hour === false ? 'red.900' : 'gray.200'}`}
+                                                />
+                                            </Div_input_creation>
+                                            <Div_input_creation text='orario chiusura'>
+                                                <Input
+                                                    rounded={10}
+                                                    paddingY={6}
+                                                    type="time"
+                                                    value={close_hour}
+                                                    onChange={(event) => {
+                                                        setClose_hour(event.target.value)
+                                                        setIsValid_Close_hour(true)
+                                                    }}
+                                                    onBlur={() => checkInput('close_hour')}
+                                                    borderColor={`${isValid_close_hour === false ? 'red.900' : 'gray.200'}`}
+                                                />
+                                            </Div_input_creation>
+                                        </InputGroup>
+                                    </Div_input_creation>
+                                    <Div_input_creation text='giorni di apertura'>
+                                        <Select_multiple_options
+                                            handleChangeState={changeInput}
+                                            values={days.current} type={'day'}
+                                            selectedValueBefore={undefined}
                                         />
                                     </Div_input_creation>
-                                    <Div_input_creation text='orario chiusura'>
-                                        <Input
-                                            rounded={10}
-                                            paddingY={6}
-                                            type="time"
-                                            value={close_hour}
-                                            onChange={(event) => {
-                                                setClose_hour(event.target.value)
-                                                setIsValid_Close_hour(true)
-                                            }}
-                                            onBlur={() => checkInput('close_hour')}
-                                            borderColor={`${isValid_close_hour === false ? 'red.900' : 'gray.200'}`}
-                                        />
-                                    </Div_input_creation>
-                                </InputGroup>
-                            </Div_input_creation>
-                            <Div_input_creation text='giorni di apertura'>
-                                <Select_multiple_options
-                                    handleChangeState={changeInput}
-                                    values={days.current} type={'day'}
-                                    selectedValueBefore={undefined}
-                                />
-                            </Div_input_creation>
+                                </>
+                            }
                             <div className='flex justify-end mt-4'>
                                 <BlackButton
                                     element='conferma'
@@ -791,8 +815,9 @@ const index = () => {
                                     heigth={12}
                                     size={'sm'}
                                     typeButton={'submit'}
-                                    //disabled={false}
-                                    disabled={!address || address.streetNumber === '' || !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('opening.days') || watch('opening.days').length <= 0 || !isValid}
+                                    disabled={false}
+
+                                //disabled={!address || address.streetNumber === '' || !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('opening.days') || watch('opening.days').length <= 0 || !isValid}
                                 />
                             </div>
                         </div>

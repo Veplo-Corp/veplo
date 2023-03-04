@@ -121,18 +121,18 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             const business: Business = value.data?.business
             console.log(business);
 
-            if (business.status === 'stripe_id_requested') {
-              router.push('/shop/crea-business-account')
+            // if (business.status === 'stripe_id_requested') {
+            //   router.push('/shop/crea-business-account')
 
-            }
+            // }
 
-            if (business.status === 'onboarding_KYC_requested') {
-              router.push('/shop/continua-processo-kyc')
-            }
+            // if (business.status === 'onboarding_KYC_requested') {
+            //   router.push('/shop/continua-processo-kyc')
+            // }
 
-            if (business.status === 'active') {
-              router.push('/shop/home')
-            }
+            // if (business.status === 'active') {
+            //   router.push('/shop/home')
+            // }
 
 
             // //?retrive account stripe
