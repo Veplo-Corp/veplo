@@ -6,5 +6,6 @@ export interface Firebase_User {
     isBusiness?: boolean,
     createdAt?: string,
     shopId?: string,
-    Not_yet_Authenticated_Request?: boolean
+    Not_yet_Authenticated_Request?: boolean,
+    accountId?: string
 }

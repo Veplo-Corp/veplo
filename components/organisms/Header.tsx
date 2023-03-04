@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { NextRouter, useRouter } from 'next/router'
 import Navbar from '../molecules/Home_Navbar'
 import JoinUs_Navbar from '../molecules/JoinUs_Navbar'
-import { Box, Button, useToast } from '@chakra-ui/react'
+import { background, Box, Button, useToast } from '@chakra-ui/react'
 import Input_Search_Item from '../atoms/Input_Search_Item'
 import Circle_Color from '../atoms/Circle_Color'
 import { useSelector } from 'react-redux'
@@ -15,6 +15,9 @@ import User_Popover from '../molecules/User_Popover'
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
 import { Transition } from '@headlessui/react'
 import To_Home_Logo from '../molecules/To_Home_Logo'
+import { useLazyQuery } from '@apollo/client'
+import GET_BUSINESS from '../../src/lib/apollo/queries/business'
+import { Business } from '../../src/interfaces/business.interface'
 
 
 const Header = () => {
@@ -24,9 +27,39 @@ const Header = () => {
     const [openDrawer, setopenDrawer] = useState(1);
     const [openDrawerSearch, setOpenDrawerSearch] = useState(0);
     const [openDrawerMenu, setOpenDrawerMenu] = useState(1);
-
     const user: Firebase_User = useSelector((state: any) => state.user.user);
+    const [stripeDashboardVisible, setStripeDashboardVisible] = useState(false);
+    const [stripeId, setStripeId] = useState<string>();
 
+    const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
+
+
+    useEffect(() => {
+        if (!user?.Not_yet_Authenticated_Request && user?.isBusiness && user?.accountId) {
+            getBusiness({
+                variables: {
+                    id: user.accountId
+                }
+            }).then((value) => {
+                const business: Business = value.data?.business
+                console.log(business?.status);
+                switch (business?.status) {
+                    case 'active':
+                        setStripeDashboardVisible(true)
+                        setStripeId(business.stripe.id)
+                        break;
+                    default:
+                        // code block
+                        setStripeDashboardVisible(false)
+                        break;
+                }
+            })
+        }
+
+        return () => {
+
+        }
+    }, [user])
 
 
 
@@ -65,6 +98,8 @@ const Header = () => {
         }
 
 
+
+
         //! onHover category shows adressModal if the adress is not  saved
         // else {
         //     toast({
@@ -93,6 +128,8 @@ const Header = () => {
         setOpenDrawerSearch(Math.random())
     }
 
+
+
     /* <Transition show={!user?.Not_yet_Authenticated_Request}
                     enter="transition-opacity duration-[750ms]"
                     enterFrom="opacity-0"
@@ -114,8 +151,6 @@ const Header = () => {
 
             {!user && <JoinUs_Navbar />}
 
-
-
             {/* Menu button, Search button and Veplo Logo for screen >=md */}
             {user && user.isBusiness && <div className=" fixed z-50 top-3 right-2 md:hidden">
                 <button
@@ -135,7 +170,7 @@ const Header = () => {
                     <To_Home_Logo href='/' />
                 }
                 {user?.isBusiness &&
-                    <To_Home_Logo href='/shop/prodotti' />
+                    <To_Home_Logo href='/shop/home' />
                 }
             </div>
 
@@ -155,7 +190,6 @@ const Header = () => {
                         </p>
                     </div>
                 }
-
             </div>
 
             <div className={`w-full z-10 fixed top-0 ${!user ? 'md:top-7' : 'md:top-0'} bg-white`}>
@@ -204,16 +238,44 @@ const Header = () => {
                                     </>
                                 }
                                 {user && user.isBusiness &&
-                                    <button
-                                        onClick={() => {
-                                            setOpenDrawerMenu(Math.random())
-                                        }}
-                                        aria-label="menu"
-                                        type="button" className="inline-flex mt-1 rounded-md px-1  active:bg-gray-100 focus:outline-none" aria-expanded="false">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                                        </svg>
-                                    </button>
+                                    <>
+                                        {stripeDashboardVisible &&
+                                            <form action={`/api/stripe/dashboard-link?stripeId=${stripeId}`}
+                                                method="POST"
+                                                target="_blank"
+                                            >
+                                                <Button
+                                                    bgColor={'#6772E5'}
+                                                    fontSize={'md'}
+                                                    fontWeight={'semibold'}
+                                                    textColor={'white'}
+                                                    mr={'2'}
+                                                    _hover={{
+                                                        background: '#6772E5'
+                                                    }}
+                                                    _active={{
+                                                        background: '#6772E5'
+                                                    }}
+                                                    type='submit'
+                                                >
+                                                    Vai alla Dashboard Stripe
+                                                </Button>
+                                            </form>
+                                        }
+                                        <button
+                                            onClick={() => {
+                                                setOpenDrawerMenu(Math.random())
+                                            }}
+                                            aria-label="menu"
+                                            type="button" className="inline-flex mt-1 rounded-md px-1  active:bg-gray-100 focus:outline-none" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                            </svg>
+                                        </button>
+
+                                    </>
+
+
                                 }
                             </div>
                         </div>

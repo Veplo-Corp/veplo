@@ -83,8 +83,10 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         //setUserProperties(analytics, { favorite_food: 'apples' });
         const idToken = await userAuth.getIdToken(true)
         setAuthTokenInSessionStorage(idToken)
-        console.log(idToken);
+        //console.log(idToken);
+
         const tokenResult = await userAuth.getIdTokenResult()
+
         // user is logged in, send the user's details to redux, store the current user in the state
         const isBusiness = tokenResult.claims.isBusiness ? true : false;
         let ISODate: any = userAuth.metadata.creationTime
@@ -107,13 +109,14 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               emailVerified: userAuth.emailVerified,
               isBusiness,
               createdAt: date_for_redux || new Date(),
-              shopId: undefined
+              shopId: undefined,
+              accountId: tokenResult.claims.mongoId
             })
           );
         }
         getBusiness({
           variables: {
-            id: '64030d55d31b5b49f68d3630'
+            id: tokenResult.claims.mongoId
           }
         })
           .then(async (value) => {
@@ -136,14 +139,14 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
 
             // //?retrive account stripe
-            const endpoint = `/api/stripe/retrieve-stripe-account?stripeId=${business.stripe.id}`
-            const response = await fetch(endpoint, {
-              method: "POST",
-              mode: "no-cors", // no-cors, *cors, same-origin
-              body: JSON.stringify({ stripeId: business.stripe.id })
-            })
-            const result = await response.json()
-            console.log('ACCOUNT:', result);
+            // const endpoint = `/api/stripe/retrieve-stripe-account?stripeId=${business.stripe.id}`
+            // const response = await fetch(endpoint, {
+            //   method: "POST",
+            //   mode: "no-cors", // no-cors, *cors, same-origin
+            //   body: JSON.stringify({ stripeId: business.stripe.id })
+            // })
+            // const result = await response.json()
+            // //console.log('ACCOUNT:', result);
 
           })
 

@@ -1,4 +1,4 @@
-import { Box, Button, Center, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, Center, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Text, useDisclosure } from '@chakra-ui/react'
 import { signOut } from 'firebase/auth'
 import React, { useEffect, useState } from 'react'
 import { auth } from '../../src/config/firebase'
@@ -9,27 +9,37 @@ import MobileDetect from 'mobile-detect'
 import { deleteAuthTokenInSessionStorage } from '../utils/deleteAuthTokenSessionStorage'
 import Modal_Help_Customer_Care from './Modal_Help_Customer_Care'
 
-const list = [
-    {
-        title: 'visualizza prodotti',
-        url: '/shop/prodotti'
-    },
-    {
-        title: 'aggiungi prodotto',
-        url: '/shop/crea-prodotto'
-    },
-    {
-        title: 'il tuo negozio',
-        url: '/shop/info-generali'
-    },
 
-    {
-        title: 'hai bisogno di assistenza?',
-        url: 'assistenza'
-    }
-]
 
 const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: any }> = ({ openDrawerMath, user, onCloseModal }) => {
+
+    const listShop = [
+        {
+            title: 'visualizza prodotti',
+            url: '/shop/prodotti'
+        },
+        {
+            title: 'aggiungi prodotto',
+            url: '/shop/crea-prodotto'
+        },
+
+        {
+            title: 'info negozio XX-XX',
+            url: '/shop/info-generali'
+        }
+    ]
+
+    const list = [
+        {
+            title: 'cambia negozio',
+            url: '/shop/home'
+        },
+        {
+            title: 'dettagli società',
+            url: '/shop/home/info-generali-account'
+        },
+    ]
+
     const router = useRouter()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [isOpenHelpModal, setIsOpenHelpModal] = useState(false)
@@ -70,8 +80,6 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                 <DrawerHeader borderWidth={0} borderBottomWidth={1} borderColor={'gray.200'} py={'3'} px={4}>Menu</DrawerHeader>
                 <DrawerBody px={4} py={3}>
                     <Box maxW='sm' overflow='hidden'>
-
-
                         <Tooltip label={!user.emailVerified ? 'email non verificata' : 'email verificata'}>
                             <Box
                                 mt='1'
@@ -99,33 +107,79 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                         >
                             account creato in data: {user.createdAt}
                         </Box>
-                        {list.map(element => {
-                            return (<Box
-                                key={element.title}
-                                _active={{
-                                    transform: `scale(0.99)`,
-                                }}
 
-                                fontWeight='semibold'
-                                lineHeight='none'
-                                noOfLines={1}
-                                fontSize={'mg'}
-                                display={'flex'}
-                                className={'cursor-pointer hover:underline'}
-                                onClick={() => {
-                                    if (element.url === 'assistenza') {
-                                        setIsOpenHelpModal(true)
-                                    } else {
+                        <Text
+                            fontSize={'lg'}
+                            fontWeight={'bold'}
+                            marginBottom={'2'}
+
+                        >
+                            Negozio - XYZ
+                        </Text>
+                        <Box
+                            mb={4}
+                        >
+                            {listShop.map(element => {
+                                return (<Box
+                                    key={element.title}
+                                    _active={{
+                                        transform: `scale(0.99)`,
+                                    }}
+
+                                    fontWeight='semibold'
+                                    lineHeight='none'
+                                    noOfLines={1}
+                                    fontSize={'mg'}
+                                    display={'flex'}
+                                    className={'cursor-pointer hover:underline'}
+                                    onClick={() => {
+
                                         router.push(element.url)
                                         onClose()
-                                    }
-                                }}
-                            >
-                                <p className='my-auto pb-4'>
-                                    {element.title}
-                                </p>
-                            </Box>)
-                        })}
+                                    }}
+                                >
+                                    <p className='my-auto pb-4'>
+                                        {element.title}
+                                    </p>
+                                </Box>)
+                            })}
+                        </Box>
+                        <Text
+                            fontSize={'lg'}
+                            fontWeight={'bold'}
+                            marginBottom={'2'}
+
+                        >
+                            Dettagli account
+                        </Text>
+                        <Box
+                            mb={4}
+                        >
+                            {list.map(element => {
+                                return (<Box
+                                    key={element.title}
+                                    _active={{
+                                        transform: `scale(0.99)`,
+                                    }}
+
+                                    fontWeight='semibold'
+                                    lineHeight='none'
+                                    noOfLines={1}
+                                    fontSize={'mg'}
+                                    display={'flex'}
+                                    className={'cursor-pointer hover:underline'}
+                                    onClick={() => {
+
+                                        router.push(element.url)
+                                        onClose()
+                                    }}
+                                >
+                                    <p className='my-auto pb-4'>
+                                        {element.title}
+                                    </p>
+                                </Box>)
+                            })}
+                        </Box>
 
                     </Box>
 
@@ -137,11 +191,23 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                     padding={0}
                     width={'full'}
                 >
-                    <Button
+                    <div
+                        className='text-center w-full '
+                    >
+                        <Button
+                            colorScheme={'orange'}
+                            className='w-11/12 m-auto mb-4 '
+                            onClick={() => {
+                                setIsOpenHelpModal(true)
+                            }}>
+                            Hai bisogno di assistenza?
+                        </Button>
+                        <Button
 
-                        className='w-11/12 m-auto mb-4 ' onClick={logout}>
-                        Disconnetti Account
-                    </Button>
+                            className='w-11/12 m-auto mb-4 ' onClick={logout}>
+                            Disconnetti Account
+                        </Button>
+                    </div>
                 </DrawerFooter>
             </DrawerContent>
             <Modal_Help_Customer_Care

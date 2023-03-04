@@ -71,7 +71,7 @@ const index = () => {
                         const responseGraphQL = await createBusinessStripeAccount({
                             variables: {
                                 businessName: options.businessName,
-                                vatId: options.vatNumber,
+                                vatNumber: options.vatNumber,
                                 phone: options.phoneNumber
                             }
                         })

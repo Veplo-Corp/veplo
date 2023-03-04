@@ -1,33 +1,34 @@
 import { Alert, AlertIcon, Box, Button, Center, Input, InputGroup, InputLeftAddon, Select } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
-import BlackButton from '../../../../components/atoms/BlackButton'
-import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
-import Div_input_creation from '../../../../components/atoms/Div_input_creation'
-import Select_multiple_options from '../../../../components/atoms/Select_multiple_options'
-import Address_text_handle from '../../../../components/molecules/Address_text_handle'
-import { Day, DAYS } from '../../../../components/mook/days'
-import setUserAddress from '../../../../components/utils/setUserAddress'
-import { Mapbox_Result } from '../../../interfaces/mapbox_result.interface'
+import BlackButton from '../../../../../components/atoms/BlackButton'
+import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout'
+import Div_input_creation from '../../../../../components/atoms/Div_input_creation'
+import Select_multiple_options from '../../../../../components/atoms/Select_multiple_options'
+import Address_text_handle from '../../../../../components/molecules/Address_text_handle'
+import { Day, DAYS } from '../../../../../components/mook/days'
+import setUserAddress from '../../../../../components/utils/setUserAddress'
+import { Mapbox_Result } from '../../../../interfaces/mapbox_result.interface'
 import ReactCrop, { Crop, PixelCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { Image } from '@chakra-ui/react'
-import { useDebounceEffect } from '../../../../components/utils/useDebounceEffect'
-import { canvasPreview } from '../../../../components/molecules/Canva_previews'
-import { storage } from '../../../config/firebase'
+import { useDebounceEffect } from '../../../../../components/utils/useDebounceEffect'
+import { canvasPreview } from '../../../../../components/molecules/Canva_previews'
+import { storage } from '../../../../config/firebase'
 import { useForm } from 'react-hook-form'
 import { useMutation } from '@apollo/client'
-import CREATE_SHOP from '../../../lib/apollo/mutations/createShop'
-import { ToastOpen } from '../../../../components/utils/Toast'
+import CREATE_SHOP from '../../../../lib/apollo/mutations/createShop'
+import { ToastOpen } from '../../../../../components/utils/Toast'
 import { useDispatch, useSelector } from 'react-redux'
-import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required'
-import { Firebase_User } from '../../../interfaces/firebase_user.interface'
+import Shop_UID_Required from '../../../../../components/utils/Shop_UID_Required'
+import { Firebase_User } from '../../../../interfaces/firebase_user.interface'
 import { useRouter } from 'next/router'
-import { addShopId } from '../../../store/reducers/user'
-import { resizeFile } from '../../../../components/utils/resizeFile'
-import uploadPhotoFirebase from '../../../../components/utils/uploadPhotoFirebase'
-import PostMeta from '../../../../components/organisms/PostMeta'
-import NoIndexSeo from '../../../../components/organisms/NoIndexSeo'
-import isShopOpen from '../../../../components/utils/isShopOpen'
+import { addShopId } from '../../../../store/reducers/user'
+import { resizeFile } from '../../../../../components/utils/resizeFile'
+import uploadPhotoFirebase from '../../../../../components/utils/uploadPhotoFirebase'
+import PostMeta from '../../../../../components/organisms/PostMeta'
+import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo'
+import isShopOpen from '../../../../../components/utils/isShopOpen'
+import UPLOAD_PHOTO from '../../../../lib/apollo/mutations/uploadPhotos'
 
 
 type Image = {
@@ -41,7 +42,7 @@ interface IFormInput {
     name?: string;
     //! togliere description (obbligatoria), macrocategories e gendere in createProduct
     //!deve inserire tommaso
-    photo: string[],
+    photo: string,
     isDigitalOnly?: boolean
     address?: {
         city: string | undefined
@@ -69,6 +70,7 @@ const typeShop = [
 ]
 
 const index = () => {
+    const [uploadPhotos] = useMutation(UPLOAD_PHOTO)
 
     const [createShop, createShopElement] = useMutation(CREATE_SHOP);
     const { addToast } = ToastOpen();
@@ -78,7 +80,7 @@ const index = () => {
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInput>({
         mode: "all",
         defaultValues: {
-            photo: ['']
+            photo: ''
         }
     });
 
@@ -404,54 +406,66 @@ const index = () => {
     const submitData = async (e: IFormInput) => {
         // const url = await uploadPhotoFirebase(image?.blob, `/${user.uid}/shop_image/immagine`)
         // console.log(url);
-        let Shop: IFormInput = {
-            name: e.name,
-            photo: [image?.file],
-            info: {
-                phone: watch('info.phone'),
-                description: ''
-            },
-            address: {
-                city: address.city,
-                street: address.address + ' ' + address.streetNumber,
-                //postcode: address.postcode,
-                location: address.location
-            },
-        }
-
-        if (!shopIsDigital) {
-            Shop = {
-                ...Shop,
-                isDigitalOnly: shopIsDigital,
-                photo: [image?.file],
-                info: {
-                    ...Shop.info,
-                    opening: {
-                        days: watch('info.opening.days'),
-                        hours: [open_hour, close_hour]
-                    },
-                },
-            }
-
-        }
-
-        if (shopIsDigital) {
-            Shop = {
-                ...Shop,
-                isDigitalOnly: shopIsDigital,
-                info: {
-                    ...Shop.info,
-                    opening: {
-                        days: [0, 1, 3, 4, 5, 6],
-                        hours: ["00:00", "00:00"]
-                    },
-                },
-            }
-        }
-
-        console.log(Shop);
 
         try {
+            //uploadImage
+
+            const photoUploaded = await uploadPhotos({
+                variables: {
+                    images: [image?.file],
+                    proportion: "product"
+                }
+            })
+
+            console.log(photoUploaded.data?.uploadImages);
+
+            let Shop: IFormInput = {
+                name: e.name,
+                photo: photoUploaded.data?.uploadImages[0],
+                info: {
+                    phone: watch('info.phone'),
+                    description: ''
+                },
+                address: {
+                    city: address.city,
+                    street: address.address + ' ' + address.streetNumber,
+                    //postcode: address.postcode,
+                    location: address.location
+                },
+            }
+
+            if (!shopIsDigital) {
+                Shop = {
+                    ...Shop,
+                    isDigitalOnly: shopIsDigital,
+                    info: {
+                        ...Shop.info,
+                        opening: {
+                            days: watch('info.opening.days'),
+                            hours: [open_hour, close_hour]
+                        },
+                    },
+                }
+
+            }
+
+            if (shopIsDigital) {
+                Shop = {
+                    ...Shop,
+                    isDigitalOnly: shopIsDigital,
+                    info: {
+                        ...Shop.info,
+                        opening: {
+                            days: [0, 1, 3, 4, 5, 6],
+                            hours: ["00:00", "00:00"]
+                        },
+                    },
+                }
+            }
+
+            console.log(Shop);
+
+
             //return the mongoID of the Shop
             const isCreatedShop = await createShop({ variables: { options: Shop } })
             console.log(isCreatedShop.data.createShop)
@@ -475,7 +489,7 @@ const index = () => {
                 <div className='flex '>
                     <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-3/4 lg:w-1/2 m-auto" onSubmit={handleSubmit(submitData)}>
                         <div className='w-full'>
-                            <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>parlaci di te!</h1>
+                            <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>Crea un nuovo negozio!</h1>
                             {imgSrc !== '' || !image &&
                                 <Div_input_creation text='Immagine di copertina negozio (opzionale)'>
                                     <Center
@@ -498,7 +512,6 @@ const index = () => {
                                         </div>
                                     </Center>
                                 </Div_input_creation>
-
 
                             }
                             {imgSrc && showCroppedImage && (

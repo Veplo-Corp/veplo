@@ -47,17 +47,15 @@ const index = () => {
     const abortController = new AbortController();
 
     //! da risolvere
-    // if (user && !user.Not_yet_Authenticated_Request) {
-    //   console.log(user);
+    if (user && !user.Not_yet_Authenticated_Request) {
+      console.log(user);
 
-    //   if (typeof user.shopId === 'string') {
-    //     router.push('/shop/prodotti')
-    //   } else if (user.isBusiness === false) {
-
-    //   } else if (user?.isBusiness === true) {
-    //     router.push('/shop/crea-shop')
-    //   }
-    // }
+      if (typeof user.shopId === 'string') {
+        router.push('/shop/prodotti')
+      } else if (user?.isBusiness === true) {
+        router.push('/shop/home')
+      }
+    }
     if (type) {
       settypeForm(type)
     }
@@ -124,10 +122,8 @@ const index = () => {
 
         const account = await setBusinessAccount()
         console.log(account);
-
-
         await router.push('/shop/crea-business-account')
-        //router.reload()
+        router.reload()
         // setemail('')
         // setpassword('')
       } catch (error: any) {
