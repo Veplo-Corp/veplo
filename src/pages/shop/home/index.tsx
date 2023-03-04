@@ -1,11 +1,41 @@
+import { useLazyQuery } from '@apollo/client'
 import { Box, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required'
+import { Business } from '../../../interfaces/business.interface'
+import { Firebase_User } from '../../../interfaces/firebase_user.interface'
+import GET_BUSINESS from '../../../lib/apollo/queries/business'
+
+interface Props {
+    business: Business
+}
 
 const index = () => {
-    const router = useRouter()
+    const router = useRouter();
+
+    const user: Firebase_User = useSelector((state: any) => state.user.user);
+    const [getBusiness, { error, data }] = useLazyQuery<Props>(GET_BUSINESS);
+
+
+    console.log(data?.business.phone);
+
+
+    useEffect(() => {
+        if (!user?.accountId) return
+
+        getBusiness({
+            variables: {
+                id: user.accountId
+            }
+        })
+
+        return () => {
+
+        }
+    }, [user])
     return (
         <Shop_UID_Required>
             <Desktop_Layout>
@@ -35,9 +65,9 @@ const index = () => {
                         </div>
 
                     </Box>
-                    {[1, 2].map((value) => {
+                    {data?.business?.shops && data.business.shops.map((shop) => {
                         return (
-                            <Box key={value} maxW='sm' borderWidth='1px' borderRadius='xl' overflow='hidden'
+                            <Box key={shop.id} maxW='sm' borderWidth='1px' borderRadius='xl' overflow='hidden'
                                 minH={['200px', '300px']}
                                 className='cursor-pointer'
                                 _active={{
@@ -60,7 +90,7 @@ const index = () => {
                                             textTransform='uppercase'
 
                                         >
-                                            Digitale
+                                            {shop.status}
                                         </Box>
                                     </Box>
 
@@ -71,7 +101,7 @@ const index = () => {
                                         lineHeight='tight'
                                         noOfLines={1}
                                     >
-                                        Boutique S.r.l
+                                        {shop.name}
                                     </Box>
                                     <Box
                                         fontWeight='normal'
@@ -81,7 +111,7 @@ const index = () => {
                                         lineHeight='tight'
                                         noOfLines={1}
                                     >
-                                        Via Roma 41, Terni
+                                        {shop.address.street}, {shop.address.city}
                                     </Box>
 
 

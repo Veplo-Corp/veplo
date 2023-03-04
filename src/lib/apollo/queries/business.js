@@ -15,16 +15,7 @@ const GET_BUSINESS = gql`
             stripe {
                 id
             }
-            
-        } 
-    }
-    
-`
-
-export default GET_BUSINESS;
-
-/* 
-shops {
+            shops {
                 id
                 businessId
                 name
@@ -51,4 +42,13 @@ shops {
                     }
                 }
             }
+        } 
+    }
+    
+`
+
+export default GET_BUSINESS;
+
+/* 
+
 */
