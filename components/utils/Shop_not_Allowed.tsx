@@ -11,7 +11,7 @@ const Shop_not_Allowed: React.FC<{ children: any }> = ({ children }) => {
         const abortController = new AbortController();
         if (user && user.Not_yet_Authenticated_Request === true) return
         if (user?.isBusiness) {
-            router.push('/shop/prodotti')
+            router.push('/shop/home')
         }
         return () => {
             abortController.abort();

@@ -12,13 +12,12 @@ import { analytics, auth, onAuthStateChanged, signOut } from '../config/firebase
 import user, { login, logout } from '../store/reducers/user'
 import { setAddress } from '../store/reducers/address_user'
 import { useRouter } from 'next/router'
-import { ApolloProvider } from '@apollo/client'
+import { ApolloProvider, useLazyQuery } from '@apollo/client'
 import { initApollo, useApollo } from '../lib/apollo'
 import { getAddressFromLocalStorage } from '../../components/utils/getAddress_from_LocalStorage'
 import { setAuthTokenInSessionStorage } from '../../components/utils/setAuthTokenInSessionStorage'
 import Modal_Error_Shop, { ErrorModal } from '../../components/organisms/Modal_Error_Shop'
 import modal_error from '../store/reducers/modal_error'
-import GET_SHOP_BY_FIREBASE_ID from '../lib/apollo/queries/getShopByFirebaseId'
 import Router from "next/router";
 import { Firebase_User } from '../interfaces/firebase_user.interface'
 import Loading from '../../components/molecules/Loading'
@@ -29,6 +28,8 @@ import Script from 'next/script'
 import { Open_Sans } from '@next/font/google'
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js'
+import GET_BUSINESS from '../lib/apollo/queries/business'
+import { Business } from '../interfaces/business.interface'
 
 
 const theme = extendTheme({
@@ -55,7 +56,9 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
 
   const dispatch = useDispatch();
-
+  const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
+  console.log(data);
+  console.log(error?.message);
 
 
 
@@ -64,7 +67,8 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
     //* GET the user address from localstorage
     const address_user = getAddressFromLocalStorage();
-    // console.log(address_user);
+
+
 
     dispatch(
       setAddress({
@@ -79,12 +83,10 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         //setUserProperties(analytics, { favorite_food: 'apples' });
         const idToken = await userAuth.getIdToken(true)
         setAuthTokenInSessionStorage(idToken)
-        //console.log(idToken);
+        console.log(idToken);
         const tokenResult = await userAuth.getIdTokenResult()
         // user is logged in, send the user's details to redux, store the current user in the state
         const isBusiness = tokenResult.claims.isBusiness ? true : false;
-
-
         let ISODate: any = userAuth.metadata.creationTime
         if (userAuth.metadata.creationTime) {
           ISODate = new Date(userAuth.metadata.creationTime)
@@ -108,8 +110,44 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               shopId: undefined
             })
           );
-          return
         }
+        getBusiness({
+          variables: {
+            id: '64030d55d31b5b49f68d3630'
+          }
+        })
+          .then(async (value) => {
+            //redirect to the right page based on status
+            const business: Business = value.data?.business
+            console.log(business);
+
+            if (business.status === 'stripe_id_requested') {
+              router.push('/shop/crea-business-account')
+
+            }
+
+            if (business.status === 'onboarding_KYC_requested') {
+              router.push('/shop/continua-processo-kyc')
+            }
+
+            if (business.status === 'active') {
+              router.push('/shop/home')
+            }
+
+
+            // //?retrive account stripe
+            const endpoint = `/api/stripe/retrieve-stripe-account?stripeId=${business.stripe.id}`
+            const response = await fetch(endpoint, {
+              method: "POST",
+              mode: "no-cors", // no-cors, *cors, same-origin
+              body: JSON.stringify({ stripeId: business.stripe.id })
+            })
+            const result = await response.json()
+            console.log('ACCOUNT:', result);
+
+          })
+
+        return
       } else {
         console.log('effettua il logout');
         apolloClient.clearStore()

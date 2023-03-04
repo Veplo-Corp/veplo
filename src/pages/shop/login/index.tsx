@@ -46,22 +46,20 @@ const index = () => {
   useEffect(() => {
     const abortController = new AbortController();
 
-    if (user && !user.Not_yet_Authenticated_Request) {
-      console.log(user);
+    //! da risolvere
+    // if (user && !user.Not_yet_Authenticated_Request) {
+    //   console.log(user);
 
-      if (typeof user.shopId === 'string') {
-        router.push('/shop/prodotti')
-      } else if (user.isBusiness === false) {
+    //   if (typeof user.shopId === 'string') {
+    //     router.push('/shop/prodotti')
+    //   } else if (user.isBusiness === false) {
 
-      } else if (user?.isBusiness === true) {
-        router.push('/shop/crea-shop')
-      }
-
-    }
+    //   } else if (user?.isBusiness === true) {
+    //     router.push('/shop/crea-shop')
+    //   }
+    // }
     if (type) {
       settypeForm(type)
-
-
     }
 
     return () => {
@@ -159,9 +157,6 @@ const index = () => {
           router.push('/')
           throw new Error('auth/user-not-shop', { cause: 'err' })
         }
-        // else {
-        //   //return router.push('/shop/prodotti')
-        // }
 
       } catch (error: any) {
         const errorMessage = error.message;
