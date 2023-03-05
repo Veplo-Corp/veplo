@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
+import Verified_Email from '../../../../components/molecules/Verified_Email/Verified_Email'
 import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required'
 import { Business } from '../../../interfaces/business.interface'
 import { Firebase_User } from '../../../interfaces/firebase_user.interface'
@@ -35,9 +36,16 @@ const index = () => {
 
         }
     }, [user])
+
+    const toShop = (id: string) => {
+        return router.push(`/shop/home/${id}/prodotti`)
+    }
     return (
         <Shop_UID_Required>
             <Desktop_Layout>
+                {user && user.emailVerified === false &&
+                    <Verified_Email />
+                }
                 <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>I tuoi negozi</h1>
                 <div className='grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-3 gap-x-2.5 gap-y-3.5 '>
                     <Box maxW='sm' borderWidth='1px' borderRadius='xl' overflow='hidden'
@@ -72,6 +80,7 @@ const index = () => {
                                 _active={{
                                     transform: 'scale(0.99)',
                                 }}
+                                onClick={() => toShop(shop.id)}
                             >
                                 <img src={'https://ik.imagekit.io/veploimages/fa7b4b31-b8f2-4274-afc4-30c073f7ba13?tr=w-720,h-450'}
                                     alt={'immagine non trovata'}

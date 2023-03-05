@@ -3,16 +3,23 @@ import BlackButton from '../../../../components/atoms/BlackButton'
 import BoxExplenationStripe from '../../../../components/atoms/BoxExplenationStripe'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import { useRouter } from 'next/router';
-import { Firebase_User } from './../../../interfaces/firebase_user.interface';
+import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 import { useSelector } from 'react-redux';
 
 import { useEffect } from 'react';
+import { useLazyQuery } from '@apollo/client';
+import GET_BUSINESS from '../../../lib/apollo/queries/business';
 
 const index = () => {
 
-    const stripeId = 'acct_1MgFTuECL5DJ3pkk'
+
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     const router = useRouter();
+
+
+    const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
+
+
 
     useEffect(() => {
         console.log(user);
@@ -23,6 +30,11 @@ const index = () => {
             router.push('/shop/login?type=login')
             return
         }
+        getBusiness({
+            variables: {
+                id: user.accountId
+            }
+        })
         return () => {
             abortController.abort();
         };
@@ -32,7 +44,7 @@ const index = () => {
     return (
         <Desktop_Layout>
             {user?.isBusiness &&
-                <form action={`/api/stripe/resume-kyc-process?stripeId=${stripeId}`}
+                <form action={`/api/stripe/resume-kyc-process?stripeId=${data?.business.stripe.id}`}
                     className='m-auto w-11/12 md:w-7/12 lg:w-6/12 xl:w-1/3'
                     method="POST"
 

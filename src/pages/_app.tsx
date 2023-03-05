@@ -9,7 +9,7 @@ import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from '../store/store'
 import { useEffect, useState } from 'react'
 import { analytics, auth, onAuthStateChanged, signOut } from '../config/firebase'
-import user, { login, logout } from '../store/reducers/user'
+import user, { addFavouriteShopBusiness, login, logout } from '../store/reducers/user'
 import { setAddress } from '../store/reducers/address_user'
 import { useRouter } from 'next/router'
 import { ApolloProvider, useLazyQuery } from '@apollo/client'
@@ -30,6 +30,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js'
 import GET_BUSINESS from '../lib/apollo/queries/business'
 import { Business } from '../interfaces/business.interface'
+import { getFavouriteShopFromLocalStorage } from '../../components/utils/getFavouriteShopFromLocalStroage'
 
 
 const theme = extendTheme({
@@ -113,6 +114,19 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               accountId: tokenResult.claims.mongoId
             })
           );
+
+
+          const favouriteShop: ({ id: string, name: string, street: string }) = getFavouriteShopFromLocalStorage();
+
+          if (favouriteShop) {
+            dispatch(
+              addFavouriteShopBusiness({
+                id: favouriteShop.id,
+                name: favouriteShop.name,
+                street: favouriteShop.street
+              })
+            )
+          }
         }
         getBusiness({
           variables: {
@@ -124,14 +138,14 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             const business: Business = value.data?.business
             console.log(business);
 
-            // if (business.status === 'stripe_id_requested') {
-            //   router.push('/shop/crea-business-account')
+            if (business.status === 'stripe_id_requested') {
+              router.push('/shop/crea-business-account')
 
-            // }
+            }
 
-            // if (business.status === 'onboarding_KYC_requested') {
-            //   router.push('/shop/continua-processo-kyc')
-            // }
+            if (business.status === 'onboarding_KYC_requested') {
+              router.push('/shop/continua-processo-kyc')
+            }
 
             // if (business.status === 'active') {
             //   router.push('/shop/home')

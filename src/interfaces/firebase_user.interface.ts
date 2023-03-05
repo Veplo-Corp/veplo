@@ -7,5 +7,10 @@ export interface Firebase_User {
     createdAt?: string,
     shopId?: string,
     Not_yet_Authenticated_Request?: boolean,
-    accountId?: string
+    accountId?: string,
+    favouriteShop?: {
+        name: string,
+        id: string,
+        street: string
+    }
 }

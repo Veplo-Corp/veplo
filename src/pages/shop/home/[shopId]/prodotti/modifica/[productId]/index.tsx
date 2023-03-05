@@ -4,28 +4,28 @@ import { Box, FormControl, FormLabel, Switch, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout';
-import Div_input_creation from '../../../../../../components/atoms/Div_input_creation';
-import { Color, COLORS } from '../../../../../../components/mook/colors';
-import Image_Product from '../../../../../../components/organisms/Image_Product';
-import Modal_Edit_Discount from '../../../../../../components/organisms/Modal_Edit_Discount';
-import NoIndexSeo from '../../../../../../components/organisms/NoIndexSeo';
-import PostMeta from '../../../../../../components/organisms/PostMeta';
-import Product_Form from '../../../../../../components/organisms/Product_Form';
-import { imageKitUrl } from '../../../../../../components/utils/imageKitUrl';
-import Shop_UID_Required from '../../../../../../components/utils/Shop_UID_Required';
-import { ToastOpen } from '../../../../../../components/utils/Toast';
-import uploadPhotoFirebase from '../../../../../../components/utils/uploadPhotoFirebase';
-import { Firebase_User } from '../../../../../interfaces/firebase_user.interface';
-import { Product } from '../../../../../interfaces/product.interface';
-import { initApollo } from '../../../../../lib/apollo';
-import EDIT_PRODUCT from '../../../../../lib/apollo/mutations/editProduct';
-import GET_PRODUCTS_FROM_SHOP from '../../../../../lib/apollo/queries/geetProductsShop';
-import UPLOAD_PHOTO from '../../../../../lib/apollo/mutations/uploadPhotos';
+import Desktop_Layout from '../../../../../../../../components/atoms/Desktop_Layout';
+import Div_input_creation from '../../../../../../../../components/atoms/Div_input_creation';
+import { Color, COLORS } from '../../../../../../../../components/mook/colors';
+import Image_Product from '../../../../../../../../components/organisms/Image_Product';
+import Modal_Edit_Discount from '../../../../../../../../components/organisms/Modal_Edit_Discount';
+import NoIndexSeo from '../../../../../../../../components/organisms/NoIndexSeo';
+import PostMeta from '../../../../../../../../components/organisms/PostMeta';
+import Product_Form from '../../../../../../../../components/organisms/Product_Form';
+import { imageKitUrl } from '../../../../../../../../components/utils/imageKitUrl';
+import Shop_UID_Required from '../../../../../../../../components/utils/Shop_UID_Required';
+import { ToastOpen } from '../../../../../../../../components/utils/Toast';
+import uploadPhotoFirebase from '../../../../../../../../components/utils/uploadPhotoFirebase';
+import { Firebase_User } from '../../../../../../../interfaces/firebase_user.interface';
+import { Product } from '../../../../../../../interfaces/product.interface';
+import { initApollo } from '../../../../../../../lib/apollo';
+import EDIT_PRODUCT from '../../../../../../../lib/apollo/mutations/editProduct';
+import GET_PRODUCTS_FROM_SHOP from '../../../../../../../lib/apollo/queries/geetProductsShop';
+import UPLOAD_PHOTO from '../../../../../../../lib/apollo/mutations/uploadPhotos';
 
 
-import GET_SHOP_BY_FIREBASE_ID from '../../../../../lib/apollo/queries/getShopByFirebaseId';
-import { setModalTitleAndDescription } from '../../../../../store/reducers/modal_error';
+import GET_SHOP_BY_FIREBASE_ID from '../../../../../../../lib/apollo/queries/getShopByFirebaseId';
+import { setModalTitleAndDescription } from '../../../../../../../store/reducers/modal_error';
 
 const index = () => {
     const [isOpen, setIsOpen] = useState(false);

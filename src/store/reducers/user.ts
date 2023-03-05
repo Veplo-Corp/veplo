@@ -28,16 +28,16 @@ export const userState = createSlice({
       //   Not_yet_Authenticated_Request: false
       // };
     },
-    // addShopId : (state, action) => {                
-    //   state.user = {
-    //     ...state.user,
-    //     shopId: action.payload
-    //   }        
-    // }
+    addFavouriteShopBusiness: (state, action) => {
+      state.user = {
+        ...state.user,
+        favouriteShop: action.payload
+      }
+    }
   },
 });
 
-export const { login, logout, /* addShopId */ } = userState.actions;
+export const { login, logout, addFavouriteShopBusiness } = userState.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUser = (state: RootState) => state.user.user;

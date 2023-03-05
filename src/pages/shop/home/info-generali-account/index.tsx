@@ -19,11 +19,10 @@ const index = () => {
 
 
     const user: Firebase_User = useSelector((state: any) => state.user.user);
+
     const [isOpen, setIsOpen] = useState(false)
     const [getBusiness, { error, data }] = useLazyQuery<Props>(GET_BUSINESS);
 
-
-    console.log(data?.business.phone);
 
 
     useEffect(() => {

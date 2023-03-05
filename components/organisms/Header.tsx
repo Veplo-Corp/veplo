@@ -258,7 +258,7 @@ const Header = () => {
                                                     }}
                                                     type='submit'
                                                 >
-                                                    Vai alla Dashboard Stripe
+                                                    Vai alla Dashboard Pagamenti
                                                 </Button>
                                             </form>
                                         }

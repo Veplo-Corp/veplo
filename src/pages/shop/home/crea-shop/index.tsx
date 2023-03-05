@@ -29,6 +29,7 @@ import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo'
 import isShopOpen from '../../../../../components/utils/isShopOpen'
 import UPLOAD_PHOTO from '../../../../lib/apollo/mutations/uploadPhotos'
 import GET_BUSINESS from '../../../../lib/apollo/queries/business'
+import { addShopFavouriteToLocalStorage } from '../../../../../components/utils/shop_localStorage'
 
 
 type Image = {
@@ -572,7 +573,11 @@ const index = () => {
             //TODO
             //add shopId to user in Redux with function
             addToast({ position: 'top', title: 'Shop creato con successo', description: "inizia a inserire i tuoi prodotti in Veplo!", status: 'success', duration: 5000, isClosable: false })
-            //return router.push('/shop/home')
+            addShopFavouriteToLocalStorage({
+                name: e.name,
+                id: isCreatedShop.data.createShop
+            })
+            return router.push('/shop/home/' + isCreatedShop.data.createShop + '/prodotti')
         } catch (e) {
             console.log(e);
             addToast({ position: 'top', title: 'Errore durante la creazione dello Shop', description: "non siamo riusciti a creare il tuo shop. riprova più tardi o contattaci", status: 'error', duration: 5000, isClosable: false })

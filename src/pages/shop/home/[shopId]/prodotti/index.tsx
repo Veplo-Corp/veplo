@@ -3,34 +3,78 @@ import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button } from '@ch
 import { sendEmailVerification } from '@firebase/auth';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import BlackButton from '../../../../components/atoms/BlackButton';
-import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
-import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop';
-import Table_Products_Shop from '../../../../components/organisms/Table_Products_Shop';
-import { ToastOpen } from '../../../../components/utils/Toast';
-import deletePhotoFirebase from '../../../../components/utils/deletePhotoFirebase';
-import { auth } from '../../../config/firebase';
-import { initApollo } from '../../../lib/apollo';
-import DELETE_PRODUCT from '../../../lib/apollo/mutations/deleteProduct';
-import GET_PRODUCTS_FROM_SHOP from '../../../lib/apollo/queries/geetProductsShop';
-import GET_SHOP_BY_FIREBASE_ID from '../../../lib/apollo/queries/getShopByFirebaseId';
-import GET_SINGLE_PRODUCT from '../../../lib/apollo/queries/getSingleProduct';
-import Verified_Email from '../../../../components/molecules/Verified_Email/Verified_Email';
-import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required';
-import { Firebase_User } from '../../../interfaces/firebase_user.interface';
-import { Product } from '../../../interfaces/product.interface';
-import Create_Shop_Alert from '../../../../components/molecules/Create_Shop_Alert';
-import PostMeta from '../../../../components/organisms/PostMeta';
-import NoIndexSeo from '../../../../components/organisms/NoIndexSeo';
+import BlackButton from '../../../../../../components/atoms/BlackButton';
+import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout';
+import Modal_Error_Shop from '../../../../../../components/organisms/Modal_Error_Shop';
+import Table_Products_Shop from '../../../../../../components/organisms/Table_Products_Shop';
+import { ToastOpen } from '../../../../../../components/utils/Toast';
+import deletePhotoFirebase from '../../../../../../components/utils/deletePhotoFirebase';
+import { auth } from '../../../../../config/firebase';
+import { initApollo } from '../../../../../lib/apollo';
+import DELETE_PRODUCT from '../../../../../lib/apollo/mutations/deleteProduct';
+import GET_PRODUCTS_FROM_SHOP from '../../../../../lib/apollo/queries/geetProductsShop';
+import GET_SHOP_BY_FIREBASE_ID from '../../../../../lib/apollo/queries/getShopByFirebaseId';
+import GET_SINGLE_PRODUCT from '../../../../../lib/apollo/queries/getSingleProduct';
+import Verified_Email from '../../../../../../components/molecules/Verified_Email/Verified_Email';
+import Shop_UID_Required from '../../../../../../components/utils/Shop_UID_Required';
+import { Firebase_User } from '../../../../../interfaces/firebase_user.interface';
+import { Product } from '../../../../../interfaces/product.interface';
+import Create_Shop_Alert from '../../../../../../components/molecules/Create_Shop_Alert';
+import PostMeta from '../../../../../../components/organisms/PostMeta';
+import NoIndexSeo from '../../../../../../components/organisms/NoIndexSeo';
+import { useRouter } from 'next/router';
+import { addShopFavouriteToLocalStorage } from '../../../../../../components/utils/shop_localStorage';
+import GET_BUSINESS from '../../../../../lib/apollo/queries/business';
+import { Business } from '../../../../../interfaces/business.interface';
+import { addFavouriteShopBusiness } from '../../../../../store/reducers/user';
 
 
 const index = () => {
     const dispatch = useDispatch();
+    const router = useRouter()
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     const [mathNumber, setMathNumber] = useState(1)
     const { addToast } = ToastOpen();
     const [productToDeleteData, setProductToDeleteData] = useState({})
     const apolloClient = initApollo();
+
+    const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
+
+
+    useEffect(() => {
+        const { shopId } = router.query
+        console.log(user);
+
+        if (!user?.isBusiness || !shopId) return
+
+        getBusiness({
+            variables: {
+                id: user.accountId
+            }
+        }).then((value) => {
+            const business: Business = value.data?.business;
+            const shop = business?.shops?.find(shop => shop.id === shopId);
+            console.log(shop);
+            if (shopId && (!user.favouriteShop?.id || user.favouriteShop?.id !== shopId)) {
+                const element = {
+                    id: shopId,
+                    name: shop?.name,
+                    street: shop?.address.city + ', ' + shop?.address.street
+                }
+                addShopFavouriteToLocalStorage(element)
+                dispatch(
+                    addFavouriteShopBusiness(element)
+                )
+
+            }
+        })
+
+
+        return () => {
+
+        }
+    }, [user, router])
+
 
 
     //delete product
@@ -125,13 +169,8 @@ const index = () => {
         <Shop_UID_Required>
             <Desktop_Layout>
                 <NoIndexSeo title={`Prodotti | Veplo Shop`} />
-                {user && user.emailVerified === false &&
-                    <Verified_Email />
 
-                }
-                {user && !user.shopId && !user?.Not_yet_Authenticated_Request &&
-                    <Create_Shop_Alert />
-                }
+
                 {user && !user?.Not_yet_Authenticated_Request && user?.shopId &&
                     <Table_Products_Shop idShop={user.shopId} deleteProduct={handleDeleteProductModal} />}
                 <Modal_Error_Shop title={'Elimina prodotto'} description={'confermando eliminerai il prodotto dal tuo negozio'} closeText={'annulla'} openModalMath={mathNumber} confirmText={'conferma'} data={productToDeleteData} handleEvent={deleteProductEvent} />
