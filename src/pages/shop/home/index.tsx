@@ -22,8 +22,6 @@ const index = () => {
 
     console.log(data?.business.phone);
 
-
-
     useEffect(() => {
         if (!user?.accountId) return
 

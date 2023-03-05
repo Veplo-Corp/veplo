@@ -22,13 +22,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import Shop_UID_Required from '../../../../../components/utils/Shop_UID_Required'
 import { Firebase_User } from '../../../../interfaces/firebase_user.interface'
 import { useRouter } from 'next/router'
-import { addShopId } from '../../../../store/reducers/user'
 import { resizeFile } from '../../../../../components/utils/resizeFile'
 import uploadPhotoFirebase from '../../../../../components/utils/uploadPhotoFirebase'
 import PostMeta from '../../../../../components/organisms/PostMeta'
 import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo'
 import isShopOpen from '../../../../../components/utils/isShopOpen'
 import UPLOAD_PHOTO from '../../../../lib/apollo/mutations/uploadPhotos'
+import GET_BUSINESS from '../../../../lib/apollo/queries/business'
 
 
 type Image = {
@@ -71,10 +71,106 @@ const typeShop = [
 
 const index = () => {
     const [uploadPhotos] = useMutation(UPLOAD_PHOTO)
-
-    const [createShop, createShopElement] = useMutation(CREATE_SHOP);
-    const { addToast } = ToastOpen();
     const user: Firebase_User = useSelector((state: any) => state.user.user);
+
+    const [createShop, createShopElement] = useMutation(CREATE_SHOP, {
+        update(cache, el, query) {
+            console.log(el.data);
+            console.log(query?.variables?.options);
+
+
+            const business = cache.readQuery<any>({
+                query: GET_BUSINESS,
+                variables: {
+                    //mongoId Shop
+                    id: user.accountId
+                }
+            });
+
+            console.log(business);
+            const newShop = {
+                __typename: 'Shop',
+                id: el.data.createShop,
+                businessId: user.accountId,
+                name: query?.variables?.options.name,
+                createdAt: "now",
+                status: "not_active",
+                photo: query?.variables?.options.photo,
+                isDigitalOnly: query?.variables?.options.isDigitalOnly,
+                info: {
+                    __typename: "ShopInformations",
+                    phone: query?.variables?.options.info.phone,
+                    description: "",
+                    opening: {
+                        __typename: "Opening",
+                        days: query?.variables?.options.info.opening.days,
+                        hours: query?.variables?.options.info.opening.hours,
+                    }
+                },
+                address: {
+                    __typename: "AddressShop",
+                    postcode: "00000",
+                    city: query?.variables?.options.address.city,
+                    street: query?.variables?.options.address.street,
+                    location: {
+                        __typename: "Location",
+                        type: "Point",
+                        coordinates: query?.variables?.options.address.location.coordinates,
+                    }
+                }
+            }
+            console.log(newShop);
+            console.log(business.business.shops);
+            cache.writeQuery({
+                query: GET_BUSINESS,
+                variables: {
+                    //mongoId Shop
+                    id: user.accountId
+                },
+                data: {
+                    business: {
+                        ...business.business,
+                        shops: [
+                            ...business.business.shops,
+                            newShop
+                        ]
+                    }
+                }
+            })
+
+        }
+    });
+
+
+    // const [editStatus, editStatusResponse] = useMutation(EDIT_STATUS_PRODUCT, {
+    //     update(cache, el, query) {
+
+    //         const deleteId = el.data
+    //         console.log(deleteId.deleteProduct);
+    //         const { shop } = cache.readQuery<any>({
+    //             query: GET_BUSINESS,
+    //             variables: {
+    //                 //mongoId Shop
+    //                 id: 
+    //               }
+    //         });
+    //         console.log(cache.identify({ id: query.variables?.id, __typename: 'Product' }));
+    //         const ProductCacheId = cache.identify({ id: query.variables?.id, __typename: 'Product' })
+    //         console.log(shop);
+    //         cache.modify({
+    //             id: ProductCacheId, //productId
+    //             fields: {
+    //                 status(/* cachedvalue */) {
+    //                     return query.variables?.status //newStatus
+    //                 }
+    //             },
+    //             broadcast: false // Include this to prevent automatic query refresh
+    //         });
+
+    //     }
+    // })
+
+    const { addToast } = ToastOpen();
     const router = useRouter()
     //*useForm Registration Shop
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInput>({
@@ -469,13 +565,14 @@ const index = () => {
             //return the mongoID of the Shop
             const isCreatedShop = await createShop({ variables: { options: Shop } })
             console.log(isCreatedShop.data.createShop)
-            dispatch(
-                addShopId(isCreatedShop.data.createShop)
-            );
+            //?OLD addshopId deprecated 
+            // dispatch(
+            //     addShopId(isCreatedShop.data.createShop)
+            // );
             //TODO
             //add shopId to user in Redux with function
             addToast({ position: 'top', title: 'Shop creato con successo', description: "inizia a inserire i tuoi prodotti in Veplo!", status: 'success', duration: 5000, isClosable: false })
-            return router.push('/shop/prodotti')
+            //return router.push('/shop/home')
         } catch (e) {
             console.log(e);
             addToast({ position: 'top', title: 'Errore durante la creazione dello Shop', description: "non siamo riusciti a creare il tuo shop. riprova più tardi o contattaci", status: 'error', duration: 5000, isClosable: false })
