@@ -510,7 +510,7 @@ const index = () => {
             const photoUploaded = await uploadPhotos({
                 variables: {
                     images: [image?.file],
-                    proportion: "product"
+                    proportion: "shop"
                 }
             })
 

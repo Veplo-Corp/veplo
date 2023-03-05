@@ -1,26 +1,26 @@
 export interface Shop {
     id: string,
-    name:string,
-    status:string,
-    piva: string,
-    phone:string,
-    createdAt:string,
-    firebaseId: string,
-    photo:string,
-    opening:{
-        days: number[],
-        hours: string[]
-    }
-    address: {
-        postcode:string,
-        city:string,
-        street:string,
-        location:{
-            type:String
-            coordinates:number[]
+    businessId: string,
+    name: string,
+    createdAt: string,
+    status: 'not_active' | 'active',
+    isDigitalOnly: boolean,
+    info: {
+        phone: string
+        description: string
+        opening: {
+            days: number[],
+            hours: string[]
         }
-        macroCategories?: string[],
-        gender?: string[],
+    }
+    photo: string,
+    address: {
+        postcode: string,
+        city: string,
+        street: string,
+        location: {
+            type: String
+            coordinates: number[]
+        }
     },
-    description: string,
 }

@@ -11,7 +11,6 @@ const GET_PRODUCTS_FROM_SHOP = gql`
         ) {
         shop(
             id: $id
-            
         ){
             id
             products(
@@ -21,7 +20,59 @@ const GET_PRODUCTS_FROM_SHOP = gql`
             ) {
                 id
                 name
-                price{
+                canBuy
+                info{
+                    gender
+                    macroCategory
+                    microCategory
+                    brand
+                }
+                location {
+                    type
+                    coordinates
+                }
+                shopInfo{
+                    id
+                    firebaseId
+                    name
+                    city
+                    status
+                }
+                variations{
+                    color
+                    status
+                    price {
+                        v1
+                        discountPercentage
+                        v2
+                    }
+                    photos
+                    lots{
+                        size
+                        quantity
+                    }
+                }
+            }
+        } 
+    }
+`
+
+export default GET_PRODUCTS_FROM_SHOP;
+
+
+/* id
+name
+status
+canBuy
+createdAt
+updatedAt
+info
+location
+shopInfo
+variations */
+
+
+/* price{
                     v1
                     v2
                     discountPercentage
@@ -45,10 +96,4 @@ const GET_PRODUCTS_FROM_SHOP = gql`
                     name
                 }
                 gender
-                status
-            }
-        } 
-    }
-`
-
-export default GET_PRODUCTS_FROM_SHOP;
+                status */

@@ -21,11 +21,11 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
     const listShop = [
         {
             title: 'visualizza prodotti',
-            url: '/shop/prodotti'
+            url: `/shop/home/${userDispatch?.favouriteShop?.id}/prodotti`
         },
         {
             title: 'aggiungi prodotto',
-            url: '/shop/crea-prodotto'
+            url: `/shop/home/${userDispatch?.favouriteShop?.id}/crea-prodotto`
         },
 
         {

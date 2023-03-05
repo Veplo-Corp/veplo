@@ -214,7 +214,7 @@ const index = () => {
 
   return (
     <>
-      {user?.shopId ? (
+      {user?.isBusiness ? (
         <Shop_UID_Required>
           <Desktop_Layout>
 

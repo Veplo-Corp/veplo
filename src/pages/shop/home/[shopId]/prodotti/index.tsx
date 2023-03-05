@@ -37,7 +37,7 @@ const index = () => {
     const { addToast } = ToastOpen();
     const [productToDeleteData, setProductToDeleteData] = useState({})
     const apolloClient = initApollo();
-
+    const [shopId, setShopId] = useState('')
     const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
 
 
@@ -45,8 +45,8 @@ const index = () => {
         const { shopId } = router.query
         console.log(user);
 
-        if (!user?.isBusiness || !shopId) return
-
+        if (!user?.isBusiness || !shopId || typeof shopId !== 'string') return
+        setShopId(shopId)
         getBusiness({
             variables: {
                 id: user.accountId
@@ -171,8 +171,8 @@ const index = () => {
                 <NoIndexSeo title={`Prodotti | Veplo Shop`} />
 
 
-                {user && !user?.Not_yet_Authenticated_Request && user?.shopId &&
-                    <Table_Products_Shop idShop={user.shopId} deleteProduct={handleDeleteProductModal} />}
+                {user && !user?.Not_yet_Authenticated_Request && shopId !== '' &&
+                    <Table_Products_Shop idShop={shopId} deleteProduct={handleDeleteProductModal} />}
                 <Modal_Error_Shop title={'Elimina prodotto'} description={'confermando eliminerai il prodotto dal tuo negozio'} closeText={'annulla'} openModalMath={mathNumber} confirmText={'conferma'} data={productToDeleteData} handleEvent={deleteProductEvent} />
                 {/* <button
                     onClick={handleCache}

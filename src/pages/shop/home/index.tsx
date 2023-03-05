@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client'
-import { Box, Text } from '@chakra-ui/react'
+import { Box, Tag, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -8,6 +8,7 @@ import Verified_Email from '../../../../components/molecules/Verified_Email/Veri
 import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required'
 import { Business } from '../../../interfaces/business.interface'
 import { Firebase_User } from '../../../interfaces/firebase_user.interface'
+import { Shop } from '../../../interfaces/shop.interface'
 import GET_BUSINESS from '../../../lib/apollo/queries/business'
 
 interface Props {
@@ -31,7 +32,20 @@ const index = () => {
                 id: user.accountId
             }
         })
+            .then(async (value) => {
+                if (!value) return
+                //redirect to the right page based on status
+                const business = value.data?.business
+                console.log(business);
 
+                if (business?.status === 'stripe_id_requested') {
+                    router.push('/shop/crea-business-account')
+                }
+
+                if (business?.status === 'onboarding_KYC_requested') {
+                    router.push('/shop/continua-processo-kyc')
+                }
+            })
         return () => {
 
         }
@@ -86,7 +100,9 @@ const index = () => {
                                     alt={'immagine non trovata'}
                                 />
                                 <Box py={3} px={4}>
-                                    <Box display='flex' alignItems='baseline'>
+                                    <Box display='flex' alignItems='baseline'
+                                        justifyContent={'space-between'}
+                                    >
                                         {/* <Badge borderRadius='full' px='2' colorScheme='teal'>
                             New
                         </Badge> */}
@@ -98,8 +114,15 @@ const index = () => {
                                             textTransform='uppercase'
 
                                         >
-                                            {shop.status}
+                                            {shop.isDigitalOnly === false ? 'FISICO' : 'DIGITALE'}
                                         </Box>
+                                        <Tag
+                                            fontSize={'xs'}
+                                            size={'sm'}
+                                            colorScheme={shop.status === 'active' ? 'green' : 'orange'}
+                                        >
+                                            {shop.status === 'active' ? 'ATTIVO' : 'DISATTIVATO'}
+                                        </Tag>
                                     </Box>
 
                                     <Box

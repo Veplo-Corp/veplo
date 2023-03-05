@@ -138,12 +138,11 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             const business: Business = value.data?.business
             console.log(business);
 
-            if (business.status === 'stripe_id_requested') {
+            if (business?.status === 'stripe_id_requested') {
               router.push('/shop/crea-business-account')
-
             }
 
-            if (business.status === 'onboarding_KYC_requested') {
+            if (business?.status === 'onboarding_KYC_requested') {
               router.push('/shop/continua-processo-kyc')
             }
 
