@@ -18,6 +18,7 @@ export interface Product {
     id: string,
     name: string,
     canBuy: boolean,
+    status: string,
     info: {
         macroCategory: string,
         microCategory: string,

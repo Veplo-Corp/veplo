@@ -14,6 +14,7 @@ import {
     Box,
     TagLabel,
     Tag,
+    Tooltip,
 } from '@chakra-ui/react'
 import GET_PRODUCTS_FROM_SHOP from '../../src/lib/apollo/queries/geetProductsShop';
 import { ApolloClient, useMutation, useQuery } from '@apollo/client';
@@ -174,6 +175,8 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
         </div>
     );
 
+
+
     return (
         <div>
 
@@ -210,94 +213,161 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
             <TableContainer className='flex m-auto w-full '>
 
                 <Table variant='simple'>
-                    <TableCaption>i tuoi prodotti in Veplo</TableCaption>
+                    <TableCaption
+                        marginBottom={10}
+                    >i tuoi prodotti in Veplo</TableCaption>
                     <Thead
                         bg={'gray.100'}
                     >
                         <Tr>
-                            <Th className='hidden md:table-cell' minW={[20]}></Th>
-                            <Th p={[2, 4]} minW={[30]}>Nome</Th>
-                            <Th p={[2, 4]}>Colore</Th>
-                            <Th p={[2, 4]}>Status</Th>
-                            <Th p={[2, 4]} className='hidden lg:table-cell' >Brand</Th>
-                            <Th p={[2, 4]} className='hidden md:table-cell'>Categoria</Th>
-                            <Th px={[0.5, 4]} isNumeric >Prezzo</Th>
-                            <Th p={[3, 4]} px={[0.5, 4]} className='flex w-full m-auto mr-0'>
-                                <span className='m-auto hidden sm:flex'>
-                                    Gestisci
-                                </span>
+                            <Th
+                                paddingY={5}
+                                className='hidden md:table-cell'
+                                minW={[10]}
+                                paddingRight={0}
+                                fontSize={'sm'}
+                            >
+                                Immagine
+                            </Th>
+                            <Th p={[2, 4]}
+                                fontSize={'sm'}
+                                minW={[30]}>Nome</Th>
+                            <Th p={[2, 4]}
+                                fontSize={'sm'}
+                            >
+                                <div
+                                    className='flex'
+                                >
+                                    Status
+                                    <Tooltip label="disponibilità prodotto in Veplo">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3">
+                                            <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 01-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 01-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 01-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584zM12 18a.75.75 0 100-1.5.75.75 0 000 1.5z" clipRule="evenodd" />
+                                        </svg>
+                                    </Tooltip>
+                                </div>
+
+
+                            </Th>
+                            <Th p={[2, 4]}
+                                fontSize={'sm'}
+                                className='hidden lg:table-cell' >
+                                Brand
+                            </Th>
+                            <Th p={[2, 4]} className='hidden md:table-cell'
+                                fontSize={'sm'}
+                            >
+                                Categoria
+                            </Th>
+                            <Th p={[2, 4]} className='hidden md:table-cell'
+                                fontSize={'sm'}
+
+                            >
+                                <div
+                                    className='flex'
+                                >
+                                    Varianti
+                                    <Tooltip label="Tipologie di prodotti disponibili">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3">
+                                            <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 01-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 01-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 01-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584zM12 18a.75.75 0 100-1.5.75.75 0 000 1.5z" clipRule="evenodd" />
+                                        </svg>
+                                    </Tooltip>
+                                </div>
+
+                            </Th>
+
+                            <Th p={[2, 4]}
+                                fontSize={'sm'}
+                            >Gestisci
                             </Th>
                         </Tr>
                     </Thead>
                     <Tbody >
-                        {data?.shop.products && (productsOnTextSearched.inputText.length > 0 ? productsOnTextSearched.products : data?.shop.products).map((product: Product) => {
-                            return (product.variations.map((variation: Variation | any) => {
-                                const categoryAndmicrocategory = (`${product.info.macroCategory} - ${product.info.microCategory}`).length > 20 ? (`${product.info.macroCategory} - ${product.info.microCategory}`).substring(0, 20) + '...' : (`${product.info.macroCategory} - ${product.info.microCategory}`)
+                        {data?.shop.products && (productsOnTextSearched.inputText.length > 0 ? productsOnTextSearched.products : data?.shop.products).map((product: Product | any) => {
+                            const categoryAndmicrocategory = (`${product.info.macroCategory} - ${product.info.microCategory}`).length > 20 ? (`${product.info.macroCategory} - ${product.info.microCategory}`).substring(0, 20) + '...' : (`${product.info.macroCategory} - ${product.info.microCategory}`)
 
-                                return (
-                                    <Tr key={product.id + variation.color} fontSize={['xs', 'medium']} >
-                                        <Td className='hidden md:table-cell'>
-                                            {variation.photos[0]?.src ?
-                                                (<Image
-                                                    className='w-20'
-                                                    src={
-                                                        variation?.photos[0]?.src
-                                                    }>
-                                                </Image>) :
-                                                (<Image
-                                                    className='w-20'
-                                                    src={
-                                                        imageKitUrl(variation.photos[0], 80, 115)
-                                                        //addAWSPath(product.photos[0])
-                                                    }>
-                                                </Image>)}
-                                        </Td>
+                            return (
+                                <Tr key={product.id} fontSize={['xs', 'medium']}
+                                    _hover={{
+                                        background: 'gray.50'
+                                    }}
+                                >
+                                    <Td
+                                        paddingY={2}
+                                        paddingRight={0}
+                                        className='hidden md:table-cell hover:bg-sky-700'
 
-                                        <Td px={[0.5, 4]} >
-                                            <span className='flex md:hidden'>
-                                                {product.name.length < 10 ?
+                                    >
+
+                                        {product.variations[0].photos[0]?.src ?
+                                            (<img
+                                                className='h-15 rounded-md'
+                                                src={
+                                                    product.variations[0].photos[0]?.src
+                                                }>
+                                            </img>) :
+                                            (<img
+                                                className='h-16 rounded-md'
+                                                src={
+                                                    imageKitUrl(product.variations[0].photos[0], 80, 115)
+                                                    //addAWSPath(product.photos[0])
+                                                }>
+                                            </img>)}
+                                    </Td>
+
+                                    <Td paddingRight={0}
+                                        paddingY={6}
+                                        paddingLeft={[2, 4]}
+                                    >
+                                        <span className='flex md:hidden'>
+                                            <Tooltip label={product.name}>
+                                                {product.name.length < 25 ?
                                                     product.name.toUpperCase()
                                                     :
-                                                    product.name.toUpperCase().substring(0, 10) + '...'
+                                                    product.name.toUpperCase().substring(0, 25) + '...'
                                                 }
-                                            </span>
-                                            <span className='hidden md:flex'>
-                                                {product.name.toUpperCase()}
-                                            </span>
-                                        </Td>
-                                        <Td p={[2, 4]} className='hidden lg:table-cell'>
-                                            <span>
-                                                {variation.color}
-                                            </span>
-                                        </Td>
-                                        <Td p={[2, 4]} /* className='cursor-pointer' */>
-                                            <Tag size={['sm', 'md']} variant='subtle' colorScheme={`${variation.status === 'active' ? 'green' : 'red'}`}>
+                                            </Tooltip>
+                                        </span>
+                                        <span className='hidden md:flex'>
+                                            {product.name.toUpperCase()}
+                                        </span>
 
-                                                <Product_Status_Popover status={variation.status} onChangeStatus={(DBStatus: string) => onChangeStatus(DBStatus, product.id)} />
-                                            </Tag>
+                                    </Td>
+                                    <Td paddingRight={0}
+                                        paddingY={0}
+                                        paddingLeft={[2, 4]}
+                                    /* className='cursor-pointer' */>
+                                        <Tag size={['sm', 'md']} variant='subtle'
+                                            borderRadius='full'
+                                            colorScheme={`${product.status === 'active' ? 'green' : 'red'}`}>
+                                            <Product_Status_Popover status={product.status} onChangeStatus={(DBStatus: string) => onChangeStatus(DBStatus, product.id)} />
+                                        </Tag>
 
-                                        </Td>
-                                        <Td p={[2, 4]} className='hidden lg:table-cell'>
-                                            <span>
-                                                {product.info.brand}
-                                            </span>
-                                        </Td>
-                                        <Td p={[2, 4]} className='hidden md:table-cell'>
-                                            <span>
-                                                {categoryAndmicrocategory}
-                                            </span>
-                                        </Td>
-                                        <Td px={[0.5, 4]} isNumeric >
-
-                                            <span className={`${variation.price.v2 ? 'line-through text-gray-500' : ''}`}>
-                                                {variation.price.v1.toFixed(2).replace('.', ',')}€
-                                            </span>
-                                            {variation.price.v2 && <span >
-                                                <br />
-                                                {variation.price.v2.toFixed(2).replace('.', ',')}€
-                                            </span>}
-                                        </Td>
-                                        {/* <Td className='hidden md:table-cell'>
+                                    </Td>
+                                    <Td paddingRight={0}
+                                        paddingY={0}
+                                        paddingLeft={[2, 4]}
+                                        className='hidden lg:table-cell'>
+                                        <span>
+                                            {product.info.brand}
+                                        </span>
+                                    </Td>
+                                    <Td paddingRight={0}
+                                        paddingY={0}
+                                        paddingLeft={[2, 4]}
+                                        className='hidden md:table-cell'>
+                                        <span>
+                                            {categoryAndmicrocategory}
+                                        </span>
+                                    </Td>
+                                    <Td paddingRight={0}
+                                        paddingY={0}
+                                        paddingLeft={[2, 4]}
+                                        className='hidden md:table-cell' >
+                                        <span>
+                                            {product.variations.length} variant{product.variations.length === 1 ? 'e' : 'i'}
+                                        </span>
+                                    </Td>
+                                    {/* <Td className='hidden md:table-cell'>
                                         <Button colorScheme={'blue'}>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
@@ -315,46 +385,59 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                                             <span className='hidden lg:flex ml-1'>elimina</span>
                                         </Button>
                                     </Td> */}
-                                        <Td px={[0.5, 4]} isNumeric className='w-fit' >
-                                            <div className='text-center'>
-
-                                                <Button
-                                                    className='invisible xl:visible'
-                                                    onClick={() =>
-                                                        handleButtonEditDiscount(product.id)
-                                                    }
-                                                    colorScheme={'yellow'} size={['xs', 'md']} variant={['ghost', 'outline']}>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
-                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
-                                                    </svg>
-
-                                                    <span className='hidden xl:flex ml-1'>Sconto</span>
-
-                                                </Button>
-                                                <Button
-                                                    onClick={() =>
-                                                        handleButtonEdit(product.id)
-                                                    }
-                                                    colorScheme={'blue'} size={['xs', 'md']} m={[0, 3]} variant={['ghost', 'outline']}>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                                                    </svg>
-                                                    <span className='hidden xl:flex ml-1'>modifica</span>
-
-                                                </Button>
-                                                <Button onClick={() => handleButtonDelete(product.id, product.name, []/* product.variations[0].photos[0] */)
+                                    <Td
+                                        paddingRight={0}
+                                        paddingY={0}
+                                        paddingLeft={[2, 4]}
+                                        className='w-fit' >
+                                        <div >
+                                            {/* <Button
+                                                className='invisible xl:visible'
+                                                onClick={() =>
+                                                    handleButtonEditDiscount(product.id)
                                                 }
-                                                    colorScheme={'red'} size={['xs', 'md']} variant={['ghost', 'solid']}>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                                    </svg>
-                                                    {/* <span className='hidden xl:flex ml-1'>elimina</span> */}
+                                                colorScheme={'yellow'} size={['xs', 'md']} variant={['ghost', 'outline']}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
+                                                </svg>
 
-                                                </Button>
-                                            </div>
-                                            {/* //! arrow button to show more content in mobile */}
-                                            {/* <div className='flex lg:hidden'>
+                                                <span className='hidden xl:flex ml-1'>Sconto</span>
+
+                                            </Button> */}
+                                            <Button
+                                                onClick={() =>
+                                                    handleButtonEdit(product.id)
+                                                }
+                                                colorScheme={'blue'} mr={[2, 3]} variant={['ghost', 'outline']}
+                                                borderRadius={'full'}
+                                                height={[8, 10]}
+                                                width={[8, 10]}
+                                                padding={0}
+
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 md:w-5 md:h-5">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                                </svg>
+                                                {/* <span className='hidden xl:flex ml-1'>modifica</span> */}
+
+                                            </Button>
+                                            <Button onClick={() => handleButtonDelete(product.id, product.name, []/* product.variations[0].photos[0] */)
+                                            }
+                                                borderRadius={'full'}
+                                                height={[8, 10]}
+                                                width={[8, 10]}
+                                                padding={0}
+                                                colorScheme={'red'} variant={['ghost', 'solid']}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 md:w-5 md:h-5">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                                </svg>
+                                                {/* <span className='hidden xl:flex ml-1'>elimina</span> */}
+
+                                            </Button>
+                                        </div>
+                                        {/* //! arrow button to show more content in mobile */}
+                                        {/* <div className='flex lg:hidden'>
                                             <Button onClick={() =>
                                                 handleButtonDelete(product.id, product.name)
                                             }
@@ -364,10 +447,9 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                                                 </svg>
                                             </Button>
                                         </div> */}
-                                        </Td>
-                                    </Tr>
-                                )
-                            }))
+                                    </Td>
+                                </Tr>
+                            )
 
                         })}
 
@@ -376,7 +458,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                 </Table>
 
             </TableContainer>
-        </div>
+        </div >
 
     )
 }

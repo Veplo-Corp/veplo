@@ -21,6 +21,7 @@ const GET_PRODUCTS_FROM_SHOP = gql`
                 id
                 name
                 canBuy
+                status
                 info{
                     gender
                     macroCategory
