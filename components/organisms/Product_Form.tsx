@@ -3,7 +3,7 @@ import { Box, Button, CircularProgress, Input, InputGroup, InputLeftAddon } from
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form';
-import { IFormInput } from '../../src/pages/shop/home/[shopId]/crea-prodotto';
+import { IFormInput } from '../../src/pages/shop/home/[shopId]/old-crea-prodotto';
 import Autocomplete from '../atoms/Autocomplete_Headless';
 import BlackButton from '../atoms/BlackButton';
 import Div_input_creation from '../atoms/Div_input_creation';
