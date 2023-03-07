@@ -2,12 +2,12 @@ import { FC, Fragment, useEffect, useRef, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
-import { COLORS } from '../mook/colors'
+import { Color, COLORS } from '../mook/colors'
 import Circle_Color from './Circle_Color'
 
-const SelectColor: FC<{ selectedValueBefore: string, handleClick: (value: any) => void }> = ({ selectedValueBefore, handleClick }) => {
+const SelectColor: FC<{ selectedValueBefore: string, handleClick: (value: any) => void, colors: Color[] }> = ({ selectedValueBefore, handleClick, colors }) => {
     const [selected, setSelected] = useState<any>(selectedValueBefore || null);
-    const color = useRef(COLORS)
+    // const color = useRef(COLORS)
 
     const handleEvent = (value: any) => {
         setSelected(value)
@@ -41,7 +41,7 @@ const SelectColor: FC<{ selectedValueBefore: string, handleClick: (value: any) =
                     leaveTo="opacity-0"
                 >
                     <Listbox.Options className="z-10 bg-white absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-whitetext-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                        {color.current.map((color, valueIdx: number) => {
+                        {colors.map((color, valueIdx: number) => {
                             return (
                                 <Listbox.Option
                                     key={valueIdx}
