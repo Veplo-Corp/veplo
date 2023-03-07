@@ -386,7 +386,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                 size={'sm'}
                                 typeButton={'button'}
                                 leftIcon={<DownloadIcon />}
-                                disabled={false} />
+                                disabled={images.length > 2} />
                         </div>
                         <input
                             ref={hiddenFileInput}

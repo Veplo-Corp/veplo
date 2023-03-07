@@ -42,6 +42,16 @@ const index = () => {
 
     const [microcategoriesSelected, setMicrocategoriesSelected] = useState<string[]>([])
     const [sizeTypeSelected, setSizeTypeSelected] = useState('')
+
+    const [productVariations, setProductVariations] = useState<any>([])
+
+    const deleteVariation = (index: number) => {
+        if (productVariations.length < 1) return
+        console.log(index);
+
+    }
+
+
     return (
         <Desktop_Layout>
             <NoIndexSeo title='Crea prodotto | Veplo' />
@@ -150,16 +160,27 @@ const index = () => {
                         )}
                     />
                 </Div_input_creation>
-                <h1 className='text-lg md:text-2xl font-extrabold mt-4 mb-6'>
+                <h1 className='text-lg md:text-2xl font-extrabold mt-6 mb-4'>
                     Varianti colore
                 </h1>
             </div>
 
             <div className='w-full md:w-9/12 lg:w-7/12 xl:w-6/12 m-auto'>
-                <AddColorToProduct
-                    category={sizeTypeSelected}
-                />
+                {[productVariations].map((value, index) => {
+                    return (
+                        <div
+                            key={index}
+                            className='mb-4'
+                        >
+                            <AddColorToProduct
+                                category={sizeTypeSelected}
+                                deleteCard={() => deleteVariation(index)}
+                            />
+                        </div>
 
+
+                    )
+                })}
             </div>
         </Desktop_Layout>
     )

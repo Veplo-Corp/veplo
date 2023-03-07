@@ -3,7 +3,7 @@ import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 
-const SelectStringOption: FC<{ selectedValueBefore: string, values: string[] | number[], handleClick: (value: any) => void }> = ({ selectedValueBefore, values, handleClick }) => {
+const SelectSize: FC<{ selectedValueBefore: string, values: string[] | number[], handleClick: (value: any) => void, disabledSizes: any[] }> = ({ selectedValueBefore, values, handleClick, disabledSizes }) => {
     const [selected, setSelected] = useState<any>(selectedValueBefore || null);
 
     const handleEvent = (value: any) => {
@@ -15,6 +15,10 @@ const SelectStringOption: FC<{ selectedValueBefore: string, values: string[] | n
         setSelected(undefined)
         handleClick(undefined)
     }, [values])
+
+
+
+
 
 
     return (
@@ -43,17 +47,19 @@ const SelectStringOption: FC<{ selectedValueBefore: string, values: string[] | n
                         {values?.map((value: any, valueIdx: number) => {
                             return (
                                 <Listbox.Option
+                                    disabled={disabledSizes.map(element => element.size).find(element => element === value)}
                                     key={valueIdx}
                                     className={({ active }) =>
-                                        `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-blue-700 text-white' : 'text-white-900'
-                                        }`
+                                        ` relative cursor-default select-none py-2 pl-10 pr-4  ${active ? 'bg-blue-700 text-white' : 'text-white-900'}
+                                        ${disabledSizes.map(element => element.size).find(element => element === value) ? 'bg-gray-100 text-black' : ''}
+                                        `
                                     }
                                     value={value}
                                 >
                                     {({ selected }) => (
                                         <>
                                             <span
-                                                className={`block truncate ${selected ? 'font-medium' : 'font-normal'
+                                                className={` block truncate ${selected ? 'font-medium' : 'font-normal'
                                                     }`}
                                             >
                                                 {value}
@@ -75,4 +81,4 @@ const SelectStringOption: FC<{ selectedValueBefore: string, values: string[] | n
     )
 }
 
-export default SelectStringOption
+export default SelectSize
