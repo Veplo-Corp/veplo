@@ -284,7 +284,6 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                     <Tbody >
                         {data?.shop.products && (productsOnTextSearched.inputText.length > 0 ? productsOnTextSearched.products : data?.shop.products).map((product: Product | any) => {
                             const categoryAndmicrocategory = (`${product.info.macroCategory} - ${product.info.microCategory}`).length > 20 ? (`${product.info.macroCategory} - ${product.info.microCategory}`).substring(0, 20) + '...' : (`${product.info.macroCategory} - ${product.info.microCategory}`)
-
                             return (
                                 <Tr key={product.id} fontSize={['xs', 'medium']}
                                     _hover={{
@@ -294,10 +293,8 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                                     <Td
                                         paddingY={2}
                                         paddingRight={0}
-                                        className='hidden md:table-cell hover:bg-sky-700'
-
+                                        className='hidden md:table-cell '
                                     >
-
                                         {product.variations[0].photos[0]?.src ?
                                             (<img
                                                 className='h-15 rounded-md'
@@ -457,7 +454,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
 
                 </Table>
 
-            </TableContainer>
+            </TableContainer >
         </div >
 
     )
