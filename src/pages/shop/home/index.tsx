@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import Verified_Email from '../../../../components/molecules/Verified_Email/Verified_Email'
+import { imageKitUrl } from '../../../../components/utils/imageKitUrl'
 import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required'
 import { Business } from '../../../interfaces/business.interface'
 import { Firebase_User } from '../../../interfaces/firebase_user.interface'
@@ -64,7 +65,7 @@ const index = () => {
                 <div className='grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-3 gap-x-2.5 gap-y-3.5 '>
                     <Box maxW='sm' borderWidth='1px' borderRadius='xl' overflow='hidden'
                         className='cursor-pointer'
-                        minH={['200px', '300px']}
+                        minH={['200px', '200px']}
                         bgColor={'gray.50'}
                         _active={{
                             transform: 'scale(0.99)',
@@ -89,14 +90,16 @@ const index = () => {
                     {data?.business?.shops && data.business.shops.map((shop) => {
                         return (
                             <Box key={shop.id} maxW='sm' borderWidth='1px' borderRadius='xl' overflow='hidden'
-                                minH={['200px', '300px']}
+                                minH={['200px', '200px']}
                                 className='cursor-pointer'
                                 _active={{
                                     transform: 'scale(0.99)',
                                 }}
                                 onClick={() => toShop(shop.id)}
                             >
-                                <img src={'https://ik.imagekit.io/veploimages/fa7b4b31-b8f2-4274-afc4-30c073f7ba13?tr=w-720,h-450'}
+                                <img
+                                    className='aspect-[12/7] object-cover'
+                                    src={imageKitUrl(shop.photo)}
                                     alt={'immagine non trovata'}
                                 />
                                 <Box py={3} px={4}>

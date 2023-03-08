@@ -128,7 +128,7 @@ const index = () => {
         <Desktop_Layout>
             <NoIndexSeo title='Crea prodotto | Veplo' />
             <div className='w-full md:w-8/12 lg:w-1/2 xl:w-5/12  m-auto'>
-                <h1 className='italic text-xl lg:text-4xl font-extrabold mb-6'>
+                <h1 className='italic text-xl lg:text-3xl font-extrabold mb-6'>
                     Aggiungi prodotto
                 </h1>
                 <Div_input_creation text='Nome del prodotto'>
@@ -382,24 +382,26 @@ const index = () => {
                 })
                 }
 
-                {!newCard || watch('macrocategory') === undefined ? (<Button
-                    size={['sm', 'md']}
-                    colorScheme={'gray'}
-                    ml={8}
-                    leftIcon={
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                        </svg>
-                    }
-                    variant='ghost'
-                    mb={3}
-                    mt={-1}
-                    onClick={() => {
-                        setNewCard(true)
-                    }}
-                >
-                    aggiungi nuova variante
-                </Button>)
+
+                {!newCard || watch('macrocategory') === undefined ? (
+                    <Button
+                        size={['sm', 'md']}
+                        colorScheme={'gray'}
+                        ml={[0, 8]}
+                        leftIcon={
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                        }
+                        variant='ghost'
+                        mb={3}
+                        mt={-1}
+                        onClick={() => {
+                            setNewCard(true)
+                        }}
+                    >
+                        aggiungi nuova variante
+                    </Button>)
                     : (
                         <div
                             key={Math.random()}
@@ -419,14 +421,37 @@ const index = () => {
                         </div>
                     )
                 }
+                <div
+                    className='text-center'
+                >
+                    <Button
+                        mt={4}
+                        mr={[0, 10]}
+                        bgColor={'gray.900'}
+                        color={'white'}
+                        _hover={{
+                            background: 'black'
+                        }}
+                        _active={{
+                            background: 'gray.800'
+                        }}
+                        onClick={() => {
+                            console.log(cardToEdit);
+                            console.log(productVariations);
+                        }}
+                        disabled={false}
+                        px={12}
+                        py={7}
+                        rounded={'lg'}
+                    >
+                        Crea Prodotto
+                    </Button>
+                </div>
+
+
             </div>
-            <Button
-                onClick={() => {
-                    console.log(cardToEdit);
-                    console.log(productVariations);
-                }}
-            >clicca
-            </Button>
+
+
         </Desktop_Layout>
     )
 }
