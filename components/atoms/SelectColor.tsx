@@ -5,9 +5,8 @@ import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 import { Color, COLORS } from '../mook/colors'
 import Circle_Color from './Circle_Color'
 
-const SelectColor: FC<{ selectedValueBefore: string, handleClick: (value: any) => void, colors: Color[] }> = ({ selectedValueBefore, handleClick, colors }) => {
-    const [selected, setSelected] = useState<any>(selectedValueBefore || null);
-    // const color = useRef(COLORS)
+const SelectColor: FC<{ defaultValue?: string, handleClick: (value: any) => void, colors: Color[], }> = ({ defaultValue, handleClick, colors }) => {
+    const [selected, setSelected] = useState<any>(null);
 
     const handleEvent = (value: any) => {
         setSelected(value)
@@ -18,6 +17,12 @@ const SelectColor: FC<{ selectedValueBefore: string, handleClick: (value: any) =
     //     setSelected(undefined)
     //     handleClick(undefined)
     // }, [])
+
+    useEffect(() => {
+        if (typeof defaultValue === 'string')
+            setSelected(defaultValue)
+    }, [defaultValue])
+
 
 
     return (

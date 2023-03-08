@@ -3,18 +3,30 @@ import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 
-const SelectStringOption: FC<{ selectedValueBefore: string, values: string[] | number[], handleClick: (value: any) => void }> = ({ selectedValueBefore, values, handleClick }) => {
-    const [selected, setSelected] = useState<any>(selectedValueBefore || null);
+const SelectStringOption: FC<{ defaultValue?: number | string, values: string[] | number[], handleClick: (value: any) => void }> = ({ defaultValue, values, handleClick }) => {
+    const [selected, setSelected] = useState<any>('');
+
+    useEffect(() => {
+        if (!defaultValue) return
+        setSelected(defaultValue)
+    }, [defaultValue])
 
     const handleEvent = (value: any) => {
+        if (value === undefined) return
         setSelected(value)
         handleClick(value)
     }
 
     useEffect(() => {
+        if (defaultValue) return
         setSelected(undefined)
         handleClick(undefined)
     }, [values])
+
+
+
+
+
 
 
     return (

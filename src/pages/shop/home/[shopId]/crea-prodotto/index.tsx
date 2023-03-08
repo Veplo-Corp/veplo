@@ -1,5 +1,5 @@
 import { Box, Button, ButtonGroup, IconButton, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import Autocomplete from '../../../../../../components/atoms/Autocomplete_Headless'
 import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout'
@@ -8,6 +8,7 @@ import SelectMacrocategory from '../../../../../../components/atoms/SelectMacroc
 import SelectStringOption from '../../../../../../components/atoms/SelectStringOption'
 import { Color, COLORS } from '../../../../../../components/mook/colors'
 import AddColorToProduct from '../../../../../../components/organisms/AddColorToProduct'
+import EditColorToProduct from '../../../../../../components/organisms/EditColorToProdoct'
 import NoIndexSeo from '../../../../../../components/organisms/NoIndexSeo'
 import { onChangeNumberPrice } from '../../../../../../components/utils/onChangePrice'
 import { Variation } from '../../../../../interfaces/product.interface'
@@ -51,16 +52,15 @@ const index = () => {
     const [newCard, setNewCard] = useState(true)
     const [productVariations, setProductVariations] = useState<any[]>([])
     const [colors, setColors] = useState<Color[]>(COLORS)
+    const [cardToEdit, setCardToEdit] = useState<any>([])
+    // const deleteVariation = (index: number) => {
+    //     if (productVariations.length < 1) return
+    //     console.log(index);
+    // }
 
-    const deleteVariation = (index: number) => {
-        if (productVariations.length < 1) return
-        console.log(index);
-    }
+
 
     const confirmCard = (variation: VariationCard) => {
-        console.log(variation);
-        console.log(index);
-        console.log(productVariations);
         setProductVariations((prevstate: any[]) => {
             // let prevElements = prevstate;
             // prevElements[index] = variation
@@ -79,6 +79,47 @@ const index = () => {
         })
 
         setNewCard(false)
+    }
+
+    const editCard = (variation: VariationCard) => {
+        setProductVariations((prevstate: any[]) => {
+            return [
+                ...prevstate,
+                variation
+            ]
+        })
+        setColors((prevState: Color[]) => {
+            const newColors = prevState.filter(color => color.name !== variation.color)
+            return [
+                ...newColors
+            ]
+        })
+        setCardToEdit((prevstate: VariationCard[]) => {
+            const newVariation = prevstate.filter(element => element.color !== variation.color)
+            return [
+                ...newVariation
+            ]
+        })
+
+
+        setNewCard(false)
+    }
+
+    const trasformInEditCard = (variation: any) => {
+        setCardToEdit((prevstate: VariationCard[]) => {
+            return [
+                variation,
+                ...prevstate
+            ]
+        })
+
+        setProductVariations((prevstate: VariationCard[]) => {
+            const newVariation = prevstate.filter(element => element.color !== variation.color)
+            return [
+                ...newVariation
+            ]
+        })
+
     }
 
 
@@ -153,6 +194,7 @@ const index = () => {
                                 handleClick={(macrocategory: Macrocategory) => {
                                     setSizeTypeSelected(macrocategory.sizes)
                                     setValue('macrocategory', macrocategory.name);
+                                    setProductVariations([])
                                     setMicrocategoriesSelected(macrocategory.types)
                                 }}
                             />
@@ -167,7 +209,7 @@ const index = () => {
                         render={() => (
                             <SelectStringOption
                                 values={microcategoriesSelected}
-                                selectedValueBefore={''}
+                                defaultValue={''}
                                 handleClick={(microcategory: string) => {
                                     setValue('microcategory', microcategory);
                                 }}
@@ -183,7 +225,7 @@ const index = () => {
                         render={() => (
                             <SelectStringOption
                                 values={vestibilità}
-                                selectedValueBefore={''}
+                                defaultValue={''}
                                 handleClick={(vestibilità: string) => {
                                     setValue('vestibilità', vestibilità);
                                 }}
@@ -201,6 +243,7 @@ const index = () => {
             <div className='w-full md:w-9/12 lg:w-7/12 xl:w-6/12 m-auto'>
 
                 {productVariations.length > 0 && productVariations.map((variation: any, index) => {
+
                     console.log(variation);
                     return (
                         <Box
@@ -229,7 +272,7 @@ const index = () => {
                                             <img
                                                 key={image.url}
                                                 src={image.url} alt="immagine non trovata"
-                                                className='w-10 md:w-16 rounded-lg'
+                                                className='w-10 md:w-16 h-fit rounded-lg'
                                             />
                                         )
                                     })}
@@ -257,17 +300,21 @@ const index = () => {
                                 justifyContent={'right'}
                                 mt={5}
                             >
-                                {/* <IconButton
+                                <IconButton
                                     aria-label=''
                                     colorScheme={'blue'}
                                     variant={'ghost'}
-                                    //onClick={() => setIsCardConfirmed(false)}
+                                    onClick={() => {
+
+                                        trasformInEditCard(variation)
+                                    }
+                                    }
                                     icon={
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                                         </svg>
                                     }
-                                /> */}
+                                />
                                 <IconButton aria-label='Search database'
                                     colorScheme={'red'}
                                     variant={'ghost'}
@@ -288,7 +335,6 @@ const index = () => {
                                             ]
                                             console.log(newColors);
                                             return [...newColors]
-
                                         })
                                     }}
                                     icon={
@@ -301,12 +347,42 @@ const index = () => {
                             </ButtonGroup>
                         </Box>
                     )
-
                 })}
 
+                {cardToEdit.length > 0 && cardToEdit.map((variation: VariationCard) => {
+                    console.log(variation);
+                    return (
+                        <div key={variation.color}>
+                            <EditColorToProduct
+                                defaultCardValue={variation}
+                                colors={colors}
+                                category={sizeTypeSelected}
+                                confirmCard={(variation) => {
+                                    editCard(variation)
+                                }}
+                            />
 
+                        </div>
+                    )
+                    // return (
+                    //     <div
+                    //         key={Math.random()}
+                    //         className='mb-4'
+                    //     >
+                    //         <AddColorToProduct
+                    //             defaultCardValue={variation}
+                    //             colors={colors}
+                    //             category={sizeTypeSelected}
+                    //             confirmCard={(variation) => {
+                    //                 confirmCard(variation)
+                    //             }}
+                    //         />
+                    //     </div>
+                    // )
+                })
+                }
 
-                {!newCard ? (<Button
+                {!newCard || watch('macrocategory') === undefined ? (<Button
                     size={['sm', 'md']}
                     colorScheme={'gray'}
                     ml={8}
@@ -317,7 +393,7 @@ const index = () => {
                     }
                     variant='ghost'
                     mb={3}
-                    mt={-2}
+                    mt={-1}
                     onClick={() => {
                         setNewCard(true)
                     }}
@@ -335,11 +411,22 @@ const index = () => {
                                 confirmCard={(variation) => {
                                     confirmCard(variation)
                                 }}
+                                deleteCard={() => {
+                                    if (productVariations.length < 1) return
+                                    setNewCard(false)
+                                }}
                             />
                         </div>
                     )
                 }
             </div>
+            <Button
+                onClick={() => {
+                    console.log(cardToEdit);
+                    console.log(productVariations);
+                }}
+            >clicca
+            </Button>
         </Desktop_Layout>
     )
 }
