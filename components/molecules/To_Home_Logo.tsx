@@ -7,7 +7,6 @@ const To_Home_Logo: FC<{ href: string }> = ({ href }) => {
     const router = useRouter();
     const [city, setCity] = useState('')
     useEffect(() => {
-        console.log(router.query.city_cap);
         if (typeof router.query.city_cap !== 'string') {
             return setCity('')
         }

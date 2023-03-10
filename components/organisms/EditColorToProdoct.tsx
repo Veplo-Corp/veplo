@@ -37,13 +37,13 @@ const EditColorToProduct: FC<{ category: string, confirmCard: (variation: Variat
     useEffect(() => {
 
         if (!defaultCardValue) return
-        console.log(defaultCardValue.sizes);
+        console.log(defaultCardValue.lots);
 
         setColor(defaultCardValue?.color)
-        setImages(defaultCardValue?.images)
+        setImages(defaultCardValue?.photos)
         setProductSizeSelected((prevState) => {
             return [
-                ...defaultCardValue?.sizes
+                ...defaultCardValue?.lots
             ]
         }
         )
@@ -63,8 +63,8 @@ const EditColorToProduct: FC<{ category: string, confirmCard: (variation: Variat
         setIsCardConfirmed(true)
         const variation: VariationCard = {
             color: color,
-            sizes: productSizeSelected,
-            images: images
+            lots: productSizeSelected,
+            photos: images
         }
         console.log(variation);
         confirmCard(variation);
@@ -266,7 +266,7 @@ const EditColorToProduct: FC<{ category: string, confirmCard: (variation: Variat
                     </Button> */}
                 </ButtonGroup>
             </Box>
-            <Drawer_Add_Image openDraw={openDrawNumber} imagesUploadedBefore={defaultCardValue.images} confirmPhotos={(images: string[]) => {
+            <Drawer_Add_Image openDraw={openDrawNumber} imagesUploadedBefore={defaultCardValue.photos} confirmPhotos={(images: string[]) => {
                 console.log(images);
                 setImages(images)
             }} />

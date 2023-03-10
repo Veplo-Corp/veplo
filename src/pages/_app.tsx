@@ -58,8 +58,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
   const dispatch = useDispatch();
   const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
-  console.log(data);
-  console.log(error?.message);
 
 
 
@@ -136,7 +134,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
           .then(async (value) => {
             //redirect to the right page based on status
             const business: Business = value.data?.business
-            console.log(business);
 
             if (business?.status === 'stripe_id_requested') {
               router.push('/shop/crea-business-account')
@@ -195,11 +192,11 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
   const router = useRouter()
   useEffect(() => {
     const start = () => {
-      console.log("start");
+      //console.log("start");
       setLoading(true);
     };
     const end = () => {
-      console.log("finished");
+      //console.log("finished");
       setLoading(false);
     };
     Router.events.on("routeChangeStart", start);

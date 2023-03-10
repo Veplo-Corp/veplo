@@ -38,7 +38,7 @@ const AddColorToProduct: FC<{ category: string, deleteCard: () => void, confirmC
         console.log(defaultCardValue);
 
         setColor(defaultCardValue?.color)
-        setProductSizeSelected(defaultCardValue?.sizes)
+        setProductSizeSelected(defaultCardValue?.lots)
 
     }, [defaultCardValue])
 
@@ -61,8 +61,8 @@ const AddColorToProduct: FC<{ category: string, deleteCard: () => void, confirmC
         setIsCardConfirmed(true)
         const variation: VariationCard = {
             color: color,
-            sizes: productSizeSelected,
-            images: images
+            lots: productSizeSelected,
+            photos: images
         }
         console.log(variation);
         confirmCard(variation);
@@ -244,8 +244,8 @@ const AddColorToProduct: FC<{ category: string, deleteCard: () => void, confirmC
                         paddingX={6}
                         paddingY={5}
                         size={'sm'}
-                        //disabled={false}
-                        disabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
+                        disabled={false}
+                        //disabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
                         onClick={
                             confirmButton
                         }

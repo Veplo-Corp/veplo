@@ -6,6 +6,7 @@ import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout'
 import Div_input_creation from '../../../../../../components/atoms/Div_input_creation'
 import SelectMacrocategory from '../../../../../../components/atoms/SelectMacrocategory'
 import SelectStringOption from '../../../../../../components/atoms/SelectStringOption'
+import ProductVariationCard from '../../../../../../components/molecules/ProductVariationCard'
 import { Color, COLORS } from '../../../../../../components/mook/colors'
 import AddColorToProduct from '../../../../../../components/organisms/AddColorToProduct'
 import EditColorToProduct from '../../../../../../components/organisms/EditColorToProdoct'
@@ -14,7 +15,7 @@ import { onChangeNumberPrice } from '../../../../../../components/utils/onChange
 import { Variation } from '../../../../../interfaces/product.interface'
 import { VariationCard } from '../../../../../interfaces/variationCard.interface'
 
-interface IFormInput {
+export interface IFormInputProduct {
     name: string;
     price: string;
     brand: string;
@@ -42,7 +43,7 @@ const vestibilità = [
 
 const index = () => {
 
-    const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInput>({
+    const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInputProduct>({
         mode: "all",
         //defaultValues
     });
@@ -120,6 +121,26 @@ const index = () => {
             ]
         })
 
+    }
+
+    const deleteVariationCard = (variation: Variation) => {
+        setProductVariations((prevstate: any) => {
+            const newState = prevstate.filter((state: Variation) => state.color !== variation.color)
+            return [
+                ...newState
+            ]
+        })
+        setColors((prevState: any) => {
+            const newColor = COLORS.find(color => color.name === variation.color)
+            if (!newColor) return [...prevState]
+            console.log(newColor);
+            let newColors = [
+                newColor,
+                ...prevState,
+            ]
+            console.log(newColors);
+            return [...newColors]
+        })
     }
 
 
@@ -242,110 +263,19 @@ const index = () => {
 
             <div className='w-full md:w-9/12 lg:w-7/12 xl:w-6/12 m-auto'>
 
-                {productVariations.length > 0 && productVariations.map((variation: any, index) => {
+                {productVariations.length > 0 && productVariations.map((variation: VariationCard, index) => {
 
                     console.log(variation);
                     return (
-                        <Box
-                            key={index}
-                            paddingTop={7}
-                            paddingBottom={5}
-                            paddingX={7}
-                            borderWidth={1}
-                            borderColor={'gray.300'}
-                            borderRadius={'2xl'}
-                            mb={5}
-                        >
-                            <div className='flex justify-between mb-1'>
-                                <h5 className=' text-md lg:text-lg font-extrabold my-auto'>
-                                    {variation.color}
-                                </h5>
-                                <h5 className=' text-sm lg:text-md font-bold text-right my-auto'>
-                                    Taglie
-                                </h5>
-                            </div>
-                            <div className='flex justify-between mt-2'>
+                        <div key={index}>
+                            <ProductVariationCard
+                                index={index}
+                                variation={variation}
+                                editCard={trasformInEditCard}
+                                deleteCard={deleteVariationCard}
+                            />
+                        </div>
 
-                                <div className='flex gap-2'>
-                                    {variation.images.length > 0 && variation.images.map((image: any) => {
-                                        return (
-                                            <img
-                                                key={image.url}
-                                                src={image.url} alt="immagine non trovata"
-                                                className='w-10 md:w-16 h-fit rounded-lg'
-                                            />
-                                        )
-                                    })}
-                                </div>
-
-                                <div className='gap-2 text-right'>
-                                    {
-                                        variation.sizes.length > 0 && variation.sizes.map((size: any) => {
-                                            return (
-                                                <p
-                                                    className='text-sm mb-1'
-                                                    key={Math.random()}
-                                                >
-                                                    {size.size} - {size.quantity} quantità
-                                                </p>
-                                            )
-                                        })
-                                    }
-                                </div>
-
-                            </div>
-
-                            <ButtonGroup gap='2'
-                                display={'flex'}
-                                justifyContent={'right'}
-                                mt={5}
-                            >
-                                <IconButton
-                                    aria-label=''
-                                    colorScheme={'blue'}
-                                    variant={'ghost'}
-                                    onClick={() => {
-
-                                        trasformInEditCard(variation)
-                                    }
-                                    }
-                                    icon={
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                                        </svg>
-                                    }
-                                />
-                                <IconButton aria-label='Search database'
-                                    colorScheme={'red'}
-                                    variant={'ghost'}
-                                    onClick={() => {
-                                        setProductVariations((prevstate: any) => {
-                                            const newState = prevstate.filter((state: Variation) => state.color !== variation.color)
-                                            return [
-                                                ...newState
-                                            ]
-                                        })
-                                        setColors((prevState: any) => {
-                                            const newColor = COLORS.find(color => color.name === variation.color)
-                                            if (!newColor) return [...prevState]
-                                            console.log(newColor);
-                                            let newColors = [
-                                                newColor,
-                                                ...prevState,
-                                            ]
-                                            console.log(newColors);
-                                            return [...newColors]
-                                        })
-                                    }}
-                                    icon={
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                        </svg>
-                                    }
-
-                                />
-                            </ButtonGroup>
-                        </Box>
                     )
                 })}
 

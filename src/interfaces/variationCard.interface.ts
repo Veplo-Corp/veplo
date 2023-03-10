@@ -1,8 +1,8 @@
 export interface VariationCard {
     color: string,
-    sizes: {
+    lots: {
         size: string,
         quantity: number
     }[],
-    images: any[]
+    photos: any[]
 }

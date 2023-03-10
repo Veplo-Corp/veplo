@@ -2,11 +2,11 @@ export interface Variation {
     id: string
     color: string
     status: string
-    price: {
-        v1: number,
-        discountPercentage: number,
-        v2?: number
-    }
+    // price: {
+    //     v1: number,
+    //     discountPercentage: number,
+    //     v2?: number
+    // }
     photos: string[]
     lots: {
         size: string,
@@ -25,6 +25,11 @@ export interface Product {
         gender: string,
         brand: string,
     }
+    price: {
+        v1: number,
+        discountPercentage: number,
+        v2?: number
+    }
     location: {
         type: string,
         coordinates: number[]
@@ -36,7 +41,10 @@ export interface Product {
         city: string,
         status: string,
     }
-    createdAt?: string
+    createdAt?: string,
     updatedAt?: string,
-    variations: Variation[]
+    variations: Variation[],
+    //!modificare appena inserito brand in graphQL
+    brand?: string
+
 }
