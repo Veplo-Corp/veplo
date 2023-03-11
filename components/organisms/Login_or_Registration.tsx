@@ -8,7 +8,7 @@ interface UserInfo {
     name: string,
     surname: string,
     interest: string,
-    dateBirth: string
+    dateBirth: string | number
 }
 
 const typeInterest = [
@@ -285,16 +285,18 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
                                         const date = new Date(e.target.value)
                                         setUserInfo(prevState => {
 
-                                            if (date < new Date('1920-01-01') || e.target.value.length <= 0) {
+                                            if (date < new Date('1920-01-01') || e.target.value.length <= 0 || date >= new Date()) {
                                                 return {
                                                     ...prevState
                                                 }
                                             }
-                                            console.log(date);
+
+                                            const age = Math.trunc(((new Date().getTime() - date.getTime())) / (1000 * 60 * 60 * 24 * 365));
+                                            console.log(age);
 
                                             return {
                                                 ...prevState,
-                                                dateBirth: e.target.value
+                                                dateBirth: age /* e.target.value */
                                             }
                                         })
                                     }}

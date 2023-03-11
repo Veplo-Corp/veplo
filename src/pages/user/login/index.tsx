@@ -36,8 +36,9 @@ const index = () => {
 
     if (typeForm === 'registration') {
       try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         // Signed in 
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+        //! age ora è Int, ma verrà gestita come date o string con rilascio
         const user = userCredential.user;
         const idToken = await userCredential.user.getIdToken(true);
         setAuthTokenInSessionStorage(idToken)
