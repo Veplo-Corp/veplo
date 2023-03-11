@@ -17,7 +17,7 @@ import { handleErrorFirebase } from '../../../../components/utils/handleErrorFir
 import { setModalTitleAndDescription, handleOpenModal } from '../../../store/reducers/modal_error'
 import { useRouter } from 'next/router'
 import { Firebase_User } from '../../../interfaces/firebase_user.interface'
-import Login_or_Registration from '../../../../components/organisms/Login_or_Registration'
+import Login_or_Registration, { UserInfo } from '../../../../components/organisms/Login_or_Registration'
 import CREATE_BUSINESS_ACCOUNT from '../../../lib/apollo/mutations/createBusinessAccount';
 
 import Loading from '../../../../components/molecules/Loading'
@@ -101,7 +101,7 @@ const index = () => {
   // }
 
 
-  const handleSubmit = async (email: string, password: string) => {
+  const handleSubmit = async (email: string, password: string, userInfo: UserInfo) => {
     setLoading(true)
     if (typeForm === 'registration') {
       try {

@@ -4,17 +4,27 @@ import BlackButton from '../atoms/BlackButton'
 import resetPassword from '../../components/utils/resetPassword'
 import Div_input_creation from '../atoms/Div_input_creation';
 
-interface UserInfo {
+export interface UserInfo {
     name: string,
     surname: string,
-    interest: string,
-    dateBirth: string | number
+    gender: string,
+    //dateBirth: string | number
+    age?: number
 }
 
 const typeInterest = [
-    'donna',
-    'uomo',
-    'indifferente'
+    {
+        value: 'F',
+        text: 'donna',
+    },
+    {
+        value: 'M',
+        text: 'uomo',
+    },
+    {
+        value: 'I',
+        text: 'indifferente',
+    }
 ]
 
 const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubmitToPage: any, handleType: any, type: 'registration' | 'login' | 'reset_password', title: string }> = ({ account, handleSubmitToPage, handleType, type, title }) => {
@@ -26,8 +36,8 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
     const [userInfo, setUserInfo] = useState<UserInfo>({
         name: '',
         surname: '',
-        interest: '',
-        dateBirth: ''
+        gender: '',
+        //dateBirth: ''
     })
 
 
@@ -78,7 +88,7 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
 
     const handleSubmitForm = (event: any) => {
         event.preventDefault();
-        handleSubmitToPage(email, password)
+        handleSubmitToPage(email, password, userInfo)
     }
 
     return (
@@ -293,10 +303,9 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
 
                                             const age = Math.trunc(((new Date().getTime() - date.getTime())) / (1000 * 60 * 60 * 24 * 365));
                                             console.log(age);
-
                                             return {
                                                 ...prevState,
-                                                dateBirth: age /* e.target.value */
+                                                age: age /* e.target.value */
                                             }
                                         })
                                     }}
@@ -338,11 +347,13 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
                             borderColor: 'black'
                         }}
                         onChange={(event) => {
-                            setUserInfo(prevState => {
-
+                            setUserInfo((prevState: UserInfo) => {
+                                if (event.target.value === 'I') return {
+                                    ...prevState
+                                }
                                 return {
                                     ...prevState,
-                                    interest: event.target.value
+                                    gender: event.target.value
                                 }
                             })
                         }}
@@ -353,9 +364,9 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
                     >
 
                         <option value="Quale categoria di interessa?" disabled>Quale categoria di interessa?</option>
-                        {typeInterest.map((option: string) => {
+                        {typeInterest.map((option) => {
                             return (<option
-                                key={option} value={option}>{option}</option>)
+                                key={option.value} value={option.value}>{option.text}</option>)
                         })}
 
                     </Select>
@@ -365,8 +376,7 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
             }
             {type !== 'reset_password' &&
                 <div className='w-full flex justify-end pt-2'>
-                    <BlackButton disabled={!isValidEmail || !isValidPassword
-                        || (type === 'registration' ? (userInfo.name === '' || userInfo.surname === '' || userInfo.interest === '') : true)
+                    <BlackButton disabled={!isValidEmail || !isValidPassword || (type === 'registration' ? (userInfo.name === '' || userInfo.surname === '' || userInfo.gender === '') : false)
                     }
                         heigth={12}
                         width={52}

@@ -2,13 +2,14 @@ import React, { Fragment, useState } from 'react'
 import Circle_Color from '../atoms/Circle_Color'
 import { Popover, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import { Box } from '@chakra-ui/react'
+import { Box, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../src/config/firebase'
 import { deleteAuthTokenInSessionStorage } from '../utils/deleteAuthTokenSessionStorage'
+import { Divider } from '@chakra-ui/react'
 
 
 
@@ -16,6 +17,8 @@ const User_Popover = () => {
 
     const router = useRouter();
     const user: Firebase_User = useSelector((state: any) => state?.user.user);
+
+
 
     const actionsNotLogged = [
         {
@@ -37,19 +40,25 @@ const User_Popover = () => {
 
     const actionsLogged = [
         {
-            name: 'Profilo',
-            description: user?.email || '',
+            name: 'Impostazioni',
+            description: 'gestisci le impostazioni',
+            href: '/user/settings',
+        },
+        {
+            name: 'Monitora ordini',
+            description: 'vedi i tuoi ordini',
             href: undefined,
         },
         {
-            name: 'Disconnetti',
-            description: 'accedi al tuo account',
+            name: 'Esci',
+            description: 'disconnetti accont',
             href: '/user/login?type=login',
         },
+
     ]
 
     return (
-        <Popover className="relative ">
+        <Popover className="relative">
             <Popover.Button
                 type='button'
                 aria-label="user"
@@ -59,16 +68,37 @@ const User_Popover = () => {
                 </svg>
             </Popover.Button>
             <Popover.Panel
-                className="absolute grid grid-cols-1 gap-3 cursor-pointer z-10 w-48 right-0.5 p-4 bg-gray-50 border border-gray-200 rounded-xl">
+                className="absolute grid grid-cols-1 cursor-pointer z-10 w-52 right-0.5 py-4 bg-gray-50 border border-gray-200 rounded-xl">
+                {user?.userInfo?.name &&
+                    <div className='mb-1'>
+                        <Text
+                            px={4}
+                            fontWeight={'bold'}
+                        >
+                            Ciao {user?.userInfo?.name}!
+                        </Text>
+                        <Text
+                            fontWeight={'normal'}
+                            fontSize={'xs'}
+                            color={'gray.500'}
+                            px={4}
+                            mb={2}
+                            mt={-1}
+                        >
+                            {user.email}
+                        </Text>
+                        <Divider />
+                    </div>
+                }
+
                 {!user ?
                     (actionsNotLogged.map((action, id) => {
                         return (
-                            <Popover.Button key={id} className='text-left hover:scale-95'>
+                            <Popover.Button key={id} className='text-left hover:scale-[0.98] px-4 py-[4px] pt-[8px]'>
                                 <Box
 
                                     onClick={() => {
                                         router.push(action.href)
-
                                     }}
                                 >
                                     <Box
@@ -92,7 +122,7 @@ const User_Popover = () => {
                         )
                     })) : (actionsLogged.map((action, id) => {
                         return (
-                            <Popover.Button key={id} className='text-left'>
+                            <Popover.Button key={id} className='text-left hover:scale-[0.98] px-4 pt-[8px]'>
                                 <Box
                                     onClick={async () => {
                                         if (!action.href) return

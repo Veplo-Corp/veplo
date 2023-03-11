@@ -13,4 +13,14 @@ export interface Firebase_User {
         id: string,
         street: string
     }
+    userInfo?: {
+        stripeId?: string,
+        name?: string,
+        surname?: string,
+        location?: {
+            type: string,
+            coordinates: number[]
+        }
+        gender?: string
+    }
 }

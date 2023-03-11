@@ -1,16 +1,18 @@
+import { useMutation } from '@apollo/client';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
 import Loading from '../../../../components/molecules/Loading';
-import Login_or_Registration from '../../../../components/organisms/Login_or_Registration'
+import Login_or_Registration, { UserInfo } from '../../../../components/organisms/Login_or_Registration'
 import { handleErrorFirebase } from '../../../../components/utils/handleErrorFirebase';
 import { setAuthTokenInSessionStorage } from '../../../../components/utils/setAuthTokenInSessionStorage';
 import { auth } from '../../../config/firebase';
 import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 import { handleOpenModal, setModalTitleAndDescription } from '../../../store/reducers/modal_error';
 import { login } from '../../../store/reducers/user';
+import CREATE_USER from '../../../lib/apollo/mutations/createUser';
 
 const index = () => {
   const router = useRouter()
@@ -19,6 +21,8 @@ const index = () => {
   const [typeForm, settypeForm] = useState<'registration' | 'login' | 'reset_password'>('registration')
   const user: Firebase_User = useSelector((state: any) => state.user.user);
   const dispatch = useDispatch();
+  const [createUser] = useMutation(CREATE_USER);
+
 
   useEffect(() => {
     if (user && user?.shopId) {
@@ -31,7 +35,8 @@ const index = () => {
     }
   }, [type])
 
-  const handleSubmit = async (email: string, password: string) => {
+  const handleSubmit = async (email: string, password: string, userInfo: UserInfo) => {
+    console.log(userInfo);
     setLoading(true)
 
     if (typeForm === 'registration') {
@@ -43,6 +48,19 @@ const index = () => {
         const idToken = await userCredential.user.getIdToken(true);
         setAuthTokenInSessionStorage(idToken)
         console.log(user);
+        const response = await createUser({
+          variables: {
+            options: {
+              ...userInfo,
+              location: {
+                type: "Point",
+                coordinates: [0, 0]
+              }
+            }
+          }
+        })
+        console.log(response);
+
         return router.push('/')
       } catch (error: any) {
         setLoading(false)
@@ -57,15 +75,12 @@ const index = () => {
         }))
       }
     } else {
-
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
         const tokenResult = await userCredential.user.getIdTokenResult();
         const isBusiness = tokenResult.claims.isBusiness ? true : false
-        // setemail('')
-        // setpassword('')
-        return router.push('/')
         setLoading(false)
+        return router.push('/')
 
       } catch (error: any) {
         setLoading(true)

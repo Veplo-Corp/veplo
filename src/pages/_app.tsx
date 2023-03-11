@@ -29,6 +29,8 @@ import { Open_Sans } from '@next/font/google'
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js'
 import GET_BUSINESS from '../lib/apollo/queries/business'
+import GET_USER from '../lib/apollo/queries/getUser'
+
 import { Business } from '../interfaces/business.interface'
 import { getFavouriteShopFromLocalStorage } from '../../components/utils/getFavouriteShopFromLocalStroage'
 
@@ -58,6 +60,8 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
   const dispatch = useDispatch();
   const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
+  const [getUser, user] = useLazyQuery(GET_USER);
+  console.log(user);
 
 
 
@@ -99,7 +103,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         //   //!useless
         //   fetchPolicy: 'cache-first',
         // })
-        if (userAuth.uid) {
+        if (isBusiness) {
           dispatch(
             login({
               email: userAuth.email,
@@ -112,8 +116,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               accountId: tokenResult.claims.mongoId
             })
           );
-
-
           const favouriteShop: ({ id: string, name: string, street: string }) = getFavouriteShopFromLocalStorage();
 
           if (favouriteShop) {
@@ -125,40 +127,68 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               })
             )
           }
-        }
-        getBusiness({
-          variables: {
-            id: tokenResult.claims.mongoId
-          }
-        })
-          .then(async (value) => {
-            //redirect to the right page based on status
-            const business: Business = value.data?.business
-
-            if (business?.status === 'stripe_id_requested') {
-              router.push('/shop/crea-business-account')
+          getBusiness({
+            variables: {
+              id: tokenResult.claims.mongoId
             }
-
-            if (business?.status === 'onboarding_KYC_requested') {
-              router.push('/shop/continua-processo-kyc')
-            }
-
-            // if (business.status === 'active') {
-            //   router.push('/shop/home')
-            // }
-
-
-            // //?retrive account stripe
-            // const endpoint = `/api/stripe/retrieve-stripe-account?stripeId=${business.stripe.id}`
-            // const response = await fetch(endpoint, {
-            //   method: "POST",
-            //   mode: "no-cors", // no-cors, *cors, same-origin
-            //   body: JSON.stringify({ stripeId: business.stripe.id })
-            // })
-            // const result = await response.json()
-            // //console.log('ACCOUNT:', result);
-
           })
+            .then(async (value) => {
+              //redirect to the right page based on status
+              const business: Business = value.data?.business
+
+              if (business?.status === 'stripe_id_requested') {
+                router.push('/shop/crea-business-account')
+              }
+
+              if (business?.status === 'onboarding_KYC_requested') {
+                router.push('/shop/continua-processo-kyc')
+              }
+
+              // if (business.status === 'active') {
+              //   router.push('/shop/home')
+              // }
+
+
+              // //?retrive account stripe
+              // const endpoint = `/api/stripe/retrieve-stripe-account?stripeId=${business.stripe.id}`
+              // const response = await fetch(endpoint, {
+              //   method: "POST",
+              //   mode: "no-cors", // no-cors, *cors, same-origin
+              //   body: JSON.stringify({ stripeId: business.stripe.id })
+              // })
+              // const result = await response.json()
+              // //console.log('ACCOUNT:', result);
+
+            })
+          return
+        }
+        if (!isBusiness) {
+          console.log(tokenResult.claims);
+
+          getUser({
+            variables: {
+              id: '640c9f3aff10cf6f8c8df3f7'
+            }
+          }).then((data) => {
+            //console.log(data.data);
+
+            dispatch(
+              login({
+                email: userAuth.email,
+                uid: userAuth.uid,
+                idToken: idToken,
+                emailVerified: userAuth.emailVerified,
+                createdAt: date_for_redux || new Date(),
+                accountId: tokenResult.claims.mongoId,
+                userInfo: {
+                  name: data?.data.user.name
+                }
+              })
+            );
+          })
+
+        }
+
 
         return
       } else {
