@@ -1,15 +1,34 @@
-import { Box, Button, Heading, Highlight, Input } from '@chakra-ui/react'
+import { Box, Button, Heading, Highlight, Input, InputGroup, InputLeftAddon, InputLeftElement, InputRightAddon, InputRightElement, Select } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import BlackButton from '../atoms/BlackButton'
 import resetPassword from '../../components/utils/resetPassword'
+import Div_input_creation from '../atoms/Div_input_creation';
 
-const Login_or_Registration: React.FC<{ handleSubmitToPage: any, handleType: any, type: any, title: string }> = ({ handleSubmitToPage, handleType, type, title }) => {
+interface UserInfo {
+    name: string,
+    surname: string,
+    interest: string,
+    dateBirth: string
+}
+
+const typeInterest = [
+    'donna',
+    'uomo',
+    'indifferente'
+]
+
+const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubmitToPage: any, handleType: any, type: 'registration' | 'login' | 'reset_password', title: string }> = ({ account, handleSubmitToPage, handleType, type, title }) => {
     const [showPassword, setshowPassword] = useState<boolean>(false)
     const [email, setemail] = useState<string>('')
     const [isValidEmail, setisValidEmail] = useState<boolean | null>(null)
     const [isValidPassword, setisValidPassword] = useState<boolean | null>(null)
     const [password, setpassword] = useState<string>('')
-
+    const [userInfo, setUserInfo] = useState<UserInfo>({
+        name: '',
+        surname: '',
+        interest: '',
+        dateBirth: ''
+    })
 
 
     const emailHandler = (event: any) => {
@@ -64,79 +83,295 @@ const Login_or_Registration: React.FC<{ handleSubmitToPage: any, handleType: any
 
     return (
         <form onSubmit={handleSubmitForm} >
-            <h1 className="font-black text-xl md:text-3xl italic text-black-900 mb-4 max-w-xs md:max-w-md">{title}</h1>
-            <div>
-                <div className="mt-1 flex rounded-sm mb-2">
-                    <span className="inline-flex items-center rounded-l-md border-r-0 border-2 border-gray-900  bg-black px-3 text-sm text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <h1 className="font-black text-2xl md:text-2xl italic text-black-900 mb-4 max-w-xs md:max-w-md">{title}</h1>
+            <div
+                className='mb-3'
+
+            >
+                <InputGroup
+                    _hover={{
+                        borderColor: 'gray.900'
+                    }}
+
+                >
+                    <InputLeftAddon children={
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                         </svg>
-                    </span>
+                    }
+                        background={'white'}
+                        borderWidth={2}
+                        borderColor={'gray.900'}
+                        borderRightWidth={0}
+                        height={'14'}
+                        borderRadius={'5px'}
+
+                    />
                     <Input
+                        fontSize={'md'}
+                        focusBorderColor='gray.900'
                         onBlur={emailErrorHandler}
                         value={email}
                         autoComplete={'on'}
                         onChange={emailHandler}
                         type="text" name="email" id="email"
-                        roundedLeft={0}
-                        roundedBottomRight={'md'}
-                        p={['10px', '12px']}
-                        focusBorderColor='gray.900'
-                        variant='unstyled'
-                        _hover={{
-                            borderColor: 'gray.900'
+                        fontWeight={'medium'}
+                        _placeholder={{
+                            color: "gray.600"
                         }}
-                        minWidth={'64'}
                         borderWidth={2}
+                        borderRadius={'5px'}
+                        borderLeftWidth={0}
+                        variant='unstyled'
                         borderColor={'gray.900'}
-                        className="block flex-1 rounded-r-md border-2 p-2 py-3 border-gray-900 focus:outline-none sm:text-sm placeholder-black"
-                        placeholder="email" />
-                </div>
+                        placeholder="email"
+                    />
+                </InputGroup>
+
                 {isValidEmail === false && <p className='text-sm md:text-xs text-red-600'>email non corretta</p>}
             </div>
             {type !== 'reset_password' &&
-                <div >
-                    <div className="mt-1 flex rounded-sm ">
-                        <span className="inline-flex items-center rounded-l-md border-r-0 border-2 border-gray-900  bg-black px-3 text-sm text-white">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                <div
+                    className='mb-3'
+                >
+                    <InputGroup
+                        _hover={{
+                            borderColor: 'gray.900'
+                        }}
+                    >
+                        <InputLeftAddon children={
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                             </svg>
-                        </span>
+                        }
+                            background={'white'}
+                            borderWidth={2}
+                            borderColor={'gray.900'}
+                            borderRightWidth={0}
+                            borderRadius={'5px'}
+                            height={'14'}
+                        />
                         <Input
+
+                            fontSize={'md'}
+                            fontWeight={'medium'}
+                            _placeholder={{
+                                color: "gray.600"
+                            }}
+                            borderWidth={2}
+                            borderLeftWidth={0}
+                            borderColor={'gray.900'}
                             onBlur={passwordErrorHandler}
                             value={password}
                             onChange={passwordHandler}
                             autoComplete={'on'}
                             type={showPassword ? 'text' : 'password'} name="password" id="password"
-                            rounded={0}
-                            p={['10px', '12px']}
                             focusBorderColor='gray.900'
                             variant='unstyled'
+                            placeholder="password"
+                            borderRadius={'5px'}
+                        />
+                        <InputRightAddon
+                            background={'white'}
+                            borderWidth={2}
+                            borderColor={'gray.900'}
+                            borderLeftWidth={0}
+                            height={'14'}
+                            onClick={() => setshowPassword(!showPassword)}
+                            borderRadius={'5px'}
+                            children={
+                                <>
+                                    {!showPassword && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>}
+                                    {showPassword && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                                    </svg>
+                                    }
+                                </>
+                            } />
+                    </InputGroup>
+
+                </div>
+            }
+            {
+                type === 'registration' && account === 'user' &&
+                <>
+                    <div
+                        className='mb-2'
+                    >
+                        <InputGroup
                             _hover={{
                                 borderColor: 'gray.900'
                             }}
-                            borderWidth={2}
-                            borderColor={'gray.900'}
-                            minWidth={'64'}
-                            className="block flex-1 rounded-r-md border-2 p-2 py-3 border-gray-900 focus:outline-none sm:text-sm placeholder-black"
-                            placeholder="password" />
+                            gap={2}
 
-                        <span className="inline-flex items-center rounded-r-md border-l-0 border-2 border-black   px-3 text-sm text-black" onClick={() => setshowPassword(!showPassword)}>
-                            {!showPassword && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>}
-                            {showPassword && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
-                            </svg>
-                            }
-                        </span>
+                        >
+
+                            <Input
+                                height={'14'}
+                                fontSize={'md'}
+                                focusBorderColor='gray.900'
+                                value={userInfo.name}
+                                autoComplete={'on'}
+                                onChange={(e) => {
+                                    setUserInfo(prevState => {
+                                        return {
+                                            ...prevState,
+                                            name: e.target.value
+                                        }
+                                    })
+                                }}
+                                type="text" name="nome" id="nome"
+                                fontWeight={'medium'}
+                                _placeholder={{
+                                    color: "gray.600"
+                                }}
+                                paddingLeft={4}
+                                borderWidth={2}
+                                borderRadius={'5px'}
+                                variant='unstyled'
+                                borderColor={'gray.900'}
+                                placeholder="nome"
+                            />
+                            <Input
+                                height={'14'}
+                                fontSize={'md'}
+                                focusBorderColor='gray.900'
+                                value={userInfo.surname}
+                                autoComplete={'on'}
+                                onChange={(e) => {
+                                    setUserInfo(prevState => {
+                                        return {
+                                            ...prevState,
+                                            surname: e.target.value
+                                        }
+                                    })
+                                }}
+                                type="text" name="cognome" id="cognome"
+                                fontWeight={'medium'}
+                                _placeholder={{
+                                    color: "gray.600"
+                                }}
+                                paddingLeft={4}
+                                borderWidth={2}
+                                borderRadius={'5px'}
+                                variant='unstyled'
+                                borderColor={'gray.900'}
+                                placeholder="cognome"
+                            />
+                        </InputGroup>
+
+
+
                     </div>
-                    {isValidPassword === false && <p className='text-sm md:text-xs text-red-600'>la password deve contentere almeno 8 caratteri</p>}
-                </div>}
+                    <div
+                        className='mb-3'
+                    >
+                        <Div_input_creation text={'data di nascita (facoltativa)'}>
+                            <InputGroup
+                                _hover={{
+                                    borderColor: 'gray.900'
+                                }}
+                                gap={2}
+                            >
+                                <Input
+                                    height={'14'}
+                                    fontSize={'md'}
+                                    focusBorderColor='gray.900'
+                                    value={undefined}
+                                    onChange={(e) => {
+                                        const date = new Date(e.target.value)
+                                        setUserInfo(prevState => {
+
+                                            if (date < new Date('1920-01-01') || e.target.value.length <= 0) {
+                                                return {
+                                                    ...prevState
+                                                }
+                                            }
+                                            console.log(date);
+
+                                            return {
+                                                ...prevState,
+                                                dateBirth: e.target.value
+                                            }
+                                        })
+                                    }}
+                                    type="date" name="date" id="date"
+                                    fontWeight={'medium'}
+                                    _placeholder={{
+                                        color: "gray.600"
+                                    }}
+                                    paddingLeft={4}
+                                    borderWidth={2}
+                                    paddingRight={3}
+
+                                    borderRadius={'5px'}
+                                    variant='unstyled'
+                                    borderColor={'gray.900'}
+                                    placeholder="data di nascita"
+                                />
+                            </InputGroup>
+                        </Div_input_creation>
+
+
+
+
+                    </div>
+
+                    <Select
+                        borderWidth={2}
+                        height={'14'}
+                        fontSize={'md'}
+                        focusBorderColor='white'
+                        borderColor={'gray.900'}
+                        fontWeight={'medium'}
+                        borderRadius={'5px'}
+                        _focus={{
+                            borderWidth: 2,
+                            borderColor: 'black'
+                        }}
+                        _hover={{
+                            borderColor: 'black'
+                        }}
+                        onChange={(event) => {
+                            setUserInfo(prevState => {
+
+                                return {
+                                    ...prevState,
+                                    interest: event.target.value
+                                }
+                            })
+                        }}
+                        _placeholder={{
+                            color: "gray.600"
+                        }}
+                        defaultValue={'Quale categoria di interessa?'}
+                    >
+
+                        <option value="Quale categoria di interessa?" disabled>Quale categoria di interessa?</option>
+                        {typeInterest.map((option: string) => {
+                            return (<option
+                                key={option} value={option}>{option}</option>)
+                        })}
+
+                    </Select>
+
+                </>
+
+            }
             {type !== 'reset_password' &&
                 <div className='w-full flex justify-end pt-2'>
-                    <BlackButton disabled={!isValidEmail || !isValidPassword} typeButton='submit' element={type == 'registration' ? 'registrati' : 'accedi'} borderRadius={10} size={'md'}></BlackButton>
+                    <BlackButton disabled={!isValidEmail || !isValidPassword
+                        || (type === 'registration' ? (userInfo.name === '' || userInfo.surname === '' || userInfo.interest === '') : true)
+                    }
+                        heigth={12}
+                        width={52}
+                        typeButton='submit' element={type == 'registration' ? 'registrati' : 'accedi'}
+                        borderRadius={10}
+                        size={'md'}
+                    ></BlackButton>
                 </div>}
             {type === 'reset_password' && <div className='w-full flex justify-end pt-2 md:pt-1' onClick={() => resetPassword(email)}>
                 <Button disabled={isValidEmail == null || false} onClick={() => resetPassword(email)} colorScheme={'orange'} borderRadius={10} size={'md'}>resetta password</Button>
@@ -153,7 +388,7 @@ const Login_or_Registration: React.FC<{ handleSubmitToPage: any, handleType: any
                             </Button>
                         </p>
                         <p className='mt-1 text-black	'>hai dimenticato la tua password?
-                            
+
                             <Button className='underline md:ml-1' onClick={() => handleType('reset_password')} variant='link' colorScheme={'black'}>
                                 Resetta password
                             </Button>

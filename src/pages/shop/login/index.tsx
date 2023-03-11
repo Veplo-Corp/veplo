@@ -206,7 +206,9 @@ const index = () => {
               />
               <div className='max-w-md mx-auto md:max-w-full md:flex md:m-auto  lg:w-10/12 xl:w-3/4 mt-8 md:mt-10 md:justify-between' >
                 <div className={`md:p-3  my-auto ${typeForm === 'registration' ? '' : 'space-y-4 max-w-md mx-auto'}`}>
-                  <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo negozio`} />
+                  <Login_or_Registration
+                    account='business'
+                    handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo negozio`} />
 
                 </div>
                 {typeForm === 'registration' &&

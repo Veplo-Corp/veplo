@@ -18,16 +18,16 @@ const User_Popover = () => {
     const user: Firebase_User = useSelector((state: any) => state?.user.user);
 
     const actionsNotLogged = [
-        // {
-        //     name: 'Accedi',
-        //     description: 'accedi al tuo account',
-        //     href: '/user/login?type=login',
-        // },
-        // {
-        //     name: 'Registrati',
-        //     description: 'registrati per poter usufruire di tutti i servizi',
-        //     href: '/user/login?type=registration',
-        // },
+        {
+            name: 'Accedi',
+            description: 'accedi al tuo account',
+            href: '/user/login?type=login',
+        },
+        {
+            name: 'Registrati',
+            description: 'registrati per poter usufruire di tutti i servizi',
+            href: '/user/login?type=registration',
+        },
         {
             name: 'Sei un negozio?',
             description: 'accedi o registra gratis il tuo account',
