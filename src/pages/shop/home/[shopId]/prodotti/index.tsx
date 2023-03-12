@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button } from '@chakra-ui/react';
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button, Tag, Text } from '@chakra-ui/react';
 import { sendEmailVerification } from '@firebase/auth';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,7 +27,11 @@ import { addShopFavouriteToLocalStorage } from '../../../../../../components/uti
 import GET_BUSINESS from '../../../../../lib/apollo/queries/business';
 import { Business } from '../../../../../interfaces/business.interface';
 import { addFavouriteShopBusiness } from '../../../../../store/reducers/user';
+import { Shop } from '../../../../../interfaces/shop.interface';
 
+interface Props {
+    business: Business
+}
 
 const index = () => {
     const dispatch = useDispatch();
@@ -38,7 +42,9 @@ const index = () => {
     const [productToDeleteData, setProductToDeleteData] = useState({})
     const apolloClient = initApollo();
     const [shopId, setShopId] = useState('')
-    const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
+    const [getBusiness, { error, data }] = useLazyQuery<Props>(GET_BUSINESS);
+    console.log(data?.business.status);
+    const [shop, setShop] = useState<Shop>()
 
 
     useEffect(() => {
@@ -52,8 +58,10 @@ const index = () => {
                 id: user.accountId
             }
         }).then((value) => {
+            if (!value.data?.business) return
             const business: Business = value.data?.business;
             const shop = business?.shops?.find(shop => shop.id === shopId);
+            setShop(shop)
             console.log(shop);
             if (shopId && (!user.favouriteShop?.id || user.favouriteShop?.id !== shopId)) {
                 const element = {
@@ -169,7 +177,29 @@ const index = () => {
         <Shop_UID_Required>
             <Desktop_Layout>
                 <NoIndexSeo title={`Prodotti | Veplo Shop`} />
-
+                {shop &&
+                    <Box
+                        mb={4}
+                    >
+                        <Tag size={'md'} variant='solid'
+                            colorScheme={shop?.status === 'active' ? 'green' : 'red'}
+                        >
+                            {shop?.status === 'active' ? 'attivo' : 'non attivo'}
+                        </Tag>
+                        <Text
+                            mt={-1}
+                            fontSize={'2xl'}
+                            fontWeight={'extrabold'}
+                            fontStyle={'italic'}
+                        >{shop.name}</Text>
+                        <Text
+                            mt={-1}
+                            fontSize={'sm'}
+                            fontWeight={'semibold'}
+                            color={'gray.500'}
+                        >{shop.address.city}, {shop.address.street}</Text>
+                    </Box>
+                }
 
                 {user && !user?.Not_yet_Authenticated_Request && shopId !== '' &&
                     <Table_Products_Shop idShop={shopId} deleteProduct={handleDeleteProductModal} />}

@@ -33,11 +33,21 @@ export const userState = createSlice({
         ...state.user,
         favouriteShop: action.payload
       }
+    },
+    changeName: (state, action) => {
+      state.user = {
+        ...state.user,
+        userInfo: {
+          name: action.payload
+        }
+      }
     }
+
+
   },
 });
 
-export const { login, logout, addFavouriteShopBusiness } = userState.actions;
+export const { login, logout, addFavouriteShopBusiness, changeName } = userState.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUser = (state: RootState) => state.user.user;

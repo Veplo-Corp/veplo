@@ -125,12 +125,14 @@ const User_Popover = () => {
                             <Popover.Button key={id} className='text-left hover:scale-[0.98] px-4 pt-[8px]'>
                                 <Box
                                     onClick={async () => {
-                                        if (!action.href) return
-                                        router.push(action.href)
-                                        if (action.name === 'Disconnetti') {
+                                        if (action.name === 'Esci') {
+                                            console.log('eccolo');
+
                                             await signOut(auth)
                                             deleteAuthTokenInSessionStorage()
                                         }
+                                        if (!action.href) return
+                                        router.push(action.href)
                                     }}
                                 >
                                     <Box

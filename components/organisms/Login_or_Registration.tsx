@@ -310,6 +310,7 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
                                         })
                                     }}
                                     type="date" name="date" id="date"
+                                    max={new Date().toISOString().split('T')[0]}
                                     fontWeight={'medium'}
                                     _placeholder={{
                                         color: "gray.600"

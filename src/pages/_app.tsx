@@ -61,7 +61,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
   const dispatch = useDispatch();
   const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
   const [getUser, user] = useLazyQuery(GET_USER);
-  console.log(user);
 
 
 
@@ -163,7 +162,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
           return
         }
         if (!isBusiness) {
-          console.log(tokenResult.claims);
 
           getUser({
             variables: {
