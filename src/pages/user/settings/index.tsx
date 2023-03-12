@@ -1,6 +1,8 @@
 import { Box, Divider } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 import React from 'react'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
+import SettingsCard from '../../../../components/molecules/SettingsCard'
 
 const settings = [
     {
@@ -22,34 +24,16 @@ const settings = [
 ]
 
 const index = () => {
+
+
+
+
+    const router = useRouter()
     return (
         <Desktop_Layout>
             <div className='flex w-full mt-8 md:mt-10' >
-                <div className='md:p-3 space-y-4 m-auto md:w-8/12 lg:w-1/2'>
-                    <Box
-                        borderRadius={'3xl'}
-                        w={'full'}
-                        background={'gray.100'}
-                        borderWidth={1}
-                        borderColor={'gray.300'}
-                        alignContent={'center'}
-
-                    >
-                        <Box
-                            fontSize={20}
-                            fontWeight={'bold'}
-                        >
-                            <Box
-                                paddingY={5}
-                                paddingX={8}
-                            >
-                                Impostazioni
-
-                            </Box>
-                            <Divider
-                                borderColor={'gray.400'}
-                            />
-                        </Box>
+                <div className='md:p-3 space-y-4 m-auto w-full md:w-8/12 lg:w-1/2'>
+                    <SettingsCard title='Impostazioni'>
                         {settings.map((setting, index) => {
                             return (
                                 <div key={setting.name}>
@@ -60,18 +44,32 @@ const index = () => {
                                         justifyContent={'space-between'}
                                     >
                                         <Box>{setting.name}</Box>
+                                        <Box
+                                            cursor={'pointer'}
+                                            onClick={() => {
+                                                if (!setting.href) return
+                                                router.push(setting.href)
+                                            }
+                                            }
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                            </svg>
+                                        </Box>
                                     </Box>
-                                    {index !== settings.length - 1 && <Divider
-                                        borderColor={'gray.400'}
-
-                                    />}
+                                    {
+                                        index !== settings.length - 1 && <Divider
+                                            borderColor={'gray.400'}
+                                        />
+                                    }
                                 </div>
 
                             )
                         })}
-                    </Box>
+                    </SettingsCard>
+
                 </div>
-            </div>
+            </div >
 
         </Desktop_Layout >
     )
