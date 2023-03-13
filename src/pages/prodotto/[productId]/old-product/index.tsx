@@ -4,7 +4,7 @@ import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
 import { Box, Image, Tooltip } from '@chakra-ui/react';
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
 import { useLazyQuery, useQuery } from '@apollo/client';
-import { Product, Variation } from '../../../../interfaces/product.interface';
+import { Product } from '../../../../interfaces/product.interface';
 import { initApollo } from '../../../../lib/apollo';
 import Circle_Color from '../../../../../components/atoms/Circle_Color';
 import Size_Box from '../../../../../components/atoms/Size_Box';
@@ -31,9 +31,6 @@ export async function getStaticPaths() {
     }
 }
 
-
-
-
 export async function getStaticProps(ctx: any) {
     const { productId } = ctx.params
     // Call an external API endpoint to get posts.
@@ -51,25 +48,10 @@ export async function getStaticProps(ctx: any) {
             // nextFetchPolicy: 'cache-only',
         })
 
-        const colors = data.product.variations.map((variation: Variation) => {
-            return {
-                name: variation.color,
-                cssColor: COLORS.find(color => color.name === variation.color)?.cssColor
-            }
-        })
-
 
         return {
             props: {
-                product: {
-                    ...data.product,
-                    price: {
-                        v1: 100,
-                        v2: 80,
-                        discountPercentage: 20
-                    },
-                    colors
-                },
+                product: data.product,
                 //?understand cache in GraphQL
                 initialApolloState: apolloClient.cache.extract(),
             },
@@ -82,7 +64,7 @@ export async function getStaticProps(ctx: any) {
 
         return {
             props: {
-                errorLog: e?.graphQLErrors[0].name || 'errore',
+                errorLog: e.graphQLErrors[0].name,
                 //?understand cache in GraphQL
                 initialApolloState: apolloClient.cache.extract(),
             },
@@ -90,6 +72,9 @@ export async function getStaticProps(ctx: any) {
         }
     }
 
+    return {
+
+    }
 }
 
 
@@ -100,10 +85,10 @@ export async function getStaticProps(ctx: any) {
 const index: React.FC<{ product: Product, errorLog?: string, initialApolloState: any }> = ({ product, errorLog, initialApolloState }) => {
     const colors = useRef<Color[]>(COLORS)
     const router = useRouter();
-    const { slug } = router.query;
-    const [variationSelected, setVariationSelected] = useState(product.variations[0])
+    const { slug } = router.query
+    const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
 
-    console.log(product);
+    console.log(errorLog);
 
 
     const [textCategory, setTextCategory] = useState('vestito')
@@ -121,6 +106,13 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     }, [errorLog])
 
 
+    const toProduct = (product: Product) => {
+        const newUrl = toProductPage(product)
+        if (newUrl) {
+            router.push(`/prodotto/${product.id}/${newUrl}`)
+        }
+
+    }
 
 
 
@@ -130,9 +122,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
     useEffect(() => {
         if (!product) return
-        const category = createTextCategory(product.info.macroCategory, product.info.microCategory)
+        const category = createTextCategory(product.macroCategory, product.microCategory)
         setTextCategory(category)
-        const url_slug_correct = createUrlSchema([product.info.brand, product.name, category])
+        const url_slug_correct = createUrlSchema([product.brand, product.name, category])
         if (url_slug_correct !== slug) {
             router.push({
                 pathname: `/prodotto/${router.query.productId}/${url_slug_correct}`,
@@ -141,25 +133,37 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
             )
         }
 
-        //! lista di prodotti del negozio
-        // const fetchData = async () => {
-        //     console.log(product.shopId);
+        const fetchData = async () => {
+            console.log(product.shopId);
 
-        //     await getFilterProduct({
-        //         variables: { id: product.shopId, limit: 5, offset: 0, see: null },
-        //     })
-        // }
+            await getFilterProduct({
+                variables: { id: product.shopId, limit: 5, offset: 0, see: null },
+            })
+        }
 
-        // setTimeout(() => {
-        //     fetchData()
-        // }, 100);
+        setTimeout(() => {
+            fetchData()
+        }, 100);
 
+
+
+
+
+        setProductcolorsCSS(getColorsCSS(product))
 
 
 
     }, [product])
 
 
+    const getColorsCSS = ((product: Product) => {
+        let colorsCSS = [];
+        for (let i = 0; i < product.colors.length; i++) {
+            const colorCSS = colors.current.filter(color => color.name === product.colors[i])[0].cssColor
+            colorsCSS.push(colorCSS)
+        }
+        return colorsCSS
+    })
 
 
     //!handle error case
@@ -172,35 +176,27 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
     const chatWithStore = async () => {
         const apolloClient = initApollo()
-        //! get Shop phone number
-        // try {
-        //     const { data, error } = await apolloClient.query({
-        //         query: GET_SINGLE_SHOP,
-        //         variables: { id: product.shopId },
-        //     })
-        //     if (error) return
-        //     window.open(
-        //         `https://wa.me/+39${data.shop.phone}?text=ciao, ero su Veplo.it e stavo visitando il tuo negozio ${product.shopOptions.name}. Avrei bisogno di una informazione sul prodotto *${product.name} - ${product.brand}*`
-        //         , '_blank')
-        // } catch (e) {
-        //     console.log(e);
-        // }
+        //get Shop phone number
+        try {
+            const { data, error } = await apolloClient.query({
+                query: GET_SINGLE_SHOP,
+                variables: { id: product.shopId },
+            })
+            if (error) return
+            window.open(
+                `https://wa.me/+39${data.shop.phone}?text=ciao, ero su Veplo.it e stavo visitando il tuo negozio ${product.shopOptions.name}. Avrei bisogno di una informazione sul prodotto *${product.name} - ${product.brand}*`
+                , '_blank')
+        } catch (e) {
+            console.log(e);
+        }
     }
 
 
     //console.log(imageKitUrl(product.photos[0], 171, 247));
 
+    console.log(product.price.v2 ? product.price.v2 : product.price.v1);
 
 
-
-
-    // return (
-    //     <></>
-    // )
-
-    const changeDressColor = (color: string) => {
-
-    }
 
     return (
         <>
@@ -209,13 +205,13 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                 <PostMeta
                     canonicalUrl={'https://www.veplo.it' + router.asPath}
                     //riverdere length description 150 to 160
-                    title={`${product.name.toUpperCase()} ${product.brand} - ${product.info.macroCategory} - ${product.shopInfo.city} - Veplo.it`}
-                    subtitle={`${product.name.toUpperCase()} ${product.brand} - ${product.info.macroCategory} a ${product.price.v2 ? product.price.v2 : product.price.v1}€ | vivi Veplo`}
-                    image={imageKitUrl(variationSelected.photos[0], 171, 247)}
-                    description={`${product.name.toUpperCase()} ${product.brand} - ${product.info.macroCategory} - Veplo.it`} />
+                    title={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} - ${product.shopOptions.city} - Veplo.it`}
+                    subtitle={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} a ${product.price.v2 ? product.price.v2 : product.price.v1}€ | vivi Veplo`}
+                    image={imageKitUrl(product.photos[0], 171, 247)}
+                    description={`${product.name.toUpperCase()} ${product.brand} - ${product.macroCategory} - Veplo.it`} />
 
                 <div className='md:flex justify-between w-full'>
-                    <Image_Product variation={variationSelected} />
+                    <Image_Product product={product} />
                     <Box className='md:block md:w-5/12 xl:w-1/2 md:pl-4 xl:pr-10'>
                         <Box
                             fontWeight='normal'
@@ -224,9 +220,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             noOfLines={1}
                             fontSize='sm'
                         >
-                            {product.info.macroCategory} - {product.info.microCategory}
-                            {product.info.gender === 'F' && <span className='ml-1'>per donna</span>}
-                            {product.info.gender === 'M' && <span className='ml-1'>per uomo</span>}
+                            {product.macroCategory} - {product.microCategory}
+                            {product.gender === 'F' && <span className='ml-1'>per donna</span>}
+                            {product.gender === 'M' && <span className='ml-1'>per uomo</span>}
                         </Box>
                         <Box
                             fontWeight='normal'
@@ -270,26 +266,19 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             </span>
 
                         </Box>
-                        {product?.colors && <Box
+                        <Box
                             fontWeight='light'
                             as='h1'
                             noOfLines={1}
                             mt='6'
                             fontSize='md'
                         >
-                            {product.colors.length || 0}
+                            {product.colors.length}
                             {product.colors.length === 1 && <span className='ml-1'>colorazione disponibile</span>}
                             {product.colors.length > 1 && <span className='ml-1'>colorazioni disponibili</span>}
-                        </Box>}
+                        </Box>
                         <div className='mt-2'>
-                            <Circle_Color colors={
-                                product.colors?.map(color => {
-                                    return color.cssColor
-                                })
-                            }
-                                dimension={10} space={4} showTooltip={true}
-                                eventHanlder={(color) => changeDressColor(color)}
-                            />
+                            <Circle_Color colors={productcolorsCSS} dimension={10} space={4} showTooltip={true} />
                         </div>
                         <Box
                             fontWeight='light'
@@ -307,11 +296,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             borderRadius={5}
                             fontSize={'xl'}
                             fontWeight={'normal'}
-                            sizes={variationSelected.lots.map((size) => {
-                                return size.size
-                            })}
-                            gender={product.info.gender}
-                            macrocategory={product.info.macroCategory}
+                            sizes={product.sizes}
+                            gender={product.gender}
+                            macrocategory={product.macroCategory}
                         />
 
                         <Box
@@ -333,7 +320,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
 
                         <>
-                            <Link href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.city, product.shopInfo.name])}`}>
+                            <Link href={`/negozio/${product.shopId}/${createUrlSchema([product.shopOptions.city, product.shopOptions.name])}`}>
                                 <Box
                                     fontWeight='light'
                                     as='h1'
@@ -342,13 +329,13 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                     mb={3}
                                     fontSize='md'
                                 >
-                                    Altri prodotti di <span className='underline underline-offset-2 cursor-pointer'>{product.shopInfo.name}</span>
+                                    Altri prodotti di <span className='underline underline-offset-2 cursor-pointer'>{product.shopOptions.name}</span>
                                 </Box>
                             </Link>
 
 
                             <div className="overflow-x-scroll flex gap-4 ">
-                                {shopProductsData && shopProductsData?.data?.shop.products.map((element: Product) => {
+                                {shopProductsData?.data?.shop.products.map((element: Product) => {
                                     return (
                                         <Link key={element.id} href={`/prodotto/${element.id}/${toProductPage(element)}`}>
                                             <div className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
@@ -416,7 +403,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                         </Link>
                                     )
                                 })}
-                                <Link href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.city, product.shopInfo.name])}`}
+                                <Link href={`/negozio/${product.shopId}/${createUrlSchema([product.shopOptions.city, product.shopOptions.name])}`}
                                     className={`flex gap-4 w-36 max-h-max justify-center`}
                                 >
                                     <div className='my-auto'>

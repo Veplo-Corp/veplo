@@ -7,29 +7,31 @@ const GET_SINGLE_PRODUCT = gql`
         ){
             id
             name
-            price{
-                v1
-                v2
-                discountPercentage
+            status
+            canBuy
+            info {
+                gender
+                macroCategory
+                microCategory
+                brand
             }
-            colors
-            sizes
-            macroCategory
-            microCategory
-            brand
-            shopId
-            firebaseShopId
+            variations{
+            id
+            color
+            status
             photos
-            updatedAt
-            location {
-                type
-                coordinates
+            lots {
+                size
+                quantity
+                }
             }
-            shopOptions {
+            shopInfo{
+                id
+                firebaseId
+                name 
                 city
-                name
+                status
             }
-            gender
         } 
     }
     

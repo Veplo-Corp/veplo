@@ -19,6 +19,7 @@ export interface Product {
     name: string,
     canBuy: boolean,
     status: string,
+    colors?: { name: string, cssColor: string }[],
     info: {
         macroCategory: string,
         microCategory: string,
