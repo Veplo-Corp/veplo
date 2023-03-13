@@ -22,6 +22,8 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import { imageKitUrl } from '../../../../../components/utils/imageKitUrl';
 import PostMeta from '../../../../../components/organisms/PostMeta';
 import Link from 'next/link';
+import CircleColorSelected from '../../../../../components/atoms/CircleColorSelected';
+import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter';
 
 
 export async function getStaticPaths() {
@@ -58,6 +60,17 @@ export async function getStaticProps(ctx: any) {
             }
         })
 
+        const totalSize = data.product.variations.map((variation: Variation) => {
+            return variation.lots.map((lot: any) => {
+                return lot.size
+            })
+
+        }).flat()
+        const totalSizeAvailable = totalSize.filter((item: any,
+            index: any) => totalSize.indexOf(item) === index)
+
+
+
 
         return {
             props: {
@@ -68,7 +81,8 @@ export async function getStaticProps(ctx: any) {
                         v2: 80,
                         discountPercentage: 20
                     },
-                    colors
+                    colors,
+                    totalSizeAvailable
                 },
                 //?understand cache in GraphQL
                 initialApolloState: apolloClient.cache.extract(),
@@ -102,8 +116,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     const router = useRouter();
     const { slug } = router.query;
     const [variationSelected, setVariationSelected] = useState(product.variations[0])
+    const [sizeSelected, setSizeSelected] = useState<string>('')
+    const [colorSelected, setColorSelected] = useState<string>(product.variations[0].color)
 
-    console.log(product);
 
 
     const [textCategory, setTextCategory] = useState('vestito')
@@ -119,6 +134,19 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
             })
         }
     }, [errorLog])
+
+    useEffect(() => {
+
+        const color = router.query.colore
+        if (typeof color === 'string') {
+            const variation = product.variations.find(variation => variation.color.toLowerCase() == color.toLowerCase())
+            if (!variation) return
+            setVariationSelected(variation)
+            setColorSelected(variation.color)
+            return
+        }
+    }, [router.query.colore])
+
 
 
 
@@ -199,7 +227,17 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     // )
 
     const changeDressColor = (color: string) => {
-
+        const variation = product.variations.find(variation => variation.color.toLowerCase() == color.toLowerCase())
+        if (!variation) return
+        setVariationSelected(variation)
+        setColorSelected(variation.color)
+        setSizeSelected('')
+        router.push({
+            pathname: router.asPath.split('?')[0],
+            query: { colore: color }
+        },
+            undefined, { shallow: true }
+        )
     }
 
     return (
@@ -248,7 +286,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             pb='3'
                         >
                             {`${product.name.toLocaleUpperCase()}`}
-                            <span className='font-light text-lg'>{` - ${textCategory}`}</span>
+                            <span className='font-light text-lg'>{` - ${textCategory}`} ({colorSelected})</span>
                         </Box>
                         <Box
                             fontWeight='medium'
@@ -281,16 +319,17 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             {product.colors.length === 1 && <span className='ml-1'>colorazione disponibile</span>}
                             {product.colors.length > 1 && <span className='ml-1'>colorazioni disponibili</span>}
                         </Box>}
-                        <div className='mt-2'>
-                            <Circle_Color colors={
-                                product.colors?.map(color => {
-                                    return color.cssColor
-                                })
-                            }
-                                dimension={10} space={4} showTooltip={true}
-                                eventHanlder={(color) => changeDressColor(color)}
+                        {product.colors && <div className='mt-2'>
+                            <CircleColorSelected
+                                colorSelected={colorSelected}
+                                colors={
+                                    product.colors
+                                }
+                                handleSelectColor={(color: string) => changeDressColor(color)}
+                                dimension={7} space={5} showTooltip={true}
+
                             />
-                        </div>
+                        </div>}
                         <Box
                             fontWeight='light'
                             as='h1'
@@ -301,18 +340,17 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                         >
                             Taglie disponibili
                         </Box>
-                        <Size_Box
+                        {product?.totalSizeAvailable && <Size_Box
                             borderWidth='1px'
-                            py={3}
+                            py={2}
+                            totalLotsProduct={product.totalSizeAvailable}
                             borderRadius={5}
                             fontSize={'xl'}
                             fontWeight={'normal'}
-                            sizes={variationSelected.lots.map((size) => {
-                                return size.size
-                            })}
-                            gender={product.info.gender}
-                            macrocategory={product.info.macroCategory}
-                        />
+                            lots={variationSelected.lots}
+                            handleLot={(size: string) => setSizeSelected(size)}
+                            sizeSelected={sizeSelected}
+                        />}
 
                         <Box
                             fontWeight='light'

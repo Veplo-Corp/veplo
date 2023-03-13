@@ -47,5 +47,5 @@ export interface Product {
     variations: Variation[],
     //!modificare appena inserito brand in graphQL
     brand?: string
-
+    totalSizeAvailable?: string[]
 }
