@@ -4,9 +4,9 @@ import { Box, Image } from '@chakra-ui/react';
 interface Props {
     borderWidth: string,
     py: number,
-    borderRadius: number,
+    borderRadius: string,
     fontSize: string,
-    fontWeight: string,
+    fontWeight: any,
     lots: {
         size: string,
         quantity: any
@@ -37,10 +37,10 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                         bg={sizeProductExist?.quantity > 0 ? `white` : 'gray.100'}
                         color={'black.900'}
                         noOfLines={3}
-                        className='text-center w-full lg:w-32'
+                        className='text-center  md:w-24 lg:w-32 min-w-[100px]'
                         h={'full'}
                         cursor={sizeProductExist?.quantity <= 0 || !sizeProductExist ? '' : 'pointer'}
-                        px={2}
+                        px={[4, 2]}
                         onClick={() => {
                             if (sizeProductExist?.quantity <= 0 || !sizeProductExist) return
                             handleLot(size)

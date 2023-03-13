@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
-import { Box, Image, Tooltip } from '@chakra-ui/react';
+import { Box, Button, Image, Tooltip } from '@chakra-ui/react';
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { Product, Variation } from '../../../../interfaces/product.interface';
@@ -24,6 +24,7 @@ import PostMeta from '../../../../../components/organisms/PostMeta';
 import Link from 'next/link';
 import CircleColorSelected from '../../../../../components/atoms/CircleColorSelected';
 import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter';
+import BlackButton from '../../../../../components/atoms/BlackButton';
 
 
 export async function getStaticPaths() {
@@ -154,6 +155,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
 
     const [getFilterProduct, shopProductsData] = useLazyQuery(GET_PRODUCTS_FROM_SHOP);
+    console.log(shopProductsData?.data?.shop.products);
 
 
     useEffect(() => {
@@ -170,22 +172,23 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
         }
 
         //! lista di prodotti del negozio
-        // const fetchData = async () => {
-        //     console.log(product.shopId);
+        const fetchData = async () => {
+            console.log(product.shopInfo.id);
 
-        //     await getFilterProduct({
-        //         variables: { id: product.shopId, limit: 5, offset: 0, see: null },
-        //     })
-        // }
+            await getFilterProduct({
+                variables: { id: product.shopInfo.id, limit: 5, offset: 0, see: null },
+            })
+        }
 
-        // setTimeout(() => {
-        //     fetchData()
-        // }, 100);
+        setTimeout(() => {
+            fetchData()
+        }, 100);
 
 
 
 
     }, [product])
+
 
 
 
@@ -252,9 +255,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                     image={imageKitUrl(variationSelected.photos[0], 171, 247)}
                     description={`${product.name.toUpperCase()} ${product.brand} - ${product.info.macroCategory} - Veplo.it`} />
 
-                <div className='md:flex justify-between w-full'>
+                <div className='md:flex justify-between w-full '>
                     <Image_Product variation={variationSelected} />
-                    <Box className='md:block md:w-5/12 xl:w-1/2 md:pl-4 xl:pr-10'>
+                    <Box className='md:block md:w-6/12 md:pl-4 xl:pr-24'>
                         <Box
                             fontWeight='normal'
                             as='h2'
@@ -295,12 +298,12 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             fontSize={['lg', 'xl']}
                             lineHeight={['4']}
                         >
-                            {product.price.v2 && <span className=' text-red-700 font-bold'>{product.price.v2.toFixed(2).replace('.', ',')} €<br /></span>}
+                            {product.price?.v2 && <span className=' text-red-700 font-bold'>{product.price?.v2.toFixed(2).replace('.', ',')} €<br /></span>}
 
                             <span
-                                className={`${product.price.v2 ? 'text-slate-500 font-normal text-sm ' : ''} mr-2`}
+                                className={`${product.price?.v2 ? 'text-slate-500 font-normal text-sm ' : ''} mr-2`}
                             >
-                                {product.price.v2 && <span>prima era: </span>}<span className={`${product.price.v2 ? 'line-through' : ''}`}>{product.price.v1.toFixed(2).replace('.', ',')} €</span>
+                                {product.price.v2 && <span>prima era: </span>}<span className={`${product.price?.v2 ? 'line-through' : ''}`}>{product.price?.v1.toFixed(2).replace('.', ',')} €</span>
                                 {product.price.discountPercentage &&
                                     <span className='ml-2 text-red-500'>
                                         -{product.price.discountPercentage.toString().replace('.', ',')}%
@@ -344,13 +347,35 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             borderWidth='1px'
                             py={2}
                             totalLotsProduct={product.totalSizeAvailable}
-                            borderRadius={5}
-                            fontSize={'xl'}
-                            fontWeight={'normal'}
+                            borderRadius={'lg'}
+                            fontSize={'2xl'}
+                            fontWeight={'medium'}
                             lots={variationSelected.lots}
                             handleLot={(size: string) => setSizeSelected(size)}
                             sizeSelected={sizeSelected}
                         />}
+
+                        <Button
+                            mt={5}
+                            onClick={() => { }}
+                            disabled={false}
+                            type={'button'}
+                            borderRadius={'md'}
+                            size={'xl'}
+                            padding={5}
+                            paddingInline={10}
+                            width={'full'}
+                            height={'fit-content'}
+                            bg={'black.900'}
+                            color={'white'}
+                            _hover={{ bg: 'black.900' }}
+                            _focus={{
+                                bg: 'black.900'
+                            }}
+                            _active={{
+                                transform: 'scale(0.98)',
+                            }}
+                        >Aggiungi al Carrello</Button>
 
                         <Box
                             fontWeight='light'
@@ -362,7 +387,6 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             onClick={() => {
 
                             }}
-
                         >
                             Hai bisogno di più informazioni sul prodotto? <span className='underline underline-offset-2 cursor-pointer'
                                 onClick={chatWithStore}
@@ -387,9 +411,15 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
                             <div className="overflow-x-scroll flex gap-4 ">
                                 {shopProductsData && shopProductsData?.data?.shop.products.map((element: Product) => {
+                                    // return (
+                                    //     <div key={element.id}>
+                                    //         {element.name}
+                                    //     </div>
+                                    // )
+
                                     return (
                                         <Link key={element.id} href={`/prodotto/${element.id}/${toProductPage(element)}`}>
-                                            <div className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
+                                            <div className={`${element.id !== product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
                                                 <Box borderRadius='lg' overflow='hidden'
                                                     borderWidth={0.5}
                                                     className={`w-36`}/*  aspect-[8.5/12] */
@@ -399,7 +429,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                 >
                                                     <LazyLoadImage
                                                         src={
-                                                            imageKitUrl(element.photos[0], 171, 247)
+                                                            imageKitUrl(element.variations[0].photos[0], 171, 247)
                                                         }//placeholderSrc={'/static/grayScreen.png'}
                                                         effect="blur"
                                                         alt={element.name}
@@ -439,15 +469,15 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
                                                     >
                                                         <span
-                                                            className={`${element.price.v2 ? 'text-slate-500 font-normal line-through text-[11px]' : ''}`}
+                                                            className={`${element.price?.v2 ? 'text-slate-500 font-normal line-through text-[11px]' : ''}`}
                                                         >
-                                                            {Number(element.price.v1).toFixed(2).replace('.', ',')} €
+                                                            {Number(element.price?.v1).toFixed(2).replace('.', ',')} €
                                                         </span>
-                                                        {element.price.v2 && <span className=' text-red-700 font-bold ml-1'>{element.price.v2.toFixed(2).replace('.', ',')} €</span>}
+                                                        {element.price?.v2 && <span className=' text-red-700 font-bold ml-1'>{element.price?.v2.toFixed(2).replace('.', ',')} €</span>}
                                                     </Box>
-                                                    <div className='text-right flex float-right my-2 mx-2'>
+                                                    {/* <div className='text-right flex float-right my-2 mx-2'>
                                                         <Circle_Color colors={getColorsCSS(element)} dimension={4} space={1} />
-                                                    </div>
+                                                    </div> */}
                                                 </Box>
 
                                             </div>
