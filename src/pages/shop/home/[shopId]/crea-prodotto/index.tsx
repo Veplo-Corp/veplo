@@ -1,4 +1,6 @@
+import { useMutation } from '@apollo/client'
 import { Box, Button, ButtonGroup, IconButton, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import Autocomplete from '../../../../../../components/atoms/Autocomplete_Headless'
@@ -7,6 +9,7 @@ import Div_input_creation from '../../../../../../components/atoms/Div_input_cre
 import SelectMacrocategory from '../../../../../../components/atoms/SelectMacrocategory'
 import SelectStringOption from '../../../../../../components/atoms/SelectStringOption'
 import ProductVariationCard from '../../../../../../components/molecules/ProductVariationCard'
+import { CATEGORIES } from '../../../../../../components/mook/categories'
 import { Color, COLORS } from '../../../../../../components/mook/colors'
 import AddColorToProduct from '../../../../../../components/organisms/AddColorToProduct'
 import EditColorToProduct from '../../../../../../components/organisms/EditColorToProdoct'
@@ -14,6 +17,7 @@ import NoIndexSeo from '../../../../../../components/organisms/NoIndexSeo'
 import { onChangeNumberPrice } from '../../../../../../components/utils/onChangePrice'
 import { Variation } from '../../../../../interfaces/product.interface'
 import { VariationCard } from '../../../../../interfaces/variationCard.interface'
+import CREATE_PRODUCT from '../../../../../lib/apollo/mutations/createProduct'
 
 export interface IFormInputProduct {
     name: string;
@@ -28,14 +32,16 @@ interface Macrocategory {
     name: string,
     sizes: string,
     types: string[],
-    url: string
+    url: string,
+    gender: string
 }
 
 const vestibilità = [
     'skinny',
-    'slim fit',
+    'slim',
     'regular',
-    'baggy'
+    'baggy',
+    'oversize'
 ]
 
 
@@ -47,26 +53,22 @@ const index = () => {
         mode: "all",
         //defaultValues
     });
-
+    const router = useRouter();
     const [microcategoriesSelected, setMicrocategoriesSelected] = useState<string[]>([])
+    const [genderSelected, setGenderSelected] = useState<string>('')
+
     const [sizeTypeSelected, setSizeTypeSelected] = useState('')
     const [newCard, setNewCard] = useState(true)
-    const [productVariations, setProductVariations] = useState<any[]>([])
+    const [productVariations, setProductVariations] = useState<VariationCard[]>([])
     const [colors, setColors] = useState<Color[]>(COLORS)
     const [cardToEdit, setCardToEdit] = useState<any>([])
-    // const deleteVariation = (index: number) => {
-    //     if (productVariations.length < 1) return
-    //     console.log(index);
-    // }
+    const [createProduct] = useMutation(CREATE_PRODUCT);
+
 
 
 
     const confirmCard = (variation: VariationCard) => {
         setProductVariations((prevstate: any[]) => {
-            // let prevElements = prevstate;
-            // prevElements[index] = variation
-            // console.log(prevElements);
-            // return prevElements
             return [
                 ...prevstate,
                 variation
@@ -78,7 +80,6 @@ const index = () => {
                 ...newColors
             ]
         })
-
         setNewCard(false)
     }
 
@@ -141,6 +142,56 @@ const index = () => {
             console.log(newColors);
             return [...newColors]
         })
+    }
+
+
+
+    const createProductHandler = async () => {
+
+        const variations = productVariations.map((variation) => {
+            let photos: any[] = [];
+
+            variation.photos.forEach(photo => {
+                photos.push(photo.file)
+            });
+
+            return {
+                ...variation,
+                photos: ['25d70b96-8065-429c-9760-7543a413dd10'],
+                status: 'active',
+                lots: [
+                    {
+                        size: "m",
+                        quantity: 3
+                    }
+                ],
+            }
+        })
+
+
+
+        const product = {
+            name: watch('name').toLowerCase(),
+            status: 'active',
+            canBuy: true,
+            price: {
+                v1: Number(watch('price').replace(',', '.'))
+            },
+            info: {
+                gender: genderSelected === 'donna' ? 'f' : 'm',
+                macroCategory: watch('macrocategory'),
+                microCategory: watch('microcategory'),
+                brand: watch('brand'),
+                fit: watch('vestibilità').toLowerCase()
+            },
+            variations: variations
+        }
+        try {
+            const isCreatedProduct = await createProduct({ variables: { shopId: router.query.shopId, options: product } })
+            console.log(isCreatedProduct);
+        } catch (e: any) {
+            console.log(e);
+        }
     }
 
 
@@ -213,6 +264,7 @@ const index = () => {
                             <SelectMacrocategory
                                 selectedValueBefore={''}
                                 handleClick={(macrocategory: Macrocategory) => {
+                                    setGenderSelected(macrocategory.gender)
                                     setSizeTypeSelected(macrocategory.sizes)
                                     setValue('macrocategory', macrocategory.name);
                                     setProductVariations([])
@@ -366,13 +418,13 @@ const index = () => {
                             background: 'gray.800'
                         }}
                         onClick={() => {
-                            console.log(cardToEdit);
-                            console.log(productVariations);
+                            createProductHandler()
                         }}
                         disabled={false}
                         px={12}
                         py={7}
                         rounded={'lg'}
+                        width={'full'}
                     >
                         Crea Prodotto
                     </Button>

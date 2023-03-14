@@ -1,7 +1,6 @@
 
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import Header from '../../components/organisms/Header'
 // 1. import `ChakraProvider` component
 import { Center, ChakraProvider, CircularProgress } from '@chakra-ui/react'
 import { extendTheme } from "@chakra-ui/react"
@@ -33,6 +32,7 @@ import GET_USER from '../lib/apollo/queries/getUser'
 
 import { Business } from '../interfaces/business.interface'
 import { getFavouriteShopFromLocalStorage } from '../../components/utils/getFavouriteShopFromLocalStroage'
+import Header from '../../components/organisms/Header'
 
 
 const theme = extendTheme({
@@ -79,15 +79,17 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
     );
 
     onAuthStateChanged(auth, async (userAuth) => {
+      //signOut(auth)
       const apolloClient = initApollo()
       if (userAuth) {
         setUserId(analytics, userAuth.uid);
         //setUserProperties(analytics, { favorite_food: 'apples' });
         const idToken = await userAuth.getIdToken(true)
         setAuthTokenInSessionStorage(idToken)
-        //console.log(idToken);
+        console.log(idToken);
 
         const tokenResult = await userAuth.getIdTokenResult()
+        console.log(tokenResult);
 
         // user is logged in, send the user's details to redux, store the current user in the state
         const isBusiness = tokenResult.claims.isBusiness ? true : false;
@@ -161,14 +163,9 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             })
           return
         }
-        if (!isBusiness) {
-
-          getUser({
-            variables: {
-              id: '640c9f3aff10cf6f8c8df3f7'
-            }
-          }).then((data) => {
-            //console.log(data.data);
+        if (!isBusiness && tokenResult.claims.mongoId) {
+          getUser().then((data) => {
+            console.log(data);
 
             dispatch(
               login({
@@ -186,6 +183,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
           })
 
         }
+
 
 
         return
@@ -277,11 +275,12 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
       <ApolloProvider client={apolloClient} > {/* client={clientApollo} */}
         <ChakraProvider theme={theme}>
           <Auth>
-            <Header></Header>
             {loading ? (
               <Loading />
             ) : (
               <main className={sans.className}>
+                <Header></Header>
+
                 <Component {...pageProps} />
                 <Footer />
               </main>

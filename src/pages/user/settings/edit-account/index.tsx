@@ -40,11 +40,13 @@ const index = () => {
         update(cache, el, query) {
             const user = cache.readQuery<any>({
                 query: GET_USER,
-                variables: {
-                    id: '640c9f3aff10cf6f8c8df3f7'
-                }
+
             });
-            const normalizedId = cache.identify({ id: '640c9f3aff10cf6f8c8df3f7', __typename: 'User' });
+
+
+
+
+            const normalizedId = cache.identify({ id: user.user.id, __typename: 'User' });
             console.log(normalizedId);
             cache.modify({
                 id: normalizedId,
@@ -109,7 +111,7 @@ const index = () => {
             })
             console.log(response);
             setIsLoading(false);
-
+            setIsOpenNameModal(false)
         } catch {
             setIsLoading(false)
             return addToast({ position: 'top', title: "c'è stato un problema", description: 'non siamo riusciti a modificare le informazioni', status: 'error', duration: 5000, isClosable: true })

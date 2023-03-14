@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
@@ -13,6 +13,7 @@ import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 import { handleOpenModal, setModalTitleAndDescription } from '../../../store/reducers/modal_error';
 import { login } from '../../../store/reducers/user';
 import CREATE_USER from '../../../lib/apollo/mutations/createUser';
+import GET_USER from '../../../lib/apollo/queries/getUser';
 
 const index = () => {
   const router = useRouter()
@@ -22,6 +23,7 @@ const index = () => {
   const user: Firebase_User = useSelector((state: any) => state.user.user);
   const dispatch = useDispatch();
   const [createUser] = useMutation(CREATE_USER);
+  const [getUser] = useLazyQuery(GET_USER);
 
 
   useEffect(() => {
@@ -45,24 +47,36 @@ const index = () => {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         //! age ora è Int, ma verrà gestita come date o string con rilascio
         const user = userCredential.user;
-        const idToken = await userCredential.user.getIdToken(true);
+        let idToken = await userCredential.user.getIdToken(true);
         setAuthTokenInSessionStorage(idToken)
         console.log(user);
         const response = await createUser({
           variables: {
             options: {
               ...userInfo,
-              location: {
-                type: "Point",
-                coordinates: [0, 0]
-              }
             }
           }
         })
         console.log(response);
-
+        idToken = await userCredential.user.getIdToken(true);
+        setAuthTokenInSessionStorage(idToken)
+        dispatch(
+          login({
+            email: userCredential.user.email,
+            uid: userCredential.user.uid,
+            idToken: idToken,
+            emailVerified: false,
+            createdAt: 'now',
+            accountId: response?.data.createUser,
+            userInfo: {
+              name: userInfo.name
+            }
+          })
+        );
         return router.push('/')
       } catch (error: any) {
+        console.log(error);
+        return
         setLoading(false)
         const errorCode = error.code;
         const errorMessage = error.message;

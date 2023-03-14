@@ -1,10 +1,8 @@
 import { gql } from '@apollo/client'
 
 const GET_USER = gql`
-    query user($id: ID!) {
-        user(
-            id: $id
-        ){
+    query user{
+        user{
             id,
             name,
             surname,
@@ -12,21 +10,15 @@ const GET_USER = gql`
             firebaseId,
             email,
             phone,
-            location{
-                type
-                coordinates
-            },
             gender,
-            
             createdAt,
             carts {
                 id
                 userId
                 status
             }
-        } 
+        }
     }
 `
 
-// age,
 export default GET_USER;

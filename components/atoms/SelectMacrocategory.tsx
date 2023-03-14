@@ -9,12 +9,11 @@ const SelectMacrocategory: FC<{ selectedValueBefore: string, handleClick: (value
     const categories = useRef(CATEGORIES)
 
     const handleEvent = (value: any) => {
-
         setSelected(value)
         handleClick(value)
     }
     return (
-        <Listbox value={selected} onChange={handleEvent}>
+        <Listbox value={selected} onChange={(value) => handleEvent(value)}>
             <div className={`z-1 relative mt-1 border border-gray rounded-lg ${true ? 'bg-white' : 'bg-gray-200'}`}>
                 <Listbox.Button className="cursor-default w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0">
 
@@ -50,7 +49,10 @@ const SelectMacrocategory: FC<{ selectedValueBefore: string, handleClick: (value
                                                 className={({ active }) =>
                                                     ` z-10 relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-blue-700 text-white' : 'text-white-900'}`
                                                 }
-                                                value={value}
+                                                value={{
+                                                    ...value,
+                                                    gender
+                                                }}
                                             >
                                                 {({ selected }) => (
                                                     <>

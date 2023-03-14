@@ -20,7 +20,7 @@ import GET_BUSINESS from '../../src/lib/apollo/queries/business'
 import { Business } from '../../src/interfaces/business.interface'
 
 
-const Header = () => {
+const OldHeader = () => {
     const router: NextRouter = useRouter()
     const genere: any = router.query.genere
     const [showMenu, setshowMenu] = useState(false);
@@ -289,4 +289,4 @@ const Header = () => {
     )
 }
 
-export default Header
+export default OldHeader

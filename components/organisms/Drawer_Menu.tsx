@@ -14,7 +14,7 @@ import { deleteFavouriteShopFromLocalStorage } from '../utils/deleteShopFavourit
 
 
 
-const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: any }> = ({ openDrawerMath, user, onCloseModal }) => {
+const Drawer_Menu: React.FC<{ user: any, isOpen: boolean, closeDrawer: () => void }> = ({ user, isOpen, closeDrawer }) => {
 
     const userDispatch: Firebase_User = useSelector((state: any) => state.user.user);
 
@@ -46,15 +46,8 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
     ]
 
     const router = useRouter()
-    const { isOpen, onOpen, onClose } = useDisclosure()
     const [isOpenHelpModal, setIsOpenHelpModal] = useState(false)
-    useEffect(() => {
-        //console.log('openDrawerMath:',openDrawerMath);
 
-        if (openDrawerMath !== 1 && openDrawerMath !== undefined) {
-            onOpen()
-        }
-    }, [openDrawerMath])
 
 
     const logout = async () => {
@@ -64,8 +57,7 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
 
         //set OpenModal 1 in Header
         router.push('/shop/login?type=login')
-        onCloseModal()
-        onClose()
+        closeDrawer()
     }
 
 
@@ -76,10 +68,7 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
             isOpen={isOpen}
             placement='right'
             size={['xs', 'sm']}
-            onClose={() => {
-                onClose()
-                onCloseModal()
-            }}
+            onClose={closeDrawer}
         >
             <DrawerOverlay />
             <DrawerContent>
@@ -154,7 +143,7 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                                             onClick={() => {
 
                                                 router.push(element.url)
-                                                onClose()
+                                                closeDrawer()
                                             }}
                                         >
                                             <p className='my-auto '>
@@ -198,7 +187,7 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                                         onClick={() => {
 
                                             router.push(element.url)
-                                            onClose()
+                                            closeDrawer()
                                         }}
                                     >
                                         <p className='my-auto '>

@@ -7,22 +7,21 @@ import Div_input_creation from '../atoms/Div_input_creation';
 export interface UserInfo {
     name: string,
     surname: string,
-    gender: string,
-    //dateBirth: string | number
-    age?: number
+    gender: string | null,
+    dateOfBirth?: string | Date,
 }
 
 const typeInterest = [
     {
-        value: 'F',
+        value: 'm',
         text: 'donna',
     },
     {
-        value: 'M',
+        value: 'f',
         text: 'uomo',
     },
     {
-        value: 'I',
+        value: 'i',
         text: 'indifferente',
     }
 ]
@@ -36,8 +35,8 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
     const [userInfo, setUserInfo] = useState<UserInfo>({
         name: '',
         surname: '',
-        gender: '',
-        //dateBirth: ''
+        gender: null,
+        dateOfBirth: '',
     })
 
 
@@ -305,7 +304,7 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
                                             console.log(age);
                                             return {
                                                 ...prevState,
-                                                age: age /* e.target.value */
+                                                dateOfBirth: date
                                             }
                                         })
                                     }}
@@ -327,9 +326,6 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
                             </InputGroup>
                         </Div_input_creation>
 
-
-
-
                     </div>
 
                     <Select
@@ -349,8 +345,10 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
                         }}
                         onChange={(event) => {
                             setUserInfo((prevState: UserInfo) => {
-                                if (event.target.value === 'I') return {
-                                    ...prevState
+                                if (event.target.value === 'i') return {
+                                    ...prevState,
+                                    gender: null
+
                                 }
                                 return {
                                     ...prevState,
@@ -377,7 +375,7 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
             }
             {type !== 'reset_password' &&
                 <div className='w-full flex justify-end pt-2'>
-                    <BlackButton disabled={!isValidEmail || !isValidPassword || (type === 'registration' ? (userInfo.name === '' || userInfo.surname === '' || userInfo.gender === '') : false)
+                    <BlackButton disabled={!isValidEmail || !isValidPassword || (type === 'registration' && account === 'user' ? (userInfo.name === '' || userInfo.surname === '' || userInfo.gender === '') : false)
                     }
                         heigth={12}
                         width={52}
