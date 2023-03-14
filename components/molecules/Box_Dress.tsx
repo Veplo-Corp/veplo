@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { Box, Image } from '@chakra-ui/react'
 import Circle_Color from '../atoms/Circle_Color'
-import { Product } from '../../src/interfaces/product.interface'
+import { Product, Variation } from '../../src/interfaces/product.interface'
 import { COLORS } from '../mook/colors'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
@@ -14,15 +14,14 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     const [width, height] = useWindowSize();
     //const [dimensionUrl, setDimensionUrl] = useState('&tr=w-571,h-825')
-    const [urlProduct, seturlProduct] = useState(product.photos[0])
+    const [urlProduct, seturlProduct] = useState(product?.variations[0].photos[0])
 
     useEffect(() => {
-        let colorsCSS = [];
-        for (let i = 0; i < product.colors.length; i++) {
-            const colorCSS = COLORS.filter(color => color.name === product.colors[i])[0].cssColor
-            colorsCSS.push(colorCSS)
-        }
-        setProductcolorsCSS(colorsCSS)
+        const colors = product.variations.map((variation: Variation) => {
+            return COLORS.find(color => color.name === variation.color)?.cssColor
+
+        })
+        setProductcolorsCSS(colors)
     }, [product])
 
     useEffect(() => {
@@ -39,20 +38,21 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                 transform: 'scale(1)', /* 'scale(0.99)' */
             }}>
             {/* <Image fallbackSrc='https://via.placeholder.com/150' onClick={() => eventHandler(product)} src={product.photos[0]} alt={'immagine non disponibile'} /> */}
-            {product?.photos && <LazyLoadImage src={imageKitUrl(urlProduct, 447, 660)}
+            {product?.variations[0].photos[0] && <LazyLoadImage src={imageKitUrl(urlProduct, 447, 660)}
                 onClick={() => eventHandler(product)}
                 onMouseEnter={() => {
-                    seturlProduct(product.photos[1])
+                    if (!product?.variations[0].photos[1]) return
+                    seturlProduct(product?.variations[0].photos[1])
                 }}
                 onMouseLeave={() => {
-                    seturlProduct(product.photos[0])
+                    seturlProduct(product?.variations[0].photos[0])
                 }}
                 //PlaceholderSrc={PlaceholderImage}
                 effect="blur"
                 alt={product.name}
                 className="w-fit"
             />}
-            {product.price.discountPercentage && <Box
+            {product.price?.discountPercentage && <Box
                 onClick={() => eventHandler(product)}
                 fontWeight='medium'
                 as='h1'
@@ -64,7 +64,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                 px={'3'}
                 py={'1'}
                 className='absolute mt-[-55px] md:mt-[-48px] right-0'>
-                - {product.price.discountPercentage.toString().replace('.', ',')}%
+                - {product.price?.discountPercentage.toString().replace('.', ',')}%
                 {/* {height} - {width} */}
             </Box>}
             <Box pb='1' px={'0'}>
@@ -76,9 +76,9 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                     lineHeight='tight'
                     noOfLines={1}
                     fontSize={['xs', 'sm']}
-                    onClick={() => toShop(product.shopId, product.shopOptions.city, product.shopOptions.name)}
+                    onClick={() => toShop(product.shopInfo.id, product.shopInfo.city, product.shopInfo.name)}
                 >
-                    {toUpperCaseFirstLetter(product.shopOptions.name)}
+                    {toUpperCaseFirstLetter(product.shopInfo.name)}
                 </Box>
                 <div className='flex justify-between'>
                     <div>
@@ -119,7 +119,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                         color={'white'}
                         rounded={'3xl'}
                     >
-                        -{product.price.discountPercentage.toString().replace('.', ',')}%
+                        -{product.price?.discountPercentage.toString().replace('.', ',')}%
                        
                     </Box> */}
                 </div>
@@ -136,11 +136,11 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                         mt={'1'}
                     >
                         <span
-                            className={`${product.price.v2 ? 'text-slate-500 font-normal line-through' : ''} mr-2`}
+                            className={`${product.price?.v2 ? 'text-slate-500 font-normal line-through' : ''} mr-2`}
                         >
-                            {Number(product.price.v1).toFixed(2).replace('.', ',')} €
+                            {Number(product.price?.v1).toFixed(2).replace('.', ',')} €
                         </span>
-                        {product.price.v2 && <span className=' text-red-700 font-bold'>{product.price.v2.toFixed(2).replace('.', ',')} €</span>}
+                        {product.price?.v2 && <span className=' text-red-700 font-bold'>{product.price?.v2.toFixed(2).replace('.', ',')} €</span>}
                     </Box>
 
                 </div>

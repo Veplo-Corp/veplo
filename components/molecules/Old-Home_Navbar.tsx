@@ -27,39 +27,6 @@ const types = [
 const navbar: React.FC<Props> = ({ showCategory, onShowCategory, openAddressModal }) => {
 
     const address_user = useSelector((state: any) => state.address.address);
-    // console.log(address_user);
-
-    // const pushToStores = () => {
-    //     onShowCategory(false)
-    //     if (address_user) {
-    //         if (address_user.city && address_user.city !== 'undefined') {
-    //             if (address_user.postcode.length === 5) {
-    //                 const uri = createUrlSchema([address_user.city, address_user.postcode])
-    //                 return router.push(`/negozi/${uri}`)
-    //             } else {
-    //                 const uri = createUrlSchema([address_user.city])
-    //                 return router.push(`/negozi/${uri}`)
-    //             }
-    //         }
-    //     }
-    //     return
-    // }
-
-    // const pushToProducts = (gender: string) => {
-    //     onShowCategory(false)
-    //     if (address_user) {
-    //         if (address_user.city && address_user.city !== 'undefined') {
-    //             if (address_user.postcode.length === 5) {
-    //                 const uriCity = createUrlSchema([address_user.city, address_user.postcode])
-    //                 return router.push(`/prodotti/${uriCity}/${gender}-abbigliamento`)
-    //             } else {
-    //                 const uriCity = createUrlSchema([address_user.city])
-    //                 return router.push(`/prodotti/${uriCity}/${gender}-abbigliamento`)
-    //             }
-    //         }
-    //     }
-    //     return
-    // }
 
 
     const router = useRouter()
@@ -91,7 +58,6 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory, openAddressModa
     return (
 
         <nav className="fixed justify-center w-full hidden md:flex pr-20 lg:pr-0 gap-10">  {/* z-10 */}
-
             {types.map(type => {
                 return (
                     <div

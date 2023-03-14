@@ -6,9 +6,8 @@ import Box_Dress from '../../../../../components/molecules/Box_Dress'
 import { useRouter } from 'next/router'
 import Horizontal_Line from '../../../../../components/atoms/Horizontal_Line'
 import { Product } from '../../../../interfaces/product.interface'
-import { Shop } from '../../../../interfaces/shop.interface'
+import { Shop, ShopAndProducts } from '../../../../interfaces/shop.interface'
 import createUrlSchema from '../../../../../components/utils/create_url'
-import GET_SINGLE_SHOP from '../../../../lib/apollo/queries/getSingleShop'
 import { initApollo } from '../../../../lib/apollo'
 import GET_PRODUCTS_FROM_SHOP from '../../../../lib/apollo/queries/geetProductsShop'
 import { toProductPage } from '../../../../../components/utils/toProductPage'
@@ -23,6 +22,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useLazyQuery, useQuery } from '@apollo/client'
 import Modal_Info_Store from '../../../../../components/organisms/Modal_Info_Store'
 import isShopOpen from '../../../../../components/utils/isShopOpen'
+import GET_SHOP_AND_PRODUCTS from '../../../../lib/apollo/queries/getSingleShop'
+import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
 
 export async function getStaticPaths() {
     return {
@@ -34,23 +35,19 @@ export async function getStaticPaths() {
 export async function getStaticProps(ctx: any) {
     let { shopId } = ctx.params;
     const apolloClient = initApollo()
-    //console.log(productId);
-    const { data, error } = await apolloClient.query({
-        query: GET_SINGLE_SHOP,
-        variables: { id: shopId },
-    })
 
-    const products = await apolloClient.query({
-        query: GET_PRODUCTS_FROM_SHOP,
+    const { data } = await apolloClient.query({
+        query: GET_SHOP_AND_PRODUCTS,
         variables: { id: shopId, limit: 4, offset: 0, see: null },
         //!useless
-        fetchPolicy: 'cache-first',
+        // fetchPolicy: 'cache-first',
+        // nextFetchPolicy: 'cache-only',
     })
+    console.log(data);
 
     return {
         props: {
             shop: data.shop,
-            products: products?.data?.shop.products
         },
         revalidate: 60, // In seconds
     }
@@ -60,12 +57,32 @@ export async function getStaticProps(ctx: any) {
 
 
 
-const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }) => {
+const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
+    console.log(shop);
+
+
+    useEffect(() => {
+        const funzione = async () => {
+            // const shoppe = await apolloClient.query({
+            //     query: GET_SHOP_AND_PRODUCTS,
+            //     variables: { id: '6404ac018bcdffb859c5b5b7', limit: 4, offset: 0, see: null },
+            // })
+            // console.log(shoppe);ù
+
+
+
+        }
+        funzione()
+    }, [])
+
+
+
     const router = useRouter();
     const [addressForMaps, setaddressForMaps] = useState('')
     const [productsFounded, setproductsFounded] = useState<Product[]>([])
     const [hasMoreData, setHasMoreData] = useState(true)
     const [isOpen, setIsOpen] = useState(false)
+
 
     const toProductPageUrl = (product: Product) => {
 
@@ -86,7 +103,7 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
 
     useEffect(() => {
         createAddressForMAps()
-        setproductsFounded(products)
+        setproductsFounded(shop.products)
     }, [shop])
 
     const fetchMoreData = async () => {
@@ -136,6 +153,8 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
 
 
 
+
+
     return (
         <Desktop_Layout>
             <PostMeta
@@ -174,8 +193,7 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
                                 </svg> */}
 
                             </Box>
-
-                            <Box
+                            {!shop.isDigitalOnly && <Box
                                 fontWeight='base'
                                 as='h2'
                                 fontSize='11px'
@@ -187,7 +205,7 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
                                     {shop.address.city}, {shop.address.street}
                                 </span>
 
-                            </Box>
+                            </Box>}
                         </Box>
                         <Box display='flex' className='my-auto'>
                             <a target="_blank" rel="noopener noreferrer" href={`https://www.google.it/maps/search/${addressForMaps}`} >
@@ -195,7 +213,7 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
                                     <path fillRule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
                                 </svg>
                             </a>
-                            <a href={`https://wa.me/+39${shop.phone}?text=ciao, ero su Veplo.it e stavo visitando il tuo negozio ${shop.name}. Avrei bisogno di una informazione`} target="_blank" >
+                            <a href={`https://wa.me/+39${shop.info.phone}?text=ciao, ero su Veplo.it e stavo visitando il tuo negozio ${shop.name}. Avrei bisogno di una informazione`} target="_blank" >
 
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 mr-1 hover:scale-95 cursor-pointer">
                                     <path fillRule="evenodd" d="M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.322 0 9.75-3.97 9.75-9 0-5.03-4.428-9-9.75-9s-9.75 3.97-9.75 9c0 2.409 1.025 4.587 2.674 6.192.232.226.277.428.254.543a3.73 3.73 0 01-.814 1.686.75.75 0 00.44 1.223zM8.25 10.875a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM10.875 12a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875-1.125a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z" clipRule="evenodd" />
@@ -220,7 +238,7 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
                                 </svg> */}
                             </Box>
                         </Box>
-                        <Box>
+                        {!shop.isDigitalOnly && <Box>
                             <Box
                                 fontWeight='base'
                                 as='h2'
@@ -228,9 +246,9 @@ const index: React.FC<{ shop: Shop, products: Product[] }> = ({ shop, products }
                                 fontSize='12px'
                                 display={'flex'}
                             >
-                                {isShopOpen(shop.opening.days, shop.opening.hours) ? `Aperto - chiude alle ${shop.opening.hours[1]}` : `Chiuso - apre alle ${shop.opening.hours[0]}`}
+                                {isShopOpen(shop.info.opening.days, shop.info.opening.hours) ? `Aperto - chiude alle ${shop.info.opening.hours[1]}` : `Chiuso - apre alle ${shop.info.opening.hours[0]}`}
                             </Box>
-                        </Box>
+                        </Box>}
                     </Box>
                 </Box>
 

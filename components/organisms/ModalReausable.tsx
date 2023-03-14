@@ -6,7 +6,7 @@ import { Fragment, useState } from 'react'
 export interface ErrorModal {
     title: string,
     closeModal: () => void,
-    children: any,
+    children?: any,
     isOpen: boolean
 }
 

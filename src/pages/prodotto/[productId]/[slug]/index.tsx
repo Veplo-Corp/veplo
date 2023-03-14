@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
-import { Box, Button, Image, Tooltip } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Image, Tooltip } from '@chakra-ui/react';
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { Product, Variation } from '../../../../interfaces/product.interface';
@@ -25,7 +25,7 @@ import Link from 'next/link';
 import CircleColorSelected from '../../../../../components/atoms/CircleColorSelected';
 import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter';
 import BlackButton from '../../../../../components/atoms/BlackButton';
-
+import ModalReausable from '../../../../../components/organisms/ModalReausable'
 
 export async function getStaticPaths() {
     return {
@@ -119,7 +119,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     const [variationSelected, setVariationSelected] = useState(product.variations[0])
     const [sizeSelected, setSizeSelected] = useState<string>('')
     const [colorSelected, setColorSelected] = useState<string>(product.variations[0].color)
-
+    const [isOpenModalSize, setisOpenModalSize] = useState(false)
 
 
     const [textCategory, setTextCategory] = useState('vestito')
@@ -243,6 +243,18 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
         )
     }
 
+    const addToCart = (product: Product) => {
+        if (!sizeSelected || !colorSelected) {
+            setisOpenModalSize(true)
+            setTimeout(() => {
+                setisOpenModalSize(false)
+            }, 3000);
+        }
+        else {
+
+        }
+    }
+
     return (
         <>
             {product && <Desktop_Layout>
@@ -357,8 +369,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
                         <Button
                             mt={5}
-                            onClick={() => { }}
-                            disabled={false}
+                            onClick={() => addToCart(product)}
                             type={'button'}
                             borderRadius={'md'}
                             size={'xl'}
@@ -541,6 +552,29 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                     scopri altri negozi con prodotti simili
                 </Box> */}
             </Desktop_Layout>}
+            <ModalReausable title='Manca la taglia' isOpen={isOpenModalSize}
+                closeModal={() => setisOpenModalSize(false)}
+            >
+                <Box
+                    marginTop={3}
+                    fontSize={'md'}
+                    fontWeight={'normal'}
+                    color={'gray.500'}
+                >
+                    Inserisci la taglia prima di aggiungere il prodotto al carrello
+                </Box>
+
+                {/* <ButtonGroup gap='4'
+                    marginTop={5}
+                    display={'flex'}
+                    justifyContent={'end'}
+                >
+                    <Button
+                        onClick={() => setisOpenModalSize(false)}
+                        variant={'ghost'}
+                        colorScheme='teal'>Chiudi</Button>
+                </ButtonGroup> */}
+            </ModalReausable>
         </>
 
     )
