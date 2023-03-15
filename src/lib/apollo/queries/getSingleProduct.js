@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 const GET_SINGLE_PRODUCT = gql`
-    query GetSingleProduct($id: ID!) {
+    query product($id: ID!) {
         product(
             id: $id
         ){
@@ -14,6 +14,7 @@ const GET_SINGLE_PRODUCT = gql`
                 macroCategory
                 microCategory
                 brand
+                fit
             }
             variations{
             id

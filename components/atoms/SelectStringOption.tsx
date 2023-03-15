@@ -34,7 +34,7 @@ const SelectStringOption: FC<{ defaultValue?: number | string, values: string[] 
             disabled={values?.length < 0}
         >
             <div className={`z-1 relative mt-1 border border-gray rounded-lg ${values?.length > 0 ? 'bg-white' : 'bg-gray-100'}`}>
-                <Listbox.Button className="cursor-default min-w-[100px] md:min-w-[180px] w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0">
+                <Listbox.Button className="cursor-default min-w-[100px] md:min-w-[140px] w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0">
 
                     {selected ? <span className="block truncate text-start">{selected.name || selected} </span> : <span className="block truncate text-start text-white">--</span>}
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">

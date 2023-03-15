@@ -13,7 +13,7 @@ import Drawer_Add_Image from './Drawer_Add_Image';
 
 const quantity = Array.from({ length: 100 }, (_, i) => i + 1)
 
-interface Size {
+export interface Size {
     size: string,
     quantity: number
 }

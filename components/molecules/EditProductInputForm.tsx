@@ -1,4 +1,4 @@
-import { Input, InputGroup, InputLeftAddon } from '@chakra-ui/react';
+import { Button, Input, InputGroup, InputLeftAddon, InputRightAddon } from '@chakra-ui/react';
 import React, { FC, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form';
 import { Variation } from '../../src/interfaces/product.interface';
@@ -24,8 +24,7 @@ interface Macrocategory {
     url: string
 }
 
-const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, variations: Variation[] }> = ({ defaultValues, variations }) => {
-    console.log(variations);
+const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleConfirm: (product: IFormInputProductEdit) => void }> = ({ defaultValues, handleConfirm }) => {
 
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInputProductEdit>({
         mode: "all",
@@ -33,38 +32,82 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, variation
     });
 
 
-    const [sizeTypeSelected, setSizeTypeSelected] = useState('')
-    const [productVariations, setProductVariations] = useState<any[]>(variations)
+    const onSubmit = (value: IFormInputProductEdit) => {
+        handleConfirm(value)
+    }
+
 
 
     return (
-        <>
-            <div className='w-full md:w-8/12 lg:w-1/2 xl:w-5/12  m-auto'>
+        <form onSubmit={handleSubmit(onSubmit)}>
 
-                <Div_input_creation text='Nome del prodotto'>
-                    <InputGroup >
-                        <Input
-                            autoComplete='off'
-                            maxLength={30}
-                            rounded={10}
-                            paddingY={6}
-                            type="text"
-                            {...register("name", { required: true })}
-                            isInvalid={false}
-                        />
-                    </InputGroup>
-                </Div_input_creation>
-                <Div_input_creation text='Prezzo'>
-                    <InputGroup
+            <Div_input_creation text='Nome del prodotto'>
+                <InputGroup >
+                    <Input
+                        autoComplete='off'
+                        maxLength={30}
+                        rounded={10}
+                        paddingY={6}
+                        type="text"
+                        {...register("name", { required: true })}
+                        isInvalid={false}
+                    />
+                </InputGroup>
+            </Div_input_creation>
+            <Div_input_creation text='Prezzo'>
+                <InputGroup
 
-                    >
+                >
+                    <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} />
+                    <Input
+                        rounded={10}
+                        paddingY={6}
+                        autoComplete='off'
+                        type="string"
+                        {...register("price.v1", {
+                            required: true,
+                        })}
+                        onWheel={(e: any) => e.target.blur()}
+                        placeholder={'34,99'}
+                        textAlign={"end"}
+                        isInvalid={false}
+                        onChange={(e) => {
+                            const inputValue = onChangeNumberPrice(e)
+                            setValue('price.v1', inputValue);
+                            let v1 = Number(onChangeNumberPrice(e).replace(',', '.'))
+                            let v2 = watch('price.v2');
+                            if (typeof v2 === 'string') {
+                                v2 = Number(v2.replace(',', '.'))
+                            }
+                            if (v1 > Number(watch('price.v2'))) {
+                                setValue('price.v2', inputValue);
+
+                                const discountPercentage = Number((100 - Number(v2) / v1 * 100).toFixed(2));
+                                setValue('price.discountPercentage', discountPercentage);
+                            } else {
+
+                                setValue('price.v2', v1);
+                                setValue('price.discountPercentage', 0);
+                            }
+
+
+                        }}
+                    />
+                </InputGroup>
+            </Div_input_creation>
+            <Div_input_creation text='Prezzo scontato'>
+                <InputGroup
+                    gap={10}
+                >
+                    <InputGroup>
                         <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} />
+
                         <Input
                             rounded={10}
                             paddingY={6}
                             autoComplete='off'
                             type="string"
-                            {...register("price.v1", {
+                            {...register("price.v2", {
                                 required: true,
                             })}
                             onWheel={(e: any) => e.target.blur()}
@@ -73,95 +116,140 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, variation
                             isInvalid={false}
                             onChange={(e) => {
                                 const inputValue = onChangeNumberPrice(e)
-                                return setValue('price.v1', inputValue);
+
+                                setValue('price.v2', inputValue);
+                                let v2 = Number(onChangeNumberPrice(e).replace(',', '.'))
+                                let v1 = watch('price.v1');
+                                if (typeof v1 === 'string') {
+                                    v1 = Number(v1.replace(',', '.'))
+                                }
+                                if (v2 > v1) {
+                                    setValue('price.v2', v1);
+                                    setValue('price.discountPercentage', 0);
+                                } else {
+                                    const discountPercentage = Number((100 - v2 / Number(v1) * 100).toFixed(2));
+                                    setValue('price.discountPercentage', discountPercentage);
+                                }
                             }}
-                        />
-                    </InputGroup>
-                </Div_input_creation>
-                <Div_input_creation text='Brand'
-                >
-                    <Controller
-                        control={control}
-                        name="brand"
-                        rules={{ required: false }}
-                        render={({ field: { onChange, onBlur, value, ref } }) => (
-                            <Autocomplete
-                                selectedValue={watch('brand')}
-                                handleChangeValues={(brand: any) => {
-                                    setValue('brand', brand);
-                                }} />
-                        )}
-                    />
-                </Div_input_creation>
-                <Div_input_creation text='Categoria'>
-                    <InputGroup >
+                        /></InputGroup>
+
+                    <InputGroup
+
+                    >
                         <Input
-                            autoComplete='off'
-                            maxLength={30}
                             rounded={10}
                             paddingY={6}
+                            autoComplete='off'
+                            type="string"
+
+                            {...register("price.discountPercentage", {
+                                required: true,
+                            })}
+
+                            placeholder={'percentuale sconto'}
+                            textAlign={"end"}
+                            isInvalid={false}
                             disabled={true}
                             _disabled={{
-                                background: 'gray.200'
+                                background: 'gray.50'
                             }}
-                            type="text"
-                            {...register("macrocategory", { required: true })}
-                            isInvalid={false}
+
                         />
-                    </InputGroup>
-                </Div_input_creation>
-                <Div_input_creation text='Microcategoria'>
-                    <InputGroup >
-                        <Input
-                            autoComplete='off'
-                            maxLength={30}
+                        <InputRightAddon
+                            fontWeight={'semibold'}
                             rounded={10}
                             paddingY={6}
-                            disabled={true}
-                            _disabled={{
-                                background: 'gray.200'
-                            }}
-                            type="text"
-                            {...register("microcategory", { required: true })}
-                            isInvalid={false}
-                        />
+                            children='%' />
+
                     </InputGroup>
-                </Div_input_creation>
-                <Div_input_creation text='Vestibilità prodotto'>
-                    <Controller
-                        control={control}
-                        name="vestibilità"
-                        rules={{ required: false }}
-                        render={() => (
-                            <SelectStringOption
-                                values={vestibilità}
-                                defaultValue={defaultValues.vestibilità}
-                                handleClick={(vestibilità: string) => {
-                                    setValue('vestibilità', vestibilità);
-                                }}
-                            />
-                        )}
+
+                </InputGroup>
+            </Div_input_creation>
+            <Div_input_creation text='Brand'
+            >
+                <Controller
+                    control={control}
+                    name="brand"
+                    rules={{ required: false }}
+                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                        <Autocomplete
+                            selectedValue={watch('brand')}
+                            handleChangeValues={(brand: any) => {
+                                setValue('brand', brand);
+                            }} />
+                    )}
+                />
+            </Div_input_creation>
+            <Div_input_creation text='Categoria'>
+                <InputGroup >
+                    <Input
+                        autoComplete='off'
+                        maxLength={30}
+                        rounded={10}
+                        paddingY={6}
+                        disabled={true}
+                        _disabled={{
+                            background: 'gray.200'
+                        }}
+                        type="text"
+                        {...register("macrocategory", { required: true })}
+                        isInvalid={false}
                     />
-                </Div_input_creation>
-            </div>
-            <div className='w-full md:w-9/12 lg:w-7/12 xl:w-6/12 m-auto mt-6'>
-
-                {productVariations.length > 0 && productVariations.map((variation: any, index) => {
-
-                    console.log(variation);
-                    return (
-                        <div key={index} >
-                            <ProductVariationCard
-                                index={index}
-                                variation={variation}
-                                editCard={() => { }}
-                                deleteCard={() => { }}
-                            />
-                        </div>
-                    )
-                })}
-            </div>
-        </>
+                </InputGroup>
+            </Div_input_creation>
+            <Div_input_creation text='Microcategoria'>
+                <InputGroup >
+                    <Input
+                        autoComplete='off'
+                        maxLength={30}
+                        rounded={10}
+                        paddingY={6}
+                        disabled={true}
+                        _disabled={{
+                            background: 'gray.200'
+                        }}
+                        type="text"
+                        {...register("microcategory", { required: true })}
+                        isInvalid={false}
+                    />
+                </InputGroup>
+            </Div_input_creation>
+            <Div_input_creation text='Vestibilità prodotto'>
+                <Controller
+                    control={control}
+                    name="vestibilità"
+                    rules={{ required: false }}
+                    render={() => (
+                        <SelectStringOption
+                            values={vestibilità}
+                            defaultValue={defaultValues.vestibilità}
+                            handleClick={(vestibilità: string) => {
+                                setValue('vestibilità', vestibilità);
+                            }}
+                        />
+                    )}
+                />
+            </Div_input_creation>
+            <Button
+                mt={5}
+                type={'submit'}
+                borderRadius={'md'}
+                size={'xl'}
+                padding={5}
+                paddingInline={10}
+                width={'full'}
+                height={'fit-content'}
+                bg={'black.900'}
+                color={'white'}
+                _hover={{ bg: 'black.900' }}
+                _focus={{
+                    bg: 'black.900'
+                }}
+                _active={{
+                    transform: 'scale(0.98)',
+                }}
+            >Modifica informazioni</Button>
+        </form>
 
 
     )

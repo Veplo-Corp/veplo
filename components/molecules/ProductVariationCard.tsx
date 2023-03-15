@@ -35,8 +35,6 @@ const ProductVariationCard: FC<{ index: number, variation: VariationCard, delete
 
                 <div className='flex gap-2'>
                     {variation.photos.length > 0 && variation.photos.map((image: any) => {
-                        console.log(image);
-
                         if (image?.url) {
 
                             return (
@@ -67,7 +65,7 @@ const ProductVariationCard: FC<{ index: number, variation: VariationCard, delete
                                     className='text-sm mb-1'
                                     key={Math.random()}
                                 >
-                                    {size.size} - {size.quantity} quantità
+                                    {size.size} - {size.quantity ? size.quantity + ' quantità' : 'TERMINATO'}
                                 </p>
                             )
                         })

@@ -25,6 +25,7 @@ export interface Product {
         microCategory: string,
         gender: string,
         brand: string,
+        fit: string
     }
     price: {
         v1: number,

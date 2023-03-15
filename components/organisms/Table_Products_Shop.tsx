@@ -231,26 +231,25 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                             <Th p={[2, 4]}
                                 fontSize={'sm'}
                                 minW={[30]}>Nome</Th>
+
+                            <Th p={[2, 4]}
+                                fontSize={'sm'}
+                                className='hidden lg:table-cell' >
+                                Brand
+                            </Th>
                             <Th p={[2, 4]}
                                 fontSize={'sm'}
                             >
                                 <div
                                     className='flex'
                                 >
-                                    Status
+                                    Prezzo
                                     <Tooltip label="disponibilità prodotto in Veplo">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3">
                                             <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 01-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 01-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 01-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584zM12 18a.75.75 0 100-1.5.75.75 0 000 1.5z" clipRule="evenodd" />
                                         </svg>
                                     </Tooltip>
                                 </div>
-
-
-                            </Th>
-                            <Th p={[2, 4]}
-                                fontSize={'sm'}
-                                className='hidden lg:table-cell' >
-                                Brand
                             </Th>
                             <Th p={[2, 4]} className='hidden md:table-cell'
                                 fontSize={'sm'}
@@ -328,22 +327,31 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                                     <Td paddingRight={0}
                                         paddingY={0}
                                         paddingLeft={[2, 4]}
-                                    /* className='cursor-pointer' */>
+                                        className='hidden lg:table-cell'>
+                                        <span>
+                                            {product.info.brand}
+                                        </span>
+                                    </Td>
+                                    {/* <Td paddingRight={0}
+                                        paddingY={0}
+                                        paddingLeft={[2, 4]}
+                                    >
                                         <Tag size={['sm', 'md']} variant='subtle'
                                             borderRadius='full'
                                             colorScheme={`${product.status === 'active' ? 'green' : 'red'}`}>
                                             <Product_Status_Popover status={product.status} onChangeStatus={(DBStatus: string) => onChangeStatus(DBStatus, product.id)} />
                                         </Tag>
 
-                                    </Td>
+                                    </Td> */}
                                     <Td paddingRight={0}
                                         paddingY={0}
                                         paddingLeft={[2, 4]}
                                         className='hidden lg:table-cell'>
                                         <span>
-                                            {product.info.brand}
+                                            Aggiungere
                                         </span>
                                     </Td>
+
                                     <Td paddingRight={0}
                                         paddingY={0}
                                         paddingLeft={[2, 4]}

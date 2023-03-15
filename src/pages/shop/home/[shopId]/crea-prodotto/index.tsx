@@ -102,8 +102,6 @@ const index = () => {
                 ...newVariation
             ]
         })
-
-
         setNewCard(false)
     }
 
