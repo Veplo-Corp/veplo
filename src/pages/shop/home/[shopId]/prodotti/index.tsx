@@ -90,25 +90,7 @@ const index = () => {
         update(cache, el) {
             const deleteId = el.data
             console.log(deleteId.deleteProduct);
-            const { shop } = cache.readQuery<any>({
-                query: GET_PRODUCTS_FROM_SHOP,
-                variables: {
-                    id: user.shopId, limit: 100, offset: 0, see: "everything"  //* mettere idShop,
-                },
-            });
-            console.log(shop);
-
-            //*Delete Product
-            cache.writeQuery({
-                query: GET_PRODUCTS_FROM_SHOP,
-                variables: { id: user.shopId, limit: 100, offset: 0, see: "everything" }, //shopId
-                data: {
-                    shop: {
-                        id: user.shopId,
-                        products: shop.products.filter((product: Product) => product.id != deleteId.deleteProduct)
-                    }
-                }
-            })
+            console.log(deleteId);
 
 
             //*delete old data, finding serialized number
@@ -147,18 +129,6 @@ const index = () => {
     const deleteProductEvent = async ({ productId, productName, productPhotos }: { productId: string, productName: string, productPhotos: string[] }) => {
         try {
             await deleteProduct({ variables: { id: productId } })
-            //*delete product's images from firebase
-            // let i = 1;
-            // for await (let photo of productPhotos) {
-            //     try {
-            //         await deletePhotoFirebase('photo' + i, productId, user.uid)
-            //         i++
-            //     } catch (e) {
-            //         console.log(e);
-            //         addToast({ position: 'top', title: 'Errore eliminazione prodotto', description: "errore durante l'upload dell'immagini", status: 'error', duration: 5000, isClosable: false })
-            //         break;
-            //     }
-            // }
             return addToast({ position: 'top', title: 'Prodotto eliminato', description: `${productName} è stato eliminato con successo`, status: 'success', duration: 5000, isClosable: true })
         }
         catch (e) {
@@ -202,14 +172,19 @@ const index = () => {
                 }
 
                 {user && !user?.Not_yet_Authenticated_Request && shopId !== '' &&
+
                     <Table_Products_Shop idShop={shopId} deleteProduct={handleDeleteProductModal} />}
                 <Modal_Error_Shop title={'Elimina prodotto'} description={'confermando eliminerai il prodotto dal tuo negozio'} closeText={'annulla'} openModalMath={mathNumber} confirmText={'conferma'} data={productToDeleteData} handleEvent={deleteProductEvent} />
-                {/* <button
-                    onClick={handleCache}
-                >handleCache</button> */}
+
             </Desktop_Layout >
         </Shop_UID_Required>
     )
 }
 
 export default index
+
+{/* <button
+                    onClick={handleCache}
+                >handleCache</button> */}
+
+

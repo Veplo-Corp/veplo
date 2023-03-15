@@ -28,7 +28,7 @@ export interface IFormInputProductEdit {
     name: string;
     price: {
         v1: number | string,
-        discountPercentage: number,
+        discountPercentage: number | string,
         v2?: number | string
     }
     brand: string;
@@ -70,9 +70,9 @@ const index = () => {
             setdefaultValue({
                 name: product.name,
                 price: {
-                    v1: 100,
-                    v2: 80,
-                    discountPercentage: 20
+                    v1: product.price.v1,
+                    v2: product.price?.v2 ? product.price?.v2 : '',
+                    discountPercentage: product.price?.v2 ? Number((100 - Number(product.price.v2) / product.price.v1 * 100).toFixed(2)) : ''
                 },
                 brand: product.info.brand,
                 macrocategory: product.info.macroCategory,

@@ -38,7 +38,7 @@ export interface Product {
     },
     shopInfo: {
         id: string,
-        firebaseId: string,
+        businessId: string,
         name: string,
         city: string,
         status: string,

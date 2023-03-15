@@ -34,7 +34,7 @@ import { ToastOpen } from '../utils/Toast';
 
 interface Props {
     shop: {
-        id: string
+        firebaseId: string
         products: Product[],
     }
 
@@ -92,9 +92,9 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
 
 
     //redirect to createShop,whether there is not a Shop
-    if (error) {
-        router.push('/shop/crea-shop')
-    }
+    // if (error) {
+    //     router.push('/shop/crea-shop')
+    // }
 
 
 
@@ -290,7 +290,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                                         paddingRight={0}
                                         className='hidden md:table-cell '
                                     >
-                                        {product.variations[0].photos[0]?.src ?
+                                        {product.variations[0]?.photos[0]?.src ?
                                             (<img
                                                 className='h-15 rounded-md'
                                                 src={
@@ -300,7 +300,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                                             (<img
                                                 className='h-16 rounded-md'
                                                 src={
-                                                    imageKitUrl(product.variations[0].photos[0], 80, 115)
+                                                    imageKitUrl(product.variations[0]?.photos[0], 80, 115)
                                                     //addAWSPath(product.photos[0])
                                                 }>
                                             </img>)}
@@ -346,10 +346,15 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                                     <Td paddingRight={0}
                                         paddingY={0}
                                         paddingLeft={[2, 4]}
-                                        className='hidden lg:table-cell'>
-                                        <span>
-                                            Aggiungere
+                                    >
+                                        <span
+                                            className={`${product.price?.v2 ? 'line-through text-gray-500' : ''}`}
+                                        >
+                                            {product.price.v1}€
                                         </span>
+                                        {product.price?.v2 && <span
+                                        > {product.price.v2}€
+                                        </span>}
                                     </Td>
 
                                     <Td paddingRight={0}

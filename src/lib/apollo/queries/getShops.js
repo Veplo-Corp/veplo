@@ -18,7 +18,7 @@ const GET_SHOPS_BY_LOCATION = gql`
             status
             piva
             phone
-            firebaseId
+            businessId
             address{
                 postcode
                 city

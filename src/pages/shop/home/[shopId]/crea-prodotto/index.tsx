@@ -12,12 +12,14 @@ import ProductVariationCard from '../../../../../../components/molecules/Product
 import { CATEGORIES } from '../../../../../../components/mook/categories'
 import { Color, COLORS } from '../../../../../../components/mook/colors'
 import AddColorToProduct from '../../../../../../components/organisms/AddColorToProduct'
-import EditColorToProduct from '../../../../../../components/organisms/EditColorToProdoct'
+import EditColorToProduct, { Size } from '../../../../../../components/organisms/EditColorToProdoct'
 import NoIndexSeo from '../../../../../../components/organisms/NoIndexSeo'
 import { onChangeNumberPrice } from '../../../../../../components/utils/onChangePrice'
 import { Variation } from '../../../../../interfaces/product.interface'
 import { VariationCard } from '../../../../../interfaces/variationCard.interface'
 import CREATE_PRODUCT from '../../../../../lib/apollo/mutations/createProduct'
+import UPLOAD_PHOTO from '../../../../../lib/apollo/mutations/uploadPhotos'
+import GET_PRODUCTS_FROM_SHOP from '../../../../../lib/apollo/queries/geetProductsShop'
 
 export interface IFormInputProduct {
     name: string;
@@ -62,7 +64,76 @@ const index = () => {
     const [productVariations, setProductVariations] = useState<VariationCard[]>([])
     const [colors, setColors] = useState<Color[]>(COLORS)
     const [cardToEdit, setCardToEdit] = useState<any>([])
-    const [createProduct] = useMutation(CREATE_PRODUCT);
+    const [uploadPhotos] = useMutation(UPLOAD_PHOTO)
+
+    const [createProduct] = useMutation(CREATE_PRODUCT, {
+        update(cache, el, query) {
+            const data = el.data
+
+            console.log(data.createProduct.id);
+            console.log(query?.variables?.options);
+
+
+            const shop: any = cache.readQuery({
+                query: GET_PRODUCTS_FROM_SHOP,
+                // Provide any required variables in this object.
+                // Variables of mismatched types will return `null`.
+                variables: {
+                    id: router.query.shopId, //* mettere idShop,
+                    limit: 100, offset: 0,
+                    see: "everything"
+                },
+            });
+
+            console.log(shop?.shop.products);
+
+            if (!query.variables?.options) return
+
+            const newProduct = {
+                canBuy: true,
+                id: data.createProduct.id,
+                info: {
+                    ...query.variables.options.info,
+                    __typename: "ProductInfo"
+                },
+                name: query.variables.options.name,
+                price: {
+                    v1: query.variables.price.options.v1,
+                    __typename: "Price"
+                },
+                shopInfo: {
+                    businessId: "test",
+                    city: "Terni",
+                    id: router.query.shopId,
+                    name: "Negozio fisico",
+                    status: "not_active",
+                    __typename: "ShopInfo"
+                },
+                status: 'active',
+                variations: {
+                    ...query.variables.options.variations,
+                    __typename: "ProductVariation"
+                },
+                __typename: 'Product',
+
+            }
+
+            cache.writeQuery({
+                query: GET_PRODUCTS_FROM_SHOP,
+                variables: { id: router.query.shopId, limit: 100, offset: 0, see: "everything" },
+                data: {
+                    shop: {
+                        id: router.query.shopId,
+                        products: [
+                            newProduct,
+                            ...shop?.shop.products
+                        ]
+                    }
+                }
+            })
+            router.push('/shop/home/' + router.query.shopId + '/prodotti')
+        }
+    });
 
 
 
@@ -146,25 +217,51 @@ const index = () => {
 
     const createProductHandler = async () => {
 
+        let photos: any = [];
+        for (const variation of productVariations) {
+            for (const photo of variation.photos) {
+                photos.push(photo.file)
+            }
+        }
+
+        console.log(photos);
+        const photosUploaded = await uploadPhotos({
+            variables: {
+                images: photos,
+                proportion: "product"
+            }
+        })
+
+        const photosString = photosUploaded?.data.uploadImages
+        console.log(photosString)
+
+        let i = 0;
+
+
         const variations = productVariations.map((variation) => {
-            let photos: any[] = [];
+            let lots: Size[] = [];
+            let photos: string[] = [];
+            variation.lots.forEach(lot => {
+                lots.push({
+                    quantity: lot.quantity,
+                    size: lot.size.split(' ')[0]
+                })
+            });
 
             variation.photos.forEach(photo => {
-                photos.push(photo.file)
+                photos.push(photosString[i])
+                i++
             });
 
             return {
                 ...variation,
-                photos: ['25d70b96-8065-429c-9760-7543a413dd10'],
                 status: 'active',
-                lots: [
-                    {
-                        size: "m",
-                        quantity: 3
-                    }
-                ],
+                lots: lots,
+                photos: photos
             }
         })
+
+        console.log(productVariations);
 
 
 

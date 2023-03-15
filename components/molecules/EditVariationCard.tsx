@@ -20,6 +20,7 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[] }
     }
 
     const editVariation = () => {
+
     }
 
 
@@ -44,7 +45,7 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[] }
     return (
         <>
             {
-                editMode ? (
+                !editMode ? (
                     <Box
                         paddingTop={7}
                         paddingBottom={5}
@@ -148,7 +149,7 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[] }
                         borderRadius={'2xl'}
                         mb={2}
                     >
-                        <div className='w-10/12'>
+                        <div className='w-8/12 lg:w-9/12 xl:w-7/12'>
                             <div className='flex justify-between text-sm text-gray-600 font-norma'>
                                 <p >
                                     Taglia
@@ -171,17 +172,16 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[] }
                                                 if (size === undefined) return
                                                 setvariationTranslate((prevState: Size[]) => {
                                                     let sizeArray = prevState;
-                                                    sizeArray[index].size === 'mario'
-                                                    console.log(sizeArray[index]);
+                                                    sizeArray[index] = {
+                                                        ...sizeArray[index],
+                                                        size: size
+                                                    }
+                                                    console.log(size);
 
                                                     return [
-                                                        {
-                                                            quantity: 10,
-                                                            size: 'xxxxxxxl'
-                                                        }
+                                                        ...sizeArray
                                                     ]
                                                 })
-
                                             }}
                                         />
                                         <SelectStringOption
@@ -189,17 +189,16 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[] }
                                             defaultValue={element.quantity}
                                             handleClick={(quantity) => {
                                                 if (quantity === undefined) return
-                                                // setProductSizeSelected((prevstate: Size[]) => {
-                                                //     console.log('lo tocco');
-                                                //     let newState = prevstate;
-                                                //     element.quantity = quantity
-                                                //     if (element.quantity > 0 && element.size !== '' && element.size !== undefined) {
-                                                //         setcanAddNewSize(true)
-                                                //     } else {
-                                                //         setcanAddNewSize(false)
-                                                //     }
-                                                //     return newState
-                                                // })
+                                                setvariationTranslate((prevState: Size[]) => {
+                                                    let sizeArray = prevState;
+                                                    sizeArray[index] = {
+                                                        ...sizeArray[index],
+                                                        quantity: quantity
+                                                    }
+                                                    return [
+                                                        ...sizeArray
+                                                    ]
+                                                })
                                             }}
                                         />
                                     </div>
@@ -213,23 +212,56 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[] }
                                             </svg>
                                         }
                                         onClick={() => {
-                                            // console.log(productSizeSelected);
-                                            // const newproductSizeSelected = productSizeSelected.filter(value => value.size !== element.size)
-                                            // console.log(newproductSizeSelected);
-                                            // setProductSizeSelected(newproductSizeSelected)
+                                            const newproductSizeSelected = variationTranslate.filter(value => value.size !== element.size)
+                                            console.log(newproductSizeSelected);
+                                            setvariationTranslate(newproductSizeSelected)
                                         }}
                                     />
                                 </div>
-
-
                             )
                         })}
+                        <Button
+                            size={'xs'}
+                            colorScheme={'green'}
+                            leftIcon={
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                            }
+                            variant='ghost'
+                            mb={3}
+                            onClick={() => {
+                                setvariationTranslate((prevstate: Size[]) => {
+                                    return [
+                                        ...prevstate,
+                                        {
+                                            size: '',
+                                            quantity: 0
+                                        }
+                                    ]
+                                })
+                            }}
+                        >
+                            aggiungi taglia
+                        </Button>
+
                         <ButtonGroup gap='2'
                             display={'flex'}
                             justifyContent={'right'}
                             mt={5}
                         >
-
+                            <Button colorScheme='red'
+                                borderRadius={'full'}
+                                paddingX={6}
+                                paddingY={5}
+                                size={'sm'}
+                                disabled={false}
+                                variant={'outline'}
+                                //disabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
+                                onClick={() => seteditMode(false)
+                                }
+                            >Annulla
+                            </Button>
                             <Button colorScheme='green'
                                 borderRadius={'full'}
                                 paddingX={6}

@@ -43,7 +43,11 @@ const GET_SHOP_AND_PRODUCTS = gql`
                 name
                 canBuy
                 status
-                
+                price {
+                    v1
+                    discountPercentage
+                    v2
+                }
                 info{
                     gender
                     macroCategory
@@ -56,7 +60,7 @@ const GET_SHOP_AND_PRODUCTS = gql`
                 }
                 shopInfo{
                     id
-                    firebaseId
+                    businessId
                     name
                     city
                     status

@@ -26,9 +26,14 @@ const GET_SINGLE_PRODUCT = gql`
                 quantity
                 }
             }
+            price {
+                v1
+                discountPercentage
+                v2
+            }
             shopInfo{
                 id
-                firebaseId
+                businessId
                 name 
                 city
                 status
