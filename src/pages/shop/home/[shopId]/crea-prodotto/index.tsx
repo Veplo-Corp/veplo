@@ -86,6 +86,10 @@ const index = () => {
             });
 
             console.log(shop?.shop.products);
+            if (!shop?.shop.products) return
+            console.log(query.variables?.options.info);
+            console.log(query.variables?.options.name);
+            console.log(query.variables?.options.variations);
 
             if (!query.variables?.options) return
 
@@ -98,7 +102,9 @@ const index = () => {
                 },
                 name: query.variables.options.name,
                 price: {
-                    v1: query.variables.price.options.v1,
+                    v1: query.variables.options.price.v1,
+                    v2: null,
+                    discountPercentage: null,
                     __typename: "Price"
                 },
                 shopInfo: {
@@ -114,9 +120,17 @@ const index = () => {
                     ...query.variables.options.variations,
                     __typename: "ProductVariation"
                 },
+                location: {
+                    type: 'Points',
+                    coordinates: [1, 1],
+                    __typename: 'Location'
+                },
                 __typename: 'Product',
 
             }
+
+            console.log(newProduct);
+
 
             cache.writeQuery({
                 query: GET_PRODUCTS_FROM_SHOP,
@@ -125,8 +139,9 @@ const index = () => {
                     shop: {
                         id: router.query.shopId,
                         products: [
+
+                            ...shop?.shop.products,
                             newProduct,
-                            ...shop?.shop.products
                         ]
                     }
                 }
