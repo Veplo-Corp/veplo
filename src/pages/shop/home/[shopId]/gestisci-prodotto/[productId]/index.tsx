@@ -1,5 +1,4 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
-import { Box, ButtonGroup, IconButton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
@@ -8,13 +7,15 @@ import EditProductInputForm from '../../../../../../../components/molecules/Edit
 import EditVariationCard from '../../../../../../../components/molecules/EditVariationCard';
 import { CATEGORIES } from '../../../../../../../components/mook/categories';
 import { SIZES } from '../../../../../../../components/mook/sizes';
+import { Size } from '../../../../../../../components/organisms/EditColorToProdoct';
 import NoIndexSeo from '../../../../../../../components/organisms/NoIndexSeo';
 import { imageKitUrl } from '../../../../../../../components/utils/imageKitUrl';
+import { ToastOpen } from '../../../../../../../components/utils/Toast';
 import { Business } from '../../../../../../interfaces/business.interface';
 import { Firebase_User } from '../../../../../../interfaces/firebase_user.interface';
 import { Product } from '../../../../../../interfaces/product.interface';
+import DELETE_VARIATON from '../../../../../../lib/apollo/mutations/deleteVariation';
 import EDIT_PRODUCT from '../../../../../../lib/apollo/mutations/editProduct';
-import GET_BUSINESS from '../../../../../../lib/apollo/queries/business';
 import GET_PRODUCTS_FROM_SHOP from '../../../../../../lib/apollo/queries/geetProductsShop';
 import GET_SINGLE_PRODUCT from '../../../../../../lib/apollo/queries/getSingleProduct';
 
@@ -39,6 +40,8 @@ export interface IFormInputProductEdit {
 }
 
 const index = () => {
+    const { addToast } = ToastOpen();
+
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     //const [getBusiness, { error, data }] = useLazyQuery<Props>(GET_BUSINESS);
     const router = useRouter();
@@ -48,7 +51,8 @@ const index = () => {
     const [getProduct] = useLazyQuery(GET_SINGLE_PRODUCT);
     const [first, setfirst] = useState(true)
     console.log();
-    const [sizeTypeSelected, setSizeTypeSelected] = useState<string[]>()
+    const [sizeTypeSelected, setSizeTypeSelected] = useState<string[]>();
+
     const [editProduct] = useMutation(EDIT_PRODUCT, {
         update(cache, el, query) {
             console.log(el);
@@ -79,6 +83,8 @@ const index = () => {
             })
         }
     })
+
+    const [deleteVariation] = useMutation(DELETE_VARIATON)
 
 
 
@@ -205,41 +211,116 @@ const index = () => {
 
     }
 
+    const handleDeleteVariation = async (variationId: string) => {
+        if (product && product.variations?.length <= 1) {
+            return addToast({ position: 'top', title: "Impossibile cancellare il colore", description: "hai solo un colore disponibile per questo prodotto", status: 'error', duration: 5000, isClosable: false })
+        }
+        try {
+
+            //Delete Variation on GraphQL
+            await deleteVariation({
+                variables: {
+                    id: variationId
+                }
+            })
+
+            //Edit Product.variations once you delete the variation
+            setProduct((prevstate) => {
+                if (!prevstate?.variations) return prevstate
+                const newVariations = prevstate?.variations.filter(variation => variation.id !== variationId)
+                return {
+                    ...prevstate,
+                    variations: newVariations
+                }
+            })
+        } catch (e: any) {
+
+            console.log(e.message);
+
+        }
+    }
+
+    const editVariation = (variationId: string, variation: Size[]) => {
+        console.log(variationId);
+        const variationSize = variation.map(variation => {
+            return {
+                quantity: variation.quantity,
+                size: variation.size.split(' ')[0]
+            }
+        })
+        setProduct((prevstate) => {
+            console.log(prevstate);
+
+            if (!prevstate?.variations) return prevstate
+
+
+            const newStateVariations = prevstate.variations.map(variation => {
+                if (variation.id === variationId) {
+                    const newVariation = {
+                        ...variation,
+                        lots: variationSize
+                    }
+                    return newVariation
+                }
+
+                return variation
+            })
+
+            console.log(newStateVariations);
+
+            return {
+                ...prevstate,
+                variations: [
+                    ...newStateVariations
+                ]
+            }
+        })
+    }
+
 
 
 
 
 
     return (
-        <Desktop_Layout>
-            <NoIndexSeo title='Modifica prodotto | Veplo' />
-            <div className='w-full lg:w-11/12  m-auto'>
-                <h1 className='italic text-xl lg:text-3xl font-extrabold mb-6'>
-                    Modifica prodotto
-                </h1>
-            </div>
-            {defaultValue && product?.variations && sizeTypeSelected &&
-                <div className='lg:flex w-full'>
-                    <div className='w-full md:w-8/12 lg:w-5/12 m-auto mb-10'>
-                        <EditProductInputForm
-                            handleConfirm={editProductHandler}
-                            defaultValues={defaultValue} />
-                    </div>
-                    <div className='w-full md:w-8/12 lg:w-5/12  mx-auto'>
-                        {sizeTypeSelected && product.variations.map((variation, index) => {
-                            return (
-                                <div key={index}>
-                                    <EditVariationCard variation={variation} sizeTypeSelected={sizeTypeSelected} />
-                                </div>
-                            )
-                        })}
-                    </div>
+        <>
+            <Desktop_Layout>
+                <NoIndexSeo title='Modifica prodotto | Veplo' />
+                <div className='w-full lg:w-11/12  m-auto'>
+                    <h1 className='italic text-xl lg:text-3xl font-extrabold mb-6'>
+                        Modifica prodotto
+                    </h1>
                 </div>
+                {defaultValue && product?.variations && sizeTypeSelected &&
+                    <div className='lg:flex w-full'>
+                        <div className='w-full md:w-8/12 lg:w-5/12 m-auto mb-10'>
+                            <EditProductInputForm
+                                handleConfirm={editProductHandler}
+                                defaultValues={defaultValue} />
+                        </div>
+                        <div className='w-full md:w-8/12 lg:w-5/12  mx-auto'>
+                            {sizeTypeSelected && product.variations.map((variation, index) => {
+                                return (
+                                    <div key={index}>
+                                        <EditVariationCard
+                                            variation={variation}
+                                            sizeTypeSelected={sizeTypeSelected}
+                                            deleteVariation={handleDeleteVariation}
+                                            editVariation={editVariation}
+                                        />
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
 
-            }
+                }
 
 
-        </Desktop_Layout>
+            </Desktop_Layout>
+
+        </>
+
     )
 }
 

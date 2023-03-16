@@ -10,7 +10,7 @@ export interface Variation {
     photos: string[]
     lots: {
         size: string,
-        quantity: string
+        quantity: number
     }[]
 }
 

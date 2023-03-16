@@ -4,28 +4,22 @@ import { Variation } from '../../src/interfaces/product.interface'
 import SelectSize from '../atoms/SelectSize'
 import SelectStringOption from '../atoms/SelectStringOption'
 import { Size } from '../organisms/EditColorToProdoct'
+import ModalReausable from '../organisms/ModalReausable'
 import { imageKitUrl } from '../utils/imageKitUrl'
 
 const quantity = Array.from({ length: 100 }, (_, i) => i + 1)
 
 
-const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[] }> = ({ variation, sizeTypeSelected }) => {
+const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], deleteVariation: (variationId: string) => void, editVariation: (variationId: string, variationTranslate: Size[]) => void }> = ({ variation, sizeTypeSelected, deleteVariation, editVariation }) => {
 
     const [editMode, seteditMode] = useState(false);
 
     const [variationTranslate, setvariationTranslate] = useState<Size[]>([])
+    const [openModal, setOpenModal] = useState(false);
 
-    const deleteVariation = () => {
-
-    }
-
-    const editVariation = () => {
-
-    }
 
 
     useEffect(() => {
-        console.log(variation.lots);
         const lots: Size[] = [];
         variation.lots.forEach(lot => {
             const size = sizeTypeSelected?.find(element => element.split(' ')[0] === lot.size)
@@ -39,7 +33,6 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[] }
         setvariationTranslate(lots)
     }, [variation])
 
-    console.log(variationTranslate);
 
 
     return (
@@ -131,7 +124,7 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[] }
                                 colorScheme={'red'}
                                 variant={'ghost'}
                                 onClick={() => {
-                                    deleteVariation()
+                                    setOpenModal(true)
                                 }}
                                 icon={
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -219,6 +212,7 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[] }
                                             </svg>
                                         }
                                         onClick={() => {
+                                            if (variationTranslate.length <= 1) return
                                             const newproductSizeSelected = variationTranslate.filter(value => value.size !== element.size)
                                             console.log(newproductSizeSelected);
                                             setvariationTranslate(newproductSizeSelected)
@@ -265,7 +259,20 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[] }
                                 disabled={false}
                                 variant={'outline'}
                                 //disabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
-                                onClick={() => seteditMode(false)
+                                onClick={() => {
+                                    seteditMode(false)
+                                    const lots: Size[] = [];
+                                    variation.lots.forEach(lot => {
+                                        const size = sizeTypeSelected?.find(element => element.split(' ')[0] === lot.size)
+                                        if (!size) return
+                                        lots.push({
+                                            size,
+                                            quantity: Number(lot.quantity)
+                                        })
+                                    });
+                                    if (lots.length <= 0) return
+                                    setvariationTranslate(lots)
+                                }
                                 }
                             >Annulla
                             </Button>
@@ -277,21 +284,43 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[] }
                                 disabled={false}
                                 //disabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
                                 onClick={
-                                    () => console.log('')
-
+                                    () => editVariation(variation.id, variationTranslate)
                                 }
                             >Conferma
                             </Button>
 
-                            {/* <Button
-                        onClick={() => console.log(productSizeSelected, defaultCardValue?.sizes)}
-                    >
-                        Clicca
-                    </Button> */}
                         </ButtonGroup>
                     </Box>
                 )
             }
+            <ModalReausable title='Elimina colore' isOpen={openModal} closeModal={() => setOpenModal(false)}>
+                <p
+                    className='mt-2'
+                >Vuoi davvero eliminare tutti i prodotti del colore selezionato?
+                </p>
+                <ButtonGroup
+                    mt={4}
+                    gap={2}
+                >
+                    <Button
+                        variant={'outline'}
+                        onClick={() => setOpenModal(false)}
+                    >
+                        Annulla
+                    </Button>
+                    <Button
+                        colorScheme={'red'}
+                        variant={'outline'}
+                        onClick={() => {
+                            deleteVariation(variation.id)
+                            setOpenModal(false)
+
+                        }}
+                    >
+                        Conferma
+                    </Button>
+                </ButtonGroup>
+            </ModalReausable>
         </>
 
     )
