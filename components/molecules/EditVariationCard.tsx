@@ -55,6 +55,7 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[] }
                         borderRadius={'2xl'}
                         mb={5}
                     >
+
                         <div className='flex justify-between mb-1'>
                             <h5 className=' text-md lg:text-lg font-extrabold my-auto'>
                                 {variation.color}
@@ -149,6 +150,12 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[] }
                         borderRadius={'2xl'}
                         mb={2}
                     >
+                        <div className='flex justify-between mb-3'>
+                            <h5 className=' text-md lg:text-lg font-extrabold my-auto'>
+                                {variation.color}
+                            </h5>
+
+                        </div>
                         <div className='w-8/12 lg:w-9/12 xl:w-7/12'>
                             <div className='flex justify-between text-sm text-gray-600 font-norma'>
                                 <p >

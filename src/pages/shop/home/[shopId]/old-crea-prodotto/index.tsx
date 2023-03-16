@@ -68,8 +68,6 @@ const index = () => {
 
 
 
-
-
   //redirect to createShop,whether there is not a Shop
   if (error && user?.Not_yet_Authenticated_Request === false) {
     router.push('/shop/crea-shop')
@@ -174,6 +172,8 @@ const index = () => {
           see: "everything"
         },
       });
+
+
 
       if (shop) {
         apolloClient.writeQuery({

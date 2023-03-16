@@ -21,6 +21,8 @@ interface Props {
     user: User
 }
 
+
+
 const index = () => {
     const { addToast } = ToastOpen();
 
@@ -38,6 +40,8 @@ const index = () => {
 
     const [editUserInfo] = useMutation(EDIT_USER_INFO, {
         update(cache, el, query) {
+
+            //!testare se non serve
             const user = cache.readQuery<any>({
                 query: GET_USER,
 

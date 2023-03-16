@@ -38,7 +38,7 @@ interface Macrocategory {
     gender: string
 }
 
-const vestibilità = [
+export const vestibilità = [
     'skinny',
     'slim',
     'regular',

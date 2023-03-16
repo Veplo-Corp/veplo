@@ -10,12 +10,7 @@ import SelectStringOption from '../atoms/SelectStringOption';
 import { onChangeNumberPrice } from '../utils/onChangePrice';
 import ProductVariationCard from './ProductVariationCard';
 
-const vestibilità = [
-    'skinny',
-    'slim fit',
-    'regular',
-    'baggy'
-]
+
 
 interface Macrocategory {
     name: string,
@@ -30,6 +25,13 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
         mode: "all",
         defaultValues
     });
+    const vestibilità = [
+        'skinny',
+        'slim',
+        'regular',
+        'baggy',
+        'oversize'
+    ]
 
 
     const onSubmit = (value: IFormInputProductEdit) => {
@@ -65,7 +67,7 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                         autoComplete='off'
                         type="string"
                         {...register("price.v1", {
-                            required: true,
+                            required: false,
                         })}
                         onWheel={(e: any) => e.target.blur()}
                         placeholder={'34,99'}
@@ -76,12 +78,12 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                             setValue('price.v1', inputValue);
                             let v1 = Number(onChangeNumberPrice(e).replace(',', '.'))
                             let v2 = watch('price.v2');
+                            console.log(Number(watch('price.v2')))
+
                             if (typeof v2 === 'string') {
                                 v2 = Number(v2.replace(',', '.'))
                             }
                             if (v1 > Number(watch('price.v2'))) {
-                                setValue('price.v2', inputValue);
-
                                 const discountPercentage = Number((100 - Number(v2) / v1 * 100).toFixed(2));
                                 setValue('price.discountPercentage', discountPercentage);
                             } else {
@@ -108,7 +110,7 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                             autoComplete='off'
                             type="string"
                             {...register("price.v2", {
-                                required: true,
+                                required: false,
                             })}
                             onWheel={(e: any) => e.target.blur()}
                             placeholder={'34,99'}
@@ -143,7 +145,7 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                             type="string"
 
                             {...register("price.discountPercentage", {
-                                required: true,
+                                required: false,
                             })}
 
                             placeholder={'percentuale sconto'}
@@ -156,11 +158,9 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
 
                         />
                         <InputRightAddon
-                            fontWeight={'semibold'}
                             rounded={10}
                             paddingY={6}
                             children='%' />
-
                     </InputGroup>
 
                 </InputGroup>

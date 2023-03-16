@@ -1,4 +1,4 @@
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { Box, ButtonGroup, IconButton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
@@ -13,6 +13,7 @@ import { imageKitUrl } from '../../../../../../../components/utils/imageKitUrl';
 import { Business } from '../../../../../../interfaces/business.interface';
 import { Firebase_User } from '../../../../../../interfaces/firebase_user.interface';
 import { Product } from '../../../../../../interfaces/product.interface';
+import EDIT_PRODUCT from '../../../../../../lib/apollo/mutations/editProduct';
 import GET_BUSINESS from '../../../../../../lib/apollo/queries/business';
 import GET_PRODUCTS_FROM_SHOP from '../../../../../../lib/apollo/queries/geetProductsShop';
 import GET_SINGLE_PRODUCT from '../../../../../../lib/apollo/queries/getSingleProduct';
@@ -48,6 +49,36 @@ const index = () => {
     const [first, setfirst] = useState(true)
     console.log();
     const [sizeTypeSelected, setSizeTypeSelected] = useState<string[]>()
+    const [editProduct] = useMutation(EDIT_PRODUCT, {
+        update(cache, el, query) {
+            console.log(el);
+            console.log(query);
+            const normalizedId = cache.identify({ id: router.query.productId, __typename: 'Product' });
+            cache.modify({
+                id: normalizedId,
+                fields: {
+                    name(cachedvalue) {
+                        return query?.variables?.options.name ? query?.variables?.options.name : cachedvalue
+                    },
+                    price(cachedvalue) {
+                        return {
+                            ...cachedvalue,
+                            v1: query?.variables?.options?.price?.v1 ? query?.variables?.options?.price?.v1 : cachedvalue.v1,
+                            v2: query?.variables?.options?.price?.v2 ? query?.variables?.options?.price?.v2 : cachedvalue.v2
+                        }
+                    },
+                    info(cachedvalue) {
+                        return {
+                            ...cachedvalue,
+                            brand: query?.variables?.options?.info?.brand ? query?.variables?.options?.info?.brand : cachedvalue.brand,
+                            fit: query?.variables?.options?.info?.fit ? query?.variables?.options?.info?.fit : cachedvalue.fit,
+                        }
+                    }
+
+                }
+            })
+        }
+    })
 
 
 
@@ -102,12 +133,14 @@ const index = () => {
     }, [user])
 
 
-    const editProduct = (productElement: IFormInputProductEdit) => {
-        console.log(product);
+    const editProductHandler = async (productElement: IFormInputProductEdit) => {
+
         let options: {
             name?: string,
-            brand?: string,
-            fit?: string,
+            info?: {
+                brand?: string,
+                fit?: string,
+            }
             price?: {
                 v1?: number,
                 v2?: number
@@ -116,14 +149,20 @@ const index = () => {
         if (productElement.name.trimEnd() !== product?.name) {
             options["name"] = productElement.name.trimEnd()
         }
+        let info: any = {}
+
         if (productElement.brand !== product?.info.brand) {
-            options["brand"] = productElement.brand
+            info["brand"] = productElement.brand
         }
         if (productElement.vestibilità !== product?.info.fit) {
-            options["fit"] = productElement.vestibilità
+            info["fit"] = productElement.vestibilità
+
+        }
+        if (Object.keys(info).length > 0) {
+            options["info"] = info
         }
         let price: any = {}
-        if (productElement.price.v1 !== 100) {
+        if (productElement.price.v1 !== product?.price.v1) {
             if (typeof productElement.price.v1 === 'string') {
                 const v1 = Number(productElement.price.v1.replace(',', '.'))
                 if (v1 === 0) {
@@ -132,19 +171,38 @@ const index = () => {
                 price["v1"] = v1
             }
         }
-        if (productElement.price.v2 !== 80) {
-            if (typeof productElement.price.v2 === 'string') {
+        if (productElement.price.v2 !== product?.price.v2) {
+            console.log(productElement.price.v2, product?.price.v1);
+            if (typeof productElement.price.v2 === 'string' && typeof productElement.price.v1 === 'string') {
+
+                const v1 = Number(productElement.price.v1.replace(',', '.'))
                 const v2 = Number(productElement.price.v2.replace(',', '.'))
-                if (v2 !== 0) {
+                console.log(v1, v2);
+
+                if (v2 !== 0 && v2 < v1) {
                     price["v2"] = v2
                 }
-
+            }
+            else if (typeof productElement.price.v2 === 'string' && product?.price.v1) {
+                console.log('passa');
+                const v2 = Number(productElement.price.v2.replace(',', '.'))
+                if (v2 !== 0 && v2 < product?.price.v1) {
+                    price["v1"] = product?.price.v1
+                    price["v2"] = v2
+                }
             }
         }
         if (Object.keys(price).length > 0) {
             options["price"] = price
         }
-        console.log(options);
+        if (Object.keys(options).length < 1) return
+        await editProduct({
+            variables: {
+                id: product?.id,
+                options: options
+            }
+        })
+
     }
 
 
@@ -164,7 +222,7 @@ const index = () => {
                 <div className='lg:flex w-full'>
                     <div className='w-full md:w-8/12 lg:w-5/12 m-auto mb-10'>
                         <EditProductInputForm
-                            handleConfirm={editProduct}
+                            handleConfirm={editProductHandler}
                             defaultValues={defaultValue} />
                     </div>
                     <div className='w-full md:w-8/12 lg:w-5/12  mx-auto'>
