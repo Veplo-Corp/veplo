@@ -13,9 +13,11 @@ import { imageKitUrl } from '../../../../../../../components/utils/imageKitUrl';
 import { ToastOpen } from '../../../../../../../components/utils/Toast';
 import { Business } from '../../../../../../interfaces/business.interface';
 import { Firebase_User } from '../../../../../../interfaces/firebase_user.interface';
-import { Product } from '../../../../../../interfaces/product.interface';
+import { Product, Variation } from '../../../../../../interfaces/product.interface';
 import DELETE_VARIATON from '../../../../../../lib/apollo/mutations/deleteVariation';
 import EDIT_PRODUCT from '../../../../../../lib/apollo/mutations/editProduct';
+import EDIT_VARIATIONS from '../../../../../../lib/apollo/mutations/editVariation';
+
 import GET_PRODUCTS_FROM_SHOP from '../../../../../../lib/apollo/queries/geetProductsShop';
 import GET_SINGLE_PRODUCT from '../../../../../../lib/apollo/queries/getSingleProduct';
 
@@ -40,6 +42,20 @@ export interface IFormInputProductEdit {
 }
 
 const index = () => {
+
+    const sizes = [
+        "xxs",
+        "xs",
+        "s",
+        "m",
+        "l",
+        "xl",
+        "xxl",
+        "3xl",
+        "4xl",
+        "5xl",
+    ]
+
     const { addToast } = ToastOpen();
 
     const user: Firebase_User = useSelector((state: any) => state.user.user);
@@ -53,11 +69,15 @@ const index = () => {
     console.log();
     const [sizeTypeSelected, setSizeTypeSelected] = useState<string[]>();
 
+
+
     const [editProduct] = useMutation(EDIT_PRODUCT, {
         update(cache, el, query) {
             console.log(el);
             console.log(query);
             const normalizedId = cache.identify({ id: router.query.productId, __typename: 'Product' });
+
+
             cache.modify({
                 id: normalizedId,
                 fields: {
@@ -77,14 +97,39 @@ const index = () => {
                             brand: query?.variables?.options?.info?.brand ? query?.variables?.options?.info?.brand : cachedvalue.brand,
                             fit: query?.variables?.options?.info?.fit ? query?.variables?.options?.info?.fit : cachedvalue.fit,
                         }
-                    }
-
+                    },
                 }
             })
         }
     })
 
-    const [deleteVariation] = useMutation(DELETE_VARIATON)
+    const [deleteVariation] = useMutation(DELETE_VARIATON, {
+        update(cache, el, query) {
+            console.log(el);
+            console.log(query);
+
+            const normalizedIdVariation = cache.identify({ id: query?.variables?.id, __typename: 'ProductVariation' });
+            cache.evict({ id: normalizedIdVariation })
+        }
+    })
+
+    const [editVariation] = useMutation(EDIT_VARIATIONS, {
+        update(cache, el, query) {
+            console.log(el);
+            console.log(query);
+
+            const normalizedIdVariation = cache.identify({ id: query?.variables?.id, __typename: 'ProductVariation' });
+            cache.modify({
+                id: normalizedIdVariation,
+                fields: {
+                    lots(cachedvalue) {
+                        return query?.variables?.options?.lots
+                    },
+
+                }
+            })
+        }
+    })
 
 
 
@@ -240,21 +285,35 @@ const index = () => {
         }
     }
 
-    const editVariation = (variationId: string, variation: Size[]) => {
+    const editVariationHandler = async (variationId: string, variation: Size[], photos: string[]) => {
         console.log(variationId);
-        const variationSize = variation.map(variation => {
+
+        let variationSize = variation.map(variation => {
             return {
                 quantity: variation.quantity,
                 size: variation.size.split(' ')[0]
             }
+        }).sort(function (a, b) {
+            return sizes.indexOf(a.size) - sizes.indexOf(b.size)
+        });
+
+        console.log(variationSize);
+
+
+        await editVariation({
+            variables: {
+                id: variationId,
+                options: {
+                    photos: photos,
+                    lots: variationSize
+                }
+            }
         })
+
         setProduct((prevstate) => {
             console.log(prevstate);
-
             if (!prevstate?.variations) return prevstate
-
-
-            const newStateVariations = prevstate.variations.map(variation => {
+            let newStateVariations = prevstate.variations.map(variation => {
                 if (variation.id === variationId) {
                     const newVariation = {
                         ...variation,
@@ -262,12 +321,12 @@ const index = () => {
                     }
                     return newVariation
                 }
-
                 return variation
             })
 
-            console.log(newStateVariations);
 
+
+            console.log(newStateVariations);
             return {
                 ...prevstate,
                 variations: [
@@ -275,6 +334,8 @@ const index = () => {
                 ]
             }
         })
+
+
     }
 
 
@@ -306,7 +367,7 @@ const index = () => {
                                             variation={variation}
                                             sizeTypeSelected={sizeTypeSelected}
                                             deleteVariation={handleDeleteVariation}
-                                            editVariation={editVariation}
+                                            editVariation={editVariationHandler}
                                         />
                                     </div>
                                 )

@@ -10,7 +10,7 @@ import { imageKitUrl } from '../utils/imageKitUrl'
 const quantity = Array.from({ length: 100 }, (_, i) => i + 1)
 
 
-const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], deleteVariation: (variationId: string) => void, editVariation: (variationId: string, variationTranslate: Size[]) => void }> = ({ variation, sizeTypeSelected, deleteVariation, editVariation }) => {
+const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], deleteVariation: (variationId: string) => void, editVariation: (variationId: string, variationTranslate: Size[], photos: string[]) => void }> = ({ variation, sizeTypeSelected, deleteVariation, editVariation }) => {
 
     const [editMode, seteditMode] = useState(false);
 
@@ -284,7 +284,10 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], 
                                 disabled={false}
                                 //disabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
                                 onClick={
-                                    () => editVariation(variation.id, variationTranslate)
+                                    () => {
+                                        editVariation(variation.id, variationTranslate, variation.photos)
+                                        seteditMode(false)
+                                    }
                                 }
                             >Conferma
                             </Button>

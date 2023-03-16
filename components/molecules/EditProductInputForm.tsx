@@ -84,8 +84,12 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                                 v2 = Number(v2.replace(',', '.'))
                             }
                             if (v1 > Number(watch('price.v2'))) {
-                                const discountPercentage = Number((100 - Number(v2) / v1 * 100).toFixed(2));
-                                setValue('price.discountPercentage', discountPercentage);
+                                console.log(Number(v2));
+                                if (Number(watch('price.v2')) > 0) {
+                                    const discountPercentage = Number((100 - Number(v2) / v1 * 100).toFixed(2));
+                                    setValue('price.discountPercentage', discountPercentage);
+                                }
+
                             } else {
 
                                 setValue('price.v2', v1);

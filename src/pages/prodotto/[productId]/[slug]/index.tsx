@@ -38,6 +38,19 @@ export async function getStaticPaths() {
 
 
 export async function getStaticProps(ctx: any) {
+
+    const sizes = [
+        "xxs",
+        "xs",
+        "s",
+        "m",
+        "l",
+        "xl",
+        "xxl",
+        "3xl",
+        "4xl",
+        "5xl",
+    ]
     const { productId } = ctx.params
     // Call an external API endpoint to get posts.
     // You can use any data fetching library
@@ -69,7 +82,9 @@ export async function getStaticProps(ctx: any) {
         }).flat()
         const totalSizeAvailable = totalSize.filter((item: any,
             index: any) => totalSize.indexOf(item) === index)
-
+            .sort(function (a: string, b: string) {
+                return sizes.indexOf(a) - sizes.indexOf(b)
+            });
 
 
 
@@ -77,11 +92,7 @@ export async function getStaticProps(ctx: any) {
             props: {
                 product: {
                     ...data.product,
-                    price: {
-                        v1: 100,
-                        v2: 80,
-                        discountPercentage: 20
-                    },
+
                     colors,
                     totalSizeAvailable
                 },
@@ -120,7 +131,8 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     const [sizeSelected, setSizeSelected] = useState<string>('')
     const [colorSelected, setColorSelected] = useState<string>(product.variations[0].color)
     const [isOpenModalSize, setisOpenModalSize] = useState(false)
-
+    const [getFilterProduct, shopProductsData] = useLazyQuery(GET_PRODUCTS_FROM_SHOP);
+    console.log(shopProductsData?.data?.shop.products);
 
     const [textCategory, setTextCategory] = useState('vestito')
 
@@ -154,8 +166,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
 
 
-    const [getFilterProduct, shopProductsData] = useLazyQuery(GET_PRODUCTS_FROM_SHOP);
-    console.log(shopProductsData?.data?.shop.products);
+
 
 
     useEffect(() => {
