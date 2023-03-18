@@ -7,6 +7,7 @@ import Navbar from '../molecules/Old-Home_Navbar'
 import CategoryNavbar from '../molecules/CategoryNavbar';
 import { Box } from '@chakra-ui/react';
 import Drawer_Menu from './Drawer_Menu';
+import CartDrawer from './CartDrawer';
 
 const Header = () => {
 
@@ -106,6 +107,7 @@ const Header = () => {
                 </nav>
             </header>
             {user?.isBusiness && <Drawer_Menu isOpen={openDrawerBusinessAccount} user={user} closeDrawer={closeDrawerBusinessAccount} />}
+            <CartDrawer />
         </>
 
     )

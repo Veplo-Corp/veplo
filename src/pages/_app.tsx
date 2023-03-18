@@ -33,6 +33,7 @@ import GET_USER from '../lib/apollo/queries/getUser'
 import { Business } from '../interfaces/business.interface'
 import { getFavouriteShopFromLocalStorage } from '../../components/utils/getFavouriteShopFromLocalStroage'
 import Header from '../../components/organisms/Header'
+import { Cart } from '../interfaces/carts.interface'
 
 
 const theme = extendTheme({
@@ -60,7 +61,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
   const dispatch = useDispatch();
   const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
-  const [getUser, user] = useLazyQuery(GET_USER);
+  const [getUser] = useLazyQuery(GET_USER);
 
 
 
@@ -86,10 +87,10 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         //setUserProperties(analytics, { favorite_food: 'apples' });
         const idToken = await userAuth.getIdToken(true)
         setAuthTokenInSessionStorage(idToken)
-        console.log(idToken);
+        //console.log(idToken);
 
         const tokenResult = await userAuth.getIdTokenResult()
-        console.log(tokenResult);
+        //console.log(tokenResult);
 
         // user is logged in, send the user's details to redux, store the current user in the state
         const isBusiness = tokenResult.claims.isBusiness ? true : false;
@@ -167,6 +168,8 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
           getUser().then((data) => {
             console.log(data);
 
+            if (!data.data) return
+            console.log(data?.data?.user);
             dispatch(
               login({
                 email: userAuth.email,
@@ -180,6 +183,12 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
                 }
               })
             );
+
+            const carts: Cart[] = data?.data?.user.carts
+            if (carts.length > 0) {
+
+            }
+
           })
 
         }

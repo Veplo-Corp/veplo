@@ -141,8 +141,6 @@ const index = () => {
 
 
 
-
-
     return (
         <Shop_UID_Required>
             <Desktop_Layout>

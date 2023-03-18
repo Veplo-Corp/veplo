@@ -70,8 +70,8 @@ const index = () => {
         update(cache, el, query) {
             const data = el.data
 
-            console.log(data.createProduct.id);
-            console.log(query?.variables?.options);
+            // console.log(data.createProduct.id);
+            // console.log(query?.variables?.options);
 
 
             const shop: any = cache.readQuery({
@@ -146,7 +146,7 @@ const index = () => {
                     }
                 }
             })
-            router.push('/shop/home/' + router.query.shopId + '/prodotti')
+            //router.push('/shop/home/' + router.query.shopId + '/prodotti')
         }
     });
 

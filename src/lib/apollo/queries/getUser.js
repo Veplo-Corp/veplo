@@ -12,11 +12,35 @@ const GET_USER = gql`
             phone,
             gender,
             createdAt,
-            carts {
-                id
-                userId
-                status
-            }
+            carts{
+                carts
+                {
+                    id
+                    userId
+                    shopInfo {
+                        id
+                        name
+                        city
+                        status
+                    }
+                    total
+                    productVariations{
+                        id
+                        variationId
+                        photo
+                        name
+                        quantity
+                        color
+                        size
+                        brand
+                        price{
+                            v1
+                            v2
+                            discountPercentage
+                        }
+                    }
+                }
+            } 
         }
     }
 `

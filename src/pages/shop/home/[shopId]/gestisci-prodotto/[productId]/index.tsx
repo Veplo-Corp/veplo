@@ -105,9 +105,8 @@ const index = () => {
 
     const [deleteVariation] = useMutation(DELETE_VARIATON, {
         update(cache, el, query) {
-            console.log(el);
-            console.log(query);
-
+            // console.log(el);
+            // console.log(query);
             const normalizedIdVariation = cache.identify({ id: query?.variables?.id, __typename: 'ProductVariation' });
             cache.evict({ id: normalizedIdVariation })
         }
