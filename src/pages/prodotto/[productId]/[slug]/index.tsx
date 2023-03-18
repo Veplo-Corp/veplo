@@ -171,9 +171,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
     useEffect(() => {
         if (!product) return
-        const category = createTextCategory(product.info.macroCategory, product.info.microCategory)
-        setTextCategory(category)
-        const url_slug_correct = createUrlSchema([product.info.brand, product.name, category])
+        //const category = createTextCategory(product.info.macroCategory, product.info.microCategory)
+        //setTextCategory(category)
+        const url_slug_correct = createUrlSchema([product.info.brand, product.name])
         if (url_slug_correct !== slug) {
             router.push({
                 pathname: `/prodotto/${router.query.productId}/${url_slug_correct}`,

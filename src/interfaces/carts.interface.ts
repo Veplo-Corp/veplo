@@ -25,10 +25,6 @@ export interface Cart {
         city: string,
         status: string,
     },
-    price: {
-        v1: number,
-        v2: number,
-        discountPercentage: number,
-    },
+    total: number,
     productVariations: ProductVariation[]
 }

@@ -4,8 +4,16 @@ import { Cart } from '../../src/interfaces/carts.interface'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { imageKitUrl } from '../utils/imageKitUrl'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
+import { useSelector } from 'react-redux'
+import createUrlSchema from '../utils/create_url'
+import { useRouter } from 'next/router'
 
 const CartDrawer = () => {
+    const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
+    console.log(cartsDispatch);
+
+    const router = useRouter()
+
 
     const CARTS_MOOK: Cart[] = [
         {
@@ -17,11 +25,7 @@ const CartDrawer = () => {
                 city: 'Terni',
                 status: 'active',
             },
-            price: {
-                v1: 300,
-                v2: 240,
-                discountPercentage: 20,
-            },
+            total: 200,
             productVariations: [
                 {
                     id: '6415736c8561882630645132',
@@ -64,11 +68,7 @@ const CartDrawer = () => {
                 city: 'Terni',
                 status: 'active',
             },
-            price: {
-                v1: 300,
-                v2: 240,
-                discountPercentage: 20,
-            },
+            total: 200,
             productVariations: [
                 {
                     id: '6415736c8561882630645132',
@@ -139,10 +139,12 @@ const CartDrawer = () => {
                     <VStack gap={4}
 
                     >
-                        {CARTS_MOOK.map((cart, index) => {
+                        {cartsDispatch && cartsDispatch.map((cart, index) => {
                             return (
-                                <>
-                                    <Box key={index}
+                                <Box key={index}
+                                    width={'full'}
+                                >
+                                    <Box
                                         width={'full'}
                                     >
                                         <Text
@@ -178,6 +180,10 @@ const CartDrawer = () => {
                                                                 <Box
                                                                     fontSize={'normal'}
                                                                     fontWeight={'medium'}
+                                                                    cursor={'pointer'}
+                                                                    onClick={() => {
+                                                                        router.push('/prodotto/' + variation.id + '/' + createUrlSchema([variation.brand, variation.name]))
+                                                                    }}
                                                                 >
                                                                     {toUpperCaseFirstLetter(variation.name)} ({variation.color})
                                                                 </Box>
@@ -193,7 +199,7 @@ const CartDrawer = () => {
                                                                     fontSize={'xs'}
                                                                     fontWeight={'normal'}
                                                                 >
-                                                                    {variation.size.toUpperCase()} / {variation.quantity} {variation.quantity === 1 ? 'pezzo' : 'pezzi'}
+                                                                    {variation.size.toUpperCase()} / Quantità {variation.quantity}
                                                                 </Box>
                                                             </Box>
                                                             <Box
@@ -251,9 +257,27 @@ const CartDrawer = () => {
                                                                 </Box>
                                                             </Box>
                                                         </Box>
+
                                                     </Box>
+
                                                 )
                                             })}
+                                            {/* <Box
+                                                width={'full'}
+                                                display={'flex'}
+                                                justifyContent={'space-between'}
+                                            >
+                                                <Box
+                                                    fontSize={'md'}
+                                                >
+                                                    totale
+                                                </Box>
+                                                <Box
+                                                    fontWeight={'semibold'}
+                                                >
+                                                    {cart.total.toString().replace('.', ',')} €
+                                                </Box>
+                                            </Box> */}
                                         </VStack>
                                         <Button
                                             mt={4}
@@ -275,14 +299,14 @@ const CartDrawer = () => {
                                             _active={{
                                                 transform: 'scale(0.98)',
                                             }}
-                                        >Vai al checkout</Button>
+                                        >paga {cart.total.toString().replace('.', ',')} €</Button>
 
                                     </Box>
                                     <Divider
                                         colorScheme={'red'}
                                         size={'md'}
                                     />
-                                </>
+                                </Box>
 
 
                             )

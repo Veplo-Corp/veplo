@@ -34,6 +34,7 @@ import { Business } from '../interfaces/business.interface'
 import { getFavouriteShopFromLocalStorage } from '../../components/utils/getFavouriteShopFromLocalStroage'
 import Header from '../../components/organisms/Header'
 import { Cart } from '../interfaces/carts.interface'
+import { setCarts } from '../store/reducers/carts'
 
 
 const theme = extendTheme({
@@ -166,7 +167,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         }
         if (!isBusiness && tokenResult.claims.mongoId) {
           getUser().then((data) => {
-            console.log(data);
 
             if (!data.data) return
             console.log(data?.data?.user);
@@ -184,9 +184,13 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               })
             );
 
-            const carts: Cart[] = data?.data?.user.carts
-            if (carts.length > 0) {
+            const carts: Cart[] = data?.data?.user.carts.carts
+            console.log(carts);
 
+            if (carts.length > 0) {
+              dispatch(
+                setCarts(carts)
+              )
             }
 
           })
