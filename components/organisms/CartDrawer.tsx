@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay, Tag, Text, VStack } from '@chakra-ui/react'
-import React from 'react'
+import React, { FC } from 'react'
 import { Cart } from '../../src/interfaces/carts.interface'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { imageKitUrl } from '../utils/imageKitUrl'
@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import createUrlSchema from '../utils/create_url'
 import { useRouter } from 'next/router'
 
-const CartDrawer = () => {
+const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, closeDrawer }) => {
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
     console.log(cartsDispatch);
 
@@ -31,6 +31,7 @@ const CartDrawer = () => {
                     id: '6415736c8561882630645132',
                     variationId: '6413937b80a960b926c291c4',
                     photo: '00722023-9a71-4ab8-a314-9413055fd92d',
+                    productId: 'dd',
                     name: 'maglietta',
                     brand: 'Lacoste',
                     quantity: 1,
@@ -49,6 +50,7 @@ const CartDrawer = () => {
                     name: 'Giubbotto',
                     brand: 'Nike',
                     quantity: 2,
+                    productId: 'dd',
                     color: 'Multicolore',
                     size: 'm',
                     price: {
@@ -78,6 +80,7 @@ const CartDrawer = () => {
                     brand: 'Lacoste',
                     quantity: 1,
                     color: 'Verde',
+                    productId: 'dd',
                     size: 's',
                     price: {
                         v1: 100,
@@ -93,6 +96,7 @@ const CartDrawer = () => {
                     brand: 'Nike',
                     quantity: 2,
                     color: 'Multicolore',
+                    productId: 'dd',
                     size: 'm',
                     price: {
                         v1: 200,
@@ -106,10 +110,10 @@ const CartDrawer = () => {
 
     return (
         <Drawer
-            isOpen={true}
+            isOpen={isOpen}
             placement='right'
             size={['full', 'md']}
-            onClose={() => { }}
+            onClose={closeDrawer}
         >
             <DrawerOverlay />
             <DrawerContent >
@@ -126,6 +130,7 @@ const CartDrawer = () => {
                     <Box
                         cursor={'pointer'}
                         marginY={'auto'}
+                        onClick={closeDrawer}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -182,7 +187,8 @@ const CartDrawer = () => {
                                                                     fontWeight={'medium'}
                                                                     cursor={'pointer'}
                                                                     onClick={() => {
-                                                                        router.push('/prodotto/' + variation.id + '/' + createUrlSchema([variation.brand, variation.name]))
+                                                                        router.push('/prodotto/' + variation.productId + '/' + createUrlSchema([variation.brand, variation.name]) + '?colore=' + variation.color)
+                                                                        closeDrawer()
                                                                     }}
                                                                 >
                                                                     {toUpperCaseFirstLetter(variation.name)} ({variation.color})
@@ -227,20 +233,20 @@ const CartDrawer = () => {
                                                                         display={'flex'}
                                                                     >
                                                                         <p
-                                                                            className={`${variation.price.v2 > 0 ? 'line-through  text-gray-400' : 'font-semibold'}`}
+                                                                            className={`${variation?.price.v2 && variation?.price?.v2 > 0 ? 'line-through  text-gray-400' : 'font-semibold'}`}
                                                                         > {variation.price.v1.toString().replace('.', ',')} €
                                                                         </p>
-                                                                        {variation.price.v2 > 0 &&
+                                                                        {variation?.price.v2 && variation.price.v2 > 0 &&
                                                                             <p
                                                                                 className='font-semibold ml-1'
-                                                                            >{variation.price.v2.toString().replace('.', ',')} € </p>
+                                                                            >{variation?.price.v2 && variation.price.v2.toString().replace('.', ',')} € </p>
                                                                         }
                                                                     </Box>
                                                                     <Box
                                                                         display={'flex'}
                                                                         justifyContent={'end'}
                                                                     >
-                                                                        {variation.price.discountPercentage > 0 &&
+                                                                        {variation?.price.discountPercentage && variation.price.discountPercentage > 0 &&
                                                                             <Tag
                                                                                 size={'sm'}
                                                                                 width={'fit-content'}

@@ -25,6 +25,7 @@ const GET_USER = gql`
                     }
                     total
                     productVariations{
+                        productId
                         id
                         variationId
                         photo

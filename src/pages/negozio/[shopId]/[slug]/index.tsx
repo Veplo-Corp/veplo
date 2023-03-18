@@ -313,6 +313,7 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
 
             </InfiniteScroll>
             <Modal_Info_Store isOpen={isOpen} onClose={() => setIsOpen(false)} shop={shop} />
+
         </Desktop_Layout>
 
     )

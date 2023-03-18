@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
 import { Box, Button, ButtonGroup, Image, Tooltip } from '@chakra-ui/react';
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { Product, Variation } from '../../../../interfaces/product.interface';
 import { initApollo } from '../../../../lib/apollo';
 import Circle_Color from '../../../../../components/atoms/Circle_Color';
@@ -26,6 +26,11 @@ import CircleColorSelected from '../../../../../components/atoms/CircleColorSele
 import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter';
 import BlackButton from '../../../../../components/atoms/BlackButton';
 import ModalReausable from '../../../../../components/organisms/ModalReausable'
+import CartDrawer from '../../../../../components/organisms/CartDrawer';
+import EDIT_CART from '../../../../lib/apollo/mutations/editCart';
+import { useDispatch, useSelector } from 'react-redux';
+import { Cart, ProductVariation } from '../../../../interfaces/carts.interface';
+import { editVariationFromCart } from '../../../../store/reducers/carts';
 
 export async function getStaticPaths() {
     return {
@@ -132,7 +137,11 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     const [colorSelected, setColorSelected] = useState<string>(product.variations[0].color)
     const [isOpenModalSize, setisOpenModalSize] = useState(false)
     const [getFilterProduct, shopProductsData] = useLazyQuery(GET_PRODUCTS_FROM_SHOP);
-    console.log(shopProductsData?.data?.shop.products);
+    const [openDrawerCart, setOpenDrawerCart] = useState(false)
+    const [editCart] = useMutation(EDIT_CART);
+    const cartsDispatchProduct: Cart[] = useSelector((state: any) => state.carts.carts);
+    const dispatch = useDispatch();
+
 
     const [textCategory, setTextCategory] = useState('vestito')
 
@@ -233,7 +242,23 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     //console.log(imageKitUrl(product.photos[0], 171, 247));
 
 
+    const newTotalHandler = (productVariations: ProductVariation[]) => {
 
+        let total = 0;
+        productVariations.forEach(element => {
+            console.log(element);
+
+            if (element.price.v2) {
+                total += element.price.v2 * element.quantity
+            }
+            else {
+                console.log('passa qui');
+
+                total += element.price.v1 * element.quantity
+            }
+        });
+        return Number(total.toFixed(2))
+    }
 
 
     // return (
@@ -254,7 +279,8 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
         )
     }
 
-    const addToCart = (product: Product) => {
+    const addToCart = async (product: Product) => {
+
         if (!sizeSelected || !colorSelected) {
             setisOpenModalSize(true)
             setTimeout(() => {
@@ -262,6 +288,103 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
             }, 3000);
         }
         else {
+            console.log(cartsDispatchProduct);
+            let productVariationQuantity = 0
+            const Carts: Cart[] = cartsDispatchProduct
+            const Cart = Carts.find(cart => cart.shopInfo.id === product.shopInfo.id);
+
+            let NewCart: Cart;
+            let NewCarts: Cart[] = [];
+
+            if (Cart) {
+                console.log(Cart.productVariations);
+
+                const quantity = Cart.productVariations.find(variation => variation.size === sizeSelected && variation.variationId === variationSelected.id)?.quantity
+
+                if (quantity) {
+                    productVariationQuantity = quantity
+                    const index = Cart.productVariations.findIndex(variation => variation.size === sizeSelected)
+                    const newProductVariation = {
+                        ...Cart.productVariations[index],
+                        quantity: quantity + 1
+                    }
+
+                    const productVariations = [
+                        newProductVariation,
+                        ...Cart.productVariations.filter(variation => variation.size !== sizeSelected || variation.variationId !== variationSelected.id),
+                    ]
+
+
+                    console.log(productVariations);
+
+                    const newTotal = newTotalHandler(productVariations)
+
+                    const NewCart = {
+                        ...Cart,
+                        total: newTotal,
+                        productVariations: productVariations
+
+                    }
+                    NewCarts = [
+                        ...Carts.filter(cart => cart.shopInfo.id !== product.shopInfo.id),
+                        NewCart
+                    ]
+                }
+                if (!quantity) {
+                    const newProductVariation: ProductVariation = {
+                        id: variationSelected.id,
+                        variationId: variationSelected.id,
+                        photo: variationSelected.photos[0],
+                        name: product.name,
+                        brand: product.info.brand,
+                        quantity: 1,
+                        color: variationSelected.color,
+                        size: sizeSelected,
+                        productId: product.id,
+                        price: {
+                            v1: product.price.v1,
+                            v2: product.price.v2 ? product.price.v2 : null,
+                            discountPercentage: product.price.discountPercentage ? product.price.discountPercentage : null,
+                        },
+                    }
+
+                    const productVariations = [
+                        newProductVariation,
+                        ...Cart.productVariations
+                    ]
+
+                    const newTotal = newTotalHandler(productVariations)
+
+
+                    const NewCart = {
+                        ...Cart,
+                        total: newTotal,
+                        productVariations
+                    }
+                    NewCarts = [
+                        ...Carts.filter(cart => cart.shopInfo.id !== product.shopInfo.id),
+                        NewCart
+                    ]
+
+                }
+            }
+            console.log(NewCarts);
+
+            //aggiungi al carrello
+            const edited = await editCart({
+                variables: {
+                    productVariationId: variationSelected.id,
+                    size: sizeSelected,
+                    quantity: ++productVariationQuantity
+                }
+            })
+            // if (!edited.data?.editCart) return //mettere un errore qui
+            dispatch(
+                editVariationFromCart({
+                    //add new Carts
+                    carts: NewCarts
+                })
+            );
 
         }
     }
@@ -585,6 +708,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                         variant={'ghost'}
                         colorScheme='teal'>Chiudi</Button>
                 </ButtonGroup> */}
+                <CartDrawer isOpen={openDrawerCart} closeDrawer={() => setOpenDrawerCart(false)} />
             </ModalReausable>
         </>
 

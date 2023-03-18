@@ -167,9 +167,8 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         }
         if (!isBusiness && tokenResult.claims.mongoId) {
           getUser().then((data) => {
-
             if (!data.data) return
-            console.log(data?.data?.user);
+            console.log('STA PASSANDO QUI');
             dispatch(
               login({
                 email: userAuth.email,

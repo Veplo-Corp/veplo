@@ -9,10 +9,11 @@ export interface ProductVariation {
     quantity: number,
     color: string,
     size: string,
+    productId: string,
     price: {
         v1: number,
-        v2: number,
-        discountPercentage: number,
+        v2: number | null,
+        discountPercentage: number | null,
     },
 }
 

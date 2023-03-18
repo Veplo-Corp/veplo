@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
 import { useEffect } from 'react'
 import { Cart } from '../../interfaces/carts.interface'
+import { Product } from '../../interfaces/product.interface'
 
 
 
@@ -27,10 +28,16 @@ export const userState = createSlice({
             console.log(action.payload);
 
         },
+        editVariationFromCart: (state, action) => {
+            console.log(action.payload.carts);
+
+            state.carts = action.payload.carts
+        }
+
     },
 });
 
-export const { setCarts } = userState.actions;
+export const { setCarts, editVariationFromCart } = userState.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectCart = (state: RootState) => state.carts;
