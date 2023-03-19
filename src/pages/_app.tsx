@@ -34,7 +34,7 @@ import { Business } from '../interfaces/business.interface'
 import { getFavouriteShopFromLocalStorage } from '../../components/utils/getFavouriteShopFromLocalStroage'
 import Header from '../../components/organisms/Header'
 import { Cart } from '../interfaces/carts.interface'
-import { setCarts } from '../store/reducers/carts'
+import { resetCarts, setCarts } from '../store/reducers/carts'
 
 
 const theme = extendTheme({
@@ -200,7 +200,9 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         return
       } else {
         console.log('effettua il logout');
+
         apolloClient.clearStore()
+        dispatch(resetCarts())
         return dispatch(logout())
       }
       return

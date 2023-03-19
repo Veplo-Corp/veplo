@@ -41,7 +41,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
             >
                 <ModalOverlay
                     bg='blackAlpha.300'
-                    backdropFilter='blur(10px) '
+                    backdropFilter='blur(10px)'
                 />
                 <ModalContent
                     width={'fit-content'}
@@ -125,8 +125,8 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                     </ModalBody>
                 </ModalContent>
             </Modal>
-            <div className='flex space-x-4 w-full md:w-7/12 xl:w-5/12 '>
-                <Box onClick={zoomImage} minW='20' maxW='450' mb={[2, 5]} overflow='hidden' className='cursor-pointer'>
+            <div className='flex space-x-4 w-full md:w-7/12 xl:w-5/12'>
+                <Box onClick={zoomImage} mb={[2, 5]} overflow='hidden' className='cursor-pointer w-full'>
                     <TransformWrapper
                         maxScale={3}
                         minScale={1}
@@ -155,8 +155,9 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                     >
                                         {/* <Image borderRadius={'lg'} src={fullImage} alt='immagine non trovata' /> */}
                                         <LazyLoadImage src={imageKitUrl(fullImage)}
+
                                             //PlaceholderSrc={PlaceholderImage}
-                                            effect="blur"
+                                            //effect="blur"
                                             alt={variation.color + 'non trovato'}
                                             className='rounded-lg w-full aspect-[8/12] object-cover'
                                         />

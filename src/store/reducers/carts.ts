@@ -27,12 +27,15 @@ export const userState = createSlice({
         },
         editVariationFromCart: (state, action) => {
             state.carts = action.payload.carts
+        },
+        resetCarts: (state) => {
+            state.carts = [];
         }
 
     },
 });
 
-export const { setCarts, editVariationFromCart } = userState.actions;
+export const { setCarts, editVariationFromCart, resetCarts } = userState.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectCart = (state: RootState) => state.carts;
