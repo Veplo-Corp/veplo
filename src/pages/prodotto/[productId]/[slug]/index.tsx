@@ -31,6 +31,8 @@ import EDIT_CART from '../../../../lib/apollo/mutations/editCart';
 import { useDispatch, useSelector } from 'react-redux';
 import { Cart, ProductVariation } from '../../../../interfaces/carts.interface';
 import { editVariationFromCart } from '../../../../store/reducers/carts';
+import { Firebase_User } from '../../../../interfaces/firebase_user.interface';
+import { newTotalHandler } from '../../../../../components/utils/newTotalHandler';
 
 export async function getStaticPaths() {
     return {
@@ -140,7 +142,10 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     const [openDrawerCart, setOpenDrawerCart] = useState(false)
     const [editCart] = useMutation(EDIT_CART);
     const cartsDispatchProduct: Cart[] = useSelector((state: any) => state.carts.carts);
+    const { uid }: Firebase_User = useSelector((state: any) => state.user.user);
+
     const dispatch = useDispatch();
+
 
 
     const [textCategory, setTextCategory] = useState('vestito')
@@ -193,8 +198,6 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
         //! lista di prodotti del negozio
         const fetchData = async () => {
-            console.log(product.shopInfo.id);
-
             await getFilterProduct({
                 variables: { id: product.shopInfo.id, limit: 5, offset: 0, see: null },
             })
@@ -242,23 +245,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     //console.log(imageKitUrl(product.photos[0], 171, 247));
 
 
-    const newTotalHandler = (productVariations: ProductVariation[]) => {
 
-        let total = 0;
-        productVariations.forEach(element => {
-            console.log(element);
-
-            if (element.price.v2) {
-                total += element.price.v2 * element.quantity
-            }
-            else {
-                console.log('passa qui');
-
-                total += element.price.v1 * element.quantity
-            }
-        });
-        return Number(total.toFixed(2))
-    }
 
 
     // return (
@@ -296,11 +283,13 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
             let NewCart: Cart;
             let NewCarts: Cart[] = [];
 
+            //CART ESISTENTE
             if (Cart) {
                 console.log(Cart.productVariations);
 
                 const quantity = Cart.productVariations.find(variation => variation.size === sizeSelected && variation.variationId === variationSelected.id)?.quantity
 
+                //caso in cui la Variation è già presente in cart
                 if (quantity) {
                     productVariationQuantity = quantity
                     const index = Cart.productVariations.findIndex(variation => variation.size === sizeSelected)
@@ -330,6 +319,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                         NewCart
                     ]
                 }
+                //caso in cui la Variation non esiste nel cart
                 if (!quantity) {
                     const newProductVariation: ProductVariation = {
                         id: variationSelected.id,
@@ -368,23 +358,73 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
                 }
             }
+
+            //CART INESISTENTE
+            if (!Cart) {
+                console.log('passa');
+
+                const newProductVariation: ProductVariation = {
+                    id: variationSelected.id,
+                    variationId: variationSelected.id,
+                    photo: variationSelected.photos[0],
+                    name: product.name,
+                    brand: product.info.brand,
+                    quantity: 1,
+                    color: variationSelected.color,
+                    size: sizeSelected,
+                    productId: product.id,
+                    price: {
+                        v1: product.price.v1,
+                        v2: product.price.v2 ? product.price.v2 : null,
+                        discountPercentage: product.price.discountPercentage ? product.price.discountPercentage : null,
+                    },
+                }
+
+                NewCart = {
+                    id: 'cartId',
+                    userId: uid,
+                    shopInfo: {
+                        id: product.shopInfo.id,
+                        name: product.shopInfo.name,
+                        city: product.shopInfo.city,
+                        status: product.shopInfo.status
+                    },
+                    total: product?.price.v2 ? product?.price.v2 : product?.price.v1,
+                    productVariations: [newProductVariation]
+                }
+                NewCarts = [
+                    ...Carts.filter(cart => cart.shopInfo.id !== product.shopInfo.id),
+                    NewCart
+                ]
+            }
+
             console.log(NewCarts);
 
             //aggiungi al carrello
-            const edited = await editCart({
-                variables: {
-                    productVariationId: variationSelected.id,
-                    size: sizeSelected,
-                    quantity: ++productVariationQuantity
-                }
-            })
-            // if (!edited.data?.editCart) return //mettere un errore qui
-            dispatch(
-                editVariationFromCart({
-                    //add new Carts
-                    carts: NewCarts
+
+
+            try {
+                const edited = await editCart({
+                    variables: {
+                        productVariationId: variationSelected.id,
+                        size: sizeSelected,
+                        quantity: ++productVariationQuantity
+                    }
                 })
-            );
+                // if (!edited.data?.editCart) return //mettere un errore qui
+                dispatch(
+                    editVariationFromCart({
+                        //add new Carts
+                        carts: NewCarts
+                    })
+                );
+                setOpenDrawerCart(true)
+            } catch (e: any) {
+                console.log(e.message);
+
+            }
+
+
 
         }
     }
@@ -708,8 +748,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                         variant={'ghost'}
                         colorScheme='teal'>Chiudi</Button>
                 </ButtonGroup> */}
-                <CartDrawer isOpen={openDrawerCart} closeDrawer={() => setOpenDrawerCart(false)} />
             </ModalReausable>
+            <CartDrawer isOpen={openDrawerCart} closeDrawer={() => setOpenDrawerCart(false)} />
+
         </>
 
     )

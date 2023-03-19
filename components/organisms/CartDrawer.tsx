@@ -1,18 +1,22 @@
 import { Box, Button, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay, Tag, Text, VStack } from '@chakra-ui/react'
-import React, { FC } from 'react'
-import { Cart } from '../../src/interfaces/carts.interface'
+import React, { FC, useEffect } from 'react'
+import { Cart, ProductVariation } from '../../src/interfaces/carts.interface'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { imageKitUrl } from '../utils/imageKitUrl'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import createUrlSchema from '../utils/create_url'
 import { useRouter } from 'next/router'
+import { useMutation } from '@apollo/client'
+import EDIT_CART from '../../src/lib/apollo/mutations/editCart'
+import { editVariationFromCart } from '../../src/store/reducers/carts'
+import { newTotalHandler } from '../utils/newTotalHandler'
 
 const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, closeDrawer }) => {
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
-    console.log(cartsDispatch);
-
+    const [editCart] = useMutation(EDIT_CART);
     const router = useRouter()
+    const dispatch = useDispatch();
 
 
     const CARTS_MOOK: Cart[] = [
@@ -107,6 +111,68 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
             ]
         }
     ]
+
+
+
+
+
+    const deleteVariation = async (variation: ProductVariation) => {
+        await editCart({
+            variables: {
+                productVariationId: variation.variationId,
+                size: variation.size,
+                quantity: 0
+            }
+        })
+
+        let editedCart: Cart | undefined = undefined;
+
+
+        for await (const cart of cartsDispatch) {
+            for await (const element of cart.productVariations) {
+                if (element.productId === variation.productId) {
+                    const newVariations = cart.productVariations.filter(variationElement => variationElement.variationId !== variation.variationId || variationElement.size !== variation.size)
+                    console.log(cart.productVariations, newVariations);
+
+                    const newCart = {
+                        ...cart,
+                        productVariations: newVariations,
+                        total: newTotalHandler(newVariations)
+                    }
+                    editedCart = newCart
+                }
+            }
+        }
+
+        if (!editedCart) return
+
+        console.log(editedCart);
+
+        let NewCarts: Cart[] = [];
+
+        if (editedCart.total > 0) {
+            NewCarts = [
+                ...cartsDispatch.filter(cart => cart.shopInfo.id !== editedCart?.shopInfo.id),
+                editedCart
+            ]
+        } else {
+            NewCarts = [
+                ...cartsDispatch.filter(cart => cart.shopInfo.id !== editedCart?.shopInfo.id)]
+        }
+
+
+
+        dispatch(
+            editVariationFromCart({
+                //add new Carts
+                carts: NewCarts
+            })
+        );
+
+        if (NewCarts.length <= 0) {
+            closeDrawer()
+        }
+    }
 
     return (
         <Drawer
@@ -217,6 +283,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                                                                     display={'flex'}
                                                                     alignItems={'start'}
                                                                     justifyContent={'end'}
+                                                                    onClick={() => deleteVariation(variation)}
                                                                 >
                                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-6 h-6">
                                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />

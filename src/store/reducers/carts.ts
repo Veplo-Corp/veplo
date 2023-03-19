@@ -24,13 +24,8 @@ export const userState = createSlice({
     reducers: {
         setCarts: (state, action) => {
             state.carts = action.payload;
-            console.log(state);
-            console.log(action.payload);
-
         },
         editVariationFromCart: (state, action) => {
-            console.log(action.payload.carts);
-
             state.carts = action.payload.carts
         }
 
