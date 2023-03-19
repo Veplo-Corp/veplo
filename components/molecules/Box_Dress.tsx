@@ -10,7 +10,7 @@ import { imageKitUrl } from '../utils/imageKitUrl'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 
 
-const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }> = ({ product, eventHandler, toShop }) => {
+const Box_Dress: React.FC<{ product: Product; }> = ({ product }) => {
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     const [width, height] = useWindowSize();
     //const [dimensionUrl, setDimensionUrl] = useState('&tr=w-571,h-825')
@@ -37,9 +37,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
             _active={{
                 transform: 'scale(1)', /* 'scale(0.99)' */
             }}>
-            {/* <Image fallbackSrc='https://via.placeholder.com/150' onClick={() => eventHandler(product)} src={product.photos[0]} alt={'immagine non disponibile'} /> */}
             {product?.variations[0].photos[0] && <LazyLoadImage src={imageKitUrl(urlProduct, 447, 660)}
-                onClick={() => eventHandler(product)}
                 onMouseEnter={() => {
                     if (!product?.variations[0].photos[1]) return
                     seturlProduct(product?.variations[0].photos[1])
@@ -53,7 +51,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                 className="w-fit"
             />}
             {product.price?.discountPercentage && <Box
-                onClick={() => eventHandler(product)}
+
                 fontWeight='medium'
                 as='h1'
                 fontSize={['sm', 'xs']}
@@ -76,14 +74,13 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                     lineHeight='tight'
                     noOfLines={1}
                     fontSize={['xs', 'sm']}
-                    onClick={() => toShop(product.shopInfo.id, product.shopInfo.city, product.shopInfo.name)}
                 >
                     {toUpperCaseFirstLetter(product.shopInfo.name)}
                 </Box>
                 <div className='flex justify-between'>
                     <div>
                         <Box
-                            onClick={() => eventHandler(product)}
+
                             fontWeight='normal'
                             as='h1'
                             noOfLines={1}
@@ -94,7 +91,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                             {product.brand}
                         </Box>
                         <Box
-                            onClick={() => eventHandler(product)}
+
                             fontWeight='bold'
                             as='h1'
                             fontSize={['xs', 'sm']}
@@ -106,7 +103,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
                         </Box>
                     </div>
                     {/* <Box
-                        onClick={() => eventHandler(product)}
+                    
                         fontWeight='medium'
                         as='h1'
                         fontSize={['sm', 'xs']}
@@ -126,7 +123,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
 
                 <div className='flex justify-between mr-1'>
                     <Box
-                        onClick={() => eventHandler(product)}
+
                         fontWeight={'bold'}
                         as='h4'
                         fontSize={['md', 'sm']}
@@ -145,7 +142,7 @@ const Box_Dress: React.FC<{ product: Product; eventHandler?: any, toShop: any }>
 
                 </div>
                 <div className='mt-2 md:mt-0 float-right pb-0.5 pr-0.5'>
-                    <Circle_Color eventHanlder={() => eventHandler(product)} colors={productcolorsCSS} dimension={4} space={1} />
+                    <Circle_Color colors={productcolorsCSS} dimension={4} space={1} />
                 </div>
 
             </Box>
