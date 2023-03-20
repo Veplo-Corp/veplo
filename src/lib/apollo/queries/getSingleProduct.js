@@ -1,35 +1,43 @@
 import { gql } from '@apollo/client'
 
 const GET_SINGLE_PRODUCT = gql`
-    query GetSingleProduct($id: ID!) {
+    query product($id: ID!) {
         product(
             id: $id
         ){
             id
             name
-            price{
-                v1
-                v2
-                discountPercentage
+            status
+            canBuy
+            info {
+                gender
+                macroCategory
+                microCategory
+                brand
+                fit
             }
-            colors
-            sizes
-            macroCategory
-            microCategory
-            brand
-            shopId
-            firebaseShopId
+            variations{
+            id
+            color
+            status
             photos
-            updatedAt
-            location {
-                type
-                coordinates
+            lots {
+                size
+                quantity
+                }
             }
-            shopOptions {
+            price {
+                v1
+                discountPercentage
+                v2
+            }
+            shopInfo{
+                id
+                businessId
+                name 
                 city
-                name
+                status
             }
-            gender
         } 
     }
     

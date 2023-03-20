@@ -1,29 +1,50 @@
+export interface Variation {
+    id: string
+    color: string
+    status: string
+    // price: {
+    //     v1: number,
+    //     discountPercentage: number,
+    //     v2?: number
+    // }
+    photos: string[]
+    lots: {
+        size: string,
+        quantity: number
+    }[]
+}
+
 export interface Product {
     id: string,
     name: string,
+    canBuy: boolean,
+    status: string,
+    colors?: { name: string, cssColor: string }[],
+    info: {
+        macroCategory: string,
+        microCategory: string,
+        gender: string,
+        brand: string,
+        fit: string
+    }
     price: {
         v1: number,
-        v2: number,
-        discountPercentage: number
-    },
-    colors: any[],
-    sizes: string[],
-    macroCategory: string,
-    microCategory: string,
-    gender: string,
-    brand: string,
-    shopId: string,
-    firebaseShopId: string,
-    photos: string[],
-    updatedAt: string,
+        discountPercentage: number,
+        v2?: number
+    }
     location: {
         type: string,
         coordinates: number[]
     },
-    shopOptions: {
-        city: string,
+    shopInfo: {
+        id: string,
+        businessId: string,
         name: string,
+        city: string,
+        status: string,
     }
-    description?: string,
-    status:string
+    createdAt?: string,
+    updatedAt?: string,
+    variations: Variation[],
+    totalSizeAvailable?: string[]
 }

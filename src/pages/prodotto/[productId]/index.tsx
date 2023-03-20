@@ -6,46 +6,47 @@ import createUrlScheme from '../../../../components/utils/create_url'
 import { useRouter } from 'next/router';
 
 
-export async function getServerSideProps(ctx:any) {
+export async function getServerSideProps(ctx: any) {
 
     const apolloClient = initApollo()
-    
+
 
     const { productId } = ctx.params
 
 
-    const{ data, error }: {data:any, error:any} = await apolloClient.query({
+    const { data, error }: { data: any, error: any } = await apolloClient.query({
         query: GET_SINGLE_PRODUCT,
         variables: { id: productId }
     })
 
-   
+
 
     const product: Product = data.product
-    
+
 
     return {
-      props: {product}, // will be passed to the page component as props
+        props: { product }, // will be passed to the page component as props
     }
 
 }
 
-const index: React.FC<{ product: Product, error: string }> = ({product}) => {
+const index: React.FC<{ product: Product, error: string }> = ({ product }) => {
     const router = useRouter()
-    const category = 
-        product.macroCategory.toLocaleLowerCase().includes(product.microCategory.toLocaleLowerCase()) 
-        ? product.microCategory
-        : product.macroCategory + '-' + product.microCategory
-    const newUrl = createUrlScheme([product.brand, product.name, category])    
-    const navigate = (url:string) => {}
+
+
     useEffect(() => {
-        console.log(product);
-        
-        if(newUrl){  
+        // const category = 
+        //     product.macroCategory.toLocaleLowerCase().includes(product.microCategory.toLocaleLowerCase()) 
+        //     ? product.microCategory
+        //     : product.macroCategory + '-' + product.microCategory
+        // const newUrl = createUrlScheme([product.brand, product.name, category]) 
+        const newUrl = createUrlScheme([product.info.brand, product.name])
+
+        if (newUrl) {
             router.push(`/prodotto/${router.query.productId}/${newUrl}`)
         }
     }, [product])
-    
+
 
     return (
         <>

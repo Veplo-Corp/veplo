@@ -21,7 +21,10 @@ const Product_Status_Popover: FC<{ status: string, onChangeStatus: any }> = ({ s
                 type='button'
                 aria-label="user"
             >
-                <TagLabel>
+                <TagLabel
+                    paddingX={3}
+                    paddingY={1.5}
+                >
                     <span className='hidden md:flex'>
                         {status === 'active' ? 'Attivo' : 'Terminato'}
                     </span>
@@ -41,10 +44,10 @@ const Product_Status_Popover: FC<{ status: string, onChangeStatus: any }> = ({ s
                             mb={'0.5'}
                             display={'flex'}
                             justifyContent={'space-between'}
-                            onClick={()=> {
-                                if(status === action.DB_name)return
+                            onClick={() => {
+                                if (status === action.DB_name) return
                                 onChangeStatus(action.DB_name)
-                                
+
                             }}
                         >
 

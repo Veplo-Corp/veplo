@@ -83,6 +83,7 @@ export const SIZES: Sizes = {
     "5xl (54)",
   ],
   man_clothes_sizes: [
+    "xxs (42)",
     "xs (44)",
     "s (46)",
     "m (48)",

@@ -1,59 +1,65 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Box, Image } from '@chakra-ui/react';
 
+interface Props {
+    borderWidth: string,
+    py: number,
+    borderRadius: string,
+    fontSize: string,
+    fontWeight: any,
+    lots: {
+        size: string,
+        quantity: any
+    }[],
+    totalLotsProduct: string[],
+    handleLot: (size: string) => void,
+    sizeSelected?: string
+}
 
 
-const Size_Box: React.FC<any> = ({ borderWidth, py, borderRadius, fontSize, fontWeight, sizes, gender, macrocategory }) => {
-
-    /* return (
-        <div className='grid grid-cols-4  w-fit gap-3 '>
-            {Sizes.map((size) => {
-                console.log(size);
-                
-                let bg = 'gray.100'
-                let color = 'gray.400'
+const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fontWeight, lots, handleLot, sizeSelected, totalLotsProduct }) => {
 
 
-                if (sizes.includes(size)) {
-                    bg = 'white'
-                    color = 'black.900'
-                }
-
-                return (<Box
-                    key={size}
-                    borderWidth={borderWidth}
-                    py={py}
-                    borderRadius={borderRadius}
-                    fontSize={fontSize}
-                    fontWeight={fontWeight}
-                    bg={bg}
-                    color={color}
-                    noOfLines={1}
-                    className='text-center w-24 lg:w-32 '
-                >
-                    {size}
-                </Box>)
-            })}
-        </div>
-    ) */
 
     return (
-        <div className='grid grid-cols-3 xl:grid-cols-4  w-fit gap-3 '>
-            {sizes.map((sizes:string) => {
-                return (<Box
-                    key={sizes}
-                    borderWidth={borderWidth}
-                    py={py}
-                    borderRadius={borderRadius}
-                    fontSize={fontSize}
-                    fontWeight={fontWeight}
-                    bg={'white'}
-                    color={'black.900'}
-                    noOfLines={1}
-                    className='text-center w-24 lg:w-32 '
-                >
-                    {sizes}
-                </Box>)
+        <div className='grid grid-cols-3 xl:grid-cols-4  w-fit gap-3'>
+            {totalLotsProduct.map((size) => {
+                const sizeProductExist = lots.find(lot => lot.size === size)
+                return (
+                    <Box
+                        key={size}
+                        borderWidth={sizeSelected === size ? '2px' : borderWidth}
+                        borderColor={sizeSelected === size ? 'gray.600' : 'gray-100'}
+                        py={py}
+                        borderRadius={borderRadius}
+                        fontSize={fontSize}
+                        fontWeight={fontWeight}
+                        bg={sizeProductExist?.quantity > 0 ? `white` : 'gray.100'}
+                        color={'black.900'}
+                        noOfLines={3}
+                        className='text-center  md:w-24 lg:w-32 min-w-[100px]'
+                        h={'full'}
+                        cursor={sizeProductExist?.quantity <= 0 || !sizeProductExist ? '' : 'pointer'}
+                        px={[4, 2]}
+                        onClick={() => {
+                            if (sizeProductExist?.quantity <= 0 || !sizeProductExist) return
+                            handleLot(size)
+                        }}
+
+                    >
+                        <Box
+                        >
+                            {size.toUpperCase()}
+                        </Box>
+                        <Box
+                            fontWeight={['normal', 'medium']}
+                            fontSize={['2xs', '2xs']}
+                            color={'gray.500'}
+                            mt={-1}
+                        >
+                            {sizeProductExist?.quantity > 0 ? `disponibilità: ${sizeProductExist?.quantity}` : 'non disponibile'}
+                        </Box>
+                    </Box>)
             })}
         </div>
     )

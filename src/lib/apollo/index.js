@@ -19,15 +19,15 @@ function createApolloClient() {
     // Declare variable to store authToken
     let authorization_token;
 
-    
+
     const httpLink = createHttpLink({
-        uri: process.env.NEXT_PUBLIC_APOLLO_URI ,
+        uri: process.env.NEXT_PUBLIC_APOLLO_URI,
         credentials: 'same-origin',
 
     });
 
     const link = createUploadLink({
-        uri: process.env.NEXT_PUBLIC_APOLLO_URI ,
+        uri: process.env.NEXT_PUBLIC_APOLLO_URI,
         credentials: 'same-origin',
         // 'Apollo-Require-Preflight': 'true'
     })
@@ -43,7 +43,7 @@ function createApolloClient() {
                 ...headers,
                 Authorization: authorization_token ? `${authorization_token}` : "",
                 'Apollo-Require-Preflight': 'true',
-                
+
 
             }
         }
@@ -59,11 +59,9 @@ function createApolloClient() {
                 },
                 Product: {
                     keyFields: ["id"],
-                }
-               
-                
+                },
             }
-            
+
         }),
         connectToDevTools: true,
         // defaultOptions: {

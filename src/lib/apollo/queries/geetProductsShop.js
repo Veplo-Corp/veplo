@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 
-//TODO!
+//! INSERIRE BRAND
 const GET_PRODUCTS_FROM_SHOP = gql`
     query GetSingleShop(
         $id: ID!
@@ -11,7 +11,6 @@ const GET_PRODUCTS_FROM_SHOP = gql`
         ) {
         shop(
             id: $id
-            
         ){
             id
             products(
@@ -21,34 +20,44 @@ const GET_PRODUCTS_FROM_SHOP = gql`
             ) {
                 id
                 name
-                price{
-                    v1
-                    v2
-                    discountPercentage
+                canBuy
+                status
+                info{
+                    gender
+                    macroCategory
+                    microCategory
+                    brand
                 }
-                colors
-                sizes
-                macroCategory
-                microCategory
-                gender
-                brand
-                shopId
-                firebaseShopId
-                photos
-                
                 location {
                     type
                     coordinates
                 }
-                shopOptions {
-                    city
+                shopInfo{
+                    id
+                    businessId
                     name
+                    city
+                    status
                 }
-                gender
-                status
+                price {
+                    v1
+                    discountPercentage
+                    v2
+                }
+                variations{
+                    color
+                    status
+                    
+                    photos
+                    lots{
+                        size
+                        quantity
+                    }
+                }
             }
         } 
     }
 `
+
 
 export default GET_PRODUCTS_FROM_SHOP;

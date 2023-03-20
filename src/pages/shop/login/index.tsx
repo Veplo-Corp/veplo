@@ -17,8 +17,9 @@ import { handleErrorFirebase } from '../../../../components/utils/handleErrorFir
 import { setModalTitleAndDescription, handleOpenModal } from '../../../store/reducers/modal_error'
 import { useRouter } from 'next/router'
 import { Firebase_User } from '../../../interfaces/firebase_user.interface'
-import Login_or_Registration from '../../../../components/organisms/Login_or_Registration'
-import SET_IS_SHOP from '../../../lib/apollo/mutations/setIsShop';
+import Login_or_Registration, { UserInfo } from '../../../../components/organisms/Login_or_Registration'
+import CREATE_BUSINESS_ACCOUNT from '../../../lib/apollo/mutations/createBusinessAccount';
+
 import Loading from '../../../../components/molecules/Loading'
 import PostMeta from '../../../../components/organisms/PostMeta'
 import List_Explanation_Veplo_Shop from '../../../../components/molecules/List_Explanation_Veplo_Shop'
@@ -29,7 +30,8 @@ import List_Explanation_Veplo_Shop from '../../../../components/molecules/List_E
 const index = () => {
   const router = useRouter()
   const { type }: any /* 'registration' | 'login' | 'reset_password' */ = router.query
-  const [setIsShop] = useMutation(SET_IS_SHOP)
+  //const [setIsShop] = useMutation(SET_IS_SHOP)
+  const [setBusinessAccount] = useMutation(CREATE_BUSINESS_ACCOUNT)
   const [loading, setLoading] = useState(false)
   // const [showPassword, setshowPassword] = useState<boolean>(false)
   // const [email, setemail] = useState<string>('')
@@ -44,22 +46,18 @@ const index = () => {
   useEffect(() => {
     const abortController = new AbortController();
 
+    //! da risolvere
     if (user && !user.Not_yet_Authenticated_Request) {
       console.log(user);
 
       if (typeof user.shopId === 'string') {
         router.push('/shop/prodotti')
-      } else if (user.isShop === false) {
-
-      } else if (user?.isShop === true) {
-        router.push('/shop/crea-shop')
+      } else if (user?.isBusiness === true) {
+        router.push('/shop/home')
       }
-
     }
     if (type) {
       settypeForm(type)
-
-
     }
 
     return () => {
@@ -103,10 +101,9 @@ const index = () => {
   // }
 
 
-  const handleSubmit = async (email: string, password: string) => {
+  const handleSubmit = async (email: string, password: string, userInfo: UserInfo) => {
     setLoading(true)
     if (typeForm === 'registration') {
-      console.log('passa qui');
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         // Signed in 
@@ -114,25 +111,18 @@ const index = () => {
         setAuthTokenInSessionStorage(idToken)
         console.log(idToken);
         await sendEmailVerificationHanlder()
-        // dispatch(
-        //   login(
-        //     {
-        //       email: user.email,
-        //       uid: user.uid,
-        //       idToken: idToken,
-        //       emailVerified: user.emailVerified,
-        //       isShop: true,
-        //       createdAt: 'now'
-        //     }
-        //   )
-        // );
 
-        await setIsShop({
-          variables: {
-            isShop: true
-          }
-        })
-        await router.push('/shop/crea-shop')
+        //!deprecated
+        // await setIsShop({
+        //   variables: {
+        //     isBusiness: true
+        //   }
+        // })
+
+
+        const account = await setBusinessAccount()
+        console.log(account);
+        await router.push('/shop/crea-business-account')
         router.reload()
         // setemail('')
         // setpassword('')
@@ -153,8 +143,8 @@ const index = () => {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
         const tokenResult = await userCredential.user.getIdTokenResult();
-        const isShop = tokenResult.claims.isShop ? true : false
-        if (!isShop) {
+        const isBusiness = tokenResult.claims.isBusiness ? true : false
+        if (!isBusiness) {
           // const errorForModal = handleErrorFirebase('auth/user-not-shop')
           // dispatch(setModalTitleAndDescription({
           //   title: errorForModal?.title,
@@ -163,9 +153,6 @@ const index = () => {
           router.push('/')
           throw new Error('auth/user-not-shop', { cause: 'err' })
         }
-        // else {
-        //   //return router.push('/shop/prodotti')
-        // }
 
       } catch (error: any) {
         const errorMessage = error.message;
@@ -217,10 +204,11 @@ const index = () => {
                 image={''}
                 description={`accedi o registra un negozio  | Veplo.it`}
               />
-              <div className='max-w-md mx-auto md:max-w-full md:flex md:m-auto  lg:w-10/12 xl:w-3/4 mt-8 md:mt-10 md:justify-between' >
-                <div className={`md:p-3  my-auto ${typeForm === 'registration' ? '' : 'space-y-4 max-w-md mx-auto'}`}>
-                  <Login_or_Registration handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo negozio`} />
-
+              <div className='max-w-md mx-auto md:max-w-full md:flex md:m-auto  w-full mt-8 md:mt-10 md:justify-between' >
+                <div className={`md:p-3 w-full md:w-3/4 my-auto space-y-4 max-w-md mx-auto`}>
+                  <Login_or_Registration
+                    account='business'
+                    handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo negozio`} />
                 </div>
                 {typeForm === 'registration' &&
                   <div className='md:my-auto md:w-5/12 md:mr-10 mt-10 md:mt-0'>

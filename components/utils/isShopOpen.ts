@@ -1,7 +1,8 @@
 
 
 //find out if the shop is NOW open or not
-const isShopOpen = (openingDays: number[], openingHours: string[]) => {
+const isShopOpen = (openingDays: number[] | null, openingHours: string[] | null) => {
+    if (!openingDays || !openingHours) return false
     const dateNow = new Date();
 
     const dayNow = dateNow.getDay();
@@ -10,6 +11,7 @@ const isShopOpen = (openingDays: number[], openingHours: string[]) => {
 
     // console.log(day, hour);
     // console.log(openingDays, openingHours);
+    if (openingHours.length < 1) return
     const openingHour = Number(openingHours[0].split(':')[0]) + (Number(openingHours[0].split(':')[1]) / 100)
     const closingHour = Number(openingHours[1].split(':')[0]) + (Number(openingHours[1].split(':')[1]) / 100)
     if (typeof openingDays.find(openingDay => openingDay === dayNow) === 'number' && (

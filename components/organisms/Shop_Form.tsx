@@ -40,25 +40,7 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                     />
                 </InputGroup>
             </Div_input_creation>
-            <Div_input_creation text='Partita Iva'>
-                <InputGroup>
-                    <Input
-                        autoComplete='off'
-                        maxLength={35}
-                        rounded={10}
-                        paddingY={6}
-                        type="text"
-                        {...register("piva")}
-                        isInvalid={false}
-                        disabled={true}
-                        _disabled={{
-                            opacity: '1',
-                            background: 'gray.50'
-                        }}
-                        className='cursor-not-allowed'
-                    />
-                </InputGroup>
-            </Div_input_creation>
+
             <Div_input_creation text=''>
                 <InputGroup className='flex justify-between gap-2'>
                     <Div_input_creation text='Città'>
@@ -112,13 +94,13 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                             background: 'gray.50',
                         }}
                         //borderColor={`${isValid_shop_phone === false ? 'red.900' : 'gray.200'}`}
-                        {...register("phone", { required: true, minLength: 6, maxLength: 12 })}
+                        {...register("info.phone", { required: true, minLength: 6, maxLength: 12 })}
                     />
                 </InputGroup>
             </Div_input_creation>
             <h1 className='italic text-xl lg:text-2xl font-extrabold mt-6 mb-2 md:mb-4'>Informazioni aggiuntive</h1>
             <Div_input_creation text='Immagine negozio'>
-                <img src={imageKitUrl(shop.photo, 480, 300)}
+                <img src={imageKitUrl(shop.photo)}
                     className='w-full aspect-[4.8/3] object-cover rounded-md mb-4'
                 />
             </Div_input_creation>
@@ -130,7 +112,7 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                         rounded={10}
                         paddingY={6}
                         type="text"
-                        value={`${shop.opening.days.map((dayNumber) => { return DAYS.find(day => day.id === dayNumber.toString())?.name }).join(', ')}`}
+                        value={`${shop.info.opening.days.map((dayNumber) => { return DAYS.find(day => day.id === dayNumber.toString())?.name }).join(', ')}`}
 
                         isInvalid={false}
                         disabled={true}
@@ -150,7 +132,7 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                         rounded={10}
                         paddingY={6}
                         type="text"
-                        value={`${shop.opening?.hours[0]} - ${shop.opening?.hours[1]}`}
+                        value={`${shop.info.opening?.hours[0]} - ${shop.info.opening?.hours[1]}`}
                         isInvalid={false}
                         disabled={true}
                         _disabled={{

@@ -1,4 +1,4 @@
-import { Box, Button, Center, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, Center, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Text, useDisclosure, VStack } from '@chakra-ui/react'
 import { signOut } from 'firebase/auth'
 import React, { useEffect, useState } from 'react'
 import { auth } from '../../src/config/firebase'
@@ -8,47 +8,56 @@ import { useRouter } from 'next/router'
 import MobileDetect from 'mobile-detect'
 import { deleteAuthTokenInSessionStorage } from '../utils/deleteAuthTokenSessionStorage'
 import Modal_Help_Customer_Care from './Modal_Help_Customer_Care'
+import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
+import { useSelector } from 'react-redux'
+import { deleteFavouriteShopFromLocalStorage } from '../utils/deleteShopFavourite'
 
-const list = [
-    {
-        title: 'visualizza prodotti',
-        url: '/shop/prodotti'
-    },
-    {
-        title: 'aggiungi prodotto',
-        url: '/shop/crea-prodotto'
-    },
-    {
-        title: 'il tuo negozio',
-        url: '/shop/info-generali'
-    },
 
-    {
-        title: 'hai bisogno di assistenza?',
-        url: 'assistenza'
-    }
-]
 
-const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: any }> = ({ openDrawerMath, user, onCloseModal }) => {
-    const router = useRouter()
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const [isOpenHelpModal, setIsOpenHelpModal] = useState(false)
-    useEffect(() => {
-        //console.log('openDrawerMath:',openDrawerMath);
+const Drawer_Menu: React.FC<{ user: any, isOpen: boolean, closeDrawer: () => void }> = ({ user, isOpen, closeDrawer }) => {
 
-        if (openDrawerMath !== 1 && openDrawerMath !== undefined) {
-            onOpen()
+    const userDispatch: Firebase_User = useSelector((state: any) => state.user.user);
+
+    const listShop = [
+        {
+            title: 'visualizza prodotti',
+            url: `/shop/home/${userDispatch?.favouriteShop?.id}/prodotti`
+        },
+        {
+            title: 'aggiungi prodotto',
+            url: `/shop/home/${userDispatch?.favouriteShop?.id}/crea-prodotto`
+        },
+
+        {
+            title: `info negozio`,
+            url: `/shop/home/${userDispatch?.favouriteShop?.id}/info-generali`
         }
-    }, [openDrawerMath])
+    ]
+
+    const list = [
+        {
+            title: 'cambia negozio',
+            url: '/shop/home'
+        },
+        {
+            title: 'dettagli società',
+            url: '/shop/home/info-generali-account'
+        },
+    ]
+
+    const router = useRouter()
+    const [isOpenHelpModal, setIsOpenHelpModal] = useState(false)
+
 
 
     const logout = async () => {
         await signOut(auth);
         deleteAuthTokenInSessionStorage()
+        deleteFavouriteShopFromLocalStorage()
+
         //set OpenModal 1 in Header
         router.push('/shop/login?type=login')
-        onCloseModal()
-        onClose()
+        closeDrawer()
     }
 
 
@@ -59,26 +68,20 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
             isOpen={isOpen}
             placement='right'
             size={['xs', 'sm']}
-            onClose={() => {
-                onClose()
-                onCloseModal()
-            }}
+            onClose={closeDrawer}
         >
             <DrawerOverlay />
             <DrawerContent>
                 <DrawerCloseButton size={'lg'} mt={'0'} />
                 <DrawerHeader borderWidth={0} borderBottomWidth={1} borderColor={'gray.200'} py={'3'} px={4}>Menu</DrawerHeader>
                 <DrawerBody px={4} py={3}>
-                    <Box maxW='sm' overflow='hidden'>
-
-
+                    <Box overflow='hidden'>
                         <Tooltip label={!user.emailVerified ? 'email non verificata' : 'email verificata'}>
                             <Box
                                 mt='1'
                                 fontWeight='semibold'
                                 as='h4'
                                 lineHeight='tight'
-                                noOfLines={1}
                                 display={'flex'}
                             >
                                 {user.email}
@@ -95,38 +98,105 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                             noOfLines={1}
                             fontSize={'small'}
                             display={'flex'}
-                            mb={10}
+                            mb={6}
                         >
                             account creato in data: {user.createdAt}
                         </Box>
-                        {list.map(element => {
-                            return (<Box
-                                key={element.title}
-                                _active={{
-                                    transform: `scale(0.99)`,
-                                }}
 
-                                fontWeight='semibold'
-                                lineHeight='none'
-                                noOfLines={1}
-                                fontSize={'mg'}
-                                display={'flex'}
-                                className={'cursor-pointer hover:underline'}
-                                onClick={() => {
-                                    if (element.url === 'assistenza') {
-                                        setIsOpenHelpModal(true)
-                                    } else {
-                                        router.push(element.url)
-                                        onClose()
-                                    }
-                                }}
+                        {userDispatch.favouriteShop &&
+                            <Box
+                                bgColor={'gray.100'}
+                                padding={4}
+                                borderRadius={'md'}
                             >
-                                <p className='my-auto pb-4'>
-                                    {element.title}
-                                </p>
-                            </Box>)
-                        })}
+                                <Text
+                                    fontSize={'lg'}
+                                    fontWeight={'bold'}
+                                >
+                                    {userDispatch.favouriteShop?.name.toUpperCase()}
+                                </Text>
+                                <Text
+                                    fontSize={'sm'}
+                                    fontWeight={'normal'}
+                                    marginBottom={3}
+                                    mt={-1}
+                                >
+                                    {userDispatch.favouriteShop?.street}
+                                </Text>
+                                <VStack
+                                    spacing={[2, 3]}
+                                    align='stretch'
+                                >
+                                    {listShop.map(element => {
+                                        return (<Box
+                                            key={element.title}
+                                            _active={{
+                                                transform: `scale(0.99)`,
+                                            }}
 
+                                            fontWeight='semibold'
+                                            lineHeight='none'
+
+                                            fontSize={'mg'}
+                                            display={'flex'}
+                                            className={'cursor-pointer hover:underline'}
+                                            onClick={() => {
+
+                                                router.push(element.url)
+                                                closeDrawer()
+                                            }}
+                                        >
+                                            <p className='my-auto '>
+                                                {element.title}
+                                            </p>
+                                        </Box>)
+                                    })}
+                                </VStack>
+                            </Box>
+                        }
+                        <Box
+                            bgColor={'gray.100'}
+                            padding={4}
+                            borderRadius={'md'}
+                            mt={4}
+                        >
+                            <Text
+                                fontSize={'lg'}
+                                fontWeight={'bold'}
+                                marginBottom={'2'}
+
+                            >
+                                Dettagli account
+                            </Text>
+                            <VStack
+                                spacing={[2, 3]}
+                                align='stretch'
+                            >
+                                {list.map(element => {
+                                    return (<Box
+                                        key={element.title}
+                                        _active={{
+                                            transform: `scale(0.99)`,
+                                        }}
+
+                                        fontWeight='semibold'
+                                        lineHeight='none'
+                                        fontSize={'mg'}
+                                        display={'flex'}
+                                        className={'cursor-pointer hover:underline'}
+                                        onClick={() => {
+
+                                            router.push(element.url)
+                                            closeDrawer()
+                                        }}
+                                    >
+                                        <p className='my-auto '>
+                                            {element.title}
+                                        </p>
+                                    </Box>)
+                                })}
+                            </VStack>
+                        </Box>
                     </Box>
 
                 </DrawerBody>
@@ -137,11 +207,23 @@ const Drawer_Menu: React.FC<{ openDrawerMath: number, user: any, onCloseModal: a
                     padding={0}
                     width={'full'}
                 >
-                    <Button
+                    <div
+                        className='text-center w-full '
+                    >
+                        <Button
+                            colorScheme={'orange'}
+                            className='w-11/12 m-auto mb-4 '
+                            onClick={() => {
+                                setIsOpenHelpModal(true)
+                            }}>
+                            Hai bisogno di assistenza?
+                        </Button>
+                        <Button
 
-                        className='w-11/12 m-auto mb-4 ' onClick={logout}>
-                        Disconnetti Account
-                    </Button>
+                            className='w-11/12 m-auto mb-4 ' onClick={logout}>
+                            Disconnetti Account
+                        </Button>
+                    </div>
                 </DrawerFooter>
             </DrawerContent>
             <Modal_Help_Customer_Care

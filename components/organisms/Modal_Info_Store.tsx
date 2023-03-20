@@ -43,28 +43,32 @@ const Modal_Info_Store: FC<{ isOpen: boolean, onClose: () => void, shop: Shop }>
                         display={'flex'}
                         mt={-0.5}
                     >
-                        {shop.opening.days.map((dayNumber) => { return DAYS.find(day => day.id === dayNumber.toString())?.name }).join(', ')}
+                        {shop.info.opening.days.map((dayNumber) => { return DAYS.find(day => day.id === dayNumber.toString())?.name }).join(', ')}
                     </Box>
-                    <Box
-                        fontWeight='semibold'
-                        as='h2'
-                        noOfLines={1}
-                        fontSize='medium'
-                        display={'flex'}
-                        mt={1}
-                    >
-                        Orario di apertura
-                    </Box>
-                    <Box
-                        fontWeight='normal'
-                        as='h2'
-                        noOfLines={1}
-                        fontSize='small'
-                        display={'flex'}
-                        mt={-0.5}
-                    >
-                        {shop.opening.hours[0]} - {shop.opening.hours[1]}
-                    </Box>
+                    {!shop.isDigitalOnly &&
+                        <>
+                            <Box
+                                fontWeight='semibold'
+                                as='h2'
+                                noOfLines={1}
+                                fontSize='medium'
+                                display={'flex'}
+                                mt={1}
+                            >
+                                Orario di apertura
+                            </Box>
+                            <Box
+                                fontWeight='normal'
+                                as='h2'
+                                noOfLines={1}
+                                fontSize='small'
+                                display={'flex'}
+                                mt={-0.5}
+                            >
+                                {shop.info.opening.hours[0]} - {shop.info.opening.hours[1]}
+                            </Box>
+                        </>
+                    }
                     <Box
                         fontWeight='semibold'
                         as='h2'
@@ -85,10 +89,10 @@ const Modal_Info_Store: FC<{ isOpen: boolean, onClose: () => void, shop: Shop }>
                         mt={-0.5}
                     >
                         <p>
-                            +39 {shop.phone}
+                            +39 {shop.info.phone}
                         </p>
                         <div className='flex'>
-                            <a href={`tel:+39${shop.phone}`}
+                            <a href={`tel:+39${shop.info.phone}`}
                                 className='my-auto'
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
@@ -104,37 +108,41 @@ const Modal_Info_Store: FC<{ isOpen: boolean, onClose: () => void, shop: Shop }>
                             </a> */}
                         </div>
                     </Box>
-                    <Box
-                        fontWeight='semibold'
-                        as='h2'
-                        noOfLines={1}
-                        fontSize='medium'
-                        display={'flex'}
-                        mt={1}
-                    >
-                        Indirizzo negozio
-                    </Box>
-                    <Box
-                        fontWeight='normal'
-                        as='h2'
-                        noOfLines={1}
-                        fontSize='small'
-                        display={'flex'}
-                        justifyContent='space-between'
-                        mt={-0.5}
-                    >
-                        <p>
-                            {shop.address.city}, {shop.address.street}
-                        </p>
-                        <a target="_blank" rel="noopener noreferrer" href={`https://www.google.it/maps/search/${shop.address.street.replaceAll(' ', '+') + ', ' + shop.address.city.replaceAll(' ', '+')}`}
-                            className='my-auto'
+                    {!shop.isDigitalOnly &&
+                        <>
+                            <Box
+                                fontWeight='semibold'
+                                as='h2'
+                                noOfLines={1}
+                                fontSize='medium'
+                                display={'flex'}
+                                mt={1}
+                            >
+                                Indirizzo negozio
+                            </Box>
+                            <Box
+                                fontWeight='normal'
+                                as='h2'
+                                noOfLines={1}
+                                fontSize='small'
+                                display={'flex'}
+                                justifyContent='space-between'
+                                mt={-0.5}
+                            >
+                                <p>
+                                    {shop.address.city}, {shop.address.street}
+                                </p>
+                                <a target="_blank" rel="noopener noreferrer" href={`https://www.google.it/maps/search/${shop.address.street.replaceAll(' ', '+') + ', ' + shop.address.city.replaceAll(' ', '+')}`}
+                                    className='my-auto'
 
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 hover:scale-95 cursor-pointer">
-                                <path fillRule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
-                            </svg>
-                        </a>
-                    </Box>
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 hover:scale-95 cursor-pointer">
+                                        <path fillRule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
+                                    </svg>
+                                </a>
+                            </Box>
+                        </>
+                    }
                 </ModalBody>
 
                 <ModalFooter px={[4, 6]}>

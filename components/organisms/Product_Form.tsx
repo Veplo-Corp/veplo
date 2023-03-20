@@ -3,7 +3,6 @@ import { Box, Button, CircularProgress, Input, InputGroup, InputLeftAddon } from
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form';
-import { IFormInput } from '../../src/pages/shop/crea-prodotto';
 import Autocomplete from '../atoms/Autocomplete_Headless';
 import BlackButton from '../atoms/BlackButton';
 import Div_input_creation from '../atoms/Div_input_creation';
@@ -162,7 +161,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                             name="brand"
                             rules={{ required: false }}
                             render={({ field: { onChange, onBlur, value, ref } }) => (
-                                <Autocomplete values={brands.current}
+                                <Autocomplete
                                     selectedValue={watch('brand')}
                                     handleChangeValues={(brand: any) => {
                                         setValue('brand', brand);

@@ -2,40 +2,47 @@ import { gql } from '@apollo/client'
 
 const GET_PRODUCTS = gql`
     query products(
-        $range: Float!
         $limit: Int!
         $offset: Int!
         $filters: ProductFilters!   
         ) {
         products(
-            range: $range,
             limit: $limit
             offset: $offset
             filters: $filters    
         ){
             id
             name
-            price{
-                v1
-                v2
-                discountPercentage
+            status
+            canBuy
+            info {
+                gender
+                macroCategory
+                microCategory
+                brand
+                fit
             }
-            colors
-            sizes
-            macroCategory
-            microCategory
-            gender
-            brand
-            shopId
-            firebaseShopId
+            variations{
+            id
+            color
+            status
             photos
-            location {
-                type
-                coordinates
+            lots {
+                size
+                quantity
+                }
             }
-            shopOptions {
+            price {
+                v1
+                discountPercentage
+                v2
+            }
+            shopInfo{
+                id
+                businessId
+                name 
                 city
-                name
+                status
             }
         } 
     }

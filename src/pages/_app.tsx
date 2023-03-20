@@ -1,7 +1,6 @@
 
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import Header from '../../components/organisms/Header'
 // 1. import `ChakraProvider` component
 import { Center, ChakraProvider, CircularProgress } from '@chakra-ui/react'
 import { extendTheme } from "@chakra-ui/react"
@@ -9,16 +8,15 @@ import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from '../store/store'
 import { useEffect, useState } from 'react'
 import { analytics, auth, onAuthStateChanged, signOut } from '../config/firebase'
-import user, { login, logout } from '../store/reducers/user'
+import user, { addFavouriteShopBusiness, login, logout } from '../store/reducers/user'
 import { setAddress } from '../store/reducers/address_user'
 import { useRouter } from 'next/router'
-import { ApolloProvider } from '@apollo/client'
+import { ApolloProvider, useLazyQuery } from '@apollo/client'
 import { initApollo, useApollo } from '../lib/apollo'
 import { getAddressFromLocalStorage } from '../../components/utils/getAddress_from_LocalStorage'
 import { setAuthTokenInSessionStorage } from '../../components/utils/setAuthTokenInSessionStorage'
 import Modal_Error_Shop, { ErrorModal } from '../../components/organisms/Modal_Error_Shop'
 import modal_error from '../store/reducers/modal_error'
-import GET_SHOP_BY_FIREBASE_ID from '../lib/apollo/queries/getShopByFirebaseId'
 import Router from "next/router";
 import { Firebase_User } from '../interfaces/firebase_user.interface'
 import Loading from '../../components/molecules/Loading'
@@ -27,6 +25,16 @@ import Footer from '../../components/organisms/Footer'
 import PostMeta from '../../components/organisms/PostMeta'
 import Script from 'next/script'
 import { Open_Sans } from '@next/font/google'
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js'
+import GET_BUSINESS from '../lib/apollo/queries/business'
+import GET_USER from '../lib/apollo/queries/getUser'
+
+import { Business } from '../interfaces/business.interface'
+import { getFavouriteShopFromLocalStorage } from '../../components/utils/getFavouriteShopFromLocalStroage'
+import Header from '../../components/organisms/Header'
+import { Cart } from '../interfaces/carts.interface'
+import { resetCarts, setCarts } from '../store/reducers/carts'
 
 
 const theme = extendTheme({
@@ -53,7 +61,8 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
 
   const dispatch = useDispatch();
-
+  const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
+  const [getUser] = useLazyQuery(GET_USER);
 
 
 
@@ -62,7 +71,8 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
     //* GET the user address from localstorage
     const address_user = getAddressFromLocalStorage();
-    // console.log(address_user);
+
+
 
     dispatch(
       setAddress({
@@ -71,6 +81,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
     );
 
     onAuthStateChanged(auth, async (userAuth) => {
+      //signOut(auth)
       const apolloClient = initApollo()
       if (userAuth) {
         setUserId(analytics, userAuth.uid);
@@ -78,72 +89,120 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         const idToken = await userAuth.getIdToken(true)
         setAuthTokenInSessionStorage(idToken)
         //console.log(idToken);
+
         const tokenResult = await userAuth.getIdTokenResult()
+        //console.log(tokenResult);
+
         // user is logged in, send the user's details to redux, store the current user in the state
-        const isShop = tokenResult.claims.isShop ? true : false;
+        const isBusiness = tokenResult.claims.isBusiness ? true : false;
         let ISODate: any = userAuth.metadata.creationTime
         if (userAuth.metadata.creationTime) {
           ISODate = new Date(userAuth.metadata.creationTime)
         }
-        let date_for_redux = ('0' + ISODate.getDate()).slice(-2) + '/' + ('0' + ISODate.getMonth() + 1).slice(-2) + '/' + ISODate.getFullYear();
-        if (!isShop && userAuth.uid) {
+        let date_for_redux = ('0' + ISODate.getDate()).slice(-2) + '/' + ('0' + Number(ISODate.getMonth() + 1)).slice(-2) + '/' + ISODate.getFullYear();
+        // const { data, error } = await apolloClient.query({
+        //   query: GET_SHOP_BY_FIREBASE_ID,
+        //   variables: { firebaseId: userAuth.uid },
+        //   //!useless
+        //   fetchPolicy: 'cache-first',
+        // })
+        if (isBusiness) {
           dispatch(
             login({
               email: userAuth.email,
               uid: userAuth.uid,
               idToken: idToken,
               emailVerified: userAuth.emailVerified,
-              isShop: false,
+              isBusiness,
               createdAt: date_for_redux || new Date(),
-              shopId: undefined
+              shopId: undefined,
+              accountId: tokenResult.claims.mongoId
             })
           );
-          return
-        } else if (isShop === true) {
+          const favouriteShop: ({ id: string, name: string, street: string }) = getFavouriteShopFromLocalStorage();
 
-          try {
-            const { data, error } = await apolloClient.query({
-              query: GET_SHOP_BY_FIREBASE_ID,
-              variables: { firebaseId: userAuth.uid },
-              //!useless
-              fetchPolicy: 'cache-first',
-              // nextFetchPolicy: 'cache-only',
-            })
-
-
-
+          if (favouriteShop) {
             dispatch(
-              login({
-                email: userAuth.email,
-                uid: userAuth.uid,
-                idToken: idToken,
-                emailVerified: userAuth.emailVerified,
-                isShop,
-                createdAt: date_for_redux,
-                shopId: data?.shopByFirebaseId?.id || null
+              addFavouriteShopBusiness({
+                id: favouriteShop.id,
+                name: favouriteShop.name,
+                street: favouriteShop.street
               })
-            );
-            // if(!data?.shopByFirebaseId?.id){
-            //   router.push('/shop/crea-shop')
-            // }
-          } catch (e: any) {
-            dispatch(
-              login({
-                email: userAuth.email,
-                uid: userAuth.uid,
-                idToken: idToken,
-                emailVerified: userAuth.emailVerified,
-                isShop,
-                createdAt: date_for_redux,
-                shopId: null
-              })
-            );
+            )
           }
+          getBusiness({
+            variables: {
+              id: tokenResult.claims.mongoId
+            }
+          })
+            .then(async (value) => {
+              //redirect to the right page based on status
+              const business: Business = value.data?.business
+
+              if (business?.status === 'stripe_id_requested') {
+                router.push('/shop/crea-business-account')
+              }
+
+              if (business?.status === 'onboarding_KYC_requested') {
+                router.push('/shop/continua-processo-kyc')
+              }
+
+              // if (business.status === 'active') {
+              //   router.push('/shop/home')
+              // }
+
+
+              // //?retrive account stripe
+              // const endpoint = `/api/stripe/retrieve-stripe-account?stripeId=${business.stripe.id}`
+              // const response = await fetch(endpoint, {
+              //   method: "POST",
+              //   mode: "no-cors", // no-cors, *cors, same-origin
+              //   body: JSON.stringify({ stripeId: business.stripe.id })
+              // })
+              // const result = await response.json()
+              // //console.log('ACCOUNT:', result);
+
+            })
+          return
+        }
+        if (!isBusiness && tokenResult.claims.mongoId) {
+          getUser().then((data) => {
+            if (!data.data) return
+            dispatch(
+              login({
+                email: userAuth.email,
+                uid: userAuth.uid,
+                idToken: idToken,
+                emailVerified: userAuth.emailVerified,
+                createdAt: date_for_redux || new Date(),
+                accountId: tokenResult.claims.mongoId,
+                userInfo: {
+                  name: data?.data.user.name
+                }
+              })
+            );
+
+            const carts: Cart[] = data?.data?.user.carts.carts
+            console.log(carts);
+
+            if (carts.length > 0) {
+              dispatch(
+                setCarts(carts)
+              )
+            }
+
+          })
 
         }
+
+
+
+        return
       } else {
         console.log('effettua il logout');
+
         apolloClient.clearStore()
+        dispatch(resetCarts())
         return dispatch(logout())
       }
       return
@@ -167,15 +226,16 @@ const sans = Open_Sans({ subsets: ['latin'] })
 
 
 function MyApp({ Component, pageProps }: any /* AppProps */) {
+
   const [loading, setLoading] = useState(false);
   const router = useRouter()
   useEffect(() => {
     const start = () => {
-      console.log("start");
+      //console.log("start");
       setLoading(true);
     };
     const end = () => {
-      console.log("finished");
+      //console.log("finished");
       setLoading(false);
     };
     Router.events.on("routeChangeStart", start);
@@ -224,14 +284,16 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
 
   return (
     <Provider store={store}>
+
       <ApolloProvider client={apolloClient} > {/* client={clientApollo} */}
         <ChakraProvider theme={theme}>
           <Auth>
-            <Header></Header>
             {loading ? (
               <Loading />
             ) : (
               <main className={sans.className}>
+                <Header></Header>
+
                 <Component {...pageProps} />
                 <Footer />
               </main>
@@ -240,6 +302,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
           </Auth>
         </ChakraProvider>
       </ApolloProvider>
+
     </Provider >
 
   )

@@ -3,11 +3,11 @@ import { Box, IconButton, Image, Modal, ModalBody, ModalContent, ModalOverlay, M
 import { TransformComponent, TransformWrapper } from '@pronestor/react-zoom-pan-pinch'
 import React, { useEffect, useState } from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-import { Product } from '../../src/interfaces/product.interface'
+import { Product, Variation } from '../../src/interfaces/product.interface'
 import { imageKitUrl } from '../utils/imageKitUrl'
 
-const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) => {
-    if (!product) {
+const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variation }) => {
+    if (!variation) {
         return (
             <></>
         )
@@ -27,11 +27,11 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
     }
 
     useEffect(() => {
-        if (product?.photos) {
-            setfullImage(product.photos[0])
+        if (variation?.photos) {
+            setfullImage(variation.photos[0])
         }
 
-    }, [product])
+    }, [variation])
 
     return (
         <>
@@ -41,7 +41,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
             >
                 <ModalOverlay
                     bg='blackAlpha.300'
-                    backdropFilter='blur(10px) '
+                    backdropFilter='blur(10px)'
                 />
                 <ModalContent
                     width={'fit-content'}
@@ -98,8 +98,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
 
                                                     /* onClick={onClickImageModal} */
                                                     src={imageKitUrl(fullImage)}
-                                                    alt={product.name}
-
+                                                    alt={variation.color + 'non trovato'}
                                                 />
                                             </TransformComponent>
                                         </div>
@@ -119,15 +118,15 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                     <Image
                                         /* onClick={onClickImageModal} */
 
-                                        src={imageKitUrl(fullImage)} alt={product.name} />
+                                        src={imageKitUrl(fullImage)} alt={variation.color + 'non trovato'} />
                                 </TransformComponent>
                             </TransformWrapper>
                         </div>
                     </ModalBody>
                 </ModalContent>
             </Modal>
-            <div className='flex space-x-4 w-full md:w-7/12 xl:w-5/12 '>
-                <Box onClick={zoomImage} minW='20' maxW='450' mb={[2, 5]} overflow='hidden' className='cursor-pointer'>
+            <div className='flex space-x-4 w-full md:w-7/12 xl:w-5/12'>
+                <Box onClick={zoomImage} mb={[2, 5]} overflow='hidden' className='cursor-pointer w-full'>
                     <TransformWrapper
                         maxScale={3}
                         minScale={1}
@@ -156,9 +155,10 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                     >
                                         {/* <Image borderRadius={'lg'} src={fullImage} alt='immagine non trovata' /> */}
                                         <LazyLoadImage src={imageKitUrl(fullImage)}
+
                                             //PlaceholderSrc={PlaceholderImage}
-                                            effect="blur"
-                                            alt={product.name}
+                                            //effect="blur"
+                                            alt={variation.color + 'non trovato'}
                                             className='rounded-lg w-full aspect-[8/12] object-cover'
                                         />
                                     </TransformComponent>
@@ -169,7 +169,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
 
                 </Box>
                 <div>
-                    {product?.photos && product.photos.map((image) => {
+                    {variation?.photos && variation.photos.map((image) => {
                         return (
                             <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
                                 borderWidth={1.5}
@@ -181,7 +181,7 @@ const Image_Product: React.FC<{ product: Product | undefined }> = ({ product }) 
                                 <Image src={
                                     imageKitUrl(image, 171, 247)
                                 }
-                                    alt={product.name}
+                                    alt={variation.color + 'non trovato'}
                                     width={'fit-content'}
                                     maxH={'52'}
                                     // height={'fit-content'}

@@ -2,13 +2,14 @@ import React, { Fragment, useState } from 'react'
 import Circle_Color from '../atoms/Circle_Color'
 import { Popover, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import { Box } from '@chakra-ui/react'
+import { Box, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../src/config/firebase'
 import { deleteAuthTokenInSessionStorage } from '../utils/deleteAuthTokenSessionStorage'
+import { Divider } from '@chakra-ui/react'
 
 
 
@@ -17,17 +18,18 @@ const User_Popover = () => {
     const router = useRouter();
     const user: Firebase_User = useSelector((state: any) => state?.user.user);
 
+
     const actionsNotLogged = [
-        // {
-        //     name: 'Accedi',
-        //     description: 'accedi al tuo account',
-        //     href: '/user/login?type=login',
-        // },
-        // {
-        //     name: 'Registrati',
-        //     description: 'registrati per poter usufruire di tutti i servizi',
-        //     href: '/user/login?type=registration',
-        // },
+        {
+            name: 'Accedi',
+            description: 'accedi al tuo account',
+            href: '/user/login?type=login',
+        },
+        {
+            name: 'Registrati',
+            description: 'registrati per poter usufruire di tutti i servizi',
+            href: '/user/login?type=registration',
+        },
         {
             name: 'Sei un negozio?',
             description: 'accedi o registra gratis il tuo account',
@@ -37,38 +39,66 @@ const User_Popover = () => {
 
     const actionsLogged = [
         {
-            name: 'Profilo',
-            description: user?.email || '',
+            name: 'Impostazioni',
+            description: 'gestisci le impostazioni',
+            href: '/user/settings',
+        },
+        {
+            name: 'Monitora ordini',
+            description: 'vedi i tuoi ordini',
             href: undefined,
         },
         {
-            name: 'Disconnetti',
-            description: 'accedi al tuo account',
+            name: 'Esci',
+            description: 'disconnetti accont',
             href: '/user/login?type=login',
         },
+
     ]
 
     return (
-        <Popover className="relative ">
+        <Popover className="relative top-1">
             <Popover.Button
                 type='button'
                 aria-label="user"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={`w-9 h-9 md:w-10 md:h-10  text-gray-900`}>
-                    <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-8 h-8 my-auto">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
             </Popover.Button>
             <Popover.Panel
-                className="absolute grid grid-cols-1 gap-3 cursor-pointer z-10 w-48 right-0.5 p-4 bg-gray-50 border border-gray-200 rounded-xl">
+                className="absolute grid grid-cols-1 cursor-pointer z-10 w-52 right-0.5 py-4 bg-gray-50 border border-gray-200 rounded-xl">
+                {user?.userInfo?.name &&
+                    <div className='mb-1'>
+                        <Text
+                            px={4}
+                            fontWeight={'bold'}
+                            mb={2}
+                        >
+                            Ciao {user?.userInfo?.name}!
+                        </Text>
+                        {/* <Text
+                            fontWeight={'normal'}
+                            fontSize={'xs'}
+                            color={'gray.500'}
+                            px={4}
+                            mb={2}
+                            mt={-1}
+                        >
+                            {user.email}
+                        </Text> */}
+                        <Divider />
+                    </div>
+                }
+
                 {!user ?
                     (actionsNotLogged.map((action, id) => {
                         return (
-                            <Popover.Button key={id} className='text-left hover:scale-95'>
+                            <Popover.Button key={id} className='text-left hover:scale-[0.98] px-4 py-[4px] pt-[8px]'>
                                 <Box
 
                                     onClick={() => {
                                         router.push(action.href)
-
                                     }}
                                 >
                                     <Box
@@ -92,15 +122,17 @@ const User_Popover = () => {
                         )
                     })) : (actionsLogged.map((action, id) => {
                         return (
-                            <Popover.Button key={id} className='text-left'>
+                            <Popover.Button key={id} className='text-left hover:scale-[0.98] px-4 pt-[8px]'>
                                 <Box
                                     onClick={async () => {
-                                        if (!action.href) return
-                                        router.push(action.href)
-                                        if (action.name === 'Disconnetti') {
+                                        if (action.name === 'Esci') {
+                                            console.log('eccolo');
+
                                             await signOut(auth)
                                             deleteAuthTokenInSessionStorage()
                                         }
+                                        if (!action.href) return
+                                        router.push(action.href)
                                     }}
                                 >
                                     <Box

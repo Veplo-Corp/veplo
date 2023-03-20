@@ -2,13 +2,15 @@ import userState from './reducers/user';
 import { configureStore } from '@reduxjs/toolkit';
 import addressState from './reducers/address_user';
 import modalState from './reducers/modal_error';
+import cartsState from './reducers/carts';
 
 
 export const store = configureStore({
   reducer: {
     user: userState,
     address: addressState,
-    modal: modalState
+    modal: modalState,
+    carts: cartsState
   },
 })
 

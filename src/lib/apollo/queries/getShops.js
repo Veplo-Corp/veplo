@@ -2,37 +2,38 @@ import { gql } from '@apollo/client'
 
 const GET_SHOPS_BY_LOCATION = gql`
     query shops(
-        $range: Int!
         $limit: Int!
         $offset: Int!
         $filters: ShopFilters!
     ) {
         shops(
-            range: $range
             limit: $limit
             offset: $offset
             filters: $filters
         ){
             id
+            businessId
             name
+            createdAt
             status
-            piva
-            phone
-            firebaseId
+            photo
+            isDigitalOnly
+            info{
+                phone
+                description
+                opening{
+                    days
+                    hours
+                }
+            }
             address{
                 postcode
                 city
                 street
-                location{
+                location {
                     type
                     coordinates
                 }
-            }
-            createdAt
-            photo
-            opening{
-                days
-                hours
             }
         } 
     }
