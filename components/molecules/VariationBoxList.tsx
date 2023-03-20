@@ -21,13 +21,14 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
                 className='w-2/12 max-w-[70px] rounded-md object-cover'
             />
             <Box
-                display={'flex'}
-                justifyContent={'space-between'}
-                w={'full'}
-                py={2}
-                paddingLeft={3}
+                width={'full'}
+                height={'full'}
             >
-                <Box>
+                <Box
+                    paddingLeft={3}
+                    display={'flex'}
+                    justifyContent={'space-between'}
+                >
                     <Box
                         fontSize={'normal'}
                         fontWeight={'medium'}
@@ -36,24 +37,6 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
                     >
                         {toUpperCaseFirstLetter(variation.name)} ({variation.color})
                     </Box>
-                    <Box
-                        fontSize={'xs'}
-                        fontWeight={'light'}
-                        color={'gray.500'}
-                        mt={-1}
-                    >
-                        {toUpperCaseFirstLetter(variation.brand)}
-                    </Box>
-                    <Box
-                        fontSize={'xs'}
-                        fontWeight={'normal'}
-                    >
-                        {variation.size.toUpperCase()} / Quantità {variation.quantity}
-                    </Box>
-                </Box>
-                <Box
-                    display={'grid'}
-                >
                     <Text
                         cursor={'pointer'}
                         color={'red.500'}
@@ -67,46 +50,82 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
                         </svg>
 
                     </Text>
+                </Box>
+                <Box
+                    display={'flex'}
+                    justifyContent={'space-between'}
+                    paddingLeft={3}
+                    width={'full'}
+                    height={'full'}
+
+                >
                     <Box
-                        display={'grid'}
-                        alignItems={'end'}
                     >
                         <Box
-                            fontSize={'sm'}
-                            fontWeight={'normal'}
-                            display={'flex'}
+                            fontSize={'xs'}
+                            fontWeight={'light'}
+                            color={'gray.500'}
+                            mt={-1}
                         >
-                            <p
-                                className={`${variation?.price.v2 && variation?.price?.v2 > 0 ? 'line-through  text-gray-400' : 'font-semibold'}`}
-                            > {variation.price.v1.toString().replace('.', ',')} €
-                            </p>
-                            {variation?.price.v2 && variation.price.v2 > 0 &&
-                                <p
-                                    className='font-semibold ml-1'
-                                >{variation?.price.v2 && variation.price.v2.toString().replace('.', ',')} € </p>
-                            }
+                            {toUpperCaseFirstLetter(variation.brand)}
                         </Box>
                         <Box
-                            display={'flex'}
-                            justifyContent={'end'}
+                            fontSize={'xs'}
+                            fontWeight={'normal'}
                         >
-                            {variation?.price.discountPercentage && variation.price.discountPercentage > 0 &&
-                                <Tag
-                                    size={'sm'}
-                                    width={'fit-content'}
-                                    color={'white'}
-                                    bgColor={'#38A736'}
-                                    borderRadius={'full'}
-                                    fontSize={'2xs'}
-                                    height={'fit-content'}
-                                    mt={[0, -1]}
-                                >- {variation.price.discountPercentage.toString().replace('.', ',')} %
-                                </Tag>}
+                            {variation.size.toUpperCase()} / Quantità {variation.quantity}
                         </Box>
+                    </Box>
 
+                    <Box
+                        display={'grid'}
+                        pt={2}
+                    >
+
+                        <Box
+                            display={'grid'}
+                            alignItems={'end'}
+                        >
+                            <Box
+                                fontSize={'sm'}
+                                fontWeight={'normal'}
+                                display={'flex'}
+                            >
+                                <p
+                                    className={`${variation?.price.v2 && variation?.price?.v2 > 0 ? 'line-through  text-gray-400' : 'font-semibold'}`}
+                                > {variation.price.v1.toString().replace('.', ',')} €
+                                </p>
+                                {variation?.price.v2 && variation.price.v2 > 0 &&
+                                    <p
+                                        className='font-semibold ml-1'
+                                    >{variation?.price.v2 && variation.price.v2.toString().replace('.', ',')} € </p>
+                                }
+                            </Box>
+                            <Box
+                                display={'flex'}
+                                justifyContent={'end'}
+                            >
+                                {variation?.price.discountPercentage && variation.price.discountPercentage > 0 &&
+                                    <Tag
+                                        size={['xs', 'sm']}
+                                        px={2}
+                                        py={1}
+                                        width={'fit-content'}
+                                        color={'white'}
+                                        bgColor={'#38A736'}
+                                        borderRadius={'full'}
+                                        fontSize={'2xs'}
+                                        height={'fit-content'}
+                                    >- {variation.price.discountPercentage.toString().replace('.', ',')} %
+                                    </Tag>}
+                            </Box>
+
+                        </Box>
                     </Box>
                 </Box>
             </Box>
+
+
 
         </Box>
     )
