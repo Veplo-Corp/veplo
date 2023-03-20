@@ -66,7 +66,7 @@ const Header = () => {
                         }
                     </div>
 
-                    <div className="hidden lg:flex lg:flex-1 lg:justify-end ">
+                    <div className="flex lg:flex-1 lg:justify-end ">
                         {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isBusiness) &&
                             <div className='flex gap-3'>
                                 <Box
