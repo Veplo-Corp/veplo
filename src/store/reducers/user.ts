@@ -19,7 +19,11 @@ export const userState = createSlice({
   initialState: initialState,
   reducers: {
     login: (state, action) => {
-      state.user = action.payload;
+      state.user = {
+        genderSelected: state?.user.genderSelected ? state?.user.genderSelected : '',
+        ...action.payload,
+
+      }
     },
     logout: (state) => {
       state.user = undefined
@@ -41,13 +45,18 @@ export const userState = createSlice({
           name: action.payload
         }
       }
+    },
+
+    changeGenderSelected: (state, action) => {
+      state.user = {
+        ...state.user,
+        genderSelected: action.payload
+      }
     }
-
-
   },
 });
 
-export const { login, logout, addFavouriteShopBusiness, changeName } = userState.actions;
+export const { login, logout, addFavouriteShopBusiness, changeName, changeGenderSelected } = userState.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUser = (state: RootState) => state.user.user;

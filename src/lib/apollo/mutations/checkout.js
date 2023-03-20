@@ -2,10 +2,10 @@ import { gql } from '@apollo/client';
 
 const CRATE_CHECKOUT_URL = gql`
     mutation checkout(
-        $cartId: ID!
+        $shopId: ID!
     ) {
         checkout(
-            cartId: $cartId
+            shopId: $shopId
         )
     }
 `

@@ -1,21 +1,25 @@
+import { useLazyQuery } from '@apollo/client';
 import { Button, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useDispatch } from 'react-redux';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
 import Box_Dress from '../../../../components/molecules/Box_Dress';
 import FIlter_Button from '../../../../components/molecules/FIlter_Button';
 import PostMeta from '../../../../components/organisms/PostMeta';
 import { findMacrocategoryName } from '../../../../components/utils/find_macrocategory_name';
 import getGenderandMacrocategory from '../../../../components/utils/get_Gender_and_Macrocategory';
+import { setInLocalStorage } from '../../../../components/utils/setInLocalStorage';
 import { toProductPage } from '../../../../components/utils/toProductPage';
 import { Product } from '../../../interfaces/product.interface';
 import { initApollo } from '../../../lib/apollo';
 import GET_PRODUCTS from '../../../lib/apollo/queries/getProducts';
+import { changeGenderSelected } from '../../../store/reducers/user';
 
 
-const RANGE = 6
+const RANGE = 5
 
 
 export async function getStaticPaths() {
@@ -39,7 +43,6 @@ export async function getStaticProps(ctx: any) {
         const { data, errors } = await apolloClient.query({
             query: GET_PRODUCTS,
             variables: {
-                range: 10000,
                 offset: 0,
                 limit: RANGE,
                 filters: {
@@ -51,7 +54,7 @@ export async function getStaticProps(ctx: any) {
 
         return {
             props: {
-                gender: elementGenderMacrocategory.gender,
+                gender: elementGenderMacrocategory.gender === 'uomo' ? 'm' : 'f',
                 category: macrogategoryName,
                 products: data?.products,
             },
@@ -78,11 +81,64 @@ export async function getStaticProps(ctx: any) {
 
 
 const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = ({ products, category, gender }) => {
+
     const router = useRouter();
     const [loading, setLoading] = useState(false);
-    const [hasMoreData, setHasMoreData] = useState(false);
+    const [hasMoreData, setHasMoreData] = useState(true);
     const [productsFounded, setproductsFounded] = useState<Product[]>([])
-    const fetchMoreData = () => {
+    const dispatch = useDispatch();
+    const [getProducts, productsFounder] = useLazyQuery(GET_PRODUCTS);
+
+
+    console.log(productsFounder);
+
+
+
+    const fetchMoreData = async () => {
+
+
+        //TODO filter
+        // let filters: any = createFilterObject(
+        //     brands,
+        //     minPrice,
+        //     maxPrice,
+        //     colors,
+        //     sizes
+        //   )
+
+
+        if (products.length % RANGE !== 0 || productsFounder?.data?.products.length === 0) {
+            setHasMoreData(false)
+            return console.log('no more data');
+        }
+
+        console.log(productsFounded.length);
+
+        const newProducts = await getProducts({
+            variables: {
+                offset: productsFounded.length,
+                limit: RANGE,
+                filters: {
+                    macroCategory: category,
+                    gender: gender
+                }
+            }
+        })
+
+
+        if (newProducts.data?.products) {
+            setproductsFounded(prevstate => {
+                return [
+                    ...prevstate,
+                    ...newProducts.data?.products
+                ]
+            })
+
+            if (newProducts.data?.products.length % RANGE !== 0 || newProducts.data?.products.length === 0) {
+                setHasMoreData(false)
+                return console.log('no more data');
+            }
+        }
 
     }
 
@@ -90,9 +146,20 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
         setproductsFounded(products)
     }, [products])
 
+
     const resetFilter = () => {
 
     }
+
+    useEffect(() => {
+        if (gender) {
+            setInLocalStorage('genderSelected', gender)
+            dispatch(
+                changeGenderSelected(gender)
+            );
+        }
+    }, [gender])
+
 
 
 
@@ -107,20 +174,21 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                     image={''}
                     description={`Tutto l'abbigliamento ${gender} - ${category === '' ? 'Vestiti' : category} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
                 />
-
+                {gender &&
+                    <Text
+                        fontSize={'lg'}
+                        fontWeight={'semibold'}
+                        marginBottom={4}
+                    >
+                        {gender === 'f' ? 'Donna' : 'Uomo'} | {category ? category : "tutto l'abbligliamento"}
+                    </Text>
+                }
                 {!loading && <InfiniteScroll
                     dataLength={productsFounded.length}
                     next={fetchMoreData}
                     hasMore={hasMoreData}
                     loader={
                         <>
-                            {/* <Center color='white'>
-                  <Spinner
-                    size='lg'
-                    emptyColor='gray.100'
-                    color='grey.300'
-                  />
-                </Center> */}
                             {productsFounded[3] && <Text textAlign={'center'}
                                 fontWeight={'bold'}
                             >
@@ -130,11 +198,7 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                     }
                     endMessage={
                         <></>
-                        // <Text textAlign={'center'}
-                        //   fontWeight={'bold'}
-                        // >
-                        //   Hai visualizzato tutti i prodotti
-                        // </Text>
+
                     }
                 >
                     <div className={` flex items-center justify-center`}>

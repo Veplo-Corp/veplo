@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Firebase_User } from '../../src/interfaces/firebase_user.interface';
 import { Mapbox_Result } from '../../src/interfaces/mapbox_result.interface';
 import { CATEGORIES, Categories } from '../mook/categories';
 import createUrlSchema from '../utils/create_url';
@@ -18,6 +19,9 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any }> =
     }, [gender])
 
 
+
+
+
     const handleClickCategory = (categorySelected: string) => {
         let gender: string = 'donna'
         if (indexCategory === 1) {
@@ -25,10 +29,10 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any }> =
         }
         const categoryForUrl = Object.values(categories)[indexCategory]?.abbigliamento.find(category => category.name === categorySelected)?.url
         if (!categoryForUrl) {
-            router.push(`/prodotti/${gender}/abbigliamento`)
+            router.push(`/prodotti/${gender}-abbigliamento`)
         } else {
             const categorySelectedUrl = createUrlSchema([gender, categoryForUrl])
-            router.push(`/prodotti/${gender}/${categorySelectedUrl}`)
+            router.push(`/prodotti/${categorySelectedUrl}`)
         }
         closeCategory()
     }

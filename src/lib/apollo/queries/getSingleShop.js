@@ -41,45 +41,39 @@ const GET_SHOP_AND_PRODUCTS = gql`
             ) {
                 id
                 name
-                canBuy
                 status
+                canBuy
+                info {
+                    gender
+                    macroCategory
+                    microCategory
+                    brand
+                    fit
+                }
+                variations{
+                id
+                color
+                status
+                photos
+                lots {
+                    size
+                    quantity
+                    }
+                }
                 price {
                     v1
                     discountPercentage
                     v2
                 }
-                info{
-                    gender
-                    macroCategory
-                    microCategory
-                    brand
-                }
-                location {
-                    type
-                    coordinates
-                }
                 shopInfo{
                     id
                     businessId
-                    name
+                    name 
                     city
                     status
                 }
-                variations{
-                    color
-                    status
-                    price {
-                        v1
-                        discountPercentage
-                        v2
-                    }
-                    photos
-                    lots{
-                        size
-                        quantity
-                    }
-                }
             }
+            
         } 
     }
 `

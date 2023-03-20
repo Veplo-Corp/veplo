@@ -69,7 +69,7 @@ const Box_Dress: React.FC<{ product: Product; }> = ({ product }) => {
                 <Box
                     // mt='1'
                     zIndex={50}
-                    fontWeight='name'
+                    fontWeight='semibold'
                     as='h2'
                     lineHeight='tight'
                     noOfLines={1}
@@ -85,40 +85,24 @@ const Box_Dress: React.FC<{ product: Product; }> = ({ product }) => {
                             as='h1'
                             noOfLines={1}
                             lineHeight='tight'
-                            fontSize={['xs', 'sm']}
+                            fontSize={['2xs', 'xs']}
                             className='italic'
                         >
-                            {product.brand}
+                            {product.info.brand}
                         </Box>
                         <Box
 
-                            fontWeight='bold'
+                            fontWeight='semibold'
                             as='h1'
                             fontSize={['xs', 'sm']}
                             noOfLines={1}
                             mt={-1}
                         >
-                            {product.name.toUpperCase()}
+                            {product.name.toUpperCase()} - {product.info.microCategory}
                             {/* {height} - {width} */}
                         </Box>
                     </div>
-                    {/* <Box
-                    
-                        fontWeight='medium'
-                        as='h1'
-                        fontSize={['sm', 'xs']}
-                        noOfLines={1}
-                        mt={-1}
-                        my={'auto'}
-                        px={'2'}
-                        py={'1'}
-                        background={'green.700'}
-                        color={'white'}
-                        rounded={'3xl'}
-                    >
-                        -{product.price?.discountPercentage.toString().replace('.', ',')}%
-                       
-                    </Box> */}
+
                 </div>
 
                 <div className='flex justify-between mr-1'>

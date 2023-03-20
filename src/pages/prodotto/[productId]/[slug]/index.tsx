@@ -33,6 +33,8 @@ import { Cart, ProductVariation } from '../../../../interfaces/carts.interface';
 import { editVariationFromCart } from '../../../../store/reducers/carts';
 import { Firebase_User } from '../../../../interfaces/firebase_user.interface';
 import { newTotalHandler } from '../../../../../components/utils/newTotalHandler';
+import { setInLocalStorage } from '../../../../../components/utils/setInLocalStorage';
+import { changeGenderSelected } from '../../../../store/reducers/user';
 
 export async function getStaticPaths() {
     return {
@@ -142,7 +144,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     const [openDrawerCart, setOpenDrawerCart] = useState(false)
     const [editCart] = useMutation(EDIT_CART);
     const cartsDispatchProduct: Cart[] = useSelector((state: any) => state.carts.carts);
-    const { uid }: Firebase_User = useSelector((state: any) => state.user.user);
+    const user: Firebase_User = useSelector((state: any) => state.user.user);
 
     const dispatch = useDispatch();
 
@@ -183,6 +185,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
 
 
+
     useEffect(() => {
         if (!product) return
         //const category = createTextCategory(product.info.macroCategory, product.info.microCategory)
@@ -196,10 +199,20 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
             )
         }
 
+        setInLocalStorage('genderSelected', product.info.gender)
+        dispatch(
+            changeGenderSelected(product.info.gender)
+        );
+
         //! lista di prodotti del negozio
         const fetchData = async () => {
             await getFilterProduct({
-                variables: { id: product.shopInfo.id, limit: 5, offset: 0, see: null },
+                variables: {
+                    id: product.shopInfo.id,
+                    limit: 5,
+                    offset: 0,
+                    see: null
+                },
             })
         }
 
@@ -234,7 +247,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
         //     })
         //     if (error) return
         //     window.open(
-        //         `https://wa.me/+39${data.shop.phone}?text=ciao, ero su Veplo.it e stavo visitando il tuo negozio ${product.shopOptions.name}. Avrei bisogno di una informazione sul prodotto *${product.name} - ${product.brand}*`
+        //         `https://wa.me/+39${data.shop.phone}?text=ciao, ero su Veplo.it e stavo visitando il tuo negozio ${product.shopOptions.name}. Avrei bisogno di una informazione sul prodotto *${product.name} - ${product.info.brand}*`
         //         , '_blank')
         // } catch (e) {
         //     console.log(e);
@@ -267,6 +280,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     }
 
     const addToCart = async (product: Product) => {
+        //qui si invita a fare login
+        if (!user?.uid) { return }
+
 
         if (!sizeSelected || !colorSelected) {
             setisOpenModalSize(true)
@@ -382,7 +398,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
                 NewCart = {
                     id: 'cartId',
-                    userId: uid,
+                    userId: user.uid,
                     shopInfo: {
                         id: product.shopInfo.id,
                         name: product.shopInfo.name,
@@ -436,10 +452,10 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                 <PostMeta
                     canonicalUrl={'https://www.veplo.it' + router.asPath}
                     //riverdere length description 150 to 160
-                    title={`${product.name.toUpperCase()} ${product.brand} - ${product.info.macroCategory} - ${product.shopInfo.city} - Veplo.it`}
-                    subtitle={`${product.name.toUpperCase()} ${product.brand} - ${product.info.macroCategory} a ${product.price.v2 ? product.price.v2 : product.price.v1}€ | vivi Veplo`}
+                    title={`${product.name.toUpperCase()} ${product.info.brand} - ${product.info.macroCategory} - ${product.shopInfo.city} - Veplo.it`}
+                    subtitle={`${product.name.toUpperCase()} ${product.info.brand} - ${product.info.macroCategory} a ${product.price.v2 ? product.price.v2 : product.price.v1}€ | vivi Veplo`}
                     image={imageKitUrl(variationSelected.photos[0], 171, 247)}
-                    description={`${product.name.toUpperCase()} ${product.brand} - ${product.info.macroCategory} - Veplo.it`} />
+                    description={`${product.name.toUpperCase()} ${product.info.brand} - ${product.info.macroCategory} - Veplo.it`} />
 
                 <div className='md:flex justify-between w-full '>
                     <Image_Product variation={variationSelected} />
@@ -463,7 +479,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             fontSize='xl'
                             className='italic'
                         >
-                            {product.brand}
+                            {product.info.brand}
                         </Box>
                         <Box
                             fontWeight='bold'
@@ -596,15 +612,10 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
                             <div className="overflow-x-scroll flex gap-4 ">
                                 {shopProductsData && shopProductsData?.data?.shop.products.map((element: Product) => {
-                                    // return (
-                                    //     <div key={element.id}>
-                                    //         {element.name}
-                                    //     </div>
-                                    // )
 
                                     return (
                                         <Link key={element.id} href={`/prodotto/${element.id}/${toProductPage(element)}`}>
-                                            <div className={`${element.id !== product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
+                                            <div className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
                                                 <Box borderRadius='lg' overflow='hidden'
                                                     borderWidth={0.5}
                                                     className={`w-36`}/*  aspect-[8.5/12] */
@@ -631,7 +642,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                         mt={'1'}
                                                         mb={-1}
                                                     >
-                                                        {element.brand}
+                                                        {element.info.brand}
                                                     </Box>
                                                     <Box
                                                         fontWeight='semibold'

@@ -38,10 +38,9 @@ export async function getStaticProps(ctx: any) {
 
     const { data } = await apolloClient.query({
         query: GET_SHOP_AND_PRODUCTS,
-        variables: { id: shopId, limit: 4, offset: 0, see: null },
-        //!useless
-        // fetchPolicy: 'cache-first',
-        // nextFetchPolicy: 'cache-only',
+
+        variables: { id: shopId, limit: 50, offset: 0, see: null },
+
     })
     console.log(data);
 
@@ -59,21 +58,7 @@ export async function getStaticProps(ctx: any) {
 
 const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
     console.log(shop);
-
-
-    useEffect(() => {
-        const funzione = async () => {
-            // const shoppe = await apolloClient.query({
-            //     query: GET_SHOP_AND_PRODUCTS,
-            //     variables: { id: '6404ac018bcdffb859c5b5b7', limit: 4, offset: 0, see: null },
-            // })
-            // console.log(shoppe);ù
-
-
-
-        }
-        funzione()
-    }, [])
+    //TODO lazyload scroll products
 
 
 
@@ -106,50 +91,7 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
         setproductsFounded(shop.products)
     }, [shop])
 
-    const fetchMoreData = async () => {
-        const plus_for_limit = 4;
-        if (productsFounded.length % plus_for_limit !== 0) {
-            return setHasMoreData(false)
-        }
-        if (productsFounded.length > plus_for_limit && productsFounded.length % plus_for_limit === 0) {
-            console.log('Passa pure qui');
-            const fetchMoreProducts = await fetchMore({
-                variables: {
-                    offset: productsFounded.length,
-                    limit: plus_for_limit
-                },
-            })
-            setproductsFounded((prevstate: Product[]) => {
-                return [
-                    ...prevstate,
-                    ...fetchMoreProducts.data.shop?.products
-                ]
-            })
-            return console.log(fetchMoreProducts.data.shop?.products);
-        }
-        if (productsFounded.length === plus_for_limit) {
-            console.log('Passa qui');
 
-            const fetchMoreProducts = await getMoreProducts({
-                variables: {
-                    id: shop.id,
-                    limit: plus_for_limit,
-                    offset: productsFounded.length
-                },
-            })
-            setproductsFounded((prevstate: Product[]) => {
-                return [
-                    ...prevstate,
-                    ...fetchMoreProducts.data.shop?.products
-                ]
-            })
-            return console.log(fetchMoreProducts.data.shop?.products);
-        }
-
-
-
-
-    }
 
 
 
@@ -199,7 +141,6 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
                                 fontSize='11px'
                                 mt={-1}
                                 display={'flex'}
-                                className='cursor-pointer'
                             >
                                 <span>
                                     {shop.address.city}, {shop.address.street}
@@ -275,43 +216,20 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
             >
                 tutti i prodotti
             </Box>
-            <InfiniteScroll
-                dataLength={productsFounded.length}
-                next={fetchMoreData}
-                hasMore={hasMoreData}
-                loader={
-                    <>
-                        {productsFounded[3] &&
-                            <Text textAlign={'center'}
-                                fontWeight={'bold'}
-                            >
-                                caricamento
-                            </Text>}
-                    </>
-                }
-                endMessage={
-                    <></>
-                    // <Text textAlign={'center'}
-                    //   fontWeight={'bold'}
-                    // >
-                    //   Hai visualizzato tutti i prodotti
-                    // </Text>
-                }
-            >
-                {productsFounded &&
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
-                        {productsFounded.map((product) => {
-                            return (
-                                <Link key={product.id} href={`/prodotto/${product.id}/${toProductPage(product)}`}>
-                                    <Box_Dress eventHandler={toProductPageUrl} product={product}
-                                        toShop={() => { }}
-                                    ></Box_Dress>
-                                </Link>
-                            )
-                        })}
-                    </div>}
 
-            </InfiniteScroll>
+            {productsFounded &&
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
+                    {productsFounded.map((product) => {
+                        return (
+                            <Link key={product.id} href={`/prodotto/${product.id}/${toProductPage(product)}`}>
+                                <Box_Dress product={product}
+
+                                ></Box_Dress>
+                            </Link>
+                        )
+                    })}
+                </div>}
+
             <Modal_Info_Store isOpen={isOpen} onClose={() => setIsOpen(false)} shop={shop} />
 
         </Desktop_Layout>

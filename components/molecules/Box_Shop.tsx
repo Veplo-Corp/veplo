@@ -8,7 +8,10 @@ import isShopOpen from '../utils/isShopOpen';
 import { imageKitUrl } from '../utils/imageKitUrl';
 
 const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ shop, eventHandler, scale }) => {
-    const [isOpen, setisOpen] = useState(isShopOpen(shop.opening.days, shop.opening.hours))
+    const [isOpen, setisOpen] = useState(isShopOpen(shop?.info?.opening.days, shop?.info?.opening.hours))
+
+
+
 
     return (
         <Box onClick={() => eventHandler(shop)} width={'full'}

@@ -40,7 +40,7 @@ const index = () => {
         try {
             const create = await checkoutUrlMutation({
                 variables: {
-                    cartId: cart?.id
+                    shopId: cart?.shopInfo.id
                 }
             })
             setIsDisabled(false)
