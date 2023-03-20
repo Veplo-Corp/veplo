@@ -8,6 +8,8 @@ import CategoryNavbar from '../molecules/CategoryNavbar';
 import { Box } from '@chakra-ui/react';
 import Drawer_Menu from './Drawer_Menu';
 import CartDrawer from './CartDrawer';
+import Drawer_User_Search from './Old-Drawer_User_Search';
+import DrawerSearchProducts from './DrawerSearchProducts';
 
 const Header = () => {
 
@@ -15,7 +17,7 @@ const Header = () => {
     const [showMacrocategory, setshowMacrocategory] = useState(true)
     const [openDrawerBusinessAccount, setopenDrawerBusinessAccount] = useState(false)
     const [openDrawerCart, setOpenDrawerCart] = useState(false)
-
+    const [isOpenUserDrawerSearch, setisOpenUserDrawerSearch] = useState(false)
 
     const searchCategory = () => {
         // if (!address_user) {
@@ -73,6 +75,19 @@ const Header = () => {
                                     marginY={'auto'}
                                     height={'fit-content'}
                                     onClick={() => {
+                                        setisOpenUserDrawerSearch(true)
+                                    }}
+                                    cursor={'pointer'}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-7 h-7">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                                    </svg>
+
+                                </Box>}
+                                {user?.uid && <Box
+                                    marginY={'auto'}
+                                    height={'fit-content'}
+                                    onClick={() => {
                                         setOpenDrawerCart(true)
                                     }}
                                     cursor={'pointer'}
@@ -113,6 +128,7 @@ const Header = () => {
             </header>
             {user?.isBusiness && <Drawer_Menu isOpen={openDrawerBusinessAccount} user={user} closeDrawer={closeDrawerBusinessAccount} />}
             <CartDrawer isOpen={openDrawerCart} closeDrawer={() => setOpenDrawerCart(false)} />
+            <DrawerSearchProducts isOpen={isOpenUserDrawerSearch} closeDrawer={() => setisOpenUserDrawerSearch(false)} />
         </>
 
     )
