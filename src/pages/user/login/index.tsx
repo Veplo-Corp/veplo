@@ -29,7 +29,9 @@ const index = () => {
   useEffect(() => {
     if (user && user?.shopId) {
       router.push('/shop/prodotti')
-    } if (user?.uid && !user?.Not_yet_Authenticated_Request) {
+    }
+    //da rivedere
+    if (user?.uid && !user?.Not_yet_Authenticated_Request) {
       router.push('/')
     }
     if (type) {
