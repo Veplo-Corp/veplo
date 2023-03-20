@@ -91,7 +91,7 @@ const User_Popover = () => {
                     </div>
                 }
 
-                {!user ?
+                {!user?.uid ?
                     (actionsNotLogged.map((action, id) => {
                         return (
                             <Popover.Button key={id} className='text-left hover:scale-[0.98] px-4 py-[4px] pt-[8px]'>

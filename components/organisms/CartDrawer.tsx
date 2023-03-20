@@ -189,7 +189,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
         <Drawer
             isOpen={isOpen}
             placement='right'
-            size={['full', 'md']}
+            size={['xs', 'md']}
             onClose={closeDrawer}
         >
             <DrawerOverlay />

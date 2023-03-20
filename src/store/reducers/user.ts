@@ -20,7 +20,7 @@ export const userState = createSlice({
   reducers: {
     login: (state, action) => {
       state.user = {
-        genderSelected: state?.user.genderSelected ? state?.user.genderSelected : '',
+        genderSelected: state?.user?.genderSelected ? state?.user?.genderSelected : '',
         ...action.payload,
 
       }
