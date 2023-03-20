@@ -14,7 +14,7 @@ export default async function handler(
             const accountLink = await stripe.accountLinks.create({
                 account: stripeId,
                 refresh_url: 'https://www.veplo.it',
-                return_url: 'https://www.veplo.it/shop/prodotti',
+                return_url: 'https://www.veplo.it/shop/home',
                 type: 'account_onboarding',
             });
             console.log(accountLink.url);
