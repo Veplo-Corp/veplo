@@ -31,11 +31,12 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
         }
         console.log(catObject);
         const categoryForUrl = Object.values(categories)[indexArray].abbigliamento.find(category => category.name === catObject)?.url
+
         if (!categoryForUrl) {
             router.push(`/prodotti/${gender}-abbigliamento`)
         } else {
             const categorySelectedUrl = createUrlSchema([gender, categoryForUrl])
-            router.push(`/prodotti/${gender}-${categorySelectedUrl}`)
+            router.push(`/prodotti/${categorySelectedUrl}`)
         }
         closeDrawer()
     }

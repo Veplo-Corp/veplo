@@ -216,11 +216,8 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                 </DrawerHeader>
                 <DrawerBody
                     padding={[3, 4]}
-
                 >
-                    <VStack gap={4}
-
-                    >
+                    <VStack gap={4}>
                         {cartsDispatch && cartsDispatch.map((cart, index) => {
                             return (
                                 <Box key={index} width={'full'}>
@@ -231,7 +228,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                                             fontSize={'2xl'}
                                             fontWeight={'bold'}
                                             mb={3}
-                                        >{cart.shopInfo.name}</Text>
+                                        >{toUpperCaseFirstLetter(cart.shopInfo.name)}</Text>
                                         <VStack
                                             gap={1}
                                         >
