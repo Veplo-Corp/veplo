@@ -29,7 +29,7 @@ const index = () => {
   useEffect(() => {
     if (user && user?.shopId) {
       router.push('/shop/prodotti')
-    } if (user && !user?.Not_yet_Authenticated_Request) {
+    } if (user?.uid && !user?.Not_yet_Authenticated_Request) {
       router.push('/')
     }
     if (type) {
