@@ -132,7 +132,6 @@ const OldHeader = () => {
             <Drawer_User_Search handleChangeAddress={() => {
                 setopenDrawer(Math.random())
             }} address_user={address_user} openDrawerMath={openDrawerSearch} />
-            {user?.isBusiness && <Drawer_Menu openDrawerMath={openDrawerMenu} user={user} onCloseModal={() => { setOpenDrawerMenu(1) }} />}
 
             {!user && <JoinUs_Navbar />}
 
@@ -276,14 +275,7 @@ const OldHeader = () => {
                     } */}
                 </div>
             </div>
-            {showCategory.show &&
-                <Show_Categories_NavBar gender={showCategory.gender} closeCategory={handleShowCategory} closeShowCategory={() => {
-                    setshowCategory({
-                        show: false,
-                        gender: ''
-                    })
-                }} />
-            }
+
         </div >
 
     )
