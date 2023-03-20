@@ -17,24 +17,35 @@ import Link from 'next/link';
 
 
 
-export async function getStaticProps() {
-    const apolloClient = initApollo()
-    const { data, error } = await apolloClient.query({
-        query: GET_SHOPS_BY_LOCATION,
-        variables: {
-            limit: 10,
-            offset: 0,
-            filters: {
+export const getStaticProps = async () => {
+    const apolloClient = initApollo();
+    try {
+        const { data, error } = await apolloClient.query({
+            query: GET_SHOPS_BY_LOCATION,
+            variables: {
+                limit: 10,
+                offset: 0,
+                filters: {
 
-            }
-        },
-    })
-    return {
-        props: {
-            shops: data.shops
-        },
-        revalidate: 60, // In seconds
+                }
+            },
+        })
+        return {
+            props: {
+                shops: data.shops
+            },
+            revalidate: 60, // In seconds
+        }
     }
+    catch {
+        return {
+            props: {
+                shops: []
+            },
+            revalidate: 60, // In seconds
+        }
+    }
+
 }
 
 const index: FC<{ shops: Shop[] }> = ({ shops }) => {
