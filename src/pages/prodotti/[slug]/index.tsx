@@ -66,7 +66,7 @@ export async function getStaticProps(ctx: any) {
 
         return {
             props: {
-                gender: elementGenderMacrocategory.gender,
+                gender: elementGenderMacrocategory.gender === 'uomo' ? 'm' : 'f',
                 category: elementGenderMacrocategory.macrocategory,
                 products: [],
                 errorLog: 'errore'

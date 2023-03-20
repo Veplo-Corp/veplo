@@ -33,10 +33,9 @@ const Home: NextPage = () => {
   useEffect(() => {
     const genderSelected = getFromLocalStorage('genderSelected')
     if (!genderSelected) {
-      setshowHome(true)
+      return setshowHome(true)
     }
 
-    console.log(genderSelected);
 
     if (genderSelected === 'f') {
 
