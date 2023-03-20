@@ -33,17 +33,17 @@ const CategoryNavbar: FC<{ showMacrocategory: boolean }> = ({ showMacrocategory 
     }, [showMacrocategory])
 
     useEffect(() => {
-        if (user.genderSelected) {
+        if (user?.genderSelected) {
             findGenderSelected()
         }
     }, [user])
 
     const findGenderSelected = () => {
         let gender: string = '';
-        if (user.genderSelected === 'f') {
+        if (user?.genderSelected === 'f') {
             gender = 'donna'
         }
-        if (user.genderSelected === 'm') {
+        if (user?.genderSelected === 'm') {
             gender = 'uomo'
         }
         if (gender !== '') {
