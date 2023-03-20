@@ -1,14 +1,23 @@
 import { Box, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { CATEGORIES } from '../mook/categories'
 import { Disclosure, Tab } from '@headlessui/react'
 import createUrlSchema from '../utils/create_url'
+import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
+import { useSelector } from 'react-redux'
 
 const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, closeDrawer }) => {
-    const [selectedIndex, setSelectedIndex] = useState(2)
+    const [selectedIndex, setSelectedIndex] = useState(0)
     const [categories] = useState(CATEGORIES)
     const router = useRouter();
+    const user: Firebase_User = useSelector((state: any) => state.user.user);
+
+    useEffect(() => {
+        if (user?.genderSelected) {
+            setSelectedIndex(user?.genderSelected === 'm' ? 1 : 0)
+        }
+    }, [user])
 
 
     const classNames = (...classes: any[]) => {
