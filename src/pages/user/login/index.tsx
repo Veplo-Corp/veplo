@@ -30,7 +30,7 @@ const index = () => {
     if (user && user?.shopId) {
       router.push('/shop/prodotti')
     }
-    //da rivedere
+    //da rivedere la logica
     if (user?.uid && !user?.Not_yet_Authenticated_Request) {
       router.push('/')
     }
