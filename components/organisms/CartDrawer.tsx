@@ -12,6 +12,7 @@ import EDIT_CART from '../../src/lib/apollo/mutations/editCart'
 import { editVariationFromCart } from '../../src/store/reducers/carts'
 import { newTotalHandler } from '../utils/newTotalHandler'
 import VariationBoxList from '../molecules/VariationBoxList'
+import { sortShopsInCart } from '../utils/sortShopsInCart'
 
 const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, closeDrawer }) => {
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
@@ -152,13 +153,13 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
         let NewCarts: Cart[] = [];
 
         if (editedCart.total > 0) {
-            NewCarts = [
+            NewCarts = sortShopsInCart([
                 ...cartsDispatch.filter(cart => cart.shopInfo.id !== editedCart?.shopInfo.id),
                 editedCart
-            ]
+            ])
         } else {
-            NewCarts = [
-                ...cartsDispatch.filter(cart => cart.shopInfo.id !== editedCart?.shopInfo.id)]
+            NewCarts = sortShopsInCart([
+                ...cartsDispatch.filter(cart => cart.shopInfo.id !== editedCart?.shopInfo.id)])
         }
 
 

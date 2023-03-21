@@ -71,7 +71,8 @@ const Header = () => {
                     <div className="flex lg:flex-1 lg:justify-end ">
                         {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isBusiness) &&
                             <div className='flex gap-3'>
-                                {user?.uid && <Box
+                                <Box
+                                    className='flex lg:hidden'
                                     marginY={'auto'}
                                     height={'fit-content'}
                                     onClick={() => {
@@ -83,7 +84,7 @@ const Header = () => {
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                                     </svg>
 
-                                </Box>}
+                                </Box>
                                 {user?.uid && <Box
                                     marginY={'auto'}
                                     height={'fit-content'}

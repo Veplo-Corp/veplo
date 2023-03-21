@@ -1,3 +1,4 @@
+import { sortShopsInCart } from './../../../components/utils/sortShopsInCart';
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
@@ -23,7 +24,9 @@ export const userState = createSlice({
     initialState,
     reducers: {
         setCarts: (state, action) => {
-            state.carts = action.payload;
+            //console.log(action.payload);
+
+            state.carts = sortShopsInCart(action.payload);
         },
         editVariationFromCart: (state, action) => {
             state.carts = action.payload.carts
