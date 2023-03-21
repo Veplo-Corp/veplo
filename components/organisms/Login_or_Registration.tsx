@@ -123,7 +123,7 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
                         value={email}
                         autoComplete={'on'}
                         onChange={emailHandler}
-                        type="text" name="email" id="email"
+                        type="email" name="email" id="email"
                         fontWeight={'medium'}
                         _placeholder={{
                             color: "gray.600"

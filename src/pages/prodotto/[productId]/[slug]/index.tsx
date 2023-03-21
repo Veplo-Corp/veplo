@@ -35,6 +35,8 @@ import { Firebase_User } from '../../../../interfaces/firebase_user.interface';
 import { newTotalHandler } from '../../../../../components/utils/newTotalHandler';
 import { setInLocalStorage } from '../../../../../components/utils/setInLocalStorage';
 import { changeGenderSelected } from '../../../../store/reducers/user';
+import { sortShopsInCart } from '../../../../../components/utils/sortShopsInCart';
+import { handleErrorGraphQL } from '../../../../../components/utils/handleError_graphQL';
 
 export async function getStaticPaths() {
     return {
@@ -142,11 +144,28 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     const [isOpenModalSize, setisOpenModalSize] = useState(false)
     const [getFilterProduct, shopProductsData] = useLazyQuery(GET_PRODUCTS_FROM_SHOP);
     const [openDrawerCart, setOpenDrawerCart] = useState(false)
-    const [editCart] = useMutation(EDIT_CART);
+    const [editCart, elementEditCart] = useMutation(EDIT_CART);
     const cartsDispatchProduct: Cart[] = useSelector((state: any) => state.carts.carts);
     const user: Firebase_User = useSelector((state: any) => state.user.user);
 
     const dispatch = useDispatch();
+
+
+
+    useEffect(() => {
+        console.log(elementEditCart.error?.graphQLErrors);
+        console.log(elementEditCart.error?.graphQLErrors[0].name);
+        if (!elementEditCart.error?.graphQLErrors[0].name || !elementEditCart.error?.graphQLErrors[0].path || typeof elementEditCart.error?.graphQLErrors[0].path !== 'string') return
+        const error = handleErrorGraphQL({
+            name: elementEditCart.error?.graphQLErrors[0].name,
+            path: elementEditCart.error?.graphQLErrors[0].path
+        })
+
+
+
+
+
+    }, [elementEditCart.error])
 
 
 
@@ -367,10 +386,10 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                         total: newTotal,
                         productVariations
                     }
-                    NewCarts = [
+                    NewCarts = sortShopsInCart([
                         ...Carts.filter(cart => cart.shopInfo.id !== product.shopInfo.id),
                         NewCart
-                    ]
+                    ])
 
                 }
             }
@@ -408,10 +427,11 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                     total: product?.price.v2 ? product?.price.v2 : product?.price.v1,
                     productVariations: [newProductVariation]
                 }
-                NewCarts = [
-                    ...Carts.filter(cart => cart.shopInfo.id !== product.shopInfo.id),
-                    NewCart
-                ]
+                NewCarts = sortShopsInCart(
+                    [
+                        ...Carts.filter(cart => cart.shopInfo.id !== product.shopInfo.id),
+                        NewCart
+                    ])
             }
 
             console.log(NewCarts);
