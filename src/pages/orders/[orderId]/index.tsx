@@ -27,7 +27,7 @@ const index = () => {
     return (
         <Desktop_Layout>
             {order && <div
-                className='w-full md:w-7/12 xl:w-1/2 m-auto mt-4 md:mt-16'
+                className='w-full md:w-7/12 xl:w-1/2 m-auto mt-4 md:mt-8'
             >
                 <Box
                     display={['', 'flex']}
@@ -102,7 +102,7 @@ const index = () => {
                     display={'flex'}
                     justifyContent={'space-between'}
                     width={'full'}
-                    mt={[5, 3]}
+                    mt={[5, 5]}
                 >
                     <Box
                         width={'full'}
