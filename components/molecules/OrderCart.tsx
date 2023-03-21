@@ -41,7 +41,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                 </Box>
             </Box>
             <Box
-                mt={16}
+                mt={12}
                 display={'flex'}
                 justifyContent={'space-between'}
 
@@ -54,7 +54,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                     verticalAlign={'baseline'}
                     fontSize={'lg'}
                     fontWeight={'semibold'}
-                >In elaborazione
+                >In elaborazione (manca)
                 </Text>
 
                 <Link
