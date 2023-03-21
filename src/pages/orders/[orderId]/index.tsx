@@ -106,6 +106,8 @@ const index = () => {
                 >
                     <Box
                         width={'full'}
+                        display={'flex'}
+                        justifyContent={'space-between'}
                     >
                         <VStack
                             width={'full'}
@@ -113,61 +115,58 @@ const index = () => {
                         >
                             {order.productVariations.map((variation, index) => {
                                 return (
-                                    <div
-                                        className='flex gap-4 justify-between w-full'
-                                        key={index}
-                                    >
-                                        <Box
-                                            display={'flex'}
-                                        >
-                                            <LazyLoadImage src={
-                                                imageKitUrl(variation.photo, 171, 247)
-                                            }
-                                                //PlaceholderSrc={PlaceholderImage}
-                                                alt={variation.name}
-                                                className='w-20'
-                                            />
-                                            <Box
-                                                paddingLeft={3}
 
-                                                justifyContent={'space-between'}
+                                    <Box
+                                        width={'full'}
+                                        display={'flex'}
+                                    >
+                                        <LazyLoadImage src={
+                                            imageKitUrl(variation.photo, 171, 247)
+                                        }
+                                            //PlaceholderSrc={PlaceholderImage}
+                                            alt={variation.name}
+                                            className='w-20'
+                                        />
+                                        <Box
+                                            paddingLeft={3}
+
+                                            justifyContent={'space-between'}
+                                        >
+                                            <Box
+                                                fontSize={'normal'}
+                                                fontWeight={'medium'}
                                             >
-                                                <Box
-                                                    fontSize={'normal'}
-                                                    fontWeight={'medium'}
-                                                >
-                                                    {toUpperCaseFirstLetter(variation.name)} ({variation.color})
-                                                </Box>
-                                                <Box
-                                                    fontSize={'xs'}
-                                                    fontWeight={'light'}
-                                                    color={'gray.500'}
-                                                    mt={-1}
-                                                >
-                                                    {toUpperCaseFirstLetter('Lacoste (Manca)')}
-                                                </Box>
-                                                <Box
-                                                    fontSize={'xs'}
-                                                    fontWeight={'normal'}
-                                                >
-                                                    {variation.size.toUpperCase()} / Quantità {variation.quantity}
-                                                </Box>
+                                                {toUpperCaseFirstLetter(variation.name)} ({variation.color})
+                                            </Box>
+                                            <Box
+                                                fontSize={'xs'}
+                                                fontWeight={'light'}
+                                                color={'gray.500'}
+                                                mt={-1}
+                                            >
+                                                {toUpperCaseFirstLetter('Lacoste (Manca)')}
+                                            </Box>
+                                            <Box
+                                                fontSize={'xs'}
+                                                fontWeight={'normal'}
+                                            >
+                                                {variation.size.toUpperCase()} / Quantità {variation.quantity}
                                             </Box>
                                         </Box>
+                                    </Box>
 
-                                        <Link
-                                            href={'/home'}
-                                            target="_blank"
-                                            className='text-lg font-bold h-fit'
-
-                                        >
-                                            Traccia il<br />mio pacco
-                                        </Link>
-                                    </div>
 
                                 )
                             })}
                         </VStack>
+                        <Link
+                            href={'/home'}
+                            target="_blank"
+                            className='text-lg font-bold h-fit  w-1/2 text-end leading-tight'
+
+                        >
+                            Traccia il<br />mio pacco
+                        </Link>
 
                     </Box>
                 </Box>
