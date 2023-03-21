@@ -35,6 +35,8 @@ import { getFavouriteShopFromLocalStorage } from '../../components/utils/getFavo
 import Header from '../../components/organisms/Header'
 import { Cart } from '../interfaces/carts.interface'
 import { resetCarts, setCarts } from '../store/reducers/carts'
+import { Order } from '../interfaces/order.interface'
+import { setOrders } from '../store/reducers/orders'
 
 
 const theme = extendTheme({
@@ -167,6 +169,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         }
         if (!isBusiness && tokenResult.claims.mongoId) {
           getUser().then((data) => {
+
             if (!data.data) return
             dispatch(
               login({
@@ -182,12 +185,18 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               })
             );
 
-            const carts: Cart[] = data?.data?.user.carts.carts
-            console.log(carts);
+            const carts: Cart[] = data?.data?.user.carts.carts;
+            const orders: Order[] = data?.data?.user.orders;
 
-            if (carts.length > 0) {
+            if (carts?.length > 0) {
               dispatch(
                 setCarts(carts)
+              )
+            }
+
+            if (orders?.length > 0) {
+              dispatch(
+                setOrders(orders)
               )
             }
 

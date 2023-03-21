@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import addressState from './reducers/address_user';
 import modalState from './reducers/modal_error';
 import cartsState from './reducers/carts';
+import ordersState from './reducers/orders';
 
 
 export const store = configureStore({
@@ -10,7 +11,9 @@ export const store = configureStore({
     user: userState,
     address: addressState,
     modal: modalState,
-    carts: cartsState
+    carts: cartsState,
+    orders: ordersState
+
   },
 })
 
