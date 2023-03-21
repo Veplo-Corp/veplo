@@ -300,7 +300,18 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
     const addToCart = async (product: Product) => {
         //qui si invita a fare login
-        if (!user?.uid) { return }
+        if (!user?.uid) {
+            console.log(router.asPath);
+
+            return router.push({
+                pathname: '/user/login',
+                query: {
+                    type: 'registration',
+                    callbackUrl: router.asPath
+                },
+
+            })
+        }
 
 
         if (!sizeSelected || !colorSelected) {
