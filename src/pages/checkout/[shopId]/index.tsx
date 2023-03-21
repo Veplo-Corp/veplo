@@ -23,9 +23,9 @@ const index = () => {
     const [isDisabled, setIsDisabled] = useState(false)
 
     useEffect(() => {
-        const { cartId } = router.query
+        const { shopId } = router.query
 
-        const cart = cartsDispatch.filter(cart => cart.id === cartId)[0]
+        const cart = cartsDispatch.filter(cart => cart.shopInfo.id === shopId)[0]
         if (cart) {
             console.log(cart);
             setCart(cart)
