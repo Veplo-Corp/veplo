@@ -26,6 +26,6 @@ export interface Order {
         quantity: number,
         color: string
         size: string
-    }
+    }[]
 
 }

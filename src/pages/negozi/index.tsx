@@ -100,7 +100,7 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
                 {shops.length &&
                     shops.map((shop) => {
                         return (
-                            <Link key={shop.id} href={`/negozio/${shop.id}/${createUrlSchema([shop.address.city, shop.name])}`}>
+                            <Link key={shop.id} href={`/negozio/${shop.id}/${createUrlSchema([shop.name])}`}>
                                 <Box_Shop scale={'scale(0.99)'} eventHandler={() => { }} shop={shop} />
                             </Link>
                         )
