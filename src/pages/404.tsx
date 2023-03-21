@@ -11,13 +11,13 @@ const Error404: FC = () => {
     const [errorText, seterrorText] = useState<undefined | string>()
 
     useEffect(() => {
-        
-      if(typeof router.query.error === 'string'){
-        seterrorText(handleErrorGraphQL(router.query.error))
-      }
-      
+
+        if (typeof router.query.error === 'string') {
+            //seterrorText(handleErrorGraphQL(router.query.error))
+        }
+
     }, [router.query.error])
-    
+
 
     return (
         <>
