@@ -12,7 +12,6 @@ const GET_USER = gql`
             phone,
             gender,
             createdAt,
-
             carts{
                 carts
                 {
