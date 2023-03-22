@@ -5,7 +5,7 @@ const Desktop_Layout: React.FC<{ children: any }> = ({ children }) => {
 
   const user = useSelector((state: any) => state.user.user);
   return (
-    <div className={`p-3 pt-20  md:p-10  ${!user ? 'pt-24' : 'md:pt-20'} min-h-[800px]  lg:min-h-screen`}>
+    <div className={`p-3 px-7 min-h-[800px]  lg:min-h-screen`}>
       {children}
     </div>
   )
