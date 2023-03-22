@@ -80,20 +80,20 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
                 if (filters?.maxPrice && filters?.maxPrice < 500) {
                     setMaxAmount(filters?.maxPrice)
                 }
-                if (filters?.sizes) {                    
+                if (filters?.sizes) {
                     setSizeSelected(filters?.sizes)
                 }
                 COLORS
-                if (filters?.colors) {  
+                if (filters?.colors) {
                     let colors = [];
                     for (const colorName of filters?.colors) {
                         const colorToAdd = COLORS.find(color => color.name === colorName);
-                        if(colorToAdd){
+                        if (colorToAdd) {
                             colors.push(colorToAdd)
                         }
-                    }   
-                        setColorSelected(colors)
-                                  
+                    }
+                    setColorSelected(colors)
+
                 }
                 console.log(filters);
             }
@@ -138,6 +138,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
     const onChangeText = (query: string) => {
         setshowFilter(false)
         setFilteredBrand((prevstate: any) => {
+            return prevstate
             if (query.length === 0) {
                 setshowFilter(true)
                 setFilteredBrand([])
@@ -229,7 +230,7 @@ const Drawer_Filter: FC<{ openDrawerMath: number, gender: string, macrocategory:
             })
             slug += ('colors=' + colorsToDB)
             console.log(slug);
-            
+
         }
         if (sizeSelected.length > 0) {
             slug !== '' ? slug += '&' : ''
