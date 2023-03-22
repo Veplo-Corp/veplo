@@ -1,6 +1,6 @@
 import { Cart } from './../../src/interfaces/carts.interface';
 export const sortShopsInCart = (carts: Cart[]) => {
-    console.log(carts[0].shopInfo.name);
+    //console.log(carts[0].shopInfo.name);
     // let newCarts = carts.slice()
     // console.log(newCarts.sort());
 

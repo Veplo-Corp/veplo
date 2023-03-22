@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import VariationBoxList from '../../../../components/molecules/VariationBoxList';
 import NoIndexSeo from '../../../../components/organisms/NoIndexSeo'
+import PriceAndShippingListingCost from '../../../../components/organisms/PriceAndShippingListingCost';
 import createUrlSchema from '../../../../components/utils/create_url';
 import { newTotalHandler } from '../../../../components/utils/newTotalHandler';
 import { Cart, ProductVariation } from '../../../interfaces/carts.interface';
@@ -145,52 +146,8 @@ const index = () => {
                             })}
 
                         </VStack>
-                        <Box
-                            marginTop={[5, 4]}
-                            width={'full'}
-                            fontSize={'sm'}
-                        >
+                        <PriceAndShippingListingCost subTotal={cart.total} total={cart.total} shippingCost={4.99} />
 
-                            <Box
-                                display={'flex'}
-                                justifyContent={'space-between'}
-                                mb={0}
-                            >
-                                <Box>
-                                    Subtotale
-                                </Box>
-                                <Box>
-                                    {cart.total.toFixed(2).replace('.', ',')} €
-                                </Box>
-                            </Box>
-                            <Box
-                                display={'flex'}
-                                justifyContent={'space-between'}
-                            >
-                                <Box>
-                                    Spedizione
-                                </Box>
-                                <Box>
-                                    4,99 €
-                                </Box>
-                            </Box>
-                            <Divider
-                                marginY={[1, 2]}
-                            />
-                            <Box
-                                display={'flex'}
-                                justifyContent={'space-between'}
-                                fontSize={'md'}
-                                fontWeight={'semibold'}
-                            >
-                                <Box>
-                                    Totale
-                                </Box>
-                                <Box>
-                                    {(cart.total + 4.99).toFixed(2).replace('.', ',')} €
-                                </Box>
-                            </Box>
-                        </Box>
                         <Box
                             display={'flex'}
                             justifyContent={'end'}

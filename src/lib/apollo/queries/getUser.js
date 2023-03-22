@@ -46,7 +46,7 @@ const GET_USER = gql`
             orders{
                 id
                 cartId
-                uniqueId
+                code
                 createdAt
                 totalDetails{
                     amountDiscount
@@ -54,9 +54,14 @@ const GET_USER = gql`
                     subTotal
                     total
                 }
+                status
                 shop{
                     id
                     name
+                }
+                shipping{
+                    url
+                    courier
                 }
                 productVariations{
                     productId
@@ -68,9 +73,20 @@ const GET_USER = gql`
                         v2
                         discountPercentage
                     }
+                    brand
                     quantity
                     color
                     size
+                }
+                user{
+                    address{
+                        city
+                        country
+                        line1
+                        line2
+                        postalCode
+                        state
+                    }
                 }
             }
         }

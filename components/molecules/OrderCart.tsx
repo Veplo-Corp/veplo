@@ -37,7 +37,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                     fontSize={'md'}
                     fontWeight={'bold'}
                 >
-                    {(order.totalDetails.total / 100).toFixed(2).replace('.', ',')} €
+                    {(order.totalDetails.total).toFixed(2).replace('.', ',')} €
                 </Box>
             </Box>
             <Box
