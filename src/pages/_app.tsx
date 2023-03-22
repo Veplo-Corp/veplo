@@ -36,7 +36,7 @@ import Header from '../../components/organisms/Header'
 import { Cart } from '../interfaces/carts.interface'
 import { resetCarts, setCarts } from '../store/reducers/carts'
 import { Order } from '../interfaces/order.interface'
-import { setOrders } from '../store/reducers/orders'
+import { detroyOrders, setOrders } from '../store/reducers/orders'
 
 
 const theme = extendTheme({
@@ -212,6 +212,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
         apolloClient.clearStore()
         dispatch(resetCarts())
+        dispatch(detroyOrders())
         return dispatch(logout())
       }
       return
