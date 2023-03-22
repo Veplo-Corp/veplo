@@ -1,4 +1,5 @@
-const toUpperCaseFirstLetter = (string:string) => {
+const toUpperCaseFirstLetter = (string: string) => {
+    if (!string) return
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
