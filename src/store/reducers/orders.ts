@@ -22,12 +22,15 @@ export const userState = createSlice({
     reducers: {
         setOrders: (state, action) => {
             state.orders = action.payload
-        }
+        },
+        detroyOrders: (state) => {
+            state.orders = []
+        },
 
     },
 });
 
-export const { setOrders } = userState.actions;
+export const { setOrders, detroyOrders } = userState.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectCart = (state: RootState) => state.orders;

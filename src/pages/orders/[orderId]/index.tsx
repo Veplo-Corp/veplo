@@ -13,7 +13,7 @@ import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First
 import { Order } from '../../../interfaces/order.interface';
 
 
-const STATUS = [
+export const STATUS = [
 
     {
         code: 'paid',
@@ -78,7 +78,7 @@ const index = () => {
     return (
         <Desktop_Layout>
             {order && <div
-                className='w-full md:w-7/12 xl:w-1/2 m-auto md:mt4'
+                className='w-full md:w-8/12 lg:9/12 xl:w-1/2 m-auto md:mt4'
             >
                 {orderStatus &&
                     <Box

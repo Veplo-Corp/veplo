@@ -15,7 +15,7 @@ const index = () => {
     return (
         <Desktop_Layout>
             <div
-                className='w-full md:w-3/4 xl:w-1/2 m-auto mt-4 md:mt-8'
+                className='w-full sm:w-9/12 md:w-3/4 xl:w-1/2 m-auto mt-4 md:mt-8'
             >
                 <VStack
                     gap={4}
