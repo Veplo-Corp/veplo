@@ -12,6 +12,7 @@ import GET_SHOPS_BY_LOCATION from '../../lib/apollo/queries/getShops'
 import Input_Search_Item from '../../../components/atoms/Input_Search_Item';
 import PostMeta from '../../../components/organisms/PostMeta';
 import Link from 'next/link';
+import { removeFromLocalStorage } from '../../../components/utils/removeFromLocalStorage';
 
 
 
@@ -49,6 +50,10 @@ export const getStaticProps = async () => {
 }
 
 const index: FC<{ shops: Shop[] }> = ({ shops }) => {
+    useEffect(() => {
+        removeFromLocalStorage('genderSelected')
+    }, [])
+
     console.log('ao');
 
     const router = useRouter()

@@ -627,7 +627,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
 
                         <>
-                            <Link href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.city, product.shopInfo.name])}`}>
+                            <Link href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
                                 <Box
                                     fontWeight='light'
                                     as='h1'
@@ -711,7 +711,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                         </Link>
                                     )
                                 })}
-                                <Link href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.city, product.shopInfo.name])}`}
+                                <Link href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}
                                     className={`flex gap-4 w-36 max-h-max justify-center`}
                                 >
                                     <div className='my-auto'>

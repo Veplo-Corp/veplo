@@ -199,11 +199,8 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
                 setOrders(orders)
               )
             }
-
           })
-
         }
-
 
 
         return

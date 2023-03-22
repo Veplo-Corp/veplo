@@ -267,7 +267,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                                         _active={{
                                             transform: 'scale(0.98)',
                                         }}
-                                    >paga {cart.total.toString().replace('.', ',')} €</Button>
+                                    >procedi {cart.total.toString().replace('.', ',')} €</Button>
                                     <Divider
                                         colorScheme={'red'}
                                         size={'md'}
