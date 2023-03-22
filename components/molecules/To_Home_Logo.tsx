@@ -10,8 +10,8 @@ const To_Home_Logo: FC<{ href: string }> = ({ href }) => {
         if (typeof router.query.city_cap !== 'string') {
             return setCity('')
         }
-        const elementCityCap: { city: string, postcode: string | null } = getCityAndPostcodeFromSlug(router.query.city_cap);
-        setCity(elementCityCap.city)
+        //const elementCityCap: { city: string, postcode: string | null } = getCityAndPostcodeFromSlug(router.query.city_cap);
+        //setCity(elementCityCap.city)
     }, [router.query.city_cap])
 
 
