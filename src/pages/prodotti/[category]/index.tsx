@@ -26,6 +26,7 @@ import TransitionFilter from '../../../../components/atoms/TransitionFilter';
 import { SIZES } from '../../../../components/mook/sizes';
 import { COLORS } from '../../../../components/mook/colors';
 import Circle_Color from '../../../../components/atoms/Circle_Color';
+import ModalReausable from '../../../../components/organisms/ModalReausable';
 
 
 const RANGE = 5
@@ -86,8 +87,14 @@ export async function getStaticProps(ctx: any) {
 
 }
 
-
-
+interface PropsOpenModal {
+    category: boolean,
+    size: boolean,
+    color: boolean,
+    price: boolean,
+    brand: boolean,
+    fit: boolean
+}
 const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = ({ products, category, gender }) => {
 
     const router = useRouter();
@@ -97,13 +104,20 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
     const dispatch = useDispatch();
     const [getProducts, productsFounder] = useLazyQuery(GET_PRODUCTS);
     const [microcategory, setMicrocategory] = useState<string[]>([])
-    const [sizeProduct, setSizeProduct] = useState<string>()
+    const [sizeProduct, setSizeProduct] = useState<string>();
+    const [isOpen, setIsOpen] = useState<PropsOpenModal>({
+        category: false,
+        size: false,
+        color: true,
+        price: false,
+        brand: false,
+        fit: false
+    })
 
     console.log(router.asPath);
 
 
     const fetchMoreData = async () => {
-
 
         //TODO filter
         // let filters: any = createFilterObject(
@@ -201,13 +215,11 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                 } */}
                 <Box width={'full'}
                     display={'flex'}
-
                 >
                     <Box
                         minWidth={'xs'}
-                        className='hidden lg:table w-1/4'
+                        className='hidden lg:table w-1/4 lg:mt-0'
                     >
-
                         {Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.map(element => {
 
 
@@ -240,43 +252,113 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                                 </Box>
                             )
                         })}
-
                     </Box>
-                    <Box
-                        className='w-full lg:w-3/4'
-                    >
-                        <div
-                            className='mb-4 overflow-x-scroll flex gap-4'
-                        >
-                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(() => {
-                                return (
-                                    <Button
-                                        rightIcon={
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="ml-1 w-5 h-5">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                            </svg>
-                                        }
-                                        minW={'fit-content'}
-                                        bg={'white'}
-                                        color={'black'}
-                                        _hover={{ bg: 'white' }}
-                                        borderWidth={1}
-                                        borderColor={'gray.300'}
-                                        borderRadius={'10px'}
-                                        padding={6}
-                                        _focus={{
-                                            bg: 'white'
-                                        }}
-                                        _active={{
-                                            transform: 'scale(0.98)',
-                                        }}
-                                    >
-                                        Categoria
-                                    </Button>
-                                )
-                            })
 
+                    <Box
+                        className='w-full lg:w-3/4 relative'
+                    >
+
+                        <div
+                            className='mb-2 overflow-x-scroll flex gap-4 pb-3'
+                        >
+
+                            {microcategory && <Button
+                                rightIcon={
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="ml-1 w-5 h-5">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                    </svg>
+                                }
+                                minW={'fit-content'}
+                                bg={'white'}
+                                position={'relative'}
+                                color={'black'}
+                                _hover={{ bg: 'white' }}
+                                borderWidth={1}
+                                borderColor={'gray.300'}
+                                borderRadius={'10px'}
+                                padding={6}
+                                _focus={{
+                                    bg: 'white'
+                                }}
+                                _active={{
+                                    transform: 'scale(0.98)',
+                                }}
+                                onClick={() => {
+                                    setIsOpen(prevstate => {
+                                        return {
+                                            ...prevstate,
+                                            category: true
+                                        }
+                                    })
+                                }}
+                            >
+                                Categoria
+                            </Button>}
+                            {sizeProduct && <Button
+                                rightIcon={
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="ml-1 w-5 h-5">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                    </svg>
+                                }
+                                minW={'fit-content'}
+                                bg={'white'}
+                                position={'relative'}
+                                color={'black'}
+                                _hover={{ bg: 'white' }}
+                                borderWidth={1}
+                                borderColor={'gray.300'}
+                                borderRadius={'10px'}
+                                padding={6}
+                                _focus={{
+                                    bg: 'white'
+                                }}
+                                _active={{
+                                    transform: 'scale(0.98)',
+                                }}
+                                onClick={() => {
+                                    setIsOpen(prevstate => {
+                                        return {
+                                            ...prevstate,
+                                            size: true
+                                        }
+                                    })
+                                }}
+                            >
+                                Taglia
+                            </Button>
                             }
+                            <Button
+                                rightIcon={
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="ml-1 w-5 h-5">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                    </svg>
+                                }
+                                minW={'fit-content'}
+                                bg={'white'}
+                                position={'relative'}
+                                color={'black'}
+                                _hover={{ bg: 'white' }}
+                                borderWidth={1}
+                                borderColor={'gray.300'}
+                                borderRadius={'10px'}
+                                padding={6}
+                                _focus={{
+                                    bg: 'white'
+                                }}
+                                _active={{
+                                    transform: 'scale(0.98)',
+                                }}
+                                onClick={() => {
+                                    setIsOpen(prevstate => {
+                                        return {
+                                            ...prevstate,
+                                            color: true
+                                        }
+                                    })
+                                }}
+                            >
+                                Colore
+                            </Button>
 
 
                         </div>
@@ -325,6 +407,114 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
             </Desktop_Layout >
             {gender && <FIlter_Button gender={gender} macrocategory={category ? category : "Tutto l'abbigliamento"} />}
 
+            {/* Modal Categorie */}
+            <ModalReausable title='Categoria' closeModal={() => {
+                setIsOpen(prevstate => {
+                    return {
+                        ...prevstate,
+                        category: false
+                    }
+                })
+            }} isOpen={isOpen.category} positionTopModal={true}>
+                <Box
+                    mt={3}
+                >
+                    {microcategory.map(element => {
+                        return (<Box
+                            p={2}
+                            width={'full'}
+                            pr={44}
+                            pl={1}
+                            _hover={{
+                                background: 'gray.100'
+                            }}
+                            cursor={'pointer'}
+                            borderRadius={'lg'}
+                            fontSize={'lg'}
+                            fontWeight={'semibold'}
+                        >
+                            {element}
+                        </Box>)
+                    })}
+                </Box>
+
+            </ModalReausable>
+            <ModalReausable title='Taglia' closeModal={() => {
+                setIsOpen(prevstate => {
+                    return {
+                        ...prevstate,
+                        size: false
+                    }
+                })
+            }} isOpen={isOpen.size} positionTopModal={true}>
+                <Box
+                    mt={2}
+                    className={`grid ${sizeProduct === 'shoes_sizes' ? 'grid-cols-5 gap-2' : 'grid-cols-3 gap-2'} `}
+                >
+                    {(sizeProduct === 'man_clothes_sizes' || sizeProduct === 'woman_clothes_sizes' || sizeProduct === 'shoes_sizes') && SIZES[sizeProduct].map(element => {
+                        return (<Box
+                            p={4}
+                            width={'full'}
+                            _hover={{
+                                background: 'gray.100'
+                            }}
+                            textAlign={'center'}
+                            cursor={'pointer'}
+                            borderRadius={'lg'}
+                            fontSize={'md'}
+                            fontWeight={'semibold'}
+                        >
+                            {element}
+                        </Box>)
+                    })}
+                </Box>
+
+            </ModalReausable>
+            <ModalReausable title='Colore' closeModal={() => {
+                setIsOpen(prevstate => {
+                    return {
+                        ...prevstate,
+                        color: false
+                    }
+                })
+            }} isOpen={isOpen.color} positionTopModal={true}>
+                <Box
+                    mt={3}
+                    className={`grid grid-cols-2 md:grid-cols-3 gap-4`}
+                >
+                    {COLORS.map(element => {
+                        return (<Box
+                            width={'full'}
+                            _hover={{
+                                background: 'gray.100'
+                            }}
+                            p={2}
+                            textAlign={'center'}
+                            cursor={'pointer'}
+                            borderRadius={'lg'}
+                            fontSize={'md'}
+                            fontWeight={'semibold'}
+                        >
+                            <div
+                                className='flex m-auto'
+                            >
+                                <div className='my-auto mr-2'>
+                                    <Circle_Color colors={[element.cssColor]} dimension={4} space={0} />
+
+                                </div>
+                                <Text
+                                    my={'auto'}
+                                >
+                                    {element.name}
+
+                                </Text>
+                            </div>
+
+                        </Box>)
+                    })}
+                </Box>
+
+            </ModalReausable>
         </>
 
     )

@@ -7,10 +7,11 @@ export interface ErrorModal {
     title: string,
     closeModal: () => void,
     children?: any,
-    isOpen: boolean
+    isOpen: boolean,
+    positionTopModal?: boolean
 }
 
-const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isOpen }) => {
+const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isOpen, positionTopModal }) => {
 
     function handleCloseButton() {
         closeModal()
@@ -19,7 +20,7 @@ const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isO
 
     return (
         <Transition appear show={isOpen} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={handleCloseButton}>
+            <Dialog as="div" className="relative z-50" onClose={handleCloseButton}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -32,7 +33,7 @@ const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isO
                     <div className="fixed inset-0 bg-black bg-opacity-25" />
                 </Transition.Child>
                 <div className="fixed inset-0 overflow-y-auto">
-                    <div className="flex min-h-full items-center justify-center p-4 text-center">
+                    <div className={`flex ${positionTopModal ? 'min-h-fit mt-32' : 'min-h-full'} items-center justify-center p-4 text-center`}>
                         <Transition.Child
                             as={Fragment}
                             enter="ease-out duration-300"
@@ -42,14 +43,14 @@ const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isO
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                            <Dialog.Panel className={`w-full ${positionTopModal ? 'w-fit' : 'max-w-md'}  transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}>
                                 <Dialog.Title
                                     as="h3"
                                     className="text-lg font-medium leading-6 text-gray-900 flex justify-between"
                                 >
                                     <Text
                                         fontSize={'xl'}
-                                        fontWeight={'medium'}
+                                        fontWeight={`${positionTopModal ? 'bold' : 'medium'}`}
                                         marginY={'auto'}
                                     >
                                         {title}
