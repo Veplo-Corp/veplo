@@ -397,16 +397,20 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     </svg>
                                 }
                                 minW={'fit-content'}
-                                bg={'white'}
+                                bg={slug[1] !== 'tutto' ? 'black' : 'white'}
                                 position={'relative'}
-                                color={'black'}
-                                _hover={{ bg: 'white' }}
+                                color={slug[1] !== 'tutto' ? 'white' : 'black'}
+                                _hover={
+                                    {
+                                        bg: slug[1] !== 'tutto' ? 'black' : 'white'
+                                    }
+                                }
                                 borderWidth={slug[1] !== 'tutto' ? 2 : 1}
                                 borderColor={slug[1] !== 'tutto' ? 'gray.600' : 'gray.300'}
                                 borderRadius={'10px'}
                                 padding={6}
                                 _focus={{
-                                    bg: 'white'
+                                    bg: slug[1] !== 'tutto' ? 'black' : 'white'
                                 }}
                                 _active={{
                                     transform: 'scale(0.98)',
