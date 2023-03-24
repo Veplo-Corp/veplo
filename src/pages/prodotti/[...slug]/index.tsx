@@ -405,6 +405,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 borderColor={'gray.300'}
                                 borderRadius={'10px'}
                                 padding={6}
+                                fontWeight={'bold'}
                                 _focus={{
                                     bg: slug[1] !== 'tutto' ? 'black' : 'white'
                                 }}
@@ -439,6 +440,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 _active={{
                                     transform: 'scale(0.98)',
                                 }}
+                                fontWeight={'bold'}
                                 onClick={() => {
                                     setIsOpen(prevstate => {
                                         return {
@@ -462,6 +464,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 borderColor={'gray.300'}
                                 borderRadius={'10px'}
                                 padding={6}
+                                fontWeight={'bold'}
                                 _focus={{
                                     bg: 'white'
                                 }}
@@ -553,7 +556,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 </Box>
 
             </Desktop_Layout >
-            {gender && <FIlter_Button gender={gender} macrocategory={category ? category : "Tutto l'abbigliamento"} />}
+            {/* {gender && <FIlter_Button gender={gender} macrocategory={category ? category : "Tutto l'abbigliamento"} />} */}
 
             {/* Modal Categorie */}
             <ModalReausable title='Categoria' closeModal={() => {
