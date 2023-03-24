@@ -391,11 +391,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                         >
 
                             {microcategory.length > 0 && <Button
-                                rightIcon={
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="ml-1 w-5 h-5">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                    </svg>
-                                }
+
                                 minW={'fit-content'}
                                 bg={slug[1] !== 'tutto' ? 'black' : 'white'}
                                 position={'relative'}
@@ -405,8 +401,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                         bg: slug[1] !== 'tutto' ? 'black' : 'white'
                                     }
                                 }
-                                borderWidth={slug[1] !== 'tutto' ? 2 : 1}
-                                borderColor={slug[1] !== 'tutto' ? 'gray.600' : 'gray.300'}
+                                borderWidth={1}
+                                borderColor={'gray.300'}
                                 borderRadius={'10px'}
                                 padding={6}
                                 _focus={{
@@ -427,18 +423,14 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 {slug[1] !== 'tutto' ? microCategory : 'Categoria'}
                             </Button>}
                             {sizeProduct && <Button
-                                rightIcon={
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="ml-1 w-5 h-5">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                    </svg>
-                                }
+
                                 minW={'fit-content'}
                                 bg={'white'}
                                 position={'relative'}
                                 color={'black'}
                                 _hover={{ bg: 'white' }}
-                                borderWidth={filter.sizes ? 2 : 1}
-                                borderColor={filter.sizes ? 'gray.600' : 'gray.300'}
+                                borderWidth={1}
+                                borderColor={'gray.300'}
                                 borderRadius={'10px'}
                                 padding={6}
                                 _focus={{
@@ -460,18 +452,14 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             </Button>
                             }
                             <Button
-                                rightIcon={
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="ml-1 w-5 h-5">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                    </svg>
-                                }
+
                                 minW={'fit-content'}
                                 bg={'white'}
                                 position={'relative'}
                                 color={'black'}
                                 _hover={{ bg: 'white' }}
-                                borderWidth={filter.colors ? 2 : 1}
-                                borderColor={filter.colors ? 'gray.600' : 'gray.300'}
+                                borderWidth={1}
+                                borderColor={'gray.300'}
                                 borderRadius={'10px'}
                                 padding={6}
                                 _focus={{
@@ -493,11 +481,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 {filter.colors ? filter.colors : 'Colore'}
                             </Button>
                             {false && <Button
-                                rightIcon={
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="ml-1 w-5 h-5">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                    </svg>
-                                }
+
                                 minW={'fit-content'}
                                 bg={'white'}
                                 position={'relative'}
