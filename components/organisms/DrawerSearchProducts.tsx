@@ -33,10 +33,10 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
         const categoryForUrl = Object.values(categories)[indexArray].abbigliamento.find(category => category.name === catObject)?.url
 
         if (!categoryForUrl) {
-            router.push(`/prodotti/${gender}-abbigliamento`)
+            router.push(`/prodotti/${gender}-abbigliamento/tutto/rilevanza`)
         } else {
             const categorySelectedUrl = createUrlSchema([gender, categoryForUrl])
-            router.push(`/prodotti/${categorySelectedUrl}`)
+            router.push(`/prodotti/${categorySelectedUrl}/tutto/rilevanza`)
         }
         closeDrawer()
     }

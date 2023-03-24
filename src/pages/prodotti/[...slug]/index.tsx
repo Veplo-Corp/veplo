@@ -27,6 +27,7 @@ import { SIZES } from '../../../../components/mook/sizes';
 import { COLORS } from '../../../../components/mook/colors';
 import Circle_Color from '../../../../components/atoms/Circle_Color';
 import ModalReausable from '../../../../components/organisms/ModalReausable';
+import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First_Letter';
 
 
 const RANGE = 5
@@ -40,8 +41,19 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(ctx: any) {
-    let { category } = ctx.params;
-    const elementGenderMacrocategory: { gender: string | null, macrocategory: string | null } = getGenderandMacrocategory(category);
+    // console.log(ctx.params.slug);
+    // return {
+    //     props: {
+    //         gender: 'm',
+    //         category: 'mario',
+    //         products: [],
+    //     },
+    // }
+    let { slug } = ctx.params;
+
+    const elementGenderMacrocategory: { gender: string | null, macrocategory: string | null } = getGenderandMacrocategory(slug[0]);
+    const microgategoryName: string | undefined = slug[1];
+
     const apolloClient = initApollo()
 
     try {
@@ -49,15 +61,30 @@ export async function getStaticProps(ctx: any) {
             throw new Error("categoria o gender non trovato");
         }
         const macrogategoryName = findMacrocategoryName(elementGenderMacrocategory.macrocategory, elementGenderMacrocategory.gender) || ''
+        let filter: {
+            macroCategory?: string,
+            microCategory?: string,
+            gender?: 'm' | 'f'
+        } = {
+
+        }
+        if (macrogategoryName) {
+            filter.macroCategory = macrogategoryName
+        }
+        // if (microgategoryName) {
+        //     filter.microCategory = microgategoryName
+        // }
+        if (elementGenderMacrocategory.gender) {
+            filter.gender = elementGenderMacrocategory.gender === 'uomo' ? 'm' : 'f'
+        }
+
+
         const { data, errors } = await apolloClient.query({
             query: GET_PRODUCTS,
             variables: {
                 offset: 0,
                 limit: RANGE,
-                filters: {
-                    macroCategory: macrogategoryName,
-                    gender: elementGenderMacrocategory.gender === 'uomo' ? 'm' : 'f'
-                }
+                filters: filter
             }
         })
 
@@ -88,6 +115,7 @@ export async function getStaticProps(ctx: any) {
 }
 
 interface PropsOpenModal {
+    orderBy: boolean,
     category: boolean,
     size: boolean,
     color: boolean,
@@ -95,6 +123,20 @@ interface PropsOpenModal {
     brand: boolean,
     fit: boolean
 }
+
+
+interface PropsFilter {
+    category?: string,
+    sizes?: string,
+    colors?: string,
+    price?: {
+        min?: number,
+        max?: number
+    },
+    brand?: string,
+    fit?: string
+}
+
 const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = ({ products, category, gender }) => {
 
     const router = useRouter();
@@ -106,27 +148,26 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
     const [microcategory, setMicrocategory] = useState<string[]>([])
     const [sizeProduct, setSizeProduct] = useState<string>();
     const [isOpen, setIsOpen] = useState<PropsOpenModal>({
+        orderBy: false,
         category: false,
         size: false,
-        color: true,
+        color: false,
         price: false,
         brand: false,
         fit: false
-    })
+    });
+    const [filter, setFilter] = useState<PropsFilter>({
 
-    console.log(router.asPath);
+    })
+    const [slug, setSlug] = useState<any[]>([])
+
 
 
     const fetchMoreData = async () => {
+        console.log('AOOOOO');
 
-        //TODO filter
-        // let filters: any = createFilterObject(
-        //     brands,
-        //     minPrice,
-        //     maxPrice,
-        //     colors,
-        //     sizes
-        //   )
+        //FILTER
+        const filter = getFilterValue()
 
 
         if (products.length % RANGE !== 0 || productsFounder?.data?.products.length === 0) {
@@ -134,25 +175,34 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
             return console.log('no more data');
         }
 
-        console.log(productsFounded.length);
 
         const newProducts = await getProducts({
             variables: {
-                offset: productsFounded.length,
+                offset: productsFounded.length + 1,
                 limit: RANGE,
+                //inserire la microcategoria
                 filters: {
                     macroCategory: category,
-                    gender: gender
+                    gender: gender,
+                    ...filter
                 }
             }
         })
 
 
         if (newProducts.data?.products) {
+
             setproductsFounded(prevstate => {
-                return [
+                const products = [
                     ...prevstate,
                     ...newProducts.data?.products
+                ]
+                products.map(products => {
+                    console.log(products.id);
+
+                })
+                return [
+                    ...products
                 ]
             })
 
@@ -170,14 +220,15 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
 
         if (!microcategory?.types) return
         setMicrocategory(microcategory?.types);
-        setSizeProduct(microcategory.sizes)
+        setSizeProduct(microcategory.sizes);
+
+        const { slug } = router.query
+        if (typeof slug === 'object' && slug?.length === 3) {
+            setSlug(slug)
+        }
 
     }, [products])
 
-
-    const resetFilter = () => {
-
-    }
 
     useEffect(() => {
         if (gender) {
@@ -189,8 +240,71 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
     }, [gender])
 
 
-    console.log(gender);
 
+    useEffect(() => {
+
+        const filters = getFilterValue()
+
+        if (Object.keys(filters).length > 0) {
+            const newProducts = async () => {
+                return await getProducts({
+                    variables: {
+                        offset: 0,
+                        limit: RANGE,
+                        filters: {
+                            macroCategory: toUpperCaseFirstLetter(category),
+                            //inserire la microcategoria
+                            gender: gender,
+                            ...filters
+                        }
+                    }
+                })
+            }
+
+            newProducts().then(products => {
+                console.log(products);
+                setproductsFounded(products.data?.products)
+                setHasMoreData(true)
+
+            })
+        }
+
+
+
+    }, [router.query])
+
+    console.log(filter);
+
+
+
+    const getFilterValue = () => {
+        const { sizes, colors } = router.query
+        if (colors || sizes) {
+            let filter: {
+                colors?: string[],
+                sizes?: string[]
+            } = {}
+
+            if (typeof colors === 'string' && colors !== undefined) {
+
+                setFilter(prevstate => {
+                    return {
+                        ...prevstate,
+                        colors: colors
+                    }
+                })
+                const colore = toUpperCaseFirstLetter(colors)
+                if (colore) { filter['colors'] = [colore] }
+
+            }
+            if (typeof sizes === 'string') {
+                filter['sizes'] = [sizes.split(' ')[0]]
+            }
+            return filter
+        }
+        return {}
+
+    }
 
 
     return (
@@ -262,7 +376,7 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                             className='mb-2 overflow-x-scroll flex gap-4 pb-3'
                         >
 
-                            {microcategory && <Button
+                            {microcategory.length > 0 && <Button
                                 rightIcon={
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="ml-1 w-5 h-5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -338,6 +452,39 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                                 position={'relative'}
                                 color={'black'}
                                 _hover={{ bg: 'white' }}
+                                borderWidth={filter.colors ? 2 : 1}
+                                borderColor={filter.colors ? 'gray.600' : 'gray.300'}
+                                borderRadius={'10px'}
+                                padding={6}
+                                _focus={{
+                                    bg: 'white'
+                                }}
+                                _active={{
+                                    transform: 'scale(0.98)',
+                                }}
+
+                                onClick={() => {
+                                    setIsOpen(prevstate => {
+                                        return {
+                                            ...prevstate,
+                                            color: true
+                                        }
+                                    })
+                                }}
+                            >
+                                {filter.colors ? filter.colors : 'Colore'}
+                            </Button>
+                            <Button
+                                rightIcon={
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="ml-1 w-5 h-5">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                    </svg>
+                                }
+                                minW={'fit-content'}
+                                bg={'white'}
+                                position={'relative'}
+                                color={'black'}
+                                _hover={{ bg: 'white' }}
                                 borderWidth={1}
                                 borderColor={'gray.300'}
                                 borderRadius={'10px'}
@@ -352,14 +499,13 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                                     setIsOpen(prevstate => {
                                         return {
                                             ...prevstate,
-                                            color: true
+                                            orderBy: true
                                         }
                                     })
                                 }}
                             >
-                                Colore
+                                Ordina
                             </Button>
-
 
                         </div>
 
@@ -419,22 +565,32 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                 <Box
                     mt={3}
                 >
-                    {microcategory.map(element => {
-                        return (<Box
-                            p={2}
-                            width={'full'}
-                            pr={44}
-                            pl={1}
-                            _hover={{
-                                background: 'gray.100'
-                            }}
-                            cursor={'pointer'}
-                            borderRadius={'lg'}
-                            fontSize={'lg'}
-                            fontWeight={'semibold'}
-                        >
-                            {element}
-                        </Box>)
+                    {microcategory.map((element: string) => {
+
+                        return (
+                            <Link
+                                key={element}
+
+                                href={`/prodotti/${slug[0]}/${createUrlSchema([element.toLocaleLowerCase()])}/${slug[2]}`}
+                            >
+                                <Box
+                                    p={2}
+                                    width={'full'}
+                                    pr={[0, 44]}
+                                    pl={1}
+                                    _hover={{
+                                        background: 'gray.100'
+                                    }}
+                                    cursor={'pointer'}
+                                    borderRadius={'lg'}
+                                    fontSize={'lg'}
+                                    fontWeight={'semibold'}
+                                >
+                                    {element}
+                                </Box>
+                            </Link>
+
+                        )
                     })}
                 </Box>
 
@@ -453,6 +609,7 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                 >
                     {(sizeProduct === 'man_clothes_sizes' || sizeProduct === 'woman_clothes_sizes' || sizeProduct === 'shoes_sizes') && SIZES[sizeProduct].map(element => {
                         return (<Box
+                            key={element}
                             p={4}
                             width={'full'}
                             _hover={{
@@ -470,7 +627,7 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                 </Box>
 
             </ModalReausable>
-            <ModalReausable title='Colore' closeModal={() => {
+            <ModalReausable title={'Colore'} closeModal={() => {
                 setIsOpen(prevstate => {
                     return {
                         ...prevstate,
@@ -483,34 +640,48 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                     className={`grid grid-cols-2 md:grid-cols-3 gap-4`}
                 >
                     {COLORS.map(element => {
-                        return (<Box
-                            width={'full'}
-                            _hover={{
-                                background: 'gray.100'
-                            }}
-                            p={2}
-                            textAlign={'center'}
-                            cursor={'pointer'}
-                            borderRadius={'lg'}
-                            fontSize={'md'}
-                            fontWeight={'semibold'}
-                        >
-                            <div
-                                className='flex m-auto'
+                        return (
+                            <Box
+                                key={element.cssColor}
+                                width={'full'}
+                                _hover={{
+                                    background: 'gray.100'
+                                }}
+                                p={2}
+                                textAlign={'center'}
+                                cursor={'pointer'}
+                                borderRadius={'lg'}
+                                fontSize={'md'}
+                                fontWeight={'semibold'}
+                                onClick={() => {
+                                    console.log(router.asPath.split('?')[0]);
+                                    const filter = getFilterValue();
+                                    router.push({
+                                        pathname: router.asPath.split('?')[0],
+                                        query: {
+                                            ...filter,
+                                            colors: [element.name.toLocaleLowerCase()]
+                                        }
+                                    },
+                                        undefined, { shallow: false })
+                                }}
                             >
-                                <div className='my-auto mr-2'>
-                                    <Circle_Color colors={[element.cssColor]} dimension={4} space={0} />
-
-                                </div>
-                                <Text
-                                    my={'auto'}
+                                <div
+                                    className='flex m-auto'
                                 >
-                                    {element.name}
+                                    <div className='my-auto mr-2'>
+                                        <Circle_Color colors={[element.cssColor]} dimension={4} space={0} />
 
-                                </Text>
-                            </div>
+                                    </div>
+                                    <Text
+                                        my={'auto'}
+                                    >
+                                        {element.name}
 
-                        </Box>)
+                                    </Text>
+                                </div>
+
+                            </Box>)
                     })}
                 </Box>
 
