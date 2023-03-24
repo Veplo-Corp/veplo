@@ -21,6 +21,11 @@ import { changeGenderSelected } from '../../../store/reducers/user';
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import createUrlSchema from '../../../../components/utils/create_url';
+import MenuBottonFilter from '../../../../components/atoms/MenuBottonFilter';
+import TransitionFilter from '../../../../components/atoms/TransitionFilter';
+import { SIZES } from '../../../../components/mook/sizes';
+import { COLORS } from '../../../../components/mook/colors';
+import Circle_Color from '../../../../components/atoms/Circle_Color';
 
 
 const RANGE = 5
@@ -34,10 +39,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(ctx: any) {
-    let { slug } = ctx.params;
-    const elementGenderMacrocategory: { gender: string | null, macrocategory: string | null } = getGenderandMacrocategory(slug);
+    let { category } = ctx.params;
+    const elementGenderMacrocategory: { gender: string | null, macrocategory: string | null } = getGenderandMacrocategory(category);
     const apolloClient = initApollo()
-
 
     try {
         if (!elementGenderMacrocategory.gender || !elementGenderMacrocategory.macrocategory) {
@@ -80,8 +84,8 @@ export async function getStaticProps(ctx: any) {
         }
     }
 
-
 }
+
 
 
 const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = ({ products, category, gender }) => {
@@ -93,8 +97,9 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
     const dispatch = useDispatch();
     const [getProducts, productsFounder] = useLazyQuery(GET_PRODUCTS);
     const [microcategory, setMicrocategory] = useState<string[]>([])
+    const [sizeProduct, setSizeProduct] = useState<string>()
 
-    console.log(router);
+    console.log(router.asPath);
 
 
     const fetchMoreData = async () => {
@@ -151,6 +156,7 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
 
         if (!microcategory?.types) return
         setMicrocategory(microcategory?.types);
+        setSizeProduct(microcategory.sizes)
 
     }, [products])
 
@@ -169,6 +175,7 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
     }, [gender])
 
 
+    console.log(gender);
 
 
 
@@ -198,10 +205,12 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                 >
                     <Box
                         minWidth={'xs'}
-                        className='hidden lg:table'
+                        className='hidden lg:table w-1/4'
                     >
 
                         {Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.map(element => {
+
+
                             return (
                                 <Box
                                     key={element.name}
@@ -209,13 +218,14 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                                     width={'fit-content'}
                                 >
                                     <Link
-                                        href={'/prodotti/' + gender === 'm' ? 'uomo' : 'donna' + '-' + element.url}
+                                        href={'/prodotti/' + (gender == 'f' ? 'donna' : 'uomo') + '-' + element.url}
                                     >
                                         <Text
                                             textAlign={'start'}
                                             cursor={'pointer'}
                                             fontWeight={'bold'}
                                             fontSize={'md'}
+                                            className='hover:underline'
                                         >
                                             {element.name}
 
@@ -233,75 +243,43 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
 
                     </Box>
                     <Box
+                        className='w-full lg:w-3/4'
                     >
-                        <HStack
-                            gap={4}
-                            mb={4}
+                        <div
+                            className='mb-4 overflow-x-scroll flex gap-4'
                         >
+                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(() => {
+                                return (
+                                    <Button
+                                        rightIcon={
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="ml-1 w-5 h-5">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                            </svg>
+                                        }
+                                        minW={'fit-content'}
+                                        bg={'white'}
+                                        color={'black'}
+                                        _hover={{ bg: 'white' }}
+                                        borderWidth={1}
+                                        borderColor={'gray.300'}
+                                        borderRadius={'10px'}
+                                        padding={6}
+                                        _focus={{
+                                            bg: 'white'
+                                        }}
+                                        _active={{
+                                            transform: 'scale(0.98)',
+                                        }}
+                                    >
+                                        Categoria
+                                    </Button>
+                                )
+                            })
 
-                            <Menu as="div" className="relative z-10 inline-block text-left">
-                                <div>
-                                    <Menu.Button className="inline-flex w-full justify-center rounded-[10px] bg-white border-[1px] px-4 py-3 text-md text-black font-black border-gray-300 ">
-                                        <Text
-                                            my={'auto'}
-                                        >
-                                            micro categoria
-                                        </Text>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={4} stroke="currentColor" className="w-4 h-4 my-auto ml-1.5">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                        </svg>
-
-                                    </Menu.Button>
-                                </div>
-                                <Transition
-                                    enter="transition ease-out duration-100"
-                                    enterFrom="transform opacity-0 scale-95"
-                                    enterTo="transform opacity-100 scale-100"
-                                    leave="transition ease-in duration-75"
-                                    leaveFrom="transform opacity-100 scale-100"
-                                    leaveTo="transform opacity-0 scale-95"
-                                >
-                                    <Menu.Items className="absolute left-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-lg bg-white border-[1px] border-gray-200">
-                                        <div className="p-2 ">
-                                            <Menu.Item>
-                                                {({ active }) =>
-                                                (
-                                                    <>
-                                                        {microcategory.map((category: string, index) => {
-                                                            return (
-                                                                <Link
-                                                                    key={index}
-                                                                    href={
-                                                                        router.asPath.split('?')[1] ?
-                                                                            `${router.asPath.split('?')[0]}/${createUrlSchema([category])}/?${router.asPath.split('?')[1]}`
-                                                                            :
-                                                                            `${router.asPath.split('?')[0]}/${createUrlSchema([category])}`
-
-                                                                    }
-                                                                >
-                                                                    <button
-                                                                        className={`hover:bg-gray-50 group flex w-full items-center rounded-md px-2 py-2 text-md font-bold`}
-                                                                    >
-                                                                        {category}
-                                                                    </button>
-                                                                </Link>
-                                                            )
-                                                        })}
-                                                    </>
-                                                )}
+                            }
 
 
-
-                                            </Menu.Item>
-
-                                        </div>
-
-                                    </Menu.Items>
-                                </Transition>
-                            </Menu>
-
-
-                        </HStack>
+                        </div>
 
                         {!loading && <InfiniteScroll
                             dataLength={productsFounded.length}
@@ -332,22 +310,7 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                                                 </Link>
                                             )
                                         })) : (
-                                            <div className='text-center h-screen content-center'>
-                                                <div className='absolute w-full top-56'>
-                                                    <h1 className='font-extrabold md:8/12 lg:w-6/12 m-auto text-xl lg:text-2xl mb-10 text-[#707070] px-9 line-clamp-2'>
-                                                        Nessun prodotto trovato
-                                                    </h1>
-                                                    <img
-                                                        className='m-auto h-28 w-28 mb-6'
-                                                        src="/error/cryingBoy.svg"
-                                                        alt="non trovata" />
-                                                    <Button
-                                                        colorScheme={'blackAlpha'}
-                                                        mt={'1'}
-                                                        onClick={resetFilter}
-                                                    >Resetta filtri</Button>
-                                                </div>
-                                            </div>
+                                            <></>
                                         )
                                     }
                                 </div>
@@ -359,7 +322,7 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
 
                 </Box>
 
-            </Desktop_Layout>
+            </Desktop_Layout >
             {gender && <FIlter_Button gender={gender} macrocategory={category ? category : "Tutto l'abbigliamento"} />}
 
         </>
