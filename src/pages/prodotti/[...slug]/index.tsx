@@ -401,8 +401,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                         bg: slug[1] !== 'tutto' ? 'black' : 'white'
                                     }
                                 }
-                                borderWidth={slug[1] !== 'tutto' ? 2 : 1}
-                                borderColor={slug[1] !== 'tutto' ? 'gray.600' : 'gray.300'}
+                                borderWidth={1}
+                                borderColor={'gray.300'}
                                 borderRadius={'10px'}
                                 padding={6}
                                 _focus={{
@@ -429,8 +429,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 position={'relative'}
                                 color={'black'}
                                 _hover={{ bg: 'white' }}
-                                borderWidth={filter.sizes ? 2 : 1}
-                                borderColor={filter.sizes ? 'gray.600' : 'gray.300'}
+                                borderWidth={1}
+                                borderColor={'gray.300'}
                                 borderRadius={'10px'}
                                 padding={6}
                                 _focus={{
@@ -458,8 +458,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 position={'relative'}
                                 color={'black'}
                                 _hover={{ bg: 'white' }}
-                                borderWidth={filter.colors ? 2 : 1}
-                                borderColor={filter.colors ? 'gray.600' : 'gray.300'}
+                                borderWidth={1}
+                                borderColor={'gray.300'}
                                 borderRadius={'10px'}
                                 padding={6}
                                 _focus={{
