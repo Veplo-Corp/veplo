@@ -28,6 +28,7 @@ import { COLORS } from '../../../../components/mook/colors';
 import Circle_Color from '../../../../components/atoms/Circle_Color';
 import ModalReausable from '../../../../components/organisms/ModalReausable';
 import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First_Letter';
+import { findMicrocategoryName } from '../../../../components/utils/find_microcategory_name';
 
 
 const RANGE = 5
@@ -52,7 +53,8 @@ export async function getStaticProps(ctx: any) {
     let { slug } = ctx.params;
 
     const elementGenderMacrocategory: { gender: string | null, macrocategory: string | null } = getGenderandMacrocategory(slug[0]);
-    const microgategoryName: string | undefined = slug[1];
+    const microgategoryNameUrl: string = slug[1];
+
 
     const apolloClient = initApollo()
 
@@ -61,6 +63,9 @@ export async function getStaticProps(ctx: any) {
             throw new Error("categoria o gender non trovato");
         }
         const macrogategoryName = findMacrocategoryName(elementGenderMacrocategory.macrocategory, elementGenderMacrocategory.gender) || ''
+        const microgategoryName = findMicrocategoryName(elementGenderMacrocategory.macrocategory, elementGenderMacrocategory.gender, microgategoryNameUrl) || ''
+
+
         let filter: {
             macroCategory?: string,
             microCategory?: string,
@@ -71,7 +76,7 @@ export async function getStaticProps(ctx: any) {
         if (macrogategoryName) {
             filter.macroCategory = macrogategoryName
         }
-        // if (microgategoryName) {
+        // if (microgategoryNameUrl) {
         //     filter.microCategory = microgategoryName
         // }
         if (elementGenderMacrocategory.gender) {
@@ -93,6 +98,7 @@ export async function getStaticProps(ctx: any) {
                 gender: elementGenderMacrocategory.gender === 'uomo' ? 'm' : 'f',
                 category: macrogategoryName,
                 products: data?.products,
+                microCategory: microgategoryName
             },
             revalidate: 60 //seconds
         }
@@ -137,7 +143,7 @@ interface PropsFilter {
     fit?: string
 }
 
-const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = ({ products, category, gender }) => {
+const index: FC<{ products: Product[], category: string, microCategory: string, gender: 'f' | 'm' }> = ({ products, microCategory, category, gender }) => {
 
     const router = useRouter();
     const [loading, setLoading] = useState(false);
@@ -298,6 +304,12 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
 
             }
             if (typeof sizes === 'string') {
+                setFilter(prevstate => {
+                    return {
+                        ...prevstate,
+                        sizes: sizes
+                    }
+                })
                 filter['sizes'] = [sizes.split(' ')[0]]
             }
             return filter
@@ -305,6 +317,8 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
         return {}
 
     }
+
+    console.log(slug);
 
 
     return (
@@ -387,8 +401,8 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                                 position={'relative'}
                                 color={'black'}
                                 _hover={{ bg: 'white' }}
-                                borderWidth={1}
-                                borderColor={'gray.300'}
+                                borderWidth={slug[1] !== 'tutto' ? 2 : 1}
+                                borderColor={slug[1] !== 'tutto' ? 'gray.600' : 'gray.300'}
                                 borderRadius={'10px'}
                                 padding={6}
                                 _focus={{
@@ -406,7 +420,7 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                                     })
                                 }}
                             >
-                                Categoria
+                                {slug[1] !== 'tutto' ? microCategory : 'Categoria'}
                             </Button>}
                             {sizeProduct && <Button
                                 rightIcon={
@@ -419,8 +433,8 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                                 position={'relative'}
                                 color={'black'}
                                 _hover={{ bg: 'white' }}
-                                borderWidth={1}
-                                borderColor={'gray.300'}
+                                borderWidth={filter.sizes ? 2 : 1}
+                                borderColor={filter.sizes ? 'gray.600' : 'gray.300'}
                                 borderRadius={'10px'}
                                 padding={6}
                                 _focus={{
@@ -438,7 +452,7 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                                     })
                                 }}
                             >
-                                Taglia
+                                {filter.sizes ? 'Taglia: ' + filter.sizes : 'Taglia'}
                             </Button>
                             }
                             <Button
@@ -474,7 +488,7 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                             >
                                 {filter.colors ? filter.colors : 'Colore'}
                             </Button>
-                            <Button
+                            {false && <Button
                                 rightIcon={
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="ml-1 w-5 h-5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -505,7 +519,7 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                                 }}
                             >
                                 Ordina
-                            </Button>
+                            </Button>}
 
                         </div>
 
@@ -571,7 +585,11 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                             <Link
                                 key={element}
 
-                                href={`/prodotti/${slug[0]}/${createUrlSchema([element.toLocaleLowerCase()])}/${slug[2]}`}
+                                href={
+                                    router.asPath.split('?')[1] ?
+                                        `/prodotti/${slug[0]}/${createUrlSchema([element.toLocaleLowerCase()])}/${slug[2]}?${router.asPath.split('?')[1]}`
+                                        : `/prodotti/${slug[0]}/${createUrlSchema([element.toLocaleLowerCase()])}/${slug[2]}`
+                                }
                             >
                                 <Box
                                     p={2}
@@ -601,6 +619,7 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                         ...prevstate,
                         size: false
                     }
+
                 })
             }} isOpen={isOpen.size} positionTopModal={true}>
                 <Box
@@ -620,6 +639,17 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                             borderRadius={'lg'}
                             fontSize={'md'}
                             fontWeight={'semibold'}
+                            onClick={() => {
+                                const filter = getFilterValue();
+                                router.push({
+                                    pathname: router.asPath.split('?')[0],
+                                    query: {
+                                        ...filter,
+                                        sizes: [element.split(' ')[0]]
+                                    }
+                                },
+                                    undefined, { shallow: true })
+                            }}
                         >
                             {element}
                         </Box>)
@@ -663,7 +693,7 @@ const index: FC<{ products: Product[], category: string, gender: 'f' | 'm' }> = 
                                             colors: [element.name.toLocaleLowerCase()]
                                         }
                                     },
-                                        undefined, { shallow: false })
+                                        undefined, { shallow: true })
                                 }}
                             >
                                 <div
