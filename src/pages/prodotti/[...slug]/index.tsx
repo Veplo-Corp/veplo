@@ -612,7 +612,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             }} isOpen={isOpen.size} positionTopModal={true}>
                 <Box
                     mt={2}
-                    className={`grid ${sizeProduct === 'shoes_sizes' ? 'grid-cols-5 gap-2' : 'grid-cols-3 gap-2'} `}
+                    className={`grid ${sizeProduct === 'shoes_sizes' ? 'grid-cols-4 gap-2' : 'grid-cols-3 gap-2'} `}
                 >
                     {(sizeProduct === 'man_clothes_sizes' || sizeProduct === 'woman_clothes_sizes' || sizeProduct === 'shoes_sizes') && SIZES[sizeProduct].map(element => {
                         return (<Box

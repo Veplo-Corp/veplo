@@ -57,7 +57,7 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
                         <h3
                             className='text-2xl font-medium'
                         >
-                            Carrello
+                            Cerca
                         </h3>
                         <Box
                             cursor={'pointer'}
@@ -71,6 +71,7 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
                     </DrawerHeader>
                     <DrawerBody
                         p={0}
+
 
                     >
                         <Tab.Group
@@ -102,6 +103,7 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
                             </Tab.List>
 
                             <Tab.Panels
+                                className={'mb-20'}
                             >
                                 {/* <Tab.Panel></Tab.Panel> */}
                                 {Object.values(categories).map((categories, indexArray) => {
