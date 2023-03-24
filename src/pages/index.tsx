@@ -58,10 +58,10 @@ const Home: NextPage = () => {
               image={''}
               description={"Scopri i negozi di vestiti per uomo e donna della tua città su Veplo. Cerca tra tutto l'abbigliamento in vendita vicino a te e approfitta delle offerte"}
             />
-            <div className='w-full justify-between mt-16 md:mt-[85px]'>
+            <div className='w-full justify-between'>
 
               <Gradient_Component_home display='flex'>
-                <h1 className='text-6xl md:text-7xl lg:text-8xl font-black text-white md:w-7/12 my-auto md:leading-[90px] lg:leading-[110px] '>
+                <h1 className='text-6xl md:text-7xl lg:text-8xl font-black text-white md:w-7/12 my-auto '>
                   SCOPRI <br />I TUOI<br /> DINTORNI
                 </h1>
                 <div
