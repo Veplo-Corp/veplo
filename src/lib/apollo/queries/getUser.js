@@ -77,8 +77,9 @@ const GET_USER = gql`
                     color
                     size
                 }
-                user{
+                recipient{
                     id
+                    name
                     address{
                         city
                         country

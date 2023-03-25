@@ -24,7 +24,7 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
         return classes.filter(Boolean).join(' ')
     }
 
-    const handleCategoryClicked = (catObject: any, indexArray: any) => {
+    const handleCategoryClicked = (catObject: any, indexArray: any, microcategory?: string) => {
         let gender: string = 'donna'
         if (indexArray === 1) {
             gender = 'uomo'
@@ -36,7 +36,7 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
             router.push(`/prodotti/${gender}-abbigliamento/tutto/rilevanza`)
         } else {
             const categorySelectedUrl = createUrlSchema([gender, categoryForUrl])
-            router.push(`/prodotti/${categorySelectedUrl}/tutto/rilevanza`)
+            router.push(`/prodotti/${categorySelectedUrl}/${microcategory ? createUrlSchema([microcategory]) : 'tutto'}/rilevanza`)
         }
         closeDrawer()
     }
@@ -115,7 +115,7 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
                                                     handleCategoryClicked('tutto l’abbigliamento', indexArray)
                                                 }}
                                             >
-                                                <p className='my-auto text-lg font-medium'>
+                                                <p className='my-auto text-lg font-bold'>
                                                     Tutto l'abbigliamento
                                                 </p>
                                             </div>
@@ -128,28 +128,38 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
                                                                     <Disclosure.Button className="py-2 px-6 w-full flex my-auto justify-between h-12 border-0 border-b"
                                                                         /* delete when you filter by microcategory */
                                                                         onClick={() => {
-                                                                            handleCategoryClicked(catObject.name, indexArray)
+                                                                            //handleCategoryClicked(catObject.name, indexArray)
                                                                         }}
                                                                     >
 
-                                                                        <p className='text-lg font-medium my-auto'>
+                                                                        <p className='text-lg font-bold my-auto'>
                                                                             {catObject.name}
                                                                         </p>
-                                                                        {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
-                                                                    className={`${open ? 'rotate-180 transform' : ''
-                                                                        } w-6 h-6 my-auto`}>
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                                                </svg> */}
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
+                                                                            className={`${open ? 'rotate-180 transform' : ''
+                                                                                } w-6 h-6 my-auto`}>
+                                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                                                        </svg>
                                                                     </Disclosure.Button>
                                                                     <Disclosure.Panel>
+                                                                        <div
 
+                                                                            onClick={() => {
+                                                                                handleCategoryClicked(catObject.name, indexArray)
+                                                                            }}
+                                                                            key={idx} className='bg-slate-50 py-2 px-6 h-12 border-0 border-b text-md font-semibold flex cursor-pointer'>
+                                                                            <p className='my-auto'>
+                                                                                Tutti i prodotti della categoria
+                                                                            </p>
+                                                                        </div>
                                                                         {catObject.types.map((type: string, idx) => {
                                                                             return (
                                                                                 <div
+
                                                                                     onClick={() => {
-                                                                                        handleCategoryClicked(catObject.name, indexArray)
+                                                                                        handleCategoryClicked(catObject.name, indexArray, type)
                                                                                     }}
-                                                                                    key={idx} className='bg-slate-50 py-2 px-6 h-12 border-0 border-b text-md font-medium flex'>
+                                                                                    key={idx} className='bg-slate-50 py-2 px-6 h-12 border-0 border-b text-md font-semibold flex cursor-pointer'>
                                                                                     <p className='my-auto'>
                                                                                         {type.charAt(0).toUpperCase() + type.slice(1)}
 

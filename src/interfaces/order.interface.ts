@@ -43,9 +43,9 @@ export interface Order {
         id: string,
         name: string,
     },
-    user: {
+    recipient: {
         id: string,
-        //manca il nome dell'ordinante
+        name: string,
         address: Address
     }
     productVariations: ProductVariationInOrder[],

@@ -30,6 +30,7 @@ import ModalReausable from '../../../../components/organisms/ModalReausable';
 import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First_Letter';
 import { findMicrocategoryName } from '../../../../components/utils/find_microcategory_name';
 import Div_input_creation from '../../../../components/atoms/Div_input_creation';
+import { motion } from 'framer-motion';
 
 
 const RANGE = 5
@@ -269,7 +270,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             newProducts().then(products => {
                 setproductsFounded(products.data?.products)
                 setHasMoreData(true)
-
             })
         }
 
@@ -281,8 +281,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
 
     const getFilterValue = () => {
-        const { sizes, colors, maxprice, minprice } = router.query
-        if (colors || sizes || maxprice || minprice) {
+        const { sizes, colors, maxPrice, minPrice } = router.query
+        if (colors || sizes || maxPrice || minPrice) {
             let filter: {
                 colors?: string[],
                 sizes?: string[],
@@ -310,29 +310,29 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 })
                 filter['sizes'] = [sizes.split(' ')[0]]
             }
-            if (typeof minprice === 'string') {
+            if (typeof minPrice === 'string') {
                 setFilter(prevstate => {
                     return {
                         ...prevstate,
                         price: {
                             ...prevstate.price,
-                            min: Number(minprice)
+                            min: Number(minPrice)
                         }
                     }
                 })
-                filter['minPrice'] = Number(minprice)
+                filter['minPrice'] = Number(minPrice)
             }
-            if (typeof maxprice === 'string') {
+            if (typeof maxPrice === 'string') {
                 setFilter(prevstate => {
                     return {
                         ...prevstate,
                         price: {
                             ...prevstate.price,
-                            max: Number(maxprice)
+                            max: Number(maxPrice)
                         }
                     }
                 })
-                filter['maxPrice'] = Number(maxprice)
+                filter['maxPrice'] = Number(maxPrice)
             }
             return filter
         }
@@ -345,6 +345,21 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
     return (
         <>
+            <div className="hidden lg:flex w-full h-[16px] bg-purple-400">
+                <motion.span
+                    initial={{ x: '100%' }}
+                    animate={{ x: '-100%' }}
+                    transition={{
+                        duration: 20,
+                        ease: 'linear',
+                        repeat: Infinity,
+                        repeatType: 'loop',
+                    }}
+                    className="my-auto text-white text-xl w-full font-extrabold leading-4"
+                >
+                    &#x1F525; VEPLO IS ON FIREEE &#x1F525;
+                </motion.span>
+            </div>
             <Desktop_Layout>
                 <PostMeta
                     canonicalUrl={'https://www.veplo.it' + router.asPath}
@@ -363,6 +378,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                         {gender === 'f' ? 'Donna' : 'Uomo'} | {category ? category : "tutto l'abbligliamento"}
                     </Text>
                 } */}
+
+
                 <Box width={'full'}
                     display={'flex'}
                 >
@@ -631,8 +648,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
                                 href={
                                     router.asPath.split('?')[1] ?
-                                        `/prodotti/${slug[0]}/${createUrlSchema([element.toLocaleLowerCase()])}/${slug[2]}?${router.asPath.split('?')[1]}`
-                                        : `/prodotti/${slug[0]}/${createUrlSchema([element.toLocaleLowerCase()])}/${slug[2]}`
+                                        `/prodotti/${slug[0]}/${createUrlSchema([element])}/${slug[2]}?${router.asPath.split('?')[1]}`
+                                        : `/prodotti/${slug[0]}/${createUrlSchema([element])}/${slug[2]}`
                                 }
                             >
                                 <Box
@@ -738,7 +755,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 _hover={{
                                     background: 'gray.100'
                                 }}
-                                background={element.name.toLocaleLowerCase() === router.query.colors ? 'gray.100' : 'white'}
+                                background={element.name === router.query.colors ? 'gray.100' : 'white'}
                                 p={2}
                                 textAlign={'center'}
                                 cursor={'pointer'}
@@ -747,7 +764,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 fontWeight={'semibold'}
                                 onClick={() => {
 
-                                    if (element.name.toLocaleLowerCase() === router.query.colors) {
+                                    if (element.name === router.query.colors) {
 
 
                                         let filter = getFilterValue();
@@ -766,7 +783,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             pathname: router.asPath.split('?')[0],
                                             query: {
                                                 ...filter,
-                                                colors: [element.name.toLocaleLowerCase()]
+                                                colors: [element.name]
                                             }
                                         },
                                             undefined, { shallow: true })
@@ -877,28 +894,36 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                     </Div_input_creation>
 
                 </Box>
-                <Stack align={'end'}>
+                <Stack align={'end'} >
+
                     <Button
 
                         mt={2}
                         onClick={() => {
 
                             let price: {
-                                minprice?: number,
-                                maxprice?: number
+                                minPrice?: number,
+                                maxPrice?: number
                             } = {}
                             if (filter.price?.min) {
-                                price['minprice'] = filter.price?.min
+                                price['minPrice'] = filter.price?.min
                             }
                             if (filter.price?.max && (!filter.price?.min || filter.price?.max > filter.price?.min)) {
-                                price['maxprice'] = filter.price?.max
+                                price['maxPrice'] = filter.price?.max
                             }
 
-                            console.log(price);
+
 
 
 
                             const filterValues = getFilterValue();
+                            if (!filter.price?.max) {
+                                delete filterValues['maxPrice']
+                            }
+                            if (!filter.price?.min) {
+                                delete filterValues['minPrice']
+                            }
+
                             router.push({
                                 pathname: router.asPath.split('?')[0],
                                 query: {
