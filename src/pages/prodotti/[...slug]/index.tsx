@@ -260,6 +260,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                         filters: {
                             macroCategory: toUpperCaseFirstLetter(category),
                             //inserire la microcategoria
+                            microCategory: microCategory ? microCategory : '',
                             gender: gender,
                             ...filters
                         }
@@ -350,7 +351,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                     initial={{ x: '100%' }}
                     animate={{ x: '-100%' }}
                     transition={{
-                        duration: 20,
+                        duration: 40,
                         ease: 'linear',
                         repeat: Infinity,
                         repeatType: 'loop',
@@ -385,7 +386,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 >
                     <Box
                         minWidth={'xs'}
-                        className='hidden lg:table w-1/4 lg:mt-0'
+                        className='hidden lg:table w-1/4 lg:mt-4'
                     >
                         {Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.map(element => {
 
@@ -422,7 +423,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                     </Box>
 
                     <Box
-                        className='w-full lg:w-3/4 relative'
+                        className='w-full lg:w-3/4 relative lg:mt-2'
                     >
 
                         <div
@@ -441,7 +442,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     }
                                 }
                                 borderWidth={1}
-                                borderColor={'gray.300'}
+                                borderColor={'#DFDFDF'}
                                 borderRadius={'10px'}
                                 padding={6}
                                 fontWeight={'bold'}
@@ -451,6 +452,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 _active={{
                                     transform: 'scale(0.98)',
                                 }}
+                                fontSize={'18px'}
                                 onClick={() => {
                                     setIsOpen(prevstate => {
                                         return {
@@ -470,7 +472,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 color={'black'}
                                 _hover={{ bg: 'white' }}
                                 borderWidth={1}
-                                borderColor={'gray.300'}
+                                borderColor={'#DFDFDF'}
                                 borderRadius={'10px'}
                                 padding={6}
                                 _focus={{
@@ -479,6 +481,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 _active={{
                                     transform: 'scale(0.98)',
                                 }}
+                                fontSize={'18px'}
                                 fontWeight={'bold'}
                                 onClick={() => {
                                     setIsOpen(prevstate => {
@@ -500,7 +503,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 color={'black'}
                                 _hover={{ bg: 'white' }}
                                 borderWidth={1}
-                                borderColor={'gray.300'}
+                                borderColor={'#DFDFDF'}
                                 borderRadius={'10px'}
                                 padding={6}
                                 fontWeight={'bold'}
@@ -510,7 +513,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 _active={{
                                     transform: 'scale(0.98)',
                                 }}
-
+                                fontSize={'18px'}
                                 onClick={() => {
                                     setIsOpen(prevstate => {
                                         return {
@@ -530,7 +533,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 color={'black'}
                                 _hover={{ bg: 'white' }}
                                 borderWidth={1}
-                                borderColor={'gray.300'}
+                                borderColor={'#DFDFDF'}
                                 borderRadius={'10px'}
                                 padding={6}
                                 _focus={{
@@ -539,6 +542,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 _active={{
                                     transform: 'scale(0.98)',
                                 }}
+                                fontSize={'18px'}
                                 onClick={() => {
                                     setIsOpen(prevstate => {
                                         return {
@@ -558,7 +562,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 color={'black'}
                                 _hover={{ bg: 'white' }}
                                 borderWidth={1}
-                                borderColor={'gray.300'}
+                                borderColor={'#DFDFDF'}
                                 borderRadius={'10px'}
                                 padding={6}
                                 fontWeight={'bold'}
@@ -568,7 +572,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 _active={{
                                     transform: 'scale(0.98)',
                                 }}
-
+                                fontSize={'18px'}
                                 onClick={() => {
                                     setIsOpen(prevstate => {
                                         return {
@@ -814,125 +818,148 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
             </ModalReausable>
             <ModalReausable title={'Prezzo'} closeModal={() => {
+
+
+
+
+
+
+
+
+                const filterValues = getFilterValue();
+
+
+                let price: {
+                    minPrice?: number,
+                    maxPrice?: number
+                } = {}
+                if (filter.price?.min) {
+                    price['minPrice'] = filter.price?.min
+                }
+                if (filter.price?.max && (!filter.price?.min || filter.price?.max > filter.price?.min)) {
+                    console.log(filter.price?.max);
+                    console.log(filter.price?.min);
+
+                    price['maxPrice'] = filter.price?.max
+                } else {
+                    delete filterValues['maxPrice']
+                }
+
+                if (!filter.price?.max) {
+                    delete filterValues['maxPrice']
+                }
+                if (!filter.price?.min) {
+                    delete filterValues['minPrice']
+                }
+
+                router.push({
+                    pathname: router.asPath.split('?')[0],
+                    query: {
+                        ...filterValues,
+                        ...price
+                    }
+                },
+                    undefined, { shallow: true })
+
                 setIsOpen(prevstate => {
                     return {
                         ...prevstate,
                         price: false
                     }
                 })
-            }} isOpen={isOpen.price} positionTopModal={true}>
+
+            }}
+                isOpen={isOpen.price} positionTopModal={true}>
                 <Box
                     mt={3}
                     className={`flex justify-between`}
+                    marginTop={2}
                 >
-                    <Div_input_creation text='Prezzo minimo'>
-                        <InputGroup
 
-                        >
-                            {/* <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} /> */}
-                            <Input
-                                rounded={10}
-                                paddingY={6}
-                                autoComplete='off'
-                                type="number"
-                                marginRight={[2, 6]}
-                                value={filter.price?.min || ""}
-                                onWheel={(e: any) => e.target.blur()}
-                                placeholder={'MIN'}
-                                textAlign={"end"}
-                                isInvalid={false}
-                                onChange={(e) => {
-                                    const number = Number(e.target.value.replace('/[^1-9]/g', ""))
-                                    if (number >= 0) {
-                                        setFilter(prevstate => {
-                                            return {
-                                                ...prevstate,
-                                                price: {
-                                                    ...prevstate.price,
-                                                    min: number
-                                                }
-                                            }
-                                        })
+                    {/* <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} /> */}
+                    <Input
+                        rounded={10}
+                        paddingY={6}
+                        borderWidth={0}
+                        autoComplete='off'
+                        type="number"
+                        value={filter.price?.min || ""}
+                        onWheel={(e: any) => e.target.blur()}
+                        placeholder={'Prezzo minimo'}
+                        _placeholder={{
+                            fontWeight: '450',
+                            color: '#A19F9F'
+                        }}
+                        fontWeight={'semibold'}
+
+                        fontSize={'lg'}
+                        background={'#F2F2F2'}
+                        textAlign={"center"}
+                        isInvalid={false}
+                        onChange={(e) => {
+                            const number = Number(e.target.value.replace('/[^1-9]/g', ""))
+                            if (number >= 0) {
+                                setFilter(prevstate => {
+                                    return {
+                                        ...prevstate,
+                                        price: {
+                                            ...prevstate.price,
+                                            min: number
+                                        }
                                     }
+                                })
+                            }
 
-                                }}
-                            />
-                        </InputGroup>
-                    </Div_input_creation>
-                    <Div_input_creation text='Prezzo massimo'>
-                        <InputGroup
+                        }}
+                    />
 
-                        >
-                            {/* <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} /> */}
-                            <Input
-                                rounded={10}
-                                paddingY={6}
-                                autoComplete='off'
-                                type="number"
-                                value={filter.price?.max || ""}
-                                onWheel={(e: any) => e.target.blur()}
-                                placeholder={'MAX'}
-                                textAlign={"end"}
-                                isInvalid={false}
-                                onChange={(e) => {
-                                    const number = Number(e.target.value.replace('/[^1-9]/g', ""))
-                                    if (number >= 0) {
-                                        setFilter(prevstate => {
-                                            return {
-                                                ...prevstate,
-                                                price: {
-                                                    ...prevstate.price,
-                                                    max: number
-                                                }
-                                            }
-                                        })
+                    <span className='mx-4 my-auto font-black'>
+                        -
+                    </span>
+
+                    {/* <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} /> */}
+                    <Input
+                        rounded={10}
+                        paddingY={6}
+                        autoComplete='off'
+                        type="number"
+                        value={filter.price?.max || ""}
+                        onWheel={(e: any) => e.target.blur()}
+                        placeholder={'Prezzo massimo'}
+                        fontSize={'lg'}
+                        background={'#F2F2F2'}
+                        textAlign={"center"}
+                        _placeholder={{
+                            fontWeight: '450',
+                            color: '#A19F9F'
+                        }}
+                        borderWidth={0}
+                        fontWeight={'semibold'}
+                        isInvalid={false}
+                        onChange={(e) => {
+                            const number = Number(e.target.value.replace('/[^1-9]/g', ""))
+                            if (number >= 0) {
+                                setFilter(prevstate => {
+                                    return {
+                                        ...prevstate,
+                                        price: {
+                                            ...prevstate.price,
+                                            max: number
+                                        }
                                     }
+                                })
+                            }
 
-                                }}
-                            />
-                        </InputGroup>
-                    </Div_input_creation>
+                        }}
+                    />
 
                 </Box>
-                <Stack align={'end'} >
+                {/* <Stack align={'end'} mt={2} >
 
                     <Button
 
                         mt={2}
-                        onClick={() => {
-
-                            let price: {
-                                minPrice?: number,
-                                maxPrice?: number
-                            } = {}
-                            if (filter.price?.min) {
-                                price['minPrice'] = filter.price?.min
-                            }
-                            if (filter.price?.max && (!filter.price?.min || filter.price?.max > filter.price?.min)) {
-                                price['maxPrice'] = filter.price?.max
-                            }
-
-
-
-
-
-                            const filterValues = getFilterValue();
-                            if (!filter.price?.max) {
-                                delete filterValues['maxPrice']
-                            }
-                            if (!filter.price?.min) {
-                                delete filterValues['minPrice']
-                            }
-
-                            router.push({
-                                pathname: router.asPath.split('?')[0],
-                                query: {
-                                    ...filterValues,
-                                    ...price
-                                }
-                            },
-                                undefined, { shallow: true })
-                        }}
+                        
 
                         type={'button'}
                         borderRadius={'xl'}
@@ -956,7 +983,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                     >
                         conferma
                     </Button>
-                </Stack>
+                </Stack> */}
 
             </ModalReausable>
         </>
