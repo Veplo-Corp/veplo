@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
-import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, HStack, Input, InputGroup, Stack, Text, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, useEffect, useState } from 'react'
@@ -29,6 +29,7 @@ import Circle_Color from '../../../../components/atoms/Circle_Color';
 import ModalReausable from '../../../../components/organisms/ModalReausable';
 import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First_Letter';
 import { findMicrocategoryName } from '../../../../components/utils/find_microcategory_name';
+import Div_input_creation from '../../../../components/atoms/Div_input_creation';
 
 
 const RANGE = 5
@@ -76,9 +77,9 @@ export async function getStaticProps(ctx: any) {
         if (macrogategoryName) {
             filter.macroCategory = macrogategoryName
         }
-        // if (microgategoryNameUrl) {
-        //     filter.microCategory = microgategoryName
-        // }
+        if (microgategoryName) {
+            filter.microCategory = microgategoryName
+        }
         if (elementGenderMacrocategory.gender) {
             filter.gender = elementGenderMacrocategory.gender === 'uomo' ? 'm' : 'f'
         }
@@ -103,7 +104,6 @@ export async function getStaticProps(ctx: any) {
             revalidate: 60 //seconds
         }
     } catch (e: any) {
-        console.log(e);
 
 
         return {
@@ -170,7 +170,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
 
     const fetchMoreData = async () => {
-        console.log('AOOOOO');
 
         //FILTER
         const filter = getFilterValue()
@@ -204,7 +203,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                     ...newProducts.data?.products
                 ]
                 products.map(products => {
-                    console.log(products.id);
 
                 })
                 return [
@@ -250,6 +248,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     useEffect(() => {
 
         const filters = getFilterValue()
+        console.log(filters);
 
         if (Object.keys(filters).length > 0) {
             const newProducts = async () => {
@@ -268,7 +267,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             }
 
             newProducts().then(products => {
-                console.log(products);
                 setproductsFounded(products.data?.products)
                 setHasMoreData(true)
 
@@ -279,16 +277,17 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
     }, [router.query])
 
-    console.log(filter);
 
 
 
     const getFilterValue = () => {
-        const { sizes, colors } = router.query
-        if (colors || sizes) {
+        const { sizes, colors, maxprice, minprice } = router.query
+        if (colors || sizes || maxprice || minprice) {
             let filter: {
                 colors?: string[],
-                sizes?: string[]
+                sizes?: string[],
+                maxPrice?: number,
+                minPrice?: number,
             } = {}
 
             if (typeof colors === 'string' && colors !== undefined) {
@@ -299,8 +298,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                         colors: colors
                     }
                 })
-                const colore = toUpperCaseFirstLetter(colors)
-                if (colore) { filter['colors'] = [colore] }
+                filter['colors'] = [colors]
 
             }
             if (typeof sizes === 'string') {
@@ -312,13 +310,37 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 })
                 filter['sizes'] = [sizes.split(' ')[0]]
             }
+            if (typeof minprice === 'string') {
+                setFilter(prevstate => {
+                    return {
+                        ...prevstate,
+                        price: {
+                            ...prevstate.price,
+                            min: Number(minprice)
+                        }
+                    }
+                })
+                filter['minPrice'] = Number(minprice)
+            }
+            if (typeof maxprice === 'string') {
+                setFilter(prevstate => {
+                    return {
+                        ...prevstate,
+                        price: {
+                            ...prevstate.price,
+                            max: Number(maxprice)
+                        }
+                    }
+                })
+                filter['maxPrice'] = Number(maxprice)
+            }
             return filter
         }
         return {}
 
     }
 
-    console.log(slug);
+
 
 
     return (
@@ -358,7 +380,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     width={'fit-content'}
                                 >
                                     <Link
-                                        href={'/prodotti/' + (gender == 'f' ? 'donna' : 'uomo') + '-' + element.url}
+                                        href={'/prodotti/' + (gender == 'f' ? 'donna' : 'uomo') + '-' + element.url + '/tutto/rilevanza'}
                                     >
                                         <Text
                                             textAlign={'start'}
@@ -450,7 +472,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     })
                                 }}
                             >
-                                {filter.sizes ? 'Taglia: ' + filter.sizes : 'Taglia'}
+                                {filter.sizes ? 'Taglia: ' + filter.sizes.toLocaleUpperCase() : 'Taglia'}
                             </Button>
                             }
                             <Button
@@ -511,7 +533,38 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             >
                                 Ordina
                             </Button>}
+                            <Button
 
+                                minW={'fit-content'}
+                                bg={'white'}
+                                position={'relative'}
+                                color={'black'}
+                                _hover={{ bg: 'white' }}
+                                borderWidth={1}
+                                borderColor={'gray.300'}
+                                borderRadius={'10px'}
+                                padding={6}
+                                fontWeight={'bold'}
+                                _focus={{
+                                    bg: 'white'
+                                }}
+                                _active={{
+                                    transform: 'scale(0.98)',
+                                }}
+
+                                onClick={() => {
+                                    setIsOpen(prevstate => {
+                                        return {
+                                            ...prevstate,
+                                            price: true
+                                        }
+                                    })
+                                }}
+                            >
+                                {filter.price?.min ? 'da ' + filter.price?.min + '€ ' : ''}
+                                {filter.price?.max ? 'fino a ' + filter.price?.max + '€' : ''}
+                                {!filter.price?.min && !filter.price?.max ? 'Prezzo' : ''}
+                            </Button>
                         </div>
 
                         {!loading && <InfiniteScroll
@@ -590,6 +643,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     _hover={{
                                         background: 'gray.100'
                                     }}
+                                    background={microCategory === element ? 'gray.100' : 'white'}
                                     cursor={'pointer'}
                                     borderRadius={'lg'}
                                     fontSize={'lg'}
@@ -625,24 +679,40 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             _hover={{
                                 background: 'gray.100'
                             }}
+                            background={element.split(' ')[0] === router.query.sizes ? 'gray.100' : 'white'}
                             textAlign={'center'}
                             cursor={'pointer'}
                             borderRadius={'lg'}
                             fontSize={'md'}
                             fontWeight={'semibold'}
                             onClick={() => {
-                                const filter = getFilterValue();
-                                router.push({
-                                    pathname: router.asPath.split('?')[0],
-                                    query: {
-                                        ...filter,
-                                        sizes: [element.split(' ')[0]]
-                                    }
-                                },
-                                    undefined, { shallow: true })
-                            }}
+                                if (element.split(' ')[0] === router.query.sizes) {
+                                    let filter = getFilterValue();
+                                    delete filter['sizes'];
+
+                                    return router.push({
+                                        pathname: router.asPath.split('?')[0],
+                                        query: {
+                                            ...filter
+                                        }
+                                    },
+                                        undefined, { shallow: true })
+                                } else {
+                                    const filter = getFilterValue();
+                                    router.push({
+                                        pathname: router.asPath.split('?')[0],
+                                        query: {
+                                            ...filter,
+                                            sizes: [element.split(' ')[0]]
+                                        }
+                                    },
+                                        undefined, { shallow: true })
+                                }
+                            }
+                            }
+
                         >
-                            {element}
+                            {element.toLocaleUpperCase()}
                         </Box>)
                     })}
                 </Box>
@@ -668,6 +738,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 _hover={{
                                     background: 'gray.100'
                                 }}
+                                background={element.name.toLocaleLowerCase() === router.query.colors ? 'gray.100' : 'white'}
                                 p={2}
                                 textAlign={'center'}
                                 cursor={'pointer'}
@@ -675,17 +746,35 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 fontSize={'md'}
                                 fontWeight={'semibold'}
                                 onClick={() => {
-                                    console.log(router.asPath.split('?')[0]);
-                                    const filter = getFilterValue();
-                                    router.push({
-                                        pathname: router.asPath.split('?')[0],
-                                        query: {
-                                            ...filter,
-                                            colors: [element.name.toLocaleLowerCase()]
-                                        }
-                                    },
-                                        undefined, { shallow: true })
-                                }}
+
+                                    if (element.name.toLocaleLowerCase() === router.query.colors) {
+
+
+                                        let filter = getFilterValue();
+                                        delete filter['colors'];
+
+                                        return router.push({
+                                            pathname: router.asPath.split('?')[0],
+                                            query: {
+                                                ...filter
+                                            }
+                                        },
+                                            undefined, { shallow: true })
+                                    } else {
+                                        const filter = getFilterValue();
+                                        router.push({
+                                            pathname: router.asPath.split('?')[0],
+                                            query: {
+                                                ...filter,
+                                                colors: [element.name.toLocaleLowerCase()]
+                                            }
+                                        },
+                                            undefined, { shallow: true })
+                                    }
+                                }
+                                }
+
+
                             >
                                 <div
                                     className='flex m-auto'
@@ -705,6 +794,144 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             </Box>)
                     })}
                 </Box>
+
+            </ModalReausable>
+            <ModalReausable title={'Prezzo'} closeModal={() => {
+                setIsOpen(prevstate => {
+                    return {
+                        ...prevstate,
+                        price: false
+                    }
+                })
+            }} isOpen={isOpen.price} positionTopModal={true}>
+                <Box
+                    mt={3}
+                    className={`flex justify-between`}
+                >
+                    <Div_input_creation text='Prezzo minimo'>
+                        <InputGroup
+
+                        >
+                            {/* <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} /> */}
+                            <Input
+                                rounded={10}
+                                paddingY={6}
+                                autoComplete='off'
+                                type="number"
+                                marginRight={[2, 6]}
+                                value={filter.price?.min || ""}
+                                onWheel={(e: any) => e.target.blur()}
+                                placeholder={'MIN'}
+                                textAlign={"end"}
+                                isInvalid={false}
+                                onChange={(e) => {
+                                    const number = Number(e.target.value.replace('/[^1-9]/g', ""))
+                                    if (number >= 0) {
+                                        setFilter(prevstate => {
+                                            return {
+                                                ...prevstate,
+                                                price: {
+                                                    ...prevstate.price,
+                                                    min: number
+                                                }
+                                            }
+                                        })
+                                    }
+
+                                }}
+                            />
+                        </InputGroup>
+                    </Div_input_creation>
+                    <Div_input_creation text='Prezzo massimo'>
+                        <InputGroup
+
+                        >
+                            {/* <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} /> */}
+                            <Input
+                                rounded={10}
+                                paddingY={6}
+                                autoComplete='off'
+                                type="number"
+                                value={filter.price?.max || ""}
+                                onWheel={(e: any) => e.target.blur()}
+                                placeholder={'MAX'}
+                                textAlign={"end"}
+                                isInvalid={false}
+                                onChange={(e) => {
+                                    const number = Number(e.target.value.replace('/[^1-9]/g', ""))
+                                    if (number >= 0) {
+                                        setFilter(prevstate => {
+                                            return {
+                                                ...prevstate,
+                                                price: {
+                                                    ...prevstate.price,
+                                                    max: number
+                                                }
+                                            }
+                                        })
+                                    }
+
+                                }}
+                            />
+                        </InputGroup>
+                    </Div_input_creation>
+
+                </Box>
+                <Stack align={'end'}>
+                    <Button
+
+                        mt={2}
+                        onClick={() => {
+
+                            let price: {
+                                minprice?: number,
+                                maxprice?: number
+                            } = {}
+                            if (filter.price?.min) {
+                                price['minprice'] = filter.price?.min
+                            }
+                            if (filter.price?.max && (!filter.price?.min || filter.price?.max > filter.price?.min)) {
+                                price['maxprice'] = filter.price?.max
+                            }
+
+                            console.log(price);
+
+
+
+                            const filterValues = getFilterValue();
+                            router.push({
+                                pathname: router.asPath.split('?')[0],
+                                query: {
+                                    ...filterValues,
+                                    ...price
+                                }
+                            },
+                                undefined, { shallow: true })
+                        }}
+
+                        type={'button'}
+                        borderRadius={'xl'}
+                        size={'md'}
+                        padding={4}
+                        paddingInline={12}
+                        width={'fit-content'}
+                        height={'fit-content'}
+                        bg={'black.900'}
+                        color={'white'}
+                        _hover={{ bg: 'black.900' }}
+                        _focus={{
+                            bg: 'black.900'
+                        }}
+                        _active={{
+                            transform: 'scale(0.98)',
+                        }}
+                        _disabled={{
+                            background: 'black'
+                        }}
+                    >
+                        conferma
+                    </Button>
+                </Stack>
 
             </ModalReausable>
         </>

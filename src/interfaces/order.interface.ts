@@ -26,7 +26,6 @@ export interface Address {
 export interface Order {
     id: string,
     cartId: string,
-    code: string,
     status: string,
     createdAt: string,
     totalDetails: {
@@ -38,12 +37,15 @@ export interface Order {
     shipping: {
         url: string,
         courier: string,
+        code: string,
     }
     shop: {
         id: string,
         name: string,
     },
     user: {
+        id: string,
+        //manca il nome dell'ordinante
         address: Address
     }
     productVariations: ProductVariationInOrder[],
