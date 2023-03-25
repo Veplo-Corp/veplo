@@ -477,7 +477,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     })
                                 }}
                             >
-                                {filter.sizes ? 'Taglia: ' + filter.sizes.toLocaleUpperCase() : 'Taglia'}
+                                {filter.sizes ? 'Taglia ' + filter.sizes.toLocaleUpperCase() : 'Taglia'}
                             </Button>
                             }
                             <Button
