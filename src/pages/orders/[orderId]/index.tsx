@@ -16,7 +16,7 @@ import { Order } from '../../../interfaces/order.interface';
 export const STATUS = [
 
     {
-        code: 'paid',
+        code: 'PAY01',
         text: 'In preparazione',
         color: 'blackAlpha',
     },
@@ -153,8 +153,15 @@ const index = () => {
                             fontWeight={'bold'}
                             fontSize={'md'}
                         >
-                            Indirizzo consegna
-
+                            Consegna
+                        </Text>
+                        <Text
+                            fontWeight={'semibold'}
+                            fontSize={'md'}
+                            mt={0}
+                            mb={-1}
+                        >
+                            {order.recipient.name}
                         </Text>
                         <Text
                             fontWeight={'medium'}
@@ -189,7 +196,7 @@ const index = () => {
                 </VStack>
                 <PriceAndShippingListingCost subTotal={order.totalDetails.total} total={order.totalDetails.total} shippingCost={order.totalDetails.amountShipping} />
 
-                <Link
+                {order.shipping?.url && <Link
                     href={'/home'}
                     target="_blank"
                     className='text-lg font-bold h-fit flex'
@@ -205,7 +212,7 @@ const index = () => {
                         Traccia il mio pacco
                     </Button>
 
-                </Link>
+                </Link>}
 
 
 
