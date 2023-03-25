@@ -45,7 +45,6 @@ const GET_USER = gql`
             orders{
                 id
                 cartId
-                code
                 createdAt
                 totalDetails{
                     amountDiscount
@@ -61,6 +60,7 @@ const GET_USER = gql`
                 shipping{
                     url
                     courier
+                    code
                 }
                 productVariations{
                     productId
@@ -78,6 +78,7 @@ const GET_USER = gql`
                     size
                 }
                 user{
+                    id
                     address{
                         city
                         country

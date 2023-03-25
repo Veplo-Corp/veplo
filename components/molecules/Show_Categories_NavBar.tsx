@@ -29,10 +29,10 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any }> =
         }
         const categoryForUrl = Object.values(categories)[indexCategory]?.abbigliamento.find(category => category.name === categorySelected)?.url
         if (!categoryForUrl) {
-            router.push(`/prodotti/${gender}-abbigliamento`)
+            router.push(`/prodotti/${gender}-abbigliamento/tutto/rilevanza`)
         } else {
             const categorySelectedUrl = createUrlSchema([gender, categoryForUrl])
-            router.push(`/prodotti/${categorySelectedUrl}`)
+            router.push(`/prodotti/${categorySelectedUrl}/tutto/rilevanza`)
         }
         closeCategory()
     }

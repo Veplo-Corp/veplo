@@ -81,7 +81,7 @@ const CategoryNavbar: FC<{ showMacrocategory: boolean }> = ({ showMacrocategory 
                                 >
                                     <Link
 
-                                        href={type.url !== 'negozi' ? `/prodotti/${type.url}-abbigliamento` : '/negozi'}
+                                        href={type.url !== 'negozi' ? `/prodotti/${type.url}-abbigliamento/tutto/rilevanza` : '/negozi'}
                                     >
                                         {type.title}
                                     </Link>
