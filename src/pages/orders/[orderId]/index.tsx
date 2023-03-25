@@ -21,14 +21,14 @@ export const STATUS = [
         color: 'blackAlpha',
     },
     {
-        code: 'pending',
+        code: 'SHIP01',
         text: 'In preparazione',
         color: 'blackAlpha',
     },
     {
-        code: 'shipped',
+        code: 'SHIP02',
         text: 'Spedito',
-        color: 'yellow',
+        color: 'orange',
     },
     {
         code: 'delivered',
@@ -162,14 +162,14 @@ const index = () => {
                             mt={0}
                             mb={-1}
                         >
-                            {order.user.address.city} ({order.user.address.postalCode}), {order.user.address.line1}
+                            {order.recipient.address.city} ({order.recipient.address.postalCode}), {order.recipient.address.line1}
                         </Text>
                     </Box>
 
                 </Box>
 
                 <Text>
-                    {order.code}
+                    {order.shipping.code}
                 </Text>
                 <VStack
                     mt={[6, 4]}
