@@ -345,22 +345,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
 
     return (
-        <>
-            <div className="hidden lg:flex w-full h-[16px] bg-purple-400">
-                <motion.span
-                    initial={{ x: '100%' }}
-                    animate={{ x: '-100%' }}
-                    transition={{
-                        duration: 40,
-                        ease: 'linear',
-                        repeat: Infinity,
-                        repeatType: 'loop',
-                    }}
-                    className="my-auto text-white text-xl w-full font-extrabold leading-4"
-                >
-                    &#x1F525; VEPLO IS ON FIREEE &#x1F525;
-                </motion.span>
-            </div>
+        <div className='relative'>
             <Desktop_Layout>
                 <PostMeta
                     canonicalUrl={'https://www.veplo.it' + router.asPath}
@@ -427,7 +412,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                     >
 
                         <div
-                            className='mb-2 overflow-x-scroll flex gap-4 pb-3'
+                            className='mb-2 overflow-x-scroll lg:overflow-hidden flex gap-4 pb-3'
                         >
 
                             {microcategory.length > 0 && <Button
@@ -986,7 +971,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 </Stack> */}
 
             </ModalReausable>
-        </>
+        </div>
 
     )
 }
