@@ -477,7 +477,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     })
                                 }}
                             >
-                                {filter.sizes ? 'Taglia: ' + filter.sizes.toLocaleUpperCase() : 'Taglia'}
+                                {filter.sizes ? 'Taglia ' + filter.sizes.toLocaleUpperCase() : 'Taglia'}
                             </Button>
                             }
                             <Button
@@ -858,7 +858,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 <Box
                     mt={3}
                     className={`flex justify-between`}
-                    marginTop={2}
+                    marginTop={4}
                 >
 
                     {/* <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} /> */}
@@ -870,14 +870,14 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                         type="number"
                         value={filter.price?.min || ""}
                         onWheel={(e: any) => e.target.blur()}
-                        placeholder={'Prezzo minimo'}
+                        placeholder={'minimo'}
                         _placeholder={{
                             fontWeight: '450',
                             color: '#A19F9F'
                         }}
                         fontWeight={'semibold'}
 
-                        fontSize={'lg'}
+                        fontSize={['md', 'lg']}
                         background={'#F2F2F2'}
                         textAlign={"center"}
                         isInvalid={false}
@@ -910,8 +910,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                         type="number"
                         value={filter.price?.max || ""}
                         onWheel={(e: any) => e.target.blur()}
-                        placeholder={'Prezzo massimo'}
-                        fontSize={'lg'}
+                        placeholder={'massimo'}
+                        fontSize={['md', 'lg']}
                         background={'#F2F2F2'}
                         textAlign={"center"}
                         _placeholder={{
