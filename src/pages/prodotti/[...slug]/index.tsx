@@ -282,7 +282,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     useEffect(() => {
         setTimeout(() => {
             setLoading(false)
-        }, 1000);
+        }, 1500);
 
     }, [])
 
@@ -601,30 +601,36 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             >
                                 <div className={` flex items-center justify-center`}>
                                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-5 gap-y-5 w-full">
+
                                         {productsFounded.length > 0 ?
-                                            (<Transition
-                                                appear={true}
-                                                show={productsFounded.length > 0}
-                                                enter="transition-opacity ease-out duration-500"
-                                                enterFrom="opacity-0"
-                                                enterTo="opacity-100"
-                                                leave="transition-opacity ease-out duration-500"
-                                                leaveFrom="opacity-100"
-                                                leaveTo="opacity-0"
-                                            >
-                                                {productsFounded.map((product) => {
+                                            (
+                                                productsFounded.map((product) => {
                                                     return (
-                                                        <Link key={product.id} href={`/prodotto/${product.id}/${toProductPage(product)}`}>
-                                                            <Box_Dress product={product}></Box_Dress>
-                                                        </Link>
+                                                        <Transition
+                                                            key={product.id}
+                                                            appear={true}
+                                                            show={productsFounded.length > 0}
+                                                            enter="transition-opacity duration-500"
+                                                            enterFrom="opacity-0"
+                                                            enterTo="opacity-100"
+                                                            leave="transition-opacity duration-500"
+                                                            leaveFrom="opacity-100"
+                                                            leaveTo="opacity-0"
+                                                        >
+
+                                                            <Link href={`/prodotto/${product.id}/${toProductPage(product)}`}>
+                                                                <Box_Dress product={product}></Box_Dress>
+                                                            </Link>
+                                                        </Transition>
                                                     )
-                                                })}
-                                            </Transition>)
+                                                })
+                                            )
                                             : (
                                                 <></>
                                             )
                                         }
                                     </div>
+
                                 </div>
                             </InfiniteScroll>)
                             : (
