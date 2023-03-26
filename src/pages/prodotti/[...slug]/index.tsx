@@ -639,7 +639,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     {[1, 2, 3].map((index) => {
                                         return (
                                             <Skeleton
-                                                startColor={'gray.200'}
+                                                startColor={'gray.100'}
                                                 endColor={'gray.300'}
                                                 key={index}
                                                 //height={['250px', '150', '500px']}
