@@ -2,7 +2,7 @@ import { Box, Text } from '@chakra-ui/react'
 import Link from 'next/link';
 import React, { FC } from 'react'
 import { Order } from '../../src/interfaces/order.interface'
-import { STATUS } from '../../src/pages/orders/[orderId]';
+import { STATUS } from '../mook/statusOrderUser';
 
 
 const OrderCart: FC<{ order: Order }> = ({ order }) => {
@@ -30,7 +30,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                         fontSize={'sm'}
                         fontWeight={'normal'}
                         mt={-1}
-                    >Ordine del {('0' + new Date(+order.createdAt).getDay()).slice(-2)}/{('0' + (new Date(+order.createdAt).getMonth() + 1)).slice(-2)}/{new Date(+order.createdAt).getFullYear()}</Text>
+                    >Ordine del {('0' + new Date(+order.createdAt).getDate()).slice(-2)}/{('0' + (new Date(+order.createdAt).getMonth() + 1)).slice(-2)}/{new Date(+order.createdAt).getFullYear()}</Text>
 
                 </Box>
                 <Box

@@ -18,12 +18,18 @@ import GET_USER from '../../../lib/apollo/queries/getUser';
 const index = () => {
   const router = useRouter()
   const { type }: any /* 'registration' | 'login' | 'reset_password' */ = router.query;
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [typeForm, settypeForm] = useState<'registration' | 'login' | 'reset_password'>('registration')
   const user: Firebase_User = useSelector((state: any) => state.user.user);
   const dispatch = useDispatch();
   const [createUser] = useMutation(CREATE_USER);
   const [getUser] = useLazyQuery(GET_USER);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 1000);
+  }, [])
 
 
   useEffect(() => {

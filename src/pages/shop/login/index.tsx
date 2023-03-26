@@ -32,7 +32,7 @@ const index = () => {
   const { type }: any /* 'registration' | 'login' | 'reset_password' */ = router.query
   //const [setIsShop] = useMutation(SET_IS_SHOP)
   const [setBusinessAccount] = useMutation(CREATE_BUSINESS_ACCOUNT)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   // const [showPassword, setshowPassword] = useState<boolean>(false)
   // const [email, setemail] = useState<string>('')
   // const [isValidEmail, setisValidEmail] = useState<boolean | null>(null)
@@ -41,6 +41,13 @@ const index = () => {
   const user: Firebase_User = useSelector((state: any) => state.user.user);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 1000);
+
+  }, [])
 
 
   useEffect(() => {
@@ -66,39 +73,7 @@ const index = () => {
   }, [type, user])
 
 
-  // const [password, setpassword] = useState<string>('')
-  //const [openModalMath, setOpenModalMath] = useState(1);
 
-
-  // const emailHandler = (event) => {
-  //   setemail(event.target.value)
-  //   if (/\S+@\S+\.\S+/.test(event.target.value)) {
-  //     return setisValidEmail(true)
-  //   }
-  // }
-
-  // const emailErrorHandler = () => {
-  //   if (/\S+@\S+\.\S+/.test(email)) {
-  //     return setisValidEmail(true)
-  //   }
-  //   setisValidEmail(false)
-  // }
-
-  // const passwordHandler = (event) => {
-  //   setpassword(event.target.value)
-  //   if (event.target.value.length >= 8) {
-  //     return setisValidPassword(true)
-  //   }
-  // }
-
-
-  // const passwordErrorHandler = () => {
-  //   if (password.length >= 8) {
-  //     return setisValidPassword(true)
-  //   } else {
-  //     return setisValidPassword(false)
-  //   }
-  // }
 
 
   const handleSubmit = async (email: string, password: string, userInfo: UserInfo) => {
@@ -112,12 +87,7 @@ const index = () => {
         console.log(idToken);
         await sendEmailVerificationHanlder()
 
-        //!deprecated
-        // await setIsShop({
-        //   variables: {
-        //     isBusiness: true
-        //   }
-        // })
+
 
 
         const account = await setBusinessAccount()
@@ -164,26 +134,13 @@ const index = () => {
         }))
         dispatch(handleOpenModal);
         setLoading(false)
-
+        router.push('/shop/home')
       }
       setLoading(false)
     }
   }
 
-  // const LoginButton = () => {
-  //   return (
-  //     <>
-  //       <p className='mr-1 text-black	'>hai già un account?</p>
-  //       <Button className='underline' onClick={() => {
-  //         settypeForm('login')
-  //       }
-  //       } variant='link' colorScheme={'black'}>
-  //         Accedi
-  //       </Button>
 
-  //     </>
-  //   )
-  // }
 
 
 
