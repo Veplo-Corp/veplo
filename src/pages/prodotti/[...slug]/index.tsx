@@ -608,20 +608,20 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                     return (
                                                         <Transition
                                                             key={product.id}
-                                                            appear={true}
+                                                            appear={productsFounded.length > 0}
                                                             show={productsFounded.length > 0}
-                                                            enter="transition-opacity duration-500"
+                                                            enter="transition-opacity duration-500 transform"
                                                             enterFrom="opacity-0"
                                                             enterTo="opacity-100"
-                                                            leave="transition-opacity duration-500"
+                                                            leave="transition-opacity duration-500 transform"
                                                             leaveFrom="opacity-100"
                                                             leaveTo="opacity-0"
                                                         >
-
                                                             <Link href={`/prodotto/${product.id}/${toProductPage(product)}`}>
                                                                 <Box_Dress product={product}></Box_Dress>
                                                             </Link>
                                                         </Transition>
+
                                                     )
                                                 })
                                             )
@@ -629,6 +629,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                 <></>
                                             )
                                         }
+
                                     </div>
 
                                 </div>

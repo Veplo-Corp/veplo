@@ -8,6 +8,7 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import useWindowSize from '../Hooks/useWindowSize'
 import { imageKitUrl } from '../utils/imageKitUrl'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
+import { Transition } from '@headlessui/react'
 
 
 const Box_Dress: React.FC<{ product: Product; }> = ({ product }) => {
@@ -33,23 +34,25 @@ const Box_Dress: React.FC<{ product: Product; }> = ({ product }) => {
 
 
     return (
+
         <Box minW='20' /* maxW='350' */ borderRadius='lg' overflow='hidden' className='cursor-pointer relative'
             _active={{
                 transform: 'scale(1)', /* 'scale(0.99)' */
             }}>
-            {product?.variations[0].photos[0] && <LazyLoadImage src={imageKitUrl(urlProduct, 447, 660)}
-                onMouseEnter={() => {
-                    if (!product?.variations[0].photos[1]) return
-                    seturlProduct(product?.variations[0].photos[1])
-                }}
-                onMouseLeave={() => {
-                    seturlProduct(product?.variations[0].photos[0])
-                }}
-                //PlaceholderSrc={PlaceholderImage}
-                //effect="blur"
-                alt={product.name}
-                className="w-fit"
-            />}
+            {product?.variations[0].photos[0] &&
+                <LazyLoadImage src={imageKitUrl(urlProduct, 447, 660)}
+                    onMouseEnter={() => {
+                        if (!product?.variations[0].photos[1]) return
+                        seturlProduct(product?.variations[0].photos[1])
+                    }}
+                    onMouseLeave={() => {
+                        seturlProduct(product?.variations[0].photos[0])
+                    }}
+                    //PlaceholderSrc={PlaceholderImage}
+                    //effect="blur"
+                    alt={product.name}
+                    className="w-fit min-h-[200px] md:min-h-0"
+                />}
             {product.price?.discountPercentage && <Box
 
                 fontWeight='medium'
