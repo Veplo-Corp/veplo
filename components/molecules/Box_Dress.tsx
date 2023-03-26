@@ -51,7 +51,7 @@ const Box_Dress: React.FC<{ product: Product; }> = ({ product }) => {
                     //PlaceholderSrc={PlaceholderImage}
                     //effect="blur"
                     alt={product.name}
-                    className="w-fit min-h-[200px] md:min-h-0"
+                    className="w-fit min-h-[180px] md:min-h-0"
                 />}
             {product.price?.discountPercentage && <Box
 
