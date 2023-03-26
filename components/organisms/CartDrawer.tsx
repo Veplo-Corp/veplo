@@ -231,6 +231,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                                         >
 
                                             <Text
+                                                cursor={'pointer'}
                                                 fontSize={'2xl'}
                                                 fontWeight={'bold'}
                                                 mb={3}
