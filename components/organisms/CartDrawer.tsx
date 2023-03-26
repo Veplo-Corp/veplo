@@ -13,6 +13,7 @@ import { editVariationFromCart } from '../../src/store/reducers/carts'
 import { newTotalHandler } from '../utils/newTotalHandler'
 import VariationBoxList from '../molecules/VariationBoxList'
 import { sortShopsInCart } from '../utils/sortShopsInCart'
+import Link from 'next/link'
 
 const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, closeDrawer }) => {
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
@@ -225,11 +226,16 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                                     <Box
                                         width={'full'}
                                     >
-                                        <Text
-                                            fontSize={'2xl'}
-                                            fontWeight={'bold'}
-                                            mb={3}
-                                        >{toUpperCaseFirstLetter(cart.shopInfo.name)}</Text>
+                                        <Link
+                                            href={`/negozio/${cart.shopInfo.id}/${createUrlSchema([cart.shopInfo.name])}`}
+                                        >
+
+                                            <Text
+                                                fontSize={'2xl'}
+                                                fontWeight={'bold'}
+                                                mb={3}
+                                            >{toUpperCaseFirstLetter(cart.shopInfo.name)}</Text>
+                                        </Link>
                                         <VStack
                                             gap={1}
                                         >

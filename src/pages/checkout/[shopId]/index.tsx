@@ -1,5 +1,6 @@
 import { useMutation } from '@apollo/client';
 import { Box, Button, Divider, Text, VStack } from '@chakra-ui/react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -119,14 +120,19 @@ const index = () => {
 
                 {cart &&
                     <div className='w-full m-auto md:w-10/12 lg:w-1/2 mt-4'>
-                        <Text
-                            fontSize={['lg', '2xl']}
-                            fontWeight={'extrabold'}
-                            mb={[4]}
+                        <Link
+                            href={`/negozio/${cart.shopInfo.id}/${createUrlSchema([cart.shopInfo.name])}`}
                         >
-                            {cart?.shopInfo.name}
+                            <Text
+                                fontSize={['lg', '2xl']}
+                                fontWeight={'extrabold'}
+                                mb={[4]}
+                            >
+                                {cart?.shopInfo.name}
 
-                        </Text>
+                            </Text>
+                        </Link>
+
                         <VStack
                             gap={1}
                         >
