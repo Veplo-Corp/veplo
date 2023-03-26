@@ -226,17 +226,18 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                                     <Box
                                         width={'full'}
                                     >
-                                        <Link
-                                            href={`/negozio/${cart.shopInfo.id}/${createUrlSchema([cart.shopInfo.name])}`}
-                                        >
 
-                                            <Text
-                                                cursor={'pointer'}
-                                                fontSize={'2xl'}
-                                                fontWeight={'bold'}
-                                                mb={3}
-                                            >{toUpperCaseFirstLetter(cart.shopInfo.name)}</Text>
-                                        </Link>
+
+                                        <Text
+                                            onClick={() => {
+                                                router.push(`/negozio/${cart.shopInfo.id}/${createUrlSchema([cart.shopInfo.name])}`)
+                                            }}
+                                            cursor={'pointer'}
+                                            fontSize={'2xl'}
+                                            fontWeight={'bold'}
+                                            width={'fit-content'}
+                                            mb={3}
+                                        >{toUpperCaseFirstLetter(cart.shopInfo.name)}</Text>
                                         <VStack
                                             gap={1}
                                         >
