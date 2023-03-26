@@ -58,7 +58,7 @@ const index = () => {
     return (
         <Shop_UID_Required>
             <Desktop_Layout>
-                {user && user.emailVerified === false &&
+                {false && user && user.emailVerified === false &&
                     <Verified_Email />
                 }
                 <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>I tuoi negozi</h1>

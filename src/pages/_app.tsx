@@ -296,7 +296,10 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
         <ChakraProvider theme={theme}>
           <Auth>
             {loading ? (
-              <Loading />
+              <div className='mt-32'>
+                <Loading />
+
+              </div>
             ) : (
               <main className={sans.className}>
                 <Header></Header>

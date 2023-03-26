@@ -6,6 +6,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
 import ProductVariationInOrder from '../../../../components/molecules/ProductVariationInOrder';
+import { STATUS } from '../../../../components/mook/statusOrderUser';
 import PriceAndShippingListingCost from '../../../../components/organisms/PriceAndShippingListingCost';
 import createUrlSchema from '../../../../components/utils/create_url';
 import { imageKitUrl } from '../../../../components/utils/imageKitUrl';
@@ -13,40 +14,7 @@ import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First
 import { Order } from '../../../interfaces/order.interface';
 
 
-export const STATUS = [
 
-    {
-        code: 'PAY01',
-        text: 'In preparazione',
-        color: 'blackAlpha',
-    },
-    {
-        code: 'SHIP01',
-        text: 'In preparazione',
-        color: 'blackAlpha',
-    },
-    {
-        code: 'SHIP02',
-        text: 'Spedito',
-        color: 'orange',
-    },
-    {
-        code: 'delivered',
-        text: 'Consegnato',
-        color: 'green',
-    },
-    {
-        code: 'cancel',
-        text: 'Rimborsato',
-        color: 'green',
-    },
-    {
-        code: 'pending due to return',
-        text: 'In attesa di rimborso',
-        color: 'yellow',
-    },
-
-]
 
 
 const index = () => {
@@ -143,7 +111,7 @@ const index = () => {
                             mt={0}
                             mb={-1}
                         >
-                            {('0' + new Date(+order.createdAt).getDay()).slice(-2)}/{('0' + (new Date(+order.createdAt).getMonth() + 1)).slice(-2)}/{new Date(+order.createdAt).getFullYear()}
+                            {('0' + new Date(+order.createdAt).getDate()).slice(-2)}/{('0' + (new Date(+order.createdAt).getMonth() + 1)).slice(-2)}/{new Date(+order.createdAt).getFullYear()}
                         </Text>
                     </Box>
                     <Box
