@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
-import { Box, Button, HStack, Input, InputGroup, Stack, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, HStack, Input, InputGroup, Skeleton, Stack, Text, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, useEffect, useState } from 'react'
@@ -147,7 +147,7 @@ interface PropsFilter {
 const index: FC<{ products: Product[], category: string, microCategory: string, gender: 'f' | 'm' }> = ({ products, microCategory, category, gender }) => {
 
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [hasMoreData, setHasMoreData] = useState(true);
     const [productsFounded, setproductsFounded] = useState<Product[]>([])
     const dispatch = useDispatch();
@@ -278,6 +278,13 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
     }, [router.query])
 
+
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(false)
+        }, 1000);
+
+    }, [])
 
 
 
@@ -573,41 +580,69 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             </Button>
                         </div>
 
-                        {!loading && <InfiniteScroll
-                            dataLength={productsFounded.length}
-                            next={fetchMoreData}
-                            hasMore={hasMoreData}
-                            loader={
-                                <>
-                                    {productsFounded[3] && <Text textAlign={'center'}
-                                        fontWeight={'bold'}
-                                    >
-                                        caricamento
-                                    </Text>}
-                                </>
-                            }
-                            endMessage={
-                                <></>
+                        {!loading ?
+                            (<InfiniteScroll
+                                dataLength={productsFounded.length}
+                                next={fetchMoreData}
+                                hasMore={hasMoreData}
+                                loader={
+                                    <>
+                                        {productsFounded[3] && <Text textAlign={'center'}
+                                            fontWeight={'bold'}
+                                        >
+                                            caricamento
+                                        </Text>}
+                                    </>
+                                }
+                                endMessage={
+                                    <></>
 
-                            }
-                        >
-                            <div className={` flex items-center justify-center`}>
-                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-5 gap-y-5 w-full">
-                                    {productsFounded.length > 0 ?
-
-                                        (productsFounded.map((product) => {
-                                            return (
-                                                <Link key={product.id} href={`/prodotto/${product.id}/${toProductPage(product)}`}>
-                                                    <Box_Dress product={product}></Box_Dress>
-                                                </Link>
+                                }
+                            >
+                                <div className={` flex items-center justify-center`}>
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-5 gap-y-5 w-full">
+                                        {productsFounded.length > 0 ?
+                                            (<Transition
+                                                appear={true}
+                                                show={productsFounded.length > 0}
+                                                enter="transition-opacity ease-out duration-500"
+                                                enterFrom="opacity-0"
+                                                enterTo="opacity-100"
+                                                leave="transition-opacity ease-out duration-500"
+                                                leaveFrom="opacity-100"
+                                                leaveTo="opacity-0"
+                                            >
+                                                {productsFounded.map((product) => {
+                                                    return (
+                                                        <Link key={product.id} href={`/prodotto/${product.id}/${toProductPage(product)}`}>
+                                                            <Box_Dress product={product}></Box_Dress>
+                                                        </Link>
+                                                    )
+                                                })}
+                                            </Transition>)
+                                            : (
+                                                <></>
                                             )
-                                        })) : (
-                                            <></>
-                                        )
-                                    }
+                                        }
+                                    </div>
                                 </div>
-                            </div>
-                        </InfiniteScroll>}
+                            </InfiniteScroll>)
+                            : (
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-5 gap-y-5 w-full">
+                                    {[1, 2, 3].map((index) => {
+                                        return (
+                                            <Skeleton
+                                                key={index}
+                                                //height={['250px', '150', '500px']}
+                                                className={'h-[250px] lg:h-[350px] xl:h-[500px]'}
+                                                borderRadius={'10px'}
+                                            />
+                                        )
+                                    })}
+
+                                </div>
+                            )
+                        }
                     </Box>
 
 
