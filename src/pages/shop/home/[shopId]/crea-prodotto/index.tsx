@@ -146,7 +146,7 @@ const index = () => {
                     }
                 }
             })
-            //router.push('/shop/home/' + router.query.shopId + '/prodotti')
+
         }
     });
 
@@ -299,6 +299,7 @@ const index = () => {
         try {
             const isCreatedProduct = await createProduct({ variables: { shopId: router.query.shopId, options: product } })
             console.log(isCreatedProduct);
+            router.push('/shop/home/' + router.query.shopId + '/prodotti')
         } catch (e: any) {
             console.log(e);
         }
@@ -530,11 +531,12 @@ const index = () => {
                         onClick={() => {
                             createProductHandler()
                         }}
-                        disabled={false}
+                        disabled={productVariations.length <= 0 || !watch('name') || !watch('brand') || !watch('macrocategory') || !watch('microcategory') || !watch('price') || !watch('vestibilità')}
                         px={12}
                         py={7}
                         rounded={'lg'}
                         width={'full'}
+
                     >
                         Crea Prodotto
                     </Button>
