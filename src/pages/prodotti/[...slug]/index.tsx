@@ -353,9 +353,10 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
 
     return (
-        <Shop_not_Allowed>
-            <div className='relative'>
-                <Desktop_Layout>
+
+        <div className='relative'>
+            <Desktop_Layout>
+                <Shop_not_Allowed>
                     <PostMeta
                         canonicalUrl={'https://www.veplo.it' + router.asPath}
                         title={`${category === '' ? 'Abbigliamento' : category} ${gender} | Veplo`}
@@ -681,89 +682,148 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
 
                     </Box>
+                </Shop_not_Allowed>
 
-                </Desktop_Layout >
-                {/* {gender && <FIlter_Button gender={gender} macrocategory={category ? category : "Tutto l'abbigliamento"} />} */}
+            </Desktop_Layout >
+            {/* {gender && <FIlter_Button gender={gender} macrocategory={category ? category : "Tutto l'abbigliamento"} />} */}
 
-                {/* Modal Categorie */}
-                <ModalReausable title='Categoria' closeModal={() => {
-                    setIsOpen(prevstate => {
-                        return {
-                            ...prevstate,
-                            category: false
-                        }
-                    })
-                }} isOpen={isOpen.category} positionTopModal={true}>
-                    <Box
-                        mt={3}
-                    >
-                        {microcategory.map((element: string) => {
+            {/* Modal Categorie */}
+            <ModalReausable title='Categoria' closeModal={() => {
+                setIsOpen(prevstate => {
+                    return {
+                        ...prevstate,
+                        category: false
+                    }
+                })
+            }} isOpen={isOpen.category} positionTopModal={true}>
+                <Box
+                    mt={3}
+                >
+                    {microcategory.map((element: string) => {
 
-                            return (
-                                <Link
-                                    key={element}
-
-                                    href={
-                                        router.asPath.split('?')[1] ?
-                                            `/prodotti/${slug[0]}/${createUrlSchema([element])}/${slug[2]}?${router.asPath.split('?')[1]}`
-                                            : `/prodotti/${slug[0]}/${createUrlSchema([element])}/${slug[2]}`
-                                    }
-                                >
-                                    <Box
-                                        p={2}
-                                        width={'full'}
-                                        pr={[0, 44]}
-                                        pl={1}
-                                        _hover={{
-                                            background: 'gray.100'
-                                        }}
-                                        background={microCategory === element ? 'gray.100' : 'white'}
-                                        cursor={'pointer'}
-                                        borderRadius={'lg'}
-                                        fontSize={'lg'}
-                                        fontWeight={'semibold'}
-                                    >
-                                        {element}
-                                    </Box>
-                                </Link>
-
-                            )
-                        })}
-                    </Box>
-
-                </ModalReausable>
-                <ModalReausable title='Taglia' closeModal={() => {
-                    setIsOpen(prevstate => {
-                        return {
-                            ...prevstate,
-                            size: false
-                        }
-
-                    })
-                }} isOpen={isOpen.size} positionTopModal={true}>
-                    <Box
-                        mt={2}
-                        className={`grid ${sizeProduct === 'shoes_sizes' ? 'grid-cols-4 gap-2' : 'grid-cols-3 gap-2'} `}
-                    >
-                        {(sizeProduct === 'man_clothes_sizes' || sizeProduct === 'woman_clothes_sizes' || sizeProduct === 'shoes_sizes') && SIZES[sizeProduct].map(element => {
-                            return (<Box
+                        return (
+                            <Link
                                 key={element}
-                                p={4}
+
+                                href={
+                                    router.asPath.split('?')[1] ?
+                                        `/prodotti/${slug[0]}/${createUrlSchema([element])}/${slug[2]}?${router.asPath.split('?')[1]}`
+                                        : `/prodotti/${slug[0]}/${createUrlSchema([element])}/${slug[2]}`
+                                }
+                            >
+                                <Box
+                                    p={2}
+                                    width={'full'}
+                                    pr={[0, 44]}
+                                    pl={1}
+                                    _hover={{
+                                        background: 'gray.100'
+                                    }}
+                                    background={microCategory === element ? 'gray.100' : 'white'}
+                                    cursor={'pointer'}
+                                    borderRadius={'lg'}
+                                    fontSize={'lg'}
+                                    fontWeight={'semibold'}
+                                >
+                                    {element}
+                                </Box>
+                            </Link>
+
+                        )
+                    })}
+                </Box>
+
+            </ModalReausable>
+            <ModalReausable title='Taglia' closeModal={() => {
+                setIsOpen(prevstate => {
+                    return {
+                        ...prevstate,
+                        size: false
+                    }
+
+                })
+            }} isOpen={isOpen.size} positionTopModal={true}>
+                <Box
+                    mt={2}
+                    className={`grid ${sizeProduct === 'shoes_sizes' ? 'grid-cols-4 gap-2' : 'grid-cols-3 gap-2'} `}
+                >
+                    {(sizeProduct === 'man_clothes_sizes' || sizeProduct === 'woman_clothes_sizes' || sizeProduct === 'shoes_sizes') && SIZES[sizeProduct].map(element => {
+                        return (<Box
+                            key={element}
+                            p={4}
+                            width={'full'}
+                            _hover={{
+                                background: 'gray.100'
+                            }}
+                            background={element.split(' ')[0] === router.query.sizes ? 'gray.100' : 'white'}
+                            textAlign={'center'}
+                            cursor={'pointer'}
+                            borderRadius={'lg'}
+                            fontSize={'md'}
+                            fontWeight={'semibold'}
+                            onClick={() => {
+                                if (element.split(' ')[0] === router.query.sizes) {
+                                    let filter = getFilterValue();
+                                    delete filter['sizes'];
+
+                                    return router.push({
+                                        pathname: router.asPath.split('?')[0],
+                                        query: {
+                                            ...filter
+                                        }
+                                    },
+                                        undefined, { shallow: true })
+                                } else {
+                                    const filter = getFilterValue();
+                                    router.push({
+                                        pathname: router.asPath.split('?')[0],
+                                        query: {
+                                            ...filter,
+                                            sizes: [element.split(' ')[0]]
+                                        }
+                                    },
+                                        undefined, { shallow: true })
+                                }
+                            }
+                            }
+                        >
+                            {element.toLocaleUpperCase()}
+                        </Box>)
+                    })}
+                </Box>
+
+            </ModalReausable>
+            <ModalReausable title={'Colore'} closeModal={() => {
+                setIsOpen(prevstate => {
+                    return {
+                        ...prevstate,
+                        color: false
+                    }
+                })
+            }} isOpen={isOpen.color} positionTopModal={true}>
+                <Box
+                    mt={3}
+                    className={`grid grid-cols-2 md:grid-cols-3 gap-4`}
+                >
+                    {COLORS.map(element => {
+                        return (
+                            <Box
+                                key={element.cssColor}
                                 width={'full'}
                                 _hover={{
                                     background: 'gray.100'
                                 }}
-                                background={element.split(' ')[0] === router.query.sizes ? 'gray.100' : 'white'}
+                                background={element.name === router.query.colors ? 'gray.100' : 'white'}
+                                p={2}
                                 textAlign={'center'}
                                 cursor={'pointer'}
                                 borderRadius={'lg'}
                                 fontSize={'md'}
                                 fontWeight={'semibold'}
                                 onClick={() => {
-                                    if (element.split(' ')[0] === router.query.sizes) {
+                                    if (element.name === router.query.colors) {
                                         let filter = getFilterValue();
-                                        delete filter['sizes'];
-
+                                        delete filter['colors'];
                                         return router.push({
                                             pathname: router.asPath.split('?')[0],
                                             query: {
@@ -777,7 +837,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             pathname: router.asPath.split('?')[0],
                                             query: {
                                                 ...filter,
-                                                sizes: [element.split(' ')[0]]
+                                                colors: [element.name]
                                             }
                                         },
                                             undefined, { shallow: true })
@@ -785,222 +845,164 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 }
                                 }
                             >
-                                {element.toLocaleUpperCase()}
-                            </Box>)
-                        })}
-                    </Box>
-
-                </ModalReausable>
-                <ModalReausable title={'Colore'} closeModal={() => {
-                    setIsOpen(prevstate => {
-                        return {
-                            ...prevstate,
-                            color: false
-                        }
-                    })
-                }} isOpen={isOpen.color} positionTopModal={true}>
-                    <Box
-                        mt={3}
-                        className={`grid grid-cols-2 md:grid-cols-3 gap-4`}
-                    >
-                        {COLORS.map(element => {
-                            return (
-                                <Box
-                                    key={element.cssColor}
-                                    width={'full'}
-                                    _hover={{
-                                        background: 'gray.100'
-                                    }}
-                                    background={element.name === router.query.colors ? 'gray.100' : 'white'}
-                                    p={2}
-                                    textAlign={'center'}
-                                    cursor={'pointer'}
-                                    borderRadius={'lg'}
-                                    fontSize={'md'}
-                                    fontWeight={'semibold'}
-                                    onClick={() => {
-                                        if (element.name === router.query.colors) {
-                                            let filter = getFilterValue();
-                                            delete filter['colors'];
-                                            return router.push({
-                                                pathname: router.asPath.split('?')[0],
-                                                query: {
-                                                    ...filter
-                                                }
-                                            },
-                                                undefined, { shallow: true })
-                                        } else {
-                                            const filter = getFilterValue();
-                                            router.push({
-                                                pathname: router.asPath.split('?')[0],
-                                                query: {
-                                                    ...filter,
-                                                    colors: [element.name]
-                                                }
-                                            },
-                                                undefined, { shallow: true })
-                                        }
-                                    }
-                                    }
+                                <div
+                                    className='flex m-auto'
                                 >
-                                    <div
-                                        className='flex m-auto'
-                                    >
-                                        <div className='my-auto mr-2'>
-                                            <Circle_Color colors={[element.cssColor]} dimension={4} space={0} />
+                                    <div className='my-auto mr-2'>
+                                        <Circle_Color colors={[element.cssColor]} dimension={4} space={0} />
 
-                                        </div>
-                                        <Text
-                                            my={'auto'}
-                                        >
-                                            {element.name}
-
-                                        </Text>
                                     </div>
+                                    <Text
+                                        my={'auto'}
+                                    >
+                                        {element.name}
 
-                                </Box>)
-                        })}
-                    </Box>
+                                    </Text>
+                                </div>
 
-                </ModalReausable>
-                <ModalReausable title={'Prezzo'} closeModal={() => {
+                            </Box>)
+                    })}
+                </Box>
 
-
-
-
-
-
-
-
-                    const filterValues = getFilterValue();
+            </ModalReausable>
+            <ModalReausable title={'Prezzo'} closeModal={() => {
 
 
-                    let price: {
-                        minPrice?: number,
-                        maxPrice?: number
-                    } = {}
-                    if (filter.price?.min) {
-                        price['minPrice'] = filter.price?.min
+
+
+
+
+
+
+                const filterValues = getFilterValue();
+
+
+                let price: {
+                    minPrice?: number,
+                    maxPrice?: number
+                } = {}
+                if (filter.price?.min) {
+                    price['minPrice'] = filter.price?.min
+                }
+                if (filter.price?.max && (!filter.price?.min || filter.price?.max > filter.price?.min)) {
+                    console.log(filter.price?.max);
+                    console.log(filter.price?.min);
+
+                    price['maxPrice'] = filter.price?.max
+                } else {
+                    delete filterValues['maxPrice']
+                }
+
+                if (!filter.price?.max) {
+                    delete filterValues['maxPrice']
+                }
+                if (!filter.price?.min) {
+                    delete filterValues['minPrice']
+                }
+
+                router.push({
+                    pathname: router.asPath.split('?')[0],
+                    query: {
+                        ...filterValues,
+                        ...price
                     }
-                    if (filter.price?.max && (!filter.price?.min || filter.price?.max > filter.price?.min)) {
-                        console.log(filter.price?.max);
-                        console.log(filter.price?.min);
+                },
+                    undefined, { shallow: true })
 
-                        price['maxPrice'] = filter.price?.max
-                    } else {
-                        delete filterValues['maxPrice']
+                setIsOpen(prevstate => {
+                    return {
+                        ...prevstate,
+                        price: false
                     }
+                })
 
-                    if (!filter.price?.max) {
-                        delete filterValues['maxPrice']
-                    }
-                    if (!filter.price?.min) {
-                        delete filterValues['minPrice']
-                    }
+            }}
+                isOpen={isOpen.price} positionTopModal={true}>
+                <Box
+                    mt={3}
+                    className={`flex justify-between`}
+                    marginTop={4}
+                >
 
-                    router.push({
-                        pathname: router.asPath.split('?')[0],
-                        query: {
-                            ...filterValues,
-                            ...price
-                        }
-                    },
-                        undefined, { shallow: true })
+                    {/* <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} /> */}
+                    <Input
+                        rounded={10}
+                        paddingY={6}
+                        borderWidth={0}
+                        autoComplete='off'
+                        type="number"
+                        value={filter.price?.min || ""}
+                        onWheel={(e: any) => e.target.blur()}
+                        placeholder={'minimo'}
+                        _placeholder={{
+                            fontWeight: '450',
+                            color: '#A19F9F'
+                        }}
+                        fontWeight={'semibold'}
 
-                    setIsOpen(prevstate => {
-                        return {
-                            ...prevstate,
-                            price: false
-                        }
-                    })
-
-                }}
-                    isOpen={isOpen.price} positionTopModal={true}>
-                    <Box
-                        mt={3}
-                        className={`flex justify-between`}
-                        marginTop={4}
-                    >
-
-                        {/* <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} /> */}
-                        <Input
-                            rounded={10}
-                            paddingY={6}
-                            borderWidth={0}
-                            autoComplete='off'
-                            type="number"
-                            value={filter.price?.min || ""}
-                            onWheel={(e: any) => e.target.blur()}
-                            placeholder={'minimo'}
-                            _placeholder={{
-                                fontWeight: '450',
-                                color: '#A19F9F'
-                            }}
-                            fontWeight={'semibold'}
-
-                            fontSize={['md', 'lg']}
-                            background={'#F2F2F2'}
-                            textAlign={"center"}
-                            isInvalid={false}
-                            onChange={(e) => {
-                                const number = Number(e.target.value.replace('/[^1-9]/g', ""))
-                                if (number >= 0) {
-                                    setFilter(prevstate => {
-                                        return {
-                                            ...prevstate,
-                                            price: {
-                                                ...prevstate.price,
-                                                min: number
-                                            }
+                        fontSize={['md', 'lg']}
+                        background={'#F2F2F2'}
+                        textAlign={"center"}
+                        isInvalid={false}
+                        onChange={(e) => {
+                            const number = Number(e.target.value.replace('/[^1-9]/g', ""))
+                            if (number >= 0) {
+                                setFilter(prevstate => {
+                                    return {
+                                        ...prevstate,
+                                        price: {
+                                            ...prevstate.price,
+                                            min: number
                                         }
-                                    })
-                                }
+                                    }
+                                })
+                            }
 
-                            }}
-                        />
+                        }}
+                    />
 
-                        <span className='mx-4 my-auto font-black'>
-                            -
-                        </span>
+                    <span className='mx-4 my-auto font-black'>
+                        -
+                    </span>
 
-                        {/* <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} /> */}
-                        <Input
-                            rounded={10}
-                            paddingY={6}
-                            autoComplete='off'
-                            type="number"
-                            value={filter.price?.max || ""}
-                            onWheel={(e: any) => e.target.blur()}
-                            placeholder={'massimo'}
-                            fontSize={['md', 'lg']}
-                            background={'#F2F2F2'}
-                            textAlign={"center"}
-                            _placeholder={{
-                                fontWeight: '450',
-                                color: '#A19F9F'
-                            }}
-                            borderWidth={0}
-                            fontWeight={'semibold'}
-                            isInvalid={false}
-                            onChange={(e) => {
-                                const number = Number(e.target.value.replace('/[^1-9]/g', ""))
-                                if (number >= 0) {
-                                    setFilter(prevstate => {
-                                        return {
-                                            ...prevstate,
-                                            price: {
-                                                ...prevstate.price,
-                                                max: number
-                                            }
+                    {/* <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} /> */}
+                    <Input
+                        rounded={10}
+                        paddingY={6}
+                        autoComplete='off'
+                        type="number"
+                        value={filter.price?.max || ""}
+                        onWheel={(e: any) => e.target.blur()}
+                        placeholder={'massimo'}
+                        fontSize={['md', 'lg']}
+                        background={'#F2F2F2'}
+                        textAlign={"center"}
+                        _placeholder={{
+                            fontWeight: '450',
+                            color: '#A19F9F'
+                        }}
+                        borderWidth={0}
+                        fontWeight={'semibold'}
+                        isInvalid={false}
+                        onChange={(e) => {
+                            const number = Number(e.target.value.replace('/[^1-9]/g', ""))
+                            if (number >= 0) {
+                                setFilter(prevstate => {
+                                    return {
+                                        ...prevstate,
+                                        price: {
+                                            ...prevstate.price,
+                                            max: number
                                         }
-                                    })
-                                }
+                                    }
+                                })
+                            }
 
-                            }}
-                        />
+                        }}
+                    />
 
-                    </Box>
-                    {/* <Stack align={'end'} mt={2} >
+                </Box>
+                {/* <Stack align={'end'} mt={2} >
 
                     <Button
 
@@ -1031,9 +1033,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                     </Button>
                 </Stack> */}
 
-                </ModalReausable>
-            </div>
-        </Shop_not_Allowed>
+            </ModalReausable>
+        </div>
 
 
     )
