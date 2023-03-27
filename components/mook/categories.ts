@@ -347,7 +347,6 @@ export const CATEGORIES: Categories = {
                     "Scarpe per outdoor",
                     "Stivaletti/Stivali",
                     "Pantofole",
-                    "Accessori per le scarpe",
                 ],
                 sizes: "shoes_sizes",
             },
