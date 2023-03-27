@@ -232,6 +232,8 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                     offset: 0,
                     see: null
                 },
+                fetchPolicy: 'cache-first',
+                nextFetchPolicy: 'cache-first'
             })
         }
 

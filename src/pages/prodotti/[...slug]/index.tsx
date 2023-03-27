@@ -617,7 +617,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                                 enterFrom="opacity-0"
                                                                 enterTo="opacity-100"
                                                                 leave="transition-opacity duration-500 transform"
-                                                                leaveFrom="opacity-100"
+                                                                leaveFrom="opacity-0"
                                                                 leaveTo="opacity-0"
                                                             >
                                                                 <Link href={`/prodotto/${product.id}/${toProductPage(product)}`}>
