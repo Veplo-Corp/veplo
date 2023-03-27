@@ -81,10 +81,14 @@ const index = () => {
             }
           })
         );
-        return router.push('/')
+        if (typeof router.query?.callbackUrl === 'string') {
+          return router.push(router.query?.callbackUrl)
+        } else {
+          return router.push('/')
+
+        }
       } catch (error: any) {
         console.log(error);
-        return
         setLoading(false)
         const errorCode = error.code;
         const errorMessage = error.message;

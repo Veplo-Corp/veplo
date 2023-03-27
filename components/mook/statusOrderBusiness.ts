@@ -2,7 +2,8 @@ export const STATUS = [
     //*Ordine creato ma non ancora pagato
     {
         code: 'CRE01',
-        text: 'Pending',
+        pagament: '',
+        text: 'In corso',
         description: 'in attesa di conferma pagamento',
         color: 'yellow',
     },

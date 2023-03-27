@@ -1,15 +1,18 @@
 import Link from 'next/link';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface';
 import User_Popover from '../molecules/User_Popover';
 import Navbar from '../molecules/Old-Home_Navbar'
 import CategoryNavbar from '../molecules/CategoryNavbar';
-import { Box } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
 import Drawer_Menu from './Drawer_Menu';
 import CartDrawer from './CartDrawer';
 import Drawer_User_Search from './Old-Drawer_User_Search';
 import DrawerSearchProducts from './DrawerSearchProducts';
+import { useLazyQuery } from '@apollo/client';
+import GET_BUSINESS from '../../src/lib/apollo/queries/business';
+import { Business } from '../../src/interfaces/business.interface';
 
 const Header = () => {
 
@@ -18,6 +21,10 @@ const Header = () => {
     const [openDrawerBusinessAccount, setopenDrawerBusinessAccount] = useState(false)
     const [openDrawerCart, setOpenDrawerCart] = useState(false)
     const [isOpenUserDrawerSearch, setisOpenUserDrawerSearch] = useState(false)
+    const [stripeDashboardVisible, setStripeDashboardVisible] = useState(false);
+    const [stripeId, setStripeId] = useState<string>();
+
+    const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
 
     const searchCategory = () => {
         // if (!address_user) {
@@ -37,6 +44,33 @@ const Header = () => {
     const closeDrawerBusinessAccount = () => {
         setopenDrawerBusinessAccount(false)
     }
+
+    useEffect(() => {
+        if (!user?.Not_yet_Authenticated_Request && user?.isBusiness && user?.accountId) {
+            getBusiness({
+                variables: {
+                    id: user.accountId
+                }
+            }).then((value) => {
+                const business: Business = value.data?.business
+                console.log(business?.status);
+                switch (business?.status) {
+                    case 'active':
+                        setStripeDashboardVisible(true)
+                        setStripeId(business.stripe.id)
+                        break;
+                    default:
+                        // code block
+                        setStripeDashboardVisible(false)
+                        break;
+                }
+            })
+        }
+
+        return () => {
+
+        }
+    }, [user])
 
     return (
         <>
@@ -111,17 +145,43 @@ const Header = () => {
                         }
                         {
                             user?.isBusiness &&
-                            <button
-                                onClick={() => {
-                                    setopenDrawerBusinessAccount(true)
-                                }}
-                                type="button"
-                                aria-label="menu"
-                                className="inline-flex mt-0.5 rounded-md px-1  active:bg-gray-100 focus:outline-none" aria-expanded="false">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                                </svg>
-                            </button>
+                            <>
+                                {stripeDashboardVisible &&
+                                    <form action={`/api/stripe/dashboard-link?stripeId=${stripeId}`}
+                                        method="POST"
+                                        target="_blank">
+                                        <Button
+                                            bgColor={'#6772E5'}
+                                            fontSize={'md'}
+                                            fontWeight={'semibold'}
+                                            textColor={'white'}
+                                            mr={'2'}
+                                            _hover={{
+                                                background: '#6772E5'
+                                            }}
+                                            _active={{
+                                                background: '#6772E5'
+                                            }}
+                                            type='submit'
+                                        >
+                                            Vai alla Dashboard Pagamenti
+                                        </Button>
+                                    </form>
+                                }
+                                <button
+                                    onClick={() => {
+                                        setopenDrawerBusinessAccount(true)
+                                    }}
+                                    type="button"
+                                    aria-label="menu"
+                                    className="inline-flex mt-0.5 rounded-md px-1  active:bg-gray-100 focus:outline-none" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                    </svg>
+                                </button>
+                            </>
+
+
                         }
 
 
