@@ -51,7 +51,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                         onClick={() => setisOpen(false)}
                     />
                     <ModalBody padding={0}>
-                        <div className='hidden md:flex]'>
+                        <div className='hidden md:flex'>
                             <TransformWrapper
                                 maxScale={2}
                                 minScale={1}
