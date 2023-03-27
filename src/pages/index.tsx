@@ -47,7 +47,7 @@ const Home: NextPage = () => {
   }, [])
 
   return (
-    <>
+    <div className='min-h-screen'>
       {
         showHome ? (
           <Shop_not_Allowed>
@@ -229,7 +229,7 @@ const Home: NextPage = () => {
           )
 
       }
-    </>
+    </div>
   )
 
 
