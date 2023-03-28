@@ -584,7 +584,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             totalLotsProduct={product.totalSizeAvailable}
                             borderRadius={'lg'}
                             fontSize={'2xl'}
-                            fontWeight={'medium'}
+                            fontWeight={'normal'}
                             lots={variationSelected.lots}
                             handleLot={(size: string) => setSizeSelected(size)}
                             sizeSelected={sizeSelected}
@@ -611,7 +611,8 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             }}
                         >Aggiungi al Carrello</Button>
 
-                        <Box
+                        {/* contattare il negozio */}
+                        {/* <Box
                             fontWeight='light'
                             as='h1'
                             noOfLines={2}
@@ -625,7 +626,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             Hai bisogno di più informazioni sul prodotto? <span className='underline underline-offset-2 cursor-pointer'
                                 onClick={chatWithStore}
                             >contatta il titolare del negozio</span>
-                        </Box>
+                        </Box> */}
 
 
                         <>
@@ -643,13 +644,24 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             </Link>
 
 
-                            <div className="overflow-x-scroll flex gap-4 ">
+                            <div className="overflow-x-scroll flex gap-4 pb-4">
                                 {shopProductsData && shopProductsData?.data?.shop.products.map((element: Product) => {
+                                    let colorsCSS: string[] = [];
+                                    if (element.variations) {
+                                        element?.variations.map((variation) => {
+                                            const ColorCCS = COLORS.find(color => color.name === variation.color)
+                                            if (ColorCCS) {
+                                                colorsCSS.push(ColorCCS.cssColor)
+                                            }
+                                        })
+                                    }
+                                    console.log(colorsCSS);
+
 
                                     return (
                                         <Link key={element.id} href={`/prodotto/${element.id}/${toProductPage(element)}`}>
                                             <div className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
-                                                <Box borderRadius='lg' overflow='hidden'
+                                                <Box borderRadius='xl' overflow='hidden'
                                                     borderWidth={0.5}
                                                     className={`w-36`}/*  aspect-[8.5/12] */
                                                     _active={{
@@ -704,9 +716,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                         </span>
                                                         {element.price?.v2 && <span className=' text-red-700 font-bold ml-1'>{element.price?.v2.toFixed(2).replace('.', ',')} €</span>}
                                                     </Box>
-                                                    {/* <div className='text-right flex float-right my-2 mx-2'>
-                                                        <Circle_Color colors={getColorsCSS(element)} dimension={4} space={1} />
-                                                    </div> */}
+                                                    <div className='text-right flex float-right mb-2 mx-2'>
+                                                        <Circle_Color colors={colorsCSS} dimension={4} space={1} />
+                                                    </div>
                                                 </Box>
 
                                             </div>

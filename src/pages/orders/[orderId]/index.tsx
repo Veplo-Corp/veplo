@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
+import Loading from '../../../../components/molecules/Loading';
 import ProductVariationInOrder from '../../../../components/molecules/ProductVariationInOrder';
 import { STATUS } from '../../../../components/mook/statusOrderUser';
 import PriceAndShippingListingCost from '../../../../components/organisms/PriceAndShippingListingCost';
@@ -22,6 +23,7 @@ const index = () => {
     const orders: Order[] = useSelector((state: any) => state.orders.orders);
     const [order, setOrder] = useState<Order>();
     const [orderStatus, setOrderStatus] = useState<{ text: string, color: string }>();
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const { orderId } = router.query
@@ -44,148 +46,157 @@ const index = () => {
     }
 
     return (
-        <Desktop_Layout>
-            {order && <div
-                className='w-full md:w-8/12 lg:9/12 xl:w-1/2 m-auto md:mt4'
-            >
-                {orderStatus &&
-                    <Box
-                        display={'flex'}
+        <>
+            {order ? (
+                <Desktop_Layout>
+                    {order && <div
+                        className='w-full md:w-8/12 lg:9/12 xl:w-1/2 m-auto md:mt4'
                     >
-                        <Tag
-                            className='m-auto md:m-0'
-                            mt={[0, 4]}
-                            mb={4}
-                            px={4}
-                            py={2}
-                            borderRadius={'full'}
-                            size={'lg'}
+                        {orderStatus &&
+                            <Box
+                                display={'flex'}
+                            >
+                                <Tag
+                                    className='m-auto md:m-0'
+                                    mt={[0, 4]}
+                                    mb={4}
+                                    px={4}
+                                    py={2}
+                                    borderRadius={'full'}
+                                    size={'lg'}
 
-                            colorScheme={orderStatus.color}
-                        >
-                            {orderStatus.text}
-                        </Tag>
-                    </Box>
-                }
-                <Box
-                    display={['', 'flex']}
-                    justifyContent={'space-between'}
+                                    colorScheme={orderStatus.color}
+                                >
+                                    {orderStatus.text}
+                                </Tag>
+                            </Box>
+                        }
+                        <Box
+                            display={['', 'flex']}
+                            justifyContent={'space-between'}
 
-                >
-                    <Box
-                        mb={2}
-                    >
-                        <Text
-                            fontWeight={'bold'}
-                            fontSize={['md']}
                         >
-                            Negozio
+                            <Box
+                                mb={2}
+                            >
+                                <Text
+                                    fontWeight={'bold'}
+                                    fontSize={['md']}
+                                >
+                                    Negozio
+                                </Text>
+                                <Text
+                                    fontWeight={'medium'}
+                                    fontSize={'md'}
+                                    mt={0}
+                                    mb={-1}
+                                >
+                                    {order?.shop.name}
+                                </Text>
+                                <Link
+                                    href={'/negozio/' + order?.shop.id + '/' + createUrlSchema([order?.shop.name])}
+                                    className='text-sm font-semibold underline'
+                                >
+                                    vai al negozio
+                                </Link>
+                            </Box>
+                            <Box
+                                mb={2}
+                            >
+                                <Text
+                                    fontWeight={'bold'}
+                                    fontSize={'md'}
+                                >
+                                    Ordine effetuato
+                                </Text>
+                                <Text
+                                    fontWeight={'medium'}
+                                    fontSize={'md'}
+                                    mt={0}
+                                    mb={-1}
+                                >
+                                    {('0' + new Date(+order.createdAt).getDate()).slice(-2)}/{('0' + (new Date(+order.createdAt).getMonth() + 1)).slice(-2)}/{new Date(+order.createdAt).getFullYear()}
+                                </Text>
+                            </Box>
+                            <Box
+                                mb={2}
+                            >
+                                <Text
+                                    fontWeight={'bold'}
+                                    fontSize={'md'}
+                                >
+                                    Consegna
+                                </Text>
+                                <Text
+                                    fontWeight={'semibold'}
+                                    fontSize={'md'}
+                                    mt={0}
+                                    mb={-1}
+                                >
+                                    {order.recipient.name}
+                                </Text>
+                                <Text
+                                    fontWeight={'medium'}
+                                    fontSize={'md'}
+                                    mt={0}
+                                    mb={-1}
+                                >
+                                    {order.recipient.address.city} ({order.recipient.address.postalCode}), {order.recipient.address.line1}
+                                </Text>
+                            </Box>
+
+                        </Box>
+
+                        <Text>
+                            {order.shipping.code}
                         </Text>
-                        <Text
-                            fontWeight={'medium'}
-                            fontSize={'md'}
-                            mt={0}
-                            mb={-1}
+                        <VStack
+                            mt={[6, 4]}
+                            width={'full'}
+                            gap={4}
                         >
-                            {order?.shop.name}
-                        </Text>
-                        <Link
-                            href={'/negozio/' + order?.shop.id + '/' + createUrlSchema([order?.shop.name])}
-                            className='text-sm font-semibold underline'
+                            {order.productVariations.map((variation, index) => {
+                                return (
+                                    <div key={index} className='w-full'>
+                                        <ProductVariationInOrder variation={variation} />
+
+                                    </div>
+
+
+                                )
+                            })}
+                        </VStack>
+                        <PriceAndShippingListingCost subTotal={order.totalDetails.total} total={order.totalDetails.total} shippingCost={order.totalDetails.amountShipping} />
+
+                        {order.shipping?.url && <Link
+                            href={'/home'}
+                            target="_blank"
+                            className='text-lg font-bold h-fit flex'
+
                         >
-                            vai al negozio
-                        </Link>
-                    </Box>
-                    <Box
-                        mb={2}
-                    >
-                        <Text
-                            fontWeight={'bold'}
-                            fontSize={'md'}
-                        >
-                            Ordine effetuato
-                        </Text>
-                        <Text
-                            fontWeight={'medium'}
-                            fontSize={'md'}
-                            mt={0}
-                            mb={-1}
-                        >
-                            {('0' + new Date(+order.createdAt).getDate()).slice(-2)}/{('0' + (new Date(+order.createdAt).getMonth() + 1)).slice(-2)}/{new Date(+order.createdAt).getFullYear()}
-                        </Text>
-                    </Box>
-                    <Box
-                        mb={2}
-                    >
-                        <Text
-                            fontWeight={'bold'}
-                            fontSize={'md'}
-                        >
-                            Consegna
-                        </Text>
-                        <Text
-                            fontWeight={'semibold'}
-                            fontSize={'md'}
-                            mt={0}
-                            mb={-1}
-                        >
-                            {order.recipient.name}
-                        </Text>
-                        <Text
-                            fontWeight={'medium'}
-                            fontSize={'md'}
-                            mt={0}
-                            mb={-1}
-                        >
-                            {order.recipient.address.city} ({order.recipient.address.postalCode}), {order.recipient.address.line1}
-                        </Text>
-                    </Box>
+                            <Button
+                                margin={'auto'}
+                                width={'full'}
+                                mt={5}
 
-                </Box>
+                            >
 
-                <Text>
-                    {order.shipping.code}
-                </Text>
-                <VStack
-                    mt={[6, 4]}
-                    width={'full'}
-                    gap={4}
-                >
-                    {order.productVariations.map((variation, index) => {
-                        return (
-                            <div key={index} className='w-full'>
-                                <ProductVariationInOrder variation={variation} />
+                                Traccia il mio pacco
+                            </Button>
 
-                            </div>
-
-
-                        )
-                    })}
-                </VStack>
-                <PriceAndShippingListingCost subTotal={order.totalDetails.total} total={order.totalDetails.total} shippingCost={order.totalDetails.amountShipping} />
-
-                {order.shipping?.url && <Link
-                    href={'/home'}
-                    target="_blank"
-                    className='text-lg font-bold h-fit flex'
-
-                >
-                    <Button
-                        margin={'auto'}
-                        width={'full'}
-                        mt={5}
-
-                    >
-
-                        Traccia il mio pacco
-                    </Button>
-
-                </Link>}
+                        </Link>}
 
 
 
-            </div>}
-        </Desktop_Layout>
+                    </div>}
+                </Desktop_Layout>
+            ) :
+                (
+                    <Loading />
+                )
+            }
+        </>
+
     )
 }
 

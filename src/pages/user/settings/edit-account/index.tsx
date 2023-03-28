@@ -168,7 +168,7 @@ const index = () => {
                                 <Box
                                     marginY={'auto'}
                                 >
-                                    {user?.data.user.name} {user?.data.user.surname}
+                                    {user?.data.user.name}  {user?.data.user.surname}
                                 </Box>
 
                                 <IconButton
