@@ -113,7 +113,7 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
                     }
 
                         //PlaceholderSrc={PlaceholderImage}
-                        effect="blur"
+                        effect="opacity"
                         alt={shop.name}
                         className='aspect-[4.8/3] w-96 lg:w-[32rem] rounded-md object-cover'
                     />

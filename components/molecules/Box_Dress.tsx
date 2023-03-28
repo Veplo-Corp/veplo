@@ -49,7 +49,7 @@ const Box_Dress: React.FC<{ product: Product; }> = ({ product }) => {
                         seturlProduct(product?.variations[0].photos[0])
                     }}
                     //PlaceholderSrc={PlaceholderImage}
-                    effect='blur'
+                    effect="blur"
                     alt={product.name}
                     className="w-fit min-h-[240px] md:min-h-0 object-cover"
                 />}

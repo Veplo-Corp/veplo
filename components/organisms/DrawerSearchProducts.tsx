@@ -86,7 +86,7 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
                                             classNames(
                                                 'text-lg font-semibold w-2/6',
                                                 selected
-                                                    ? 'underline underline-offset-2'
+                                                    ? 'bg-black text-white' /* underline underline-offset-2 */
                                                     : ''
                                             )
                                         }
