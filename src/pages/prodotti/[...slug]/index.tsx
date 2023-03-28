@@ -185,7 +185,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
         const newProducts = await getProducts({
             variables: {
-                offset: productsFounded.length + 1,
+                offset: productsFounded.length,
                 limit: RANGE,
                 //inserire la microcategoria
                 filters: {
