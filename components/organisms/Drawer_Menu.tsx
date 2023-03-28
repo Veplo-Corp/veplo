@@ -20,6 +20,10 @@ const Drawer_Menu: React.FC<{ user: any, isOpen: boolean, closeDrawer: () => voi
 
     const listShop = [
         {
+            title: `monitora ordini`,
+            url: `/shop/home/${userDispatch?.favouriteShop?.id}/ordini`
+        },
+        {
             title: 'visualizza prodotti',
             url: `/shop/home/${userDispatch?.favouriteShop?.id}/prodotti`
         },
