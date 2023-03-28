@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
+import Loading from '../../../../components/molecules/Loading';
 import VariationBoxList from '../../../../components/molecules/VariationBoxList';
 import NoIndexSeo from '../../../../components/organisms/NoIndexSeo'
 import PriceAndShippingListingCost from '../../../../components/organisms/PriceAndShippingListingCost';
@@ -115,108 +116,113 @@ const index = () => {
 
     return (
         <>
-            <NoIndexSeo title='Veplo'></NoIndexSeo>
-            <Desktop_Layout>
+            {cart ? (
+                <>
+                    <NoIndexSeo title='Veplo'></NoIndexSeo>
+                    <Desktop_Layout>
 
-                {cart &&
-                    <div className='w-full m-auto md:w-10/12 lg:w-1/2 mt-4'>
-                        <Link
 
-                            href={`/negozio/${cart.shopInfo.id}/${createUrlSchema([cart.shopInfo.name])}`}
-                        >
-                            <Text
-                                cursor={'pointer'}
-                                fontSize={['lg', '2xl']}
-                                fontWeight={'extrabold'}
-                                mb={[4]}
+                        <div className='w-full m-auto md:w-10/12 lg:w-1/2 mt-4'>
+                            <Link
+
+                                href={`/negozio/${cart.shopInfo.id}/${createUrlSchema([cart.shopInfo.name])}`}
                             >
-                                {cart?.shopInfo.name}
+                                <Text
+                                    cursor={'pointer'}
+                                    fontSize={['lg', '2xl']}
+                                    fontWeight={'extrabold'}
+                                    mb={[4]}
+                                >
+                                    {cart?.shopInfo.name}
 
-                            </Text>
-                        </Link>
+                                </Text>
+                            </Link>
 
-                        <VStack
-                            gap={1}
-                        >
-                            {cart.productVariations.map(variation => {
-                                return (
-                                    <div
-                                        key={variation.variationId + variation.size}
-                                        className='w-full'
-                                    >
-                                        <VariationBoxList
-                                            variation={variation}
-                                            toProduct={() => pushToProduct(variation)}
-                                            deleteVariation={() => deleteVariation(variation)}
-                                        />
-                                    </div>
-                                )
-                            })}
-
-                        </VStack>
-                        <PriceAndShippingListingCost subTotal={cart.total} total={cart.total} shippingCost={4.99} />
-
-                        <Box
-                            display={'flex'}
-                            justifyContent={'end'}
-                        >
-                            <Button
-
-                                mt={4}
-                                mb={3}
-                                onClick={checkoutUrl}
-
-                                type={'button'}
-                                borderRadius={'xl'}
-                                size={'md'}
-                                padding={4}
-                                paddingInline={16}
-                                width={'fit-content'}
-                                height={'fit-content'}
-                                bg={'black.900'}
-                                color={'white'}
-                                _hover={{ bg: 'black.900' }}
-                                _focus={{
-                                    bg: 'black.900'
-                                }}
-                                _active={{
-                                    transform: 'scale(0.98)',
-                                }}
-                                disabled={isDisabled}
-                                _disabled={{
-                                    background: 'black'
-                                }}
-                            >Procedi
-                            </Button>
-                        </Box>
-
-                        <Box
-                            mt={5}
-                            width={'full'}
-                            background={'gray.100'}
-                            padding={6}
-                        >
-                            <Text
-                                fontSize={'2xl'}
-                                fontWeight={'medium'}
-                                mb={1}
+                            <VStack
+                                gap={1}
                             >
-                                Consegna prevista in 5 - 7 giorni
-                            </Text>
-                            <Text
-                                fontSize={'sm'}
+                                {cart.productVariations.map(variation => {
+                                    return (
+                                        <div
+                                            key={variation.variationId + variation.size}
+                                            className='w-full'
+                                        >
+                                            <VariationBoxList
+                                                variation={variation}
+                                                toProduct={() => pushToProduct(variation)}
+                                                deleteVariation={() => deleteVariation(variation)}
+                                            />
+                                        </div>
+                                    )
+                                })}
+
+                            </VStack>
+                            <PriceAndShippingListingCost subTotal={cart.total} total={cart.total} shippingCost={4.99} />
+
+                            <Box
+                                display={'flex'}
+                                justifyContent={'end'}
                             >
-                                Costo fisso per la spedizione 4,99€
-                            </Text>
-                        </Box>
-                    </div>}
+                                <Button
 
+                                    mt={4}
+                                    mb={3}
+                                    onClick={checkoutUrl}
 
+                                    type={'button'}
+                                    borderRadius={'xl'}
+                                    size={'md'}
+                                    padding={4}
+                                    paddingInline={16}
+                                    width={'fit-content'}
+                                    height={'fit-content'}
+                                    bg={'black.900'}
+                                    color={'white'}
+                                    _hover={{ bg: 'black.900' }}
+                                    _focus={{
+                                        bg: 'black.900'
+                                    }}
+                                    _active={{
+                                        transform: 'scale(0.98)',
+                                    }}
+                                    disabled={isDisabled}
+                                    _disabled={{
+                                        background: 'black'
+                                    }}
+                                >Procedi
+                                </Button>
+                            </Box>
 
-
-
-            </Desktop_Layout>
+                            <Box
+                                mt={5}
+                                width={'full'}
+                                background={'gray.100'}
+                                padding={6}
+                            >
+                                <Text
+                                    fontSize={'2xl'}
+                                    fontWeight={'medium'}
+                                    mb={1}
+                                >
+                                    Consegna prevista in 5 - 7 giorni
+                                </Text>
+                                <Text
+                                    fontSize={'sm'}
+                                >
+                                    Costo fisso per la spedizione 4,99€
+                                </Text>
+                            </Box>
+                        </div>
+                    </Desktop_Layout>
+                </>
+            ) :
+                (
+                    <Loading />
+                )
+            }
         </>
+
+
 
     )
 }
