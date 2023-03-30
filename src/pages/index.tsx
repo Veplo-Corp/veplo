@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { Button, Box, Stack, Text } from '@chakra-ui/react'
+import { Button, Box, Stack, Text, InputGroup, Input, VStack, Icon } from '@chakra-ui/react'
 import BlackButton from '../../components/atoms/BlackButton'
 import { useEffect, useRef, useState } from 'react'
 import Drawer_Address from '../../components/organisms/Drawer_Address'
@@ -15,8 +15,15 @@ import Section from '../../components/atoms/Section'
 import { getFromLocalStorage } from '../../components/utils/getFromLocalStorage'
 import { setInLocalStorage } from '../../components/utils/setInLocalStorage'
 import Link from 'next/link'
+import ModalForm from '../../components/organisms/ModalForm'
+import { useForm } from 'react-hook-form'
 
-
+type InputForm = {
+  email: string,
+  userName: string,
+  businessName: string,
+  phone: string,
+}
 
 
 
@@ -26,10 +33,20 @@ const Home: NextPage = () => {
   // let filterTimeout: any;
   /* drawer */
   const [openDrawer, setopenDrawer] = useState(1)
-  console.log(process.env);
   const router = useRouter()
   const address_user = useSelector((state: any) => state.address.address);
-  const [showHome, setshowHome] = useState<boolean>(false)
+  const [showHome, setshowHome] = useState<boolean>(false);
+  const [modalForm, setModalForm] = useState(false)
+  const [modalConfirmSubmit, setModalConfirmSubmit] = useState(false)
+  const { register, handleSubmit, reset, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<InputForm>({
+    mode: "all",
+    // defaultValues: {
+    //   email: '',
+    //   userName: '',
+    //   businessName: '',
+    //   phone: '',
+    // }
+  });
 
   useEffect(() => {
     // const genderSelected = getFromLocalStorage('genderSelected')
@@ -46,6 +63,16 @@ const Home: NextPage = () => {
     //   router.push('/prodotti/uomo-abbigliamento')
     // }
   }, [])
+
+  const onSubmitForm = (value: InputForm) => {
+    console.log(value);
+    setModalForm(false)
+    setTimeout(() => {
+      setModalConfirmSubmit(true)
+    }, 1000);
+    reset()
+
+  }
 
   return (
     <div className='min-h-screen '>
@@ -164,6 +191,7 @@ const Home: NextPage = () => {
                 _active={{
                   transform: 'scale(0.98)',
                 }}
+                onClick={() => { setModalForm(true) }}
               >
                 richiedi informazioni
               </Button>
@@ -197,7 +225,186 @@ const Home: NextPage = () => {
 
         <Drawer_Address openDrawerMath={openDrawer} />
       </Shop_not_Allowed >
+      <ModalForm closeModal={() => setModalForm(false)} isOpen={modalForm}>
+        <form onSubmit={handleSubmit(onSubmitForm)}>
+          <Text
+            fontSize={'3xl'}
+            fontWeight={'black'}
+            mb={3}
+            lineHeight={'9'}
+          >
+            rispondiamo a ogni<br />
+            dubbio o domanda
+          </Text>
+          <Text
+            fontSize={'sm'}
+            fontWeight={'medium'}
+            color={'gray.500'}
+            lineHeight={'short'}
+            mb={5}
+          >
+            non ti preoccupare, compilando questo form verrai contattato direttamente da noi!
+          </Text>
+          <VStack
+            gap={3}
+          >
+            <Input
+              placeholder='email'
+              id='email'
+              type='email'
+              py={5}
+              rounded={'10px'}
+              _placeholder={{
+                //color: 'gray.200',
+                fontWeight: '600'
+              }}
+              variant='filled'
+              {...register("email", {
+                required: true,
+                pattern: /\S+@\S+\.\S+/
+              })}
+            >
+            </Input>
+            <Input
+              placeholder='nome e cognome'
+              id='userName'
+              type='text'
+              py={5}
+              rounded={'10px'}
+              _placeholder={{
+                //color: 'gray.200',
+                fontWeight: '600'
+              }}
+              variant='filled'
+              {...register("userName", {
+                required: true,
+              })}
+            >
+            </Input>
+            <Input
+              placeholder='Nome del tuo shop'
+              id='businessName'
+              type='text'
+              py={5}
+              rounded={'10px'}
+              _placeholder={{
+                //color: 'gray.200',
+                fontWeight: '600'
+              }}
+              variant='filled'
+              {...register("businessName", {
+                required: true,
+                minLength: 2
+              })}
+            >
+            </Input>
+            <Input
+              placeholder='numero di telefono'
+              id='phone'
+              type='tel'
+              py={5}
+              rounded={'10px'}
+              _placeholder={{
+                //color: 'gray.200',
+                fontWeight: '600'
+              }}
+              variant='filled'
+              {...register("phone",
+                { required: true, minLength: 7 }
+                ,)}
 
+            >
+            </Input>
+
+
+          </VStack>
+          <Button
+            mt={8}
+            size={'lg'}
+            fontSize={['lg', 'xl']}
+            fontWeight={'bold'}
+            type={'submit'}
+            py={'28px'}
+            width={'full'}
+            borderRadius={'10px'}
+            color={'white'}
+            background={'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'}
+            _hover={{
+              bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
+            }}
+            _focus={{
+              bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
+            }}
+            _active={{
+              transform: 'scale(0.98)',
+            }}
+          >
+            invia richiesta
+          </Button>
+        </form>
+
+      </ModalForm>
+      <ModalForm closeModal={() => setModalConfirmSubmit(false)} isOpen={modalConfirmSubmit}>
+        <Box
+          textAlign={'center'}
+          display={'grid'}
+        >
+
+          <VStack
+            gap={5}
+          >
+            <img className='m-auto'
+              src="/home_svg/sendMail.svg"
+              alt="home image" />
+
+            <Text
+              fontSize={'4xl'}
+              fontWeight={'extrabold'}
+
+              lineHeight={'9'}
+            >
+              Grazie!
+            </Text>
+            <Text
+              fontSize={'md'}
+              fontWeight={'medium'}
+              color={'gray.500'}
+              lineHeight={'short'}
+
+            >
+              La tua richiesta e’ stata inviata con successo. In questi giorni sarai contattato, tramite cellulare o tramite email, dal nostro team di ricerca.
+            </Text>
+
+            <Button
+
+              size={'lg'}
+              fontSize={['lg', 'xl']}
+              fontWeight={'bold'}
+              onClick={() => setModalConfirmSubmit(false)}
+              py={'28px'}
+              width={'full'}
+              borderRadius={'10px'}
+              color={'white'}
+              background={'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'}
+              _hover={{
+                bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
+              }}
+              _focus={{
+                bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
+              }}
+              _active={{
+                transform: 'scale(0.98)',
+              }}
+            >
+              Tutto chiaro!
+            </Button>
+          </VStack>
+
+        </Box>
+
+
+
+      </ModalForm>
     </div >
   )
 
