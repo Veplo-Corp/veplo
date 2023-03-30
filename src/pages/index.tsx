@@ -102,7 +102,7 @@ const Home: NextPage = () => {
 
           <Section>
             <Box
-              className='h-fit mb-40 lg:mb-20 mt-24 lg:mt-0 px-6'
+              className='h-fit mb-40 lg:mb-20 mt-24 lg:mt-18 px-6'
               textAlign={'center'}
             >
               <div
