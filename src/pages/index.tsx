@@ -86,7 +86,7 @@ const Home: NextPage = () => {
                   in un unico sito
                 </h1>
                 <h3
-                  className='mt-2 lg:mt-5 text-xl font-medium'
+                  className='mt-4 lg:mt-2 text-md leading-5 lg:text-xl font-normal'
                 >
                   il modo <strong>innovativo</strong> di vendere abbigliamento online
                 </h3>
@@ -113,7 +113,7 @@ const Home: NextPage = () => {
                   fontWeight={'black'}
                   width={'fit-content'}
                   position={'relative'}
-                  mr={[1, 2]}
+                  mr={[2]}
                 >
                   <Text zIndex={10}>
                     Veplo
