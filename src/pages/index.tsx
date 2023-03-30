@@ -354,7 +354,7 @@ const Home: NextPage = () => {
             gap={5}
           >
             <img className='m-auto'
-              src="/home_svg/sendMail.svg"
+              src="/home_svg/sendmail.svg"
               alt="home image" />
 
             <Text
