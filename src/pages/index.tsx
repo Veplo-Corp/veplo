@@ -80,7 +80,7 @@ const Home: NextPage = () => {
               <Box
                 my={'auto'}
               >
-                <h1 className='text-[45px] leading-[40px] lg:text-6xl lg:leading-[70px] font-extrabold text-black'>
+                <h1 className='text-[42px] leading-[40px] lg:text-6xl lg:leading-[70px] font-extrabold text-black'>
                   tutti i negozi di<br />
                   abbigliamento,<br />
                   in un unico sito
@@ -109,7 +109,7 @@ const Home: NextPage = () => {
               >
                 <Box
                   display={'flex'}
-                  fontSize={['3xl', '3xl', '6xl']}
+                  fontSize={['28px', '3xl', '6xl']}
                   fontWeight={'black'}
                   width={'fit-content'}
                   position={'relative'}
@@ -119,12 +119,12 @@ const Home: NextPage = () => {
                     Veplo
                   </Text>
 
-                  <div className='absolute w-full h-3 lg:h-4 bottom-2 lg:bottom-4 bg-[#BB3838]'>
+                  <div className='absolute w-full h-2 lg:h-4 bottom-2 lg:bottom-4 bg-[#BB3838]'>
                   </div>
                 </Box>
                 <Text
 
-                  fontSize={['3xl', '3xl', '6xl']}
+                  fontSize={['28px', '3xl', '6xl']}
                   fontWeight={'black'}
                 >
                   sta per arrivare!
@@ -179,7 +179,6 @@ const Home: NextPage = () => {
             <Text
               fontSize={'md'}
               fontWeight={'semibold'}
-
             >
               Social
             </Text>
