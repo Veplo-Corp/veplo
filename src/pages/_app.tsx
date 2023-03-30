@@ -24,7 +24,7 @@ import { getAnalytics, logEvent, setUserId, setUserProperties } from "firebase/a
 import Footer from '../../components/organisms/Footer'
 import PostMeta from '../../components/organisms/PostMeta'
 import Script from 'next/script'
-import { Open_Sans } from '@next/font/google'
+import { Open_Sans, Work_Sans } from '@next/font/google'
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js'
 import GET_BUSINESS from '../lib/apollo/queries/business'
@@ -229,7 +229,9 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
 //font
 
-const sans = Open_Sans({ subsets: ['latin'] })
+//const sans = Open_Sans({ subsets: ['latin'] })
+const sans = Work_Sans({ subsets: ['latin'] })
+
 
 
 function MyApp({ Component, pageProps }: any /* AppProps */) {
