@@ -135,7 +135,7 @@ const Home: NextPage = () => {
             </Box>
             <Section>
               <Box
-                className='h-fit mb-40 lg:mb-20 mt-24 lg:mt-18 px-6'
+                className='h-fit mb-40 lg:mb-20 mt-24 lg:mt-18 '
                 textAlign={'center'}
               >
                 <div
@@ -171,7 +171,7 @@ const Home: NextPage = () => {
                   fontSize={['xs', 'lg']}
                   fontWeight={'semibold'}
                   color={'gray.600'}
-                  mt={3}
+                  mt={2.5}
                   className='w-10/12 mx-auto'
                 >
                   vuoi ricevere maggiori informazioni? compila il form
@@ -180,11 +180,13 @@ const Home: NextPage = () => {
                 <Button
                   mt={8}
                   size={'lg'}
+
                   fontSize={['lg', '28px']}
                   fontWeight={['bold', 'semibold']}
-                  px={[0, 28]}
+                  px={[0, 24]}
                   py={[8, 10]}
                   width={['full', 'fit-content']}
+                  //className='w-11/12 lg:w-fit'
                   borderRadius={'10px'}
                   color={'white'}
                   background={'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'}
