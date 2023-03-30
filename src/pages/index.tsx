@@ -54,9 +54,10 @@ const Home: NextPage = () => {
         <PostMeta
           canonicalUrl='https://www.veplo.it'
           title={'Veplo | Abbigliamento & Moda '}
-          subtitle={"Scopri i negozi di vestiti per uomo e donna della tua città su Veplo. Cerca tra tutto l'abbigliamento in vendita vicino a te e approfitta delle offerte"}
+          subtitle={"tutti i migliori negozi di abbigliamento in un unico sito. Cerca tra l'abbigliamento in vendita su Veplo e approfitta delle offerte in corso"}
           image={''}
-          description={"Scopri i negozi di vestiti per uomo e donna della tua città su Veplo. Cerca tra tutto l'abbigliamento in vendita vicino a te e approfitta delle offerte"}
+          description={"tutti i migliori negozi di abbigliamento in un unico sito. Cerca tra l'abbigliamento in vendita su Veplo e approfitta delle offerte in corso"}
+
         />
         <div className='w-full '>
 
@@ -146,8 +147,8 @@ const Home: NextPage = () => {
               <Button
                 mt={8}
                 size={'lg'}
-                fontSize={['lg', '2xl']}
-                fontWeight={'bold'}
+                fontSize={['lg', '28px']}
+                fontWeight={['bold', 'semibold']}
                 px={[0, 28]}
                 py={[8, 10]}
                 width={['full', 'fit-content']}
