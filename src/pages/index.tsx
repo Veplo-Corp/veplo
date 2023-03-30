@@ -17,6 +17,8 @@ import { setInLocalStorage } from '../../components/utils/setInLocalStorage'
 import Link from 'next/link'
 import ModalForm from '../../components/organisms/ModalForm'
 import { useForm } from 'react-hook-form'
+import { useMutation } from '@apollo/client'
+import CREATE_FORM_INFO_BUSINESS from '../lib/apollo/mutations/createFormInfoBusiness'
 
 type InputForm = {
   email: string,
@@ -40,13 +42,9 @@ const Home: NextPage = () => {
   const [modalConfirmSubmit, setModalConfirmSubmit] = useState(false)
   const { register, handleSubmit, reset, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<InputForm>({
     mode: "all",
-    // defaultValues: {
-    //   email: '',
-    //   userName: '',
-    //   businessName: '',
-    //   phone: '',
-    // }
   });
+  const [createForm] = useMutation(CREATE_FORM_INFO_BUSINESS);
+
 
   useEffect(() => {
     // const genderSelected = getFromLocalStorage('genderSelected')
@@ -64,10 +62,21 @@ const Home: NextPage = () => {
     // }
   }, [])
 
-  const onSubmitForm = (value: InputForm) => {
+  const onSubmitForm = async (value: InputForm) => {
     console.log(value);
     setModalForm(false)
-    setTimeout(() => {
+    setTimeout(async () => {
+
+      await createForm({
+        variables: {
+          options: {
+            userName: value.userName,
+            businessName: value.businessName,
+            email: value.email,
+            phone: value.phone,
+          }
+        }
+      })
       setModalConfirmSubmit(true)
     }, 1000);
     reset()
@@ -124,79 +133,80 @@ const Home: NextPage = () => {
                 alt="home image" />
 
             </Box>
+            <Section>
+              <Box
+                className='h-fit mb-40 lg:mb-20 mt-24 lg:mt-18 px-6'
+                textAlign={'center'}
+              >
+                <div
+                  className='flex w-full justify-center'
+                >
+                  <Box
+                    display={'flex'}
+                    fontSize={['28px', '3xl', '6xl']}
+                    fontWeight={'black'}
+                    width={'fit-content'}
+                    position={'relative'}
+                    mr={[2]}
+                  >
+                    <Text zIndex={10}>
+                      Veplo
+                    </Text>
+
+                    <div className='absolute w-full h-2 lg:h-4 bottom-2 lg:bottom-4 bg-[#BB3838]'>
+                    </div>
+                  </Box>
+                  <Text
+
+                    fontSize={['28px', '3xl', '6xl']}
+                    fontWeight={'black'}
+                  >
+                    sta per arrivare!
+                  </Text>
+                </div>
+
+
+                <Text
+                  as={'h2'}
+                  fontSize={['xs', 'lg']}
+                  fontWeight={'semibold'}
+                  color={'gray.600'}
+                  mt={3}
+                  className='w-10/12 mx-auto'
+                >
+                  vuoi ricevere maggiori informazioni? compila il form
+                  dedicato ai negozi
+                </Text>
+                <Button
+                  mt={8}
+                  size={'lg'}
+                  fontSize={['lg', '28px']}
+                  fontWeight={['bold', 'semibold']}
+                  px={[0, 28]}
+                  py={[8, 10]}
+                  width={['full', 'fit-content']}
+                  borderRadius={'10px'}
+                  color={'white'}
+                  background={'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'}
+                  _hover={{
+                    bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
+                  }}
+                  _focus={{
+                    bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
+                  }}
+                  _active={{
+                    transform: 'scale(0.98)',
+                  }}
+                  onClick={() => { setModalForm(true) }}
+                >
+                  richiedi informazioni
+                </Button>
+              </Box>
+            </Section>
 
           </Gradient_Component_home>
 
-          <Section>
-            <Box
-              className='h-fit mb-40 lg:mb-20 mt-24 lg:mt-18 px-6'
-              textAlign={'center'}
-            >
-              <div
-                className='flex w-full justify-center'
-              >
-                <Box
-                  display={'flex'}
-                  fontSize={['28px', '3xl', '6xl']}
-                  fontWeight={'black'}
-                  width={'fit-content'}
-                  position={'relative'}
-                  mr={[2]}
-                >
-                  <Text zIndex={10}>
-                    Veplo
-                  </Text>
 
-                  <div className='absolute w-full h-2 lg:h-4 bottom-2 lg:bottom-4 bg-[#BB3838]'>
-                  </div>
-                </Box>
-                <Text
-
-                  fontSize={['28px', '3xl', '6xl']}
-                  fontWeight={'black'}
-                >
-                  sta per arrivare!
-                </Text>
-              </div>
-
-
-              <Text
-                as={'h2'}
-                fontSize={['xs', 'lg']}
-                fontWeight={'semibold'}
-                color={'gray.600'}
-                mt={3}
-                className='w-10/12 mx-auto'
-              >
-                vuoi ricevere maggiori informazioni? compila il form
-                dedicato ai negozi
-              </Text>
-              <Button
-                mt={8}
-                size={'lg'}
-                fontSize={['lg', '28px']}
-                fontWeight={['bold', 'semibold']}
-                px={[0, 28]}
-                py={[8, 10]}
-                width={['full', 'fit-content']}
-                borderRadius={'10px'}
-                color={'white'}
-                background={'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'}
-                _hover={{
-                  bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
-                }}
-                _focus={{
-                  bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
-                }}
-                _active={{
-                  transform: 'scale(0.98)',
-                }}
-                onClick={() => { setModalForm(true) }}
-              >
-                richiedi informazioni
-              </Button>
-            </Box>
-          </Section>
           <Box
             textAlign={'center'}
             color={'#666666'}
@@ -282,7 +292,7 @@ const Home: NextPage = () => {
             >
             </Input>
             <Input
-              placeholder='Nome del tuo shop'
+              placeholder='nome del tuo shop'
               id='businessName'
               type='text'
               py={5}
@@ -363,7 +373,7 @@ const Home: NextPage = () => {
 
               lineHeight={'9'}
             >
-              Grazie!
+              Grazie
             </Text>
             <Text
               fontSize={'md'}
@@ -396,7 +406,7 @@ const Home: NextPage = () => {
                 transform: 'scale(0.98)',
               }}
             >
-              Tutto chiaro!
+              affare fatto!
             </Button>
           </VStack>
 
