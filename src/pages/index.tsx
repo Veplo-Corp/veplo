@@ -75,13 +75,13 @@ const Home: NextPage = () => {
               mt={[10, 8, '-14']}
               display={'flex'}
               justifyContent={'space-between'}
-              className='w-full md:w-9/12 m-auto'
+              className='w-full md:w-fit lg:gap-40 m-auto'
             >
               <Box
                 my={'auto'}
               >
-                <h1 className='text-4xl leading-[40px] lg:text-6xl lg:leading-[70px] font-extrabold text-black'>
-                  tutti i negozio di<br />
+                <h1 className='text-[45px] leading-[40px] lg:text-6xl lg:leading-[70px] font-extrabold text-black'>
+                  tutti i negozi di<br />
                   abbigliamento,<br />
                   in un unico sito
                 </h1>
