@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
 
-const Gradient_Component_home: FC<{ children: any, display: string }> = ({ children, display }) => {
+const Gradient_Component_home: FC<{ children: any }> = ({ children }) => {
     return (
         <div
-            className={`h-fit min-h-[50vh] md:min-h-[88vh] content-center  md:${display} justify-between p-5 md:px-16 lg:px-20`}
+            className={`w-full min-h-96 lg:h-screen px-4`}
             style={{
-                background: 'linear-gradient(0deg, rgba(169,99,224,1) 0%, rgba(6,214,160,1) 100%)'
+                background: 'linear-gradient(180deg, rgba(192,133,228,0.9206276260504201) 0%, rgba(192,133,228,0.702140231092437) 53%, rgba(192,133,228,0) 100%)'
             }}
         >
             {children}

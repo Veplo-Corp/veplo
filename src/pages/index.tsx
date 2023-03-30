@@ -14,6 +14,7 @@ import PostMeta from '../../components/organisms/PostMeta'
 import Section from '../../components/atoms/Section'
 import { getFromLocalStorage } from '../../components/utils/getFromLocalStorage'
 import { setInLocalStorage } from '../../components/utils/setInLocalStorage'
+import Link from 'next/link'
 
 
 
@@ -31,205 +32,173 @@ const Home: NextPage = () => {
   const [showHome, setshowHome] = useState<boolean>(false)
 
   useEffect(() => {
-    const genderSelected = getFromLocalStorage('genderSelected')
-    if (!genderSelected) {
-      return setshowHome(true)
-    }
+    // const genderSelected = getFromLocalStorage('genderSelected')
+    // if (!genderSelected) {
+    //   return setshowHome(true)
+    // }
 
 
-    if (genderSelected === 'f') {
+    // if (genderSelected === 'f') {
 
-      router.push('/prodotti/donna-abbigliamento')
-    }
-    if (genderSelected === 'm') {
-      router.push('/prodotti/uomo-abbigliamento')
-    }
+    //   router.push('/prodotti/donna-abbigliamento')
+    // }
+    // if (genderSelected === 'm') {
+    //   router.push('/prodotti/uomo-abbigliamento')
+    // }
   }, [])
 
   return (
-    <div className='min-h-screen'>
-      {
-        showHome ? (
-          <Shop_not_Allowed>
-            <PostMeta
-              canonicalUrl='https://www.veplo.it'
-              title={'Veplo | Abbigliamento & Moda '}
-              subtitle={"Scopri i negozi di vestiti per uomo e donna della tua città su Veplo. Cerca tra tutto l'abbigliamento in vendita vicino a te e approfitta delle offerte"}
-              image={''}
-              description={"Scopri i negozi di vestiti per uomo e donna della tua città su Veplo. Cerca tra tutto l'abbigliamento in vendita vicino a te e approfitta delle offerte"}
-            />
-            <div className='w-full justify-between'>
+    <div className='min-h-screen '>
 
-              <Gradient_Component_home display='flex'>
-                <h1 className='text-6xl md:text-7xl lg:text-8xl font-black text-white md:w-7/12 my-auto '>
-                  SCOPRI <br />I TUOI<br /> DINTORNI
-                </h1>
-                <div
-                  className='mt-8 md:m-auto'
-                >
-                  {!address_user && <p
-                    className='font-bold text-md text-white ml-1'
-                  >Inizia la ricerca</p>}
-                  <Button
-                    rightIcon={
-                      <>
-                        {
-                          !address_user ? (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                            <path fillRule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
-                          </svg>) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                            </svg>
-                          )
-                        }
-                      </>
-                    }
-                    border='2px'
-                    borderColor='gray.900'
-                    rounded={'xl'}
-                    colorScheme='white'
-                    textColor={'gray.900'}
-                    width={['full', '80']}
-                    height={'16'}
-                    display='flex'
-                    justifyContent={'space-between'}
-                    backgroundColor={'white'}
-                    onClick={() => {
-                      if (!address_user) {
-                        setopenDrawer(Math.random())
-                      } else {
-                        const url = createUrlSchema([address_user.city, address_user.postcode])
-                        router.push(`/negozi/${url}`)
-                      }
-                    }}
-                  >
-                    {address_user ? 'I negozi della tua città' : 'Inserisci città o indirizzo'}
+      <Shop_not_Allowed>
+        <PostMeta
+          canonicalUrl='https://www.veplo.it'
+          title={'Veplo | Abbigliamento & Moda '}
+          subtitle={"Scopri i negozi di vestiti per uomo e donna della tua città su Veplo. Cerca tra tutto l'abbigliamento in vendita vicino a te e approfitta delle offerte"}
+          image={''}
+          description={"Scopri i negozi di vestiti per uomo e donna della tua città su Veplo. Cerca tra tutto l'abbigliamento in vendita vicino a te e approfitta delle offerte"}
+        />
+        <div className='w-full '>
 
-                  </Button>
-                </div>
-              </Gradient_Component_home>
-
-              <Section>
-                <div
-                  className='md:flex md:justify-between px-5 py-20 md:px-20 md:gap-20 md:my-20'>
-                  <img className='md:w-1/2 md:h-96 object-contain my-auto'
-                    src="/home_svg/home_first.svg"
-                    alt="home image" />
-                  <div className='my-5 md:m-auto lg:w-4/12 '>
-                    <h1
-                      className='text-4xl xl:text-5xl font-black mb-3'
-                    >Cerca tra i negozi
-                      della tua città..</h1>
-                    <h2 className='text-lg font-medium'>
-                      Seleziona già online i prodotti che proverai in negozio. Ogni negozio possiede una pagina dedicata con tutti i prodotti in vetrina
-                    </h2>
-                  </div>
-                </div>
-              </Section>
-
-
-
-
-              <div
-                className='min-h-[60vh md:min-h-[80vh] py-5 bg-slate-100  grid content-center  align-middle
-              px-5
-             '
+          <Gradient_Component_home>
+            <Text
+              fontWeight={'extrabold'}
+              color={'white'}
+              fontSize={['3xl', '5xl']}
+              py={[8]}
+              px={[2, 12]}
+            >
+              Veplo
+            </Text>
+            <Box
+              pl={2}
+              mt={[10, 8, '-14']}
+              display={'flex'}
+              justifyContent={'space-between'}
+              className='w-full md:w-9/12 m-auto'
+            >
+              <Box
+                my={'auto'}
               >
-                <h3 className='text-4xl md:text-5xl lg:text-6xl font-black my-auto md:leading-[90px] lg:leading-[110px] text-center mb-5 md:mb-0'>
-                  ESSERE VEPLO
-                </h3>
-                <h2 className='text-xl md:text-3xl px-4 md:px-36 text-center font-medium md:font-bold md:mt-2'>
-                  Veplo è la community che permette a tutti i negozi di vestiti
-                  di mostrare online i propri prodotti.
-                </h2>
-                <div
-                  className='grid md:flex gap-5 xl:gap-10 md:justify-between md:w-6/12 lg:w-4/12 mt-10 m-auto justify-center'>
-                  <Button
-                    border='2px'
-                    borderColor='gray.900'
-                    rounded={'2xl'}
-                    colorScheme='white'
-                    textColor={'gray.100'}
-                    height={'16'}
-                    width={'full'}
-                    backgroundColor={'gray.900'}
-                    marginX={'auto'}
-                    onClick={() => {
-                      router.push('/shop/login?type=registration')
-                    }}
-                  >
-                    Crea un negozio senza costi
-                  </Button>
-                  {/* <Button
-                  border='2px'
-                  borderColor='gray.900'
-                  rounded={'2xl'}
-                  colorScheme='white'
-                  textColor={'gray.900'}
-                  height={'16'}
-                  paddingX={'20'}
-                  backgroundColor={'white'}
-                  onClick={() => {
-                    setopenDrawer(Math.random())
-                  }}
+                <h1 className='text-4xl leading-[40px] lg:text-6xl lg:leading-[70px] font-extrabold text-black'>
+                  tutti i negozio di<br />
+                  abbigliamento,<br />
+                  in un unico sito
+                </h1>
+                <h3
+                  className='mt-2 lg:mt-5 text-xl font-medium'
                 >
-                  cerca i vestiti nella tua zona
-    
-                </Button> */}
-
-                </div>
-                <h3 className='text-md  md:text-xl xl:px-96 text-center font-base mt-4 md:mt-12'>
-                  Crea il tuo negozio gratuitamente e inizia a mostrare
-                  a tutti i tuoi vestiti!
+                  il modo <strong>innovativo</strong> di vendere abbigliamento online
                 </h3>
-              </div>
-              <Section>
-                <div
-                  className='md:flex md:justify-between pt-20 pb-10 px-5 md:px-20 md:gap-20 md:my-20'>
+              </Box>
+              <img className='hidden md:flex'
+                src="/home_svg/iphoneMockup.svg"
+                alt="home image" />
 
-                  <div className='m-5 md:m-auto lg:w-4/12 '>
-                    <h1
-                      className='text-4xl xl:text-5xl font-black mb-3'
-                    >Migliora il tuo acquisto in negozio...</h1>
-                    <h2 className='text-lg font-medium'>
-                      con Veplo puoi visitare tutti i negozi della tua città e scegliere in anticipo quali andrai a trovare di persona            </h2>
+            </Box>
+
+          </Gradient_Component_home>
+
+          <Section>
+            <Box
+              className='h-fit mb-40 lg:mb-20 mt-24 lg:mt-0 px-6'
+              textAlign={'center'}
+            >
+              <div
+                className='flex w-full justify-center'
+              >
+                <Box
+                  display={'flex'}
+                  fontSize={['3xl', '3xl', '6xl']}
+                  fontWeight={'black'}
+                  width={'fit-content'}
+                  position={'relative'}
+                  mr={[1, 2]}
+                >
+                  <Text zIndex={10}>
+                    Veplo
+                  </Text>
+
+                  <div className='absolute w-full h-3 lg:h-4 bottom-2 lg:bottom-4 bg-[#BB3838]'>
                   </div>
-                  <img className='md:w-1/2 h-96 object-contain my-auto  mt-8 md:mt-'
-                    src="/home_svg/home_second.svg"
-                    alt="home image" />
-                </div>
-              </Section>
-            </div>
+                </Box>
+                <Text
 
-            {/* <img className='w-full object-cover h-full md:h-full mt-12' 
-          src="/static/homeImg.png" 
-          alt="non trovata" />
-          <div className='w-full p-4 md:p-6  md:flex justify-between'>
-            <div className='mb-0 md:mb-0'>
-              <h1 className='font-extrabold cursor-pointer italic text-xl text-black-900'>Alcune città che utilizzano Veplo</h1>
-              <Stack direction='row' spacing={4} align='center' className='mt-2'>
-                {ARRAY_CITY.map((city: string) => {
-                  return (
-                    <BlackButton disabled={false} key={city} element={city} borderRadius={50} size={'lg'} typeButton='button'></BlackButton>
-                  )
-                })}
-              </Stack>
-            </div>
-          </div>
-          <img className='w-full  object-cover h-full md:h-full' 
-          src="https://img01.ztat.net/outfit/d2bbc3015626416fa0f33450b7295d97/9586c74af338488da7215817f83e1bb6.jpg?imwidth=1800" 
-          alt="" /> */}
-            <Drawer_Address openDrawerMath={openDrawer} />
-          </Shop_not_Allowed >
+                  fontSize={['3xl', '3xl', '6xl']}
+                  fontWeight={'black'}
+                >
+                  sta per arrivare!
+                </Text>
+              </div>
 
-        )
-          : (
-            <>
-            </>
-          )
 
-      }
-    </div>
+              <Text
+                as={'h2'}
+                fontSize={['xs', 'lg']}
+                fontWeight={'semibold'}
+                color={'gray.600'}
+                mt={3}
+                className='w-10/12 mx-auto'
+              >
+                vuoi ricevere maggiori informazioni? compila il form
+                dedicato ai negozi
+              </Text>
+              <Button
+                mt={8}
+                size={'lg'}
+                fontSize={['lg', '2xl']}
+                fontWeight={'bold'}
+                px={[0, 28]}
+                py={[8, 10]}
+                width={['full', 'fit-content']}
+                borderRadius={'10px'}
+                color={'white'}
+                background={'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'}
+                _hover={{
+                  bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
+                }}
+                _focus={{
+                  bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
+                }}
+                _active={{
+                  transform: 'scale(0.98)',
+                }}
+              >
+                richiedi informazioni
+              </Button>
+            </Box>
+          </Section>
+          <Box
+            textAlign={'center'}
+            color={'#666666'}
+            mb={10}
+            display={'grid'}
+            justifyContent={'center'}
+
+          >
+            <Text
+              fontSize={'md'}
+              fontWeight={'semibold'}
+
+            >
+              Social
+            </Text>
+            <Link href="https://www.instagram.com/veplo_clothes/" target='_blank' className="text-[#666666] m-auto">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd" /></svg>
+              <span className="sr-only">Instagram page</span>
+            </Link>
+          </Box>
+
+
+
+
+
+        </div>
+
+        <Drawer_Address openDrawerMath={openDrawer} />
+      </Shop_not_Allowed >
+
+    </div >
   )
 
 
