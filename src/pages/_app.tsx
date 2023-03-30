@@ -289,6 +289,9 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
 
 
 
+
+
+
   return (
     <Provider store={store}>
 
@@ -302,10 +305,9 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
               </div>
             ) : (
               <main className={sans.className}>
-                <Header></Header>
-
+                {router.asPath !== '/' && <Header />}
                 <Component {...pageProps} />
-                <Footer />
+                {router.asPath !== '/' && <Footer />}
               </main>
             )}
 
