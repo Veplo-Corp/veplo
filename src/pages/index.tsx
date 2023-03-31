@@ -127,19 +127,20 @@ const Home: NextPage = () => {
               mt={[10, 8, '-14']}
               display={'flex'}
               justifyContent={'space-between'}
-              className='w-full md:w-10/12 lg:w-8/12 mx-auto lg:gap-40 m-auto'
+              className='w-full md:w-10/12 xl:w-8/12 mx-auto lg:gap-40 m-auto'
             >
               <Box
                 my={'auto'}
+                className='md:mr-5 lg:mr-0'
               >
-                <h1 className='text-[42px] italic h-36 md:h-56 leading-[40px] lg:text-6xl lg:leading-[70px] font-extrabold text-black'>
+                <h1 className='text-[42px] italic h-36 lg:h-56 leading-[40px] lg:text-6xl lg:leading-[70px] font-extrabold text-black'>
                   {/*  tutti i negozi di<br />
                   abbigliamento,<br />
                   in un unico sito */}
                   {displayText}
                 </h1>
                 <h3
-                  className='lg:mt-2 text-md leading-5 lg:text-xl font-normal'
+                  className='lg:mt-2 text-lg leading-5 lg:text-xl font-normal'
                 >
                   il modo <strong>innovativo</strong> di vendere abbigliamento online
                 </h3>
@@ -184,14 +185,22 @@ const Home: NextPage = () => {
 
                 <Text
                   as={'h2'}
-                  fontSize={['xs', 'lg']}
-                  fontWeight={'semibold'}
+                  fontSize={['sm', 'sm']}
+                  fontWeight={['mediusemiboldm', 'medium']}
                   color={'gray.600'}
                   mt={2.5}
-                  className='w-10/12 mx-auto'
+                  className='w-11/12 md:w-3/4 lg:w-1/2 mx-auto'
                 >
-                  vuoi ricevere maggiori informazioni? compila il form
-                  dedicato ai negozi
+                  <span className='hidden md:table mx-auto'>
+                    non importa se sei un piccolo negozio di abbigliamento o un brand emergente,
+                    <br className='hidden lg:flex' /> con Veplo vendere
+                    <strong> senza costi fissi o canoni mensili</strong>
+                  </span>
+                  <span className=' md:hidden'>
+                    sei un negozio di abbigliamento? inizia a vendere online
+                    <strong> senza costi fissi o canoni mensili</strong>
+                  </span>
+
                 </Text>
                 <Button
                   mt={8}
@@ -217,7 +226,7 @@ const Home: NextPage = () => {
                   }}
                   onClick={() => { setModalForm(true) }}
                 >
-                  richiedi informazioni
+                  voglio saperne di più
                 </Button>
               </Box>
             </Section>
