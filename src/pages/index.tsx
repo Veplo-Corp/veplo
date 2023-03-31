@@ -197,7 +197,7 @@ const Home: NextPage = () => {
                     <strong> senza costi fissi o canoni mensili</strong>
                   </span>
                   <span className=' md:hidden'>
-                    sei un negozio di abbigliamento? inizia a vendere online
+                    sei un negozio di abbigliamento? Vendi con Veplo
                     <strong> senza costi fissi o canoni mensili</strong>
                   </span>
 
