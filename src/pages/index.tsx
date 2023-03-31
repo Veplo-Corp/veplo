@@ -186,8 +186,8 @@ const Home: NextPage = () => {
                 <Text
                   as={'h2'}
                   fontSize={['sm', 'medium']}
-                  fontWeight={['mediusemiboldm', 'medium']}
-                  color={'gray.600'}
+                  fontWeight={['medium', 'medium']}
+                  color={['gray.700', 'gray.700']}
                   mt={2.5}
                   className='w-11/12 md:w-3/4 lg:w-1/2 mx-auto'
                 >
