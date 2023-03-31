@@ -44,7 +44,22 @@ const Home: NextPage = () => {
     mode: "all",
   });
   const [createForm] = useMutation(CREATE_FORM_INFO_BUSINESS);
+  const [displayText, setDisplayText] = useState("");
 
+  useEffect(() => {
+    let currentText = '';
+    let currentIndex = 0;
+    const text = "tutti i negozi di abbigliamento, in un unico sito"
+    const intervalId = setInterval(() => {
+      currentText += text[currentIndex];
+      setDisplayText(currentText);
+      currentIndex++;
+      if (currentIndex === text.length) {
+        clearInterval(intervalId);
+      }
+    }, 50);
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     // const genderSelected = getFromLocalStorage('genderSelected')
@@ -112,18 +127,19 @@ const Home: NextPage = () => {
               mt={[10, 8, '-14']}
               display={'flex'}
               justifyContent={'space-between'}
-              className='w-full md:w-fit lg:gap-40 m-auto'
+              className='w-full md:w-10/12 lg:w-8/12 mx-auto lg:gap-40 m-auto'
             >
               <Box
                 my={'auto'}
               >
-                <h1 className='text-[42px] leading-[40px] lg:text-6xl lg:leading-[70px] font-extrabold text-black'>
-                  tutti i negozi di<br />
+                <h1 className='text-[42px] italic h-36 md:h-56 leading-[40px] lg:text-6xl lg:leading-[70px] font-extrabold text-black'>
+                  {/*  tutti i negozi di<br />
                   abbigliamento,<br />
-                  in un unico sito
+                  in un unico sito */}
+                  {displayText}
                 </h1>
                 <h3
-                  className='mt-4 lg:mt-2 text-md leading-5 lg:text-xl font-normal'
+                  className='lg:mt-2 text-md leading-5 lg:text-xl font-normal'
                 >
                   il modo <strong>innovativo</strong> di vendere abbigliamento online
                 </h3>

@@ -307,9 +307,9 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
               </div>
             ) : (
               <main className={sans.className}>
-                {router.asPath !== '/' && <Header />}
+                {router.asPath !== '/' && !router.query?.fbclid && <Header />}
                 <Component {...pageProps} />
-                {router.asPath !== '/' && <Footer />}
+                {router.asPath !== '/' && !router.query?.fbclid && <Footer />}
               </main>
             )}
 
