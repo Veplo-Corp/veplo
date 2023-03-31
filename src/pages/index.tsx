@@ -409,7 +409,7 @@ const Home: NextPage = () => {
               lineHeight={'short'}
 
             >
-              La tua richiesta e’ stata inviata con successo. In questi giorni sarai contattato, tramite cellulare o tramite email, dal nostro team di ricerca.
+              La tua richiesta e’ stata inviata con successo. In questi giorni sarai contattato, tramite cellulare o email, dal nostro team di ricerca.
             </Text>
 
             <Button
