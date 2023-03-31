@@ -81,6 +81,7 @@ const Home: NextPage = () => {
     console.log(value);
     setModalForm(false)
     setTimeout(async () => {
+      setModalConfirmSubmit(true)
 
       await createForm({
         variables: {
@@ -92,7 +93,6 @@ const Home: NextPage = () => {
           }
         }
       })
-      setModalConfirmSubmit(true)
     }, 1000);
     reset()
 
