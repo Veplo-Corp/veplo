@@ -193,7 +193,7 @@ const Home: NextPage = () => {
                 >
                   <span className='hidden md:table mx-auto'>
                     non importa se sei un piccolo negozio di abbigliamento o un brand emergente,
-                    <br className='hidden lg:flex' /> con Veplo vendere
+                    <br className='hidden lg:flex' /> con Veplo vendi
                     <strong> senza costi fissi o canoni mensili</strong>
                   </span>
                   <span className=' md:hidden'>

@@ -149,12 +149,16 @@ const Header = () => {
                                 {stripeDashboardVisible &&
                                     <form action={`/api/stripe/dashboard-link?stripeId=${stripeId}`}
                                         method="POST"
-                                        target="_blank">
+                                        target="_blank"
+                                        className='hidden md:flex'
+                                    >
                                         <Button
+
                                             bgColor={'#6772E5'}
                                             fontSize={'md'}
                                             fontWeight={'semibold'}
                                             textColor={'white'}
+                                            size={'sm'}
                                             mr={'2'}
                                             _hover={{
                                                 background: '#6772E5'
