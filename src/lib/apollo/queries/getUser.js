@@ -44,6 +44,7 @@ const GET_USER = gql`
             } 
             orders{
                 id
+                code
                 cartId
                 createdAt
                 totalDetails{

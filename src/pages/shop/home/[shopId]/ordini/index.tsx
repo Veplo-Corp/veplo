@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout'
 import NoIndexSeo from '../../../../../../components/organisms/NoIndexSeo';
+import TableOrdersShop from '../../../../../../components/organisms/TableOrdersShop';
 import { Firebase_User } from '../../../../../interfaces/firebase_user.interface';
 import GET_SHOP_ORDERS from '../../../../../lib/apollo/queries/shopOrders';
 
@@ -58,7 +59,7 @@ function index() {
                     >{data?.shop?.address?.city}, {data?.shop?.address?.street}</Text>
                 </Box>
             }
-            index
+            {data?.shop.orders && <TableOrdersShop orders={data?.shop.orders} />}
         </Desktop_Layout>
     )
 }
