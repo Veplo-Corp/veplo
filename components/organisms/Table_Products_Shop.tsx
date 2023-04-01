@@ -50,7 +50,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
         inputText: '',
         products: []
     })
-    const apolloClient = initApollo();
+
     const [editStatus, editStatusResponse] = useMutation(EDIT_STATUS_PRODUCT, {
         update(cache, el, query) {
 
@@ -66,7 +66,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
             console.log(cache.identify({ id: query.variables?.id, __typename: 'Product' }));
             const ProductCacheId = cache.identify({ id: query.variables?.id, __typename: 'Product' })
             console.log(shop);
-            apolloClient.cache.modify({
+            cache.modify({
                 id: ProductCacheId, //productId
                 fields: {
                     status(/* cachedvalue */) {

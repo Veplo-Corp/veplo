@@ -28,6 +28,7 @@ export interface Order {
     cartId: string,
     status: string,
     createdAt: string,
+    code: string,
     totalDetails: {
         amountDiscount: number,
         amountShipping: number,

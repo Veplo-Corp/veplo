@@ -34,7 +34,9 @@ const ProductVariationInOrder: FC<{ variation: ProductVariationInOrder }> = ({ v
                     >
                         {toUpperCaseFirstLetter(variation.name)} ({variation.color})
                     </Box>
-                    <Box>
+                    <Box
+
+                    >
                         <Box
                             fontSize={'sm'}
                             fontWeight={'normal'}

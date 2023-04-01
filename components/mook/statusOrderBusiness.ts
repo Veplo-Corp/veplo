@@ -1,92 +1,150 @@
-export const STATUS = [
+export const STATUS_ORDER_SHOP = [
     //*Ordine creato ma non ancora pagato
     {
         code: 'CRE01',
-        payment: 'pending',
-        status: 'In corso',
+        payment: {
+            text: 'pending',
+            color: 'yellow'
+        },
+        orderStatus: {
+            text: 'In corso',
+            color: 'yellow',
+        },
         description: 'in attesa di conferma pagamento',
-        color: 'yellow',
+
     },
     //*Ordine pagato e pronto per essere spedito
     {
         code: 'PAY01',
-        payment: 'Saldato',
-        status: 'In preparazione',
+        payment: {
+            text: 'Saldato',
+            color: 'green'
+        },
+        orderStatus: {
+            text: 'In preparazione',
+            color: 'blackAlpha',
+        },
+
         description: 'spedisci l’ordine al all’indirizzo indicato',
-        color: 'blackAlpha',
     },
     //*Ordine inviato, ma da controllare se il codice spedizione è corretto, manca URL ordine
     {
         code: 'SHIP01',
-        payment: 'Saldato',
-        status: 'In preparazione',
+        payment: {
+            text: 'Saldato',
+            color: 'green'
+        },
+        orderStatus: {
+            text: 'In Viaggio',
+            color: 'yellow',
+        },
         description: 'Ordine in viaggio',
-        color: 'blackAlpha',
     },
     //*Codice ordine valido e inserimento url ordine
     {
         code: 'SHIP02',
-        payment: 'Saldato',
-        status: 'Spedito',
+        payment: {
+            text: 'Saldato',
+            color: 'green'
+        },
+        orderStatus: {
+            text: 'In Viaggio',
+            color: 'yellow',
+        },
         description: 'Ordine in viaggio',
-        color: 'orange',
     },
     //*Business cancella ordine perchè non può inviare il prodotto ordinato
     {
         code: 'CANC01',
-        payment: 'N/A',
-        status: 'Annullato',
+        payment: {
+            text: 'Annullato',
+            color: 'red'
+        },
+        orderStatus: {
+            text: 'N/A',
+            color: 'blackAlpha',
+        },
         description: 'Ordine cancellato dal venditore',
-        color: 'red',
     },
     //* refund avvenuto con successo dopo che il 
     //* business annulla l'ordine il cliente viene rimborsato
     {
         code: 'REF01',
-        payment: 'Saldato',
-        status: 'Rimborsato',
+        payment: {
+            text: 'Saldato',
+            color: 'green'
+        },
+        orderStatus: {
+            text: 'N/A',
+            color: 'blackAlpha',
+        },
         description: "l'ordine che hai annullato è stato rimborsato con successo",
-        color: 'green',
+
     },
     //*cliente richiede rimborso e fa il reso
     {
         code: 'RET01',
-        payment: 'N/A',
-        status: 'Reso in corso',
+        payment: {
+            text: 'Reso in corso',
+            color: 'yellow'
+        },
+        orderStatus: {
+            text: 'In restituzione',
+            color: 'blackAlpha',
+        },
         description: 'Procedura di reso in corso',
-        color: 'yellow',
     },
     //*business riceve il reso e accetta reso
     {
         code: 'RET02',
-        payment: 'N/A',
-        status: 'Reso ricevuto',
+        payment: {
+            text: 'N/A',
+            color: 'blackAlpha'
+        },
+        orderStatus: {
+            text: 'Reso accettato',
+            color: 'green',
+        },
         description: 'hai ricevuto il prodotto in reso',
-        color: 'green',
     },
     //*rimborsato cliente per reso
     {
         code: 'REF02',
-        payment: 'Saldato',
-        status: 'Rimborso',
+        payment: {
+            text: 'Rimborsato',
+            color: 'green'
+        },
+        orderStatus: {
+            text: 'Ricevuto',
+            color: 'green',
+        },
         description: 'Reso rimborsato con successo',
-        color: 'green',
     },
     //*Prodotto mai arrivato al cliente
     {
         code: 'CANC02',
-        payment: 'N/A',
-        status: 'Rimborso richiesto',
+        payment: {
+            text: 'N/A',
+            color: 'blackAlpha'
+        },
+        orderStatus: {
+            text: 'rimborso richiesto',
+            color: 'yellow',
+        },
         description: 'richiesta rimborso per ordine mai arrivato',
-        color: 'yellow',
     },
     //*rimborsato cliente per rimborso causa mancato arrivo prodotto
     {
         code: 'REF03',
-        payment: 'Saldato',
-        status: 'Ordine rimborsato',
+        payment: {
+            text: 'Rimborsato',
+            color: 'green'
+        },
+        orderStatus: {
+            text: 'Mai arrivato',
+            color: 'green',
+        },
         description: 'Ordine rimborsato con successo',
-        color: 'green',
     },
 
 ]

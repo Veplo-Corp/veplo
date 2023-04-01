@@ -148,7 +148,7 @@ const index = () => {
                         </Box>
 
                         <Text>
-                            {order.shipping.code}
+                            {order.code}
                         </Text>
                         <VStack
                             mt={[6, 4]}

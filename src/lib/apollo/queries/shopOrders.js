@@ -23,7 +23,53 @@ const GET_SHOP_ORDERS = gql`
             orders(
                 statuses: $statuses
             ){
-              id  
+                id
+                code
+                cartId
+                createdAt
+                totalDetails{
+                    amountDiscount
+                    amountShipping
+                    subTotal
+                    total
+                }
+                status
+                shop{
+                    id
+                    name
+                }
+                shipping{
+                    url
+                    courier
+                    code
+                }
+                productVariations{
+                    productId
+                    variationId
+                    photo
+                    name
+                    price{
+                        v1
+                        v2
+                        discountPercentage
+                    }
+                    brand
+                    quantity
+                    color
+                    size
+                }
+                recipient{
+                    id
+                    name
+                    address{
+                        city
+                        country
+                        line1
+                        line2
+                        postalCode
+                        state
+                    }
+                }  
             }
         } 
     }
