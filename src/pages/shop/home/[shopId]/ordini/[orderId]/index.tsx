@@ -1,7 +1,8 @@
 import { useLazyQuery } from '@apollo/client'
-import { Box, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, Input, InputGroup, Text, VStack } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import Desktop_Layout from '../../../../../../../components/atoms/Desktop_Layout'
 import GrayBox from '../../../../../../../components/atoms/GrayBox'
@@ -15,7 +16,10 @@ const index = () => {
     const [getOrders, { error, data }] = useLazyQuery(GET_SHOP_ORDERS);
     const router = useRouter()
     const user: Firebase_User = useSelector((state: any) => state.user.user);
-    const [order, setOrder] = useState<Order>()
+    const [order, setOrder] = useState<Order>();
+    const { register, handleSubmit, reset, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<{ code: string, courier: string }>({
+        mode: "all",
+    });
 
     useEffect(() => {
         const { shopId, orderId } = router.query
@@ -35,10 +39,15 @@ const index = () => {
         }
     }, [user, router])
 
+    const onSubmitFormOrder = (orderInfo: { courier: string, code: string }) => {
+        console.log(orderInfo);
+
+    }
+
     return (
         <Desktop_Layout>
             <Box
-                className='w-full md:w-3/4 lg:w-1/2 m-auto'
+                className='w-full md:w-3/4 xl:w-1/2 m-auto mt-8'
             >
                 <GrayBox>
                     <Text
@@ -87,7 +96,7 @@ const index = () => {
                 </GrayBox>
             </Box>
             <Box
-                className='w-full md:w-3/4 lg:w-1/2 m-auto mt-8'
+                className='w-full md:w-3/4 xl:w-1/2 m-auto mt-8'
             >
                 <GrayBox>
                     <Text
@@ -201,7 +210,85 @@ const index = () => {
                     </Box>
                 }
                 <GrayBox>
+                    {order?.status === 'PAY01' &&
+                        <>
 
+                            <Text
+                                fontSize={'2xl'}
+                                fontWeight={'medium'}
+                            >
+                                Inserisci spedizione
+                            </Text>
+                            <form onSubmit={handleSubmit(onSubmitFormOrder)}>
+                                <InputGroup
+                                    gap={5}
+                                    mt={4}
+                                >
+                                    <Input
+                                        placeholder='Codice spedizione'
+                                        id='codice spedizione'
+                                        autoComplete='off'
+                                        type='text'
+                                        py={6}
+                                        rounded={'10px'}
+                                        _placeholder={{
+                                            color: 'gray.600',
+                                            fontWeight: '400'
+                                        }}
+                                        background={'white'}
+                                        variant='outline'
+                                        {...register("code", {
+                                            required: true,
+                                            minLength: 6
+                                        })}
+                                    >
+                                    </Input>
+                                    <Input
+                                        placeholder='Corriere'
+                                        id='corriere'
+                                        type='text'
+                                        py={6}
+                                        rounded={'10px'}
+                                        _placeholder={{
+                                            color: 'gray.600',
+                                            fontWeight: '400'
+                                        }}
+                                        {...register("courier", {
+                                            required: true,
+                                            minLength: 2
+                                        })}
+                                        background={'white'}
+                                        variant='outline'
+                                    >
+                                    </Input>
+
+                                </InputGroup>
+
+                                <Button
+                                    mt={5}
+                                    onClick={() => { }}
+                                    borderRadius={'md'}
+                                    size={'xl'}
+                                    padding={4}
+                                    px={10}
+                                    width={'fit-content'}
+                                    height={'fit-content'}
+                                    bg={'black.900'}
+                                    color={'white'}
+                                    type={'submit'}
+                                    _hover={{ bg: 'black.900' }}
+                                    _focus={{
+                                        bg: 'black.900'
+                                    }}
+
+                                    _active={{
+                                        transform: 'scale(0.98)',
+                                    }}
+                                >Conferma</Button>
+                            </form>
+                        </>
+
+                    }
                 </GrayBox>
             </Box>
         </Desktop_Layout>
