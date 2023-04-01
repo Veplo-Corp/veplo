@@ -57,7 +57,7 @@ const index = () => {
         const user = userCredential.user;
         let idToken = await userCredential.user.getIdToken(true);
         setAuthTokenInSessionStorage(idToken)
-        console.log(user);
+        console.log(userInfo);
         const response = await createUser({
           variables: {
             options: {

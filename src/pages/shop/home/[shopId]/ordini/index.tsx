@@ -1,12 +1,13 @@
 import { useLazyQuery } from '@apollo/client';
 import { Box, Tag, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout'
 import NoIndexSeo from '../../../../../../components/organisms/NoIndexSeo';
 import TableOrdersShop from '../../../../../../components/organisms/TableOrdersShop';
 import { Firebase_User } from '../../../../../interfaces/firebase_user.interface';
+import { Order } from '../../../../../interfaces/order.interface';
 import GET_SHOP_ORDERS from '../../../../../lib/apollo/queries/shopOrders';
 
 interface Props {
@@ -17,8 +18,8 @@ function index() {
     const router = useRouter()
     const [getOrders, { error, data }] = useLazyQuery(GET_SHOP_ORDERS);
     const user: Firebase_User = useSelector((state: any) => state.user.user);
+    const [orders, setOrders] = useState<Order[]>([])
     console.log(data);
-
     useEffect(() => {
         const { shopId } = router.query
         if (user?.isBusiness || shopId) {
@@ -31,6 +32,13 @@ function index() {
             })
         }
     }, [user, router])
+
+    useEffect(() => {
+        if (data?.shop.orders) {
+            setOrders(data?.shop.orders)
+        }
+    }, [data])
+
 
 
     return (
@@ -59,7 +67,8 @@ function index() {
                     >{data?.shop?.address?.city}, {data?.shop?.address?.street}</Text>
                 </Box>
             }
-            {data?.shop.orders && <TableOrdersShop orders={data?.shop.orders} />}
+
+            {orders && <TableOrdersShop orders={orders} />}
         </Desktop_Layout>
     )
 }

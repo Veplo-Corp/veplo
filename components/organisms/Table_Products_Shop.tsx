@@ -277,7 +277,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                     </Thead>
                     <Tbody >
                         {data?.shop.products && (productsOnTextSearched.inputText.length > 0 ? productsOnTextSearched.products : data?.shop.products).map((product: Product | any) => {
-                            const categoryAndmicrocategory = (`${product.info.macroCategory} - ${product.info.microCategory}`).length > 20 ? (`${product.info.macroCategory} - ${product.info.microCategory}`).substring(0, 20) + '...' : (`${product.info.macroCategory} - ${product.info.microCategory}`)
+                            //const categoryAndmicrocategory = (`${product.info.macroCategory} - ${product.info.microCategory}`).length > 25 ? (`${product.info.macroCategory} - ${product.info.microCategory}`).substring(0, 25) + '...' : (`${product.info.macroCategory} - ${product.info.microCategory}`)
                             return (
                                 <Tr key={product.id} fontSize={['xs', 'medium']}
                                     _hover={{
@@ -361,7 +361,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                                         paddingLeft={[2, 4]}
                                         className='hidden md:table-cell'>
                                         <span>
-                                            {categoryAndmicrocategory}
+                                            {product.info.macroCategory} - {product.info.microCategory}
                                         </span>
                                     </Td>
                                     <Td paddingRight={0}
