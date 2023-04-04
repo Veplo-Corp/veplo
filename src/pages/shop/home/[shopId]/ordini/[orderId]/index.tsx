@@ -10,12 +10,14 @@ import ProductVariationInOrder from '../../../../../../../components/molecules/P
 import { STATUS_ORDER_SHOP } from '../../../../../../../components/mook/statusOrderBusiness'
 import Modal_Help_Customer_Care from '../../../../../../../components/organisms/Modal_Help_Customer_Care'
 import PriceAndShippingListingCost from '../../../../../../../components/organisms/PriceAndShippingListingCost'
+import { ToastOpen } from '../../../../../../../components/utils/Toast'
 import { Firebase_User } from '../../../../../../interfaces/firebase_user.interface'
 import { Order } from '../../../../../../interfaces/order.interface'
 import ADD_CODE_AND_COURIER_TO_ORDER from '../../../../../../lib/apollo/mutations/addCodeAndCourierToOrder'
 import GET_SHOP_ORDERS from '../../../../../../lib/apollo/queries/shopOrders'
 
 const index = () => {
+    const { addToast } = ToastOpen();
     const [isOpenHelpModal, setIsOpenHelpModal] = useState(false)
     const [getOrders, { error, data }] = useLazyQuery(GET_SHOP_ORDERS);
     const router = useRouter()
@@ -31,6 +33,27 @@ const index = () => {
             console.log(cache);
             console.log(el);
             console.log(query);
+
+            const OrderCacheId = cache.identify({ id: query.variables?.id, __typename: 'Order' })
+            console.log(OrderCacheId);
+            cache.modify({
+                id: OrderCacheId, //productId
+                fields: {
+                    status(/* cachedvalue */) {
+                        return "SHIP01"
+                    },
+                    shipping() {
+                        return {
+                            url: null,
+                            courier: query.variables?.options?.courier,
+                            code: query.variables?.options?.code,
+                        }
+                    }
+                },
+                broadcast: false // Include this to prevent automatic query refresh
+            });
+            addToast({ position: 'top', title: 'Spedizione inserita con successo', description: `hai inserito con successo il codice di spedizione dell'ordine ${order?.code} `, status: 'success', duration: 5000, isClosable: false })
+            router.push(`/shop/home/${router.query?.shopId}/ordini`)
         }
     })
 
@@ -46,7 +69,7 @@ const index = () => {
                 }
             }).then(result => {
                 if (result) {
-                    const order: Order = result.data.shop.orders.find((order: Order) => order.id === orderId)
+                    const order: Order = result?.data?.shop.orders.find((order: Order) => order.id === orderId)
                     //console.log(order);
                     if (!order) return
                     handleStatus(order?.status)
@@ -398,7 +421,7 @@ const index = () => {
                                                 Poste Italiane
                                             </Text>
                                         </Box>
-                                        {(order?.status !== 'SHIP01' && order?.status !== 'SHIP02') && <Button
+                                        {(order?.status === 'SHIP01' || order?.status === 'SHIP02') && <Button
                                             mx={'auto'}
                                             mr={0}
                                             mt={2}
