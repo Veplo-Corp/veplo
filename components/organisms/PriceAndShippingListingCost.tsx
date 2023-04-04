@@ -45,7 +45,7 @@ const PriceAndShippingListingCost: FC<{ subTotal: number, total: number, shippin
                     Totale
                 </Box>
                 <Box>
-                    {(total + shippingCost).toFixed(2).replace('.', ',')} €
+                    {(total).toFixed(2).replace('.', ',')} €
                 </Box>
             </Box>
         </Box>

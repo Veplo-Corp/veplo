@@ -53,6 +53,19 @@ export const STATUS_ORDER_SHOP = [
         },
         description: 'Ordine in viaggio',
     },
+    //*Ordine arrivato con successo
+    {
+        code: 'SHIP03',
+        payment: {
+            text: 'Saldato',
+            color: 'green'
+        },
+        orderStatus: {
+            text: 'Completato',
+            color: 'green',
+        },
+        description: 'Ordine consegnato',
+    },
     //*Business cancella ordine perchè non può inviare il prodotto ordinato
     {
         code: 'CANC01',

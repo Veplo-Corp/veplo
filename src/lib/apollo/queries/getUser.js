@@ -55,6 +55,8 @@ const GET_USER = gql`
                 }
                 status
                 shop{
+                    businessId
+                    stripeId
                     id
                     name
                 }
@@ -78,9 +80,16 @@ const GET_USER = gql`
                     color
                     size
                 }
-                recipient{
+                user{
+                    stripeId
                     id
+                    email
                     name
+                    surname
+                }
+                recipient{
+                    name
+                    phone
                     address{
                         city
                         country
