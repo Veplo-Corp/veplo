@@ -35,6 +35,8 @@ const GET_SHOP_ORDERS = gql`
                 }
                 status
                 shop{
+                    businessId
+                    stripeId
                     id
                     name
                 }
@@ -58,9 +60,16 @@ const GET_SHOP_ORDERS = gql`
                     color
                     size
                 }
-                recipient{
+                user{
+                    stripeId
                     id
+                    email
                     name
+                    surname
+                }
+                recipient{
+                    name
+                    phone
                     address{
                         city
                         country
