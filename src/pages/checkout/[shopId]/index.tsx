@@ -157,7 +157,7 @@ const index = () => {
                                 })}
 
                             </VStack>
-                            <PriceAndShippingListingCost subTotal={cart.total} total={cart.total} shippingCost={4.99} />
+                            <PriceAndShippingListingCost subTotal={cart.total} total={cart.total + 4.99} shippingCost={4.99} />
 
                             <Box
                                 display={'flex'}
