@@ -43,11 +43,20 @@ export interface Order {
     shop: {
         id: string,
         name: string,
+        businessId: string,
+        stripeId: string,
     },
-    recipient: {
+    user: {
         id: string,
+        stripeId: string,
         name: string,
-        address: Address
+        surname: string,
+        email: string,
+    }
+    recipient: {
+        name: string,
+        address: Address,
+        phone: string
     }
     productVariations: ProductVariationInOrder[],
 

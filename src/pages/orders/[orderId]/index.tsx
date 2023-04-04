@@ -166,7 +166,7 @@ const index = () => {
                                 )
                             })}
                         </VStack>
-                        <PriceAndShippingListingCost subTotal={order.totalDetails.total} total={order.totalDetails.total} shippingCost={order.totalDetails.amountShipping} />
+                        <PriceAndShippingListingCost subTotal={order.totalDetails.subTotal} total={order.totalDetails.total} shippingCost={order.totalDetails.amountShipping} />
 
                         {order.shipping?.url && <Link
                             href={'/home'}
@@ -185,7 +185,6 @@ const index = () => {
                             </Button>
 
                         </Link>}
-
 
 
                     </div>}
