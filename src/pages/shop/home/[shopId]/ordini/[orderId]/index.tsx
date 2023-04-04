@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation } from '@apollo/client'
-import { Box, Button, Input, InputGroup, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, Input, InputGroup, Tag, Text, VStack } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -24,6 +24,8 @@ const index = () => {
     const { register, handleSubmit, reset, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<{ code: string, courier: string }>({
         mode: "all",
     });
+    const [orderStatus, setOrderStatus] = useState<{ text: string, color: string }>();
+
     const [editUserInfo] = useMutation(ADD_CODE_AND_COURIER_TO_ORDER, {
         update(cache, el, query) {
             console.log(cache);
@@ -44,8 +46,10 @@ const index = () => {
                 }
             }).then(result => {
                 if (result) {
-                    const order = result.data.shop.orders.find((order: Order) => order.id === orderId)
+                    const order: Order = result.data.shop.orders.find((order: Order) => order.id === orderId)
                     //console.log(order);
+                    if (!order) return
+                    handleStatus(order?.status)
                     setOrder(order)
                 }
 
@@ -69,15 +73,46 @@ const index = () => {
 
     }
 
+    const handleStatus = (orderStatus: string) => {
+        const status = STATUS_ORDER_SHOP.find(status => status.code === orderStatus);
+        if (!status) return
+        setOrderStatus({
+            text: status.description,
+            color: status.orderStatus.color
+        })
+    }
+
     return (
         <>
 
             {
                 order &&
                 <Desktop_Layout>
+
                     <Box
                         className='w-full md:w-3/4 xl:w-1/2 m-auto mt-8'
                     >
+                        {orderStatus &&
+                            <Box
+                                display={'flex'}
+                            >
+                                <Tag
+                                    className='m-auto md:m-0'
+                                    mt={[0, 4]}
+                                    mb={4}
+                                    px={4}
+                                    py={2}
+                                    borderRadius={'full'}
+                                    size={'lg'}
+                                    fontWeight={'semibold'}
+                                    colorScheme={orderStatus.color}
+                                    borderWidth={2}
+                                    borderColor={'black'}
+                                >
+                                    {orderStatus.text}
+                                </Tag>
+                            </Box>
+                        }
                         <GrayBox>
                             <Text
                                 fontSize={'2xl'}
@@ -102,7 +137,7 @@ const index = () => {
                                         fontSize={'md'}
                                         fontWeight={'normal'}
                                     >
-                                        Nicolò Merlini [manca]
+                                        {order.recipient.name}
                                     </Text>
                                 </Box>
                                 <Box>
@@ -117,7 +152,7 @@ const index = () => {
                                         fontSize={'md'}
                                         fontWeight={'normal'}
                                     >
-                                        nicolo.merlini@gmail.com [manca]
+                                        {order.user.email}
                                     </Text>
                                 </Box>
 
@@ -183,7 +218,7 @@ const index = () => {
                                         fontSize={'md'}
                                         fontWeight={'normal'}
                                     >
-                                        {order.recipient.address.postalCode}, {order.recipient.address.city}, {order.recipient.address.line1} {order.recipient.address.line2}
+                                        {order.recipient.address.postalCode}, {order.recipient.address.city}, {order.recipient.address.line1}{order.recipient.address.line2 ? ',' : ''} {order.recipient.address.line2}
 
                                     </Text>
                                 </Box>
@@ -214,7 +249,7 @@ const index = () => {
                                         fontSize={'md'}
                                         fontWeight={'normal'}
                                     >
-                                        3403033922 [manca]
+                                        {order.recipient.phone}
                                     </Text>
                                 </Box>
                             </VStack>

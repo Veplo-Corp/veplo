@@ -25,7 +25,7 @@ export const STATUS_ORDER_SHOP = [
             color: 'blackAlpha',
         },
 
-        description: 'spedisci l’ordine al all’indirizzo indicato',
+        description: 'spedisci l’ordine all’indirizzo indicato',
     },
     //*Ordine inviato, ma da controllare se il codice spedizione è corretto, manca URL ordine
     {
