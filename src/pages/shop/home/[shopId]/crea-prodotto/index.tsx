@@ -240,63 +240,69 @@ const index = () => {
         }
 
         console.log(photos);
-        const photosUploaded = await uploadPhotos({
-            variables: {
-                images: photos,
-                proportion: "product"
-            }
-        })
-
-        const photosString = photosUploaded?.data.uploadImages
-        console.log(photosString)
-
-        let i = 0;
-
-
-        const variations = productVariations.map((variation) => {
-            let lots: Size[] = [];
-            let photos: string[] = [];
-            variation.lots.forEach(lot => {
-                lots.push({
-                    quantity: lot.quantity,
-                    size: lot.size.split(' ')[0]
-                })
-            });
-
-            variation.photos.forEach(photo => {
-                photos.push(photosString[i])
-                i++
-            });
-
-            return {
-                ...variation,
-                status: 'active',
-                lots: lots,
-                photos: photos
-            }
-        })
-
-        console.log(productVariations);
-
-
-
-        const product = {
-            name: watch('name').toLowerCase(),
-            status: 'active',
-            canBuy: true,
-            price: {
-                v1: Number(watch('price').replace(',', '.'))
-            },
-            info: {
-                gender: genderSelected === 'donna' ? 'f' : 'm',
-                macroCategory: watch('macrocategory'),
-                microCategory: watch('microcategory'),
-                brand: watch('brand'),
-                fit: watch('vestibilità').toLowerCase()
-            },
-            variations: variations
-        }
+        console.log('test');
         try {
+            const photosUploaded = await uploadPhotos({
+                variables: {
+                    images: photos,
+                    proportion: "product"
+                }
+            })
+            console.log(photosUploaded);
+
+
+
+
+            const photosString = photosUploaded?.data.uploadImages
+            console.log(photosString)
+
+            let i = 0;
+
+
+            const variations = productVariations.map((variation) => {
+                let lots: Size[] = [];
+                let photos: string[] = [];
+                variation.lots.forEach(lot => {
+                    lots.push({
+                        quantity: lot.quantity,
+                        size: lot.size.split(' ')[0]
+                    })
+                });
+
+                variation.photos.forEach(photo => {
+                    photos.push(photosString[i])
+                    i++
+                });
+
+                return {
+                    ...variation,
+                    status: 'active',
+                    lots: lots,
+                    photos: photos
+                }
+            })
+
+            console.log(productVariations);
+
+
+
+            const product = {
+                name: watch('name').toLowerCase(),
+                status: 'active',
+                canBuy: true,
+                price: {
+                    v1: Number(watch('price').replace(',', '.'))
+                },
+                info: {
+                    gender: genderSelected === 'donna' ? 'f' : 'm',
+                    macroCategory: watch('macrocategory'),
+                    microCategory: watch('microcategory'),
+                    brand: watch('brand'),
+                    fit: watch('vestibilità').toLowerCase()
+                },
+                variations: variations
+            }
+
             const isCreatedProduct = await createProduct({ variables: { shopId: router.query.shopId, options: product } })
             console.log(isCreatedProduct);
             router.push('/shop/home/' + router.query.shopId + '/prodotti')
