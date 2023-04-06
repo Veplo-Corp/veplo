@@ -403,7 +403,7 @@ const index = () => {
                                                 fontSize={'md'}
                                                 fontWeight={'normal'}
                                             >
-                                                AB12345
+                                                {order.shipping.code}
                                             </Text>
                                         </Box>
                                         <Box >
@@ -418,7 +418,7 @@ const index = () => {
                                                 fontSize={'md'}
                                                 fontWeight={'normal'}
                                             >
-                                                Poste Italiane
+                                                {order.shipping.courier}
                                             </Text>
                                         </Box>
                                         {(order?.status === 'SHIP01' || order?.status === 'SHIP02') && <Button

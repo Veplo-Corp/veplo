@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { Box, Button, ButtonGroup, IconButton, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, IconButton, Input, InputGroup, InputLeftAddon, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -15,6 +15,7 @@ import AddColorToProduct from '../../../../../../components/organisms/AddColorTo
 import EditColorToProduct, { Size } from '../../../../../../components/organisms/EditColorToProdoct'
 import NoIndexSeo from '../../../../../../components/organisms/NoIndexSeo'
 import { onChangeNumberPrice } from '../../../../../../components/utils/onChangePrice'
+import { ToastOpen } from '../../../../../../components/utils/Toast'
 import { Variation } from '../../../../../interfaces/product.interface'
 import { VariationCard } from '../../../../../interfaces/variationCard.interface'
 import CREATE_PRODUCT from '../../../../../lib/apollo/mutations/createProduct'
@@ -50,7 +51,7 @@ export const vestibilità = [
 
 
 const index = () => {
-
+    const { addToast } = ToastOpen();
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInputProduct>({
         mode: "all",
         //defaultValues
@@ -305,7 +306,8 @@ const index = () => {
 
             const isCreatedProduct = await createProduct({ variables: { shopId: router.query.shopId, options: product } })
             console.log(isCreatedProduct);
-            router.push('/shop/home/' + router.query.shopId + '/prodotti')
+            addToast({ position: 'top', title: 'Prodotto creato con successo', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
+            return router.push('/shop/home/' + router.query.shopId + '/prodotti')
         } catch (e: any) {
             console.log(e);
         }
