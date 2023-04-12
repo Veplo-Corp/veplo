@@ -169,7 +169,6 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
 
 
-    const [textCategory, setTextCategory] = useState('vestito')
 
     useEffect(() => {
 
@@ -524,7 +523,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             pb='3'
                         >
                             {`${product.name.toLocaleUpperCase()}`}
-                            <span className='font-light text-lg'>{` - ${textCategory}`} ({colorSelected})</span>
+                            <span className='font-light text-lg'> - ({colorSelected})</span>
                         </Box>
                         <Box
                             fontWeight='medium'
