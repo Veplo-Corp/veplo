@@ -155,7 +155,7 @@ const index = () => {
                 <BoxExplenationStripe textBold='Conferma informazioni' />
 
                 <BlackButton
-                    disabled={false}
+                    disabled={!isValid}
                     typeButton='submit'
                     element='Conferma Informazioni'
                     borderRadius={10}

@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
+import StripeAccountAlert from '../../../../components/molecules/StripeAccountAlert'
 import Verified_Email from '../../../../components/molecules/Verified_Email/Verified_Email'
 import { imageKitUrl } from '../../../../components/utils/imageKitUrl'
 import Shop_UID_Required from '../../../../components/utils/Shop_UID_Required'
@@ -43,9 +44,10 @@ const index = () => {
                     router.push('/shop/crea-business-account')
                 }
 
-                if (business?.status === 'onboarding_KYC_requested') {
-                    router.push('/shop/continua-processo-kyc')
-                }
+                //! deprecated
+                // if (business?.status === 'onboarding_KYC_requested') {
+                //   router.push('/shop/continua-processo-kyc')  
+                // }
             })
         return () => {
 
@@ -55,13 +57,19 @@ const index = () => {
     const toShop = (id: string) => {
         return router.push(`/shop/home/${id}/prodotti`)
     }
+
+
+
     return (
         <Shop_UID_Required>
             <Desktop_Layout>
-                {false && user && user.emailVerified === false &&
-                    <Verified_Email />
+                {user && (data?.business?.status === 'onboarding_KYC_requested' || data?.business?.status === 'onboarding_KYC_requested_first_time') &&
+                    <StripeAccountAlert stripeId={data.business.stripe.id} />
                 }
-                <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>I tuoi negozi</h1>
+                {/* {user && user.emailVerified === false &&
+                    <Verified_Email />
+                } */}
+                <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>I tuoi negozi e brand</h1>
                 <div className='grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-3 gap-x-2.5 gap-y-3.5 '>
                     <Box maxW='sm' borderWidth='1px' borderRadius='xl' overflow='hidden'
                         className='cursor-pointer'
@@ -82,7 +90,7 @@ const index = () => {
                             <Text fontSize={'lg'}
                                 fontWeight={'bold'}
                             >
-                                Aggiungi negozio
+                                Aggiungi
                             </Text>
                         </div>
 

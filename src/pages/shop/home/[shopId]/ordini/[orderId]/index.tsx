@@ -107,7 +107,6 @@ const index = () => {
 
     return (
         <>
-
             {
                 order &&
                 <Desktop_Layout>

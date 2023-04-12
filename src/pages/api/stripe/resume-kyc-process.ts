@@ -9,14 +9,19 @@ export default async function handler(
 ) {
     const stripeId = req.query.stripeId;
 
+    let url = 'https://www.veplo.it/shop/home';
+
+    if (process.env.NODE_ENV === 'development') {
+        url = 'http://localhost:3000/shop/home'
+    }
 
     if (req.method === 'POST') {
         try {
             // Create Checkout Sessions from body params.
             const accountLink = await stripe.accountLinks.create({
                 account: stripeId,
-                refresh_url: 'https://www.veplo.it',
-                return_url: 'https://www.veplo.it/shop/prodotti',
+                refresh_url: url,
+                return_url: url,
                 type: 'account_onboarding',
             });
             console.log(accountLink.url);
