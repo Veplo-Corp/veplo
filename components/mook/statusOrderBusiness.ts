@@ -4,11 +4,11 @@ export const STATUS_ORDER_SHOP = [
         code: 'CRE01',
         payment: {
             text: 'pending',
-            color: 'yellow'
+            color: 'blue'
         },
         orderStatus: {
             text: 'In corso',
-            color: 'yellow',
+            color: 'blue',
         },
         description: 'in attesa di conferma pagamento',
 
@@ -36,7 +36,7 @@ export const STATUS_ORDER_SHOP = [
         },
         orderStatus: {
             text: 'In Viaggio',
-            color: 'yellow',
+            color: 'blue',
         },
         description: 'Ordine in viaggio',
     },
@@ -49,7 +49,7 @@ export const STATUS_ORDER_SHOP = [
         },
         orderStatus: {
             text: 'In Viaggio',
-            color: 'yellow',
+            color: 'blue',
         },
         description: 'Ordine in viaggio',
     },
@@ -74,7 +74,7 @@ export const STATUS_ORDER_SHOP = [
             color: 'red'
         },
         orderStatus: {
-            text: 'N/A',
+            text: 'Cancellato',
             color: 'blackAlpha',
         },
         description: 'Ordine cancellato dal venditore',
@@ -99,7 +99,7 @@ export const STATUS_ORDER_SHOP = [
         code: 'RET01',
         payment: {
             text: 'Reso in corso',
-            color: 'yellow'
+            color: 'blue'
         },
         orderStatus: {
             text: 'In restituzione',
@@ -142,7 +142,7 @@ export const STATUS_ORDER_SHOP = [
         },
         orderStatus: {
             text: 'rimborso richiesto',
-            color: 'yellow',
+            color: 'blue',
         },
         description: 'richiesta rimborso per ordine mai arrivato',
     },

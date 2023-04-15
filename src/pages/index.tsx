@@ -115,143 +115,267 @@ const Home: NextPage = () => {
           <Gradient_Component_home>
             <Text
               fontWeight={'extrabold'}
-              color={'white'}
+              color={'#2E2E2E'}
               fontSize={['3xl', '5xl']}
               py={[8]}
               px={[2, 12]}
             >
               Veplo
             </Text>
+
             <Box
-              pl={2}
-              mt={[10, 8, '-14']}
-              display={'flex'}
-              justifyContent={'space-between'}
-              className='w-full md:w-10/12 xl:w-8/12 mx-auto lg:gap-40 m-auto'
-            >
-              <Box
-                my={'auto'}
-                className='md:mr-5 lg:mr-0'
-              >
-                <h1 className='text-[42px] italic h-36 lg:h-56 leading-[40px] lg:text-6xl lg:leading-[70px] font-extrabold text-black'>
-                  {/*  tutti i negozi di<br />
-                  abbigliamento,<br />
-                  in un unico sito */}
-                  {displayText}
-                </h1>
-                <h3
-                  className='lg:mt-2 text-lg leading-5 lg:text-xl font-normal'
-                >
-                  il modo <strong>innovativo</strong> di vendere abbigliamento online
-                </h3>
-              </Box>
-              <img className='hidden md:flex'
-                src="/home_svg/iphoneMockup.svg"
-                alt="home image" />
-
-            </Box>
-            <Section>
-              <Box
-                className='h-fit mb-40 lg:mb-20 mt-24 lg:mt-18 '
-                textAlign={'center'}
-              >
-                <div
-                  className='flex w-full justify-center'
-                >
-                  <Box
-                    display={'flex'}
-                    fontSize={['28px', '3xl', '6xl']}
-                    fontWeight={'black'}
-                    width={'fit-content'}
-                    position={'relative'}
-                    mr={[2]}
-                  >
-                    <Text zIndex={10}>
-                      Veplo
-                    </Text>
-
-                    <div className='absolute w-full h-2 lg:h-4 bottom-2 lg:bottom-4 bg-[#BB3838]'>
-                    </div>
-                  </Box>
-                  <Text
-
-                    fontSize={['28px', '3xl', '6xl']}
-                    fontWeight={'black'}
-                  >
-                    sta per arrivare!
-                  </Text>
-                </div>
-
-
-                <Text
-                  as={'h2'}
-                  fontSize={['sm', 'medium']}
-                  fontWeight={['medium', 'medium']}
-                  color={['gray.700', 'gray.700']}
-                  mt={2.5}
-                  className='w-11/12 md:w-3/4 lg:w-1/2 mx-auto'
-                >
-                  <span className='hidden md:table mx-auto'>
-                    non importa se sei un piccolo negozio di abbigliamento o un brand emergente,
-                    <br className='hidden lg:flex' /> con Veplo vendi
-                    <strong> senza costi fissi o canoni mensili</strong>
-                  </span>
-                  <span className=' md:hidden'>
-                    sei un negozio di abbigliamento? Vendi con Veplo
-                    <strong> senza costi fissi o canoni mensili</strong>
-                  </span>
-
-                </Text>
-                <Button
-                  mt={8}
-                  size={'lg'}
-
-                  fontSize={['lg', '28px']}
-                  fontWeight={['bold', 'semibold']}
-                  px={[0, 24]}
-                  py={[8, 10]}
-                  width={['full', 'fit-content']}
-                  //className='w-11/12 lg:w-fit'
-                  borderRadius={'10px'}
-                  color={'white'}
-                  background={'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'}
-                  _hover={{
-                    bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
-                  }}
-                  _focus={{
-                    bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
-                  }}
-                  _active={{
-                    transform: 'scale(0.98)',
-                  }}
-                  onClick={() => { setModalForm(true) }}
-                >
-                  voglio saperne di più
-                </Button>
-              </Box>
-            </Section>
-            <Box
-              textAlign={'center'}
-              color={'#666666'}
-              mb={10}
-              display={'grid'}
-              justifyContent={'center'}
-
+              textAlign={['left', 'center']}
+              mt={[6, 28]}
+              mx={[3, 0]}
             >
               <Text
-                fontSize={'md'}
-                fontWeight={'semibold'}
+                fontSize={['4xl', '7xl']}
+                lineHeight={['10', 'base']}
+                fontWeight={'black'}
+                color={'#2E2E2E'}
               >
-                Social
+                Hai presente il fast fashion?
               </Text>
-              <Link href="https://www.instagram.com/veplo_clothes/" target='_blank' className="text-[#666666] m-auto">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd" /></svg>
-                <span className="sr-only">Instagram page</span>
-              </Link>
+              <Text
+                mt={[2, -1]}
+                fontSize={['lg', '4xl']}
+                fontWeight={'normal'}
+                color={'#141414'}
+              >
+                allontanati da questa idea più che puoi
+              </Text>
+              <Button
+                mt={[6, 10]}
+                size={'lg'}
+                fontSize={['lg', '2xl']}
+                fontWeight={['bold', 'semibold']}
+                px={[8, 12]}
+                py={[2, 8]}
+                width={'fit-content'}
+                borderRadius={'10px'}
+                color={'white'}
+                background={'black'}
+                _hover={{
+                  bg: 'black'
+                }}
+                _focus={{
+                  bg: 'black'
+                }}
+                _active={{
+                  transform: 'scale(0.98)',
+                }}
+                onClick={() => { setModalForm(true) }}
+              >
+                scopri di più
+              </Button>
             </Box>
+
           </Gradient_Component_home>
+          <img className='flex md:hidden mx-auto mt-[-130px]'
+            src="/home_svg/iphoneMockup.svg"
+            alt="home image" />
+          <Box
+            pl={2}
+            mt={[0, 8, '-10']}
+            display={'flex'}
+            justifyContent={'space-between'}
+            className='mx-6 md:mx-28'
+          >
+            <Box
+              my={'auto'}
+              className='md:w-1/2'
+            >
+              <Text
+                fontSize={['3xl', '5xl']}
+                fontWeight={'extrabold'}
+                color={'#2E2E2E'}
+                mt={[10, 20]}
+              >
+                In mondo dove...
+              </Text>
+              <Text
+                fontSize={['md', 'xl']}
+                fontWeight={'light'}
+                color={'#2E2E2E'}
+                mt={[2, 0]}
+              >
+                la moda segue i trend passeggeri delle grandi catene dello shopping
+              </Text>
+
+            </Box>
+            <img className='hidden md:flex'
+              src="/home_svg/iphoneMockup.svg"
+              alt="home image" />
+          </Box>
+          <Box
+            mt={[10, 28]}
+            display={['', 'flex']}
+            gap={20}
+            justifyContent={'space-between'}
+            className='mx-6 md:mx-28'
+          >
+            <Box
+              bg={'gray.100'}
+              borderRadius={'10px'}
+              height={['300', '420px']}
+              className='w-full md:w-1/2'
+            >
+            </Box>
+            <Box
+              className='w-full md:w-1/2'
+            >
+              <Text
+                fontSize={['3xl', '5xl']}
+                fontWeight={'extrabold'}
+                color={'#2E2E2E'}
+                mt={[16, 20]}
+                lineHeight={['30px', '45px']}
+              >
+                vogliamo dare visibilità a brand emergenti
+              </Text>
+              <Text
+                fontSize={['md', 'xl']}
+                fontWeight={'light'}
+                color={'#2E2E2E'}
+                mt={[2, 6]}
+              >
+                che con i loro prodotti e le loro storie rendono la moda una vera espressione di sé.
+              </Text>
+              <Button
+                mt={6}
+                size={'lg'}
+                fontSize={['lg', '2xl']}
+                fontWeight={['bold', 'semibold']}
+                px={[8, 12]}
+                py={[2, 8]}
+                width={['fit-content']}
+                borderRadius={'10px'}
+                color={'white'}
+                background={'black'}
+                _hover={{
+                  bg: 'black'
+                }}
+                _focus={{
+                  bg: 'black'
+                }}
+                _active={{
+                  transform: 'scale(0.98)',
+                }}
+                onClick={() => { setModalForm(true) }}
+              >
+                unisciti a noi
+              </Button>
+            </Box>
+          </Box>
+
+          <Box
+
+            bg={'gray.100'}
+            borderRadius={'10px'}
+            height={['300', '420px']}
+            className='mt-16 mx-6 flex md:hidden'
+          >
+          </Box>
 
 
+
+
+          <Section>
+            <Box
+              className='h-fit lg:mb-20 mt-12 md:mt-40 lg:mt-18 '
+              textAlign={'center'}
+            >
+              <div
+                className='flex w-full justify-center'
+              >
+                <Box
+                  display={'flex'}
+                  fontSize={['4xl', '4xl', '6xl']}
+                  fontWeight={'black'}
+                  width={'fit-content'}
+                  position={'relative'}
+                  mr={[2]}
+                >
+
+                  <Text zIndex={10}>
+                    Scopri Veplo
+                  </Text>
+
+                  {/* <div className='absolute w-full h-2 lg:h-4 bottom-2 lg:bottom-4 bg-[#BB3838]'>
+                  </div> */}
+                </Box>
+
+              </div>
+
+
+              <Text
+                as={'h2'}
+                fontSize={['lg', '3xl']}
+                fontWeight={['medium', 'medium']}
+                color={'#656565'}
+                className='w-11/12 md:w-3/4 lg:w-1/2 mx-auto'
+                mt={[0, -4]}
+              >
+                il marketplace per brand indipendenti
+              </Text>
+              <Button
+                mt={[4, 8]}
+                size={'lg'}
+
+                fontSize={['lg', 'xl']}
+                fontWeight={['bold', 'bold']}
+                px={[10, 12]}
+                py={[6, 7]}
+                width={['fit-content']}
+                //className='w-11/12 lg:w-fit'
+                borderRadius={'10px'}
+                color={'white'}
+                // background={'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'}
+                // _hover={{
+                //   bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
+                // }}
+                // _focus={{
+                //   bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
+                // }}
+                // _active={{
+                //   transform: 'scale(0.98)',
+                // }}
+                background={'black'}
+                _hover={{
+                  bg: 'black'
+                }}
+                _focus={{
+                  bg: 'black'
+                }}
+                _active={{
+                  transform: 'scale(0.98)',
+                }}
+                onClick={() => { setModalForm(true) }}
+              >
+                scrivici
+              </Button>
+            </Box>
+          </Section>
+          <Box
+            textAlign={'center'}
+            color={'#666666'}
+            mb={10}
+            mt={[16, 40]}
+            display={'grid'}
+            justifyContent={'center'}
+
+          >
+            <Text
+              fontSize={'md'}
+              fontWeight={'semibold'}
+            >
+              Social
+            </Text>
+            <Link href="https://www.instagram.com/veplo_clothes/" target='_blank' className="text-[#666666] m-auto">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd" /></svg>
+              <span className="sr-only">Instagram page</span>
+            </Link>
+          </Box>
 
 
 
