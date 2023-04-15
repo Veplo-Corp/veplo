@@ -139,7 +139,7 @@ const Home: NextPage = () => {
               <Text
                 mt={[2, -1]}
                 fontSize={['lg', '4xl']}
-                fontWeight={'normal'}
+                fontWeight={'light'}
                 color={'#141414'}
               >
                 allontanati da questa idea più che puoi
@@ -178,102 +178,83 @@ const Home: NextPage = () => {
             pl={2}
             mt={[0, 8, '-10']}
             display={'flex'}
-            justifyContent={'space-between'}
+            justifyContent={'space-around'}
             className='mx-6 md:mx-28'
           >
             <Box
               my={'auto'}
               className='md:w-1/2'
             >
-              <Text
-                fontSize={['3xl', '5xl']}
-                fontWeight={'extrabold'}
-                color={'#2E2E2E'}
-                mt={[10, 20]}
-              >
-                In mondo dove...
-              </Text>
-              <Text
-                fontSize={['md', 'xl']}
-                fontWeight={'light'}
-                color={'#2E2E2E'}
-                mt={[2, 0]}
-              >
-                la moda segue i trend passeggeri delle grandi catene dello shopping
-              </Text>
+              <Section>
 
+
+                <Text
+                  fontSize={['3xl', '5xl']}
+                  fontWeight={'extrabold'}
+                  color={'#2E2E2E'}
+                  mt={[10, 10]}
+                >
+                  In un mondo dove...
+                </Text>
+                <Text
+                  fontSize={['md', 'xl']}
+                  fontWeight={'light'}
+                  color={'#2E2E2E'}
+                  mt={[2, 0]}
+                >
+                  la moda segue i trend passeggeri delle grandi catene dello shopping
+                </Text>
+              </Section>
             </Box>
             <img className='hidden md:flex'
               src="/home_svg/iphoneMockup.svg"
               alt="home image" />
           </Box>
-          <Box
-            mt={[10, 28]}
-            display={['', 'flex']}
-            gap={20}
-            justifyContent={'space-between'}
-            className='mx-6 md:mx-28'
-          >
+          <Section>
             <Box
-              bg={'gray.100'}
-              borderRadius={'10px'}
-              height={['300', '420px']}
-              className='w-full md:w-1/2'
+              mt={[10, 28]}
+              display={['', 'flex']}
+              gap={16}
+              justifyContent={'space-between'}
+              className='mx-6 md:mx-28'
             >
-            </Box>
-            <Box
-              className='w-full md:w-1/2'
-            >
-              <Text
-                fontSize={['3xl', '5xl']}
-                fontWeight={'extrabold'}
-                color={'#2E2E2E'}
-                mt={[16, 20]}
-                lineHeight={['30px', '45px']}
-              >
-                vogliamo dare visibilità a brand emergenti
-              </Text>
-              <Text
-                fontSize={['md', 'xl']}
-                fontWeight={'light'}
-                color={'#2E2E2E'}
-                mt={[2, 6]}
-              >
-                che con i loro prodotti e le loro storie rendono la moda una vera espressione di sé.
-              </Text>
-              <Button
-                mt={6}
-                size={'lg'}
-                fontSize={['lg', '2xl']}
-                fontWeight={['bold', 'semibold']}
-                px={[8, 12]}
-                py={[2, 8]}
-                width={['fit-content']}
+              <Box
+                bg={'gray.100'}
                 borderRadius={'10px'}
-                color={'white'}
-                background={'black'}
-                _hover={{
-                  bg: 'black'
-                }}
-                _focus={{
-                  bg: 'black'
-                }}
-                _active={{
-                  transform: 'scale(0.98)',
-                }}
-                onClick={() => { setModalForm(true) }}
+                height={['300', '420px']}
+                className='w-full md:w-5/12 mb-12 md:mb-0'
               >
-                unisciti a noi
-              </Button>
+              </Box>
+              <Box
+                className='w-full md:w-7/12 my-auto'
+              >
+                <Text
+                  fontSize={['3xl', '5xl']}
+                  fontWeight={'extrabold'}
+                  color={'#2E2E2E'}
+                  lineHeight={['30px', '55px']}
+
+                >
+                  ...vogliamo dare visibilità ai brand emergenti
+                </Text>
+                <Text
+                  fontSize={['md', 'xl']}
+                  fontWeight={'light'}
+                  color={'#2E2E2E'}
+                  mt={[2, 6]}
+                >
+                  che con i loro prodotti e le loro storie rendono la moda una vera espressione di sé.
+                </Text>
+              </Box>
             </Box>
-          </Box>
+          </Section>
+
 
           <Box
-
             bg={'gray.100'}
             borderRadius={'10px'}
             height={['300', '420px']}
-            className='mt-16 mx-6 flex md:hidden'
+            className='mt-12 md:mt-16 mx-6 flex md:hidden'
           >
           </Box>
 
@@ -290,7 +271,7 @@ const Home: NextPage = () => {
               >
                 <Box
                   display={'flex'}
-                  fontSize={['4xl', '4xl', '6xl']}
+                  fontSize={['4xl', '4xl', '7xl']}
                   fontWeight={'black'}
                   width={'fit-content'}
                   position={'relative'}
@@ -311,21 +292,21 @@ const Home: NextPage = () => {
               <Text
                 as={'h2'}
                 fontSize={['lg', '3xl']}
-                fontWeight={['medium', 'medium']}
+                fontWeight={'light'}
                 color={'#656565'}
                 className='w-11/12 md:w-3/4 lg:w-1/2 mx-auto'
-                mt={[0, -4]}
+                mt={[0, -2]}
               >
                 il marketplace per brand indipendenti
               </Text>
               <Button
-                mt={[4, 8]}
+                mt={[6, 8]}
                 size={'lg'}
 
-                fontSize={['lg', 'xl']}
+                fontSize={['lg', '2xl']}
                 fontWeight={['bold', 'bold']}
-                px={[10, 12]}
-                py={[6, 7]}
+                px={[14, 24]}
+                py={[8, 10]}
                 width={['fit-content']}
                 //className='w-11/12 lg:w-fit'
                 borderRadius={'10px'}
@@ -352,7 +333,7 @@ const Home: NextPage = () => {
                 }}
                 onClick={() => { setModalForm(true) }}
               >
-                scrivici
+                Unisciti a noi
               </Button>
             </Box>
           </Section>
