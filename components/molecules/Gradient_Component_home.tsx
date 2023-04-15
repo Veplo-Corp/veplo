@@ -15,14 +15,9 @@ const Gradient_Component_home: FC<{ children: any }> = ({ children }) => {
 
         >
 
-            <Box
-                className={`w-full h-full
-            md:bg-[url('/home_svg/copertina.png')] 
-            `}
-            >
-                {children}
 
-            </Box>
+            {children}
+
 
         </Box >
 
