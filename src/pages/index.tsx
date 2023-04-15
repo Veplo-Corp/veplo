@@ -199,7 +199,7 @@ const Home: NextPage = () => {
           >
             <Box
 
-              className='lg:w-1/2 my-20 lg:my-auto'
+              className='lg:w-1/2 xl:w-5/12 my-20 lg:my-auto'
             >
               <Section>
 
@@ -218,11 +218,11 @@ const Home: NextPage = () => {
                   color={'#2E2E2E'}
                   mt={[2, 0]}
                 >
-                  vengono seguiti i trend passeggeri decisi dai grandi marchi
+                  vengono seguiti i trend dettati dalle grandi etichette del fast fashion
                 </Text>
               </Section>
             </Box>
-            <img className='hidden lg:flex'
+            <img className='hidden lg:flex mt-[-20px]'
               src="/home_svg/iphoneMockup.svg"
               alt="home image" />
           </Box>
