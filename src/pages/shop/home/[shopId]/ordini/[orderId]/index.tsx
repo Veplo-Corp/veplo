@@ -112,7 +112,7 @@ const index = () => {
                 <Desktop_Layout>
 
                     <Box
-                        className='w-full md:w-3/4 xl:w-1/2 m-auto mt-8'
+                        className='w-screen md:w-3/4 xl:w-1/2 m-auto mt-8'
                     >
                         {orderStatus &&
                             <Box
