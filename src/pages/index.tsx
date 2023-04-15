@@ -120,12 +120,13 @@ const Home: NextPage = () => {
 
           <Gradient_Component_home>
             <Text
-
+              position={'absolute'}
+              top={[8]}
+              left={[6, 12]}
               fontWeight={'black'}
               color={'#2E2E2E'}
               fontSize={['3xl', '35px']}
-              py={[8]}
-              px={[6, 12]}
+
             >
 
               Veplo
@@ -133,52 +134,57 @@ const Home: NextPage = () => {
             </Text>
 
 
-            <Box
-              textAlign={['left', 'center']}
-              mt={[6, 28]}
-              mx={[6, 0]}
-            >
-              <Text
-                fontSize={['4xl', '7xl']}
-                lineHeight={['10', 'base']}
-                fontWeight={'black'}
-                color={'#2E2E2E'}
+            <Box display={'flex'} height={'full'}>
+              <Box
+                textAlign={['left', 'center']}
+                //mt={[6, 28]}
+
+                m={'auto'}
+
               >
-                Hai presente il fast fashion?
-              </Text>
-              <Text
-                mt={[2, -1]}
-                fontSize={['lg', '4xl']}
-                fontWeight={'light'}
-                color={'#141414'}
-              >
-                allontanati da questa idea più che puoi
-              </Text>
-              <Button
-                mt={[6, 10]}
-                size={'lg'}
-                fontSize={['lg', '2xl']}
-                fontWeight={['bold', 'semibold']}
-                px={[8, 12]}
-                py={[2, 8]}
-                width={'fit-content'}
-                borderRadius={'10px'}
-                color={'#2E2E2E'}
-                background={'#FF9737'}
-                _hover={{
-                  bg: '#FF9737'
-                }}
-                _focus={{
-                  bg: '#FF9737'
-                }}
-                _active={{
-                  transform: 'scale(0.98)',
-                }}
-                onClick={() => { setModalForm(true) }}
-              >
-                scopri di più
-              </Button>
+                <Text
+                  fontSize={['4xl', '7xl']}
+                  lineHeight={['10', 'base']}
+                  fontWeight={'black'}
+                  color={'#2E2E2E'}
+                >
+                  Hai presente il fast fashion?
+                </Text>
+                <Text
+                  mt={[2, -1]}
+                  fontSize={['lg', '4xl']}
+                  fontWeight={'light'}
+                  color={'#141414'}
+                >
+                  allontanati da questa idea più che puoi
+                </Text>
+                <Button
+                  mt={[6, 10]}
+                  size={'lg'}
+                  fontSize={['lg', '2xl']}
+                  fontWeight={['bold', 'semibold']}
+                  px={[8, 12]}
+                  py={[2, 8]}
+                  width={'fit-content'}
+                  borderRadius={'10px'}
+                  color={'#2E2E2E'}
+                  background={'#FF9737'}
+                  _hover={{
+                    bg: '#FF9737'
+                  }}
+                  _focus={{
+                    bg: '#FF9737'
+                  }}
+                  _active={{
+                    transform: 'scale(0.98)',
+                  }}
+                  onClick={() => { setModalForm(true) }}
+                >
+                  scopri di più
+                </Button>
+              </Box>
             </Box>
+
 
           </Gradient_Component_home>
 
@@ -278,15 +284,16 @@ const Home: NextPage = () => {
                 width={'fit-content'}
                 position={'relative'}
                 mr={[2]}
+                marginX={'auto'}
               >
 
-                <Text zIndex={10}>
-                  Scopri Veplo
-                </Text>
+                Scopri Veplo
+
 
                 {/* <div className='absolute w-full h-2 lg:h-4 bottom-2 lg:bottom-4 bg-[#BB3838]'>
                   </div> */}
               </Box>
+
 
 
               <Text
