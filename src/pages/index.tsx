@@ -214,7 +214,7 @@ const Home: NextPage = () => {
             <Box
               mt={[10, 28]}
               display={['', 'flex']}
-              gap={24}
+              gap={16}
               justifyContent={'space-between'}
               className='mx-6 md:mx-28'
             >
