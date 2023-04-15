@@ -240,7 +240,7 @@ const Home: NextPage = () => {
                 src="/home_svg/armadio.svg"
                 alt="home image" />
               <Box
-                className='w-full sm:w-10/12 md:w-full lg:w-8/12 m-auto mt-10 mb-16 md:mb-0'
+                className='w-full sm:w-10/12 md:w-full lg:w-8/12 xl:w-7/12 m-auto mt-10 mb-16 md:mb-0'
               >
                 <Text
                   fontSize={['2xl', '5xl']}
