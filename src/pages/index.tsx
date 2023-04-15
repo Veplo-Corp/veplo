@@ -271,7 +271,7 @@ const Home: NextPage = () => {
 
           <Section>
             <Box
-              className='h-fit mb-20 mt-8 md:mt-40 lg:mt-18 '
+              className='h-fit mb-20 mt-8 md:mt-20 lg:mt-40 lg:mt-18 '
               textAlign={'center'}
             >
 
