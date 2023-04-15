@@ -3,6 +3,7 @@ import { Box, Tag, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import AlertChacraUI from '../../../../components/atoms/AlertChacraUI'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import StripeAccountAlert from '../../../../components/molecules/StripeAccountAlert'
 import Verified_Email from '../../../../components/molecules/Verified_Email/Verified_Email'
@@ -69,6 +70,16 @@ const index = () => {
                 {/* {user && user.emailVerified === false &&
                     <Verified_Email />
                 } */}
+                {user && data?.business?.status === 'pending' &&
+                    <Box
+                        mb={5}
+                    >
+                        <AlertChacraUI alert='success'
+                            title='onboarding completato con successo'
+                            subtitle="grazie per aver completato l'onboarding con Stripe. Il nostro team ti contatterà non appena il tuo account sarà abilitato"
+                        />
+                    </Box>
+                }
                 <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>I tuoi negozi e brand</h1>
                 <div className='grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-3 gap-x-2.5 gap-y-3.5 '>
                     <Box maxW='sm' borderWidth='1px' borderRadius='xl' overflow='hidden'
