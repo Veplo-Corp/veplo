@@ -111,10 +111,10 @@ const Home: NextPage = () => {
 
         />
         <img className='flex md:hidden absolute w-full -z-10'
-          src="/home_svg/copertinaMobile.png"
+          src="/home_svg/copertinaMobile.svg"
           alt="home image" />
         <img className='hidden md:flex absolute w-full -z-10 object-cover h-screen'
-          src="/home_svg/copertina.png"
+          src="/home_svg/copertina.svg"
           alt="home image" />
         <div className='w-full '>
 
