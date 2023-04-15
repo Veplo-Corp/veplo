@@ -306,7 +306,7 @@ const Home: NextPage = () => {
                 fontSize={['lg', '2xl']}
                 fontWeight={['bold', 'bold']}
                 px={[14, 24]}
-                py={[8, 10]}
+                py={[7, 10]}
                 width={['fit-content']}
                 //className='w-11/12 lg:w-fit'
                 borderRadius={'10px'}
