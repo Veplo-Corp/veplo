@@ -198,8 +198,8 @@ const Home: NextPage = () => {
             className='mx-6 md:mx-28 '
           >
             <Box
-              my={'auto'}
-              className='lg:w-1/2'
+
+              className='lg:w-1/2 my-20 lg:my-auto'
             >
               <Section>
 
@@ -208,7 +208,7 @@ const Home: NextPage = () => {
                   fontSize={['2xl', '5xl']}
                   fontWeight={'extrabold'}
                   color={'#2E2E2E'}
-                  mt={10}
+
                 >
                   In un mondo dove...
                 </Text>
@@ -226,7 +226,7 @@ const Home: NextPage = () => {
               src="/home_svg/iphoneMockup.svg"
               alt="home image" />
           </Box>
-          <img className='flex lg:hidden m-auto mt-12 sm:mt-20'
+          <img className='flex lg:hidden m-auto  sm:mt-20'
             src="/home_svg/armadio.svg"
             alt="home image" />
           <Section>
