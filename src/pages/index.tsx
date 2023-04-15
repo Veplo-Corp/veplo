@@ -111,10 +111,10 @@ const Home: NextPage = () => {
 
         />
         <img className='flex md:hidden absolute w-full -z-10'
-          src="/home_svg/copertinaMobile.png"
+          src="/home_svg/copertinaMobile.svg"
           alt="home image" />
         <img className='hidden md:flex absolute w-full -z-10 object-cover h-screen'
-          src="/home_svg/copertina.png"
+          src="/home_svg/copertina.svg"
           alt="home image" />
         <div className='w-full '>
 
@@ -236,7 +236,7 @@ const Home: NextPage = () => {
                 src="/home_svg/armadio.svg"
                 alt="home image" />
               <Box
-                className='w-full md:w-7/12 my-auto mt-10 mb-16 md:mb-0'
+                className='w-full md:w-8/12 my-auto mt-10 mb-16 md:mb-0'
               >
                 <Text
                   fontSize={['2xl', '5xl']}
@@ -270,27 +270,23 @@ const Home: NextPage = () => {
               className='h-fit mb-20 mt-8 md:mt-40 lg:mt-18 '
               textAlign={'center'}
             >
-              <div
-                className='flex w-full justify-center'
+
+              <Box
+                display={'flex'}
+                fontSize={['4xl', '4xl', '7xl']}
+                fontWeight={'black'}
+                width={'fit-content'}
+                position={'relative'}
+                mr={[2]}
               >
-                <Box
-                  display={'flex'}
-                  fontSize={['4xl', '4xl', '7xl']}
-                  fontWeight={'black'}
-                  width={'fit-content'}
-                  position={'relative'}
-                  mr={[2]}
-                >
 
-                  <Text zIndex={10}>
-                    Scopri Veplo
-                  </Text>
+                <Text zIndex={10}>
+                  Scopri Veplo
+                </Text>
 
-                  {/* <div className='absolute w-full h-2 lg:h-4 bottom-2 lg:bottom-4 bg-[#BB3838]'>
+                {/* <div className='absolute w-full h-2 lg:h-4 bottom-2 lg:bottom-4 bg-[#BB3838]'>
                   </div> */}
-                </Box>
-
-              </div>
+              </Box>
 
 
               <Text
