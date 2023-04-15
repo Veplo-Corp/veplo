@@ -218,7 +218,7 @@ const Home: NextPage = () => {
                   color={'#2E2E2E'}
                   mt={[2, 0]}
                 >
-                  la moda segue i trend passeggeri decisi dai grandi marchi
+                  vengono seguiti i trend passeggeri decisi dai grandi marchi
                 </Text>
               </Section>
             </Box>
