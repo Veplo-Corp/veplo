@@ -28,7 +28,7 @@ const index = () => {
     });
     const [orderStatus, setOrderStatus] = useState<{ text: string, color: string }>();
 
-    const [editUserInfo] = useMutation(ADD_CODE_AND_COURIER_TO_ORDER, {
+    const [editCurrierInfo] = useMutation(ADD_CODE_AND_COURIER_TO_ORDER, {
         update(cache, el, query) {
             console.log(cache);
             console.log(el);
@@ -83,7 +83,7 @@ const index = () => {
     const onSubmitFormOrder = async (orderInfo: { courier: string, code: string }) => {
         console.log(orderInfo);
         try {
-            await editUserInfo({
+            await editCurrierInfo({
                 variables: {
                     id: order?.id,
                     options: orderInfo
@@ -128,7 +128,7 @@ const index = () => {
                                     size={'lg'}
                                     fontWeight={'semibold'}
                                     colorScheme={orderStatus.color}
-                                    borderWidth={2}
+                                    // borderWidth={2}
                                     borderColor={'black'}
                                 >
                                     {orderStatus.text}
@@ -159,7 +159,7 @@ const index = () => {
                                         fontSize={'md'}
                                         fontWeight={'normal'}
                                     >
-                                        {order.recipient.name}
+                                        {order.user.name} {order.user.surname}
                                     </Text>
                                 </Box>
                                 <Box>
@@ -240,9 +240,11 @@ const index = () => {
                                         fontSize={'md'}
                                         fontWeight={'normal'}
                                     >
-                                        {order.recipient.address.postalCode}, {order.recipient.address.city}, {order.recipient.address.line1}{order.recipient.address.line2 ? ',' : ''} {order.recipient.address.line2}
-
+                                        {order.recipient.address.postalCode}, {order.recipient.address.city}, {order.recipient.address.line1}{order.recipient.address.line2 ? ',' : ''}
                                     </Text>
+                                    {order.recipient.address.line2 && <Text>
+                                        Info aggiuntive: {order.recipient.address.line2}
+                                    </Text>}
                                 </Box>
                                 <Box>
                                     <Text

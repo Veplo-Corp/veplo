@@ -353,7 +353,7 @@ const index = () => {
                 </div>
                 {defaultValue && product?.variations && sizeTypeSelected &&
                     <div className='lg:flex w-full'>
-                        <div className='w-full md:w-8/12 lg:w-5/12 m-auto mb-10'>
+                        <div className='w-full md:w-8/12 lg:w-5/12 m-auto mb-10 mt-0'>
                             <EditProductInputForm
                                 handleConfirm={editProductHandler}
                                 defaultValues={defaultValue} />
