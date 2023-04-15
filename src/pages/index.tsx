@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { Button, Box, Stack, Text, InputGroup, Input, VStack, Icon } from '@chakra-ui/react'
+import { Button, Box, Stack, Text, InputGroup, Input, VStack, Icon, Highlight } from '@chakra-ui/react'
 import BlackButton from '../../components/atoms/BlackButton'
 import { useEffect, useRef, useState } from 'react'
 import Drawer_Address from '../../components/organisms/Drawer_Address'
@@ -110,23 +110,30 @@ const Home: NextPage = () => {
           description={"tutti i migliori negozi di abbigliamento in un unico sito. Cerca tra l'abbigliamento in vendita su Veplo e approfitta delle offerte in corso"}
 
         />
+        <img className='flex md:hidden absolute w-full -z-10'
+          src="/home_svg/copertinaMobile.png"
+          alt="home image" />
         <div className='w-full '>
 
           <Gradient_Component_home>
             <Text
-              fontWeight={'extrabold'}
+
+              fontWeight={'black'}
               color={'#2E2E2E'}
-              fontSize={['3xl', '5xl']}
+              fontSize={['3xl', '35px']}
               py={[8]}
-              px={[2, 12]}
+              px={[6, 12]}
             >
+
               Veplo
+
             </Text>
+
 
             <Box
               textAlign={['left', 'center']}
               mt={[6, 28]}
-              mx={[3, 0]}
+              mx={[6, 0]}
             >
               <Text
                 fontSize={['4xl', '7xl']}
@@ -153,13 +160,13 @@ const Home: NextPage = () => {
                 py={[2, 8]}
                 width={'fit-content'}
                 borderRadius={'10px'}
-                color={'white'}
-                background={'black'}
+                color={'#2E2E2E'}
+                background={'#FF9737'}
                 _hover={{
-                  bg: 'black'
+                  bg: '#FF9737'
                 }}
                 _focus={{
-                  bg: 'black'
+                  bg: '#FF9737'
                 }}
                 _active={{
                   transform: 'scale(0.98)',
@@ -171,7 +178,8 @@ const Home: NextPage = () => {
             </Box>
 
           </Gradient_Component_home>
-          <img className='flex md:hidden mx-auto mt-[-130px]'
+
+          <img className='flex md:hidden mx-auto '
             src="/home_svg/iphoneMockup.svg"
             alt="home image" />
           <Box
@@ -179,7 +187,7 @@ const Home: NextPage = () => {
             mt={[0, 8, '-10']}
             display={'flex'}
             justifyContent={'space-around'}
-            className='mx-6 md:mx-28'
+            className='mx-6 md:mx-28 '
           >
             <Box
               my={'auto'}
@@ -189,7 +197,7 @@ const Home: NextPage = () => {
 
 
                 <Text
-                  fontSize={['3xl', '5xl']}
+                  fontSize={['2xl', '5xl']}
                   fontWeight={'extrabold'}
                   color={'#2E2E2E'}
                   mt={[10, 10]}
@@ -202,7 +210,7 @@ const Home: NextPage = () => {
                   color={'#2E2E2E'}
                   mt={[2, 0]}
                 >
-                  la moda segue i trend passeggeri delle grandi catene dello shopping
+                  la moda segue i trend passeggeri decisi dai grandi marchi
                 </Text>
               </Section>
             </Box>
@@ -210,60 +218,53 @@ const Home: NextPage = () => {
               src="/home_svg/iphoneMockup.svg"
               alt="home image" />
           </Box>
+          <img className='flex md:hidden m-auto mt-12'
+            src="/home_svg/armadio.svg"
+            alt="home image" />
           <Section>
             <Box
               mt={[10, 28]}
               display={['', 'flex']}
               gap={28}
               justifyContent={'space-between'}
-              className='mx-6 md:mx-28'
+              className='mx-6 md:mx-44'
             >
+              <img className='hidden md:flex mt-[-250px]'
+                src="/home_svg/armadio.svg"
+                alt="home image" />
               <Box
-                bg={'gray.100'}
-                borderRadius={'10px'}
-                height={['300', '420px']}
-                className='w-full md:w-5/12 mb-12 md:mb-0'
-              >
-              </Box>
-              <Box
-                className='w-full md:w-7/12 my-auto'
+                className='w-full md:w-7/12 my-auto mt-10 mb-16 md:mb-0'
               >
                 <Text
-                  fontSize={['3xl', '5xl']}
+                  fontSize={['2xl', '5xl']}
                   fontWeight={'extrabold'}
                   color={'#2E2E2E'}
-                  lineHeight={['30px', '55px']}
+                  lineHeight={['45px', '70px']}
 
                 >
-                  ...vogliamo dare visibilità ai brand emergenti
+                  <Highlight query='brand emergenti' styles={{ px: '5', py: '2', bg: '#37FFCF', borderRadius: '50px', }}>
+                    ...vogliamo dare visibilità ai brand emergenti
+                  </Highlight>
                 </Text>
                 <Text
                   fontSize={['md', 'xl']}
                   fontWeight={'light'}
                   color={'#2E2E2E'}
-                  mt={[2, 6]}
+                  mt={[5, 6]}
                 >
-                  che con i loro prodotti e le loro storie rendono la moda una vera espressione di sé.
-                </Text>
+                  che con i loro prodotti e le loro idee rendono la moda una vera espressione di sé                </Text>
               </Box>
             </Box>
           </Section>
 
 
-          <Box
-            bg={'gray.100'}
-            borderRadius={'10px'}
-            height={['300', '420px']}
-            className='mt-12 md:mt-16 mx-6 flex md:hidden'
-          >
-          </Box>
 
 
 
 
           <Section>
             <Box
-              className='h-fit lg:mb-20 mt-12 md:mt-40 lg:mt-18 '
+              className='h-fit mb-20 mt-8 md:mt-40 lg:mt-18 '
               textAlign={'center'}
             >
               <div
@@ -310,23 +311,14 @@ const Home: NextPage = () => {
                 width={['fit-content']}
                 //className='w-11/12 lg:w-fit'
                 borderRadius={'10px'}
-                color={'white'}
-                // background={'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'}
-                // _hover={{
-                //   bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
-                // }}
-                // _focus={{
-                //   bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
-                // }}
-                // _active={{
-                //   transform: 'scale(0.98)',
-                // }}
-                background={'black'}
+
+                color={'#2E2E2E'}
+                background={'#FF9737'}
                 _hover={{
-                  bg: 'black'
+                  bg: '#FF9737'
                 }}
                 _focus={{
-                  bg: 'black'
+                  bg: '#FF9737'
                 }}
                 _active={{
                   transform: 'scale(0.98)',
@@ -469,13 +461,13 @@ const Home: NextPage = () => {
             py={'28px'}
             width={'full'}
             borderRadius={'10px'}
-            color={'white'}
-            background={'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'}
+            color={'#2E2E2E'}
+            background={'#FF9737'}
             _hover={{
-              bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
+              bg: '#FF9737'
             }}
             _focus={{
-              bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
+              bg: '#FF9737'
             }}
             _active={{
               transform: 'scale(0.98)',
@@ -526,13 +518,13 @@ const Home: NextPage = () => {
               py={'28px'}
               width={'full'}
               borderRadius={'10px'}
-              color={'white'}
-              background={'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'}
+              color={'#2E2E2E'}
+              background={'#FF9737'}
               _hover={{
-                bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
+                bg: '#FF9737'
               }}
               _focus={{
-                bg: 'linear-gradient(180deg, rgba(255,129,129,1) 0%, rgba(204,0,196,1) 100%)'
+                bg: '#FF9737'
               }}
               _active={{
                 transform: 'scale(0.98)',
