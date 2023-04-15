@@ -30,7 +30,7 @@ const TableOrdersShop: FC<{ orders: Order[] }> = ({ orders }) => {
             <Table variant='simple'>
                 <TableCaption
                     marginBottom={10}
-                >i tuoi prodotti in Veplo</TableCaption>
+                >i tuoi ordini in Veplo</TableCaption>
                 <Thead
                     bg={'gray.100'}
                 >

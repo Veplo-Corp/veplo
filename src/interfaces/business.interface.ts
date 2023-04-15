@@ -32,7 +32,7 @@ export interface Business {
     email: string,
     businessName: string,
     phone: string,
-    status: 'stripe_id_requested' | 'onboarding_KYC_requested' | 'not_active' | 'active',
+    status: 'stripe_id_requested' | 'pending' | 'pending_first_time' | 'onboarding_KYC_requested' | 'not_active' | 'active' | 'onboarding_KYC_requested_first_time',
     createdAt: string,
     stripe: {
         id: string

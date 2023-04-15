@@ -145,24 +145,11 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
                 router.push('/shop/crea-business-account')
               }
 
-              if (business?.status === 'onboarding_KYC_requested') {
-                router.push('/shop/continua-processo-kyc')
-              }
-
-              // if (business.status === 'active') {
-              //   router.push('/shop/home')
+              //! deprecated
+              // if (business?.status === 'onboarding_KYC_requested') {
+              //   router.push('/shop/continua-processo-kyc')
               // }
 
-
-              // //?retrive account stripe
-              // const endpoint = `/api/stripe/retrieve-stripe-account?stripeId=${business.stripe.id}`
-              // const response = await fetch(endpoint, {
-              //   method: "POST",
-              //   mode: "no-cors", // no-cors, *cors, same-origin
-              //   body: JSON.stringify({ stripeId: business.stripe.id })
-              // })
-              // const result = await response.json()
-              // //console.log('ACCOUNT:', result);
 
             })
           return
