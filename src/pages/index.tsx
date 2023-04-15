@@ -110,10 +110,10 @@ const Home: NextPage = () => {
           description={"tutti i migliori negozi di abbigliamento in un unico sito. Cerca tra l'abbigliamento in vendita su Veplo e approfitta delle offerte in corso"}
 
         />
-        <img className='flex md:hidden absolute w-full -z-10'
+        <img className='flex sm:hidden absolute w-full -z-10'
           src="/home_svg/copertinaMobile.svg"
           alt="home image" />
-        <img className='hidden md:flex absolute w-full -z-10 object-cover h-screen'
+        <img className='hidden sm:flex absolute w-full -z-10 object-cover h-screen'
           src="/home_svg/copertina.svg"
           alt="home image" />
         <div className='w-full '>
@@ -142,7 +142,7 @@ const Home: NextPage = () => {
 
               >
                 <Text
-                  fontSize={['4xl', '7xl']}
+                  fontSize={['4xl', '4xl', '7xl']}
                   lineHeight={['10', 'base']}
                   fontWeight={'black'}
                   color={'#2E2E2E'}
@@ -151,7 +151,7 @@ const Home: NextPage = () => {
                 </Text>
                 <Text
                   mt={[2, -1]}
-                  fontSize={['lg', '4xl']}
+                  fontSize={['lg', 'lg', '4xl']}
                   fontWeight={'light'}
                   color={'#141414'}
                 >
@@ -187,19 +187,19 @@ const Home: NextPage = () => {
 
           </Gradient_Component_home>
 
-          <img className='flex md:hidden mx-auto '
+          <img className='flex lg:hidden mx-auto  sm:mt-[-40px] '
             src="/home_svg/iphoneMockup.svg"
             alt="home image" />
           <Box
             pl={2}
-            mt={[0, 8, '-10']}
+
             display={'flex'}
             justifyContent={'space-around'}
             className='mx-6 md:mx-28 '
           >
             <Box
               my={'auto'}
-              className='md:w-1/2'
+              className='lg:w-1/2'
             >
               <Section>
 
@@ -208,7 +208,7 @@ const Home: NextPage = () => {
                   fontSize={['2xl', '5xl']}
                   fontWeight={'extrabold'}
                   color={'#2E2E2E'}
-                  mt={[10, 10]}
+                  mt={10}
                 >
                   In un mondo dove...
                 </Text>
@@ -222,26 +222,25 @@ const Home: NextPage = () => {
                 </Text>
               </Section>
             </Box>
-            <img className='hidden md:flex'
+            <img className='hidden lg:flex'
               src="/home_svg/iphoneMockup.svg"
               alt="home image" />
           </Box>
-          <img className='flex md:hidden m-auto mt-12'
+          <img className='flex lg:hidden m-auto mt-12 sm:mt-20'
             src="/home_svg/armadio.svg"
             alt="home image" />
           <Section>
             <Box
-              mt={[10, 28]}
-              display={['', 'flex']}
+              mt={[10, 10, 10, 28]}
               gap={28}
               justifyContent={'space-between'}
-              className='mx-6 md:mx-44'
+              className='mx-6 md:mx-44 grid lg:flex'
             >
-              <img className='hidden md:flex mt-[-250px]'
+              <img className='hidden lg:flex mt-[-250px]'
                 src="/home_svg/armadio.svg"
                 alt="home image" />
               <Box
-                className='w-full md:w-8/12 my-auto mt-10 mb-16 md:mb-0'
+                className='w-full sm:w-10/12 md:w-full lg:w-8/12 m-auto mt-10 mb-16 md:mb-0'
               >
                 <Text
                   fontSize={['2xl', '5xl']}

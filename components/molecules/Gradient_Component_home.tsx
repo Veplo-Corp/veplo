@@ -4,7 +4,7 @@ import React, { FC } from 'react'
 const Gradient_Component_home: FC<{ children: any }> = ({ children }) => {
     return (
         <Box
-            className={`h-[450px] md:h-screen
+            className={`h-[450px] sm:h-screen
             `}
         //style={{
         //background: 'linear-gradient(180deg, rgba(192,133,228,0.9206276260504201) 0%, rgba(192,133,228,0.40242034313725494) 50%, rgba(192,133,228,0) 100%)'
