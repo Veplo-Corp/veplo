@@ -134,11 +134,10 @@ const Home: NextPage = () => {
             </Text>
 
 
-            <Box display={'flex'} height={'full'}>
+            <Box display={'flex'} height={'full'} px={[6, 0]}>
               <Box
                 textAlign={['left', 'center']}
                 //mt={[6, 28]}
-
                 m={'auto'}
 
               >
