@@ -28,10 +28,15 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined }> = ({
             const indexPhoto = product?.variations.findIndex(variation => variation.color === color)
             if (indexPhoto >= 0) {
                 console.log(indexPhoto);
-                setindexPhoto(indexPhoto)
+                setindexPhoto(30)
+
+                return seturlProduct(product?.variations[indexPhoto].photos[0])
+
             }
         }
         seturlProduct(product?.variations[indexPhoto].photos[0])
+
+
 
     }, [product])
 
