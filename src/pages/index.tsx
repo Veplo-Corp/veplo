@@ -229,19 +229,21 @@ const Home: NextPage = () => {
           <img className='flex lg:hidden m-auto  sm:mt-20'
             src="/home_svg/armadio.svg"
             alt="home image" />
-          <Section>
+
+          <Box
+            mt={[10, 10, 10, 28]}
+            gap={28}
+            justifyContent={'space-between'}
+            className='mx-6 md:mx-44 grid lg:flex'
+          >
+            <img className='hidden lg:flex mt-[-250px]'
+              src="/home_svg/armadio.svg"
+              alt="home image" />
+
             <Box
-              mt={[10, 10, 10, 28]}
-              gap={28}
-              justifyContent={'space-between'}
-              className='mx-6 md:mx-44 grid lg:flex'
+              className='w-full sm:w-10/12 md:w-full lg:w-8/12 xl:w-7/12 m-auto mt-10 mb-16 md:mb-0'
             >
-              <img className='hidden lg:flex mt-[-250px]'
-                src="/home_svg/armadio.svg"
-                alt="home image" />
-              <Box
-                className='w-full sm:w-10/12 md:w-full lg:w-8/12 xl:w-7/12 m-auto mt-10 mb-16 md:mb-0'
-              >
+              <Section>
                 <Text
                   fontSize={['2xl', '5xl']}
                   fontWeight={'extrabold'}
@@ -260,9 +262,10 @@ const Home: NextPage = () => {
                   mt={[5, 6]}
                 >
                   che con i loro prodotti e le loro idee rendono la moda una vera espressione di sé                </Text>
-              </Box>
+              </Section>
             </Box>
-          </Section>
+
+          </Box>
 
 
 
