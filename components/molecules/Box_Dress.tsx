@@ -11,18 +11,28 @@ import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 import { Transition } from '@headlessui/react'
 
 
-const Box_Dress: React.FC<{ product: Product; }> = ({ product }) => {
+const Box_Dress: React.FC<{ product: Product; color?: string | undefined }> = ({ product, color }) => {
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     const [width, height] = useWindowSize();
     //const [dimensionUrl, setDimensionUrl] = useState('&tr=w-571,h-825')
-    const [urlProduct, seturlProduct] = useState(product?.variations[0].photos[0])
+    const [urlProduct, seturlProduct] = useState<string>('')
+    const [indexPhoto, setindexPhoto] = useState(0)
 
     useEffect(() => {
+
         const colors = product.variations.map((variation: Variation) => {
             return COLORS.find(color => color.name === variation.color)?.cssColor
-
         })
         setProductcolorsCSS(colors)
+        if (color) {
+            const indexPhoto = product?.variations.findIndex(variation => variation.color === color)
+            if (indexPhoto >= 0) {
+                console.log(indexPhoto);
+                setindexPhoto(indexPhoto)
+            }
+        }
+        seturlProduct(product?.variations[indexPhoto].photos[0])
+
     }, [product])
 
     useEffect(() => {
@@ -35,9 +45,9 @@ const Box_Dress: React.FC<{ product: Product; }> = ({ product }) => {
 
     return (
 
-        <Box minW='20' /* maxW='350' */ borderRadius='lg' overflow='hidden' className='cursor-pointer relative'
+        <Box minW='20' borderRadius='lg' overflow='hidden' className='cursor-pointer relative'
             _active={{
-                transform: 'scale(1)', /* 'scale(0.99)' */
+                transform: 'scale(1)',
             }}>
             {product?.variations[0].photos[0] &&
                 <LazyLoadImage src={imageKitUrl(urlProduct, 447, 660)}
