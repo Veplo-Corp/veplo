@@ -6,6 +6,7 @@ import { Mapbox_Result } from '../../src/interfaces/mapbox_result.interface';
 import { CATEGORIES, Categories } from '../mook/categories';
 import createUrlSchema from '../utils/create_url';
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
+import Link from 'next/link';
 
 
 
@@ -22,20 +23,6 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any }> =
 
 
 
-    const handleClickCategory = (categorySelected: string) => {
-        let gender: string = 'donna'
-        if (indexCategory === 1) {
-            gender = 'uomo'
-        }
-        const categoryForUrl = Object.values(categories)[indexCategory]?.abbigliamento.find(category => category.name === categorySelected)?.url
-        if (!categoryForUrl) {
-            router.push(`/prodotti/${gender}-abbigliamento/tutto/rilevanza`)
-        } else {
-            const categorySelectedUrl = createUrlSchema([gender, categoryForUrl])
-            router.push(`/prodotti/${categorySelectedUrl}/tutto/rilevanza`)
-        }
-        closeCategory()
-    }
 
     return (
         <div className=' bg-white border-2 border-gray-100 w-1/2 left-1/4 xl:w-4/12 xl:left-1/3 fixed z-50 top-12 pt-4 pb-10 px-10 rounded-2xl	'>
@@ -47,19 +34,34 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any }> =
                     Tutto l'abbigliamento
                 </p>
                 {Object.values(categories)[indexCategory]?.abbigliamento.map((category) => {
+                    const gender = indexCategory === 1 ? 'uomo' : 'donna'
+                    const categoryForUrl = Object.values(categories)[indexCategory]?.abbigliamento.find(element => element.name === category.name)?.url
+                    let categorySelectedUrl;
+
+                    if (categoryForUrl) {
+                        categorySelectedUrl = createUrlSchema([gender, categoryForUrl])
+                    }
+                    console.log(categorySelectedUrl);
+
                     return (
-                        <p key={category.name} className='text-base font-medium mb-1 w-fit cursor-pointer hover:underline underline-offset-2'
-                            onClick={() => handleClickCategory(category.name)}
+                        <Link
+                            href={!categorySelectedUrl ? `/prodotti/${gender}-abbigliamento/tutto/rilevanza` : `/prodotti/${categorySelectedUrl}/tutto/rilevanza`}
+                            key={category.name} className='text-base font-medium mb-1 w-fit cursor-pointer hover:underline underline-offset-2'
+
                         >
                             {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
-                        </p>
+                        </Link>
                     )
                 })
                 }
             </div>
         </div>
 
+
+
     )
 }
 
 export default Show_Categories_NavBar
+
+
