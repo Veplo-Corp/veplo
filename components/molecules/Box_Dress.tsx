@@ -28,7 +28,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined }> = ({
             const indexPhoto = product?.variations.findIndex(variation => variation.color === color)
             if (indexPhoto >= 0) {
                 console.log(indexPhoto);
-                setindexPhoto(30)
+                setindexPhoto(indexPhoto)
 
                 return seturlProduct(product?.variations[indexPhoto].photos[0])
 
@@ -57,11 +57,11 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined }> = ({
             {product?.variations[0].photos[0] &&
                 <LazyLoadImage src={imageKitUrl(urlProduct, 447, 660)}
                     onMouseEnter={() => {
-                        if (!product?.variations[0].photos[1]) return
-                        seturlProduct(product?.variations[0].photos[1])
+                        if (!product?.variations[indexPhoto].photos[1]) return
+                        seturlProduct(product?.variations[indexPhoto].photos[1])
                     }}
                     onMouseLeave={() => {
-                        seturlProduct(product?.variations[0].photos[0])
+                        seturlProduct(product?.variations[indexPhoto].photos[0])
                     }}
                     //PlaceholderSrc={PlaceholderImage}
                     effect="blur"
