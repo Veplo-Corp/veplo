@@ -17,12 +17,14 @@ import {
     Tooltip,
     Text,
     Badge,
+    Stack,
+    Center,
 } from '@chakra-ui/react'
 import { Order } from '../../src/interfaces/order.interface'
 import { STATUS_ORDER_SHOP } from '../mook/statusOrderBusiness';
 import { useRouter } from 'next/router';
 
-const TableOrdersShop: FC<{ orders: Order[] }> = ({ orders }) => {
+const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders: () => void }> = ({ orders, moreData, handleMoreOrders }) => {
     const router = useRouter()
     return (
         <TableContainer className='flex m-auto w-full '>
@@ -30,7 +32,27 @@ const TableOrdersShop: FC<{ orders: Order[] }> = ({ orders }) => {
             <Table variant='simple'>
                 <TableCaption
                     marginBottom={10}
-                >i tuoi ordini in Veplo</TableCaption>
+                >
+                    {moreData ?
+                        (
+                            <Center>
+                                <Button
+                                    onClick={handleMoreOrders}
+                                >
+                                    Piu ordini
+                                </Button>
+                            </Center>
+                        ) : (
+                            <Text>
+                                i tuoi ordini in Veplo
+                            </Text>
+
+                        )
+
+                    }
+
+
+                </TableCaption>
                 <Thead
                     bg={'gray.100'}
                 >
@@ -64,7 +86,7 @@ const TableOrdersShop: FC<{ orders: Order[] }> = ({ orders }) => {
                             p={[2, 4]}
                             fontSize={'sm'}
                         >
-                            CONSEGNA
+                            DATA CREAZIONE
                         </Th>
                         <Th
                             p={[2, 4]}
@@ -153,7 +175,7 @@ const TableOrdersShop: FC<{ orders: Order[] }> = ({ orders }) => {
                                     <Text
                                         fontWeight={'normal'}
                                     >
-                                        {order.recipient.address.city}, {order.recipient.address.line1}
+                                        {('0' + new Date(+order.createdAt).getDate()).slice(-2)}/{('0' + (new Date(+order.createdAt).getMonth() + 1)).slice(-2)}/{new Date(+order.createdAt).getFullYear()}
                                     </Text>
                                 </Td>
                                 <Td
@@ -184,8 +206,14 @@ const TableOrdersShop: FC<{ orders: Order[] }> = ({ orders }) => {
                             </Tr>
                         )
                     })}
+
+
+
                 </Tbody>
+
+
             </Table>
+
         </TableContainer>
     )
 }

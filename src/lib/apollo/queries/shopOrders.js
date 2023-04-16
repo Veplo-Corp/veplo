@@ -2,8 +2,10 @@ import { gql } from '@apollo/client'
 
 const GET_SHOP_ORDERS = gql`
     query shop(
-        $id: ID!
-        $statuses: [String!]
+        $id: ID!,
+        $statuses: [String!],
+        $limit: Int!,
+        $offset: Int!
         ) {
         shop(
             id: $id
@@ -22,6 +24,8 @@ const GET_SHOP_ORDERS = gql`
             name
             orders(
                 statuses: $statuses
+                limit: $limit
+                offset: $offset
             ){
                 id
                 code
