@@ -119,19 +119,24 @@ const Home: NextPage = () => {
         <div className='w-full '>
 
           <Gradient_Component_home>
-            <Text
-              position={'absolute'}
-              top={[8]}
-              left={[6, 12]}
-              fontWeight={'black'}
-              color={'#2E2E2E'}
-              fontSize={['3xl', '35px']}
-
+            <Link
+              href='https://www.veplo.it/'
             >
+              <Text
+                position={'absolute'}
+                top={[8]}
+                left={[6, 12]}
+                fontWeight={'black'}
+                color={'#2E2E2E'}
+                fontSize={['3xl', '35px']}
 
-              Veplo
+              >
 
-            </Text>
+                Veplo
+
+              </Text>
+            </Link>
+
 
 
             <Box display={'flex'} height={'full'} px={[6, 0]}>
@@ -142,7 +147,7 @@ const Home: NextPage = () => {
 
               >
                 <Text
-                  fontSize={['4xl', '4xl', '7xl']}
+                  className='text-4xl lg:text-7xl'
                   lineHeight={['10', 'base']}
                   fontWeight={'black'}
                   color={'#2E2E2E'}
@@ -151,8 +156,8 @@ const Home: NextPage = () => {
                 </Text>
                 <Text
                   mt={[2, -1]}
-                  fontSize={['lg', 'lg', '4xl']}
                   fontWeight={'light'}
+                  className='text-lg md:text-xl lg:text-4xl'
                   color={'#141414'}
                 >
                   allontanati da questa idea più che puoi
