@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
-import { Box, Button, HStack, Input, InputGroup, Skeleton, Stack, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, HStack, Input, InputGroup, Skeleton, Stack, Text, VStack, color } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, useEffect, useState } from 'react'
@@ -607,7 +607,9 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
                                             {productsFounded.length > 0 ?
                                                 (
-                                                    productsFounded.map((product) => {
+                                                    productsFounded.map((product: Product) => {
+                                                        const { colors } = router.query
+
                                                         return (
                                                             <Transition
                                                                 key={product.id}
@@ -620,8 +622,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                                 leaveFrom="opacity-0"
                                                                 leaveTo="opacity-0"
                                                             >
-                                                                <Link href={`/prodotto/${product.id}/${toProductPage(product)}`}>
-                                                                    <Box_Dress product={product}></Box_Dress>
+                                                                <Link href={colors ? `/prodotto/${product.id}/${toProductPage(product)}?colore=${colors}` : `/prodotto/${product.id}/${toProductPage(product)}`}>
+                                                                    <Box_Dress product={product} color={typeof colors === 'string' ? colors : undefined}></Box_Dress>
                                                                 </Link>
                                                             </Transition>
 

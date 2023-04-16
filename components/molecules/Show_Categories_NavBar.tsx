@@ -28,11 +28,12 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any }> =
         <div className=' bg-white border-2 border-gray-100 w-1/2 left-1/4 xl:w-4/12 xl:left-1/3 fixed z-50 top-12 pt-4 pb-10 px-10 rounded-2xl	'>
             <h1 className='font-bold text-lg'>Abbigliamento {toUpperCaseFirstLetter(gender)}</h1>
             <div className='grid grid-cols-2 mt-3 gap-x-2.5 '>
-                <p className='text-base font-medium mb-1 w-fit cursor-pointer hover:underline underline-offset-2'
-                    onClick={() => handleClickCategory('abbigliamento')}
+                <Link
+                    className='text-base font-medium mb-1 w-fit cursor-pointer hover:underline underline-offset-2'
+                    href={indexCategory === 1 ? `/prodotti/uomo-abbigliamento/tutto/rilevanza` : `/prodotti/donna-abbigliamento/tutto/rilevanza`}
                 >
                     Tutto l'abbigliamento
-                </p>
+                </Link>
                 {Object.values(categories)[indexCategory]?.abbigliamento.map((category) => {
                     const gender = indexCategory === 1 ? 'uomo' : 'donna'
                     const categoryForUrl = Object.values(categories)[indexCategory]?.abbigliamento.find(element => element.name === category.name)?.url
@@ -45,7 +46,7 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any }> =
 
                     return (
                         <Link
-                            href={!categorySelectedUrl ? `/prodotti/${gender}-abbigliamento/tutto/rilevanza` : `/prodotti/${categorySelectedUrl}/tutto/rilevanza`}
+                            href={!categorySelectedUrl ? `/ prodotti / ${gender}-abbigliamento/tutto/rilevanza` : `/prodotti/${categorySelectedUrl}/tutto/rilevanza`}
                             key={category.name} className='text-base font-medium mb-1 w-fit cursor-pointer hover:underline underline-offset-2'
 
                         >
@@ -55,7 +56,7 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any }> =
                 })
                 }
             </div>
-        </div>
+        </div >
 
 
 
