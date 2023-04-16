@@ -144,7 +144,6 @@ const Home: NextPage = () => {
                 textAlign={['left', 'center']}
                 //mt={[6, 28]}
                 m={'auto'}
-
               >
                 <Text
                   className='text-4xl lg:text-7xl'
