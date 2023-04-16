@@ -5,7 +5,7 @@ const Section: FC<{ children: any }> = ({ children }) => {
     const isInView = useInView(ref, { once: true });
 
     return (
-        <section ref={ref} >
+        <section ref={ref}>
             <div
                 style={{
                     //transform: isInView ? "none" : "",

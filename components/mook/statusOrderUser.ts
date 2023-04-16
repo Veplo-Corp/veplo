@@ -23,6 +23,12 @@ export const STATUS = [
         text: 'Spedito',
         color: 'orange',
     },
+    //*rimborsato cliente per rimborso causa mancato arrivo prodotto
+    {
+        code: 'SHIP03',
+        text: 'Ordine Consegnato',
+        color: 'green',
+    },
     //*Business cancella ordine perchè non può inviare il prodotto ordinato
     {
         code: 'CANC01',

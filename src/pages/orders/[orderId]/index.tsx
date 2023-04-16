@@ -169,7 +169,7 @@ const index = () => {
                         <PriceAndShippingListingCost subTotal={order.totalDetails.subTotal} total={order.totalDetails.total} shippingCost={order.totalDetails.amountShipping} />
 
                         {order.shipping?.url && <Link
-                            href={'/home'}
+                            href={order.shipping?.url.startsWith("https://") ? order.shipping?.url : "https://" + order.shipping?.url}
                             target="_blank"
                             className='text-lg font-bold h-fit flex'
 
