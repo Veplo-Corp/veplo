@@ -56,7 +56,7 @@ const index = () => {
     }, [user])
 
     const toShop = (id: string) => {
-        return router.push(`/shop/home/${id}/prodotti`)
+        return router.push(`/shop/home/${id}/ordini`)
     }
 
 
