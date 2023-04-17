@@ -2,19 +2,24 @@ import { useLazyQuery } from '@apollo/client';
 import { Box, Tag, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout'
 import NoIndexSeo from '../../../../../../components/organisms/NoIndexSeo';
 import TableOrdersShop from '../../../../../../components/organisms/TableOrdersShop';
 import { Firebase_User } from '../../../../../interfaces/firebase_user.interface';
 import { Order } from '../../../../../interfaces/order.interface';
 import GET_SHOP_ORDERS from '../../../../../lib/apollo/queries/shopOrders';
+import { Shop } from '../../../../../interfaces/shop.interface';
+import { addShopFavouriteToLocalStorage } from '../../../../../../components/utils/shop_localStorage';
+import { addFavouriteShopBusiness } from '../../../../../store/reducers/user';
 
 
 const limit = 15;
 
 
 function index() {
+    const dispatch = useDispatch();
+
     const router = useRouter()
     const [getOrders, { error, data }] = useLazyQuery(GET_SHOP_ORDERS);
     const user: Firebase_User = useSelector((state: any) => state.user.user);
@@ -35,6 +40,7 @@ function index() {
     }, [user, router])
 
     useEffect(() => {
+        const { shopId } = router.query
         if (data?.shop.orders) {
             if (data?.shop.orders.length % limit === 0) {
                 setHasMoreData(true)
@@ -43,6 +49,17 @@ function index() {
             }
             if (orders.length === 0) {
                 setOrders(data?.shop.orders)
+                console.log(data?.shop);
+
+                const element = {
+                    id: shopId,
+                    name: data?.shop?.name,
+                    street: data?.shop?.address?.city + ', ' + data?.shop?.address?.street
+                }
+                addShopFavouriteToLocalStorage(element)
+                dispatch(
+                    addFavouriteShopBusiness(element)
+                )
             }
         }
     }, [data])
