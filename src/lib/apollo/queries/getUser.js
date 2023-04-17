@@ -42,7 +42,11 @@ const GET_USER = gql`
                     }
                 }
             } 
-            orders{
+            orders(
+                limit:1000,
+                offset:0
+            )
+            {
                 id
                 code
                 cartId
