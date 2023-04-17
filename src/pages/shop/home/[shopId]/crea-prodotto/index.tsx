@@ -21,6 +21,7 @@ import { VariationCard } from '../../../../../interfaces/variationCard.interface
 import CREATE_PRODUCT from '../../../../../lib/apollo/mutations/createProduct'
 import UPLOAD_PHOTO from '../../../../../lib/apollo/mutations/uploadPhotos'
 import GET_PRODUCTS_FROM_SHOP from '../../../../../lib/apollo/queries/geetProductsShop'
+import SelectMultipleOptions from '../../../../../../components/atoms/SelectMultipleOptions'
 
 export interface IFormInputProduct {
     name: string;
@@ -28,7 +29,9 @@ export interface IFormInputProduct {
     brand: string;
     macrocategory: string;
     microcategory: string;
-    vestibilità: string
+    traits: string;
+    vestibilità: string;
+
 }
 
 interface Macrocategory {
@@ -299,7 +302,8 @@ const index = () => {
                     macroCategory: watch('macrocategory'),
                     microCategory: watch('microcategory'),
                     brand: watch('brand'),
-                    fit: watch('vestibilità').toLowerCase()
+                    fit: watch('vestibilità').toLowerCase(),
+                    traits: watch('traits') ? watch('traits') : []
                 },
                 variations: variations
             }
@@ -405,6 +409,21 @@ const index = () => {
                                 handleClick={(microcategory: string) => {
                                     setValue('microcategory', microcategory);
                                 }}
+                            />
+                        )}
+                    />
+                </Div_input_creation>
+                <Div_input_creation text='Tipologia (opzionale, massimo 2)'>
+                    <Controller
+                        control={control}
+                        name="traits"
+                        rules={{ required: false }}
+                        render={() => (
+                            <SelectMultipleOptions
+                                limitNumber={2}
+                            // handleClick={(microcategory: string) => {
+                            //     setValue('traits', microcategory);
+                            // }}
                             />
                         )}
                     />

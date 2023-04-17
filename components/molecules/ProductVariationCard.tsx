@@ -32,7 +32,6 @@ const ProductVariationCard: FC<{ index: number, variation: VariationCard, delete
                 </h5>
             </div>
             <div className='flex justify-between mt-2'>
-
                 <div className='flex gap-2'>
                     {variation.photos.length > 0 && variation.photos.map((image: any) => {
                         if (image?.url) {
