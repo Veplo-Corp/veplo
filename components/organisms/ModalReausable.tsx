@@ -8,10 +8,11 @@ export interface ErrorModal {
     closeModal: () => void,
     children?: any,
     isOpen: boolean,
-    positionTopModal?: boolean
+    positionTopModal?: boolean,
+    marginTop: number
 }
 
-const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isOpen, positionTopModal }) => {
+const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isOpen, positionTopModal, marginTop }) => {
 
     function handleCloseButton() {
         closeModal()
@@ -33,7 +34,7 @@ const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isO
                     <div className="fixed inset-0 bg-black bg-opacity-25" />
                 </Transition.Child>
                 <div className="fixed inset-0 overflow-y-auto">
-                    <div className={`flex ${positionTopModal ? 'min-h-full md:min-h-fit md:mt-32' : 'min-h-full'} items-center justify-center p-4 text-center`}>
+                    <div className={`flex ${positionTopModal ? 'min-h-full md:min-h-fit' : 'min-h-full'} md:mt-${marginTop} items-center justify-center p-4 text-center`}>
                         <Transition.Child
                             as={Fragment}
                             enter="ease-out duration-300"
@@ -65,8 +66,6 @@ const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isO
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                                         </svg>
                                     </Box>
-
-
                                 </Dialog.Title>
                                 {children}
                             </Dialog.Panel>
