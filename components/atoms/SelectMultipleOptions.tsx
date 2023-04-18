@@ -10,7 +10,7 @@ const category = [
     'vintage'
 ]
 
-const SelectMultipleOptions: FC<{ limitNumber: number }> = ({ limitNumber }) => {
+const SelectMultipleOptions: FC<{ limitNumber: number, handleValue: (selectedValue: (string[] | [])) => void }> = ({ limitNumber, handleValue }) => {
     const [selected, setSelected] = useState<string[]>([])
 
 
@@ -19,6 +19,7 @@ const SelectMultipleOptions: FC<{ limitNumber: number }> = ({ limitNumber }) => 
         setSelected(() => {
             return value
         })
+        handleValue(value)
     }
 
     return (

@@ -15,6 +15,7 @@ const GET_SINGLE_PRODUCT = gql`
                 microCategory
                 brand
                 fit
+                traits
             }
             variations{
             id
@@ -38,9 +39,9 @@ const GET_SINGLE_PRODUCT = gql`
                 city
                 status
             }
+            
         } 
     }
     
 `
-
 export default GET_SINGLE_PRODUCT;

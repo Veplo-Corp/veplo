@@ -75,7 +75,7 @@ function index() {
                 offset: orders.length
             }
         }).then((element: any) => {
-            if (!element?.data.shop.orders) return
+            if (!element?.data?.shop.orders) return
             console.log(element?.data.shop.orders);
 
             if (element.data.shop.orders.length % limit === 0) {
