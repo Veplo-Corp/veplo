@@ -690,14 +690,17 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             {/* {gender && <FIlter_Button gender={gender} macrocategory={category ? category : "Tutto l'abbigliamento"} />} */}
 
             {/* Modal Categorie */}
-            <ModalReausable title='Categoria' closeModal={() => {
-                setIsOpen(prevstate => {
-                    return {
-                        ...prevstate,
-                        category: false
-                    }
-                })
-            }} isOpen={isOpen.category} positionTopModal={true}>
+            <ModalReausable
+                marginTop={32}
+
+                title='Categoria' closeModal={() => {
+                    setIsOpen(prevstate => {
+                        return {
+                            ...prevstate,
+                            category: false
+                        }
+                    })
+                }} isOpen={isOpen.category} positionTopModal={true}>
                 <Box
                     mt={3}
                 >
@@ -736,15 +739,16 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 </Box>
 
             </ModalReausable>
-            <ModalReausable title='Taglia' closeModal={() => {
-                setIsOpen(prevstate => {
-                    return {
-                        ...prevstate,
-                        size: false
-                    }
+            <ModalReausable
+                marginTop={32} title='Taglia' closeModal={() => {
+                    setIsOpen(prevstate => {
+                        return {
+                            ...prevstate,
+                            size: false
+                        }
 
-                })
-            }} isOpen={isOpen.size} positionTopModal={true}>
+                    })
+                }} isOpen={isOpen.size} positionTopModal={true}>
                 <Box
                     mt={2}
                     className={`grid ${sizeProduct === 'shoes_sizes' ? 'grid-cols-4 gap-2' : 'grid-cols-3 gap-2'} `}
@@ -795,14 +799,15 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 </Box>
 
             </ModalReausable>
-            <ModalReausable title={'Colore'} closeModal={() => {
-                setIsOpen(prevstate => {
-                    return {
-                        ...prevstate,
-                        color: false
-                    }
-                })
-            }} isOpen={isOpen.color} positionTopModal={true}>
+            <ModalReausable
+                marginTop={32} title={'Colore'} closeModal={() => {
+                    setIsOpen(prevstate => {
+                        return {
+                            ...prevstate,
+                            color: false
+                        }
+                    })
+                }} isOpen={isOpen.color} positionTopModal={true}>
                 <Box
                     mt={3}
                     className={`grid grid-cols-2 md:grid-cols-3 gap-4`}
@@ -867,7 +872,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 </Box>
 
             </ModalReausable>
-            <ModalReausable title={'Prezzo'} closeModal={() => {
+            <ModalReausable
+                marginTop={32} title={'Prezzo'} closeModal={() => {
 
 
 
@@ -876,49 +882,49 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
 
 
-                const filterValues = getFilterValue();
+                    const filterValues = getFilterValue();
 
 
-                let price: {
-                    minPrice?: number,
-                    maxPrice?: number
-                } = {}
-                if (filter.price?.min) {
-                    price['minPrice'] = filter.price?.min
-                }
-                if (filter.price?.max && (!filter.price?.min || filter.price?.max > filter.price?.min)) {
-                    console.log(filter.price?.max);
-                    console.log(filter.price?.min);
-
-                    price['maxPrice'] = filter.price?.max
-                } else {
-                    delete filterValues['maxPrice']
-                }
-
-                if (!filter.price?.max) {
-                    delete filterValues['maxPrice']
-                }
-                if (!filter.price?.min) {
-                    delete filterValues['minPrice']
-                }
-
-                router.push({
-                    pathname: router.asPath.split('?')[0],
-                    query: {
-                        ...filterValues,
-                        ...price
+                    let price: {
+                        minPrice?: number,
+                        maxPrice?: number
+                    } = {}
+                    if (filter.price?.min) {
+                        price['minPrice'] = filter.price?.min
                     }
-                },
-                    undefined, { shallow: true })
+                    if (filter.price?.max && (!filter.price?.min || filter.price?.max > filter.price?.min)) {
+                        console.log(filter.price?.max);
+                        console.log(filter.price?.min);
 
-                setIsOpen(prevstate => {
-                    return {
-                        ...prevstate,
-                        price: false
+                        price['maxPrice'] = filter.price?.max
+                    } else {
+                        delete filterValues['maxPrice']
                     }
-                })
 
-            }}
+                    if (!filter.price?.max) {
+                        delete filterValues['maxPrice']
+                    }
+                    if (!filter.price?.min) {
+                        delete filterValues['minPrice']
+                    }
+
+                    router.push({
+                        pathname: router.asPath.split('?')[0],
+                        query: {
+                            ...filterValues,
+                            ...price
+                        }
+                    },
+                        undefined, { shallow: true })
+
+                    setIsOpen(prevstate => {
+                        return {
+                            ...prevstate,
+                            price: false
+                        }
+                    })
+
+                }}
                 isOpen={isOpen.price} positionTopModal={true}>
                 <Box
                     mt={3}

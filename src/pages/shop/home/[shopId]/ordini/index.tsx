@@ -77,7 +77,6 @@ function index() {
         }).then((element: any) => {
             if (!element?.data?.shop.orders) return
             console.log(element?.data.shop.orders);
-
             if (element.data.shop.orders.length % limit === 0) {
                 setHasMoreData(true)
             }

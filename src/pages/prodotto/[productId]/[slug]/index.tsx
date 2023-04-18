@@ -822,7 +822,10 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                     scopri altri negozi con prodotti simili
                 </Box> */}
             </Desktop_Layout>}
-            <ModalReausable title='Manca la taglia' isOpen={isOpenModalSize}
+            <ModalReausable
+
+                marginTop={32}
+                title='Manca la taglia' isOpen={isOpenModalSize}
                 closeModal={() => setisOpenModalSize(false)}
             >
                 <Box
