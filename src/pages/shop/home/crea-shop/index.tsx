@@ -146,34 +146,6 @@ const index = () => {
     });
 
 
-    // const [editStatus, editStatusResponse] = useMutation(EDIT_STATUS_PRODUCT, {
-    //     update(cache, el, query) {
-
-    //         const deleteId = el.data
-    //         console.log(deleteId.deleteProduct);
-    //         const { shop } = cache.readQuery<any>({
-    //             query: GET_BUSINESS,
-    //             variables: {
-    //                 //mongoId Shop
-    //                 id: 
-    //               }
-    //         });
-    //         console.log(cache.identify({ id: query.variables?.id, __typename: 'Product' }));
-    //         const ProductCacheId = cache.identify({ id: query.variables?.id, __typename: 'Product' })
-    //         console.log(shop);
-    //         cache.modify({
-    //             id: ProductCacheId, //productId
-    //             fields: {
-    //                 status(/* cachedvalue */) {
-    //                     return query.variables?.status //newStatus
-    //                 }
-    //             },
-    //             broadcast: false // Include this to prevent automatic query refresh
-    //         });
-
-    //     }
-    // })
-
     const { addToast } = ToastOpen();
     const router = useRouter()
     //*useForm Registration Shop
@@ -208,31 +180,26 @@ const index = () => {
 
 
     //*handle image upload and crop
-    const hiddenFileInput = useRef<any>(null);
     const hiddenFileInputProfileImage = useRef<any>(null);
     const [typeCroppedImage, setTypeCroppedImage] = useState<'cover' | 'profile'>()
 
     const [imgSrc, setImgSrc] = useState<any>('');
-    const [imgSrcProfile, setImgSrcProfile] = useState<any>('');
 
     const imgRef = useRef<HTMLImageElement>(null)
     const [url, setUrl] = useState<any>()
     const [blob, setBlob] = useState<any>()
-    const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
     const previewCanvasRef = useRef<HTMLCanvasElement>(null)
-    const [isDisabledButton, setIsDisabledButton] = useState(true)
-    const [crop, setCrop] = useState<Crop | any>(
-        {
-            unit: '%', // Can be 'px' or '%'
-            x: 17.53,
-            y: 11.00,
-            width: 65.99,  //762 diviso 5
-            height: 76.209,//1100 diviso 5
-        }
-    )
+    // const [crop, setCrop] = useState<Crop | any>(
+    //     {
+    //         unit: '%', // Can be 'px' or '%'
+    //         x: 17.53,
+    //         y: 11.00,
+    //         width: 65.99,  //762 diviso 5
+    //         height: 76.209,//1100 diviso 5
+    //     }
+    // )
     const [image, setImage] = useState<Image>()
     const [imageProfile, setImageProfile] = useState<Image>()
-    const [loading, setLoading] = useState(false)
     const [showCroppedImage, setShowCroppedImage] = useState<any>(false);
 
     // Programatically click the hidden file input element
@@ -252,32 +219,7 @@ const index = () => {
 
     };
 
-    const onSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        setLoading(true)
-        setBlob(null)
-        setUrl(null)
-        setCrop(null)
-        setShowCroppedImage(true)
 
-        if (e.target.files /* && e.target.files.length > 0 */) {
-            try {
-                const file = e.target.files[0];
-                const image = await resizeFile(file);
-                console.log(image);
-
-                setImgSrc(image)
-
-            } catch (err) {
-                console.log(err);
-            }
-
-        }
-        else {
-            return console.log('non trovata immagine caricata');
-        }
-
-        setLoading(false)
-    }
 
     //refactoring of onSelectFile
     const onSelectFileInput = async (e: React.ChangeEvent<HTMLInputElement>, type: 'profile' | 'cover') => {
@@ -288,7 +230,7 @@ const index = () => {
 
                 const file = e.target.files[0];
                 const image = await resizeFile(file);
-                setImgSrcProfile(image)
+                setImgSrc(image)
                 setisProfileImageModalOpen(true)
 
             } catch (err) {
@@ -303,61 +245,9 @@ const index = () => {
 
     }
 
-    useDebounceEffect(async () => {
-        console.log(imgRef.current);
-
-        if (
-            completedCrop?.width &&
-            completedCrop?.height &&
-            imgRef.current &&
-            previewCanvasRef.current
-        ) {
-            // We use canvasPreview as it's much faster than imgPreview.
-            canvasPreview(
-                imgRef.current,
-                previewCanvasRef.current,
-                completedCrop,
-
-            )
-                .then(canvas => {
-                    const yourBase64String = imgSrc.substring(imgSrc.indexOf(',') + 1);
-                    const kb = Math.ceil(((yourBase64String.length * 6) / 8) / 1000); //es. 426 kb
-                    console.log(kb);
-                    //set quality based on dimension photo
-                    const quality = kb > 3000 ? 0.3 : 0.8;
-                    canvas.toBlob(function (blob) {
-                        if (!blob) { return }
-                        const url = URL.createObjectURL(blob);
-                        setUrl(url)
-                        setBlob(blob)
-                        setIsDisabledButton(false)
-                    }, 'image/webp', quality);
-                })
-        }
-    },
-        0,
-        [completedCrop],
-    )
 
 
-    const onHanldeConfirm = () => {
-        const file = new File([blob], "photo1", {
-            type: 'image/webp'
-        });
 
-        const newImage: Image = {
-            type: 'image/webp',
-            blob: blob,
-            url: url,
-            file: file
-        }
-        setImage(newImage)
-        setBlob(null)
-        setUrl(null)
-        setCrop(null)
-        setIsDisabledButton(true)
-        setShowCroppedImage(false)
-    }
 
     //* address parameters
     let filterTimeout: any;
@@ -600,7 +490,6 @@ const index = () => {
 
             console.log(Shop);
 
-
             //return the mongoID of the Shop
             const isCreatedShop = await createShop({ variables: { options: Shop } })
             console.log(isCreatedShop.data.createShop)
@@ -678,12 +567,13 @@ const index = () => {
             <Desktop_Layout>
                 <NoIndexSeo title={`Crea Negozio | Veplo`} />
                 <div className='flex '>
-                    <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-3/4 lg:w-1/2 m-auto" onSubmit={handleSubmit(submitData)}>
+                    <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-3/4 lg:w-7/12 m-auto" onSubmit={handleSubmit(submitData)}>
                         <div className='w-full'>
                             <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>Crea un nuovo negozio!</h1>
 
-                            <Div_input_creation text='Immagine di copertina'>
-                                {imgSrc !== '' || !image && <Center
+                            <Div_input_creation text='Immagine di copertina e profilo'>
+                                {!image && <Center
+
                                     onClick={() => {
                                         setTypeCroppedImage('cover')
                                         handleClick(null, 'cover')
@@ -691,6 +581,7 @@ const index = () => {
                                     marginBottom={1}
                                     width={'full'}
                                     height={'64'}
+                                    fontSize={['xs', 'sm']}
                                     borderWidth={1}
                                     borderColor={'gray.200'}
                                     borderStyle={'dashed'}
@@ -702,97 +593,103 @@ const index = () => {
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 m-auto">
                                             <path fillRule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clipRule="evenodd" />
                                         </svg>
-                                        <h2>immagine negozio</h2>
+                                        <h2>immagine copertina</h2>
                                     </div>
                                 </Center>}
-                                {imgSrc && showCroppedImage && (
-                                    <>
-                                        <Alert status='warning' variant='solid' className='mb-2'>
-                                            <AlertIcon />
-                                            Ritaglia la foto
-                                        </Alert>
-                                        <ReactCrop
-                                            className='w-full h-fit'
-                                            crop={crop}
-                                            //circularCrop={true}
-                                            onChange={(_, percentCrop) => setCrop(percentCrop)}
-                                            onComplete={(c) => {
-                                                setIsDisabledButton(true)
-                                                setCompletedCrop(c)
-                                            }}
 
-                                            aspect={4.8 / 3}
-
-                                        >
-                                            <img
-                                                className='min-w-full'
-                                                src={imgSrc} ref={imgRef}
-                                            />
-                                        </ReactCrop>
-                                        <div className='flex justify-between mt-2 mb-2 gap-2'>
-                                            <Button
-                                                //onClick={() => setImgSrc(null)}
-                                                onClick={() => setShowCroppedImage(false)}
-                                                borderRadius={5}
-                                                width={'fit-content'}
-                                                height={12}
-                                                size={'sm'}
-                                                variant='outline'
-                                                colorScheme={'blackAlpha'}
-                                                color={'blackAlpha.900'}
-                                                disabled={false} >
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                                                    <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clipRule="evenodd" />
-                                                </svg>
-                                            </Button>
-                                            <Button
-                                                onClick={() => {
-                                                    setTypeCroppedImage('cover')
-                                                    handleClick(null, 'cover')
-                                                }}
-                                                borderRadius={5}
-                                                width={150}
-                                                height={12}
-                                                size={'sm'}
-                                                variant='outline'
-                                                colorScheme={'blackAlpha'}
-                                                color={'blackAlpha.900'}
-                                                disabled={false} >
-                                                cambia
-                                            </Button>
-                                            <BlackButton
-                                                onClick={onHanldeConfirm}
-                                                element='aggiungi'
-                                                borderRadius={5}
-                                                width={200}
-                                                heigth={12}
-                                                size={'sm'}
-                                                typeButton={'button'}
-                                                disabled={isDisabledButton} />
-
-                                        </div>
-                                    </>
-                                )}
-                                {image && !showCroppedImage && <Image
+                                {image && <Image
                                     width={'full'}
                                     height={'64'}
                                     borderRadius={10}
                                     marginBottom={1}
+                                    zIndex={0}
                                     objectFit='cover'
                                     onClick={() => {
                                         setTypeCroppedImage('cover')
                                         handleClick(null, 'cover')
                                     }}
+                                    className='z-0'
                                     src={image.url} /* 'https://bit.ly/dan-abramov' */
                                     alt={shop_name}
                                 />}
+                                <Box
+                                    onClick={() => {
+                                        setTypeCroppedImage('profile')
+                                        handleClick(null, 'profile')
+                                    }
+                                    }
+                                    marginBottom={1}
+                                    width={['32', '40']}
+                                    height={['32', '40']}
+                                    mt={[-16, -20]}
+                                    zIndex={50}
+                                    borderWidth={1}
+                                    borderColor={imageProfile ? 'white' : 'gray.200'}
+                                    borderStyle={imageProfile ? 'none' : 'dashed'}
+                                    background={'white'}
+                                    borderRadius={'full'}
+                                    color={'gray.400'}
+                                    fontSize={['xs', 'sm']}
+                                    className='cursor-pointer ml-6 md:ml-8'
+                                    display={'flex'}
+
+                                >
+                                    {!imageProfile ? (
+                                        <Box
+                                            borderRadius={'full'}
+                                            width={'full'}
+                                            height={'full'}
+                                            background={'white'}
+                                            textAlign={'center'}
+                                            display={'flex'}
+                                        >
+                                            <Box
+                                                alignItems={'center'}
+                                                margin={'auto'}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 z-50 m-auto">
+                                                    <path fillRule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clipRule="evenodd" />
+                                                </svg>
+                                                <h2>immagine profilo</h2>
+                                            </Box>
+
+
+                                        </Box>
+
+                                    )
+                                        : (
+                                            <Box
+                                                className='border-[5px] border-white rounded-full
+                                                w-36 h-36 md:w-40 md:h-40
+                                                '
+                                            >
+
+
+                                                <Image
+
+
+                                                    borderRadius={'full'}
+
+                                                    marginBottom={1}
+                                                    objectFit='cover'
+                                                    src={imageProfile.url} /* 'https://bit.ly/dan-abramov' */
+                                                    alt={shop_name}
+                                                />
+                                            </Box>
+
+                                        )
+                                    }
+
+
+                                </Box>
                                 <input
-                                    ref={hiddenFileInput}
+                                    ref={hiddenFileInputProfileImage}
                                     type="file" id="file" multiple accept="image/*"
                                     className='hidden'
                                     onChange={(e) => {
-                                        onSelectFile(e);
+                                        onSelectFileInput(e, typeCroppedImage === 'cover' ? 'cover' : 'profile');
                                     }} />
+
                                 {<canvas
                                     ref={previewCanvasRef}
                                     className='hidden'
@@ -804,57 +701,7 @@ const index = () => {
                                 // }}
                                 />}
                             </Div_input_creation>
-                            <Div_input_creation text='Immagine di profilo'>
-                                <Center
-                                    onClick={() => {
-                                        setTypeCroppedImage('profile')
-                                        handleClick(null, 'profile')
-                                    }
-                                    }
-                                    marginBottom={1}
-                                    width={'64'}
-                                    height={'64'}
-                                    borderWidth={1}
-                                    borderColor={'gray.200'}
-                                    borderStyle={'dashed'}
-                                    borderRadius={'full'}
-                                    color={'gray.400'}
-                                    className='cursor-pointer mx-auto'
 
-                                >
-                                    {!imageProfile ? (
-                                        <div
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 m-auto">
-                                                <path fillRule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clipRule="evenodd" />
-                                            </svg>
-                                            <h2>immagine profilo</h2>
-                                        </div>
-                                    )
-                                        : (
-                                            <Image
-                                                width={'64'}
-                                                height={'64'}
-                                                borderRadius={'full'}
-
-                                                marginBottom={1}
-                                                objectFit='cover'
-                                                src={imageProfile.url} /* 'https://bit.ly/dan-abramov' */
-                                                alt={shop_name}
-                                            />
-                                        )
-                                    }
-
-
-                                </Center>
-                                <input
-                                    ref={hiddenFileInputProfileImage}
-                                    type="file" id="file" multiple accept="image/*"
-                                    className='hidden'
-                                    onChange={(e) => {
-                                        onSelectFileInput(e, typeCroppedImage === 'cover' ? 'cover' : 'profile');
-                                    }} />
-                            </Div_input_creation>
 
 
 
@@ -1102,7 +949,7 @@ const index = () => {
                 positionTopModal={true}
             >
                 <ImageCrop
-                    imageSrc={imgSrcProfile} type={typeCroppedImage} aspectRatio={typeCroppedImage === 'profile' ? 1 : (4.8 / 3)}
+                    imageSrc={imgSrc} type={typeCroppedImage} aspectRatio={typeCroppedImage === 'profile' ? 1 : (4.8 / 3)}
                     circularCrop={typeCroppedImage === 'profile' ? true : false}
                     onHanldeConfirm={(image, type, imageRefCurrent) => {
                         if (type === 'cover' || type === 'profile') {
