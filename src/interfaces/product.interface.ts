@@ -14,6 +14,8 @@ export interface Variation {
     }[]
 }
 
+
+
 export interface Product {
     id: string,
     name: string,
@@ -25,7 +27,12 @@ export interface Product {
         microCategory: string,
         gender: string,
         brand: string,
-        fit: string
+        fit: string,
+        traits?: ('eco-friendly' |
+            'vegan' |
+            'handmade' |
+            'vintage')[]
+
     }
     price: {
         v1: number,
@@ -46,5 +53,5 @@ export interface Product {
     createdAt?: string,
     updatedAt?: string,
     variations: Variation[],
-    totalSizeAvailable?: string[]
+    totalSizeAvailable?: string[],
 }

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
-import { Box, Button, ButtonGroup, Image, Tooltip } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, HStack, Image, Tag, Tooltip } from '@chakra-ui/react';
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { Product, Variation } from '../../../../interfaces/product.interface';
@@ -492,6 +492,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                 <div className='md:flex justify-between w-full '>
                     <Image_Product variation={variationSelected} />
                     <Box className='md:block md:w-6/12 md:pl-4 xl:pr-24'>
+
                         <Box
                             fontWeight='normal'
                             as='h2'
@@ -526,25 +527,65 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             <span className='font-light text-lg'> - ({colorSelected})</span>
                         </Box>
                         <Box
-                            fontWeight='medium'
-                            as='h1'
-                            noOfLines={2}
-                            fontSize={['lg', 'xl']}
-                            lineHeight={['4']}
+                            className='lg:flex'
+                            justifyContent={'space-between'}
                         >
-                            {product.price?.v2 && <span className=' text-red-700 font-bold'>{product.price?.v2.toFixed(2).replace('.', ',')} €<br /></span>}
-
-                            <span
-                                className={`${product.price?.v2 ? 'text-slate-500 font-normal text-sm ' : ''} mr-2`}
+                            <Box
+                                fontWeight='medium'
+                                as='h1'
+                                noOfLines={2}
+                                fontSize={['lg', 'xl']}
+                                lineHeight={['4']}
+                                my={'auto'}
                             >
-                                {product.price.v2 && <span>prima era: </span>}<span className={`${product.price?.v2 ? 'line-through' : ''}`}>{product.price?.v1.toFixed(2).replace('.', ',')} €</span>
-                                {product.price.discountPercentage &&
-                                    <span className='ml-2 text-red-500'>
-                                        -{product.price.discountPercentage.toString().replace('.', ',')}%
-                                    </span>}
-                            </span>
+                                {product.price?.v2 && <span className=' text-red-700 font-bold'>{product.price?.v2.toFixed(2).replace('.', ',')} €<br /></span>}
+
+                                <span
+                                    className={`${product.price?.v2 ? 'text-slate-500 font-normal text-sm ' : ''} mr-2`}
+                                >
+                                    {product.price.v2 && <span>prima era: </span>}<span className={`${product.price?.v2 ? 'line-through' : ''}`}>{product.price?.v1.toFixed(2).replace('.', ',')} €</span>
+                                    {product.price.discountPercentage &&
+                                        <span className='ml-2 text-red-500'>
+                                            -{product.price.discountPercentage.toString().replace('.', ',')}%
+                                        </span>}
+                                </span>
+
+                            </Box>
+                            <Box
+                                fontWeight='normal'
+                                as='h2'
+                                lineHeight='tall'
+                                noOfLines={1}
+                                fontSize='sm'
+
+                                className={`${product.price.v2 ? 'mt-2' : 'mt-4'} lg:my-auto`}
+                            >
+
+                                {product.info.traits && <HStack spacing={2} justifyContent={'start'}>
+                                    {product.info.traits.map(value => {
+
+                                        return (
+                                            <Tag
+                                                size={'md'}
+                                                px={6}
+                                                py={2}
+                                                variant='solid'
+                                                borderRadius={'full'}
+                                                color={(value === 'eco-friendly' || value === 'vegan') ? '#207441' : '#552D09'}
+                                                backgroundColor={(value === 'eco-friendly' || value === 'vegan') ? '#B2FDCF' : '#FDD6B2'}
+                                            >
+                                                {value}
+                                            </Tag>
+                                        )
+                                    })
+
+                                    }
+                                </HStack>}
+                            </Box>
 
                         </Box>
+
+
                         {product?.colors && <Box
                             fontWeight='light'
                             as='h1'

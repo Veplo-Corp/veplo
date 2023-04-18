@@ -29,7 +29,7 @@ export interface IFormInputProduct {
     brand: string;
     macrocategory: string;
     microcategory: string;
-    traits: string;
+    traits: string[] | [];
     vestibilità: string;
 
 }
@@ -421,9 +421,9 @@ const index = () => {
                         render={() => (
                             <SelectMultipleOptions
                                 limitNumber={2}
-                            // handleClick={(microcategory: string) => {
-                            //     setValue('traits', microcategory);
-                            // }}
+                                handleValue={(value) => {
+                                    setValue('traits', value);
+                                }}
                             />
                         )}
                     />
