@@ -9,7 +9,7 @@ export interface ErrorModal {
     children?: any,
     isOpen: boolean,
     positionTopModal?: boolean,
-    marginTop: number
+    marginTop?: number
 }
 
 const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isOpen, positionTopModal, marginTop }) => {
@@ -34,7 +34,7 @@ const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isO
                     <div className="fixed inset-0 bg-black bg-opacity-25" />
                 </Transition.Child>
                 <div className="fixed inset-0 overflow-y-auto">
-                    <div className={`flex ${positionTopModal ? 'min-h-full md:min-h-fit' : 'min-h-full'} md:mt-${marginTop} items-center justify-center p-4 text-center`}>
+                    <div className={`flex ${positionTopModal ? 'min-h-full md:min-h-fit' : 'min-h-full'} ${marginTop ? `md:mt-${marginTop}` : ''} items-center justify-center p-4 text-center`}>
                         <Transition.Child
                             as={Fragment}
                             enter="ease-out duration-300"
