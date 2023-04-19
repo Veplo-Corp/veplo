@@ -567,7 +567,7 @@ const index = () => {
             <Desktop_Layout>
                 <NoIndexSeo title={`Crea Negozio | Veplo`} />
                 <div className='flex '>
-                    <form className="p-3 px-4 lg:px-16 xl:px-24 w-full md:w-3/4 lg:w-7/12 m-auto" onSubmit={handleSubmit(submitData)}>
+                    <form className="p-3 px-0 lg:px-16 xl:px-24 w-full md:w-3/4 lg:w-7/12 m-auto" onSubmit={handleSubmit(submitData)}>
                         <div className='w-full'>
                             <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>Crea un nuovo negozio!</h1>
 
@@ -580,14 +580,14 @@ const index = () => {
                                     }}
                                     marginBottom={1}
                                     width={'full'}
-                                    height={'64'}
+                                    //minHeight={['52', '64']}
                                     fontSize={['xs', 'sm']}
                                     borderWidth={1}
                                     borderColor={'gray.200'}
                                     borderStyle={'dashed'}
                                     borderRadius={10}
                                     color={'gray.400'}
-                                    className='cursor-pointer'
+                                    className='cursor-pointer aspect-[2.3/1]'
                                 >
                                     <div>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 m-auto">
@@ -599,7 +599,7 @@ const index = () => {
 
                                 {image && <Image
                                     width={'full'}
-                                    height={'64'}
+                                    height={['52', '64']}
                                     borderRadius={10}
                                     marginBottom={1}
                                     zIndex={0}
@@ -949,7 +949,7 @@ const index = () => {
                 positionTopModal={true}
             >
                 <ImageCrop
-                    imageSrc={imgSrc} type={typeCroppedImage} aspectRatio={typeCroppedImage === 'profile' ? 1 : (4.8 / 3)}
+                    imageSrc={imgSrc} type={typeCroppedImage} aspectRatio={typeCroppedImage === 'profile' ? 1 : (2.3 / 1)}
                     circularCrop={typeCroppedImage === 'profile' ? true : false}
                     onHanldeConfirm={(image, type, imageRefCurrent) => {
                         if (type === 'cover' || type === 'profile') {

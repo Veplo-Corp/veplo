@@ -7,7 +7,6 @@ const GET_PRODUCTS_FROM_SHOP = gql`
         $id: ID!
         $limit: Int!
         $offset: Int!
-        $see: String
         ) {
         shop(
             id: $id
@@ -16,7 +15,6 @@ const GET_PRODUCTS_FROM_SHOP = gql`
             products(
                 limit: $limit
                 offset: $offset
-                see: $see
             ) {
                 id
                 name

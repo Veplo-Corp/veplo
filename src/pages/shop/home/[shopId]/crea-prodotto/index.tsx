@@ -84,8 +84,7 @@ const index = () => {
                 // Variables of mismatched types will return `null`.
                 variables: {
                     id: router.query.shopId, //* mettere idShop,
-                    limit: 100, offset: 0,
-                    see: "everything"
+                    limit: 100, offset: 0
                 },
             });
 
@@ -138,7 +137,7 @@ const index = () => {
 
             cache.writeQuery({
                 query: GET_PRODUCTS_FROM_SHOP,
-                variables: { id: router.query.shopId, limit: 100, offset: 0, see: "everything" },
+                variables: { id: router.query.shopId, limit: 100, offset: 0 },
                 data: {
                     shop: {
                         id: router.query.shopId,
