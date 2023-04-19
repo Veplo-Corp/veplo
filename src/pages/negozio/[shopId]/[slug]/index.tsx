@@ -38,8 +38,7 @@ export async function getStaticProps(ctx: any) {
 
     const { data } = await apolloClient.query({
         query: GET_SHOP_AND_PRODUCTS,
-
-        variables: { id: shopId, limit: 50, offset: 0, see: null },
+        variables: { id: shopId, limit: 50, offset: 0 },
 
     })
     console.log(data);

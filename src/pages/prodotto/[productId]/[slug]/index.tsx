@@ -229,7 +229,6 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                     id: product.shopInfo.id,
                     limit: 5,
                     offset: 0,
-                    see: null
                 },
                 fetchPolicy: 'cache-first',
                 nextFetchPolicy: 'cache-first'
