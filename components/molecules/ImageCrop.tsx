@@ -50,7 +50,8 @@ const ImageCrop: FC<Props> = ({ ...props }) => {
             >
 
                 <ReactCrop
-                    className='w-full h-fit '
+                    className='w-full h-fit max-h-[65vh]'
+
                     crop={crop}
                     circularCrop={props.circularCrop}
                     onChange={(_, percentCrop) => setCrop(percentCrop)}
