@@ -110,6 +110,9 @@ const index = () => {
         if (typeof router.query?.callbackUrl === 'string') {
           return router.push(router.query?.callbackUrl)
         }
+        else if (!isBusiness) {
+          return router.push('/')
+        }
 
 
         else if (isBusiness) {
