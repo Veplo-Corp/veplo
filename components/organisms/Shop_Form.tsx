@@ -100,7 +100,7 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
             </Div_input_creation>
             <h1 className='italic text-xl lg:text-2xl font-extrabold mt-6 mb-2 md:mb-4'>Informazioni aggiuntive</h1>
             <Div_input_creation text='Immagine negozio'>
-                <img src={imageKitUrl(shop.photo)}
+                <img src={imageKitUrl(shop.profileCover)}
                     className='w-full aspect-[4.8/3] object-cover rounded-md mb-4'
                 />
             </Div_input_creation>

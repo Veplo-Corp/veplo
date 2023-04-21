@@ -118,7 +118,7 @@ const index = () => {
                             >
                                 <img
                                     className='aspect-[12/7] object-cover'
-                                    src={imageKitUrl(shop.photo)}
+                                    src={imageKitUrl(shop.profileCover)}
                                     alt={'immagine non trovata'}
                                 />
                                 <Box py={3} px={4}>

@@ -23,7 +23,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
 
             >
                 <LazyLoadImage src={
-                    imageKitUrl(shop.photo, 480, 300)
+                    imageKitUrl(shop.profileCover, 480, 300)
                 }
                     //placeholderSrc={'/static/grayScreen.png'}
                     effect="blur"
