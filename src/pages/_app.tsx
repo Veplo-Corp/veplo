@@ -86,14 +86,20 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
       //signOut(auth)
       const apolloClient = initApollo()
       if (userAuth) {
-        setUserId(analytics, userAuth.uid);
+        //analytics
+        //setUserId(analytics, userAuth.uid);
         //setUserProperties(analytics, { favorite_food: 'apples' });
         const idToken = await userAuth.getIdToken(true)
         setAuthTokenInSessionStorage(idToken)
         //console.log(idToken);
-
         const tokenResult = await userAuth.getIdTokenResult()
         //console.log(tokenResult);
+
+        //handle refresh token
+        console.log(new Date > new Date(tokenResult.expirationTime));
+        console.log(new Date(tokenResult.expirationTime));
+
+
 
         // user is logged in, send the user's details to redux, store the current user in the state
         const isBusiness = tokenResult.claims.isBusiness ? true : false;
@@ -191,9 +197,8 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
 
         return
-      } else {
+      } else if (!userAuth) {
         console.log('effettua il logout');
-
         apolloClient.clearStore()
         dispatch(resetCarts())
         dispatch(detroyOrders())

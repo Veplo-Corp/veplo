@@ -8,6 +8,8 @@ const Shop_not_Allowed: React.FC<{ children: any }> = ({ children }) => {
     const router = useRouter();
 
     useEffect(() => {
+        console.log(user);
+
         const abortController = new AbortController();
         if (user && user.Not_yet_Authenticated_Request === true) return
         if (user?.isBusiness) {
@@ -21,7 +23,10 @@ const Shop_not_Allowed: React.FC<{ children: any }> = ({ children }) => {
 
 
     return (
-        <div>{children}</div>
+        <div>
+            {!user || (!user?.isBusiness && !user.Not_yet_Authenticated_Request) && <>{children}</>}
+        </div>
+
     )
 }
 
