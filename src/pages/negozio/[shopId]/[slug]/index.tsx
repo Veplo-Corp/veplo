@@ -102,13 +102,13 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`${toUpperCaseFirstLetter(shop.name)} a ${shop.address.city}, ${shop.address.street} - CAP ${shop.address.postcode} - Veplo.it`}
                 subtitle={`Visita il negozio di abbigliamento ${shop.name} a ${shop.address.city}, ${shop.address.street} - CAP ${shop.address.postcode} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
-                image={shop.photo}
+                image={shop.profileCover}
                 description={`Visita il negozio di abbigliamento ${shop.name} a ${shop.address.city}, ${shop.address.street} - CAP ${shop.address.postcode} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
             />
             <div className='md:flex w-full'>
                 <Box className='w-fit'>
                     <LazyLoadImage src={
-                        imageKitUrl(shop.photo, 720, 450)
+                        imageKitUrl(shop.profileCover, 720, 450)
                     }
 
                         //PlaceholderSrc={PlaceholderImage}

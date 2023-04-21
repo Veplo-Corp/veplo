@@ -21,7 +21,8 @@ const GET_BUSINESS = gql`
                 name
                 createdAt
                 status
-                photo
+                profilePhoto
+                profileCover
                 isDigitalOnly
                 info{
                     phone

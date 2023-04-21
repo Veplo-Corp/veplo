@@ -14,7 +14,8 @@ const GET_SHOP_AND_PRODUCTS = gql`
             name
             createdAt
             status
-            photo
+            profilePhoto
+            profileCover
             isDigitalOnly
             info{
                 phone

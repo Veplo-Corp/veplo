@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Alert, AlertIcon, Box, Button, Highlight, List, ListItem, UnorderedList } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, Center, Highlight, List, ListItem, UnorderedList } from '@chakra-ui/react'
 import BlackButton from '../atoms/BlackButton'
 import Resizer from "react-image-file-resizer";
 
@@ -23,6 +23,8 @@ import { resizeFile } from '../utils/resizeFile';
 import { imageKitUrl } from '../utils/imageKitUrl';
 import { useMutation } from '@apollo/client';
 import CREATE_IMAGE from '../../src/lib/apollo/mutations/createImage';
+import ModalReausable from './ModalReausable';
+import ImageCrop from '../molecules/ImageCrop';
 
 
 
@@ -62,9 +64,8 @@ const list_explanation_photos_format = [
         type: 'vestiti',
         list: [
             'prima immagine: fronte del prodotto',
-            'seconda immagine: retro del prodotto',
+            'seconda immagine: retro del prodotto o prodotto indossato',
             'terza immagine: prodotto indossato',
-            'quarta / quinta immagine: prodotto nei diversi colori',
         ]
     },
     {
@@ -73,8 +74,6 @@ const list_explanation_photos_format = [
             'prima immagine: profilo del prodotto',
             'seconda immagine: fronte del prodotto',
             'terza immagine: scarpe indossate',
-            'quarta: retro del prodotto',
-            'quinta immagine: opzionale'
         ]
     }
 ]
@@ -109,6 +108,7 @@ const ImageTextFormat: string[] = [
 const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: any, imagesUploadedBefore?: string[] | [] }> = ({ openDraw, confirmPhotos, imagesUploadedBefore }) => {
     //create image test
     const [createImage] = useMutation(CREATE_IMAGE);
+    const [isImageModalOpen, setisImageModalOpen] = useState(false)
 
 
     //* react image crop
@@ -232,6 +232,55 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
         setShowCroppedImage(false)
         //setImgSrc(null)
         setIsDisabledButton(true)
+    }
+
+    const handleImageConfirm = (image: PixelCrop, imgRefCurrent: HTMLImageElement) => {
+
+        if (
+            image?.width &&
+            image?.height &&
+            imgRefCurrent &&
+            previewCanvasRef.current
+        ) {
+            // We use canvasPreview as it's much faster than imgPreview.
+            canvasPreview(
+                imgRefCurrent,
+                previewCanvasRef.current,
+                image,
+            )
+                .then(canvas => {
+                    const yourBase64String = imgSrc.substring(imgSrc.indexOf(',') + 1);
+                    const kb = Math.ceil(((yourBase64String.length * 6) / 8) / 1000); //es. 426 kb
+                    console.log(kb);
+                    //set quality based on dimension photo
+                    const quality = kb > 3000 ? 0.3 : 0.8;
+                    canvas.toBlob(function (blob) {
+                        if (!blob) { return }
+                        const url = URL.createObjectURL(blob);
+                        setUrl(url)
+                        setBlob(blob)
+                        console.log('PASSA QUI');
+
+                        const file = new File([blob], "photo1", {
+                            type: 'image/webp'
+                        });
+
+
+                        const newImage: Image = {
+                            type: 'image/webp',
+                            blob: blob,
+                            url: url,
+                            file: file,
+                            position: 0
+                        }
+                        setImages([newImage])
+
+
+
+                    }, 'image/webp', quality);
+
+                })
+        }
     }
 
 
@@ -359,9 +408,12 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                 placement='top'
                 size='full'
                 onClose={() => setisOpen(false)}
+
             >
                 <DrawerOverlay />
-                <DrawerContent>
+                <DrawerContent
+
+                >
                     <DrawerHeader padding={3} className='flex justify-between'>
 
                         <h3 className='md:ml-12 italic text-sm  md:text-2xl xl:text-3xl  font-black my-auto hidden md:flex'>
@@ -535,36 +587,124 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                                     </div>
                                 </>
                             ) : (
-                                <Box className='mt-5 md:mt-20 md:ml-20 w-full md:w-3/5'>
-                                    <h1 className='text-2xl font-bold mb-2'>
-                                        <Highlight
-                                            query={['perfetta!']}
-                                            styles={{ px: '2', py: '1', bg: 'gray.900', color: 'white', fontStyle: 'italic' }}
-                                        >
-                                            Mostra i tuoi prodotti in maniera perfetta!
-                                        </Highlight>
-                                    </h1>
+                                <Box
+                                    display={'flex'}
+                                    width={'full'}
+                                    justifyContent={'space-between'}
+                                    className='m-10 w-full'
+                                >
+                                    <Box
+                                        width={'full'}
+                                    >
+                                        <h1 className='text-2xl font-bold mb-2'>
+                                            <Highlight
+                                                query={['perfetta!']}
+                                                styles={{ px: '2', py: '1', bg: 'gray.900', color: 'white', fontStyle: 'italic' }}
+                                            >
+                                                Mostra i tuoi prodotti in maniera perfetta!
+                                            </Highlight>
+                                        </h1>
 
-                                    <h3 className='text-sm font-medium leading-4	'>inserisci le immagini secondo uno schema preciso, migliorando l’esperienza
-                                        che vivranno gli utenti nel tuo store</h3>
-                                    {list_explanation_photos_format.map(list => {
-                                        return (
-                                            <div key={list.type}><h2 className='text-lg font-bold mt-2'>{list.type}:</h2>
-                                                <List spacing={1} marginLeft={30}>
-                                                    <UnorderedList >
-                                                        {
-                                                            list.list.map((value, id) => {
-                                                                return (
-                                                                    <ListItem key={id}>{value}</ListItem>
+                                        <h3 className='text-sm font-medium leading-4	'>inserisci le immagini secondo uno schema preciso, migliorando l’esperienza
+                                            che vivranno gli utenti nel tuo store</h3>
+                                        {list_explanation_photos_format.map(list => {
+                                            return (
+                                                <div key={list.type}><h2 className='text-lg font-bold mt-2'>{list.type}:</h2>
+                                                    <List spacing={1} marginLeft={30}>
+                                                        <UnorderedList >
+                                                            {
+                                                                list.list.map((value, id) => {
+                                                                    return (
+                                                                        <ListItem key={id}>{value}</ListItem>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </UnorderedList>
+                                                    </List>
+                                                </div>
+                                            )
+                                        })}
+                                    </Box>
+                                    <Box
+                                        width={'full'}
+                                        display={'flex'}
+                                        justifyContent={'end'}
+                                    >
+                                        <Box
+                                            className=' cursor-pointer flex'
+                                            _active={{
+                                                transform: 'scale(0.99)',
+                                            }}
+
+                                            height={162}
+                                            width={126}
+                                            borderColor={'gray.300'}
+                                            borderWidth={2}
+                                            borderRadius={'10px'}
+                                            borderStyle={'dashed'}
+                                            onClick={() => {
+                                                console.log('ao');
+                                                setisImageModalOpen(true)
+                                            }}
+                                        >
+                                            <Box
+                                                alignItems={'center'}
+                                                margin={'auto'}
+                                                color={'gray.500'}
+
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 m-auto">
+                                                    <path fillRule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clipRule="evenodd" />
+                                                </svg>
+                                                <h2>aggiungi</h2>
+                                            </Box>
+
+                                        </Box>
+                                        {/* <div className="min-h-screen items-center justify-center mb-96 ">
+                                            <div className='w-full md:mr-11 md:w-fit grid gap-5 grid-cols-2 justify-items-start mt-8'>
+                                                {images.map((image: any, position: any) => {
+                                                    return (
+                                                        <div key={position} className='md:w-44 lg:w-56 h-fit'>
+                                                            <div className='flex justify-between mb-1'>
+                                                                <p>{ImageTextFormat[position]}</p>
+                                                                <Box
+                                                                    className='my-auto cursor-pointer'
+                                                                    _active={{
+                                                                        transform: 'scale(0.90)',
+                                                                    }}
+                                                                    onClick={() => handleClick(position)}
+                                                                >
+                                                                    <svg
+                                                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                                                        <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
+                                                                    </svg>
+                                                                </Box>
+
+
+
+                                                            </div>
+                                                            {!image.url ? (
+                                                                <img
+                                                                    className='rounded'
+                                                                    src={imageKitUrl(image, 305, 440)} alt="immagine non trovata"
+                                                                />
+                                                            ) :
+                                                                (
+                                                                    <img
+                                                                        className='rounded'
+                                                                        src={image.url} alt="immagine non trovata" />
                                                                 )
-                                                            })
-                                                        }
-                                                    </UnorderedList>
-                                                </List>
+                                                            }
+
+                                                        </div>
+                                                    )
+                                                })}
                                             </div>
-                                        )
-                                    })}
+                                        </div> */}
+                                    </Box>
+
                                 </Box>
+
                             )}
 
 
@@ -617,7 +757,37 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
                             </footer>
                         </DrawerFooter>}
                 </DrawerContent>
+
             </Drawer >
+            <ModalReausable
+                marginTop={0}
+                title={'inserisci immagine'}
+                isOpen={isImageModalOpen}
+                closeModal={() => {
+                    hiddenFileInput.current.value = null;
+                    setisImageModalOpen(false)
+                }
+                }
+                positionTopModal={true}
+            >
+                <ImageCrop
+                    imageSrc={imgSrc} type={'product'} aspectRatio={(1 / 1.3)}
+                    circularCrop={false}
+                    onHanldeConfirm={(image, type, imageRefCurrent) => {
+
+                        handleImageConfirm(image, imageRefCurrent)
+
+                        hiddenFileInput.current.value = null;
+                        setisImageModalOpen(false)
+                    }
+
+                    }
+                    handlerCancel={() => {
+                        hiddenFileInput.current.value = null;
+                        setisImageModalOpen(false)
+                    }}
+                />
+            </ModalReausable>
         </>
 
 

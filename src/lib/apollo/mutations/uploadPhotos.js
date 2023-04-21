@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 const UPLOAD_PHOTO = gql`
     mutation uploadImages(
         $images: [Upload!]!
-        $proportion: String!
+        $proportion: imageProportionsEnum!
     ) {
         uploadImages(
             images: $images
