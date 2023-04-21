@@ -37,6 +37,7 @@ import { setInLocalStorage } from '../../../../../components/utils/setInLocalSto
 import { changeGenderSelected } from '../../../../store/reducers/user';
 import { sortShopsInCart } from '../../../../../components/utils/sortShopsInCart';
 import { handleErrorGraphQL } from '../../../../../components/utils/handleError_graphQL';
+import expirationTimeTokenControll from '../../../../../components/utils/expirationTimeTokenControll';
 
 export async function getStaticPaths() {
     return {
@@ -149,6 +150,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     const user: Firebase_User = useSelector((state: any) => state.user.user);
 
     const dispatch = useDispatch();
+
 
 
 
@@ -312,6 +314,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
             })
         }
+
+        const resolve = await expirationTimeTokenControll(user.expirationTime)
+        if (!resolve) return
 
 
         if (!sizeSelected || !colorSelected) {
@@ -565,6 +570,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
                                         return (
                                             <Tag
+                                                key={value}
                                                 size={'md'}
                                                 px={6}
                                                 py={2}
