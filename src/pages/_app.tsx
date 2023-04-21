@@ -124,7 +124,8 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               isBusiness,
               createdAt: date_for_redux || new Date(),
               shopId: undefined,
-              accountId: tokenResult.claims.mongoId
+              accountId: tokenResult.claims.mongoId,
+              expirationTime: tokenResult.expirationTime
             })
           );
           const favouriteShop: ({ id: string, name: string, street: string }) = getFavouriteShopFromLocalStorage();
@@ -172,6 +173,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
                 emailVerified: userAuth.emailVerified,
                 createdAt: date_for_redux || new Date(),
                 accountId: tokenResult.claims.mongoId,
+                expirationTime: tokenResult.expirationTime,
                 userInfo: {
                   name: data?.data.user.name
                 }
