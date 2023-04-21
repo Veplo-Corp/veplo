@@ -85,6 +85,7 @@ export {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
+
   sendPasswordResetEmail,
   storage,
   analytics

@@ -106,13 +106,15 @@ const index = () => {
         const tokenResult = await userCredential.user.getIdTokenResult();
         const isBusiness = tokenResult.claims.isBusiness ? true : false
         setLoading(false)
+
         if (typeof router.query?.callbackUrl === 'string') {
           return router.push(router.query?.callbackUrl)
-        } else {
-          return router.push('/')
-
         }
 
+
+        else if (isBusiness) {
+          return router.push('/shop/home')
+        }
       } catch (error: any) {
         setLoading(true)
         const errorCode = error.code;
