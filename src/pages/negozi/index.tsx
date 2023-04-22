@@ -54,7 +54,7 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
         removeFromLocalStorage('genderSelected')
     }, [])
 
-    console.log('ao');
+    console.log(shops);
 
     const router = useRouter()
 
@@ -104,6 +104,7 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
             <div className="grid grid-cols-1 md:pt-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 w-full m-auto justify-items-center mt-4	">
                 {shops.length &&
                     shops.map((shop) => {
+
                         return (
                             <Link key={shop.id} href={`/negozio/${shop.id}/${createUrlSchema([shop.name])}`}>
                                 <Box_Shop scale={'scale(0.99)'} eventHandler={() => { }} shop={shop} />

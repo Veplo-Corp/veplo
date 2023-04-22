@@ -9,7 +9,7 @@ import { useEffect } from 'react'
 const initialState: any = {
   user: {
     email: null,
-    Not_yet_Authenticated_Request: true
+    statusAuthentication: 'not_yet_authenticated'
   }
 
 }
@@ -26,11 +26,11 @@ export const userState = createSlice({
       }
     },
     logout: (state) => {
-      state.user = undefined
-      // state.user = {
-      //   email:null,
-      //   Not_yet_Authenticated_Request: false
-      // };
+
+      state.user = {
+        statusAuthentication: 'logged_out'
+      }
+
     },
     addFavouriteShopBusiness: (state, action) => {
       state.user = {

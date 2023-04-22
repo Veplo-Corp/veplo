@@ -53,13 +53,10 @@ const index = () => {
   useEffect(() => {
     const abortController = new AbortController();
 
-    //! da risolvere
-    if (user && !user.Not_yet_Authenticated_Request) {
+    if (user.statusAuthentication === 'logged_in') {
       console.log(user);
 
-      if (typeof user.shopId === 'string') {
-        router.push('/shop/prodotti')
-      } else if (user?.isBusiness === true) {
+      if (user?.isBusiness === true) {
         router.push('/shop/home')
       }
     }
@@ -136,7 +133,10 @@ const index = () => {
         setLoading(false)
         router.push('/shop/home')
       }
-      setLoading(false)
+      setTimeout(() => {
+        setLoading(false)
+
+      }, 1000);
     }
   }
 
@@ -161,7 +161,7 @@ const index = () => {
                 image={''}
                 description={`accedi o registra un negozio  | Veplo.it`}
               />
-              <div className='max-w-md mx-auto md:max-w-full md:flex md:m-auto  w-full mt-8 md:mt-10 md:justify-between' >
+              {!user.uid && <div className='max-w-md mx-auto md:max-w-full md:flex md:m-auto  w-full mt-8 md:mt-10 md:justify-between' >
                 <div className={`md:p-3 w-full md:w-3/4 my-auto space-y-4 max-w-md mx-auto`}>
                   <Login_or_Registration
                     account='business'
@@ -172,7 +172,7 @@ const index = () => {
                     <List_Explanation_Veplo_Shop />
                   </div>
                 }
-              </div>
+              </div>}
             </Desktop_Layout>
           )
       }

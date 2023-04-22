@@ -25,7 +25,7 @@ const index = () => {
         console.log(user);
 
         const abortController = new AbortController();
-        if (user && user.Not_yet_Authenticated_Request === true) return
+        if (user && user.statusAuthentication === 'not_yet_authenticated') return
         if (!user || !user.isBusiness) {
             router.push('/shop/login?type=login')
             return

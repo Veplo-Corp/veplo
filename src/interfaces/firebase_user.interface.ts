@@ -6,7 +6,7 @@ export interface Firebase_User {
     isBusiness?: boolean,
     createdAt?: string,
     shopId?: string,
-    Not_yet_Authenticated_Request?: boolean,
+    statusAuthentication?: 'not_yet_authenticated' | 'logged_out' | 'logged_in',
     accountId?: string,
     favouriteShop?: {
         name: string,
