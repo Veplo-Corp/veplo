@@ -11,7 +11,7 @@ const Shop_not_Allowed: React.FC<{ children: any }> = ({ children }) => {
         console.log(user);
 
         const abortController = new AbortController();
-        if (user && user.Not_yet_Authenticated_Request === true) return
+        //if (user && user.statusAuthentication === 'logged_in') return
         if (user?.isBusiness) {
             router.push('/shop/home')
         }
@@ -24,7 +24,7 @@ const Shop_not_Allowed: React.FC<{ children: any }> = ({ children }) => {
 
     return (
         <div>
-            {!user || (!user?.isBusiness && !user.Not_yet_Authenticated_Request) && <>{children}</>}
+            {(user.statusAuthentication === 'logged_out' || (user.statusAuthentication === 'logged_in' && !user.isBusiness)) && <>{children}</>}
         </div>
 
     )

@@ -169,7 +169,7 @@ const index = () => {
                     </Box>
                 }
 
-                {user && !user?.Not_yet_Authenticated_Request && shopId !== '' &&
+                {user && user.statusAuthentication === 'logged_out' && shopId !== '' &&
 
                     <Table_Products_Shop idShop={shopId} deleteProduct={handleDeleteProductModal} />}
                 <Modal_Error_Shop title={'Elimina prodotto'} description={'confermando eliminerai il prodotto dal tuo negozio'} closeText={'annulla'} openModalMath={mathNumber} confirmText={'conferma'} data={productToDeleteData} handleEvent={deleteProductEvent} />

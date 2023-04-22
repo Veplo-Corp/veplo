@@ -33,11 +33,12 @@ const index = () => {
 
 
   useEffect(() => {
+
     if (user && user?.shopId) {
       router.push('/shop/prodotti')
     }
     //da rivedere la logica
-    if (user?.uid && !user?.Not_yet_Authenticated_Request) {
+    if (user?.uid && user.statusAuthentication === 'logged_out') {
       router.push('/')
     }
     if (type) {
@@ -113,7 +114,6 @@ const index = () => {
         else if (!isBusiness) {
           return router.push('/')
         }
-
 
         else if (isBusiness) {
           return router.push('/shop/home')

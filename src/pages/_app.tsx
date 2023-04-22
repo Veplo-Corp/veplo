@@ -91,7 +91,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         //setUserProperties(analytics, { favorite_food: 'apples' });
         const idToken = await userAuth.getIdToken(true)
         setAuthTokenInSessionStorage(idToken)
-        //console.log(idToken);
+        console.log(userAuth);
         const tokenResult = await userAuth.getIdTokenResult()
         //console.log(tokenResult);
 
@@ -117,6 +117,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         if (isBusiness) {
           dispatch(
             login({
+              statusAuthentication: 'logged_in',
               email: userAuth.email,
               uid: userAuth.uid,
               idToken: idToken,
@@ -147,6 +148,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             .then(async (value) => {
               //redirect to the right page based on status
               const business: Business = value.data?.business
+              console.log(value);
 
               if (business?.status === 'stripe_id_requested') {
                 router.push('/shop/crea-business-account')
@@ -167,6 +169,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             if (!data.data) return
             dispatch(
               login({
+                statusAuthentication: 'logged_in',
                 email: userAuth.email,
                 uid: userAuth.uid,
                 idToken: idToken,
@@ -200,7 +203,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
         return
       } else if (!userAuth) {
-        console.log('effettua il logout');
+        console.log('effettua il logout matto');
         apolloClient.clearStore()
         dispatch(resetCarts())
         dispatch(detroyOrders())

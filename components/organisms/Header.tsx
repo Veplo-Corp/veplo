@@ -46,7 +46,7 @@ const Header = () => {
     }
 
     useEffect(() => {
-        if (!user?.Not_yet_Authenticated_Request && user?.isBusiness && user?.accountId) {
+        if (user.statusAuthentication === 'logged_in' && user?.isBusiness && user?.accountId) {
             getBusiness({
                 variables: {
                     id: user.accountId
@@ -99,13 +99,13 @@ const Header = () => {
                     </div>
 
                     <div>
-                        {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isBusiness) &&
+                        {!(user.statusAuthentication === 'logged_in' && user.isBusiness) &&
                             <CategoryNavbar showMacrocategory={showMacrocategory} />
                         }
                     </div>
 
                     <div className="flex lg:flex-1 lg:justify-end ">
-                        {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isBusiness) &&
+                        {!(user.statusAuthentication === 'logged_in' && user.isBusiness) &&
                             <div className='flex gap-3'>
                                 <Box
                                     className='flex lg:hidden'

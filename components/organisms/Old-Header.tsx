@@ -35,7 +35,7 @@ const OldHeader = () => {
 
 
     useEffect(() => {
-        if (!user?.Not_yet_Authenticated_Request && user?.isBusiness && user?.accountId) {
+        if (user.statusAuthentication === 'logged_out' && user?.isBusiness && user?.accountId) {
             getBusiness({
                 variables: {
                     id: user.accountId
@@ -159,7 +159,7 @@ const OldHeader = () => {
             </div>
 
             <div className={` pl-2 lg:pl-8 fixed z-50 ${!user ? 'top-3 md:top-10' : 'top-3'} right-16 `}> {/* lg:w-0 lg:flex-1 */}
-                {(!user || !user.Not_yet_Authenticated_Request) && !user?.isBusiness && address_user &&
+                {(!user || user.statusAuthentication === 'logged_out') && !user?.isBusiness && address_user &&
                     <div className='hidden md:flex cursor-pointer'
                         onClick={() => setopenDrawer(Math.random())}
                     >
@@ -181,20 +181,20 @@ const OldHeader = () => {
                     <div className="py-3 lg:justify-start lg:space-x-10">
                         <div className='flex items-center justify-between h-8 '>
 
-                            {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isBusiness) &&
+                            {(!user || user.statusAuthentication === 'logged_out') && (!user || !user.isBusiness) &&
                                 <>
                                     <Navbar showCategory={showCategory.show} onShowCategory={handleShowCategory} openAddressModal={searchCategory} />
 
                                 </>
                             }
-                            <Transition show={!user?.Not_yet_Authenticated_Request}
+                            <Transition show={user.statusAuthentication === 'logged_out'}
                                 enter="transition-opacity duration-[200ms]"
                                 enterFrom="opacity-0"
                                 enterTo="opacity-100"
                             >
 
                                 {/* button for Mobile */}
-                                {(!user || !user.Not_yet_Authenticated_Request) && (!user || !user.isBusiness) &&
+                                {(!user || user.statusAuthentication === 'logged_out') && (!user || !user.isBusiness) &&
                                     <div className={`pl-2 md:pl-8 fixed z-50 top-3 md:top-4 right-2 md:hidden`}>
                                         {/* searchButton */}
                                         <div className='flex gap-0.5'>
@@ -216,7 +216,7 @@ const OldHeader = () => {
 
 
                             <div className={`hidden md:flex gap-2 fixed ${!user ? 'top-9' : 'top-2'} right-4 z-10`}> {/* pr-80 */}
-                                {(!user || !user.Not_yet_Authenticated_Request) && !user?.isBusiness &&
+                                {(!user || user.statusAuthentication === 'logged_out') && !user?.isBusiness &&
                                     <>
                                         <User_Popover />
                                     </>

@@ -69,7 +69,7 @@ const index = () => {
 
 
   //redirect to createShop,whether there is not a Shop
-  if (error && user?.Not_yet_Authenticated_Request === false) {
+  if (error && user.statusAuthentication === 'logged_in') {
     router.push('/shop/crea-shop')
   }
 
