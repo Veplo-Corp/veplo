@@ -140,7 +140,10 @@ const Home: NextPage = () => {
 
 
             <Box display={'flex'} height={'full'} px={[6, 0]}
-              className="lg:bg-[url('/home_svg/copertina.svg')]"
+              className="lg:bg-[url('/home_svg/copertina.svg')]
+
+              
+              "
 
             >
               <Box
