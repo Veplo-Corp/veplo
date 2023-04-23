@@ -193,6 +193,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                 </Button>
                 <div className='mb-2 w-3/4 md:mb-0 md:w-fit'>
                     <Input_Search_Item
+                        handleChangeValue={() => { }}
                         placeholder='cerca prodotto'
                         onConfirmText={textSearchProducts}
                     />
