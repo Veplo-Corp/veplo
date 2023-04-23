@@ -386,22 +386,23 @@ const Home: NextPage = () => {
 
               <Text
                 as={'h2'}
-                fontSize={['lg', 'xl']}
+                fontSize={['md', 'lg']}
                 fontWeight={'medium'}
                 color={'#2E2E2E'}
                 className='w-11/12 md:w-3/4 lg:w-1/2 xl:w-5/12 mt-4 mx-auto'
-                mt={[0, -2]}
+                mt={[2, -2]}
               >
                 che tu sia un brand emergente o un negozio compila il form per ricevere maggiori informazioni.
               </Text>
               <Button
-                mt={[6, 8]}
+                mt={[8, 10]}
                 size={'lg'}
 
                 fontSize={['lg', '2xl']}
                 fontWeight={['bold', 'bold']}
-                px={[14, 24]}
-                py={[7, 10]}
+
+                px={[10, 20]}
+                py={[7, 8]}
                 width={['fit-content']}
                 //className='w-11/12 lg:w-fit'
                 borderRadius={'10px'}
@@ -419,7 +420,7 @@ const Home: NextPage = () => {
                 }}
                 onClick={() => { setModalForm(true) }}
               >
-                Unisciti a noi
+                sentiamoci
               </Button>
             </Box>
           </Section>
