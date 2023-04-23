@@ -395,7 +395,7 @@ const Home: NextPage = () => {
                 che tu sia un brand emergente o un negozio compila il form per ricevere maggiori informazioni.
               </Text>
               <Button
-                mt={[8, 10]}
+                mt={[7, 10]}
                 size={'lg'}
 
                 fontSize={['lg', '2xl']}
