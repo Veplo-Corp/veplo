@@ -13,9 +13,13 @@ import DrawerSearchProducts from './DrawerSearchProducts';
 import { useLazyQuery } from '@apollo/client';
 import GET_BUSINESS from '../../src/lib/apollo/queries/business';
 import { Business } from '../../src/interfaces/business.interface';
+import { Medal1St, ShoppingBag, User } from 'iconoir-react';
+import Input_Search_Item from '../atoms/Input_Search_Item';
+import { useRouter } from 'next/router';
+import { getFromLocalStorage } from '../utils/getFromLocalStorage';
 
 const Header = () => {
-
+    const router = useRouter()
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     const [showMacrocategory, setshowMacrocategory] = useState(true)
     const [openDrawerBusinessAccount, setopenDrawerBusinessAccount] = useState(false)
@@ -26,20 +30,6 @@ const Header = () => {
 
     const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
 
-    const searchCategory = () => {
-        // if (!address_user) {
-
-        //     toast({
-        //         title: 'Non hai collegato un indirizzo',
-        //         description: "collega un indirizzo per permetterci di trovare il meglio per te",
-        //         status: 'info',
-        //         duration: 6000,
-        //         isClosable: true,
-        //     })
-        //     return setopenDrawer(Math.random())
-        // }
-        // setOpenDrawerSearch(Math.random())
-    }
 
     const closeDrawerBusinessAccount = () => {
         setopenDrawerBusinessAccount(false)
@@ -72,6 +62,25 @@ const Header = () => {
 
         }
     }, [user])
+
+    const handleAutoComplete = (text: string) => {
+
+    }
+
+    const handleSearchText = (question: string) => {
+        let gender = getFromLocalStorage('genderSelected')
+        if (gender === 'f') {
+            gender = 'donna'
+        }
+        if (gender === 'm') {
+            gender = 'uomo'
+        }
+        if (!gender) {
+            gender = 'donna'
+        }
+
+
+    }
 
     return (
         <>
@@ -107,6 +116,11 @@ const Header = () => {
                     <div className="flex lg:flex-1 lg:justify-end ">
                         {!(user.statusAuthentication === 'logged_in' && user.isBusiness) &&
                             <div className='flex gap-3'>
+                                <Input_Search_Item
+                                    handleChangeValue={(text) => handleAutoComplete(text)}
+                                    placeholder='Cerca...'
+                                    onConfirmText={handleSearchText}
+                                />
                                 <Box
                                     className='flex lg:hidden'
                                     marginY={'auto'}
@@ -120,6 +134,7 @@ const Header = () => {
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                                     </svg>
 
+
                                 </Box>
                                 {user?.uid && <Box
                                     marginY={'auto'}
@@ -128,16 +143,22 @@ const Header = () => {
                                         setOpenDrawerCart(true)
                                     }}
                                     cursor={'pointer'}
+                                    className='bg-gray-100 rounded-[10px] p-2'
                                 >
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-7 h-7">
+                                    {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-7 h-7">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                                    </svg>
+                                    </svg> */}
+                                    <ShoppingBag
+                                        strokeWidth={2}
+                                        className="w-6 h-6 my-auto"
+                                    />
                                 </Box>}
                                 <Box
                                     marginY={'auto'}
                                     height={'fit-content'}
                                 >
                                     <User_Popover />
+
 
                                 </Box>
 

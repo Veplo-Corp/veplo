@@ -110,12 +110,12 @@ const Home: NextPage = () => {
           description={"tutti i migliori negozi di abbigliamento in un unico sito. Cerca tra l'abbigliamento in vendita su Veplo e approfitta delle offerte in corso"}
 
         />
-        <img className='flex sm:hidden absolute w-full -z-10'
+        {/* <img className='flex sm:hidden absolute w-full -z-10'
           src="/home_svg/copertinaMobile.svg"
           alt="home image" />
-        <img className='hidden sm:flex absolute w-full -z-10 object-cover h-screen'
+        <img className='hidden sm:flex absolute w-full z-10 object-cover h-screen'
           src="/home_svg/copertina.svg"
-          alt="home image" />
+          alt="home image" /> */}
         <div className='w-full '>
 
           <Gradient_Component_home>
@@ -139,27 +139,29 @@ const Home: NextPage = () => {
 
 
 
-            <Box display={'flex'} height={'full'} px={[6, 0]}>
+            <Box display={'flex'} height={'full'} px={[6, 0]}
+              className="lg:bg-[url('/home_svg/copertina.svg')]"
+
+            >
               <Box
                 textAlign={['left', 'center']}
-                //mt={[6, 28]}
                 m={'auto'}
               >
                 <Text
-                  className='text-4xl lg:text-7xl'
+                  className='text-4xl lg:text-7xl pt-16 lg:pt-0'
                   lineHeight={['10', 'base']}
                   fontWeight={'black'}
-                  color={'#2E2E2E'}
+                  textColor={'#0133FF'}
                 >
                   Hai presente il fast fashion?
                 </Text>
                 <Text
                   mt={[2, -1]}
-                  fontWeight={'light'}
+                  fontWeight={'medium'}
                   className='text-lg md:text-xl lg:text-4xl'
-                  color={'#141414'}
+                  color={'#2E2E2E'}
                 >
-                  allontanati da questa idea più che puoi
+                  allontanati da questa idea più che puoi.
                 </Text>
                 <Button
                   mt={[6, 10]}
@@ -170,13 +172,13 @@ const Home: NextPage = () => {
                   py={[2, 8]}
                   width={'fit-content'}
                   borderRadius={'10px'}
-                  color={'#2E2E2E'}
-                  background={'#FF9737'}
+                  color={'white'}
+                  background={'#0132D1'}
                   _hover={{
-                    bg: '#FF9737'
+                    bg: '#0132D1'
                   }}
                   _focus={{
-                    bg: '#FF9737'
+                    bg: '#0132D1'
                   }}
                   _active={{
                     transform: 'scale(0.98)',
@@ -196,33 +198,36 @@ const Home: NextPage = () => {
             alt="home image" />
           <Box
             pl={2}
-
+            background={'#FFF7BC'}
             display={'flex'}
             justifyContent={'space-around'}
-            className='mx-6 md:mx-28 '
+            className='px-6 md:px-28 mt-[-80px] lg:mt-0'
+
           >
             <Box
-
-              className='lg:w-1/2 xl:w-5/12 my-20 lg:my-auto'
+              px={[6, 0]}
+              className='lg:w-1/2 xl:w-5/12 my-20 lg:my-auto mt-[120px]'
             >
               <Section>
 
 
                 <Text
-                  fontSize={['2xl', '5xl']}
+                  fontSize={['3xl', '5xl']}
+                  lineHeight={['30px', '50px']}
                   fontWeight={'extrabold'}
-                  color={'#2E2E2E'}
+                  color={'#0132D1'}
 
                 >
-                  In un mondo dove...
+                  Vogliamo dar luce ai prodotti
                 </Text>
                 <Text
-                  fontSize={['md', 'xl']}
-                  fontWeight={'light'}
+                  fontSize={['lg', 'xl']}
+                  fontWeight={'medium'}
+
                   color={'#2E2E2E'}
-                  mt={[2, 0]}
+                  mt={[6, 4]}
                 >
-                  vengono seguiti i trend dettati dalle grandi etichette del fast fashion
+                  che rendono la moda una vera espressione di sé, attraverso una piattaforma completamente dedicata.
                 </Text>
               </Section>
             </Box>
@@ -230,44 +235,121 @@ const Home: NextPage = () => {
               src="/home_svg/iphoneMockup.svg"
               alt="home image" />
           </Box>
+
+
+
+
+          <Section>
+            <Box
+              className='py-20 lg:py-40 '
+              textAlign={'center'}
+            >
+
+              <Box
+                px={[4]}
+                display={'flex'}
+                fontSize={['2xl', '3xl', '5xl']}
+                lineHeight={['', '60px']}
+                fontWeight={'black'}
+                width={'fit-content'}
+                position={'relative'}
+                mr={[2]}
+                color={'#0133FF'}
+                marginX={'auto'}
+                maxWidth={'4xl'}
+              >
+
+                Entra nel marketplace innovativo per brand emergenti
+
+
+                {/* <div className='absolute w-full h-2 lg:h-4 bottom-2 lg:bottom-4 bg-[#BB3838]'>
+                  </div> */}
+              </Box>
+
+
+
+              <Text
+                as={'h2'}
+                fontSize={['md', '2xl']}
+                fontWeight={'medium'}
+                color={'#2E2E2E'}
+                className='w-10/12 md:w-3/4 lg:w-1/2 mx-auto'
+                mt={[4, 6]}
+              >
+                dove migliaia di clienti possono scoprire e acquistare
+                prodotti unici, proprio come il tuo.
+              </Text>
+              <Button
+                mt={[6, 12]}
+                size={'lg'}
+
+                fontSize={['lg', '2xl']}
+                fontWeight={['bold', 'bold']}
+                px={[14, 24]}
+                py={[7, 10]}
+                width={['fit-content']}
+                //className='w-11/12 lg:w-fit'
+                borderRadius={'10px'}
+
+                color={'#0132D1'}
+                background={'#FFF7BC'}
+                _hover={{
+                  bg: '#FFF7BC'
+                }}
+                _focus={{
+                  bg: '#FFF7BC'
+                }}
+                _active={{
+                  transform: 'scale(0.98)',
+                }}
+                onClick={() => { setModalForm(true) }}
+              >
+                inizia
+              </Button>
+            </Box>
+          </Section>
           <img className='flex lg:hidden m-auto  sm:mt-20'
-            src="/home_svg/armadio.svg"
+            src="/home_svg/homeImage.svg"
             alt="home image" />
 
           <Box
-            mt={[10, 10, 10, 28]}
             gap={28}
             justifyContent={'space-between'}
-            className='mx-6 md:mx-44 grid lg:flex'
+            className='px-6 md:px-40 grid lg:flex'
+            bg={'#FFF7BC'}
+            paddingY={28}
           >
-            <img className='hidden lg:flex mt-[-250px]'
-              src="/home_svg/armadio.svg"
-              alt="home image" />
 
             <Box
-              className='w-full sm:w-10/12 md:w-full lg:w-8/12 xl:w-7/12 m-auto mt-10 mb-16 md:mb-0'
+              className='w-full sm:w-10/12 md:w-full xl:w-4/12 m-auto'
+              textAlign={'center'}
+
             >
               <Section>
                 <Text
-                  fontSize={['2xl', '5xl']}
+                  fontSize={['2xl', '4xl']}
                   fontWeight={'extrabold'}
-                  color={'#2E2E2E'}
+                  color={'#0133FF'}
                   lineHeight={['45px', '70px']}
 
                 >
-                  <Highlight query='brand emergenti' styles={{ px: '5', py: '2', bg: '#37FFCF', borderRadius: '50px', }}>
-                    ...vogliamo dare visibilità ai brand emergenti
-                  </Highlight>
+                  Mission & Vision
                 </Text>
                 <Text
-                  fontSize={['md', 'xl']}
-                  fontWeight={'light'}
+                  fontSize={['md', 'lg']}
+                  fontWeight={'medium'}
                   color={'#2E2E2E'}
-                  mt={[5, 6]}
+                  mt={[5, 4]}
                 >
-                  che con i loro prodotti e le loro idee rendono la moda una vera espressione di sé                </Text>
+                  In un mondo dove vengono seguiti i trend dettati dalle grandi etichette del fast fashion vogliamo dare visibilità ai brand emergenti che con i loro prodotti e le loro idee rendono la moda una vera espressione di sé.
+                </Text>
+
               </Section>
             </Box>
+            <img className='hidden lg:flex h-96'
+              src="/home_svg/homeImage.svg"
+              alt="home image" />
+
 
           </Box>
 
@@ -278,7 +360,7 @@ const Home: NextPage = () => {
 
           <Section>
             <Box
-              className='h-fit mb-20 mt-8 md:mt-20 lg:mt-40 lg:mt-18 '
+              className='h-fit mb-20 mt-20 lg:mt-40 lg:mt-18 '
               textAlign={'center'}
             >
 
@@ -290,6 +372,7 @@ const Home: NextPage = () => {
                 position={'relative'}
                 mr={[2]}
                 marginX={'auto'}
+                color={'#0133FF'}
               >
 
                 Scopri Veplo
@@ -303,13 +386,13 @@ const Home: NextPage = () => {
 
               <Text
                 as={'h2'}
-                fontSize={['lg', '3xl']}
-                fontWeight={'light'}
-                color={'#656565'}
-                className='w-11/12 md:w-3/4 lg:w-1/2 mx-auto'
+                fontSize={['lg', 'xl']}
+                fontWeight={'medium'}
+                color={'#2E2E2E'}
+                className='w-11/12 md:w-3/4 lg:w-1/2 xl:w-5/12 mt-4 mx-auto'
                 mt={[0, -2]}
               >
-                il marketplace per brand indipendenti
+                che tu sia un brand emergente o un negozio compila il form per ricevere maggiori informazioni.
               </Text>
               <Button
                 mt={[6, 8]}
@@ -323,13 +406,13 @@ const Home: NextPage = () => {
                 //className='w-11/12 lg:w-fit'
                 borderRadius={'10px'}
 
-                color={'#2E2E2E'}
-                background={'#FF9737'}
+                color={'white'}
+                background={'#0132D1'}
                 _hover={{
-                  bg: '#FF9737'
+                  bg: '#0132D1'
                 }}
                 _focus={{
-                  bg: '#FF9737'
+                  bg: '#0132D1'
                 }}
                 _active={{
                   transform: 'scale(0.98)',
@@ -472,13 +555,13 @@ const Home: NextPage = () => {
             py={'28px'}
             width={'full'}
             borderRadius={'10px'}
-            color={'#2E2E2E'}
-            background={'#FF9737'}
+            color={'white'}
+            background={'#0132D1'}
             _hover={{
-              bg: '#FF9737'
+              bg: '#0132D1'
             }}
             _focus={{
-              bg: '#FF9737'
+              bg: '#0132D1'
             }}
             _active={{
               transform: 'scale(0.98)',
