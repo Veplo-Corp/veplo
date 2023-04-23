@@ -57,6 +57,8 @@ export async function getStaticProps(ctx: any) {
 
     const elementGenderMacrocategory: { gender: string | null, macrocategory: string | null } = getGenderandMacrocategory(slug[0]);
     const microgategoryNameUrl: string = slug[1];
+    const searchedText: string = slug[3];
+
 
 
     const apolloClient = initApollo()

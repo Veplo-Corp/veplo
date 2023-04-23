@@ -1,16 +1,21 @@
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/react'
-import React, { FC, useRef } from 'react'
+import { Search } from 'iconoir-react'
+import React, { FC, useRef, useState } from 'react'
 
-const Input_Search_Item: FC<{ placeholder: string, onConfirmText: any, textInput?: string }> = ({ placeholder, onConfirmText, textInput }) => {
-    const inputText = useRef<HTMLInputElement | null>(null)
+const Input_Search_Item: FC<{ placeholder: string, onConfirmText: (text: string) => void, textInput?: string, handleChangeValue: (text: string) => void }> = ({ placeholder, onConfirmText, textInput, handleChangeValue }) => {
+    const [textSearched, setTextSearched] = useState('')
 
-    const onConfirm = (e:any) => {
+    const onConfirm = (e: any) => {
         if (e.key === 'Enter' || e.key === undefined) {
-            if ( inputText.current?.value !== null || undefined && inputText.current?.value > 3){
-                onConfirmText(inputText?.current?.value.trim());
-                inputText.current!.value = ''
-            }
-        } 
+            onConfirmText(e.target.value)
+            //setTextSearched('')
+        }
+    }
+
+    const handleChangeValueInput = (e: any) => {
+        //console.log(e.target.value);
+        setTextSearched(e.target.value)
+        handleChangeValue(e.target.value)
     }
 
     return (
@@ -18,26 +23,39 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: any, textInput
             <InputGroup>
                 <Input
                     type='text'
-                    ref={inputText}
-                    
+                    value={textSearched}
+                    //borderWidth={0}
+                    _active={{
+                        borderWidth: 0
+                    }}
                     onKeyDown={onConfirm}
                     placeholder={placeholder}
-                    _placeholder={{ color: 'gray.500', opacity: 1 }}
-                    borderRadius={12}
+                    _placeholder={{
+                        color: '#A19F9F',
+                        opacity: 1,
+                        fontWeight: '500'
+                    }}
+                    borderRadius={10}
                     py={2}
                     pl={4}
                     size='md'
+                    fontSize={'18px'}
                     focusBorderColor='gray.300'
-                    bg={'gray.100'} />
+                    fontWeight={'semibold'}
+                    bg={'gray.100'}
+                    onChange={(e) => handleChangeValueInput(e)}
+                />
                 <InputRightElement
                     mr={1}
                     className='cursor-pointer'
-                    color={'gray.500'}
+                    color={'#A19F9F'}
                     onClick={onConfirm}
                     children={
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                        </svg>
+
+                        <Search
+                            className="w-6 h-6"
+                            strokeWidth={2}
+                        />
                     }
                 />
             </InputGroup>

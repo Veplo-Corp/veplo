@@ -75,9 +75,12 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
             <div className='md:flex justify-end'>
                 {/* <Logo_Below_Header city={city} /> */}
                 <div className='my-auto mt-2'>
-                    <Input_Search_Item placeholder='cerca negozio' onConfirmText={(textInput: string) => {
-                        setInputSearchShop(textInput)
-                    }} />
+                    <Input_Search_Item
+                        handleChangeValue={() => { }}
+
+                        placeholder='cerca negozio' onConfirmText={(textInput: string) => {
+                            setInputSearchShop(textInput)
+                        }} />
                 </div>
             </div>
             {
