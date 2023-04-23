@@ -127,13 +127,11 @@ const Home: NextPage = () => {
                 top={[8]}
                 left={[6, 12]}
                 fontWeight={'black'}
-                color={'#2E2E2E'}
+                color={['#2E2E2E', '#2E2E2E']}
                 fontSize={['3xl', '35px']}
 
               >
-
                 Veplo
-
               </Text>
             </Link>
 
@@ -141,8 +139,7 @@ const Home: NextPage = () => {
 
             <Box display={'flex'} height={'full'} px={[6, 0]}
               className="lg:bg-[url('/home_svg/copertina.svg')]
-
-              
+              bg-[#FFF7BC] lg:bg-transparent
               "
 
             >
@@ -151,16 +148,16 @@ const Home: NextPage = () => {
                 m={'auto'}
               >
                 <Text
-                  className='text-4xl lg:text-7xl pt-16 lg:pt-0'
+                  className='text-4xl lg:text-7xl pt-12 lg:pt-0'
                   lineHeight={['10', 'base']}
                   fontWeight={'black'}
-                  textColor={'#0133FF'}
+                  textColor={['#0133FF']}
                 >
                   Hai presente il fast fashion?
                 </Text>
                 <Text
                   mt={[2, -1]}
-                  fontWeight={'medium'}
+                  fontWeight={['semibold', 'medium']}
                   className='text-lg md:text-xl lg:text-4xl'
                   color={'#2E2E2E'}
                 >
@@ -196,7 +193,7 @@ const Home: NextPage = () => {
 
           </Gradient_Component_home>
 
-          <img className='flex lg:hidden mx-auto  sm:mt-[-40px] '
+          <img className='flex lg:hidden mx-auto  mt-[-30px] '
             src="/home_svg/iphoneMockup.svg"
             alt="home image" />
           <Box
@@ -464,8 +461,7 @@ const Home: NextPage = () => {
             mb={3}
             lineHeight={'9'}
           >
-            rispondiamo a ogni<br />
-            dubbio o domanda
+            Scopri di più su Veplo
           </Text>
           <Text
             fontSize={'sm'}
@@ -615,13 +611,13 @@ const Home: NextPage = () => {
               py={'28px'}
               width={'full'}
               borderRadius={'10px'}
-              color={'#2E2E2E'}
-              background={'#FF9737'}
+              color={'white'}
+              background={'#0132D1'}
               _hover={{
-                bg: '#FF9737'
+                bg: '#0132D1'
               }}
               _focus={{
-                bg: '#FF9737'
+                bg: '#0132D1'
               }}
               _active={{
                 transform: 'scale(0.98)',
