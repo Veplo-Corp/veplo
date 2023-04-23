@@ -148,7 +148,7 @@ const Home: NextPage = () => {
                 m={'auto'}
               >
                 <Text
-                  className='text-4xl lg:text-7xl pt-12 lg:pt-0'
+                  className='text-4xl md:text-5xl lg:text-7xl pt-12 lg:pt-0'
                   lineHeight={['10', 'base']}
                   fontWeight={'black'}
                   textColor={['#0133FF']}
@@ -205,8 +205,8 @@ const Home: NextPage = () => {
 
           >
             <Box
-              px={[6, 0]}
-              className='lg:w-1/2 xl:w-5/12 my-20 lg:my-auto mt-[120px]'
+              px={[6, 6, 20, 0]}
+              className='lg:w-1/2 xl:w-5/12 my-20 md:my-40 lg:my-auto mt-[120px]'
             >
               <Section>
 
