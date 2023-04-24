@@ -10,6 +10,7 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: (text: string)
             onConfirmText(e.target.value)
             //setTextSearched('')
         }
+
     }
 
     const handleChangeValueInput = (e: any) => {
@@ -49,7 +50,7 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: (text: string)
                     mr={1}
                     className='cursor-pointer'
                     color={'#A19F9F'}
-                    onClick={onConfirm}
+                    onClick={() => onConfirmText(textSearched)}
                     children={
 
                         <Search
