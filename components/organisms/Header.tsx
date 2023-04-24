@@ -13,7 +13,7 @@ import DrawerSearchProducts from './DrawerSearchProducts';
 import { useLazyQuery } from '@apollo/client';
 import GET_BUSINESS from '../../src/lib/apollo/queries/business';
 import { Business } from '../../src/interfaces/business.interface';
-import { Medal1St, ShoppingBag, User } from 'iconoir-react';
+import { Medal1St, Search, ShoppingBag, User } from 'iconoir-react';
 import Input_Search_Item from '../atoms/Input_Search_Item';
 import { useRouter } from 'next/router';
 import { getFromLocalStorage } from '../utils/getFromLocalStorage';
@@ -116,23 +116,30 @@ const Header = () => {
                     <div className="flex lg:flex-1 lg:justify-end ">
                         {!(user.statusAuthentication === 'logged_in' && user.isBusiness) &&
                             <div className='flex gap-3'>
-                                <Input_Search_Item
-                                    handleChangeValue={(text) => handleAutoComplete(text)}
-                                    placeholder='Cerca...'
-                                    onConfirmText={handleSearchText}
-                                />
+                                <div className='hidden lg:flex'>
+                                    <Input_Search_Item
+                                        handleChangeValue={(text) => handleAutoComplete(text)}
+                                        placeholder='Cerca...'
+                                        onConfirmText={handleSearchText}
+                                    />
+                                </div>
+
                                 <Box
-                                    className='flex lg:hidden'
                                     marginY={'auto'}
                                     height={'fit-content'}
                                     onClick={() => {
                                         setisOpenUserDrawerSearch(true)
                                     }}
                                     cursor={'pointer'}
+                                    className='flex lg:hidden bg-gray-100 rounded-[10px] p-2'
                                 >
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-7 h-7">
+                                    {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-7 h-7">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                                    </svg>
+                                    </svg> */}
+                                    <Search
+                                        strokeWidth={2}
+                                        className="w-6 h-6 my-auto"
+                                    />
 
 
                                 </Box>
