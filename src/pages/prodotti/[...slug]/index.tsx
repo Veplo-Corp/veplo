@@ -102,7 +102,7 @@ export async function getStaticProps(ctx: any) {
             props: {
                 gender: elementGenderMacrocategory.gender === 'uomo' ? 'm' : 'f',
                 category: macrogategoryName,
-                products: data?.products,
+                products: data?.products.products,
                 microCategory: microgategoryName
             },
             revalidate: 60 //seconds

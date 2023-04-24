@@ -75,9 +75,21 @@ const Header = () => {
         if (gender === 'm') {
             gender = 'uomo'
         }
+        //in futuro prendiamo la user.gender dell'utente
         if (!gender) {
             gender = 'donna'
         }
+        if (question.toLocaleLowerCase().includes('uomo')) {
+            gender = 'uomo'
+        }
+        if (question.toLocaleLowerCase().includes('donna')) {
+            gender = 'donna'
+        }
+        console.log(gender);
+
+        //router.push(`prodotti/${gender}-abbigliamento/tutto/rilevanza/mario`)
+
+
 
 
     }
@@ -120,7 +132,9 @@ const Header = () => {
                                     <Input_Search_Item
                                         handleChangeValue={(text) => handleAutoComplete(text)}
                                         placeholder='Cerca...'
-                                        onConfirmText={handleSearchText}
+                                        onConfirmText={(value) => {
+                                            handleSearchText(value)
+                                        }}
                                     />
                                 </div>
 

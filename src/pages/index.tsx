@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { Button, Box, Stack, Text, InputGroup, Input, VStack, Icon, Highlight } from '@chakra-ui/react'
+import { Button, Box, Stack, Text, InputGroup, Input, VStack, Icon, Highlight, Heading } from '@chakra-ui/react'
 import BlackButton from '../../components/atoms/BlackButton'
 import { useEffect, useRef, useState } from 'react'
 import Drawer_Address from '../../components/organisms/Drawer_Address'
@@ -116,9 +116,21 @@ const Home: NextPage = () => {
         <img className='hidden sm:flex absolute w-full z-10 object-cover h-screen'
           src="/home_svg/copertina.svg"
           alt="home image" /> */}
-        <div className='w-full '>
+        <div className='w-full'>
+          <Box
+            zIndex={0}
+            className='h-screen lg:flex absolute top-0 w-full'
+          >
+            <img src="/home_svg/twoGirls.jpg" alt=""
+              className='h-screen w-full object-fill contrast-[.85] brightness-[.9]'
+            />
+            <img src="/home_svg/manWithGlasses.jpg" alt=""
+              className='h-screen w-full object-fill contrast-[.85] brightness-[.9]'
+            />
 
+          </Box>
           <Gradient_Component_home>
+
             <Link
               href='https://www.veplo.it/'
             >
@@ -126,309 +138,267 @@ const Home: NextPage = () => {
                 position={'absolute'}
                 top={[8]}
                 left={[6, 12]}
+                color={'white'}
+                fontSize={['3xl', '5xl']}
                 fontWeight={'black'}
-                color={['#2E2E2E', '#2E2E2E']}
-                fontSize={['3xl', '35px']}
-
               >
                 Veplo
               </Text>
+
             </Link>
 
+            <Box
+              className='h-screen pt-[45vh]'
+              textAlign={['left', 'center']}
+              position={'sticky'}
+            >
+              <Text
+                className='text-4xl md:text-5xl lg:text-6xl pt-12 lg:pt-0'
+                lineHeight={['10', 'base']}
+                fontWeight={'black'}
+                textColor={'white'}
+              >
+                HAI PRESENTE IL FAST FASHION?
+              </Text>
+              <Text
+                mt={[2, 0]}
+                fontWeight={'semibold'}
+                className='text-lg md:text-xl lg:text-4xl'
+                color={'white'}
+              >
+                Allontanati da questa idea più che puoi.
+              </Text>
 
 
-            <Box display={'flex'} height={'full'} px={[6, 0]}
-              className="lg:bg-[url('/home_svg/copertina.svg')]
-              bg-[#FFF7BC] lg:bg-transparent
-              "
+              <Button
+                mt={[6, 10]}
+                size={'lg'}
+                fontSize={['lg', '2xl']}
+                fontWeight={['bold', 'semibold']}
+                px={[8, 12]}
+                py={[2, 8]}
+                width={'fit-content'}
+                borderRadius={'10px'}
+                color={'black'}
+                background={'white'}
+                _hover={{
+                  bg: 'white'
+                }}
+                _focus={{
+                  bg: 'white'
+                }}
+                _active={{
+                  transform: 'scale(0.98)',
+                }}
+                onClick={() => { setModalForm(true) }}
+              >
+                scopri di più
+              </Button>
+            </Box>
+          </Gradient_Component_home>
+
+          <Box
+            width={'full'}
+            textAlign={'center'}
+            padding={24}
+          >
+            <Text
+              fontSize={'lg'}
+              fontWeight={'medium'}
+              className='lg:w-1/2 m-auto'
+            >
+              VEPLO È IL MARKETPLACE DI ABBIGLIAMENTO CHE SELEZIONA I MIGLIORI MARCHI INDIPENDENTI E NEGOZI IN CIRCOLAZIONE.<br />SU VEPLO MIGLIAIA DI CLIENTI POSSONO TROVARE CAPI DI DESIGN E DI QUALITÀ, SVINCOLANDOSI DALLE INFLUENZE DEL FAST FASHION E TROVANDO COSÌ IL MODO DI ESPRIMERE LA LORO VERA IDENTITÀ.
+            </Text>
+            <Button
+              mt={[6, 10]}
+              mb={5}
+              size={'lg'}
+              fontSize={['lg', '2xl']}
+              fontWeight={['bold', 'semibold']}
+              px={[8, 12]}
+              py={[2, 8]}
+              width={'fit-content'}
+              borderRadius={'10px'}
+              color={'white'}
+              background={'black'}
+              _hover={{
+                bg: 'black'
+              }}
+              _focus={{
+                bg: 'black'
+              }}
+              _active={{
+                transform: 'scale(0.98)',
+              }}
+              onClick={() => { setModalForm(true) }}
+            >
+              scopri di più
+            </Button>
+          </Box>
+
+          <Box
+            width={'full'}
+            textAlign={'center'}
+            padding={2}
+            bg={'black'}
+          >
+            <Text
+              fontSize={'4xl'}
+              fontWeight={'black'}
+              color={'white'}
+              className='lg:w-1/2 m-auto'
+            >
+              IN COSA CREDIAMO
+            </Text>
+          </Box>
+
+
+          <Box
+            width={'full'}
+            bg={'#F1F1F1'}
+            mt={20}
+            p={20}
+
+          >
+            <Box
+              className='m-auto px-20'
+              display={'flex'}
+              justifyContent={'space-between'}
+              textAlign={'center'}
+            >
+              <img src="/home_svg/girlAuto.jpg" alt=""
+                className=' contrast-[.85] brightness-[.9] w-96 aspect-[9/10] object-cover'
+              />
+              <Text
+                fontSize={'lg'}
+                fontWeight={'normal'}
+                className='w-6/12 my-auto leading-8'
+              >
+                <strong>LA MODA COME ESPRESSIONE PERSONALE</strong><br />
+                CIO’ CHE INDOSSIAMO COMUNICA CHI SIAMO E CI RENDE UNICI. TUTTAVIA, STA DIVENTANDO SEMPRE PiÙ DIFFICILE RIUSCIRE A TROVARE IL PROPRIO STILE IN UN MONDO IN CUI I TREND VENGONO DETTATI DALLE GRANDI ETICHETTE DEL FAST FASHION. PER QUESTO MOTIVO, È FONDAMENTALE CHE I BRAND INDIPENDENTI,  ABBIANO LA GIUSTA VISIBILITÀ E SUPPORTO, PERMETTENDO COSÌ A TUTTI DI POTER SCEGLIERE QUALE STILE ADOTTARE E IMPERSONARE.
+              </Text>
+
+            </Box>
+          </Box>
+          <Box
+            width={'full'}
+            bg={'#F1F1F1'}
+            p={20}
+
+          >
+            <Box
+              className='m-auto px-20'
+              display={'flex'}
+              justifyContent={'space-between'}
+              textAlign={'center'}
+            >
+              <Text
+                fontSize={'lg'}
+                fontWeight={'normal'}
+                className='w-6/12 my-auto leading-8'
+              >
+                <strong>UNA COMMUNITY</strong><br />
+                SELEZIONARE CON CURA I NOSTRI PARTNER, NEGOZI FISICI O BRAND INDIPENDENTI, SIGNIFICA ANCHE PARLARE, ASCOLTARE E SCOPRIRE LE LORO STORIE. VOGLIAMO COSTRUIRE UNA COMUNITÀ DI NEGOZI CON GLI STESSI VALORI, CHE CREDONO IN UN’IDEA DI MODA DIVERSA DA QUELLA A CUI SIAMO ABITUATI, DOVE IL DNA DI OGNI SINGOLO BRAND POSSA ESPRIMERSI IN TUTTA LA SUA FORMA.
+
+              </Text>
+              <img src="/home_svg/girlHodie.jpg" alt=""
+                className=' contrast-[.85] brightness-[.9] w-96 aspect-[9/10] object-cover'
+              />
+
+
+            </Box>
+          </Box>
+          <img className='flex lg:hidden mx-auto  mt-[-30px] '
+            src="/home_svg/iphoneMockup.svg"
+            alt="home image" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <Section>
+            <Box
+              display={'flex'}
+              width={'full'}
+              padding={36}
+              justifyContent={'space-between'}
 
             >
               <Box
-                textAlign={['left', 'center']}
-                m={'auto'}
+                className='w-7/12 my-auto'
+                textAlign={'center'}
+
               >
+
                 <Text
-                  className='text-4xl md:text-5xl lg:text-7xl pt-12 lg:pt-0'
-                  lineHeight={['10', 'base']}
+                  className='text-5xl'
                   fontWeight={'black'}
-                  textColor={['#0133FF']}
                 >
-                  Hai presente il fast fashion?
+                  Veplo sta per arrivare!
                 </Text>
+
+
+
                 <Text
-                  mt={[2, -1]}
-                  fontWeight={['semibold', 'medium']}
-                  className='text-lg md:text-xl lg:text-4xl'
+                  as={'h2'}
+                  fontSize={['md', 'lg']}
+                  fontWeight={'medium'}
                   color={'#2E2E2E'}
+                  mt={2}
+                  lineHeight={7}
+
                 >
-                  allontanati da questa idea più che puoi.
+                  che tu sia un brand emergente o un negozio compila il form per ricevere maggiori informazioni.
                 </Text>
                 <Button
-                  mt={[6, 10]}
+                  mt={[7, 10]}
                   size={'lg'}
+
                   fontSize={['lg', '2xl']}
-                  fontWeight={['bold', 'semibold']}
-                  px={[8, 12]}
-                  py={[2, 8]}
-                  width={'fit-content'}
+                  fontWeight={['bold', 'bold']}
+
+                  px={[10, 20]}
+                  py={[7, 8]}
+                  width={['fit-content']}
+                  //className='w-11/12 lg:w-fit'
                   borderRadius={'10px'}
+
                   color={'white'}
-                  background={'#0132D1'}
+                  background={'black'}
                   _hover={{
-                    bg: '#0132D1'
+                    bg: 'black'
                   }}
                   _focus={{
-                    bg: '#0132D1'
+                    bg: 'black'
                   }}
                   _active={{
                     transform: 'scale(0.98)',
                   }}
                   onClick={() => { setModalForm(true) }}
                 >
-                  scopri di più
+                  sentiamoci
                 </Button>
               </Box>
+              <img
+                src="/home_svg/iphoneMockup.svg"
+                alt="home image" />
             </Box>
 
 
-          </Gradient_Component_home>
-
-          <img className='flex lg:hidden mx-auto  mt-[-30px] '
-            src="/home_svg/iphoneMockup.svg"
-            alt="home image" />
-          <Box
-            pl={2}
-            background={'#FFF7BC'}
-            display={'flex'}
-            justifyContent={'space-around'}
-            className='px-6 md:px-28 mt-[-80px] lg:mt-0'
-
-          >
-            <Box
-              px={[6, 6, 20, 0]}
-              className='lg:w-1/2 xl:w-5/12 my-20 md:my-40 lg:my-auto mt-[120px]'
-            >
-              <Section>
-
-
-                <Text
-                  fontSize={['3xl', '5xl']}
-                  lineHeight={['30px', '50px']}
-                  fontWeight={'extrabold'}
-                  color={'#0132D1'}
-
-                >
-                  Vogliamo dar luce ai prodotti
-                </Text>
-                <Text
-                  fontSize={['lg', 'xl']}
-                  fontWeight={'medium'}
-
-                  color={'#2E2E2E'}
-                  mt={[6, 4]}
-                >
-                  che rendono la moda una vera espressione di sé, attraverso una piattaforma completamente dedicata.
-                </Text>
-              </Section>
-            </Box>
-            <img className='hidden lg:flex mt-[-20px]'
-              src="/home_svg/iphoneMockup.svg"
-              alt="home image" />
-          </Box>
-
-
-
-
-          <Section>
-            <Box
-              className='py-20 lg:py-40 '
-              textAlign={'center'}
-            >
-
-              <Box
-                px={[4]}
-                display={'flex'}
-                fontSize={['2xl', '3xl', '5xl']}
-                lineHeight={['', '60px']}
-                fontWeight={'black'}
-                width={'fit-content'}
-                position={'relative'}
-                mr={[2]}
-                color={'#0133FF'}
-                marginX={'auto'}
-                maxWidth={'4xl'}
-              >
-
-                Entra nel marketplace innovativo per brand emergenti
-
-
-                {/* <div className='absolute w-full h-2 lg:h-4 bottom-2 lg:bottom-4 bg-[#BB3838]'>
-                  </div> */}
-              </Box>
-
-
-
-              <Text
-                as={'h2'}
-                fontSize={['md', '2xl']}
-                fontWeight={'medium'}
-                color={'#2E2E2E'}
-                className='w-10/12 md:w-3/4 lg:w-1/2 mx-auto'
-                mt={[4, 6]}
-              >
-                dove migliaia di clienti possono scoprire e acquistare
-                prodotti unici, proprio come il tuo.
-              </Text>
-              <Button
-                mt={[6, 12]}
-                size={'lg'}
-
-                fontSize={['lg', '2xl']}
-                fontWeight={['bold', 'bold']}
-                px={[14, 24]}
-                py={[7, 10]}
-                width={['fit-content']}
-                //className='w-11/12 lg:w-fit'
-                borderRadius={'10px'}
-
-                color={'#0132D1'}
-                background={'#FFF7BC'}
-                _hover={{
-                  bg: '#FFF7BC'
-                }}
-                _focus={{
-                  bg: '#FFF7BC'
-                }}
-                _active={{
-                  transform: 'scale(0.98)',
-                }}
-                onClick={() => { setModalForm(true) }}
-              >
-                inizia
-              </Button>
-            </Box>
-          </Section>
-          <img className='flex lg:hidden m-auto  sm:mt-20'
-            src="/home_svg/homeImage.svg"
-            alt="home image" />
-
-          <Box
-            gap={28}
-            justifyContent={'space-between'}
-            className='px-6 md:px-40 grid lg:flex'
-            bg={'#FFF7BC'}
-            paddingY={28}
-          >
-
-            <Box
-              className='w-full sm:w-10/12 md:w-full xl:w-4/12 m-auto'
-              textAlign={'center'}
-
-            >
-              <Section>
-                <Text
-                  fontSize={['2xl', '4xl']}
-                  fontWeight={'extrabold'}
-                  color={'#0133FF'}
-                  lineHeight={['45px', '70px']}
-
-                >
-                  Mission & Vision
-                </Text>
-                <Text
-                  fontSize={['md', 'lg']}
-                  fontWeight={'medium'}
-                  color={'#2E2E2E'}
-                  mt={[5, 4]}
-                >
-                  In un mondo dove vengono seguiti i trend dettati dalle grandi etichette del fast fashion vogliamo dare visibilità ai brand emergenti che con i loro prodotti e le loro idee rendono la moda una vera espressione di sé.
-                </Text>
-
-              </Section>
-            </Box>
-            <img className='hidden lg:flex h-96'
-              src="/home_svg/homeImage.svg"
-              alt="home image" />
-
-
-          </Box>
-
-
-
-
-
-
-          <Section>
-            <Box
-              className='h-fit mb-20 mt-20 lg:mt-40 lg:mt-18 '
-              textAlign={'center'}
-            >
-
-              <Box
-                display={'flex'}
-                fontSize={['4xl', '4xl', '7xl']}
-                fontWeight={'black'}
-                width={'fit-content'}
-                position={'relative'}
-                mr={[2]}
-                marginX={'auto'}
-                color={'#0133FF'}
-              >
-
-                Scopri Veplo
-
-
-                {/* <div className='absolute w-full h-2 lg:h-4 bottom-2 lg:bottom-4 bg-[#BB3838]'>
-                  </div> */}
-              </Box>
-
-
-
-              <Text
-                as={'h2'}
-                fontSize={['md', 'lg']}
-                fontWeight={'medium'}
-                color={'#2E2E2E'}
-                className='w-11/12 md:w-3/4 lg:w-1/2 xl:w-5/12 mt-4 mx-auto'
-                mt={[2, -2]}
-              >
-                che tu sia un brand emergente o un negozio compila il form per ricevere maggiori informazioni.
-              </Text>
-              <Button
-                mt={[7, 10]}
-                size={'lg'}
-
-                fontSize={['lg', '2xl']}
-                fontWeight={['bold', 'bold']}
-
-                px={[10, 20]}
-                py={[7, 8]}
-                width={['fit-content']}
-                //className='w-11/12 lg:w-fit'
-                borderRadius={'10px'}
-
-                color={'white'}
-                background={'#0132D1'}
-                _hover={{
-                  bg: '#0132D1'
-                }}
-                _focus={{
-                  bg: '#0132D1'
-                }}
-                _active={{
-                  transform: 'scale(0.98)',
-                }}
-                onClick={() => { setModalForm(true) }}
-              >
-                sentiamoci
-              </Button>
-            </Box>
           </Section>
           <Box
             textAlign={'center'}
             color={'#666666'}
             mb={10}
-            mt={[16, 40]}
             display={'grid'}
             justifyContent={'center'}
 
@@ -556,12 +526,12 @@ const Home: NextPage = () => {
             width={'full'}
             borderRadius={'10px'}
             color={'white'}
-            background={'#0132D1'}
+            background={'black'}
             _hover={{
-              bg: '#0132D1'
+              bg: 'black'
             }}
             _focus={{
-              bg: '#0132D1'
+              bg: 'black'
             }}
             _active={{
               transform: 'scale(0.98)',
@@ -613,12 +583,12 @@ const Home: NextPage = () => {
               width={'full'}
               borderRadius={'10px'}
               color={'white'}
-              background={'#0132D1'}
+              background={'black'}
               _hover={{
-                bg: '#0132D1'
+                bg: 'black'
               }}
               _focus={{
-                bg: '#0132D1'
+                bg: 'black'
               }}
               _active={{
                 transform: 'scale(0.98)',
