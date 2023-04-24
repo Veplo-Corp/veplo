@@ -291,6 +291,7 @@ const Home: NextPage = () => {
             width={'full'}
             bg={'#F1F1F1'}
             className='pb-16 lg:p-20'
+
           >
             <img src="/home_svg/GirlHodie.jpg" alt=""
               className='pt-10 lg:hidden contrast-[.85] brightness-[.9] w-full lg:w-96 aspect-[9/10] object-cover'
