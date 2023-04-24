@@ -119,13 +119,13 @@ const Home: NextPage = () => {
         <div className='w-full'>
           <Box
             zIndex={0}
-            className='h-screen lg:flex absolute top-0 w-full'
+            className='lg:h-screen lg:flex absolute top-0 w-full'
           >
             <img src="/home_svg/twoGirls.jpg" alt=""
-              className='h-screen w-full object-fill contrast-[.85] brightness-[.9]'
+              className='hidden lg:flex h-screen w-full object-fill contrast-[.85] brightness-[.9]'
             />
             <img src="/home_svg/manWithGlasses.jpg" alt=""
-              className='h-screen w-full object-fill contrast-[.85] brightness-[.9]'
+              className='h-7/12 md:h-screen w-full object-fill contrast-[.85] brightness-[.9]'
             />
 
           </Box>
@@ -136,10 +136,10 @@ const Home: NextPage = () => {
             >
               <Text
                 position={'absolute'}
-                top={[8]}
+                top={[6, 8]}
                 left={[6, 12]}
                 color={'white'}
-                fontSize={['3xl', '5xl']}
+                fontSize={['4xl', '5xl']}
                 fontWeight={'black'}
               >
                 Veplo
@@ -148,22 +148,21 @@ const Home: NextPage = () => {
             </Link>
 
             <Box
-              className='h-screen pt-[45vh]'
-              textAlign={['left', 'center']}
+              className='px-4 lg:px-0 pb-20 md:pb-0 md:h-screen pt-[30vh] md:pt-[45vh]'
+              textAlign={'center'}
               position={'sticky'}
             >
               <Text
-                className='text-4xl md:text-5xl lg:text-6xl pt-12 lg:pt-0'
-                lineHeight={['10', 'base']}
+                className='text-xl md:text-4xl lg:text-6xl pt-12 lg:pt-0'
+
                 fontWeight={'black'}
                 textColor={'white'}
               >
                 HAI PRESENTE IL FAST FASHION?
               </Text>
               <Text
-                mt={[2, 0]}
-                fontWeight={'semibold'}
-                className='text-lg md:text-xl lg:text-4xl'
+                fontWeight={['medium', 'semibold']}
+                className='text-md md:text-xl lg:text-4xl'
                 color={'white'}
               >
                 Allontanati da questa idea più che puoi.
@@ -200,7 +199,7 @@ const Home: NextPage = () => {
           <Box
             width={'full'}
             textAlign={'center'}
-            padding={24}
+            padding={[10, 24]}
           >
             <Text
               fontSize={'lg'}
@@ -209,41 +208,47 @@ const Home: NextPage = () => {
             >
               VEPLO È IL MARKETPLACE DI ABBIGLIAMENTO CHE SELEZIONA I MIGLIORI MARCHI INDIPENDENTI E NEGOZI IN CIRCOLAZIONE.<br />SU VEPLO MIGLIAIA DI CLIENTI POSSONO TROVARE CAPI DI DESIGN E DI QUALITÀ, SVINCOLANDOSI DALLE INFLUENZE DEL FAST FASHION E TROVANDO COSÌ IL MODO DI ESPRIMERE LA LORO VERA IDENTITÀ.
             </Text>
-            <Button
-              mt={[6, 10]}
-              mb={5}
-              size={'lg'}
-              fontSize={['lg', '2xl']}
-              fontWeight={['bold', 'semibold']}
-              px={[8, 12]}
-              py={[2, 8]}
-              width={'fit-content'}
-              borderRadius={'10px'}
-              color={'white'}
-              background={'black'}
-              _hover={{
-                bg: 'black'
-              }}
-              _focus={{
-                bg: 'black'
-              }}
-              _active={{
-                transform: 'scale(0.98)',
-              }}
-              onClick={() => { setModalForm(true) }}
+            <div
+              className='hidden lg:flex'
             >
-              scopri di più
-            </Button>
+              <Button
+                className='mx-auto'
+                mt={[6, 10]}
+                size={'lg'}
+                fontSize={['lg', '2xl']}
+                fontWeight={['bold', 'semibold']}
+                px={[8, 12]}
+                py={[2, 8]}
+                width={'fit-content'}
+                borderRadius={'10px'}
+                color={'white'}
+                background={'black'}
+                _hover={{
+                  bg: 'black'
+                }}
+                _focus={{
+                  bg: 'black'
+                }}
+                _active={{
+                  transform: 'scale(0.98)',
+                }}
+                onClick={() => { setModalForm(true) }}
+
+              >
+                scopri di più
+              </Button>
+            </div>
+
           </Box>
 
           <Box
             width={'full'}
             textAlign={'center'}
-            padding={2}
+            padding={[4, 2]}
             bg={'black'}
           >
             <Text
-              fontSize={'4xl'}
+              fontSize={['2xl', '4xl']}
               fontWeight={'black'}
               color={'white'}
               className='lg:w-1/2 m-auto'
@@ -256,23 +261,23 @@ const Home: NextPage = () => {
           <Box
             width={'full'}
             bg={'#F1F1F1'}
-            mt={20}
-            p={20}
+            mt={[8, 14]}
+            className='lg:p-20'
 
           >
             <Box
-              className='m-auto px-20'
-              display={'flex'}
+              className='m-auto lg:px-20 lg:flex'
+
               justifyContent={'space-between'}
               textAlign={'center'}
             >
               <img src="/home_svg/girlAuto.jpg" alt=""
-                className=' contrast-[.85] brightness-[.9] w-96 aspect-[9/10] object-cover'
+                className=' contrast-[.85] brightness-[.9] w-full lg:w-96 aspect-[9/10] object-cover'
               />
               <Text
-                fontSize={'lg'}
+                fontSize={['md', 'lg']}
                 fontWeight={'normal'}
-                className='w-6/12 my-auto leading-8'
+                className='mt-10  px-3 lg:px-0 lg:w-6/12 lg:my-auto leading-8'
               >
                 <strong>LA MODA COME ESPRESSIONE PERSONALE</strong><br />
                 CIO’ CHE INDOSSIAMO COMUNICA CHI SIAMO E CI RENDE UNICI. TUTTAVIA, STA DIVENTANDO SEMPRE PiÙ DIFFICILE RIUSCIRE A TROVARE IL PROPRIO STILE IN UN MONDO IN CUI I TREND VENGONO DETTATI DALLE GRANDI ETICHETTE DEL FAST FASHION. PER QUESTO MOTIVO, È FONDAMENTALE CHE I BRAND INDIPENDENTI,  ABBIANO LA GIUSTA VISIBILITÀ E SUPPORTO, PERMETTENDO COSÌ A TUTTI DI POTER SCEGLIERE QUALE STILE ADOTTARE E IMPERSONARE.
@@ -280,62 +285,52 @@ const Home: NextPage = () => {
 
             </Box>
           </Box>
+
           <Box
             width={'full'}
             bg={'#F1F1F1'}
-            p={20}
-
+            className='pb-16 lg:p-20'
           >
+            <img src="/home_svg/girlHodie.jpg" alt=""
+              className='pt-10 lg:hidden contrast-[.85] brightness-[.9] w-full lg:w-96 aspect-[9/10] object-cover'
+            />
             <Box
-              className='m-auto px-20'
+              className='m-auto lg:px-20 lg:flex'
               display={'flex'}
               justifyContent={'space-between'}
               textAlign={'center'}
             >
               <Text
-                fontSize={'lg'}
+                fontSize={['md', 'lg']}
                 fontWeight={'normal'}
-                className='w-6/12 my-auto leading-8'
+                className='mt-10  px-3 lg:px-0 lg:w-6/12 lg:my-auto leading-8'
               >
                 <strong>UNA COMMUNITY</strong><br />
                 SELEZIONARE CON CURA I NOSTRI PARTNER, NEGOZI FISICI O BRAND INDIPENDENTI, SIGNIFICA ANCHE PARLARE, ASCOLTARE E SCOPRIRE LE LORO STORIE. VOGLIAMO COSTRUIRE UNA COMUNITÀ DI NEGOZI CON GLI STESSI VALORI, CHE CREDONO IN UN’IDEA DI MODA DIVERSA DA QUELLA A CUI SIAMO ABITUATI, DOVE IL DNA DI OGNI SINGOLO BRAND POSSA ESPRIMERSI IN TUTTA LA SUA FORMA.
 
               </Text>
               <img src="/home_svg/girlHodie.jpg" alt=""
-                className=' contrast-[.85] brightness-[.9] w-96 aspect-[9/10] object-cover'
+                className='hidden lg:flex contrast-[.85] brightness-[.9] w-96 aspect-[9/10] object-cover'
               />
 
 
             </Box>
           </Box>
-          <img className='flex lg:hidden mx-auto  mt-[-30px] '
+          <img className='flex lg:hidden mx-auto  mt-[-35px] '
             src="/home_svg/iphoneMockup.svg"
             alt="home image" />
-
-
-
-
-
-
-
-
-
-
-
-
-
 
           <Section>
             <Box
               display={'flex'}
               width={'full'}
-              padding={36}
+              className='p-3 pt-16 md:p-20 lg:p-36'
               paddingBottom={20}
               justifyContent={'space-between'}
 
             >
               <Box
-                className='w-7/12 my-auto'
+                className='lg:w-7/12 my-auto'
                 textAlign={'center'}
 
               >
@@ -410,7 +405,9 @@ const Home: NextPage = () => {
               </Box>
               <img
                 src="/home_svg/iphoneMockup.svg"
-                alt="home image" />
+                alt="home image"
+                className='hidden lg:flex'
+              />
             </Box>
 
 
