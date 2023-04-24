@@ -311,7 +311,7 @@ const Home: NextPage = () => {
                 SELEZIONARE CON CURA I NOSTRI PARTNER, NEGOZI FISICI O BRAND INDIPENDENTI, SIGNIFICA ANCHE PARLARE, ASCOLTARE E SCOPRIRE LE LORO STORIE. VOGLIAMO COSTRUIRE UNA COMUNITÀ DI NEGOZI CON GLI STESSI VALORI, CHE CREDONO IN UN’IDEA DI MODA DIVERSA DA QUELLA A CUI SIAMO ABITUATI, DOVE IL DNA DI OGNI SINGOLO BRAND POSSA ESPRIMERSI IN TUTTA LA SUA FORMA.
 
               </Text>
-              <img src="/home_svg/girlHodie.jpg" alt=""
+              <img src="/home_svg/GirlHodie.jpg" alt=""
                 className='hidden lg:flex contrast-[.85] brightness-[.9] w-96 aspect-[9/10] object-cover'
               />
 
