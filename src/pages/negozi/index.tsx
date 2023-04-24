@@ -38,10 +38,14 @@ export const getStaticProps = async () => {
             revalidate: 60, // In seconds
         }
     }
-    catch {
+    catch (error) {
+        console.log(error);
+
+
         return {
             props: {
                 shops: []
+
             },
             revalidate: 60, // In seconds
         }
@@ -54,7 +58,7 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
         removeFromLocalStorage('genderSelected')
     }, [])
 
-    console.log(shops);
+    console.log("SHOPS", shops);
 
     const router = useRouter()
 
