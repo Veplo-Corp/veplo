@@ -34,8 +34,11 @@ import { ToastOpen } from '../utils/Toast';
 
 interface Props {
     shop: {
-        firebaseId: string
-        products: Product[],
+        firebaseId: string,
+
+        products: {
+            products: Product[]
+        }
     }
 
 }
@@ -43,6 +46,7 @@ interface Props {
 
 const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ idShop, deleteProduct }) => {
     const { addToast } = ToastOpen();
+
 
     const router = useRouter()
     //const [products, SetProducts] = useState<Product[] | []>([])
@@ -86,7 +90,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
         // notifyOnNetworkStatusChange: true,
     });
 
-    console.log(data?.shop.products);
+    console.log(error);
 
 
 
@@ -129,7 +133,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
     const textSearchProducts = (inputSearch: string) => {
         console.log(inputSearch);
 
-        const productsFiltered = data?.shop.products
+        const productsFiltered = data?.shop.products?.products
             .filter((product: Product) =>
                 product.name
                     .toLowerCase()
@@ -276,7 +280,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                         </Tr>
                     </Thead>
                     <Tbody >
-                        {data?.shop.products && (productsOnTextSearched.inputText.length > 0 ? productsOnTextSearched.products : data?.shop.products).map((product: Product | any) => {
+                        {data?.shop.products && (productsOnTextSearched.inputText.length > 0 ? productsOnTextSearched.products : data?.shop.products?.products).map((product: Product | any) => {
                             //const categoryAndmicrocategory = (`${product.info.macroCategory} - ${product.info.microCategory}`).length > 25 ? (`${product.info.macroCategory} - ${product.info.microCategory}`).substring(0, 25) + '...' : (`${product.info.macroCategory} - ${product.info.microCategory}`)
                             return (
                                 <Tr key={product.id} fontSize={['xs', 'medium']}
