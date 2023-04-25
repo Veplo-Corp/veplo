@@ -389,9 +389,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             minWidth={'xs'}
                             className='hidden lg:table w-1/4 lg:mt-4'
                         >
-                            {categories.current[gender === 'm' ? 1 : 0].abbigliamento.map(element => {
-
-
+                            {categories.current[/* gender === 'm' ? 1 :  */0].abbigliamento.map(element => {
                                 return (
                                     <Box
                                         key={element.name}
