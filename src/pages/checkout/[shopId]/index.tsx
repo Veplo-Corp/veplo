@@ -124,7 +124,7 @@ const index = () => {
 
                         <div className='w-full m-auto md:w-10/12 lg:w-1/2 mt-4'>
                             <Link
-
+                                prefetch={false}
                                 href={`/negozio/${cart.shopInfo.id}/${createUrlSchema([cart.shopInfo.name])}`}
                             >
                                 <Text

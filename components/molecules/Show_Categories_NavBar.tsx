@@ -29,6 +29,7 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any }> =
             <h1 className='font-bold text-lg'>Abbigliamento {toUpperCaseFirstLetter(gender)}</h1>
             <div className='grid grid-cols-2 mt-3 gap-x-2.5 '>
                 <Link
+                    prefetch={false}
                     className='text-base font-medium mb-1 w-fit cursor-pointer hover:underline underline-offset-2'
                     href={indexCategory === 1 ? `/prodotti/uomo-abbigliamento/tutto/rilevanza` : `/prodotti/donna-abbigliamento/tutto/rilevanza`}
                 >
@@ -46,6 +47,7 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: any }> =
 
                     return (
                         <Link
+                            prefetch={false}
                             href={!categorySelectedUrl ? `/ prodotti / ${gender}-abbigliamento/tutto/rilevanza` : `/prodotti/${categorySelectedUrl}/tutto/rilevanza`}
                             key={category.name} className='text-base font-medium mb-1 w-fit cursor-pointer hover:underline underline-offset-2'
 

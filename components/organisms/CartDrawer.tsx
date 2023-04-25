@@ -13,7 +13,6 @@ import { editVariationFromCart } from '../../src/store/reducers/carts'
 import { newTotalHandler } from '../utils/newTotalHandler'
 import VariationBoxList from '../molecules/VariationBoxList'
 import { sortShopsInCart } from '../utils/sortShopsInCart'
-import Link from 'next/link'
 
 const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, closeDrawer }) => {
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);

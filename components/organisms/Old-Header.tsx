@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import Link from 'next/link'
 import { NextRouter, useRouter } from 'next/router'
 import Navbar from '../molecules/Old-Home_Navbar'
 import JoinUs_Navbar from '../molecules/JoinUs_Navbar'

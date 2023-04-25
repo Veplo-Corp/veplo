@@ -57,6 +57,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                 </Text>
 
                 <Link
+                    prefetch={false}
                     href={'/orders/' + order.id}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10 my-auto mb-0">

@@ -15,7 +15,9 @@ const Modal_Help_Customer_Care: FC<{ isOpen: boolean, onClose: () => void }> = (
                 <ModalBody pb={6}>
                     <div className='w-full flex justify-between'>
                         <p>Invia una mail a:</p>
-                        <Link href="mailto:business@veplo.it"
+                        <Link
+                            prefetch={false}
+                            href="mailto:business@veplo.it"
                             target="_blank" rel="noopener noreferrer"
                             className='text-blue-700 underline'
                         >

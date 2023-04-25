@@ -58,7 +58,9 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined }> = ({
                 <Box
 
                 >
-                    <Link href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
+                    <Link
+                        prefetch={false}
+                        href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
 
                         <Box
                             display={'flex'}
@@ -99,7 +101,9 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined }> = ({
                         borderColor={'#F3F3F3'}
                     >
 
-                        <Link href={color ? `/prodotto/${product.id}/${toProductPage(product)}?colore=${color}` : `/prodotto/${product.id}/${toProductPage(product)}`}>
+                        <Link
+                            prefetch={false}
+                            href={color ? `/prodotto/${product.id}/${toProductPage(product)}?colore=${color}` : `/prodotto/${product.id}/${toProductPage(product)}`}>
 
                             <LazyLoadImage
                                 src={imageKitUrl(urlProduct, 447, 660)}

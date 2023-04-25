@@ -446,6 +446,7 @@ const index = () => {
 
                                         </Box>
                                         {order?.shipping?.url && <Link
+                                            prefetch={false}
                                             href={order?.shipping?.url.startsWith("https://") ? order.shipping?.url : "https://" + order.shipping?.url}
                                             target="_blank"
                                             className='text-lg font-bold h-fit flex'
