@@ -148,6 +148,7 @@ interface PropsFilter {
 }
 
 const index: FC<{ products: Product[], category: string, microCategory: string, gender: 'f' | 'm' }> = ({ products, microCategory, category, gender }) => {
+    console.log(products);
 
     const router = useRouter();
     const [loading, setLoading] = useState(true);
