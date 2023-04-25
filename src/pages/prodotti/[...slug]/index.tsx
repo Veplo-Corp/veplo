@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
-import { Box, Button, HStack, Input, InputGroup, Skeleton, Stack, Text, VStack, color } from '@chakra-ui/react';
+import { Box, Button, HStack, Input, InputGroup, Skeleton, SkeletonCircle, SkeletonText, Stack, Text, VStack, color } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, useEffect, useState } from 'react'
@@ -289,7 +289,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     useEffect(() => {
         setTimeout(() => {
             setLoading(false)
-        }, 500);
+        }, 1000);
 
     }, [])
 
@@ -644,17 +644,40 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     </div>
                                 </InfiniteScroll>)
                                 : (
-                                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-5 gap-y-5 w-full">
-                                        {[1, 2, 3].map((index) => {
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-5 gap-y-5 w-full">
+                                        {[1, 2, 3, 4].map((index) => {
                                             return (
-                                                <Skeleton
-                                                    startColor={'gray.100'}
-                                                    endColor={'gray.300'}
+                                                <Box
                                                     key={index}
-                                                    //height={['250px', '150', '500px']}
-                                                    className={'h-[250px] lg:h-[350px] xl:h-[500px]'}
-                                                    borderRadius={'10px'}
-                                                />
+                                                >
+                                                    <HStack
+                                                        mb={3}
+                                                        padding='0' bg='white' display={'flex'} gap={1.5}>
+                                                        <SkeletonCircle size='14' />
+                                                        <Box
+                                                            margin={'auto'}
+                                                        >
+                                                            <SkeletonText
+                                                                width={[56, 48]}
+
+                                                                noOfLines={1} skeletonHeight={'3'} />
+                                                            <SkeletonText mt='2'
+                                                                width={[36, 28]}
+
+                                                                noOfLines={1} skeletonHeight={'2.5'} />
+                                                        </Box>
+
+                                                    </HStack>
+                                                    <Skeleton
+                                                        startColor={'gray.100'}
+                                                        endColor={'gray.300'}
+
+                                                        //height={['250px', '150', '500px']}
+                                                        className={'h-[450px] lg:h-[350px] xl:h-[400px]'}
+                                                        borderRadius={'3xl'}
+                                                    />
+                                                </Box>
+
                                             )
                                         })}
 
