@@ -15,7 +15,6 @@ const GET_PRODUCTS_FROM_SHOP = gql`
                 products(
                     limit: $limit
                     offset: $offset
-                    filters: $filters    
                 ){
                     products{
                         id
