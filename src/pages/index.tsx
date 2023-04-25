@@ -122,10 +122,10 @@ const Home: NextPage = () => {
             className='lg:h-screen lg:flex absolute top-0 w-full'
           >
             <img src="/home_svg/twoGirls.jpg" alt=""
-              className='hidden lg:flex h-screen w-full object-fill contrast-[.85] brightness-[.9]'
+              className='hidden lg:flex h-screen w-full object-cover contrast-[.85] brightness-[.9]'
             />
             <img src="/home_svg/manWithGlasses.jpg" alt=""
-              className='h-[60vh] md:h-screen w-full object-fill contrast-[.85] brightness-[.9]'
+              className='h-[60vh] md:h-screen w-full object-cover contrast-[.85] brightness-[.9]'
             />
 
           </Box>
