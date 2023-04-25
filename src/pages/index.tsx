@@ -148,7 +148,7 @@ const Home: NextPage = () => {
             </Link>
 
             <Box
-              className='px-4 lg:px-0 pb-20 md:pb-0 h-[60vh] pt-[30vh] md:h-screen'
+              className='px-4 lg:px-0 pb-20 md:pb-0 h-[60vh] pt-[30vh] md:pt-[45vh] md:h-screen'
 
               //className='px-4 lg:px-0 pb-20 md:pb-0 md:h-screen pt-[30vh] md:pt-[45vh]'
               textAlign={'center'}
