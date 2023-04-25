@@ -2,7 +2,7 @@ import { useLazyQuery } from '@apollo/client';
 import { Box, Button, HStack, Input, InputGroup, Skeleton, SkeletonCircle, SkeletonText, Stack, Text, VStack, color } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch } from 'react-redux';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
@@ -170,7 +170,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
     })
     const [slug, setSlug] = useState<any[]>([])
-
+    const categories = useRef(Object.values(CATEGORIES))
 
 
     const fetchMoreData = async () => {
@@ -389,7 +389,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             minWidth={'xs'}
                             className='hidden lg:table w-1/4 lg:mt-4'
                         >
-                            {Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.map(element => {
+                            {categories.current[gender === 'm' ? 1 : 0].abbigliamento.map(element => {
 
 
                                 return (
