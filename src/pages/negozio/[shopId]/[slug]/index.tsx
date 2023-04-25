@@ -87,7 +87,7 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
 
     useEffect(() => {
         createAddressForMAps()
-        setproductsFounded(shop.products)
+        setproductsFounded(shop.products.products)
     }, [shop])
 
 
