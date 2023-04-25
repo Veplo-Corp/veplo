@@ -34,7 +34,7 @@ import { motion } from 'framer-motion';
 import Shop_not_Allowed from '../../../../components/utils/Shop_not_Allowed';
 
 
-const RANGE = 5
+const RANGE = 10
 
 
 export async function getStaticPaths() {
@@ -185,6 +185,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         }
 
 
+
         const newProducts = await getProducts({
             variables: {
                 offset: productsFounded.length,
@@ -199,12 +200,12 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         })
 
 
-        if (newProducts.data?.products) {
+        if (newProducts.data?.products.products) {
 
             setproductsFounded(prevstate => {
                 const products = [
                     ...prevstate,
-                    ...newProducts.data?.products
+                    ...newProducts.data?.products.products
                 ]
                 products.map(products => {
 
@@ -214,7 +215,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 ]
             })
 
-            if (newProducts.data?.products.length % RANGE !== 0 || newProducts.data?.products.length === 0) {
+            if (newProducts.data?.products.products.length % RANGE !== 0 || newProducts.data?.products.products.length === 0) {
                 setHasMoreData(false)
                 return console.log('no more data');
             }
@@ -222,8 +223,10 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
     }
 
+    //const fetchMoreData = async () => { }
+
     useEffect(() => {
-        const microcategory = Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.find(element => element.name === category)
+        const microcategory: any = Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.find(element => element.name === category)
         setproductsFounded(products)
 
         if (!microcategory?.types) return
@@ -234,6 +237,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         if (typeof slug === 'object' && slug?.length === 3) {
             setSlug(slug)
         }
+
 
     }, [products])
 
@@ -253,7 +257,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
         const filters = getFilterValue()
         console.log(filters);
-
         if (Object.keys(filters).length > 0) {
             const newProducts = async () => {
                 return await getProducts({
@@ -272,7 +275,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             }
 
             newProducts().then(products => {
-                setproductsFounded(products.data?.products)
+                if (!products.data?.products.products) return
+                setproductsFounded(products.data?.products.products)
                 setHasMoreData(true)
             })
         }
@@ -605,7 +609,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     }
                                 >
                                     <div className={` flex items-center justify-center`}>
-                                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-5 gap-y-5 w-full">
+                                        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-2 md:gap-5 gap-y-5 w-full">
 
                                             {productsFounded.length > 0 ?
                                                 (
@@ -624,9 +628,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                                 leaveFrom="opacity-0"
                                                                 leaveTo="opacity-0"
                                                             >
-                                                                <Link href={colors ? `/prodotto/${product.id}/${toProductPage(product)}?colore=${colors}` : `/prodotto/${product.id}/${toProductPage(product)}`}>
-                                                                    <Box_Dress product={product} color={typeof colors === 'string' ? colors : undefined}></Box_Dress>
-                                                                </Link>
+                                                                <Box_Dress product={product} color={typeof colors === 'string' ? colors : undefined}></Box_Dress>
                                                             </Transition>
 
                                                         )

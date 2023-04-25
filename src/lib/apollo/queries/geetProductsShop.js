@@ -10,51 +10,53 @@ const GET_PRODUCTS_FROM_SHOP = gql`
         ) {
         shop(
             id: $id
-        ){
-            id
-            products(
-                limit: $limit
-                offset: $offset
-            ) {
+        )  {
                 id
-                name
-                canBuy
-                status
-                info{
-                    gender
-                    macroCategory
-                    microCategory
-                    brand
-                }
-                location {
-                    type
-                    coordinates
-                }
-                shopInfo{
-                    id
-                    businessId
-                    name
-                    city
-                    status
-                }
-                price {
-                    v1
-                    discountPercentage
-                    v2
-                }
-                variations{
-                    color
-                    status
-                    
-                    photos
-                    lots{
-                        size
-                        quantity
+                products(
+                    limit: $limit
+                    offset: $offset
+                    filters: $filters    
+                ){
+                    products{
+                        id
+                        name
+                        status
+                        canBuy
+                        info {
+                            gender
+                            macroCategory
+                            microCategory
+                            brand
+                            fit
+                        }
+                        variations{
+                        id
+                        color
+                        status
+                        photos
+                        lots {
+                            size
+                            quantity
+                            }
+                        }
+                        price {
+                            v1
+                            discountPercentage
+                            v2
+                        }
+                        shopInfo{
+                            id
+                            businessId
+                            name 
+                            city
+                            status
+                        }
                     }
-                }
-            }
-        } 
-    }
+                } 
+            
+            
+            } 
+        }
 `
 
 

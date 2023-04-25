@@ -28,7 +28,9 @@ export interface Shop {
 }
 
 export interface ShopAndProducts extends Shop {
+    products: {
+        filters: any,
+        products: Product[]
+    }
 
-
-    products: Product[]
 }
