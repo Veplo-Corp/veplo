@@ -125,7 +125,7 @@ const Home: NextPage = () => {
               className='hidden lg:flex h-screen w-full object-fill contrast-[.85] brightness-[.9]'
             />
             <img src="/home_svg/manWithGlasses.jpg" alt=""
-              className='h-7/12 md:h-screen w-full object-fill contrast-[.85] brightness-[.9]'
+              className='h-[60vh] md:h-screen w-full object-fill contrast-[.85] brightness-[.9]'
             />
 
           </Box>
@@ -148,7 +148,9 @@ const Home: NextPage = () => {
             </Link>
 
             <Box
-              className='px-4 lg:px-0 pb-20 md:pb-0 md:h-screen pt-[30vh] md:pt-[45vh]'
+              className='px-4 lg:px-0 pb-20 md:pb-0 h-[60vh] pt-[30vh] md:h-screen'
+
+              //className='px-4 lg:px-0 pb-20 md:pb-0 md:h-screen pt-[30vh] md:pt-[45vh]'
               textAlign={'center'}
               position={'sticky'}
             >
@@ -199,7 +201,8 @@ const Home: NextPage = () => {
           <Box
             width={'full'}
             textAlign={'center'}
-            padding={[12, 16, 24]}
+            padding={[10, 24]}
+            paddingTop={[10, 24]}
           >
             <Text
               fontSize={'lg'}
