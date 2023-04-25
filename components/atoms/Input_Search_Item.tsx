@@ -29,6 +29,7 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: (text: string)
                     _active={{
                         borderWidth: 0
                     }}
+                    borderWidth={0}
                     onKeyDown={onConfirm}
                     placeholder={placeholder}
                     _placeholder={{
@@ -43,7 +44,7 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: (text: string)
                     fontSize={'18px'}
                     focusBorderColor='gray.300'
                     fontWeight={'semibold'}
-                    bg={'gray.100'}
+                    bg={'#F2F2F2'}
                     onChange={(e) => handleChangeValueInput(e)}
                 />
                 <InputRightElement

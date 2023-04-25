@@ -290,7 +290,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     useEffect(() => {
         setTimeout(() => {
             setLoading(false)
-        }, 1000);
+        }, 500);
 
     }, [])
 
