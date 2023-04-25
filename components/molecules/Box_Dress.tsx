@@ -15,6 +15,7 @@ import createUrlSchema from '../utils/create_url'
 
 
 const Box_Dress: React.FC<{ product: Product; color?: string | undefined }> = ({ product, color }) => {
+
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     const [width, height] = useWindowSize();
     //const [dimensionUrl, setDimensionUrl] = useState('&tr=w-571,h-825')
@@ -173,7 +174,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined }> = ({
                                     fontWeight={'bold'}
                                     color={'white'}
                                 >
-                                    {product.price?.v2 ? Number(product.price?.v2).toFixed(2).replace('.', ',') : Number(product.price?.v2).toFixed(2).replace('.', ',')}€
+                                    {product.price?.v2 ? Number(product.price?.v2).toFixed(2).replace('.', ',') : Number(product.price?.v1).toFixed(2).replace('.', ',')}€
                                 </Text>
                                 {product.price?.v2 && <Text
                                     mt={-2}
