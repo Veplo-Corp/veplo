@@ -399,6 +399,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                         width={'fit-content'}
                                     >
                                         <Link
+                                            prefetch={false}
                                             href={'/prodotti/' + (gender == 'f' ? 'donna' : 'uomo') + '-' + element.url + '/tutto/rilevanza'}
                                         >
                                             <Text
