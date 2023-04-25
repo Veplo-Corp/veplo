@@ -94,6 +94,7 @@ const index = () => {
                                     {order?.shop.name}
                                 </Text>
                                 <Link
+                                    prefetch={false}
                                     href={'/negozio/' + order?.shop.id + '/' + createUrlSchema([order?.shop.name])}
                                     className='text-sm font-semibold underline'
                                 >
@@ -169,6 +170,7 @@ const index = () => {
                         <PriceAndShippingListingCost subTotal={order.totalDetails.subTotal} total={order.totalDetails.total} shippingCost={order.totalDetails.amountShipping} />
 
                         {order.shipping?.url && <Link
+                            prefetch={false}
                             href={order.shipping?.url.startsWith("https://") ? order.shipping?.url : "https://" + order.shipping?.url}
                             target="_blank"
                             className='text-lg font-bold h-fit flex'

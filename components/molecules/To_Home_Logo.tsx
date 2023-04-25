@@ -17,7 +17,9 @@ const To_Home_Logo: FC<{ href: string }> = ({ href }) => {
 
 
     return (
-        <Link href={href} >
+        <Link
+            prefetch={false}
+            href={href} >
             <div className="font-black  text-2xl md:text-3xl italic text-black-900  flex">Veplo{
                 city.length > 0 &&
                 <>

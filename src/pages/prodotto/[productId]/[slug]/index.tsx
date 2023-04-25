@@ -675,7 +675,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
 
                         <>
-                            <Link href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
+                            <Link
+                                prefetch={false}
+                                href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
                                 <Box
                                     fontWeight='light'
                                     as='h1'
@@ -704,7 +706,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
 
                                     return (
-                                        <Link key={element.id} href={`/prodotto/${element.id}/${toProductPage(element)}`}>
+                                        <Link
+                                            prefetch={false}
+                                            key={element.id} href={`/prodotto/${element.id}/${toProductPage(element)}`}>
                                             <div className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
                                                 <Box borderRadius='xl' overflow='hidden'
                                                     borderWidth={0.5}
@@ -770,7 +774,9 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                         </Link>
                                     )
                                 })}
-                                <Link href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}
+                                <Link
+                                    prefetch={false}
+                                    href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}
                                     className={`flex gap-4 w-36 max-h-max justify-center`}
                                 >
                                     <div className='my-auto'>

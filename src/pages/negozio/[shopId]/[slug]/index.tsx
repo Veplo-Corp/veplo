@@ -219,7 +219,9 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
                     {productsFounded.map((product) => {
                         return (
-                            <Link key={product.id} href={`/prodotto/${product.id}/${toProductPage(product)}`}>
+                            <Link
+                                prefetch={false}
+                                key={product.id} href={`/prodotto/${product.id}/${toProductPage(product)}`}>
                                 <Box_Dress product={product}
 
                                 ></Box_Dress>

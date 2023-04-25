@@ -737,6 +737,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
                         return (
                             <Link
+                                prefetch={false}
                                 key={element}
 
                                 href={

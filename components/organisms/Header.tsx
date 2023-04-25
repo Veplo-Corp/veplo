@@ -109,6 +109,7 @@ const Header = () => {
                 <nav className="flex items-center justify-between px-4 md:px-6 py-4 lg:px-8" aria-label="Global">
                     <div className="flex lg:flex-1">
                         {<Link
+                            prefetch={false}
                             href={`${user?.isBusiness ? '/shop/home' : '/'}`}
                             className="-m-1.5 p-1.5">
                             <img
