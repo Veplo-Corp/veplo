@@ -199,7 +199,7 @@ const Home: NextPage = () => {
           <Box
             width={'full'}
             textAlign={'center'}
-            padding={[10, 24]}
+            padding={[12, 16, 24]}
           >
             <Text
               fontSize={'lg'}
