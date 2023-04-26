@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useLayoutEffect, useState } from 'react'
-import { Avatar, Box, Fade, Image, Text, VStack } from '@chakra-ui/react'
+import { Avatar, Box, Fade, Image, ScaleFade, Text, VStack } from '@chakra-ui/react'
 import Circle_Color from '../atoms/Circle_Color'
 import { Product, Variation } from '../../src/interfaces/product.interface'
 import { COLORS } from '../mook/colors'
@@ -122,7 +122,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                             prefetch={false}
                             href={color ? `/prodotto/${product.id}/${toProductPage(product)}?colore=${color}` : `/prodotto/${product.id}/${toProductPage(product)}`}>
                             {showSize &&
-                                <Fade in={showSize}
+                                <ScaleFade initialScale={0.7} in={showSize}
                                     className='z-10 absolute hidden lg:flex'
                                 >
                                     <VStack top={0}
@@ -165,7 +165,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                                         }
 
                                     </VStack>
-                                </Fade>
+                                </ScaleFade>
 
 
                             }
