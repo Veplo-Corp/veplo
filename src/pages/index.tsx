@@ -101,7 +101,7 @@ const Home: NextPage = () => {
   return (
     <>
       <PostMeta
-        canonicalUrl='https://www.veplo.it/'
+        canonicalUrl='https://www.veplo.it'
         title={'Veplo | Libera il tuo stile '}
         subtitle={"Il Marketplace che seleziona i migliori marchi indipendenti e negozi in circolazione | Hai presente il fast fashion? Allontanati da questa idea più che puoi | Abbigliamento · Scarpe · Vestiti"}
         image={''}
