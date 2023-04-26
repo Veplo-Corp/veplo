@@ -24,9 +24,9 @@ import Modal_Info_Store from '../../../../../components/organisms/Modal_Info_Sto
 import isShopOpen from '../../../../../components/utils/isShopOpen'
 import GET_SHOP_AND_PRODUCTS from '../../../../lib/apollo/queries/getSingleShop'
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
-import { numberOfLineText } from '../../../../../components/utils/NumberOfLineText'
 import { MoreHoriz, MoreHorizCircle, Phone, PinAlt } from 'iconoir-react'
 import PopoverComponent from '../../../../../components/molecules/PopoverComponent'
+import { numberOfLineText } from '../../../../../components/utils/numberOfLineText'
 
 export async function getStaticPaths() {
     return {
