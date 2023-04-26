@@ -205,17 +205,14 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
                                 ]
                             }
                             icon={
-
-
                                 <MoreHoriz
-                                    color='black'
+
                                     className='m-auto'
                                     height={'full'}
                                     width={'full'}
                                     strokeWidth={2}
+
                                 />
-
-
                             } />
 
                     </Box>
