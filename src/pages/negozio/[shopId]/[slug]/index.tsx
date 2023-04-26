@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Box_Shop from '../../../../../components/molecules/Box_Shop'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout'
-import { Box, defineStyle, Divider, Text } from '@chakra-ui/react'
+import { Box, Button, defineStyle, Divider, Flex, Spacer, Text } from '@chakra-ui/react'
 import Box_Dress from '../../../../../components/molecules/Box_Dress'
 import { useRouter } from 'next/router'
 import Horizontal_Line from '../../../../../components/atoms/Horizontal_Line'
@@ -24,6 +24,9 @@ import Modal_Info_Store from '../../../../../components/organisms/Modal_Info_Sto
 import isShopOpen from '../../../../../components/utils/isShopOpen'
 import GET_SHOP_AND_PRODUCTS from '../../../../lib/apollo/queries/getSingleShop'
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
+import { numberOfLineText } from '../../../../../components/utils/NumberOfLineText'
+import { MoreHoriz, MoreHorizCircle, Phone } from 'iconoir-react'
+import PopoverComponent from '../../../../../components/molecules/PopoverComponent'
 
 export async function getStaticPaths() {
     return {
@@ -65,15 +68,16 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
     const [productsFounded, setproductsFounded] = useState<Product[]>([])
     const [hasMoreData, setHasMoreData] = useState(true)
     const [isOpen, setIsOpen] = useState(false)
+    const [showAllDescriptionShop, setshowAllDescriptionShop] = useState(false)
+    const [descriptionRefTextLenght, setDescriptionRefTextLenght] = useState(0)
+    const descriptionRefText = useRef<any>(null)
 
-
-    const toProductPageUrl = (product: Product) => {
-
-        // const newUrl = toProductPage(product)
-        // if (newUrl) {
-        //     router.push(`/prodotto/${product.id}/${newUrl}`)
-        // }
-    }
+    useEffect(() => {
+        if (descriptionRefText.current) {
+            const numberOfLine = numberOfLineText(descriptionRefText.current);
+            setDescriptionRefTextLenght(numberOfLine);
+        }
+    }, [descriptionRefText]);
 
     const [getMoreProducts, { loading, error, data, fetchMore }] = useLazyQuery(GET_PRODUCTS_FROM_SHOP);
 
@@ -91,12 +95,10 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
 
 
 
-
-
-
-
     return (
-        <Desktop_Layout>
+        <Desktop_Layout
+            noPaddingXMobile={true}
+        >
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`${toUpperCaseFirstLetter(shop.name)} a ${shop.address.city}, ${shop.address.street} - CAP ${shop.address.postcode} - Veplo.it`}
@@ -104,128 +106,132 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
                 image={shop.profileCover}
                 description={`Visita il negozio di abbigliamento ${shop.name} a ${shop.address.city}, ${shop.address.street} - CAP ${shop.address.postcode} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
             />
-            <div className='md:flex w-full'>
-                <Box className='w-fit'>
-                    <LazyLoadImage src={
-                        imageKitUrl(shop.profileCover, 720, 450)
-                    }
 
-                        //PlaceholderSrc={PlaceholderImage}
-                        effect="opacity"
-                        alt={shop.name}
-                        className='aspect-[4.8/3] w-96 lg:w-[32rem] rounded-md object-cover'
-                    />
-                    <Box pt={0.5} display='flex' className='justify-between	'>
-                        <Box>
-                            <Box
-                                mt='1'
-                                fontWeight='semibold'
-                                as='h2'
-                                noOfLines={1}
-                                fontSize='medium'
-                                display={'flex'}
-                            >
-                                <span>
-                                    {toUpperCaseFirstLetter(shop.name)}
-                                </span>
-                                {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 my-auto ml-1">
-                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clipRule="evenodd" />
-                                </svg> */}
+            <Box
+                className='lg:w-8/12 m-auto -p-10 mb-2 lg:mb-5'
+                paddingBottom={10}
+            >
+                <LazyLoadImage src={
+                    imageKitUrl(shop.profileCover)
+                }
+                    //PlaceholderSrc={PlaceholderImage}
+                    alt={shop.name}
 
-                            </Box>
-                            {!shop.isDigitalOnly && <Box
-                                fontWeight='base'
-                                as='h2'
-                                fontSize='11px'
-                                mt={-1}
-                                display={'flex'}
-                            >
-                                <span>
-                                    {shop.address.city}, {shop.address.street}
-                                </span>
+                    className='w-full object-cover aspect-[2.3/1] lg:rounded-[10px]'
+                />
+                <Box
+                    marginBottom={1}
+                    width={['28', '40']}
+                    height={['28', '40']}
+                    mt={[-14, -20]}
+                    zIndex={50}
+                    borderWidth={1}
+                    borderColor={'white'}
+                    background={'white'}
+                    borderRadius={'full'}
+                    color={'gray.400'}
+                    fontSize={['xs', 'sm']}
+                    className='cursor-pointer ml-6 md:ml-8'
+                    display={'flex'}
+                >
+                    <Box
+                        borderRadius={'full'}
+                        width={'full'}
+                        height={'full'}
+                        background={'white'}
+                        textAlign={'center'}
+                        display={'flex'}
+                    >
 
-                            </Box>}
-                        </Box>
-                        <Box display='flex' className='my-auto'>
-                            <a target="_blank" rel="noopener noreferrer" href={`https://www.google.it/maps/search/${addressForMaps}`} >
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 mr-1 hover:scale-95 cursor-pointer">
-                                    <path fillRule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
-                                </svg>
-                            </a>
-                            <a href={`https://wa.me/+39${shop.info.phone}?text=ciao, ero su Veplo.it e stavo visitando il tuo negozio ${shop.name}. Avrei bisogno di una informazione`} target="_blank" >
-
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 mr-1 hover:scale-95 cursor-pointer">
-                                    <path fillRule="evenodd" d="M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.322 0 9.75-3.97 9.75-9 0-5.03-4.428-9-9.75-9s-9.75 3.97-9.75 9c0 2.409 1.025 4.587 2.674 6.192.232.226.277.428.254.543a3.73 3.73 0 01-.814 1.686.75.75 0 00.44 1.223zM8.25 10.875a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM10.875 12a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875-1.125a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z" clipRule="evenodd" />
-                                </svg>
-                            </a>
-                        </Box>
-                    </Box>
-                    <Box py={0.5} display='flex' className='justify-between	'>
-                        <Box>
-                            <Box
-                                onClick={() => setIsOpen(true)}
-                                fontWeight='base'
-                                as='h2'
-                                noOfLines={1}
-                                fontSize='12px'
-                                className='cursor-pointer underline underline-offset-2'
-                                display={'flex'}
-                            >
-                                scopri di più
-                                {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 my-auto mb-0">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                </svg> */}
-                            </Box>
-                        </Box>
-                        {!shop.isDigitalOnly && <Box>
-                            <Box
-                                fontWeight='base'
-                                as='h2'
-                                noOfLines={1}
-                                fontSize='12px'
-                                display={'flex'}
-                            >
-                                {isShopOpen(shop.info.opening.days, shop.info.opening.hours) ? `Aperto - chiude alle ${shop.info.opening.hours[1]}` : `Chiuso - apre alle ${shop.info.opening.hours[0]}`}
-                            </Box>
-                        </Box>}
+                        <LazyLoadImage src={
+                            imageKitUrl(shop.profilePhoto)
+                        }
+                            //PlaceholderSrc={PlaceholderImage}
+                            alt={shop.name}
+                            className='m-auto h-full w-full p-[4px] lg:p-[5px] rounded-full'
+                        />
                     </Box>
                 </Box>
+                <Box
+                    mt={[4, 6]}
+                    className='px-5 lg:p-0'
+                >
+                    <Box
+                        display={'flex'}
+                        justifyContent={'space-between'}
+                    >
+                        <Text
+                            className='font-bold text-2xl lg:text-4xl my-auto'
+                        >
+                            {shop.name}
+                        </Text>
 
-            </div>
-            {/* <Box_Shop shop={shop} width={96} height={60} scale={'1'} eventHandler={() => { }} /> */}
 
-            <Horizontal_Line />
-            <Box
-                fontWeight='medium'
-                as='h1'
-                noOfLines={1}
-                className='text-2xl md:text-5xl'
-                lineHeight={'normal'}
-            >
-                I prodotti di {shop.name}
-            </Box>
-            <Box
-                fontWeight='base'
-                as='h1'
-                noOfLines={1}
-                mb={3}
-                className='text-xl md:text-4xl'
-                lineHeight={'normal'}
-            >
-                tutti i prodotti
+                        <PopoverComponent
+                            actionsPopover={[{
+                                title: 'Contatta',
+                                icon: <Phone
+                                    className='w-4 h-4 my-auto'
+                                    strokeWidth={2.5}
+                                />,
+                                handleClick: () => {
+                                    console.log('merlo');
+                                    if (typeof window !== 'undefined') {
+                                        window.location.href = 'tel:+39' + shop.info.phone;
+
+                                    }
+                                }
+                            }]}
+                            icon={
+
+
+                                <MoreHoriz
+                                    color='black'
+                                    className='m-auto'
+                                    height={'full'}
+                                    width={'full'}
+                                    strokeWidth={2}
+                                />
+
+
+                            } />
+
+                    </Box>
+
+                    {shop.info.description &&
+                        <>
+                            <Text
+                                noOfLines={!showAllDescriptionShop || descriptionRefTextLenght <= 3 ? 3 : 100}
+                                color={'#909090'}
+                                className='font-medium text-sm mt-2 lg:text-md'
+                                ref={descriptionRefText}
+                            >
+                                {shop.info.description}
+                            </Text>
+                            {descriptionRefTextLenght > 3 && <Text
+                                onClick={() => setshowAllDescriptionShop(!showAllDescriptionShop)}
+                                color={'#909090'}
+                                cursor={'pointer'}
+                                className='font-semibold underline text-sm lg:text-md'
+                            >
+                                {!showAllDescriptionShop ? 'mostra altro' : 'mostra meno'}
+                            </Text>}
+                        </>
+                    }
+                </Box>
+
             </Box>
 
             {productsFounded &&
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-full">
+                <div className="grid grid-cols-1 px-3 lg:px-0 md:grid-cols-3 gap-5 w-full lg:w-9/12 mx-auto">
                     {productsFounded.map((product) => {
                         return (
-                            <Link
-                                prefetch={false}
-                                key={product.id} href={`/prodotto/${product.id}/${toProductPage(product)}`}>
+                            <div
+                                key={product.id}
+                            >
                                 <Box_Dress product={product}
-
                                 ></Box_Dress>
-                            </Link>
+                            </div>
                         )
                     })}
                 </div>}
