@@ -167,7 +167,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                                 bottom={0}
                                 right={0}
                                 paddingX={5}
-                                paddingY={'6px'}
+                                paddingY={product.price?.v2 ? '6px' : '12px'}
                                 background={'#B55844'}
                                 roundedTopLeft={'15px'}
 
