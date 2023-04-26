@@ -44,6 +44,7 @@ const PopoverComponent: FC<{ icon: any, actionsPopover: ActionsPopover[] }> = ({
                         return (
                             <Popover.Button key={index} className='text-left  px-4 '>
                                 <Box
+                                    py={1.5}
                                     display={'flex'}
                                     textAlign={'start'}
                                     gap={2.5}

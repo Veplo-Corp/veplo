@@ -25,7 +25,7 @@ import isShopOpen from '../../../../../components/utils/isShopOpen'
 import GET_SHOP_AND_PRODUCTS from '../../../../lib/apollo/queries/getSingleShop'
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
 import { numberOfLineText } from '../../../../../components/utils/NumberOfLineText'
-import { MoreHoriz, MoreHorizCircle, Phone } from 'iconoir-react'
+import { MoreHoriz, MoreHorizCircle, Phone, PinAlt } from 'iconoir-react'
 import PopoverComponent from '../../../../../components/molecules/PopoverComponent'
 
 export async function getStaticPaths() {
@@ -168,20 +168,42 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
 
 
                         <PopoverComponent
-                            actionsPopover={[{
-                                title: 'Contatta',
-                                icon: <Phone
-                                    className='w-4 h-4 my-auto'
-                                    strokeWidth={2.5}
-                                />,
-                                handleClick: () => {
-                                    console.log('merlo');
-                                    if (typeof window !== 'undefined') {
-                                        window.location.href = 'tel:+39' + shop.info.phone;
+                            actionsPopover={
+                                [
+                                    {
+                                        title: 'Contatta',
+                                        icon: <Phone
+                                            className='w-4 h-4 my-auto'
+                                            strokeWidth={2.5}
+                                        />,
+                                        handleClick: () => {
+                                            console.log('merlo');
+                                            if (typeof window !== 'undefined') {
+                                                window.location.href = 'tel:+39' + shop.info.phone;
 
-                                    }
-                                }
-                            }]}
+                                            }
+                                        }
+                                    },
+                                    {
+                                        title: 'Indicazioni',
+                                        icon: <PinAlt
+                                            className='w-4 h-4 my-auto'
+                                            strokeWidth={2.5}
+                                        />,
+                                        handleClick: () => {
+                                            console.log('merlo');
+                                            if (typeof window !== 'undefined') {
+                                                window.open(
+                                                    'https://www.google.it/maps/search/' + shop.address.city + ' ' + shop.address.postcode + ' ' + shop.address.street,
+                                                    '_blank' // <- This is what makes it open in a new window.
+                                                );
+                                            }
+
+                                        }
+                                    },
+
+                                ]
+                            }
                             icon={
 
 
