@@ -2,7 +2,7 @@ import { useLazyQuery } from '@apollo/client';
 import { Box, Button, HStack, Input, InputGroup, Skeleton, SkeletonCircle, SkeletonText, Stack, Text, VStack, color } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch } from 'react-redux';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
@@ -148,7 +148,6 @@ interface PropsFilter {
 }
 
 const index: FC<{ products: Product[], category: string, microCategory: string, gender: 'f' | 'm' }> = ({ products, microCategory, category, gender }) => {
-    console.log(products);
 
     const router = useRouter();
     const [loading, setLoading] = useState(true);
@@ -178,6 +177,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
         //FILTER
         const filter = getFilterValue()
+        console.log(filter);
 
 
         if (products.length % RANGE !== 0 || productsFounder?.data?.products.length === 0) {
@@ -204,15 +204,14 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         if (newProducts.data?.products.products) {
 
             setproductsFounded(prevstate => {
-                const products = [
+                const productsArray = [
                     ...prevstate,
                     ...newProducts.data?.products.products
                 ]
-                products.map(products => {
+                console.log(productsArray);
 
-                })
                 return [
-                    ...products
+                    ...productsArray
                 ]
             })
 
@@ -254,11 +253,9 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
 
 
-    useEffect(() => {
-
-        const filters = getFilterValue()
-        console.log(filters);
-        if (Object.keys(filters).length > 0) {
+    const mountedRef = useRef(true)
+    const fetchSpecificItem = useCallback(async (filters: any) => {
+        try {
             const newProducts = async () => {
                 return await getProducts({
                     variables: {
@@ -275,16 +272,30 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 })
             }
 
+
             newProducts().then(products => {
+                console.log(products);
+
                 if (!products.data?.products.products) return
+                console.log(products.data?.products.products);
+
                 setproductsFounded(products.data?.products.products)
                 setHasMoreData(true)
             })
+        } catch (error) {
         }
+    }, [mountedRef]) // add variable as dependency
+
+    useEffect(() => {
+        const filters = getFilterValue()
+
+        fetchSpecificItem(filters);
+        return () => {
+            mountedRef.current = false;   // clean up function
+        };
+    }, [router.query, fetchSpecificItem]);
 
 
-
-    }, [router.query])
 
 
     useEffect(() => {
