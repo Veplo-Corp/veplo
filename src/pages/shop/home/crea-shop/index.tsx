@@ -640,7 +640,6 @@ const index = () => {
                                     fontSize={['xs', 'sm']}
                                     className='cursor-pointer ml-6 md:ml-8'
                                     display={'flex'}
-
                                 >
                                     {!imageProfile ? (
                                         <Box
