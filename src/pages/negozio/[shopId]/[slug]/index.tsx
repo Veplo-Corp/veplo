@@ -208,7 +208,7 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
                 fontWeight='base'
                 as='h1'
                 noOfLines={1}
-                mb={3}
+                mb={[3, 8]}
                 className='text-xl md:text-4xl'
                 lineHeight={'normal'}
             >

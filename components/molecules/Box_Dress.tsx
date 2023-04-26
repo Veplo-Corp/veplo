@@ -14,7 +14,7 @@ import { toProductPage } from '../utils/toProductPage'
 import createUrlSchema from '../utils/create_url'
 
 
-const Box_Dress: React.FC<{ product: Product; color?: string | undefined }> = ({ product, color }) => {
+const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showStoreHeader?: boolean }> = ({ product, color, showStoreHeader }) => {
 
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     const [width, height] = useWindowSize();
@@ -56,9 +56,8 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined }> = ({
         <>
             {product?.variations[0].photos[0] &&
                 <Box
-
                 >
-                    <Link
+                    {showStoreHeader && <Link
                         prefetch={false}
                         href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
 
@@ -94,7 +93,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined }> = ({
                                 </Text>
                             </Box>
                         </Box>
-                    </Link>
+                    </Link>}
 
                     <Box minW='20' borderRadius='15px' h={'full'} overflow='hidden' className='cursor-pointer relative aspect-[4/5] rounded-3xl'
                         borderWidth={1}

@@ -46,7 +46,8 @@ interface IFormInput {
     name?: string;
     //! togliere description (obbligatoria), macrocategories e gendere in createProduct
     //!deve inserire tommaso
-    photo: string,
+    profileCover: string,
+    profilePhoto: string,
     isDigitalOnly?: boolean
     address?: {
         city: string | undefined
@@ -152,7 +153,8 @@ const index = () => {
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInput>({
         mode: "all",
         defaultValues: {
-            photo: ''
+            profileCover: '',
+            profilePhoto: ''
         }
     });
 
@@ -185,9 +187,6 @@ const index = () => {
 
     const [imgSrc, setImgSrc] = useState<any>('');
 
-    const imgRef = useRef<HTMLImageElement>(null)
-    const [url, setUrl] = useState<any>()
-    const [blob, setBlob] = useState<any>()
     const previewCanvasRef = useRef<HTMLCanvasElement>(null)
     // const [crop, setCrop] = useState<Crop | any>(
     //     {
@@ -200,7 +199,6 @@ const index = () => {
     // )
     const [image, setImage] = useState<Image>()
     const [imageProfile, setImageProfile] = useState<Image>()
-    const [showCroppedImage, setShowCroppedImage] = useState<any>(false);
 
     // Programatically click the hidden file input element
     // when the Button component is clicked
@@ -433,20 +431,32 @@ const index = () => {
     const submitData = async (e: IFormInput) => {
         // const url = await uploadPhotoFirebase(image?.blob, `/${user.uid}/shop_image/immagine`)
         // console.log(url);
+
+
         try {
-            //uploadImage
-            const photoUploaded = await uploadPhotos({
+            //uploadImage cover
+            const photoUploadedCover = await uploadPhotos({
                 variables: {
                     images: [image?.file],
-                    proportion: "shop"
+                    proportion: "shopCover"
                 }
             })
 
-            console.log(photoUploaded.data?.uploadImages);
+            //uploadImage profile
+            const photoUploadedProfile = await uploadPhotos({
+                variables: {
+                    images: [imageProfile?.file],
+                    proportion: "shopPhoto"
+                }
+            })
+
+
+
 
             let Shop: IFormInput = {
                 name: e.name,
-                photo: photoUploaded.data?.uploadImages[0],
+                profileCover: photoUploadedCover.data?.uploadImages[0],
+                profilePhoto: photoUploadedProfile.data?.uploadImages[0],
                 info: {
                     phone: watch('info.phone'),
                     description: ''
@@ -534,8 +544,6 @@ const index = () => {
                     canvas.toBlob(function (blob) {
                         if (!blob) { return }
                         const url = URL.createObjectURL(blob);
-                        setUrl(url)
-                        setBlob(blob)
                         console.log('PASSA QUI');
 
                         const file = new File([blob], "photo1", {
@@ -705,7 +713,7 @@ const index = () => {
 
 
 
-                            <Div_input_creation text='Nome brand o del negozio (visualizzato dagli utenti)'>
+                            <Div_input_creation text='Nome del negozio (visualizzato dagli utenti)'>
                                 <InputGroup >
                                     <Input
                                         maxLength={35}
@@ -929,8 +937,7 @@ const index = () => {
                                     size={'sm'}
                                     typeButton={'submit'}
                                     disabled={false}
-
-                                //disabled={!address || address.streetNumber === '' || !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('opening.days') || watch('opening.days').length <= 0 || !isValid}
+                                //disabled={!address || address.streetNumber === '' || !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('info.opening.days') || watch('info.opening.days').length <= 0 || !isValid || !image?.file || !imageProfile?.file}
                                 />
                             </div>
                         </div>

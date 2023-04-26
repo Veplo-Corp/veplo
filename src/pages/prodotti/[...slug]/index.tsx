@@ -499,7 +499,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 </Button>
                                 }
                                 <Button
-
                                     minW={'fit-content'}
                                     bg={'white'}
                                     position={'relative'}
@@ -630,7 +629,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                                 leaveFrom="opacity-0"
                                                                 leaveTo="opacity-0"
                                                             >
-                                                                <Box_Dress product={product} color={typeof colors === 'string' ? colors : undefined}></Box_Dress>
+                                                                <Box_Dress showStoreHeader={true} product={product} color={typeof colors === 'string' ? colors : undefined}></Box_Dress>
                                                             </Transition>
 
                                                         )
