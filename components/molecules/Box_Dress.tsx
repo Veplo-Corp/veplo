@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { Avatar, Box, Image, Text } from '@chakra-ui/react'
+import React, { Fragment, useEffect, useLayoutEffect, useState } from 'react'
+import { Avatar, Box, Fade, Image, Text, VStack } from '@chakra-ui/react'
 import Circle_Color from '../atoms/Circle_Color'
 import { Product, Variation } from '../../src/interfaces/product.interface'
 import { COLORS } from '../mook/colors'
@@ -21,6 +21,8 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
     //const [dimensionUrl, setDimensionUrl] = useState('&tr=w-571,h-825')
     const [urlProduct, seturlProduct] = useState<string>('')
     const [indexPhoto, setindexPhoto] = useState(0)
+    const [listOfSizesAvailable, setListOfSizesAvailable] = useState<string[]>([])
+    const [showSize, setShowSize] = useState(false)
 
     useEffect(() => {
 
@@ -40,6 +42,16 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
         }
         seturlProduct(product?.variations[indexPhoto].photos[0])
 
+        const totalSize: string[] = product.variations.map((variation: Variation) => {
+            return variation.lots.map((lot: any) => {
+                return lot.size
+            })
+
+        }).flat().filter((value, index, self) => {
+            return self.indexOf(value) === index;
+        }).sort();
+        setListOfSizesAvailable(totalSize)
+
 
 
     }, [product])
@@ -56,6 +68,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
         <>
             {product?.variations[0].photos[0] &&
                 <Box
+
                 >
                     {showStoreHeader && <Link
                         prefetch={false}
@@ -97,14 +110,70 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
 
                     <Box minW='20' borderRadius='15px' h={'full'} overflow='hidden' className='cursor-pointer relative aspect-[4/5] rounded-3xl'
                         borderWidth={1}
+                        position={'relative'}
                         borderColor={'#F3F3F3'}
                     >
 
+
                         <Link
+                            onMouseLeave={() => {
+                                setShowSize(false)
+                            }}
                             prefetch={false}
                             href={color ? `/prodotto/${product.id}/${toProductPage(product)}?colore=${color}` : `/prodotto/${product.id}/${toProductPage(product)}`}>
+                            {showSize &&
+                                <Fade in={showSize}
+                                    className='z-10 absolute'
+                                >
+                                    <VStack top={0}
+                                        background={'#FFFFFF'}
+                                        borderWidth={1}
+                                        borderColor={'#F3F3F3'}
+                                        p={2}
+                                        borderRadius={'xl'}
+                                        textAlign={'center'}
+                                        minW={28}
+                                    >
 
+                                        {listOfSizesAvailable.slice(0, 4).map(size => {
+                                            return (
+                                                <Box key={size}
+                                                    fontSize={'xl'}
+                                                    fontWeight={'bold'}
+                                                    paddingX={7}
+                                                    paddingY={2}
+                                                    width={'full'}
+                                                    background={'#EEEEEE'}
+                                                    borderRadius={'xl'}
+                                                >
+                                                    {size.toLocaleUpperCase()}
+                                                </Box>
+                                            )
+                                        })}
+                                        {listOfSizesAvailable.length > 4 &&
+                                            <Box
+                                                fontSize={'xl'}
+                                                fontWeight={'bold'}
+                                                paddingX={4}
+                                                paddingY={2}
+                                                width={'full'}
+                                                background={'#EEEEEE'}
+                                                borderRadius={'xl'}
+                                            >
+                                                altre {listOfSizesAvailable.length - 4}
+                                            </Box>
+                                        }
+
+                                    </VStack>
+                                </Fade>
+
+
+                            }
                             <LazyLoadImage
+                                onMouseEnter={() => {
+                                    setShowSize(true)
+                                }}
+
                                 src={imageKitUrl(urlProduct, 447, 660)}
                                 // onMouseEnter={() => {
                                 //     if (!product?.variations[indexPhoto].photos[1]) return
@@ -193,7 +262,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
 
                         </Link>
                     </Box>
-                </Box>
+                </Box >
             }
         </>
 
