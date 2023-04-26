@@ -160,10 +160,9 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                                                 background={'#EEEEEE'}
                                                 borderRadius={'xl'}
                                             >
-                                                altre {listOfSizesAvailable.length - 4}
+                                                {listOfSizesAvailable.length - 4} in più
                                             </Box>
                                         }
-
                                     </VStack>
                                 </ScaleFade>
 

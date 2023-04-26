@@ -131,7 +131,7 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
                     borderRadius={'full'}
                     color={'gray.400'}
                     fontSize={['xs', 'sm']}
-                    className='cursor-pointer ml-5 md:ml-8'
+                    className='ml-5 md:ml-8'
                     display={'flex'}
                 >
                     <Box
@@ -242,7 +242,7 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
             </Box>
 
             {productsFounded &&
-                <div className="grid grid-cols-1 px-3 lg:px-0 md:grid-cols-3 gap-5 w-full lg:w-8/12 mx-auto">
+                <div className="grid grid-cols-1 px-3 lg:px-0 md:grid-cols-3 gap-5 w-full lg:w-3/4 mx-auto">
                     {productsFounded.map((product) => {
                         return (
                             <div

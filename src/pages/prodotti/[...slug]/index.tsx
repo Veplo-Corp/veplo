@@ -616,7 +616,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                 (
                                                     productsFounded.map((product: Product) => {
                                                         const { colors } = router.query
-
                                                         return (
                                                             <Transition
                                                                 key={product.id}
