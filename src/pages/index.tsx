@@ -100,21 +100,15 @@ const Home: NextPage = () => {
 
   return (
     <>
-      {/*  <PostMeta
-          canonicalUrl='https://www.veplo.it/'
-          title={'Veplo | Libera il tuo stile '}
-          subtitle={"Il Marketplace che seleziona i migliori marchi indipendenti e negozi in circolazione | Hai presente il fast fashion? Allontanati da questa idea più che puoi | Abbigliamento · Scarpe · Vestiti"}
-          image={''}
-          description={"Il Marketplace che seleziona i migliori marchi indipendenti e negozi in circolazione | Hai presente il fast fashion? Allontanati da questa idea più che puoi | Abbigliamento · Scarpe · Vestiti"}
-
-        /> */}
       <PostMeta
-        canonicalUrl={'https://www.veplo.it/'}
-        title={`Negozi di Abbigliamento | Veplo`}
-        subtitle={`Negozi di Abbigliamento | Cerca tra tutto l'abbigliamento per uomo e donna in vendita | Abbigliamento · Scarpe · Vestiti`}
+        canonicalUrl='https://www.veplo.it/'
+        title={'Veplo | Libera il tuo stile '}
+        subtitle={"Il Marketplace che seleziona i migliori marchi indipendenti e negozi in circolazione | Hai presente il fast fashion? Allontanati da questa idea più che puoi | Abbigliamento · Scarpe · Vestiti"}
         image={''}
-        description={`Negozi di Abbigliamento | Cerca tra tutto l'abbigliamento per uomo e donna in vendita | Abbigliamento · Scarpe · Vestiti`}
+        description={"Il Marketplace che seleziona i migliori marchi indipendenti e negozi in circolazione | Hai presente il fast fashion? Allontanati da questa idea più che puoi | Abbigliamento · Scarpe · Vestiti"}
+
       />
+
       <div className='min-h-screen '>
 
         <Shop_not_Allowed>
