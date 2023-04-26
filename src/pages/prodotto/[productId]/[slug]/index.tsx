@@ -692,7 +692,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
 
                             <div className="overflow-x-scroll flex gap-4 pb-4">
-                                {shopProductsData && shopProductsData?.data?.shop.products.map((element: Product) => {
+                                {shopProductsData && shopProductsData?.data?.shop.products.products.map((element: Product) => {
                                     let colorsCSS: string[] = [];
                                     if (element.variations) {
                                         element?.variations.map((variation) => {
