@@ -30,13 +30,14 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
             return COLORS.find(color => color.name === variation.color)?.cssColor
         })
         setProductcolorsCSS(colors)
+
         if (color) {
             const indexPhoto = product?.variations.findIndex(variation => variation.color === color)
             if (indexPhoto >= 0) {
                 console.log(indexPhoto);
                 setindexPhoto(indexPhoto)
                 //rimetti a 0
-                return seturlProduct(product?.variations[indexPhoto].photos[0])
+                seturlProduct(product?.variations[indexPhoto].photos[0])
 
             }
         }
@@ -50,6 +51,8 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
         }).flat().filter((value, index, self) => {
             return self.indexOf(value) === index;
         }).sort();
+
+
         setListOfSizesAvailable(totalSize)
 
 

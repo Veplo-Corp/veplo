@@ -626,6 +626,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             {productsFounded.length > 0 ?
                                                 (
                                                     productsFounded.map((product: Product) => {
+
                                                         const { colors } = router.query
                                                         return (
                                                             <Transition
@@ -743,23 +744,24 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                     mt={3}
                 >
                     {microcategory.map((element: string) => {
-
+                        let url = router.asPath.split('?')[1] ?
+                            `/prodotti/${slug[0]}/${createUrlSchema([element])}/${slug[2]}?${router.asPath.split('?')[1]}`
+                            : `/prodotti/${slug[0]}/${createUrlSchema([element])}/${slug[2]}`
+                        if (element === microCategory) {
+                            url = url.replace(createUrlSchema([element]), 'tutto')
+                        }
                         return (
                             <Link
                                 prefetch={false}
                                 key={element}
 
-                                href={
-                                    router.asPath.split('?')[1] ?
-                                        `/prodotti/${slug[0]}/${createUrlSchema([element])}/${slug[2]}?${router.asPath.split('?')[1]}`
-                                        : `/prodotti/${slug[0]}/${createUrlSchema([element])}/${slug[2]}`
-                                }
+                                href={url}
                             >
                                 <Box
                                     p={2}
                                     width={'full'}
                                     pr={[0, 44]}
-                                    pl={1}
+                                    pl={2}
                                     _hover={{
                                         background: 'gray.100'
                                     }}

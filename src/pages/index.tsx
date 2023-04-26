@@ -104,10 +104,10 @@ const Home: NextPage = () => {
       <Shop_not_Allowed>
         <PostMeta
           canonicalUrl='https://www.veplo.it'
-          title={'Veplo | Abbigliamento & Moda '}
-          subtitle={"tutti i migliori negozi di abbigliamento in un unico sito. Cerca tra l'abbigliamento in vendita su Veplo e approfitta delle offerte in corso"}
+          title={'Veplo | Libera il tuo stile '}
+          subtitle={"Il Marketplace che seleziona i migliori marchi indipendenti e negozi in circolazione | Hai presente il fast fashion? Allontanati da questa idea più che puoi."}
           image={''}
-          description={"tutti i migliori negozi di abbigliamento in un unico sito. Cerca tra l'abbigliamento in vendita su Veplo e approfitta delle offerte in corso"}
+          description={"Il Marketplace che seleziona i migliori marchi indipendenti e negozi in circolazione | Hai presente il fast fashion? Allontanati da questa idea più che puoi."}
 
         />
         {/* <img className='flex sm:hidden absolute w-full -z-10'
