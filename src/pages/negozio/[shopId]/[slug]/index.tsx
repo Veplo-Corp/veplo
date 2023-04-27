@@ -108,8 +108,8 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
             />
 
             <Box
-                className='lg:w-8/12 m-auto -p-10 mb-2 lg:mb-5'
-                paddingBottom={10}
+                className='lg:w-8/12 m-auto -p-10 mb-6 lg:mb-9'
+
             >
                 <LazyLoadImage src={
                     imageKitUrl(shop.profileCover)
