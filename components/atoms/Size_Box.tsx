@@ -22,7 +22,7 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
 
 
     return (
-        <div className='grid grid-cols-3 xl:grid-cols-4  w-fit gap-3'>
+        <div className='grid grid-cols-3 xl:grid-cols-4 w-full  md:w-fit gap-3'>
             {totalLotsProduct.map((size) => {
                 const sizeProductExist = lots.find(lot => lot.size === size)
                 return (

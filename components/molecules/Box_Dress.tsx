@@ -30,6 +30,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
             return COLORS.find(color => color.name === variation.color)?.cssColor
         })
         setProductcolorsCSS(colors)
+        seturlProduct(product?.variations[indexPhoto].photos[0])
 
         if (color) {
             const indexPhoto = product?.variations.findIndex(variation => variation.color === color)
@@ -38,10 +39,8 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                 setindexPhoto(indexPhoto)
                 //rimetti a 0
                 seturlProduct(product?.variations[indexPhoto].photos[0])
-
             }
         }
-        seturlProduct(product?.variations[indexPhoto].photos[0])
 
         const totalSize: string[] = product.variations.map((variation: Variation) => {
             return variation.lots.map((lot: any) => {
@@ -111,7 +110,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                         </Box>
                     </Link>}
 
-                    <Box minW='20' borderRadius='15px' h={'full'} overflow='hidden' className='cursor-pointer relative aspect-[4/5] rounded-3xl'
+                    <Box minW='20' borderRadius='15px' h={'full'} overflow='hidden' className='cursor-pointer relative aspect-[4.2/5] rounded-3xl'
                         borderWidth={1}
                         position={'relative'}
                         borderColor={'#F3F3F3'}

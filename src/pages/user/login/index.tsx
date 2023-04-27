@@ -14,6 +14,7 @@ import { handleOpenModal, setModalTitleAndDescription } from '../../../store/red
 import { login } from '../../../store/reducers/user';
 import CREATE_USER from '../../../lib/apollo/mutations/createUser';
 import GET_USER from '../../../lib/apollo/queries/getUser';
+import { Box, Text } from '@chakra-ui/react';
 
 const index = () => {
   const router = useRouter()
@@ -145,7 +146,20 @@ const index = () => {
         :
         (
           <div className='flex w-full mt-8 md:mt-10' >
+
             <div className='md:p-3 space-y-4 m-auto'>
+              {router.query?.callbackUrl && <Box
+                padding={4}
+                background={'#F2F2F2'}
+                borderRadius={'10px'}
+              >
+                <Text
+                  fontWeight={'semibold'}
+                  fontSize={'lg'}
+                >
+                  per aggiungere prodotti nel carrello<br />bisogna effettuare l'accesso
+                </Text>
+              </Box>}
               <Login_or_Registration
                 account='user'
                 handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo account`} />
