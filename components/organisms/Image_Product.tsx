@@ -149,7 +149,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                         resetTransform()
                                     }}
 
-                                    className='lg:min-w-[350px]	'
+                                    className=' lg:min-w-[350px]	'
                                 >
                                     <TransformComponent
                                     >
@@ -159,7 +159,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                             //PlaceholderSrc={PlaceholderImage}
                                             //effect="blur"
                                             alt={variation.color + 'non trovato'}
-                                            className='rounded-lg w-full aspect-[8/12] object-cover'
+                                            className='rounded-lg w-full aspect-[4.2/5] object-cover'
                                         />
                                     </TransformComponent>
                                 </div>
@@ -174,8 +174,8 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                             <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
                                 borderWidth={1.5}
                                 className={` ${image == fullImage ? "border-black border-8" : "border-white"}   cursor-pointer
-                                        w-20
-                                        xl:w-32
+                                        w-14
+                                        xl:w-20
                                     `}
                             >
                                 <Image src={
