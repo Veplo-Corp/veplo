@@ -72,18 +72,28 @@ const User_Popover = () => {
                     className="w-6 h-6 my-auto"
                 />
             </Popover.Button>
-            <Popover.Panel
-                className="absolute grid grid-cols-1 cursor-pointer z-10 w-52 right-0.5 py-4 bg-gray-50 border border-gray-200 rounded-xl">
-                {user?.userInfo?.name &&
-                    <div className='mb-1'>
-                        <Text
-                            px={4}
-                            fontWeight={'bold'}
-                            mb={2}
-                        >
-                            Ciao {user?.userInfo?.name}!
-                        </Text>
-                        {/* <Text
+            <Transition
+                as={Fragment}
+                enter="transition ease-out duration-400"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+            >
+
+                <Popover.Panel
+                    className="absolute grid grid-cols-1 cursor-pointer z-10 w-52 mt-2 right-0.5 py-4 bg-white border border-gray-200 rounded-xl">
+                    {user?.userInfo?.name &&
+                        <div className='mb-1'>
+                            <Text
+                                px={4}
+                                fontWeight={'bold'}
+                                mb={2}
+                            >
+                                Ciao {user?.userInfo?.name}!
+                            </Text>
+                            {/* <Text
                             fontWeight={'normal'}
                             fontSize={'xs'}
                             color={'gray.500'}
@@ -93,76 +103,78 @@ const User_Popover = () => {
                         >
                             {user.email}
                         </Text> */}
-                        <Divider />
-                    </div>
-                }
+                            <Divider />
+                        </div>
+                    }
 
-                {!user?.uid ?
-                    (actionsNotLogged.map((action, id) => {
-                        return (
-                            <Popover.Button key={id} className='text-left hover:scale-[0.98] px-4 py-[4px] pt-[8px]'>
-                                <Box
+                    {!user?.uid ?
+                        (actionsNotLogged.map((action, id) => {
+                            return (
+                                <Popover.Button key={id} className='text-left hover:scale-[0.98] px-4 py-[4px] pt-[8px]'>
+                                    <Box
 
-                                    onClick={() => {
-                                        router.push(action.href)
-                                    }}
-                                >
-                                    <Box
-                                        fontSize={'md'}
-                                        fontWeight={'medium'}
-                                        lineHeight={'none'}
-                                        mb={'0.5'}
+                                        onClick={() => {
+                                            router.push(action.href)
+                                        }}
                                     >
-                                        {action.name}
+                                        <Box
+                                            fontSize={'md'}
+                                            fontWeight={'medium'}
+                                            lineHeight={'none'}
+                                            mb={'0.5'}
+                                        >
+                                            {action.name}
+                                        </Box>
+                                        <Box
+                                            fontSize={'2xs'}
+                                            fontWeight={'base'}
+                                            lineHeight={'1.1'}
+                                            color={'gray.400'}
+                                        >
+                                            {action.description}
+                                        </Box>
                                     </Box>
+                                </Popover.Button>
+                            )
+                        })) : (actionsLogged.map((action, id) => {
+                            return (
+                                <Popover.Button key={id} className='text-left hover:scale-[0.98] px-4 pt-[8px]'>
                                     <Box
-                                        fontSize={'2xs'}
-                                        fontWeight={'base'}
-                                        lineHeight={'1.1'}
-                                        color={'gray.400'}
-                                    >
-                                        {action.description}
-                                    </Box>
-                                </Box>
-                            </Popover.Button>
-                        )
-                    })) : (actionsLogged.map((action, id) => {
-                        return (
-                            <Popover.Button key={id} className='text-left hover:scale-[0.98] px-4 pt-[8px]'>
-                                <Box
-                                    onClick={async () => {
-                                        if (action.name === 'Esci') {
-                                            console.log('eccolo');
+                                        onClick={async () => {
+                                            if (action.name === 'Esci') {
+                                                console.log('eccolo');
 
-                                            await signOut(auth)
-                                            deleteAuthTokenInSessionStorage()
-                                        }
-                                        if (!action.href) return
-                                        router.push(action.href)
-                                    }}
-                                >
-                                    <Box
-                                        fontSize={'md'}
-                                        fontWeight={'medium'}
-                                        lineHeight={'none'}
-                                        mb={'0.5'}
+                                                await signOut(auth)
+                                                deleteAuthTokenInSessionStorage()
+                                            }
+                                            if (!action.href) return
+                                            router.push(action.href)
+                                        }}
                                     >
-                                        {action.name}
+                                        <Box
+                                            fontSize={'md'}
+                                            fontWeight={'medium'}
+                                            lineHeight={'none'}
+                                            mb={'0.5'}
+                                        >
+                                            {action.name}
+                                        </Box>
+                                        <Box
+                                            fontSize={'2xs'}
+                                            fontWeight={'base'}
+                                            lineHeight={'1.1'}
+                                            color={'gray.400'}
+                                        >
+                                            {action.description}
+                                        </Box>
                                     </Box>
-                                    <Box
-                                        fontSize={'2xs'}
-                                        fontWeight={'base'}
-                                        lineHeight={'1.1'}
-                                        color={'gray.400'}
-                                    >
-                                        {action.description}
-                                    </Box>
-                                </Box>
-                            </Popover.Button>
-                        )
-                    }))}
+                                </Popover.Button>
+                            )
+                        }))}
 
-            </Popover.Panel>
+                </Popover.Panel>
+            </Transition>
+
         </Popover >
     )
 }
