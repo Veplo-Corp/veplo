@@ -12,6 +12,7 @@ import { Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { toProductPage } from '../utils/toProductPage'
 import createUrlSchema from '../utils/create_url'
+import { isMobile } from 'react-device-detect'
 
 
 const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showStoreHeader?: boolean }> = ({ product, color, showStoreHeader }) => {
@@ -114,6 +115,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                         borderWidth={1}
                         position={'relative'}
                         borderColor={'#F3F3F3'}
+                        background={'#FBFBFB'}
                     >
 
 
@@ -175,7 +177,8 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                                     setShowSize(true)
                                 }}
 
-                                src={imageKitUrl(urlProduct, 447, 660)}
+                                src={isMobile ? imageKitUrl(urlProduct) : imageKitUrl(urlProduct, 447, 660)}
+
                                 // onMouseEnter={() => {
                                 //     if (!product?.variations[indexPhoto].photos[1]) return
                                 //     seturlProduct(product?.variations[indexPhoto].photos[1])
@@ -183,10 +186,11 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                                 // onMouseLeave={() => {
                                 //     seturlProduct(product?.variations[indexPhoto].photos[0])
                                 // }}
-                                effect="blur"
+                                placeholderSrc={imageKitUrl(urlProduct)}
+                                //effect="blur"
                                 alt={product.name}
-                                //className="w-fit min-h-[240px] md:min-h-0 object-cover"
                                 className="w-fit min-h-[240px] md:min-h-0 object-cover "
+
 
                             />
                             <Box
