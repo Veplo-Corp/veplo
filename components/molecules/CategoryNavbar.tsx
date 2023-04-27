@@ -98,6 +98,7 @@ const CategoryNavbar: FC<{ showMacrocategory: boolean }> = ({ showMacrocategory 
                 }
             </Box >
             {categoryCardOpen && showMacrocategory &&
+
                 <Show_Categories_NavBar gender={genderSelected} closeCategory={() => setcategoryCardOpen(false)} />
             }
         </div >
