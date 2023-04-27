@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Box, Button, Center, Input, InputGroup, InputLeftAddon, Select } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, Center, Input, InputGroup, InputLeftAddon, Select, Textarea } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import BlackButton from '../../../../../components/atoms/BlackButton'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout'
@@ -48,7 +48,7 @@ interface IFormInput {
     //!deve inserire tommaso
     profileCover: string,
     profilePhoto: string,
-    isDigitalOnly?: boolean
+    isDigitalOnly?: boolean,
     address?: {
         city: string | undefined
         street: string
@@ -105,7 +105,7 @@ const index = () => {
                 info: {
                     __typename: "ShopInformations",
                     phone: query?.variables?.options.info.phone,
-                    description: "",
+                    description: query?.variables?.options.info.description,
                     opening: {
                         __typename: "Opening",
                         days: query?.variables?.options.info.opening.days,
@@ -459,7 +459,7 @@ const index = () => {
                 profilePhoto: photoUploadedProfile.data?.uploadImages[0],
                 info: {
                     phone: watch('info.phone'),
-                    description: ''
+                    description: watch('info.description'),
                 },
                 address: {
                     city: address.city,
@@ -722,6 +722,24 @@ const index = () => {
                                         type="text"
                                         // value={shop_name}
                                         {...register("name", { required: true, maxLength: 30 })}
+                                        // onChange={(event) => changeInput(event, 'shop_name')}
+                                        isInvalid={false}
+                                    />
+                                </InputGroup>
+                            </Div_input_creation>
+                            <Div_input_creation text='Descrizione del negozio (opzionale, max 700 caratteri)'>
+                                <InputGroup >
+
+                                    <Textarea
+
+                                        size='sm'
+                                        maxLength={700}
+                                        rounded={10}
+                                        paddingY={3}
+                                        autoComplete="descrition-text-shop"
+                                        height={48}
+                                        // value={shop_name}
+                                        {...register("info.description", { required: false, maxLength: 700 })}
                                         // onChange={(event) => changeInput(event, 'shop_name')}
                                         isInvalid={false}
                                     />

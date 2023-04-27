@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
-import { Box, Button, ButtonGroup, HStack, Image, Tag, Tooltip } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, HStack, Image, Tag, Text, Tooltip } from '@chakra-ui/react';
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { Product, Variation } from '../../../../interfaces/product.interface';
@@ -38,6 +38,8 @@ import { changeGenderSelected } from '../../../../store/reducers/user';
 import { sortShopsInCart } from '../../../../../components/utils/sortShopsInCart';
 import { handleErrorGraphQL } from '../../../../../components/utils/handleError_graphQL';
 import expirationTimeTokenControll from '../../../../../components/utils/expirationTimeTokenControll';
+import Box_Dress from '../../../../../components/molecules/Box_Dress';
+import { ArrowRight } from 'iconoir-react';
 
 export async function getStaticPaths() {
     return {
@@ -229,11 +231,10 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
             await getFilterProduct({
                 variables: {
                     id: product.shopInfo.id,
-                    limit: 5,
+                    limit: 8,
                     offset: 0,
                 },
                 fetchPolicy: 'cache-first',
-                nextFetchPolicy: 'cache-first'
             })
         }
 
@@ -308,7 +309,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
             return router.push({
                 pathname: '/user/login',
                 query: {
-                    type: 'registration',
+                    type: 'login',
                     callbackUrl: router.asPath
                 },
 
@@ -493,31 +494,19 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                     image={imageKitUrl(variationSelected.photos[0], 171, 247)}
                     description={`${product.name.toUpperCase()} ${product.info.brand} - ${product.info.macroCategory} - Veplo.it`} />
 
-                <div className='md:flex justify-between w-full '>
+                <div className='md:flex justify-between w-full mb-5 lg:mb-0 '>
                     <Image_Product variation={variationSelected} />
-                    <Box className='md:block md:w-6/12 md:pl-4 xl:pr-24'>
-
-                        <Box
-                            fontWeight='normal'
-                            as='h2'
-                            lineHeight='tall'
-                            noOfLines={1}
-                            fontSize='sm'
-                        >
-                            {product.info.macroCategory} - {product.info.microCategory}
-                            {product.info.gender === 'F' && <span className='ml-1'>per donna</span>}
-                            {product.info.gender === 'M' && <span className='ml-1'>per uomo</span>}
-                        </Box>
-                        <Box
-                            fontWeight='normal'
+                    <Box className='md:block md:w-6/12 md:pl-4 xl:pr-24 lg:mt-2'>
+                        <Text
+                            fontWeight='medium'
                             as='h2'
                             noOfLines={1}
                             mt='0'
-                            fontSize='xl'
-                            className='italic'
+                            fontSize={'md'}
+                            color={'#909090'}
                         >
                             {product.info.brand}
-                        </Box>
+                        </Text>
                         <Box
                             fontWeight='bold'
                             as='h1'
@@ -528,7 +517,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             pb='3'
                         >
                             {`${product.name.toLocaleUpperCase()}`}
-                            <span className='font-light text-lg'> - ({colorSelected})</span>
+
                         </Box>
                         <Box
                             className='lg:flex'
@@ -565,7 +554,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                 className={`${product.price.v2 ? 'mt-2' : 'mt-4'} lg:my-auto`}
                             >
 
-                                {product.info.traits && <HStack spacing={2} justifyContent={'start'}>
+                                {/* {product.info.traits && <HStack spacing={2} justifyContent={'start'}>
                                     {product.info.traits.map(value => {
 
                                         return (
@@ -585,7 +574,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                     })
 
                                     }
-                                </HStack>}
+                                </HStack>} */}
                             </Box>
 
                         </Box>
@@ -610,7 +599,6 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                 }
                                 handleSelectColor={(color: string) => changeDressColor(color)}
                                 dimension={7} space={5} showTooltip={true}
-
                             />
                         </div>}
                         <Box
@@ -642,6 +630,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             borderRadius={'md'}
                             size={'xl'}
                             padding={5}
+                            fontSize={['xl', 'lg']}
                             paddingInline={10}
                             width={'full'}
                             height={'fit-content'}
@@ -654,7 +643,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             _active={{
                                 transform: 'scale(0.98)',
                             }}
-                        >Aggiungi al Carrello</Button>
+                        >aggiungi alla borsa</Button>
 
                         {/* contattare il negozio */}
                         {/* <Box
@@ -674,168 +663,65 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                         </Box> */}
 
 
-                        <>
-                            <Link
-                                prefetch={false}
-                                href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
-                                <Box
-                                    fontWeight='light'
-                                    as='h1'
-                                    noOfLines={1}
-                                    mt='6'
-                                    mb={3}
-                                    fontSize='md'
-                                >
-                                    Altri prodotti di <span className='underline underline-offset-2 cursor-pointer'>{product.shopInfo.name}</span>
-                                </Box>
-                            </Link>
-
-
-                            <div className="overflow-x-scroll flex gap-4 pb-4">
-                                {shopProductsData && shopProductsData?.data?.shop.products.products.map((element: Product) => {
-                                    let colorsCSS: string[] = [];
-                                    if (element.variations) {
-                                        element?.variations.map((variation) => {
-                                            const ColorCCS = COLORS.find(color => color.name === variation.color)
-                                            if (ColorCCS) {
-                                                colorsCSS.push(ColorCCS.cssColor)
-                                            }
-                                        })
-                                    }
-                                    console.log(colorsCSS);
-
-
-                                    return (
-                                        <Link
-                                            prefetch={false}
-                                            key={element.id} href={`/prodotto/${element.id}/${toProductPage(element)}`}>
-                                            <div className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
-                                                <Box borderRadius='xl' overflow='hidden'
-                                                    borderWidth={0.5}
-                                                    className={`w-36`}/*  aspect-[8.5/12] */
-                                                    _active={{
-                                                        transform: 'scale(0.98)',
-                                                    }}
-                                                >
-                                                    <LazyLoadImage
-                                                        src={
-                                                            imageKitUrl(element.variations[0].photos[0], 171, 247)
-                                                        }//placeholderSrc={'/static/grayScreen.png'}
-                                                        effect="blur"
-                                                        alt={element.name}
-
-
-                                                        className=' cursor-pointer hover:scale-105  object-cover'
-                                                    />
-                                                    <Box
-                                                        fontWeight={['light', 'normal']}
-                                                        as='h1'
-                                                        fontSize={['2xs', 'xs']}
-                                                        noOfLines={1}
-                                                        marginX={'2'}
-                                                        mt={'1'}
-                                                        mb={-1}
-                                                    >
-                                                        {element.info.brand}
-                                                    </Box>
-                                                    <Box
-                                                        fontWeight='semibold'
-                                                        as='h1'
-                                                        fontSize={['xs', 'xs']}
-                                                        noOfLines={1}
-                                                        marginX={'2'}
-                                                    >
-                                                        {element.name.toUpperCase()}
-                                                        {/* {height} - {width} */}
-                                                    </Box>
-                                                    <Box
-                                                        fontWeight={'bold'}
-                                                        as='h4'
-                                                        fontSize={'xs'}
-                                                        color={'green.600'}
-                                                        lineHeight='none'
-                                                        noOfLines={1}
-                                                        marginX={'2'}
-
-                                                    >
-                                                        <span
-                                                            className={`${element.price?.v2 ? 'text-slate-500 font-normal line-through text-[11px]' : ''}`}
-                                                        >
-                                                            {Number(element.price?.v1).toFixed(2).replace('.', ',')} €
-                                                        </span>
-                                                        {element.price?.v2 && <span className=' text-red-700 font-bold ml-1'>{element.price?.v2.toFixed(2).replace('.', ',')} €</span>}
-                                                    </Box>
-                                                    <div className='text-right flex float-right mb-2 mx-2'>
-                                                        <Circle_Color colors={colorsCSS} dimension={4} space={1} />
-                                                    </div>
-                                                </Box>
-
-                                            </div>
-                                        </Link>
-                                    )
-                                })}
-                                <Link
-                                    prefetch={false}
-                                    href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}
-                                    className={`flex gap-4 w-36 max-h-max justify-center`}
-                                >
-                                    <div className='my-auto'>
-                                        <Box borderRadius='lg' overflow='hidden'
-                                            borderWidth={0.5}
-                                            paddingY={'10'}
-                                            className={`w-36 h-full flex cursor-pointer bg-gray-50`}
-                                            // onClick={() => {
-                                            //     const slug = createUrlSchema([product.shopOptions.city, product.shopOptions.name])
-                                            //     router.push(`/negozio/${product.shopId}/${slug}`)
-                                            // }}
-                                            _active={{
-                                                transform: 'scale(0.98)',
-                                            }}
-                                        >
-                                            <div className='m-auto text-center'>
-                                                <p className='mb-4'>
-                                                    vai al<br /> negozio
-                                                </p>
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 m-auto">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
-                                                </svg>
-
-                                            </div>
-
-
-                                        </Box>
-                                    </div>
-                                </Link>
-
-
-                            </div>
-                        </>
                     </Box>
                 </div>
-                {/* <Horizontal_Line />
+                <Horizontal_Line />
                 <Box
-                    fontWeight='medium'
+
+                    fontWeight='semibold'
                     as='h1'
                     noOfLines={1}
-                    className='text-2xl md:text-5xl'
+                    className='text-2xl md:text-5xl mt-5 lg:mt-0'
                     lineHeight={'normal'}
                 >
-                    Prodotti simili
+                    {product.shopInfo.name}
                 </Box>
-                <Box
-                    fontWeight='normal'
-                    as='h1'
-                    noOfLines={1}
-                    mb={3}
-                    className='text-xl md:text-4xl'
-                    lineHeight={'normal'}
+                <Link
+                    prefetch={false}
+                    href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
+                    <Box
+                        fontWeight='normal'
+                        as='h1'
+                        noOfLines={1}
+                        mb={5}
+                        className='text-xl md:text-3xl w-fit'
+                        lineHeight={'normal'}
+                    >
+                        Altri prodotti di <span className='underline '>{product.shopInfo.name}</span>
+                    </Box>
+                </Link>
+
+                <div
+                    className="overflow-x-scroll flex gap-4 pb-4"
                 >
-                    scopri altri negozi con prodotti simili
-                </Box> */}
+                    {shopProductsData && shopProductsData?.data?.shop.products.products.map((product: Product) => {
+                        console.log(product);
+
+                        return (
+                            <div className={'flex gap-4 w-fit'} >
+                                <Box
+                                    overflow='hidden'
+                                    mb={2}
+                                    className={`lg:w-96 w-72 `}/*  aspect-[8.5/12] */
+                                >
+                                    <Box_Dress showStoreHeader={false} product={product} color={typeof colors === 'string' ? colors : undefined} />
+
+                                </Box>
+                            </div>
+
+
+                        )
+                    })
+                    }
+
+                </div>
+
+
+
             </Desktop_Layout>}
             <ModalReausable
 
-                marginTop={32}
+                marginTop={0}
                 title='Manca la taglia' isOpen={isOpenModalSize}
                 closeModal={() => setisOpenModalSize(false)}
             >
@@ -845,19 +731,10 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                     fontWeight={'normal'}
                     color={'gray.500'}
                 >
-                    Inserisci la taglia prima di aggiungere il prodotto al carrello
+                    Inserisci la taglia prima di aggiungere il prodotto alla borsa
                 </Box>
 
-                {/* <ButtonGroup gap='4'
-                    marginTop={5}
-                    display={'flex'}
-                    justifyContent={'end'}
-                >
-                    <Button
-                        onClick={() => setisOpenModalSize(false)}
-                        variant={'ghost'}
-                        colorScheme='teal'>Chiudi</Button>
-                </ButtonGroup> */}
+
             </ModalReausable>
             <CartDrawer isOpen={openDrawerCart} closeDrawer={() => setOpenDrawerCart(false)} />
 
@@ -867,3 +744,146 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 }
 
 export default index
+
+
+
+
+
+
+
+// <>
+// <Link
+//     prefetch={false}
+//     href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
+//     <Box
+//         fontWeight='light'
+//         as='h1'
+//         noOfLines={1}
+//         mt='6'
+//         mb={3}
+//         fontSize='md'
+//     >
+//         Altri prodotti simili di <span className='underline underline-offset-2 cursor-pointer'>{product.shopInfo.name}</span>
+//     </Box>
+// </Link>
+
+
+// <div className="overflow-x-scroll flex gap-4 pb-4">
+//     {shopProductsData && shopProductsData?.data?.shop.products.products.map((element: Product) => {
+//         let colorsCSS: string[] = [];
+//         if (element.variations) {
+//             element?.variations.map((variation) => {
+//                 const ColorCCS = COLORS.find(color => color.name === variation.color)
+//                 if (ColorCCS) {
+//                     colorsCSS.push(ColorCCS.cssColor)
+//                 }
+//             })
+//         }
+//         console.log(colorsCSS);
+
+
+//         return (
+//             <Link
+//                 prefetch={false}
+//                 key={element.id} href={`/prodotto/${element.id}/${toProductPage(element)}`}>
+//                 <div className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
+//                     <Box borderRadius='xl' overflow='hidden'
+//                         borderWidth={0.5}
+//                         className={`w-36`}/*  aspect-[8.5/12] */
+//                         _active={{
+//                             transform: 'scale(0.98)',
+//                         }}
+//                     >
+//                         <LazyLoadImage
+//                             src={
+//                                 imageKitUrl(element.variations[0].photos[0], 171, 247)
+//                             }//placeholderSrc={'/static/grayScreen.png'}
+//                             effect="blur"
+//                             alt={element.name}
+
+
+//                             className=' cursor-pointer hover:scale-105  object-cover'
+//                         />
+//                         <Box
+//                             fontWeight={['light', 'normal']}
+//                             as='h1'
+//                             fontSize={['2xs', 'xs']}
+//                             noOfLines={1}
+//                             marginX={'2'}
+//                             mt={'1'}
+//                             mb={-1}
+//                         >
+//                             {element.info.brand}
+//                         </Box>
+//                         <Box
+//                             fontWeight='semibold'
+//                             as='h1'
+//                             fontSize={['xs', 'xs']}
+//                             noOfLines={1}
+//                             marginX={'2'}
+//                         >
+//                             {element.name.toUpperCase()}
+//                             {/* {height} - {width} */}
+//                         </Box>
+//                         <Box
+//                             fontWeight={'bold'}
+//                             as='h4'
+//                             fontSize={'xs'}
+//                             color={'green.600'}
+//                             lineHeight='none'
+//                             noOfLines={1}
+//                             marginX={'2'}
+
+//                         >
+//                             <span
+//                                 className={`${element.price?.v2 ? 'text-slate-500 font-normal line-through text-[11px]' : ''}`}
+//                             >
+//                                 {Number(element.price?.v1).toFixed(2).replace('.', ',')} €
+//                             </span>
+//                             {element.price?.v2 && <span className=' text-red-700 font-bold ml-1'>{element.price?.v2.toFixed(2).replace('.', ',')} €</span>}
+//                         </Box>
+//                         <div className='text-right flex float-right mb-2 mx-2'>
+//                             <Circle_Color colors={colorsCSS} dimension={4} space={1} />
+//                         </div>
+//                     </Box>
+
+//                 </div>
+//             </Link>
+//         )
+//     })}
+//     <Link
+//         prefetch={false}
+//         href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}
+//         className={`flex gap-4 w-36 max-h-max justify-center`}
+//     >
+//         <div className='my-auto'>
+//             <Box borderRadius='lg' overflow='hidden'
+//                 borderWidth={0.5}
+//                 paddingY={'10'}
+//                 className={`w-36 h-full flex cursor-pointer bg-gray-50`}
+//                 // onClick={() => {
+//                 //     const slug = createUrlSchema([product.shopOptions.city, product.shopOptions.name])
+//                 //     router.push(`/negozio/${product.shopId}/${slug}`)
+//                 // }}
+//                 _active={{
+//                     transform: 'scale(0.98)',
+//                 }}
+//             >
+//                 <div className='m-auto text-center'>
+//                     <p className='mb-4'>
+//                         vai al<br /> negozio
+//                     </p>
+//                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 m-auto">
+//                         <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+//                     </svg>
+
+//                 </div>
+
+
+//             </Box>
+//         </div>
+//     </Link>
+
+
+// </div>
+// </>
