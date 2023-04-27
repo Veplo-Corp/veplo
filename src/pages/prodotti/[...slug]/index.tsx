@@ -916,17 +916,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 </ModalReausable>
                 <ModalReausable
                     marginTop={32} title={'Prezzo'} closeModal={() => {
-
-
-
-
-
-
-
-
                         const filterValues = getFilterValue();
-
-
                         let price: {
                             minPrice?: number,
                             maxPrice?: number
@@ -943,21 +933,25 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             delete filterValues['maxPrice']
                         }
 
-                        if (!filter.price?.max) {
-                            delete filterValues['maxPrice']
-                        }
-                        if (!filter.price?.min) {
-                            delete filterValues['minPrice']
+                        if (filterValues.maxPrice !== filter.price?.max || filterValues.minPrice !== filter.price?.min) {
+                            if (!filter.price?.max) {
+                                delete filterValues['maxPrice']
+                            }
+                            if (!filter.price?.min) {
+                                delete filterValues['minPrice']
+                            }
+
+                            router.push({
+                                pathname: router.asPath.split('?')[0],
+                                query: {
+                                    ...filterValues,
+                                    ...price
+                                }
+                            },
+                                undefined, { shallow: true })
                         }
 
-                        router.push({
-                            pathname: router.asPath.split('?')[0],
-                            query: {
-                                ...filterValues,
-                                ...price
-                            }
-                        },
-                            undefined, { shallow: true })
+
 
                         setIsOpen(prevstate => {
                             return {
