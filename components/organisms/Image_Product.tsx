@@ -125,7 +125,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                     </ModalBody>
                 </ModalContent>
             </Modal>
-            <div className='flex space-x-4 w-full min-h-[400px] md:min-h-0 md:w-7/12 xl:w-5/12'>
+            <div className='flex space-x-3 lg:space-x-4 w-full min-h-[400px] md:min-h-0 md:w-7/12 xl:w-5/12'>
                 <Box onClick={zoomImage} mb={[2, 5]} overflow='hidden' className='cursor-pointer w-full'>
                     <TransformWrapper
                         maxScale={3}
