@@ -40,6 +40,7 @@ import { handleErrorGraphQL } from '../../../../../components/utils/handleError_
 import expirationTimeTokenControll from '../../../../../components/utils/expirationTimeTokenControll';
 import Box_Dress from '../../../../../components/molecules/Box_Dress';
 import { ArrowRight } from 'iconoir-react';
+import { sortAndFilterSizes } from '../../../../../components/utils/sortAndFilterSizes';
 
 export async function getStaticPaths() {
     return {
@@ -88,17 +89,7 @@ export async function getStaticProps(ctx: any) {
             }
         })
 
-        const totalSize = data.product.variations.map((variation: Variation) => {
-            return variation.lots.map((lot: any) => {
-                return lot.size
-            })
-
-        }).flat()
-        const totalSizeAvailable = totalSize.filter((item: any,
-            index: any) => totalSize.indexOf(item) === index)
-            .sort(function (a: string, b: string) {
-                return sizes.indexOf(a) - sizes.indexOf(b)
-            });
+        const totalSizeAvailable = sortAndFilterSizes(data.product.variations)
 
 
 

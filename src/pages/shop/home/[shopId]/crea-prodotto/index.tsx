@@ -53,9 +53,42 @@ export const FIT = [
 ]
 
 export const MATERIALS = [
-    'tecnica',
-    'cotone',
-    'poliestere'
+    //   "alpaca",
+    //   "angora",
+    //   "cammello",
+    "cashmere",
+    "lana",
+    "lambswool",
+    "mohair",
+    "pelle",
+    "seta",
+    "cotone",
+    "canapa",
+    "juta",
+    "lino",
+    "flanella",
+    //   "ramiè",
+    //   "viscosa",
+    //   "rayon",
+    //   "acrilico",
+    //   "elastan",
+    //   "poliestere",
+    //   "poliammide",
+    //   "alcantara",
+    //   "lurex",
+    "gomma",
+    //   "tencel",
+    //   "modal",
+    //   "polipropilene",
+    //   "poliuretano",
+    //   "lycra",
+    "nylon",
+    "gore-Tex",
+    "microfibra",
+    "pile",
+    "stoffa",
+    "chino",
+    "jeans",
 ]
 
 export const LENGHT = [
@@ -320,20 +353,20 @@ const index = () => {
                 },
                 info: {
                     brand: watch('brand'),
-                    fit: watch('fit') ? watch('fit')?.toLocaleLowerCase() : [],
+                    fit: watch('fit') ? watch('fit')?.toLocaleLowerCase() : null,
                     gender: genderSelected === 'donna' ? 'f' : 'm',
-                    //length: watch('lenght') ? watch('lenght')?.toLocaleLowerCase() : null,
+                    length: watch('lenght') ? watch('lenght')?.toLocaleLowerCase() : null,
                     macroCategory: watch('macrocategory').toLocaleLowerCase(),
-                    //materials: watch('materials') ? watch('materials') : null,
+                    materials: watch('materials') ? watch('materials') : null,
                     microCategory: watch('microcategory').toLocaleLowerCase(),
-                    //traits: watch('traits') ? watch('traits') : null
+                    traits: watch('traits') ? watch('traits') : []
                 },
                 variations: variations
             }
             console.log(product);
-            // return
-
             const isCreatedProduct = await createProduct({ variables: { shopId: router.query.shopId, options: product } })
+            console.log(isCreatedProduct);
+
             addToast({ position: 'top', title: 'Prodotto creato con successo', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
             return router.push('/shop/home/' + router.query.shopId + '/prodotti')
         } catch (e: any) {
@@ -463,7 +496,7 @@ const index = () => {
                                 handleValue={(value) => {
                                     setValue('materials', value);
                                 }}
-                                values={MATERIALS}
+                                values={MATERIALS.sort()}
                             />
                         )}
                     />
@@ -636,12 +669,11 @@ const index = () => {
                         onClick={() => {
                             createProductHandler()
                         }}
-                        //disabled={productVariations.length <= 0 || !watch('name') || !watch('brand') || !watch('macrocategory') || !watch('microcategory') || !watch('price') || !watch('vestibilità')}
+                        disabled={productVariations.length <= 0 || !watch('name') || !watch('brand') || !watch('macrocategory') || !watch('microcategory') || !watch('price')}
                         px={12}
                         py={7}
                         rounded={'lg'}
                         width={'full'}
-
                     >
                         Crea Prodotto
                     </Button>
