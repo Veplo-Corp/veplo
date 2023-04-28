@@ -320,7 +320,7 @@ const index = () => {
                 },
                 info: {
                     brand: watch('brand'),
-                    //fit: watch('fit') ? watch('fit')?.toLocaleLowerCase() : null,
+                    fit: watch('fit') ? watch('fit')?.toLocaleLowerCase() : [],
                     gender: genderSelected === 'donna' ? 'f' : 'm',
                     //length: watch('lenght') ? watch('lenght')?.toLocaleLowerCase() : null,
                     macroCategory: watch('macrocategory').toLocaleLowerCase(),

@@ -39,21 +39,23 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
 
             <Modal size={['lg', 'lg', 'full', 'full']}
 
-                isCentered={isMobile ? false : true} isOpen={isOpen} onClose={() => setisOpen(false)}
+                isCentered={false/* isMobile ? false : true */} isOpen={isOpen} onClose={() => setisOpen(false)}
             >
                 <ModalOverlay
                     bg='blackAlpha.300'
                     backdropFilter='blur(10px)'
                 />
                 <ModalContent
-                    margin={0}
+                    margin={isMobile ? '' : 0}
+                    marginTop={isMobile ? 10 : 0}
+
                     width={'fit-content'}
                 >
                     <ModalCloseButton zIndex={'popover'}
                         size={'lg'}
                         onClick={() => setisOpen(false)}
                     />
-                    <ModalBody padding={0}>
+                    <ModalBody padding={0} >
                         <div className='hidden md:flex'>
                             <TransformWrapper
                                 maxScale={2}
