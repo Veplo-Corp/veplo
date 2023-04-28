@@ -43,6 +43,19 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
             }
         }
 
+        const sizes = [
+            "xxs",
+            "xs",
+            "s",
+            "m",
+            "l",
+            "xl",
+            "xxl",
+            "3xl",
+            "4xl",
+            "5xl",
+        ]
+
         const totalSize: string[] = product.variations.map((variation: Variation) => {
             return variation.lots.map((lot: any) => {
                 return lot.size
@@ -50,7 +63,9 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
 
         }).flat().filter((value, index, self) => {
             return self.indexOf(value) === index;
-        }).sort();
+        }).sort().sort(function (a: string, b: string) {
+            return sizes.indexOf(a) - sizes.indexOf(b)
+        });
 
 
         setListOfSizesAvailable(totalSize)
@@ -117,8 +132,6 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                         borderColor={'#F3F3F3'}
                         background={'#FBFBFB'}
                     >
-
-
                         <Link
                             onMouseLeave={() => {
                                 setShowSize(false)
