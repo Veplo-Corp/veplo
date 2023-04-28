@@ -47,8 +47,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                 />
                 <ModalContent
                     margin={isMobile ? '' : 0}
-                    marginTop={isMobile ? 10 : 0}
-
+                    marginTop={isMobile ? 14 : 0}
                     width={'fit-content'}
                 >
                     <ModalCloseButton zIndex={'popover'}
@@ -111,7 +110,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                         </div>
                         <div className='flex md:hidden '>
                             <TransformWrapper
-                                maxScale={2}
+                                maxScale={3}
                                 minScale={1}
                                 centerOnInit
                                 centerZoomedOut
