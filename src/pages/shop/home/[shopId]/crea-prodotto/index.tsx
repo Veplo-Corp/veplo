@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { Box, Button, ButtonGroup, IconButton, Input, InputGroup, InputLeftAddon, useToast } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, IconButton, Input, InputGroup, InputLeftAddon, Textarea, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -29,9 +29,11 @@ export interface IFormInputProduct {
     brand: string;
     macrocategory: string;
     microcategory: string;
-    traits: string[] | [];
-    vestibilità: string;
-
+    traits?: string[] | [];
+    materials?: string[] | [];
+    fit?: string;
+    lenght?: string;
+    description?: string;
 }
 
 interface Macrocategory {
@@ -42,7 +44,7 @@ interface Macrocategory {
     gender: string
 }
 
-export const vestibilità = [
+export const FIT = [
     'skinny',
     'slim',
     'regular',
@@ -50,12 +52,31 @@ export const vestibilità = [
     'oversize'
 ]
 
+export const MATERIALS = [
+    'tecnica',
+    'cotone',
+    'poliestere'
+]
+
+export const LENGHT = [
+    'corto',
+    'normale',
+    'lungo'
+]
+
+export const TRAITS = [
+    'eco-friendly',
+    'vegan',
+    'handmade',
+    'vintage'
+]
+
 
 
 
 const index = () => {
     const { addToast } = ToastOpen();
-    const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInputProduct>({
+    const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, getValues, setValue, control, formState } = useForm<IFormInputProduct>({
         mode: "all",
         //defaultValues
     });
@@ -234,6 +255,8 @@ const index = () => {
 
 
     const createProductHandler = async () => {
+        const values = getValues();
+        console.log(values);
 
         let photos: any = [];
         for (const variation of productVariations) {
@@ -243,7 +266,6 @@ const index = () => {
         }
 
         console.log(photos);
-        console.log('test');
         try {
             const photosUploaded = await uploadPhotos({
                 variables: {
@@ -297,18 +319,21 @@ const index = () => {
                     v1: Number(watch('price').replace(',', '.'))
                 },
                 info: {
-                    gender: genderSelected === 'donna' ? 'f' : 'm',
-                    macroCategory: watch('macrocategory'),
-                    microCategory: watch('microcategory'),
                     brand: watch('brand'),
-                    fit: watch('vestibilità').toLowerCase(),
-                    traits: watch('traits') ? watch('traits') : []
+                    //fit: watch('fit') ? watch('fit')?.toLocaleLowerCase() : null,
+                    gender: genderSelected === 'donna' ? 'f' : 'm',
+                    //length: watch('lenght') ? watch('lenght')?.toLocaleLowerCase() : null,
+                    macroCategory: watch('macrocategory').toLocaleLowerCase(),
+                    //materials: watch('materials') ? watch('materials') : null,
+                    microCategory: watch('microcategory').toLocaleLowerCase(),
+                    //traits: watch('traits') ? watch('traits') : null
                 },
                 variations: variations
             }
+            console.log(product);
+            // return
 
             const isCreatedProduct = await createProduct({ variables: { shopId: router.query.shopId, options: product } })
-            console.log(isCreatedProduct);
             addToast({ position: 'top', title: 'Prodotto creato con successo', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
             return router.push('/shop/home/' + router.query.shopId + '/prodotti')
         } catch (e: any) {
@@ -322,7 +347,7 @@ const index = () => {
         <Desktop_Layout>
             <NoIndexSeo title='Crea prodotto | Veplo' />
             <div className='w-full md:w-8/12 lg:w-1/2 xl:w-5/12  m-auto'>
-                <h1 className='italic text-xl lg:text-3xl font-extrabold mb-6'>
+                <h1 className='text-lg md:text-2xl font-extrabold mt-6 mb-4'>
                     Aggiungi prodotto
                 </h1>
                 <Div_input_creation text='Nome del prodotto'>
@@ -412,6 +437,74 @@ const index = () => {
                         )}
                     />
                 </Div_input_creation>
+                <Div_input_creation text='Descrizione (opzionale)'>
+                    <InputGroup >
+                        <Textarea
+                            maxLength={200}
+                            rounded={10}
+                            paddingY={6}
+                            paddingTop={2}
+                            autoComplete="descrition-text-shop"
+                            // value={shop_name}
+                            {...register("description", { required: true })}
+                            // onChange={(event) => changeInput(event, 'shop_name')}
+                            isInvalid={false}
+                        />
+                    </InputGroup>
+                </Div_input_creation>
+                <Div_input_creation text='Materiali (opzionale, massimo 2)'>
+                    <Controller
+                        control={control}
+                        name="materials"
+                        rules={{ required: false }}
+                        render={() => (
+                            <SelectMultipleOptions
+                                limitNumber={2}
+                                handleValue={(value) => {
+                                    setValue('materials', value);
+                                }}
+                                values={MATERIALS}
+                            />
+                        )}
+                    />
+                </Div_input_creation>
+                {
+                    watch('macrocategory') && watch('macrocategory').toLocaleLowerCase() !== 'scarpe' && <>
+                        <Div_input_creation text='Lunghezza (opzionale)'>
+                            <Controller
+                                control={control}
+                                name="lenght"
+                                rules={{ required: false }}
+                                render={() => (
+                                    <SelectStringOption
+                                        values={LENGHT}
+                                        defaultValue={''}
+                                        handleClick={(microcategory: string) => {
+                                            setValue('lenght', microcategory);
+                                        }}
+                                    />
+                                )}
+                            />
+                        </Div_input_creation>
+                        <Div_input_creation text='Vestibilità prodotto (opzionale)'>
+                            <Controller
+                                control={control}
+                                name="fit"
+                                rules={{ required: false }}
+                                render={() => (
+                                    <SelectStringOption
+                                        values={FIT}
+                                        defaultValue={''}
+                                        handleClick={(vestibilità: string) => {
+                                            setValue('fit', vestibilità);
+                                        }}
+                                    />
+                                )}
+                            />
+                        </Div_input_creation>
+                    </>
+                }
+
                 <Div_input_creation text='Tipologia (opzionale, massimo 2)'>
                     <Controller
                         control={control}
@@ -423,35 +516,21 @@ const index = () => {
                                 handleValue={(value) => {
                                     setValue('traits', value);
                                 }}
+                                values={TRAITS}
                             />
                         )}
                     />
                 </Div_input_creation>
-                <Div_input_creation text='Vestibilità prodotto'>
-                    <Controller
-                        control={control}
-                        name="vestibilità"
-                        rules={{ required: false }}
-                        render={() => (
-                            <SelectStringOption
-                                values={vestibilità}
-                                defaultValue={''}
-                                handleClick={(vestibilità: string) => {
-                                    setValue('vestibilità', vestibilità);
-                                }}
-                            />
-                        )}
-                    />
-                </Div_input_creation>
-                <h1 className='text-lg md:text-2xl font-extrabold mt-6 mb-4'>
-                    Varianti colore
-                </h1>
+
+
             </div>
 
 
 
             <div className='w-full md:w-9/12 lg:w-7/12 xl:w-6/12 m-auto'>
-
+                <h1 className='text-lg md:text-2xl font-extrabold mt-6 mb-4'>
+                    Varianti colore
+                </h1>
                 {productVariations.length > 0 && productVariations.map((variation: VariationCard, index) => {
 
                     console.log(variation);
@@ -557,7 +636,7 @@ const index = () => {
                         onClick={() => {
                             createProductHandler()
                         }}
-                        disabled={productVariations.length <= 0 || !watch('name') || !watch('brand') || !watch('macrocategory') || !watch('microcategory') || !watch('price') || !watch('vestibilità')}
+                        //disabled={productVariations.length <= 0 || !watch('name') || !watch('brand') || !watch('macrocategory') || !watch('microcategory') || !watch('price') || !watch('vestibilità')}
                         px={12}
                         py={7}
                         rounded={'lg'}

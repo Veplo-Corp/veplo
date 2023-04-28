@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Product, Variation } from '../../src/interfaces/product.interface'
 import { imageKitUrl } from '../utils/imageKitUrl'
+import { isMobile } from 'react-device-detect'
 
 const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variation }) => {
     if (!variation) {
@@ -36,14 +37,16 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
     return (
         <>
 
-            <Modal size={['lg', 'lg', 'md']}
-                isCentered={true} isOpen={isOpen} onClose={() => setisOpen(false)}
+            <Modal size={['lg', 'lg', 'full', 'full']}
+
+                isCentered={isMobile ? false : true} isOpen={isOpen} onClose={() => setisOpen(false)}
             >
                 <ModalOverlay
                     bg='blackAlpha.300'
                     backdropFilter='blur(10px)'
                 />
                 <ModalContent
+                    margin={0}
                     width={'fit-content'}
                 >
                     <ModalCloseButton zIndex={'popover'}
@@ -87,15 +90,13 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                             onMouseLeave={() => {
                                                 resetTransform()
                                             }}
-                                            className='h-2/3'
+                                        //className='h-2/3'
                                         >
-                                            <TransformComponent
-
-                                            >
+                                            <TransformComponent>
                                                 <Image
-                                                    height={'full'}
-                                                    width={'full'}
-
+                                                    height={'100vh'}
+                                                    //width={'full'}
+                                                    className='aspect-[4.2/5] object-cover'
                                                     /* onClick={onClickImageModal} */
                                                     src={imageKitUrl(fullImage)}
                                                     alt={variation.color + 'non trovato'}
@@ -124,48 +125,16 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                         </div>
                     </ModalBody>
                 </ModalContent>
-            </Modal>
-            <div className='flex space-x-3 lg:space-x-4 w-full min-h-[400px] md:min-h-0 md:w-7/12 xl:w-5/12'>
+            </Modal >
+            <div className='flex space-x-3 lg:space-x-4 w-full min-h-[380px] md:min-h-0 md:w-7/12 xl:w-5/12'>
                 <Box onClick={zoomImage} mb={[2, 5]} overflow='hidden' className='cursor-pointer w-full'>
-                    <TransformWrapper
-                        maxScale={3}
-                        minScale={1}
-                        wheel={{ disabled: true }}
-                        doubleClick={{ disabled: true }}
-                        pinch={{ disabled: true }}
-                        //doubleClick={{ disabled: true }}
-                        centerOnInit
-                        centerZoomedOut
-                    //!old style
+                    <LazyLoadImage src={imageKitUrl(fullImage)}
 
-                    >
-                        {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
-                            <React.Fragment>
-                                <div
-                                    onMouseEnter={((e) => {
-                                        zoomIn(0.1)
-                                    })}
-                                    onMouseLeave={() => {
-                                        resetTransform()
-                                    }}
-
-                                    className=' lg:min-w-[350px]	'
-                                >
-                                    <TransformComponent
-                                    >
-                                        {/* <Image borderRadius={'lg'} src={fullImage} alt='immagine non trovata' /> */}
-                                        <LazyLoadImage src={imageKitUrl(fullImage)}
-
-                                            //PlaceholderSrc={PlaceholderImage}
-                                            //effect="blur"
-                                            alt={variation.color + 'non trovato'}
-                                            className='rounded-lg w-full aspect-[4.2/5] object-cover'
-                                        />
-                                    </TransformComponent>
-                                </div>
-                            </React.Fragment>
-                        )}
-                    </TransformWrapper>
+                        //PlaceholderSrc={PlaceholderImage}
+                        //effect="blur"
+                        alt={variation.color + 'non trovato'}
+                        className='rounded-lg w-full aspect-[4.2/5] object-cover'
+                    />
 
                 </Box>
                 <div>

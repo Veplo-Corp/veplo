@@ -440,7 +440,7 @@ const AddColorToProduct: FC<{ category: string, deleteCard: () => void, confirmC
                 positionTopModal={true}
             >
                 <ImageCrop
-                    imageSrc={imgSrc} type={'product'} aspectRatio={1 / 1.3}
+                    imageSrc={imgSrc} type={'product'} aspectRatio={4.2 / 5}
                     circularCrop={false}
                     onHanldeConfirm={(image, type, imageRefCurrent) => {
 
