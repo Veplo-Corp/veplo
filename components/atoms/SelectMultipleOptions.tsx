@@ -3,14 +3,9 @@ import { Listbox, Transition } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { CheckIcon } from '@chakra-ui/icons'
 
-const category = [
-    'eco-friendly',
-    'vegan',
-    'handmade',
-    'vintage'
-]
 
-const SelectMultipleOptions: FC<{ limitNumber: number, handleValue: (selectedValue: (string[] | [])) => void }> = ({ limitNumber, handleValue }) => {
+
+const SelectMultipleOptions: FC<{ limitNumber: number, handleValue: (selectedValue: (string[] | [])) => void, values: string[] }> = ({ limitNumber, handleValue, values }) => {
     const [selected, setSelected] = useState<string[]>([])
 
 
@@ -41,8 +36,8 @@ const SelectMultipleOptions: FC<{ limitNumber: number, handleValue: (selectedVal
                     leaveTo="opacity-0"
                 >
                     <Listbox.Options className="z-10 bg-white absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-whitetext-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                        {category.map((person) => (
-                            <Listbox.Option key={person} value={person}
+                        {values.map((value) => (
+                            <Listbox.Option key={value} value={value}
                                 className={({ active }) =>
                                     ` relative cursor-default select-none py-2 pl-10 pr-4  ${active ? 'bg-blue-700 text-white' : 'text-white-900'} `
                                 }
@@ -53,7 +48,7 @@ const SelectMultipleOptions: FC<{ limitNumber: number, handleValue: (selectedVal
                                             className={` block truncate ${selected ? 'font-medium' : 'font-normal'
                                                 }`}
                                         >
-                                            {person}
+                                            {value}
                                         </span>
                                         {selected ? (
                                             <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
