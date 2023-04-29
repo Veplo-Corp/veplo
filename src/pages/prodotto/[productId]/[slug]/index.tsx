@@ -39,8 +39,9 @@ import { sortShopsInCart } from '../../../../../components/utils/sortShopsInCart
 import { handleErrorGraphQL } from '../../../../../components/utils/handleError_graphQL';
 import expirationTimeTokenControll from '../../../../../components/utils/expirationTimeTokenControll';
 import Box_Dress from '../../../../../components/molecules/Box_Dress';
-import { ArrowRight } from 'iconoir-react';
+import { ArrowRight, NavArrowDown } from 'iconoir-react';
 import { sortAndFilterSizes } from '../../../../../components/utils/sortAndFilterSizes';
+import { Disclosure } from '@headlessui/react';
 
 export async function getStaticPaths() {
     return {
@@ -97,7 +98,6 @@ export async function getStaticProps(ctx: any) {
             props: {
                 product: {
                     ...data.product,
-
                     colors,
                     totalSizeAvailable
                 },
@@ -143,6 +143,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     const user: Firebase_User = useSelector((state: any) => state.user.user);
 
     const dispatch = useDispatch();
+    console.log(product);
 
 
 
@@ -636,22 +637,99 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             }}
                         >aggiungi alla borsa</Button>
 
-                        {/* contattare il negozio */}
-                        {/* <Box
-                            fontWeight='light'
-                            as='h1'
-                            noOfLines={2}
-                            mt='6'
-                            mb={3}
-                            fontSize='md'
-                            onClick={() => {
-
-                            }}
+                        <Box
+                            mt={5}
+                            borderWidth={1}
+                            borderRadius={10}
+                            paddingY={[5, 5]}
+                            paddingX={[2, 5]}
                         >
-                            Hai bisogno di più informazioni sul prodotto? <span className='underline underline-offset-2 cursor-pointer'
-                                onClick={chatWithStore}
-                            >contatta il titolare del negozio</span>
-                        </Box> */}
+                            <Disclosure>
+                                {({ open }) => (
+                                    <Box>
+                                        <Disclosure.Button className="flex text-center m-auto">
+                                            <Text
+                                                fontSize={'lg'}
+                                                fontWeight={'bold'}
+                                            >
+                                                Caratteristiche
+                                            </Text>
+                                            <NavArrowDown
+                                                strokeWidth={3}
+                                                className={`${open ? 'rotate-180 transform' : ''
+                                                    } h-6 w-6 my-auto ml-1`}
+                                            />
+                                        </Disclosure.Button>
+                                        <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+                                            <Box
+                                                className='grid grid-cols-3 lg:grid-cols-4 w-fit gap-y-3 lg:gap-4'
+                                            >
+                                                <Text
+                                                    fontSize={'md'}
+                                                    fontWeight={'semibold'}
+                                                    color={'black'}
+                                                >
+                                                    Materiale
+                                                </Text>
+                                                <Text
+                                                    fontSize={'md'}
+                                                    fontWeight={'medium'}
+                                                    color={'#909090'}
+                                                    className='col-span-2 lg:col-span-3'
+                                                >
+                                                    {product.info.materials}
+                                                </Text>
+                                                <Text
+                                                    fontSize={'md'}
+                                                    fontWeight={'semibold'}
+                                                    color={'black'}
+                                                >
+                                                    Fit
+                                                </Text>
+                                                <Text
+                                                    fontSize={'md'}
+                                                    fontWeight={'medium'}
+                                                    color={'#909090'}
+                                                    className='col-span-2 lg:col-span-3'
+                                                >
+                                                    {product.info.fit}
+                                                </Text>
+                                                <Text
+                                                    fontSize={'md'}
+                                                    fontWeight={'semibold'}
+                                                    color={'black'}
+                                                >
+                                                    Lunghezza
+                                                </Text>
+                                                <Text
+                                                    fontSize={'md'}
+                                                    fontWeight={'medium'}
+                                                    color={'#909090'}
+                                                    className='col-span-2 lg:col-span-3'
+                                                >
+                                                    {product.info.length}
+                                                </Text>
+                                                <Text
+                                                    fontSize={'md'}
+                                                    fontWeight={'semibold'}
+                                                    color={'black'}
+                                                >
+                                                    Descrizione
+                                                </Text>
+                                                <Text
+                                                    fontSize={'md'}
+                                                    fontWeight={'medium'}
+                                                    color={'#909090'}
+                                                    className='col-span-2 lg:col-span-3'
+                                                >
+                                                    Tshirt con maniche a giro, girocollo a costine, doppia impuntura larga a fondo manica e sul bordo inferioreTessuto Jersey 100% cotone biologico filato e pettinato, Fabric washed (Manca)
+                                                </Text>
+                                            </Box>
+                                        </Disclosure.Panel>
+                                    </Box>
+                                )}
+                            </Disclosure>
+                        </Box>
 
 
                     </Box>
@@ -659,7 +737,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                 <Horizontal_Line />
                 <Box
 
-                    fontWeight='semibold'
+                    fontWeight='bold'
                     as='h1'
                     noOfLines={1}
                     className='text-2xl md:text-5xl mt-5 lg:mt-0'
@@ -675,7 +753,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                         as='h1'
                         noOfLines={1}
                         mb={5}
-                        className='text-xl md:text-3xl w-fit'
+                        className='text-xl md:text-2xl w-fit'
                         lineHeight={'normal'}
                     >
                         Altri prodotti di <span className='underline '>{product.shopInfo.name}</span>
@@ -686,10 +764,11 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                     className="overflow-x-scroll flex gap-4 pb-4"
                 >
                     {shopProductsData && shopProductsData?.data?.shop.products.products.map((product: Product) => {
-                        console.log(product);
 
                         return (
-                            <div className={'flex gap-4 w-fit'} >
+                            <div
+                                key={product.id}
+                                className={'flex gap-4 w-fit'} >
                                 <Box
                                     overflow='hidden'
                                     mb={2}

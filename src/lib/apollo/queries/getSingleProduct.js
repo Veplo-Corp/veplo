@@ -16,6 +16,8 @@ const GET_SINGLE_PRODUCT = gql`
                 brand
                 fit
                 traits
+                length
+                materials
             }
             variations{
             id

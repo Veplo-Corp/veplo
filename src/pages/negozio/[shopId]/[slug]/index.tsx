@@ -69,13 +69,13 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
     const [hasMoreData, setHasMoreData] = useState(true)
     const [isOpen, setIsOpen] = useState(false)
     const [showAllDescriptionShop, setshowAllDescriptionShop] = useState(false)
-    const [descriptionRefTextLenght, setDescriptionRefTextLenght] = useState(0)
+    const [descriptionRefTextLength, setDescriptionRefTextLength] = useState(0)
     const descriptionRefText = useRef<any>(null)
 
     useEffect(() => {
         if (descriptionRefText.current) {
             const numberOfLine = numberOfLineText(descriptionRefText.current);
-            setDescriptionRefTextLenght(numberOfLine);
+            setDescriptionRefTextLength(numberOfLine);
         }
     }, [descriptionRefText]);
 
@@ -220,14 +220,14 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
                     {shop.info.description &&
                         <>
                             <Text
-                                noOfLines={!showAllDescriptionShop || descriptionRefTextLenght <= 3 ? 3 : 100}
+                                noOfLines={!showAllDescriptionShop || descriptionRefTextLength <= 3 ? 3 : 100}
                                 color={'#909090'}
                                 className='font-medium text-sm mt-2 lg:text-md'
                                 ref={descriptionRefText}
                             >
                                 {shop.info.description}
                             </Text>
-                            {descriptionRefTextLenght > 3 && <Text
+                            {descriptionRefTextLength > 3 && <Text
                                 onClick={() => setshowAllDescriptionShop(!showAllDescriptionShop)}
                                 color={'#909090'}
                                 cursor={'pointer'}

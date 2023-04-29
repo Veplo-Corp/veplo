@@ -32,7 +32,7 @@ export interface IFormInputProduct {
     traits?: string[] | [];
     materials?: string[] | [];
     fit?: string;
-    lenght?: string;
+    length?: string;
     description?: string;
 }
 
@@ -91,7 +91,7 @@ export const MATERIALS = [
     "jeans",
 ]
 
-export const LENGHT = [
+export const LENGTH = [
     'corto',
     'normale',
     'lungo'
@@ -355,11 +355,12 @@ const index = () => {
                     brand: watch('brand'),
                     fit: watch('fit') ? watch('fit')?.toLocaleLowerCase() : null,
                     gender: genderSelected === 'donna' ? 'f' : 'm',
-                    length: watch('lenght') ? watch('lenght')?.toLocaleLowerCase() : null,
+                    length: watch('length') ? watch('length')?.toLocaleLowerCase() : null,
                     macroCategory: watch('macrocategory').toLocaleLowerCase(),
                     materials: watch('materials') ? watch('materials') : null,
                     microCategory: watch('microcategory').toLocaleLowerCase(),
-                    traits: watch('traits') ? watch('traits') : []
+                    traits: watch('traits') ? watch('traits') : [],
+                    //description: watch('description') ? watch('description') : null,
                 },
                 variations: variations
             }
@@ -506,14 +507,14 @@ const index = () => {
                         <Div_input_creation text='Lunghezza (opzionale)'>
                             <Controller
                                 control={control}
-                                name="lenght"
+                                name="length"
                                 rules={{ required: false }}
                                 render={() => (
                                     <SelectStringOption
-                                        values={LENGHT}
+                                        values={LENGTH}
                                         defaultValue={''}
                                         handleClick={(microcategory: string) => {
-                                            setValue('lenght', microcategory);
+                                            setValue('length', microcategory);
                                         }}
                                     />
                                 )}
