@@ -60,33 +60,31 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                     />
                 </Box>
             </Box>
-            <div className='flex justify-between ml-5 md:ml-8 mt-2'>
-                <Box pb={1} px={3} display={'flex'} gap={1.5}>
-                    <Box
-                        mt='1'
-                        fontWeight='extrabold'
-                        as='h2'
-                        noOfLines={1}
-                        fontSize={'xl'}
-                        lineHeight={'5'}
-                        my={'auto'}
-                    >
-                        {toUpperCaseFirstLetter(shop.name)}
-                    </Box>
-                    <div className="w-1 h-1 rounded-full bg-[#909090] my-auto"></div>
-
-                    <Box
-                        fontWeight='medium'
-                        as='h2'
-                        fontSize='sm'
-                        my={'auto'}
-                        color={'#909090'}
-                        lineHeight={'5'}
-                    >
-                        {shop.address.city}
-                    </Box>
+            <Box pb={1} px={3} display={'flex'} gap={1.5}>
+                <Box
+                    fontWeight='extrabold'
+                    as='h2'
+                    noOfLines={1}
+                    fontSize={'xl'}
+                    lineHeight={'5'}
+                    mb={0}
+                >
+                    {toUpperCaseFirstLetter(shop.name)}
                 </Box>
-            </div>
+                <div className="w-1 h-1 rounded-full bg-[#909090] my-auto"></div>
+
+                <Box
+                    fontWeight='medium'
+                    as='h2'
+                    fontSize='sm'
+                    my={'auto'}
+                    color={'#909090'}
+                    lineHeight={'4'}
+                    mb={[0]}
+                >
+                    {shop.address.city}
+                </Box>
+            </Box>
 
         </Box>
     )
