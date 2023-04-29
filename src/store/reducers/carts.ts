@@ -33,7 +33,8 @@ export const userState = createSlice({
         },
         resetCarts: (state) => {
             state.carts = [];
-        }
+        },
+
 
     },
 });

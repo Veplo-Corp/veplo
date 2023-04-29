@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { Box, Button, ButtonGroup, IconButton, Input, InputGroup, InputLeftAddon, Textarea, useToast } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, IconButton, Input, InputGroup, InputLeftAddon, Spinner, Textarea, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -30,7 +30,7 @@ export interface IFormInputProduct {
     macrocategory: string;
     microcategory: string;
     traits?: string[] | [];
-    materials?: string[] | [];
+    materials: string[] | [];
     fit?: string;
     length?: string;
     description?: string;
@@ -123,7 +123,7 @@ const index = () => {
     const [colors, setColors] = useState<Color[]>(COLORS)
     const [cardToEdit, setCardToEdit] = useState<any>([])
     const [uploadPhotos] = useMutation(UPLOAD_PHOTO)
-
+    const [isLoading, setIsLoading] = useState(false)
     const [createProduct] = useMutation(CREATE_PRODUCT, {
         update(cache, el, query) {
             const data = el.data
@@ -142,11 +142,20 @@ const index = () => {
                 },
             });
 
-            console.log(shop?.shop.products);
-            if (!shop?.shop.products) return
+
+            console.log(shop?.shop.products?.products);
+            if (!shop?.shop.products.products) return
             console.log(query.variables?.options.info);
             console.log(query.variables?.options.name);
             console.log(query.variables?.options.variations);
+            const variations = query.variables?.options.variations.map((element: any) => {
+                return {
+                    ...element,
+                    id: 'testId',
+                    __typename: "ProductVariation"
+                }
+            })
+            console.log(variations);
 
             if (!query.variables?.options) return
 
@@ -169,14 +178,11 @@ const index = () => {
                     city: "Terni",
                     id: router.query.shopId,
                     name: "Negozio fisico",
-                    status: "not_active",
+                    status: "active",
                     __typename: "ShopInfo"
                 },
                 status: 'active',
-                variations: {
-                    ...query.variables.options.variations,
-                    __typename: "ProductVariation"
-                },
+                variations: variations,
                 location: {
                     type: 'Points',
                     coordinates: [1, 1],
@@ -195,11 +201,12 @@ const index = () => {
                 data: {
                     shop: {
                         id: router.query.shopId,
-                        products: [
-
-                            ...shop?.shop.products,
-                            newProduct,
-                        ]
+                        products: {
+                            products: [
+                                newProduct,
+                                ...shop?.shop.products.products
+                            ]
+                        }
                     }
                 }
             })
@@ -288,6 +295,7 @@ const index = () => {
 
 
     const createProductHandler = async () => {
+        setIsLoading(true)
         const values = getValues();
         console.log(values);
 
@@ -357,7 +365,7 @@ const index = () => {
                     gender: genderSelected === 'donna' ? 'f' : 'm',
                     length: watch('length') ? watch('length')?.toLocaleLowerCase() : null,
                     macroCategory: watch('macrocategory').toLocaleLowerCase(),
-                    materials: watch('materials') ? watch('materials') : null,
+                    materials: watch('materials')?.length >= 1 ? watch('materials') : null,
                     microCategory: watch('microcategory').toLocaleLowerCase(),
                     traits: watch('traits') ? watch('traits') : [],
                     //description: watch('description') ? watch('description') : null,
@@ -367,11 +375,12 @@ const index = () => {
             console.log(product);
             const isCreatedProduct = await createProduct({ variables: { shopId: router.query.shopId, options: product } })
             console.log(isCreatedProduct);
-
+            setIsLoading(false)
             addToast({ position: 'top', title: 'Prodotto creato con successo', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
             return router.push('/shop/home/' + router.query.shopId + '/prodotti')
         } catch (e: any) {
             console.log(e);
+            setIsLoading(false)
         }
     }
 
@@ -668,6 +677,7 @@ const index = () => {
                             background: 'gray.800'
                         }}
                         onClick={() => {
+                            if (isLoading) return
                             createProductHandler()
                         }}
                         disabled={productVariations.length <= 0 || !watch('name') || !watch('brand') || !watch('macrocategory') || !watch('microcategory') || !watch('price')}
@@ -675,8 +685,23 @@ const index = () => {
                         py={7}
                         rounded={'lg'}
                         width={'full'}
+                        fontSize={'xl'}
                     >
-                        Crea Prodotto
+                        {!isLoading ? (
+                            <>Crea Prodotto</>
+                        ) :
+                            (
+                                <Spinner
+                                    thickness='4px'
+                                    speed='0.65s'
+                                    emptyColor='gray.200'
+                                    color='green.500'
+                                    size='lg'
+                                />
+                            )
+                        }
+
+
                     </Button>
                 </div>
 

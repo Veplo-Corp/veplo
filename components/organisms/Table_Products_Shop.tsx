@@ -235,7 +235,11 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                             <Th p={[2, 4]}
                                 fontSize={'sm'}
                                 minW={[30]}>Nome</Th>
-
+                            <Th p={[2, 4]}
+                                fontSize={'sm'}
+                                className='hidden lg:table-cell' >
+                                Genere
+                            </Th>
                             <Th p={[2, 4]}
                                 fontSize={'sm'}
                                 className='hidden lg:table-cell' >
@@ -326,6 +330,14 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                                             {product.name.toUpperCase()}
                                         </span>
 
+                                    </Td>
+                                    <Td paddingRight={0}
+                                        paddingY={0}
+                                        paddingLeft={[2, 4]}
+                                        className='hidden lg:table-cell'>
+                                        <span>
+                                            {product.info.gender === 'f' ? 'donna' : 'uomo'}
+                                        </span>
                                     </Td>
                                     <Td paddingRight={0}
                                         paddingY={0}
