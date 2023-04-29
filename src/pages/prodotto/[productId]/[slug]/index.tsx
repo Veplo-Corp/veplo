@@ -660,7 +660,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                     } h-6 w-6 my-auto ml-1`}
                                             />
                                         </Disclosure.Button>
-                                        <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+                                        <Disclosure.Panel className="pl-1 pt-4 pb-2 text-sm text-gray-500">
                                             <Box
                                                 className='grid grid-cols-3 lg:grid-cols-4 w-fit gap-x-1 gap-y-4 lg:gap-4'
                                             >
