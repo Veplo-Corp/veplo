@@ -76,8 +76,8 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
                 image={''}
                 description={`Negozi di Abbigliamento | Cerca tra tutto l'abbigliamento per uomo e donna in vendita | Abbigliamento · Scarpe · Vestiti`}
             />
-            <div className='md:flex justify-end'>
-                {/* <Logo_Below_Header city={city} /> */}
+            {/* <div className='md:flex justify-end'>
+                
                 <div className='my-auto mt-2'>
                     <Input_Search_Item
                         handleChangeValue={() => { }}
@@ -86,7 +86,7 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
                             setInputSearchShop(textInput)
                         }} />
                 </div>
-            </div>
+            </div> */}
             {
                 inputSearchShop.length > 3 &&
                 <Tag
@@ -108,7 +108,7 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
                 </Tag>
 
             }
-            <div className="grid grid-cols-1 md:pt-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 w-full m-auto justify-items-center mt-4	">
+            <div className="grid grid-cols-1 md:pt-1 sm:grid-cols-1 lg:grid-cols-2 gap-10 w-full lg:w-3/4 m-auto justify-items-center mt-4	">
                 {shops.length &&
                     shops.map((shop) => {
 

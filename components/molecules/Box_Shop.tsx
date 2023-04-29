@@ -8,77 +8,82 @@ import isShopOpen from '../utils/isShopOpen';
 import { imageKitUrl } from '../utils/imageKitUrl';
 
 const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ shop, eventHandler, scale }) => {
-    const [isOpen, setisOpen] = useState(isShopOpen(shop?.info?.opening.days, shop?.info?.opening.hours))
 
 
 
 
     return (
         <Box onClick={() => eventHandler(shop)} width={'full'}
-            mb={'2'} overflow='hidden' className='cursor-pointer border border-inherit pb-3 rounded-xl'
+            mb={'2'} overflow='hidden' className='cursor-pointer '
             _active={{
                 transform: `${scale}`,
             }}>
-            <Box
 
+            <LazyLoadImage src={
+                imageKitUrl(shop.profileCover)
+            }
+                //PlaceholderSrc={PlaceholderImage}
+                alt={shop.name}
+
+                className='w-full object-cover aspect-[2.3/1] rounded-[15px]'
+            />
+            <Box
+                marginBottom={1}
+                width={['20', '32']}
+                height={['20', '32']}
+                mt={[-10, -16]}
+                zIndex={50}
+                borderWidth={1}
+                borderColor={'white'}
+                background={'white'}
+                borderRadius={'full'}
+                color={'gray.400'}
+                fontSize={['xs', 'sm']}
+                className='ml-5 md:ml-8'
+                display={'flex'}
             >
-                <LazyLoadImage src={
-                    imageKitUrl(shop.profileCover, 480, 300)
-                }
-                    //placeholderSrc={'/static/grayScreen.png'}
-                    effect="blur"
-                    alt={shop.name}
+                <Box
+                    borderRadius={'full'}
                     width={'full'}
                     height={'full'}
-                    className='aspect-[4.8/3] object-cover'
-                />
+                    background={'white'}
+                    textAlign={'center'}
+                    display={'flex'}
+                >
+
+                    <LazyLoadImage src={
+                        imageKitUrl(shop.profilePhoto)
+                    }
+                        //PlaceholderSrc={PlaceholderImage}
+                        alt={shop.name}
+                        className='m-auto h-full w-full p-[4px] lg:p-[5px] rounded-full'
+                    />
+                </Box>
             </Box>
-            <div className='flex justify-between mt-2'>
-                <Box pb={1} px={3}>
+            <div className='flex justify-between ml-5 md:ml-8 mt-2'>
+                <Box pb={1} px={3} display={'flex'} gap={1.5}>
                     <Box
                         mt='1'
-                        fontWeight='semibold'
+                        fontWeight='extrabold'
                         as='h2'
                         noOfLines={1}
-                        fontSize='medium'
+                        fontSize={'xl'}
+                        lineHeight={'5'}
+                        my={'auto'}
                     >
                         {toUpperCaseFirstLetter(shop.name)}
                     </Box>
-                    <Box
-                        fontWeight='base'
-                        as='h2'
-                        fontSize='11px'
-                        mt={-1}
-                    >
-                        {shop.address.street}, {shop.address.city}
-                    </Box>
+                    <div className="w-1 h-1 rounded-full bg-[#909090] my-auto"></div>
 
-                    {/* <div className='flex justify-between mt-2'>
-                        <Box
-                            fontWeight='bold'
-                            as='h4'
-                            fontSize='xs'
-                            color='green.600'
-                            lineHeight='none'
-                            noOfLines={1}
-                            mt={'1'}
-                        >
-                            {SHOP.reviews}
-                        </Box>
-                        <div className='flex space-x-1'>
-                            {SHOP.stars.map((color) => {
-                                return (
-                                    <Box key={color} h={'4'} w={'4'} borderRadius={'100%'} bg={color} borderWidth={1} borderColor={'gray.200'}>
-                                    </Box>
-                                )
-                            })}
-                        </div>
-                    </div> */}
-                </Box>
-                <Box className={`${isOpen ? '' : 'hidden'} my-auto px-5 py-[6px] bg-[#32CD32] mr-3 rounded-xl`}
-                    fontSize={'md'}
-                >
-                    Aperto
+                    <Box
+                        fontWeight='medium'
+                        as='h2'
+                        fontSize='sm'
+                        my={'auto'}
+                        color={'#909090'}
+                    >
+                        {shop.address.city}
+                    </Box>
                 </Box>
             </div>
 
