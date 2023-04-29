@@ -139,6 +139,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                             href={color ? `/prodotto/${product.id}/${toProductPage(product)}?colore=${color}` : `/prodotto/${product.id}/${toProductPage(product)}`}>
                             {showSize &&
                                 <ScaleFade initialScale={0.7} in={showSize}
+                                    delay={0.3}
                                     className='z-10 absolute hidden lg:flex'
                                 >
                                     <VStack top={0}
