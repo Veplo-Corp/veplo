@@ -155,7 +155,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                     width={'fit-content'}
                                     maxH={'52'}
                                     // height={'fit-content'}
-                                    className='object-cover'
+                                    className='aspect-[4.2/5] object-cover '
                                     loading="lazy"
                                 />
 
