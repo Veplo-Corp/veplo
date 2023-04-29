@@ -14,7 +14,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
 
     return (
         <Box onClick={() => eventHandler(shop)} width={'full'}
-            mb={'2'} overflow='hidden' className='cursor-pointer '
+            mb={'2'} overflow='hidden' className='cursor-pointe min-h-[100px] content-start'
             _active={{
                 transform: `${scale}`,
             }}>
@@ -25,7 +25,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                 //PlaceholderSrc={PlaceholderImage}
                 alt={shop.name}
 
-                className='w-full object-cover aspect-[2.3/1] rounded-[15px]'
+                className='w-96 lg:w-full object-cover aspect-[2.3/1] lg:min-h-[200px] rounded-[15px]'
             />
             <Box
                 marginBottom={1}
@@ -39,7 +39,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                 borderRadius={'full'}
                 color={'gray.400'}
                 fontSize={['xs', 'sm']}
-                className='ml-5 md:ml-8'
+                className='ml-5 md:ml-8 w-full'
                 display={'flex'}
             >
                 <Box
