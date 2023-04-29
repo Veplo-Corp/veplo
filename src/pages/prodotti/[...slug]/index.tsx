@@ -622,7 +622,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                         }
                                     >
                                         <div className={` flex items-center justify-center`}>
-                                            <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-2 md:gap-5 gap-y-5 w-full">
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 md:gap-5 gap-y-5 w-full">
 
                                                 {productsFounded.length > 0 ?
                                                     (

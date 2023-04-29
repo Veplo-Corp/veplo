@@ -13,9 +13,13 @@ import { editVariationFromCart } from '../../src/store/reducers/carts'
 import { newTotalHandler } from '../utils/newTotalHandler'
 import VariationBoxList from '../molecules/VariationBoxList'
 import { sortShopsInCart } from '../utils/sortShopsInCart'
+import expirationTimeTokenControll from '../utils/expirationTimeTokenControll'
+import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
 
 const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, closeDrawer }) => {
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
+    const user: Firebase_User = useSelector((state: any) => state.user.user);
+
     const [editCart] = useMutation(EDIT_CART);
     const router = useRouter()
     const dispatch = useDispatch();
@@ -119,6 +123,8 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
 
 
     const deleteVariation = async (variation: ProductVariation) => {
+        const resolve = await expirationTimeTokenControll(user.expirationTime)
+        if (!resolve) return
         await editCart({
             variables: {
                 productVariationId: variation.variationId,

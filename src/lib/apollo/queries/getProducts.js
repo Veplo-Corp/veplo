@@ -44,6 +44,7 @@ const GET_PRODUCTS = gql`
                     name 
                     city
                     status
+                    profilePhoto
                 }
             }
         } 

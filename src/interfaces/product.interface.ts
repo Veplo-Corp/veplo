@@ -48,6 +48,7 @@ export interface Product {
         name: string,
         city: string,
         status: string,
+        profilePhoto: string,
     }
     createdAt?: string,
     updatedAt?: string,
