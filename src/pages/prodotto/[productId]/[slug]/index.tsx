@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
 import { Box, Button, ButtonGroup, HStack, Image, Tag, Text, Tooltip } from '@chakra-ui/react';
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
@@ -41,7 +41,7 @@ import expirationTimeTokenControll from '../../../../../components/utils/expirat
 import Box_Dress from '../../../../../components/molecules/Box_Dress';
 import { ArrowRight, NavArrowDown } from 'iconoir-react';
 import { sortAndFilterSizes } from '../../../../../components/utils/sortAndFilterSizes';
-import { Disclosure } from '@headlessui/react';
+import { Disclosure, Transition } from '@headlessui/react';
 
 export async function getStaticPaths() {
     return {
@@ -660,72 +660,88 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                     } h-6 w-6 my-auto ml-1`}
                                             />
                                         </Disclosure.Button>
-                                        <Disclosure.Panel className="pl-1 pt-4 pb-2 text-sm text-gray-500">
-                                            <Box
-                                                className='grid grid-cols-3 lg:grid-cols-4 w-fit gap-x-1 gap-y-4 lg:gap-4'
+                                        <Transition appear show={open} as={Fragment}>
+                                            <Transition.Child
+                                                as={Fragment}
+                                                enter="transition ease-out duration-500"
+                                                enterFrom="opacity-0"
+                                                enterTo="opacity-100"
+                                                leave="ease-in duration-200"
+                                                leaveFrom="opacity-100"
+                                                leaveTo="opacity-0"
                                             >
-                                                <Text
-                                                    fontSize={'md'}
-                                                    fontWeight={'semibold'}
-                                                    color={'black'}
-                                                >
-                                                    Materiale
-                                                </Text>
-                                                <Text
-                                                    fontSize={'md'}
-                                                    fontWeight={'normal'}
-                                                    color={'#909090'}
-                                                    className='col-span-2 lg:col-span-3'
-                                                >
-                                                    {product.info.materials?.length && product.info.materials?.length > 0 ? product.info.materials : 'non disponibile'}
-                                                </Text>
-                                                <Text
-                                                    fontSize={'md'}
-                                                    fontWeight={'semibold'}
-                                                    color={'black'}
-                                                >
-                                                    Fit
-                                                </Text>
-                                                <Text
-                                                    fontSize={'md'}
-                                                    fontWeight={'normal'}
-                                                    color={'#909090'}
-                                                    className='col-span-2 lg:col-span-3'
-                                                >
-                                                    {product.info.fit ? product.info.fit : 'non disponibile'}
-                                                </Text>
-                                                <Text
-                                                    fontSize={'md'}
-                                                    fontWeight={'semibold'}
-                                                    color={'black'}
-                                                >
-                                                    Lunghezza
-                                                </Text>
-                                                <Text
-                                                    fontSize={'md'}
-                                                    fontWeight={'normal'}
-                                                    color={'#909090'}
-                                                    className='col-span-2 lg:col-span-3'
-                                                >
-                                                    {product.info.length ? product.info.length : 'non disponibile'}
-                                                </Text>
-                                                <Text
-                                                    fontSize={'md'}
-                                                    fontWeight={'semibold'}
-                                                    color={'black'}
-                                                >
-                                                    Descrizione
-                                                </Text>
-                                                <Text
-                                                    fontSize={'md'}
-                                                    fontWeight={'normal'}
-                                                    color={'#909090'}
-                                                    className='col-span-2 lg:col-span-3'
-                                                >
-                                                    Tshirt con maniche a giro, girocollo a costine, doppia impuntura larga a fondo manica e sul bordo inferioreTessuto Jersey 100% cotone biologico filato e pettinato, Fabric washed (Manca)
-                                                </Text>
-                                            </Box>
-                                        </Disclosure.Panel>
+                                                <Disclosure.Panel className="pl-1 pt-4 pb-2 text-sm text-gray-500">
+
+                                                    <Box
+                                                        className='grid grid-cols-3 lg:grid-cols-4 w-fit gap-x-1 gap-y-4 lg:gap-4'
+                                                    >
+                                                        <Text
+                                                            fontSize={'md'}
+                                                            fontWeight={'semibold'}
+                                                            color={'black'}
+                                                        >
+                                                            Materiale
+                                                        </Text>
+                                                        <Text
+                                                            fontSize={'md'}
+                                                            fontWeight={'normal'}
+                                                            color={'#909090'}
+                                                            className='col-span-2 lg:col-span-3'
+                                                        >
+                                                            {product.info.materials?.length && product.info.materials?.length > 0 ? product.info.materials : 'non disponibile'}
+                                                        </Text>
+                                                        <Text
+                                                            fontSize={'md'}
+                                                            fontWeight={'semibold'}
+                                                            color={'black'}
+                                                        >
+                                                            Fit
+                                                        </Text>
+                                                        <Text
+                                                            fontSize={'md'}
+                                                            fontWeight={'normal'}
+                                                            color={'#909090'}
+                                                            className='col-span-2 lg:col-span-3'
+                                                        >
+                                                            {product.info.fit ? product.info.fit : 'non disponibile'}
+                                                        </Text>
+                                                        <Text
+                                                            fontSize={'md'}
+                                                            fontWeight={'semibold'}
+                                                            color={'black'}
+                                                        >
+                                                            Lunghezza
+                                                        </Text>
+                                                        <Text
+                                                            fontSize={'md'}
+                                                            fontWeight={'normal'}
+                                                            color={'#909090'}
+                                                            className='col-span-2 lg:col-span-3'
+                                                        >
+                                                            {product.info.length ? product.info.length : 'non disponibile'}
+                                                        </Text>
+                                                        <Text
+                                                            fontSize={'md'}
+                                                            fontWeight={'semibold'}
+                                                            color={'black'}
+                                                        >
+                                                            Descrizione
+                                                        </Text>
+                                                        <Text
+                                                            fontSize={'md'}
+                                                            fontWeight={'normal'}
+                                                            color={'#909090'}
+                                                            className='col-span-2 lg:col-span-3'
+                                                        >
+                                                            Tshirt con maniche a giro, girocollo a costine, doppia impuntura larga a fondo manica e sul bordo inferioreTessuto Jersey 100% cotone biologico filato e pettinato, Fabric washed (Manca)
+                                                        </Text>
+                                                    </Box>
+
+                                                </Disclosure.Panel>
+                                            </Transition.Child>
+
+                                        </Transition>
+
                                     </Box>
                                 )}
                             </Disclosure>

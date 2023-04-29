@@ -5,7 +5,7 @@ import { Firebase_User } from '../../src/interfaces/firebase_user.interface';
 import User_Popover from '../molecules/User_Popover';
 import Navbar from '../molecules/Old-Home_Navbar'
 import CategoryNavbar from '../molecules/CategoryNavbar';
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Tag, Text } from '@chakra-ui/react';
 import Drawer_Menu from './Drawer_Menu';
 import CartDrawer from './CartDrawer';
 import Drawer_User_Search from './Old-Drawer_User_Search';
@@ -17,10 +17,13 @@ import { Medal1St, Search, ShoppingBag, User } from 'iconoir-react';
 import Input_Search_Item from '../atoms/Input_Search_Item';
 import { useRouter } from 'next/router';
 import { getFromLocalStorage } from '../utils/getFromLocalStorage';
+import { Cart } from '../../src/interfaces/carts.interface';
 
 const Header = () => {
     const router = useRouter()
     const user: Firebase_User = useSelector((state: any) => state.user.user);
+    const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
+    const [numberOfProductsInCarts, setnumberOfProductsInCarts] = useState<number>(0)
     const [showMacrocategory, setshowMacrocategory] = useState(true)
     const [openDrawerBusinessAccount, setopenDrawerBusinessAccount] = useState(false)
     const [openDrawerCart, setOpenDrawerCart] = useState(false)
@@ -62,6 +65,18 @@ const Header = () => {
 
         }
     }, [user])
+
+    useEffect(() => {
+        let counter = 0
+        cartsDispatch.map((cart) => {
+            cart.productVariations.map(variation => {
+                counter += variation.quantity
+            })
+        })
+        setnumberOfProductsInCarts(counter)
+
+    }, [cartsDispatch])
+
 
     const handleAutoComplete = (text: string) => {
 
@@ -165,7 +180,7 @@ const Header = () => {
                                         setOpenDrawerCart(true)
                                     }}
                                     cursor={'pointer'}
-                                    className='bg-[#F2F2F2] rounded-[10px] p-2'
+                                    className='bg-[#F2F2F2] rounded-[10px] p-2 relative'
                                 >
                                     {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-7 h-7">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
@@ -174,6 +189,25 @@ const Header = () => {
                                         strokeWidth={2}
                                         className="w-6 h-6 my-auto"
                                     />
+                                    {numberOfProductsInCarts > 0 &&
+                                        <Tag
+                                            position={'absolute'}
+                                            borderRadius={'full'}
+                                            colorScheme={'orange'}
+                                            className='-top-2 -right-2.5'
+
+                                        >
+                                            <Text
+                                                fontSize={'sm'}
+                                                mx={'auto'}
+                                                fontWeight={'bold'}
+                                                color={'black'}
+                                            >
+                                                {numberOfProductsInCarts}
+                                            </Text>
+
+                                        </Tag>}
+
                                 </Box>}
                                 <Box
                                     marginY={'auto'}

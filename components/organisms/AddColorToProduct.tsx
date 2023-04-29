@@ -415,7 +415,7 @@ const AddColorToProduct: FC<{ category: string, deleteCard: () => void, confirmC
                         paddingY={5}
                         size={'sm'}
                         //disabled={false}
-                        disabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
+                        disabled={images.length < 1 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
                         onClick={
                             confirmButton
                         }
