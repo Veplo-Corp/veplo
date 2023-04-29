@@ -124,12 +124,36 @@ const Home: NextPage = () => {
               zIndex={0}
               className='lg:h-screen lg:flex absolute top-0 w-full'
             >
-              <img src="/home_svg/twoGirls.jpg" alt=""
-                className='hidden lg:flex h-screen w-full object-cover contrast-[.85] brightness-[.9]'
-              />
-              <img src="/home_svg/manWithGlasses.jpg" alt=""
-                className='h-[60vh] md:h-screen w-full object-cover contrast-[.85] brightness-[.9]'
-              />
+              <Box position={'relative'}
+                className='hidden lg:flex h-screen w-full'
+              >
+                <img src="/home_svg/twoGirls.jpg" alt=""
+                  loading='lazy'
+                  className='w-full object-cover contrast-[.85] brightness-[.9]'
+                />
+                <Text
+                  position={'absolute'}
+                  bottom={1}
+                  left={1}
+                  fontSize={'2xs'}
+                  color={'gray.500'}
+                >Immagine di Shingi Rice</Text>
+              </Box>
+              <Box position={'relative'}
+                className='h-fit w-full'
+              >
+                <img src="/home_svg/manWithGlasses.jpg" alt="" loading='lazy'
+                  className='h-[60vh] md:h-screen w-full object-cover contrast-[.85] brightness-[.9]'
+                />
+                <Text
+                  position={'absolute'}
+                  bottom={1}
+                  right={1}
+                  fontSize={'2xs'}
+                  color={'gray.500'}
+                >Immagine di Rohan G</Text>
+              </Box>
+
 
             </Box>
             <Gradient_Component_home>
@@ -278,9 +302,21 @@ const Home: NextPage = () => {
                 justifyContent={'space-between'}
                 textAlign={'center'}
               >
-                <img src="/home_svg/GirlAuto.jpg" alt=""
-                  className=' contrast-[.85] brightness-[.9] w-full lg:w-96 aspect-[9/10] object-cover'
-                />
+                <Box
+                  position={'relative'}
+                >
+                  <img src="/home_svg/GirlAuto.jpg" alt=""
+                    className=' contrast-[.85] brightness-[.9] w-full lg:w-96 aspect-[9/10] object-cover'
+                  />
+                  <Text
+                    position={'absolute'}
+                    bottom={1}
+                    right={1}
+                    fontSize={'2xs'}
+                    color={'gray.500'}
+                  >Immagine di Ellie Cooper</Text>
+                </Box>
+
                 <Text
                   fontSize={['md', 'lg']}
                   fontWeight={'normal'}
@@ -300,9 +336,22 @@ const Home: NextPage = () => {
               className='pb-16 lg:p-20'
 
             >
-              <img src="/home_svg/GirlHodie.jpg" alt=""
-                className='pt-10 lg:hidden contrast-[.85] brightness-[.9] w-full lg:w-96 aspect-[9/10] object-cover'
-              />
+              <Box
+                position={'relative'}
+                className='lg:hidden'
+              >
+                <img src="/home_svg/GirlHodie.jpg" alt=""
+                  className='pt-10  contrast-[.85] brightness-[.9] w-full lg:w-96 aspect-[9/10] object-cover'
+                />
+                <Text
+                  position={'absolute'}
+                  bottom={1}
+                  right={1}
+                  fontSize={'2xs'}
+                  color={'gray.500'}
+                >Immagine di Oladimeji Odunsi</Text>
+              </Box>
+
               <Box
                 className='m-auto lg:px-20 lg:flex'
                 display={'flex'}
@@ -318,9 +367,21 @@ const Home: NextPage = () => {
                   SELEZIONARE CON CURA I NOSTRI PARTNER, NEGOZI FISICI O BRAND INDIPENDENTI, SIGNIFICA ANCHE PARLARE, ASCOLTARE E SCOPRIRE LE LORO STORIE. VOGLIAMO COSTRUIRE UNA COMUNITÀ DI NEGOZI CON GLI STESSI VALORI, CHE CREDONO IN UN’IDEA DI MODA DIVERSA DA QUELLA A CUI SIAMO ABITUATI, DOVE IL DNA DI OGNI SINGOLO BRAND POSSA ESPRIMERSI IN TUTTA LA SUA FORMA.
 
                 </Text>
-                <img src="/home_svg/GirlHodie.jpg" alt=""
-                  className='hidden lg:flex contrast-[.85] brightness-[.9] w-96 aspect-[9/10] object-cover'
-                />
+                <Box
+                  position={'relative'}
+                >
+                  <img src="/home_svg/GirlHodie.jpg" alt=""
+                    className='hidden lg:flex contrast-[.85] brightness-[.9] w-96 aspect-[9/10] object-cover'
+                  />
+                  <Text
+                    position={'absolute'}
+                    bottom={1}
+                    right={1}
+                    fontSize={'2xs'}
+                    color={'gray.500'}
+                  >Immagine di Oladimeji Odunsi</Text>
+                </Box>
+
 
 
               </Box>
