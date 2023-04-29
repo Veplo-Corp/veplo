@@ -26,7 +26,6 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
     const [showSize, setShowSize] = useState(false)
 
     useEffect(() => {
-
         const colors = product.variations.map((variation: Variation) => {
             return COLORS.find(color => color.name === variation.color)?.cssColor
         })
@@ -80,6 +79,8 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
         //   }
     }, [width])
 
+    console.log(product);
+
 
 
     return (
@@ -97,7 +98,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                         >
                             <Avatar
                                 name={product.shopInfo.name}
-                                src={product.info.macroCategory}
+                                src={imageKitUrl(product.shopInfo.profilePhoto, 100, 100)}
                                 bg='white'
                                 size={'md'}
                                 borderWidth={1}
@@ -125,7 +126,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                         </Box>
                     </Link>}
 
-                    <Box minW='20' borderRadius='15px' h={'full'} overflow='hidden' className='cursor-pointer relative aspect-[4.2/5] rounded-3xl'
+                    <Box minW='20' borderRadius='10px' h={'full'} overflow='hidden' className='cursor-pointer relative aspect-[4.2/5] rounded-3xl'
                         borderWidth={1}
                         position={'relative'}
                         borderColor={'#F3F3F3'}
@@ -138,16 +139,18 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                             prefetch={false}
                             href={color ? `/prodotto/${product.id}/${toProductPage(product)}?colore=${color}` : `/prodotto/${product.id}/${toProductPage(product)}`}>
                             {showSize &&
-                                <ScaleFade initialScale={0.7} in={showSize}
+                                <ScaleFade
+                                    initialScale={0.7} in={showSize}
                                     delay={0.3}
-                                    className='z-10 absolute hidden lg:flex'
+
+                                    className='z-10 top-0  absolute hidden lg:flex'
                                 >
-                                    <VStack top={0}
+                                    <VStack
                                         background={'#FFFFFF'}
                                         borderWidth={1}
                                         borderColor={'#F3F3F3'}
                                         p={2}
-                                        borderRadius={'xl'}
+                                        borderRadius={'10px'}
                                         textAlign={'center'}
                                         minW={28}
                                     >
