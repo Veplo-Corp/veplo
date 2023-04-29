@@ -28,10 +28,9 @@ export interface Product {
         gender: string,
         brand: string,
         fit: string,
-        traits?: ('eco-friendly' |
-            'vegan' |
-            'handmade' |
-            'vintage')[]
+        traits?: ('eco-friendly' | 'vegan' | 'handmade' | 'vintage')[],
+        materials?: string[],
+        length: string
 
     }
     price: {
