@@ -81,6 +81,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                         fontSize='sm'
                         my={'auto'}
                         color={'#909090'}
+                        lineHeight={'5'}
                     >
                         {shop.address.city}
                     </Box>
