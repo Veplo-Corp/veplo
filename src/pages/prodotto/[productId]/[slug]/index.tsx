@@ -662,7 +662,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                         </Disclosure.Button>
                                         <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
                                             <Box
-                                                className='grid grid-cols-3 lg:grid-cols-4 w-fit gap-y-3 lg:gap-4'
+                                                className='grid grid-cols-3 lg:grid-cols-4 w-fit gap-x-1 gap-y-4 lg:gap-4'
                                             >
                                                 <Text
                                                     fontSize={'md'}
@@ -673,11 +673,11 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                 </Text>
                                                 <Text
                                                     fontSize={'md'}
-                                                    fontWeight={'medium'}
+                                                    fontWeight={'normal'}
                                                     color={'#909090'}
                                                     className='col-span-2 lg:col-span-3'
                                                 >
-                                                    {product.info.materials}
+                                                    {product.info.materials?.length && product.info.materials?.length > 0 ? product.info.materials : 'non disponibile'}
                                                 </Text>
                                                 <Text
                                                     fontSize={'md'}
@@ -688,11 +688,11 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                 </Text>
                                                 <Text
                                                     fontSize={'md'}
-                                                    fontWeight={'medium'}
+                                                    fontWeight={'normal'}
                                                     color={'#909090'}
                                                     className='col-span-2 lg:col-span-3'
                                                 >
-                                                    {product.info.fit}
+                                                    {product.info.fit ? product.info.fit : 'non disponibile'}
                                                 </Text>
                                                 <Text
                                                     fontSize={'md'}
@@ -703,11 +703,11 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                 </Text>
                                                 <Text
                                                     fontSize={'md'}
-                                                    fontWeight={'medium'}
+                                                    fontWeight={'normal'}
                                                     color={'#909090'}
                                                     className='col-span-2 lg:col-span-3'
                                                 >
-                                                    {product.info.length}
+                                                    {product.info.length ? product.info.length : 'non disponibile'}
                                                 </Text>
                                                 <Text
                                                     fontSize={'md'}
@@ -718,7 +718,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                 </Text>
                                                 <Text
                                                     fontSize={'md'}
-                                                    fontWeight={'medium'}
+                                                    fontWeight={'normal'}
                                                     color={'#909090'}
                                                     className='col-span-2 lg:col-span-3'
                                                 >
