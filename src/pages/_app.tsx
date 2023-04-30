@@ -297,6 +297,8 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
       <ApolloProvider client={apolloClient} > {/* client={clientApollo} */}
         <ChakraProvider theme={theme}>
           <Auth>
+            {router.asPath !== '/' && !router.query?.fbclid && <Header />}
+
             {loading ? (
               <div className='mt-32'>
                 <Loading />
@@ -304,7 +306,6 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
               </div>
             ) : (
               <main className={sans.className}>
-                {router.asPath !== '/' && !router.query?.fbclid && <Header />}
                 <Component {...pageProps} />
                 {router.asPath !== '/' && !router.query?.fbclid && <Footer />}
               </main>
