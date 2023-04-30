@@ -290,9 +290,9 @@ export const CATEGORIES: Categories = {
                 name: "Felpe",
                 url: "felpe",
                 types: [
-                    "con il cappuccio",
-                    "felpe",
-                    "con la zip",
+                    "cappuccio",
+                    "zip",
+                    "senza cappuccio"
                 ],
                 sizes: "man_clothes_sizes",
             },
