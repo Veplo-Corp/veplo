@@ -229,7 +229,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                                 left={4}
                                 display={'flex'}
                             >
-                                <Circle_Color colors={productcolorsCSS.slice(0, 3)} dimension={6} space={1} />
+                                <Circle_Color colors={productcolorsCSS.slice(0, 3)} dimension={6} space={2} />
                                 {productcolorsCSS.length > 3 &&
                                     <>
                                         <Box onClick={() => {
