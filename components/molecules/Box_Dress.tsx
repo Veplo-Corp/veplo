@@ -208,7 +208,8 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
 
 
                             />
-                            <Box
+
+                            <Text
                                 fontSize={'md'}
                                 fontWeight={'bold'}
                                 py={0}
@@ -218,7 +219,10 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                                 top={3}
                                 left={3}
                                 borderRadius={'full'}
-                            >{product.name.toLocaleUpperCase()}</Box>
+                                noOfLines={1}
+                            >
+                                {product.name.toLocaleUpperCase()}
+                            </Text>
                             <Box
                                 position={'absolute'}
                                 bottom={3}
