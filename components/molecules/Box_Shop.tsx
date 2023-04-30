@@ -66,7 +66,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                     as='h2'
                     noOfLines={1}
                     fontSize={'xl'}
-                    lineHeight={'5'}
+                    lineHeight={'normal'}
                     mb={0}
                 >
                     {toUpperCaseFirstLetter(shop.name)}
@@ -80,7 +80,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                     my={'auto'}
                     color={'#909090'}
                     lineHeight={'4'}
-                    mb={[0]}
+                    mb={0.5}
                 >
                     {shop.address.city}
                 </Box>

@@ -18,6 +18,7 @@ import Input_Search_Item from '../atoms/Input_Search_Item';
 import { useRouter } from 'next/router';
 import { getFromLocalStorage } from '../utils/getFromLocalStorage';
 import { Cart } from '../../src/interfaces/carts.interface';
+import createUrlSchema from '../utils/create_url';
 
 const Header = () => {
     const router = useRouter()
@@ -102,7 +103,7 @@ const Header = () => {
         }
         console.log(gender);
 
-        //router.push(`prodotti/${gender}-abbigliamento/tutto/rilevanza/mario`)
+        router.push(`/prodotti/${gender}-abbigliamento/tutto/rilevanza/${createUrlSchema([question])}`)
 
 
 

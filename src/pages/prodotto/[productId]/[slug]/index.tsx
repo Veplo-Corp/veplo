@@ -43,17 +43,12 @@ import { ArrowRight, NavArrowDown } from 'iconoir-react';
 import { sortAndFilterSizes } from '../../../../../components/utils/sortAndFilterSizes';
 import { Disclosure, Transition } from '@headlessui/react';
 
-export async function getStaticPaths() {
-    return {
-        paths: [],
-        fallback: 'blocking', // can also be true or false
-    }
-}
 
 
 
 
-export async function getStaticProps(ctx: any) {
+// This gets called on every request
+export async function getServerSideProps(ctx: any) {
 
     const sizes = [
         "xxs",
@@ -104,7 +99,7 @@ export async function getStaticProps(ctx: any) {
                 //?understand cache in GraphQL
                 initialApolloState: apolloClient.cache.extract(),
             },
-            revalidate: 60, // In seconds
+            // revalidate: 60, // In seconds
         }
 
     } catch (e: any) {
@@ -117,7 +112,7 @@ export async function getStaticProps(ctx: any) {
                 //?understand cache in GraphQL
                 initialApolloState: apolloClient.cache.extract(),
             },
-            revalidate: 60, // In seconds
+            // revalidate: 60, // In seconds
         }
     }
 

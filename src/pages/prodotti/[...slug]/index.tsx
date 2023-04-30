@@ -59,6 +59,8 @@ export async function getStaticProps(ctx: any) {
     const microgategoryNameUrl: string = slug[1];
     const searchedText: string = slug[3];
 
+    console.log(searchedText);
+
 
 
     const apolloClient = initApollo()
