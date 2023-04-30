@@ -27,6 +27,7 @@ import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
 import { MoreHoriz, MoreHorizCircle, Phone, PinAlt } from 'iconoir-react'
 import PopoverComponent from '../../../../../components/molecules/PopoverComponent'
 import { numberOfLineText } from '../../../../../components/utils/numberOfLineText'
+import { isMobile } from 'react-device-detect'
 
 export async function getStaticPaths() {
     return {
@@ -248,7 +249,7 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
                                 key={product.id}
                             >
                                 <Box_Dress product={product}
-
+                                    showStoreHeader={isMobile}
                                 ></Box_Dress>
                             </div>
                         )
