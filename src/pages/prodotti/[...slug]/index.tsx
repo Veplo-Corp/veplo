@@ -59,7 +59,7 @@ export async function getStaticProps(ctx: any) {
     const microgategoryNameUrl: string = slug[1];
     const searchedText: string = slug[3];
 
-    console.log(searchedText);
+    console.log(elementGenderMacrocategory);
 
 
 
@@ -100,9 +100,11 @@ export async function getStaticProps(ctx: any) {
             }
         })
 
+        console.log(filter.gender);
+
         return {
             props: {
-                gender: elementGenderMacrocategory.gender === 'uomo' ? 'm' : 'f',
+                gender: filter.gender,
                 category: macrogategoryName,
                 products: data?.products.products,
                 microCategory: microgategoryName
@@ -257,6 +259,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
     const mountedRef = useRef(true)
     const fetchSpecificItem = useCallback(async (filters: any) => {
+        console.log('gender', gender);
+
         try {
             const newProducts = async () => {
                 return await getProducts({
@@ -286,12 +290,15 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             })
         } catch (error) {
         }
-    }, [mountedRef]) // add variable as dependency
+    }, [mountedRef, gender]) // add variable as dependency
 
     useEffect(() => {
         const filters = getFilterValue()
+        console.log(gender);
 
+        if (Object.keys(filters).length < 1) return
         fetchSpecificItem(filters);
+
         return () => {
             mountedRef.current = false;   // clean up function
         };
@@ -757,7 +764,14 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 <Link
                                     prefetch={false}
                                     key={element}
-
+                                    onClick={() => {
+                                        setIsOpen(prevstate => {
+                                            return {
+                                                ...prevstate,
+                                                category: false
+                                            }
+                                        })
+                                    }}
                                     href={url}
                                 >
                                     <Box
@@ -812,6 +826,13 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 fontSize={'md'}
                                 fontWeight={'semibold'}
                                 onClick={() => {
+                                    setIsOpen(prevstate => {
+                                        return {
+                                            ...prevstate,
+                                            size: false
+                                        }
+                                    })
+
                                     if (element.split(' ')[0] === router.query.sizes) {
                                         let filter = getFilterValue();
                                         delete filter['sizes'];
@@ -872,6 +893,14 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     fontSize={'md'}
                                     fontWeight={'semibold'}
                                     onClick={() => {
+
+                                        setIsOpen(prevstate => {
+                                            return {
+                                                ...prevstate,
+                                                color: false
+                                            }
+                                        })
+
                                         if (element.name === router.query.colors) {
                                             let filter = getFilterValue();
                                             delete filter['colors'];
@@ -918,6 +947,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 </ModalReausable>
                 <ModalReausable
                     marginTop={32} title={'Prezzo'} closeModal={() => {
+
                         const filterValues = getFilterValue();
                         let price: {
                             minPrice?: number,
