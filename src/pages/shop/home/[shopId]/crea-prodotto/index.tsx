@@ -362,7 +362,7 @@ const index = () => {
                     v1
                 },
                 info: {
-                    brand: watch('brand'),
+                    brand: watch('brand').toLocaleLowerCase(),
                     fit: watch('fit') ? watch('fit')?.toLocaleLowerCase() : null,
                     gender: genderSelected === 'donna' ? 'f' : 'm',
                     length: watch('length') ? watch('length')?.toLocaleLowerCase() : null,
@@ -370,7 +370,7 @@ const index = () => {
                     materials: watch('materials')?.length >= 1 ? watch('materials') : null,
                     microCategory: watch('microcategory').toLocaleLowerCase(),
                     traits: watch('traits') ? watch('traits') : [],
-                    //description: watch('description') ? watch('description') : null,
+                    description: watch('description') ? watch('description') : null,
                 },
                 variations: variations
             }
