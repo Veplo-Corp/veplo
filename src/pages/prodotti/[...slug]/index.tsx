@@ -89,7 +89,6 @@ export async function getStaticProps(ctx: any) {
             filter.gender = elementGenderMacrocategory.gender === 'uomo' ? 'm' : 'f'
         }
 
-        console.log(filter);
 
 
 
@@ -154,7 +153,6 @@ interface PropsFilter {
 }
 
 const index: FC<{ products: Product[], category: string, microCategory: string, gender: 'f' | 'm' }> = ({ products, microCategory, category, gender }) => {
-    console.log(products);
 
     const router = useRouter();
     const [loading, setLoading] = useState(true);
@@ -236,7 +234,11 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         const microcategory: any = Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.find(element => element.name === category)
         setproductsFounded(products)
 
-        if (!microcategory?.types) return
+        if (!microcategory?.types) {
+            setSizeProduct('')
+            return setMicrocategory([])
+
+        }
         setMicrocategory(microcategory?.types);
         setSizeProduct(microcategory.sizes);
 
@@ -458,7 +460,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 >
 
                                     {microcategory.length > 0 && <Button
-
                                         minW={'fit-content'}
                                         bg={slug[1] !== 'tutto' ? 'black' : 'white'}
                                         position={'relative'}
@@ -491,7 +492,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     >
                                         {slug[1] !== 'tutto' ? microCategory : 'Categoria'}
                                     </Button>}
-                                    {sizeProduct && <Button
+                                    {sizeProduct && sizeProduct.length > 0 && <Button
 
                                         minW={'fit-content'}
                                         bg={'white'}
