@@ -350,14 +350,16 @@ const index = () => {
 
             console.log(productVariations);
 
+            const v1 = Number(watch('price').replace(',', '.'))
 
+            if (!v1 || v1 <= 0) return
 
             const product = {
                 name: watch('name').toLowerCase(),
                 status: 'active',
                 canBuy: true,
                 price: {
-                    v1: Number(watch('price').replace(',', '.'))
+                    v1
                 },
                 info: {
                     brand: watch('brand'),
