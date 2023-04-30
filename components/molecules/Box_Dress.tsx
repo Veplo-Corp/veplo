@@ -79,7 +79,6 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
         //   }
     }, [width])
 
-    //console.log(product);
 
 
 
@@ -126,7 +125,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                         </Box>
                     </Link>}
 
-                    <Box minW='20' borderRadius='10px' h={'full'} overflow='hidden' className='cursor-pointer relative aspect-[4.2/5] rounded-3xl'
+                    <Box minW='20' borderRadius='10px' h={'full'} overflow='hidden' className='cursor-pointer relative rounded-3xl aspect-[4.2/5]'
                         borderWidth={1}
                         position={'relative'}
                         borderColor={'#F3F3F3'}
@@ -205,7 +204,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                                 placeholderSrc={imageKitUrl(urlProduct)}
                                 //effect="blur"
                                 alt={product.name}
-                                className="w-fit min-h-[240px] md:min-h-0 object-cover "
+                                className="w-fit min-h-[240px] md:min-h-0 aspect-[4.2/5] object-cover "
 
 
                             />
