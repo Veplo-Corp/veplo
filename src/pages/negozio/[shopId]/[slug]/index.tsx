@@ -249,6 +249,7 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
                                 key={product.id}
                             >
                                 <Box_Dress product={product}
+                                    showStoreHeader={true}
                                 ></Box_Dress>
                             </div>
                         )
