@@ -38,7 +38,7 @@ export interface IFormInputProductEdit {
     brand: string;
     macrocategory: string;
     microcategory: string;
-    vestibilità: string
+    vestibilità?: string
 }
 
 const index = () => {
