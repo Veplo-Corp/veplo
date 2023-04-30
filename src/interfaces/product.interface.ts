@@ -27,11 +27,11 @@ export interface Product {
         microCategory: string,
         gender: string,
         brand: string,
-        fit: string,
+        fit?: string,
         traits?: ('eco-friendly' | 'vegan' | 'handmade' | 'vintage')[],
         materials?: string[],
-        length: string
-
+        length?: string
+        description?: string
     }
     price: {
         v1: number,

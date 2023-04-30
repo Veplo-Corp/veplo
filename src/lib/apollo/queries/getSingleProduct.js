@@ -18,6 +18,7 @@ const GET_SINGLE_PRODUCT = gql`
                 traits
                 length
                 materials
+                description
             }
             variations{
             id

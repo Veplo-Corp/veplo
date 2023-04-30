@@ -630,7 +630,8 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                             _active={{
                                 transform: 'scale(0.98)',
                             }}
-                        >aggiungi alla borsa</Button>
+                        >aggiungi alla borsa{sizeSelected && <span className='ml-[5px]'>- {sizeSelected.toLocaleUpperCase()}</span>}
+                        </Button>
 
                         <Box
                             mt={5}
@@ -682,7 +683,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                         color={'#909090'}
                                                         className='col-span-2 lg:col-span-3'
                                                     >
-                                                        {product.info.materials?.length && product.info.materials?.length > 0 ? product.info.materials : 'non disponibile'}
+                                                        {product.info.materials?.length && product.info.materials?.length > 0 ? product.info.materials.join(', ') : 'non disponibile'}
                                                     </Text>
                                                     <Text
                                                         fontSize={'md'}
@@ -714,21 +715,26 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
                                                     >
                                                         {product.info.length ? product.info.length : 'non disponibile'}
                                                     </Text>
-                                                    <Text
-                                                        fontSize={'md'}
-                                                        fontWeight={'semibold'}
-                                                        color={'black'}
-                                                    >
-                                                        Descrizione
-                                                    </Text>
-                                                    <Text
-                                                        fontSize={'md'}
-                                                        fontWeight={'normal'}
-                                                        color={'#909090'}
-                                                        className='col-span-2 lg:col-span-3'
-                                                    >
-                                                        Tshirt con maniche a giro, girocollo a costine, doppia impuntura larga a fondo manica e sul bordo inferioreTessuto Jersey 100% cotone biologico filato e pettinato, Fabric washed (Manca)
-                                                    </Text>
+                                                    {product.info.description && product.info.description?.length > 0 &&
+                                                        <>
+                                                            <Text
+                                                                fontSize={'md'}
+                                                                fontWeight={'semibold'}
+                                                                color={'black'}
+                                                            >
+                                                                Descrizione
+                                                            </Text>
+                                                            <Text
+                                                                fontSize={'md'}
+                                                                fontWeight={'normal'}
+                                                                color={'#909090'}
+                                                                className='col-span-2 lg:col-span-3'
+                                                            >   {
+                                                                    product.info.description
+                                                                }
+                                                            </Text>
+                                                        </>
+                                                    }
                                                 </Box>
 
                                             </Disclosure.Panel>
