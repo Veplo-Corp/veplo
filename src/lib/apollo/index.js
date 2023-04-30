@@ -60,6 +60,9 @@ function createApolloClient() {
                 Product: {
                     keyFields: ["id"],
                 },
+                ShopInfo: {
+                    keyFields: []
+                }
             }
 
         }),
