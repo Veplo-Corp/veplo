@@ -79,7 +79,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
         //   }
     }, [width])
 
-    console.log(product);
+    //console.log(product);
 
 
 

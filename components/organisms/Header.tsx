@@ -174,10 +174,22 @@ const Header = () => {
 
 
                                 </Box>
-                                {user?.uid && <Box
+                                <Box
                                     marginY={'auto'}
                                     height={'fit-content'}
                                     onClick={() => {
+                                        if (!user?.uid) {
+                                            console.log(router.asPath);
+
+                                            return router.push({
+                                                pathname: '/user/login',
+                                                query: {
+                                                    type: 'login',
+                                                    callbackUrl: router.asPath
+                                                },
+
+                                            })
+                                        }
                                         setOpenDrawerCart(true)
                                     }}
                                     cursor={'pointer'}
@@ -209,7 +221,7 @@ const Header = () => {
 
                                         </Tag>}
 
-                                </Box>}
+                                </Box>
                                 <Box
                                     marginY={'auto'}
                                     height={'fit-content'}
