@@ -59,7 +59,6 @@ export async function getStaticProps(ctx: any) {
     const microgategoryNameUrl: string = slug[1];
     const searchedText: string = slug[3];
 
-    console.log(elementGenderMacrocategory);
 
 
 
@@ -90,6 +89,9 @@ export async function getStaticProps(ctx: any) {
             filter.gender = elementGenderMacrocategory.gender === 'uomo' ? 'm' : 'f'
         }
 
+        console.log(filter);
+
+
 
         const { data, errors } = await apolloClient.query({
             query: GET_PRODUCTS,
@@ -100,7 +102,6 @@ export async function getStaticProps(ctx: any) {
             }
         })
 
-        console.log(filter.gender);
 
         return {
             props: {
@@ -122,7 +123,7 @@ export async function getStaticProps(ctx: any) {
                 errorLog: 'errore'
             },
             // notFound: true,
-            revalidate: 60 //seconds
+            revalidate: 1 //seconds
         }
     }
 
