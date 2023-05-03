@@ -157,7 +157,7 @@ const index = () => {
                   fontWeight={'semibold'}
                   fontSize={'lg'}
                 >
-                  per aggiungere prodotti nel carrello<br />bisogna effettuare l'accesso
+                  per aggiungere prodotti alla borsa<br />bisogna effettuare l'accesso
                 </Text>
               </Box>}
               <Login_or_Registration

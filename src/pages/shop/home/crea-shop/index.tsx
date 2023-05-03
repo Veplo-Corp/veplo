@@ -963,7 +963,7 @@ const index = () => {
             </Desktop_Layout>
             <ModalReausable
                 marginTop={0}
-                title={typeCroppedImage === 'profile' ? 'inserisci immagine di profilo' : 'inserisci immagine di copertina'}
+                title={typeCroppedImage === 'profile' ? 'inserisci immagine di profilo (ritaglia la foto)' : 'inserisci immagine di copertina (ritaglia la foto)'}
                 isOpen={isProfileImageModalOpen}
                 closeModal={() => {
                     hiddenFileInputProfileImage.current.value = null;

@@ -761,7 +761,7 @@ const Drawer_Add_Image: React.FC<{ openDraw: number | undefined, confirmPhotos: 
             </Drawer >
             <ModalReausable
                 marginTop={0}
-                title={'inserisci immagine'}
+                title={'inserisci immagine (ritaglia la foto)'}
                 isOpen={isImageModalOpen}
                 closeModal={() => {
                     hiddenFileInput.current.value = null;
