@@ -62,7 +62,6 @@ const index = () => {
             const business: Business = value.data?.business;
             const shop = business?.shops?.find(shop => shop.id === shopId);
             setShop(shop)
-            console.log(shop);
             if (shopId && (!user.favouriteShop?.id || user.favouriteShop?.id !== shopId)) {
                 const element = {
                     id: shopId,
@@ -76,8 +75,6 @@ const index = () => {
 
             }
         })
-
-
         return () => {
 
         }
