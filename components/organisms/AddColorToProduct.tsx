@@ -430,7 +430,7 @@ const AddColorToProduct: FC<{ category: string, deleteCard: () => void, confirmC
 
             <ModalReausable
                 marginTop={0}
-                title={'inserisci immagine'}
+                title={'inserisci immagine (ritaglia la foto)'}
                 isOpen={isImageModalOpen}
                 closeModal={() => {
                     hiddenFileInputImage.current.value = null;

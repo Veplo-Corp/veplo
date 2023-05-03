@@ -354,6 +354,26 @@ const index = () => {
 
             if (!v1 || v1 <= 0) return
 
+            const moreInfo: {
+                fit?: string,
+                length?: string,
+                materials?: string[],
+                description?: string
+            } = {}
+            if (watch('fit')) {
+                moreInfo['fit'] = watch('fit')?.toLocaleLowerCase()
+            }
+            if (watch('length')) {
+                moreInfo['length'] = watch('length')?.toLocaleLowerCase()
+            }
+            if (watch('materials')?.length >= 1) {
+                moreInfo['materials'] = watch('materials')
+            }
+            if (watch('description')) {
+                moreInfo['description'] = watch('description')?.toLocaleLowerCase()
+            }
+
+
             const product = {
                 name: watch('name').toLowerCase(),
                 status: 'active',
@@ -363,14 +383,15 @@ const index = () => {
                 },
                 info: {
                     brand: watch('brand').toLocaleLowerCase(),
-                    fit: watch('fit') ? watch('fit')?.toLocaleLowerCase() : null,
+                    //fit: watch('fit') ? watch('fit')?.toLocaleLowerCase() : null,
                     gender: genderSelected === 'donna' ? 'f' : 'm',
-                    length: watch('length') ? watch('length')?.toLocaleLowerCase() : null,
+                    //length: watch('length') ? watch('length')?.toLocaleLowerCase() : null,
                     macroCategory: watch('macrocategory').toLocaleLowerCase(),
-                    materials: watch('materials')?.length >= 1 ? watch('materials') : null,
+                    //materials: watch('materials')?.length >= 1 ? watch('materials') : null,
                     microCategory: watch('microcategory').toLocaleLowerCase(),
                     traits: watch('traits') ? watch('traits') : [],
-                    description: watch('description') ? watch('description') : null,
+                    //description: watch('description') ? watch('description') : null,
+                    ...moreInfo
                 },
                 variations: variations
             }

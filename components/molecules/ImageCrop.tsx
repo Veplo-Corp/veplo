@@ -50,7 +50,7 @@ const ImageCrop: FC<Props> = ({ ...props }) => {
             >
 
                 <ReactCrop
-                    className='w-full h-fit max-h-[65vh]'
+                    className='w-full h-fit max-h-[65vh] border-2 border-gray'
 
                     crop={crop}
                     circularCrop={props.circularCrop}
