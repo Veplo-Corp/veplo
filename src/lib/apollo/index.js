@@ -65,6 +65,9 @@ function createApolloClient() {
                     merge: false,
                     read: () => null,
                 },
+                ProductVariation: {
+                    keyFields: ["id"],
+                },
             }
 
         }),

@@ -1,11 +1,11 @@
-import React, { FC, Fragment, useState } from 'react'
+import React, { FC, Fragment, useEffect, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { CheckIcon } from '@chakra-ui/icons'
 
 
 
-const SelectMultipleOptions: FC<{ limitNumber: number, handleValue: (selectedValue: (string[] | [])) => void, values: string[] }> = ({ limitNumber, handleValue, values }) => {
+const SelectMultipleOptions: FC<{ limitNumber: number, handleValue: (selectedValue: (string[] | [])) => void, values: string[], defaultValue?: string[] }> = ({ limitNumber, handleValue, values, defaultValue }) => {
     const [selected, setSelected] = useState<string[]>([])
 
 
@@ -16,6 +16,14 @@ const SelectMultipleOptions: FC<{ limitNumber: number, handleValue: (selectedVal
         })
         handleValue(value)
     }
+
+    useEffect(() => {
+        if (defaultValue) {
+            setSelected(defaultValue)
+        }
+    }, [])
+
+
 
     return (
         <Listbox value={selected} onChange={(value) => { handleSelectedValue(value) }} multiple >

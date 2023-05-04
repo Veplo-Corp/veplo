@@ -628,21 +628,7 @@ const index = () => {
 
                         </div>
                     )
-                    // return (
-                    //     <div
-                    //         key={Math.random()}
-                    //         className='mb-4'
-                    //     >
-                    //         <AddColorToProduct
-                    //             defaultCardValue={variation}
-                    //             colors={colors}
-                    //             category={sizeTypeSelected}
-                    //             confirmCard={(variation) => {
-                    //                 confirmCard(variation)
-                    //             }}
-                    //         />
-                    //     </div>
-                    // )
+
                 })
                 }
 

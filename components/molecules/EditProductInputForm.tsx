@@ -1,4 +1,4 @@
-import { Button, Input, InputGroup, InputLeftAddon, InputRightAddon } from '@chakra-ui/react';
+import { Button, Input, InputGroup, InputLeftAddon, InputRightAddon, Textarea } from '@chakra-ui/react';
 import React, { FC, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form';
 import { Variation } from '../../src/interfaces/product.interface';
@@ -9,6 +9,8 @@ import SelectMacrocategory from '../atoms/SelectMacrocategory';
 import SelectStringOption from '../atoms/SelectStringOption';
 import { onChangeNumberPrice } from '../utils/onChangePrice';
 import ProductVariationCard from './ProductVariationCard';
+import SelectMultipleOptions from '../atoms/SelectMultipleOptions';
+import { FIT, LENGTH, MATERIALS, TRAITS } from '../../src/pages/shop/home/[shopId]/crea-prodotto';
 
 
 
@@ -29,8 +31,8 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
         'skinny',
         'slim',
         'regular',
-        'baggy',
-        'oversize'
+        'oversize',
+        'baggy'
     ]
 
 
@@ -218,22 +220,94 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                     />
                 </InputGroup>
             </Div_input_creation>
-            <Div_input_creation text='Vestibilità prodotto'>
+            <Div_input_creation text='Descrizione (opzionale)'>
+                <InputGroup >
+                    <Textarea
+                        maxLength={200}
+                        rounded={10}
+                        paddingY={6}
+                        paddingTop={2}
+                        autoComplete="descrition-text-shop"
+                        // value={shop_name}
+                        {...register("description", { required: true })}
+                        // onChange={(event) => changeInput(event, 'shop_name')}
+                        isInvalid={false}
+                    />
+                </InputGroup>
+            </Div_input_creation>
+            <Div_input_creation text='Materiali (opzionale, massimo 2)'>
                 <Controller
                     control={control}
-                    name="vestibilità"
+                    name="materials"
                     rules={{ required: false }}
                     render={() => (
-                        <SelectStringOption
-                            values={vestibilità}
-                            defaultValue={defaultValues.vestibilità}
-                            handleClick={(vestibilità: string) => {
-                                setValue('vestibilità', vestibilità);
+                        <SelectMultipleOptions
+                            defaultValue={watch('materials')}
+                            limitNumber={2}
+                            handleValue={(value) => {
+                                setValue('materials', value);
                             }}
+                            values={MATERIALS.sort()}
                         />
                     )}
                 />
             </Div_input_creation>
+            {
+                watch('macrocategory') && watch('macrocategory').toLocaleLowerCase() !== 'scarpe' && <>
+                    <Div_input_creation text='Lunghezza (opzionale)'>
+                        <Controller
+                            control={control}
+                            name="length"
+                            rules={{ required: false }}
+                            render={() => (
+                                <SelectStringOption
+                                    values={LENGTH}
+                                    defaultValue={watch('length')}
+                                    handleClick={(microcategory: string) => {
+                                        setValue('length', microcategory);
+                                    }}
+                                />
+                            )}
+                        />
+                    </Div_input_creation>
+                    <Div_input_creation text='Vestibilità prodotto'>
+                        <Controller
+                            control={control}
+                            name="fit"
+                            rules={{ required: false }}
+                            render={() => (
+                                <SelectStringOption
+                                    values={FIT}
+                                    defaultValue={defaultValues.fit}
+                                    handleClick={(vestibilità: string) => {
+                                        setValue('fit', vestibilità);
+                                    }}
+                                />
+                            )}
+                        />
+                    </Div_input_creation>
+                </>
+            }
+            <Div_input_creation text='Tipologia (opzionale, massimo 2)'>
+                <Controller
+                    control={control}
+                    name="traits"
+                    rules={{ required: false }}
+                    render={() => (
+                        <SelectMultipleOptions
+                            defaultValue={watch('traits')}
+                            limitNumber={2}
+                            handleValue={(value) => {
+
+
+                                setValue('traits', value);
+                            }}
+                            values={TRAITS}
+                        />
+                    )}
+                />
+            </Div_input_creation>
+
             <Button
                 mt={5}
                 type={'submit'}

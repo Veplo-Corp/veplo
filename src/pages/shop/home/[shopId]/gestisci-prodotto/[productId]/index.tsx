@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { gql, makeVar, useLazyQuery, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
@@ -17,9 +17,15 @@ import { Product, Variation } from '../../../../../../interfaces/product.interfa
 import DELETE_VARIATON from '../../../../../../lib/apollo/mutations/deleteVariation';
 import EDIT_PRODUCT from '../../../../../../lib/apollo/mutations/editProduct';
 import EDIT_VARIATIONS from '../../../../../../lib/apollo/mutations/editVariation';
+import CREATE_VARIATION from '../../../../../../lib/apollo/mutations/createVariation';
 
 import GET_PRODUCTS_FROM_SHOP from '../../../../../../lib/apollo/queries/geetProductsShop';
 import GET_SINGLE_PRODUCT from '../../../../../../lib/apollo/queries/getSingleProduct';
+import { Button } from '@chakra-ui/react';
+import AddColorToProduct from '../../../../../../../components/organisms/AddColorToProduct';
+import { COLORS, Color } from '../../../../../../../components/mook/colors';
+import { VariationCard } from '../../../../../../interfaces/variationCard.interface';
+import UPLOAD_PHOTO from '../../../../../../lib/apollo/mutations/uploadPhotos';
 
 interface Props {
     shop: {
@@ -38,7 +44,11 @@ export interface IFormInputProductEdit {
     brand: string;
     macrocategory: string;
     microcategory: string;
-    vestibilità?: string
+    traits: string[];
+    materials: string[] | [];
+    fit?: string;
+    length?: string;
+    description?: string;
 }
 
 const index = () => {
@@ -61,17 +71,80 @@ const index = () => {
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     //const [getBusiness, { error, data }] = useLazyQuery<Props>(GET_BUSINESS);
     const router = useRouter();
-    const [getShop, { error, data }] = useLazyQuery<Props>(GET_PRODUCTS_FROM_SHOP);
     const [product, setProduct] = useState<Product>();
     const [defaultValue, setdefaultValue] = useState<IFormInputProductEdit>();
-    const [getProduct] = useLazyQuery(GET_SINGLE_PRODUCT);
+    const [getProduct, productData] = useLazyQuery(GET_SINGLE_PRODUCT);
     const [first, setfirst] = useState(true)
     console.log();
     const [sizeTypeSelected, setSizeTypeSelected] = useState<string[]>();
+    const [newCard, setNewCard] = useState(false)
+    const [colors, setColors] = useState<Color[]>(COLORS)
+    const [sizeCateggory, setSizeCateggory] = useState('')
+    const [uploadPhotos] = useMutation(UPLOAD_PHOTO)
+    const [createVariation] = useMutation(CREATE_VARIATION, {
+        awaitRefetchQueries: true,
+        refetchQueries: [{
+            query: GET_SINGLE_PRODUCT, variables: {
+                id: product?.id
+            }
+        }],
+        // update(cache, el, query) {
+        //     // console.log(el);
+        //     // console.log(query);
+
+
+        //     // // const normalizedId = cache.identify({ id: router.query.productId, __typename: 'Product' });
+        //     // // const newTypenameVar = makeVar({
+        //     // //     __typename: 'ProductVariation',
+        //     // //     id: "mi_devi_dare_l_id",
+        //     // //     colors: query.variables?.colors,
+        //     // //     lots: query.variables?.lots,
+        //     // //     photos: query.variables?.photos,
+        //     // //     status: "active",
+        //     // // })
+
+        //     // // console.log(newTypenameVar);
+        //     // cache.modify({
+        //     //     fields: {
+        //     //         // Aggiunta del nuovo oggetto alla lista di ProductVariation
+        //     //         productVariations(existingProductVariations = []) {
+        //     //             const newProductVariationRef = cache.writeFragment({
+        //     //                 id: 'mi_devi_dare_l_id',
+        //     //                 fragment: gql`
+        //     //                 fragment NewProductVariation on ProductVariation {
+        //     //                 id
+        //     //                 color
+        //     //                 lots
+        //     //                 photos
+        //     //                 status
+        //     //                 }
+        //     //                 `,
+        //     //                 data: {
+        //     //                     __typename: 'ProductVariation',
+        //     //                     id: "mi_devi_dare_l_id",
+        //     //                     color: query.variables?.color,
+        //     //                     lots: query.variables?.lots,
+        //     //                     photos: query.variables?.photos,
+        //     //                     status: "active",
+        //     //                 },
+
+        //     //             });
+        //     //             return [...existingProductVariations, newProductVariationRef];
+        //     //         }
+        //     //     }
+        //     // });
+
+        //     // console.log(cache);
+
+        // }
+
+
+    })
 
 
 
     const [editProduct] = useMutation(EDIT_PRODUCT, {
+
         update(cache, el, query) {
             console.log(el);
             console.log(query);
@@ -92,6 +165,7 @@ const index = () => {
                         }
                     },
                     info(cachedvalue) {
+                        //gestire anche le variabili
                         return {
                             ...cachedvalue,
                             brand: query?.variables?.options?.info?.brand ? query?.variables?.options?.info?.brand : cachedvalue.brand,
@@ -115,7 +189,7 @@ const index = () => {
     const [editVariation] = useMutation(EDIT_VARIATIONS, {
         update(cache, el, query) {
             console.log(el);
-            console.log(query);
+            console.log(query?.variables?.options?.lots);
 
             const normalizedIdVariation = cache.identify({ id: query?.variables?.id, __typename: 'ProductVariation' });
             cache.modify({
@@ -133,6 +207,69 @@ const index = () => {
 
 
 
+    //get Product on Card
+
+    useEffect(() => {
+        const product: Product = productData?.data?.product
+        if (!product) return
+        console.log(product);
+        if (!product) return
+        setProduct(product)
+        setdefaultValue({
+            name: product.name,
+            price: {
+                v1: product.price.v1,
+                v2: product.price?.v2 ? product.price?.v2 : '',
+                discountPercentage: product.price?.v2 ? Number((100 - Number(product.price.v2) / product.price.v1 * 100).toFixed(2)) : ''
+            },
+            brand: product.info.brand,
+            macrocategory: product.info.macroCategory,
+            microcategory: product.info.microCategory,
+            materials: product.info.materials ? product.info.materials : [],
+            fit: product.info.fit,
+            traits: product.info.traits ? product.info.traits : [],
+            length: product.info.length,
+            description: product.info.description
+        })
+
+        //remove colors used for new variations
+        let colors: string[] = [];
+        product.variations.map(variation => {
+            colors.push(variation.color)
+        })
+        console.log('colori', colors);
+
+        setColors((prevState: Color[]) => {
+            const newColors = prevState.filter(str => !colors.includes(str.name))
+            console.log(newColors);
+
+            return [
+                ...newColors
+            ]
+        })
+
+
+        //find sizeType
+        if (product.info.gender === 'f') {
+            const sizeCateggory = Object.values(CATEGORIES)[0].abbigliamento.find(element => element.name.toLocaleLowerCase() === product.info.macroCategory)?.sizes
+            if (sizeCateggory === 'woman_clothes_sizes' || sizeCateggory === "shoes_sizes" || sizeCateggory === "man_clothes_sizes") {
+                setSizeCateggory(sizeCateggory)
+
+                setSizeTypeSelected(SIZES[sizeCateggory])
+            }
+        }
+        if (product.info.gender === 'm') {
+            const sizeCateggory = Object.values(CATEGORIES)[1].abbigliamento.find(element => element.name.toLocaleLowerCase() === product.info.macroCategory)?.sizes
+            if (sizeCateggory === 'woman_clothes_sizes' || sizeCateggory === "shoes_sizes" || sizeCateggory === "man_clothes_sizes") {
+                setSizeCateggory(sizeCateggory)
+
+                setSizeTypeSelected(SIZES[sizeCateggory])
+            }
+        }
+    }, [productData])
+
+
+
 
     useEffect(() => {
         const { shopId, productId } = router.query;
@@ -143,39 +280,6 @@ const index = () => {
             variables: {
                 id: productId
             }
-        }).then((data: any) => {
-            const product: Product = data?.data?.product
-            console.log(product);
-            if (!product) return
-            setProduct(product)
-            setdefaultValue({
-                name: product.name,
-                price: {
-                    v1: product.price.v1,
-                    v2: product.price?.v2 ? product.price?.v2 : '',
-                    discountPercentage: product.price?.v2 ? Number((100 - Number(product.price.v2) / product.price.v1 * 100).toFixed(2)) : ''
-                },
-                brand: product.info.brand,
-                macrocategory: product.info.macroCategory,
-                microcategory: product.info.microCategory,
-                vestibilità: product.info.fit
-            })
-
-
-            //find sizeType
-            if (product.info.gender === 'f') {
-                const sizeCateggory = Object.values(CATEGORIES)[0].abbigliamento.find(element => element.name === product.info.macroCategory)?.sizes
-                if (sizeCateggory === 'woman_clothes_sizes' || sizeCateggory === "shoes_sizes" || sizeCateggory === "man_clothes_sizes") {
-                    setSizeTypeSelected(SIZES[sizeCateggory])
-                }
-            }
-            if (product.info.gender === 'm') {
-                const sizeCateggory = Object.values(CATEGORIES)[1].abbigliamento.find(element => element.name === product.info.macroCategory)?.sizes
-                if (sizeCateggory === 'woman_clothes_sizes' || sizeCateggory === "shoes_sizes" || sizeCateggory === "man_clothes_sizes") {
-                    setSizeTypeSelected(SIZES[sizeCateggory])
-                }
-            }
-
         })
         setfirst(false)
         return () => {
@@ -184,12 +288,19 @@ const index = () => {
 
 
     const editProductHandler = async (productElement: IFormInputProductEdit) => {
+        let traits = product?.info.traits ? [...product?.info.traits] : []
+        let materials = product?.info.materials ? [...product?.info.materials] : []
+
 
         let options: {
             name?: string,
             info?: {
                 brand?: string,
-                fit?: string,
+                traits: ('eco-friendly' | 'vegan' | 'handmade' | 'vintage')[] | [];
+                materials: string[] | [];
+                fit?: string;
+                length?: string;
+                description?: string;
             }
             price?: {
                 v1?: number,
@@ -204,10 +315,25 @@ const index = () => {
         if (productElement.brand !== product?.info.brand) {
             info["brand"] = productElement.brand
         }
-        if (productElement.vestibilità !== product?.info.fit) {
-            info["fit"] = productElement.vestibilità
-
+        if (productElement?.traits.sort().join(',') !== traits.sort().join(',')) {
+            info["traits"] = productElement.traits
         }
+        if (productElement?.materials.sort().join(',') !== materials.sort().join(',')) {
+            info["materials"] = productElement.materials
+        }
+        if (productElement.fit !== product?.info.fit) {
+            info["fit"] = productElement.fit
+        }
+        if (productElement.length !== product?.info.length) {
+            info["length"] = productElement.length
+        }
+        if (productElement.description !== product?.info.description) {
+            info["description"] = productElement.description
+        }
+
+
+
+
         if (Object.keys(info).length > 0) {
             options["info"] = info
         }
@@ -234,7 +360,6 @@ const index = () => {
                 }
             }
             else if (typeof productElement.price.v2 === 'string' && product?.price.v1) {
-                console.log('passa');
                 const v2 = Number(productElement.price.v2.replace(',', '.'))
                 if (v2 !== 0 && v2 < product?.price.v1) {
                     price["v1"] = product?.price.v1
@@ -245,17 +370,20 @@ const index = () => {
         if (Object.keys(price).length > 0) {
             options["price"] = price
         }
+
         if (Object.keys(options).length < 1) return
         await editProduct({
             variables: {
                 id: product?.id,
-                options: options
+                options: { options }
             }
         })
 
     }
 
-    const handleDeleteVariation = async (variationId: string) => {
+
+
+    const handleDeleteVariation = async (variationId: string, color: string) => {
         if (product && product.variations?.length <= 1) {
             return addToast({ position: 'top', title: "Impossibile cancellare il colore", description: "hai solo un colore disponibile per questo prodotto", status: 'error', duration: 5000, isClosable: false })
         }
@@ -277,10 +405,21 @@ const index = () => {
                     variations: newVariations
                 }
             })
+
+            setColors((prevState: Color[]) => {
+                const colorElement: Color | undefined = COLORS.find(element => element.name === color)
+                if (colorElement) return [
+                    colorElement,
+                    ...prevState
+                ]
+                return [
+                    ...prevState
+                ]
+
+            })
+
         } catch (e: any) {
-
             console.log(e.message);
-
         }
     }
 
@@ -339,7 +478,68 @@ const index = () => {
 
 
 
+    const confirmCard = async (variation: VariationCard) => {
+        // setProductVariations((prevstate: any[]) => {
+        //     return [
+        //         ...prevstate,
+        //         variation
+        //     ]
+        // })
 
+        let photos = [];
+        for (const photo of variation.photos) {
+            photos.push(photo.file)
+        }
+
+        if (photos.length <= 0) return
+
+        try {
+            const photosUploaded = await uploadPhotos({
+                variables: {
+                    images: photos,
+                    proportion: "product"
+                }
+            })
+
+            const variationLots = variation.lots.map(lot => {
+                return {
+                    quantity: lot.quantity,
+                    size: lot.size.split(' ')[0]
+                }
+
+            });
+
+            const photosString = photosUploaded?.data.uploadImages;
+            await createVariation({
+                variables: {
+                    productId: product?.id,
+                    options: {
+                        color: variation.color,
+                        lots: variationLots,
+                        status: "active",
+                        photos: photosString
+                    }
+                }
+            }
+            )
+
+            //mettere alert per creazione avvenuta con successo
+
+        } catch (e) {
+            console.log(e);
+
+        }
+
+
+        setNewCard(false)
+        setColors((prevState: Color[]) => {
+            const newColors = prevState.filter(color => color.name !== variation.color)
+            return [
+                ...newColors
+            ]
+        })
+
+    }
 
 
     return (
@@ -371,9 +571,46 @@ const index = () => {
                                     </div>
                                 )
                             })}
+                            {!newCard ? (
+                                <Button
+                                    size={['sm', 'md']}
+                                    colorScheme={'gray'}
+                                    ml={[0, 8]}
+                                    leftIcon={
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                        </svg>
+                                    }
+                                    variant='ghost'
+                                    mb={3}
+                                    mt={-1}
+                                    onClick={() => {
+                                        setNewCard(true)
+                                    }}
+                                >
+                                    aggiungi nuova variante
+                                </Button>)
+                                : (
+                                    <div
+                                        key={Math.random()}
+                                        className='mb-4'
+                                    >
+                                        <AddColorToProduct
+                                            colors={colors}
+                                            category={sizeCateggory}
+                                            confirmCard={(variation) => {
+                                                confirmCard(variation)
+                                            }}
+                                            deleteCard={() => {
+                                                setNewCard(false)
+                                            }}
+                                        />
+                                    </div>
+                                )
+                            }
                         </div>
-                    </div>
 
+                    </div>
                 }
 
 

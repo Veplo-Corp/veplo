@@ -262,6 +262,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
 
     const mountedRef = useRef(true)
+
     const fetchSpecificItem = useCallback(async (filters: any) => {
         console.log('gender', gender);
 
@@ -293,14 +294,19 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 setHasMoreData(true)
             })
         } catch (error) {
+            console.log(error);
+
         }
     }, [mountedRef, gender]) // add variable as dependency
 
     useEffect(() => {
+        setFilter({})
         const filters = getFilterValue()
-        console.log(gender);
+        console.log(filters);
 
-        if (Object.keys(filters).length < 1) return
+        if (Object.keys(filters).length < 1) {
+            setproductsFounded(products)
+        }
         fetchSpecificItem(filters);
 
         return () => {
@@ -329,6 +335,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 maxPrice?: number,
                 minPrice?: number,
             } = {}
+
 
             if (typeof colors === 'string' && colors !== undefined) {
 
@@ -374,6 +381,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 })
                 filter['maxPrice'] = Number(maxPrice)
             }
+
             return filter
         }
         return {}
