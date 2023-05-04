@@ -7,13 +7,12 @@ import { Size } from '../organisms/EditColorToProdoct'
 import ModalReausable from '../organisms/ModalReausable'
 import { imageKitUrl } from '../utils/imageKitUrl'
 
-const quantity = Array.from({ length: 100 }, (_, i) => i + 1)
+const quantity = Array.from({ length: 101 }, (_, i) => i + 0)
 
 
-const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], deleteVariation: (variationId: string) => void, editVariation: (variationId: string, variationTranslate: Size[], photos: string[]) => void }> = ({ variation, sizeTypeSelected, deleteVariation, editVariation }) => {
+const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], deleteVariation: (variationId: string, color: string) => void, editVariation: (variationId: string, variationTranslate: Size[], photos: string[]) => void }> = ({ variation, sizeTypeSelected, deleteVariation, editVariation }) => {
 
     const [editMode, seteditMode] = useState(false);
-
     const [variationTranslate, setvariationTranslate] = useState<Size[]>([])
     const [openModal, setOpenModal] = useState(false);
 
@@ -32,6 +31,8 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], 
         if (lots.length <= 0) return
         setvariationTranslate(lots)
     }, [variation])
+
+    console.log(variation);
 
 
 
@@ -62,7 +63,6 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], 
                             <div className='flex gap-2'>
                                 {variation.photos.length > 0 && variation.photos.map((image: any) => {
                                     if (image?.url) {
-
                                         return (
                                             <img
                                                 key={image.url}
@@ -285,7 +285,9 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], 
                                 //disabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
                                 onClick={
                                     () => {
-                                        editVariation(variation.id, variationTranslate, variation.photos)
+                                        const variations = variationTranslate.filter(variation => variation.size !== '' && variation.quantity >= 0)
+                                        //console.log(variations);
+                                        editVariation(variation.id, variations, variation.photos)
                                         seteditMode(false)
                                     }
                                 }
@@ -315,7 +317,7 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], 
                         colorScheme={'red'}
                         variant={'outline'}
                         onClick={() => {
-                            deleteVariation(variation.id)
+                            deleteVariation(variation.id, variation.color)
                             setOpenModal(false)
 
                         }}
