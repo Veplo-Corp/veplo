@@ -97,7 +97,9 @@ export async function getStaticProps(ctx: any) {
             variables: {
                 offset: 0,
                 limit: RANGE,
-                filters: filter
+                filters: /* filter */{
+                    gender: "f"
+                }
             }
         })
 
@@ -230,6 +232,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     //const fetchMoreData = async () => { }
 
     useEffect(() => {
+
         const microcategory: any = Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.find(element => element.name === category)
         setproductsFounded(products)
 
@@ -647,6 +650,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                 {productsFounded.length > 0 ?
                                                     (
                                                         productsFounded.map((product: Product) => {
+                                                            console.log(product.variations[0].photos[0]);
 
                                                             const { colors } = router.query
                                                             return (
