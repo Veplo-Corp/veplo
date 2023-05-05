@@ -3,7 +3,7 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import {Categories} from '../mook/categories'
+import { Categories } from '../mook/categories'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 
 
@@ -12,7 +12,7 @@ const Select_options: React.FC<{ values: Categories | any, handleClick?: any, ty
     const [selected, setSelected] = useState<any>(selectedValueBefore || null);
     const [isListboxDisabled, setIsListboxDisabled] = useState(disabled || false)
 
-    
+
 
 
     const handleEvent = (value: any) => {
@@ -101,7 +101,7 @@ const Select_options: React.FC<{ values: Categories | any, handleClick?: any, ty
 
                             )
                         })}
-                        
+
 
 
 
