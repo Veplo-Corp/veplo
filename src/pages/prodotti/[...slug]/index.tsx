@@ -230,7 +230,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     //const fetchMoreData = async () => { }
 
     useEffect(() => {
-
+        setHasMoreData(true)
         const microcategory: any = Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.find(element => element.name === category)
         setproductsFounded(products)
 
@@ -259,6 +259,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             );
         }
     }, [gender])
+
 
 
 
