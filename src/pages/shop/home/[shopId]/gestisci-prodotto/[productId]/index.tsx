@@ -313,7 +313,7 @@ const index = () => {
         let info: any = {}
 
         if (productElement.brand !== product?.info.brand) {
-            info["brand"] = productElement.brand
+            info["brand"] = productElement.brand.toLocaleLowerCase()
         }
         if (productElement?.traits.sort().join(',') !== traits.sort().join(',')) {
             info["traits"] = productElement.traits
@@ -372,12 +372,19 @@ const index = () => {
         }
 
         if (Object.keys(options).length < 1) return
-        await editProduct({
-            variables: {
-                id: product?.id,
-                options: { options }
-            }
-        })
+        try {
+            await editProduct({
+                variables: {
+                    id: product?.id,
+                    options
+                }
+            })
+            addToast({ position: 'top', title: 'Prodotto modificato con successo', status: 'success', duration: 3000, isClosable: false })
+
+        } catch {
+
+        }
+
 
     }
 
