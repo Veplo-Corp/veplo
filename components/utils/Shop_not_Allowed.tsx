@@ -8,7 +8,6 @@ const Shop_not_Allowed: React.FC<{ children: any }> = ({ children }) => {
     const router = useRouter();
 
     useEffect(() => {
-        console.log(user);
 
         const abortController = new AbortController();
         //if (user && user.statusAuthentication === 'logged_in') return

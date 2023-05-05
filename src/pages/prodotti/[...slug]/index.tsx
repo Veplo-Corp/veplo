@@ -34,7 +34,7 @@ import { motion } from 'framer-motion';
 import Shop_not_Allowed from '../../../../components/utils/Shop_not_Allowed';
 
 
-const RANGE = 10
+const RANGE = 5
 
 
 export async function getStaticPaths() {
@@ -97,9 +97,7 @@ export async function getStaticProps(ctx: any) {
             variables: {
                 offset: 0,
                 limit: RANGE,
-                filters: /* filter */{
-                    gender: "f"
-                }
+                filters: filter
             }
         })
 
@@ -285,8 +283,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                     }
                 })
             }
-
-
             newProducts().then(products => {
                 console.log(products);
 
@@ -308,7 +304,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         console.log(filters);
 
         if (Object.keys(filters).length < 1) {
-            setproductsFounded(products)
+            return
         }
         fetchSpecificItem(filters);
 
@@ -650,7 +646,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                 {productsFounded.length > 0 ?
                                                     (
                                                         productsFounded.map((product: Product) => {
-                                                            console.log(product.variations[0].photos[0]);
 
                                                             const { colors } = router.query
                                                             return (
@@ -786,6 +781,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                 category: false
                                             }
                                         })
+                                        setHasMoreData(true)
+
                                     }}
                                     href={url}
                                 >
@@ -847,6 +844,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             size: false
                                         }
                                     })
+                                    setHasMoreData(true)
+
 
                                     if (element.split(' ')[0] === router.query.sizes) {
                                         let filter = getFilterValue();
@@ -857,8 +856,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             query: {
                                                 ...filter
                                             }
-                                        },
-                                            undefined, { shallow: true })
+                                        })
                                     } else {
                                         const filter = getFilterValue();
                                         router.push({
@@ -867,8 +865,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                 ...filter,
                                                 sizes: [element.split(' ')[0]]
                                             }
-                                        },
-                                            undefined, { shallow: true })
+                                        })
                                     }
                                 }
                                 }
@@ -915,6 +912,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                 color: false
                                             }
                                         })
+                                        setHasMoreData(true)
 
                                         if (element.name === router.query.colors) {
                                             let filter = getFilterValue();
@@ -925,7 +923,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                     ...filter
                                                 }
                                             },
-                                                undefined, { shallow: true })
+                                            )
                                         } else {
                                             const filter = getFilterValue();
                                             router.push({
@@ -934,8 +932,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                     ...filter,
                                                     colors: [element.name]
                                                 }
-                                            },
-                                                undefined, { shallow: true })
+                                            })
                                         }
                                     }
                                     }
@@ -994,8 +991,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     ...filterValues,
                                     ...price
                                 }
-                            },
-                                undefined, { shallow: true })
+                            })
                         }
 
 
@@ -1006,6 +1002,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 price: false
                             }
                         })
+                        setHasMoreData(true)
+
 
                     }}
                     isOpen={isOpen.price} positionTopModal={true}>
