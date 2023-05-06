@@ -90,6 +90,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                 >
                     {showStoreHeader && <Link
                         prefetch={false}
+                        shallow={true}
                         href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
                         <Box
                             display={'flex'}
@@ -132,6 +133,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                         background={'#FBFBFB'}
                     >
                         <Link
+                            shallow={true}
                             onMouseLeave={() => {
                                 setShowSize(false)
                             }}
