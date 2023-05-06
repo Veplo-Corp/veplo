@@ -13,6 +13,7 @@ import Link from 'next/link'
 import { toProductPage } from '../utils/toProductPage'
 import createUrlSchema from '../utils/create_url'
 import { isMobile } from 'react-device-detect'
+import { useRouter } from 'next/router'
 
 
 const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showStoreHeader?: boolean }> = ({ product, color, showStoreHeader }) => {
@@ -24,7 +25,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
     const [indexPhoto, setindexPhoto] = useState(0)
     const [listOfSizesAvailable, setListOfSizesAvailable] = useState<string[]>([])
     const [showSize, setShowSize] = useState(false)
-
+    const router = useRouter()
     useEffect(() => {
         const colors = product.variations.map((variation: Variation) => {
             return COLORS.find(color => color.name === variation.color)?.cssColor
@@ -82,15 +83,16 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
 
 
 
+
     return (
         <>
             {product?.variations[0].photos[0] &&
                 <Box
-
                 >
+
                     {showStoreHeader && <Link
                         prefetch={false}
-                        shallow={true}
+
                         href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
                         <Box
                             display={'flex'}
@@ -133,7 +135,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                         background={'#FBFBFB'}
                     >
                         <Link
-                            shallow={true}
+
                             onMouseLeave={() => {
                                 setShowSize(false)
                             }}
@@ -231,7 +233,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                                 left={4}
                                 display={'flex'}
                             >
-                                <Circle_Color colors={productcolorsCSS.slice(0, 3)} dimension={6} space={1} />
+                                <Circle_Color colors={productcolorsCSS.slice(0, 3)} dimension={isMobile ? 7 : 6} space={2} />
                                 {productcolorsCSS.length > 3 &&
                                     <>
                                         <Box onClick={() => {
