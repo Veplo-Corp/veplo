@@ -159,29 +159,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     }, [elementEditCart.error])
 
 
-    useEffect(() => {
-        const handleRouteChangeComplete = () => {
 
-            // Posiziona lo scorrimento della finestra alla posizione in cui ti trovavi prima di cliccare sul link
-            window.scrollTo(0, Number(sessionStorage.getItem('scrollPosition')));
-        }
-
-        // Salva la posizione di scorrimento nella sessionStorage quando l'utente lascia la pagina corrente
-        const handleBeforeUnload = () => {
-            console.log('salva la posizione');
-            sessionStorage.setItem('scrollPosition', window.pageYOffset.toString());
-        }
-
-        // Aggiungi gli event listener per la gestione del posizionamento dello scorrimento e del salvataggio della posizione di scorrimento
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        router.events.on('routeChangeComplete', handleRouteChangeComplete);
-
-        return () => {
-            // Rimuovi gli event listener quando il componente viene smontato
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-            router.events.off('routeChangeComplete', handleRouteChangeComplete);
-        }
-    }, [router.events])
 
 
     useEffect(() => {
@@ -211,7 +189,24 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
 
 
 
+    useEffect(() => {
 
+        router.beforePopState(({ as }) => {
+
+            if (as !== router.asPath) {
+                // Will run when leaving the current page; on back/forward actions
+                // Add your logic here, like toggling the modal state
+                router.push('/')
+                return true
+
+            }
+            return true;
+        });
+
+        return () => {
+            router.beforePopState(() => true);
+        };
+    }, [router]); // Add any state variables to dependencies array if needed.
 
 
 

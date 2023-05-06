@@ -227,6 +227,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         }
     }
 
+
+
     //const fetchMoreData = async () => { }
 
     useEffect(() => {
@@ -236,7 +238,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         if (!microcategory?.types) {
             setSizeProduct('')
             return setMicrocategory([])
-
         }
         setMicrocategory(microcategory?.types);
         setSizeProduct(microcategory.sizes);
@@ -245,6 +246,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         if (typeof slug === 'object' && slug?.length === 3) {
             setSlug(slug)
         }
+        setFilter({})
+
 
 
     }, [products])
@@ -266,6 +269,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
     const fetchSpecificItem = useCallback(async (filters: any) => {
         console.log('gender', gender);
+        console.log(microCategory);
 
         try {
             const newProducts = async () => {
@@ -296,12 +300,11 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             console.log(error);
 
         }
-    }, [mountedRef, gender]) // add variable as dependency
+    }, [mountedRef, gender, microCategory]) // add variable as dependency
 
     useEffect(() => {
-        setFilter({})
+
         const filters = getFilterValue()
-        console.log(filters);
 
         if (Object.keys(filters).length < 1) {
             return
@@ -948,7 +951,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             my={'auto'}
                                         >
                                             {element.name}
-
                                         </Text>
                                     </div>
 
