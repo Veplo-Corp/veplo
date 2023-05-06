@@ -62,19 +62,19 @@ const Home: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    // const genderSelected = getFromLocalStorage('genderSelected')
-    // if (!genderSelected) {
-    //   return setshowHome(true)
-    // }
+    const genderSelected = getFromLocalStorage('genderSelected')
+    if (!genderSelected) {
+      return setshowHome(true)
+    }
 
 
-    // if (genderSelected === 'f') {
+    if (genderSelected === 'f') {
 
-    //   router.push('/prodotti/donna-abbigliamento')
-    // }
-    // if (genderSelected === 'm') {
-    //   router.push('/prodotti/uomo-abbigliamento')
-    // }
+      router.push('/prodotti/donna-abbigliamento')
+    }
+    if (genderSelected === 'm') {
+      router.push('/prodotti/uomo-abbigliamento')
+    }
   }, [])
 
   const onSubmitForm = async (value: InputForm) => {

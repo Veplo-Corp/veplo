@@ -17,6 +17,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
     const [isOpen, setisOpen] = useState(false)
     const [fullImage, setfullImage] = useState<any>(undefined)
 
+
     const zoomImage = () => {
         setisOpen(true)
     }
