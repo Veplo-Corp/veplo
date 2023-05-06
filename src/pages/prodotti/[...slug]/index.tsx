@@ -45,6 +45,8 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(ctx: any) {
+
+
     // console.log(ctx.params.slug);
     // return {
     //     props: {
@@ -232,21 +234,44 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     //const fetchMoreData = async () => { }
 
     useEffect(() => {
-        setHasMoreData(true)
-        const microcategory: any = Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.find(element => element.name === category)
-        setproductsFounded(products)
-        if (!microcategory?.types) {
-            setSizeProduct('')
-            return setMicrocategory([])
-        }
-        setMicrocategory(microcategory?.types);
-        setSizeProduct(microcategory.sizes);
 
-        const { slug } = router.query
-        if (typeof slug === 'object' && slug?.length === 3) {
-            setSlug(slug)
+        // verificare se l'utente è arrivato sulla pagina con il pulsante "Indietro"
+        console.log(window.history.state.key === sessionStorage.getItem("key"));
+        console.log(window.history.state.key, sessionStorage.getItem("key"));
+
+
+        if (window.history.state.key === sessionStorage.getItem("key")) {
+            setproductsFounded([])
+            const productsFounded = sessionStorage.getItem("productsFounded");
+            if (!productsFounded) return
+            setproductsFounded(JSON.parse(productsFounded))
+            const scrollPosition = sessionStorage.getItem('scrollPosition');
+            if (!scrollPosition) return
+            console.log(scrollPosition);
+            setTimeout(() => {
+                window.scrollTo(0, parseInt(scrollPosition));
+            }, 500);
+            setHasMoreData(true)
         }
-        setFilter({})
+        else {
+
+            setHasMoreData(true)
+            const microcategory: any = Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.find(element => element.name === category)
+            setproductsFounded(products)
+            if (!microcategory?.types) {
+                setSizeProduct('')
+                return setMicrocategory([])
+            }
+            setMicrocategory(microcategory?.types);
+            setSizeProduct(microcategory.sizes);
+
+            const { slug } = router.query
+            if (typeof slug === 'object' && slug?.length === 3) {
+                setSlug(slug)
+            }
+            setFilter({})
+        }
+
 
 
 
@@ -261,6 +286,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             );
         }
     }, [gender])
+
 
 
 
@@ -322,7 +348,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     useEffect(() => {
         setTimeout(() => {
             setLoading(false)
-        }, 500);
+        }, 200);
 
     }, [])
 
@@ -663,7 +689,11 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                                     leaveFrom="opacity-0"
                                                                     leaveTo="opacity-0"
                                                                 >
-                                                                    <Box_Dress showStoreHeader={true} product={product} color={typeof colors === 'string' ? colors : undefined}></Box_Dress>
+                                                                    <Box_Dress handleEventSelectedDress={() => {
+                                                                        sessionStorage.setItem("key", window.history.state.key)
+                                                                        sessionStorage.setItem("productsFounded", JSON.stringify(productsFounded))
+                                                                        sessionStorage.setItem('scrollPosition', window.pageYOffset.toString());
+                                                                    }} showStoreHeader={true} product={product} color={typeof colors === 'string' ? colors : undefined}></Box_Dress>
                                                                 </Transition>
 
                                                             )
