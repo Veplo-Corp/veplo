@@ -12,6 +12,10 @@ const Shop_not_Allowed: React.FC<{ children: any }> = ({ children }) => {
         const abortController = new AbortController();
         //if (user && user.statusAuthentication === 'logged_in') return
         if (user?.isBusiness) {
+            if (user.favouriteShop) {
+                router.push('/shop/home/' + user.favouriteShop.id + '/ordini')
+                return
+            }
             router.push('/shop/home')
         }
         return () => {
