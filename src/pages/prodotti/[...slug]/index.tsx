@@ -422,8 +422,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             display={'flex'}
                         >
                             <Box
-                                minWidth={'xs'}
-                                className='hidden lg:table w-1/4 lg:mt-4'
+                                minWidth={'3xs'}
+                                className='hidden lg:table lg:mt-4 ml-2'
                             >
                                 {Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.map(element => {
 
@@ -461,7 +461,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             </Box>
 
                             <Box
-                                className='w-full lg:w-3/4 relative lg:mt-2'
+                                className='w-full relative lg:mt-2'
                             >
 
                                 <div
