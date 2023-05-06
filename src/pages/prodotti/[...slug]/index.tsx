@@ -110,7 +110,7 @@ export async function getStaticProps(ctx: any) {
                 products: data?.products.products,
                 microCategory: microgategoryName
             },
-            revalidate: 60 //seconds
+            revalidate: 10 //seconds
         }
     } catch (e: any) {
 

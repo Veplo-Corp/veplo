@@ -91,7 +91,7 @@ export async function getServerSideProps(ctx: any) {
 
         return {
             props: {
-                product: {
+                productFounded: {
                     ...data.product,
                     colors,
                     totalSizeAvailable
@@ -123,24 +123,32 @@ export async function getServerSideProps(ctx: any) {
 
 
 
-const index: React.FC<{ product: Product, errorLog?: string, initialApolloState: any }> = ({ product, errorLog, initialApolloState }) => {
+const index: React.FC<{ productFounded: Product, errorLog?: string, initialApolloState: any }> = ({ productFounded, errorLog, initialApolloState }) => {
     const colors = useRef<Color[]>(COLORS)
     const router = useRouter();
     const { slug } = router.query;
-    const [variationSelected, setVariationSelected] = useState(product.variations[0])
     const [sizeSelected, setSizeSelected] = useState<string>('')
-    const [colorSelected, setColorSelected] = useState<string>(product.variations[0].color)
     const [isOpenModalSize, setisOpenModalSize] = useState(false)
     const [getFilterProduct, shopProductsData] = useLazyQuery(GET_PRODUCTS_FROM_SHOP);
     const [openDrawerCart, setOpenDrawerCart] = useState(false)
     const [editCart, elementEditCart] = useMutation(EDIT_CART);
     const cartsDispatchProduct: Cart[] = useSelector((state: any) => state.carts.carts);
     const user: Firebase_User = useSelector((state: any) => state.user.user);
+    const [product, setproduct] = useState<Product>(productFounded)
+    const [variationSelected, setVariationSelected] = useState<Variation>(productFounded.variations[0])
+    const [colorSelected, setColorSelected] = useState<string>(productFounded.variations[0].color[0])
 
     const dispatch = useDispatch();
-    console.log(product);
 
 
+    useEffect(() => {
+        if (!productFounded) return
+        console.log('passa');
+
+        setproduct(productFounded)
+        setVariationSelected(productFounded.variations[0])
+        setColorSelected(productFounded.variations[0].color)
+    }, [productFounded])
 
 
     useEffect(() => {
@@ -151,11 +159,6 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
             name: elementEditCart.error?.graphQLErrors[0].name,
             path: elementEditCart.error?.graphQLErrors[0].path
         })
-
-
-
-
-
     }, [elementEditCart.error])
 
 
@@ -177,7 +180,7 @@ const index: React.FC<{ product: Product, errorLog?: string, initialApolloState:
     useEffect(() => {
 
         const color = router.query.colore
-        if (typeof color === 'string') {
+        if (typeof color === 'string' && product) {
             const variation = product.variations.find(variation => variation.color.toLowerCase() == color.toLowerCase())
             if (!variation) return
             setVariationSelected(variation)
