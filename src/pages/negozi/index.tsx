@@ -114,7 +114,6 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
 
                         return (
                             <Link
-
                                 prefetch={false} key={shop.id} href={`/negozio/${shop.id}/${createUrlSchema([shop.name])}`}>
                                 <Box_Shop scale={'scale(0.99)'} eventHandler={() => { }} shop={shop} />
                             </Link>
