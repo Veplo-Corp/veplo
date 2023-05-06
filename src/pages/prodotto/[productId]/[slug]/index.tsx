@@ -192,25 +192,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
 
 
-    useEffect(() => {
-
-        router.beforePopState(({ as }) => {
-
-            if (as !== router.asPath) {
-                // Will run when leaving the current page; on back/forward actions
-                // Add your logic here, like toggling the modal state
-                router.push('/')
-                return true
-
-            }
-            return true;
-        });
-
-        return () => {
-            router.beforePopState(() => true);
-        };
-    }, [router]); // Add any state variables to dependencies array if needed.
-
 
 
 

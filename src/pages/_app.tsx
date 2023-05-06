@@ -37,6 +37,7 @@ import { Cart } from '../interfaces/carts.interface'
 import { resetCarts, setCarts } from '../store/reducers/carts'
 import { Order } from '../interfaces/order.interface'
 import { detroyOrders, setOrders } from '../store/reducers/orders'
+import { usePreserveScroll } from '../../components/Hooks/usePreserveScroll'
 
 
 const theme = extendTheme({
@@ -232,7 +233,7 @@ const sans = Work_Sans({ subsets: ['latin'] })
 
 
 function MyApp({ Component, pageProps }: any /* AppProps */) {
-
+  //usePreserveScroll()
   const [loading, setLoading] = useState(false);
   const router = useRouter()
   useEffect(() => {
