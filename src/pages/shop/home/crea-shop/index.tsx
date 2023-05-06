@@ -32,6 +32,7 @@ import GET_BUSINESS from '../../../../lib/apollo/queries/business'
 import { addShopFavouriteToLocalStorage } from '../../../../../components/utils/shop_localStorage'
 import ModalReausable from '../../../../../components/organisms/ModalReausable'
 import ImageCrop from '../../../../../components/molecules/ImageCrop'
+import { onChangeNumberPrice } from '../../../../../components/utils/onChangePrice'
 
 
 
@@ -64,7 +65,9 @@ interface IFormInput {
             days: number[],
             hours: string[],
         },
-    }
+    },
+    price?: number | string
+
 
 }
 
@@ -164,7 +167,7 @@ const index = () => {
     const [open_hour, setOpen_hour] = useState('');
     const [close_hour, setClose_hour] = useState('');
     const [days_open, setDays_open] = useState<any[]>([]);
-    const [shopIsDigital, setShopIsDigital] = useState(false)
+    const [shopIsDigital, setShopIsDigital] = useState(true)
     const days = useRef<Day[]>(DAYS)
 
 
@@ -469,6 +472,22 @@ const index = () => {
                 },
             }
 
+
+
+            const price = watch('price')
+
+            if (typeof price === 'string' && Number(price.replace(',', '.')) > 0) {
+                Shop = {
+                    ...Shop,
+                    price: Number(price.replace(',', '.'))
+                }
+            }
+
+
+            console.log(Shop);
+
+
+
             if (!shopIsDigital) {
                 Shop = {
                     ...Shop,
@@ -571,396 +590,419 @@ const index = () => {
     }
 
     return (
-        <Shop_UID_Required>
-            <Desktop_Layout>
-                <NoIndexSeo title={`Crea Negozio | Veplo`} />
-                <div className='flex '>
-                    <form className="p-3 px-0 lg:px-16 xl:px-24 w-full md:w-3/4 lg:w-7/12 m-auto" onSubmit={handleSubmit(submitData)}>
-                        <div className='w-full'>
-                            <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>Crea un nuovo negozio!</h1>
+        <Desktop_Layout>
+            <NoIndexSeo title={`Crea Negozio | Veplo`} />
+            <div className='flex '>
+                <form className="p-3 px-0 lg:px-16 xl:px-24 w-full md:w-3/4 lg:w-7/12 m-auto" onSubmit={handleSubmit(submitData)}>
+                    <div className='w-full'>
+                        <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>Crea un nuovo negozio!</h1>
 
-                            <Div_input_creation text='Immagine di copertina e profilo'>
-                                {!image && <Center
+                        <Div_input_creation text='Immagine di copertina e profilo'>
+                            {!image && <Center
 
-                                    onClick={() => {
-                                        setTypeCroppedImage('cover')
-                                        handleClick(null, 'cover')
-                                    }}
-                                    marginBottom={1}
-                                    width={'full'}
-                                    //minHeight={['52', '64']}
-                                    fontSize={['xs', 'sm']}
-                                    borderWidth={1}
-                                    borderColor={'gray.200'}
-                                    borderStyle={'dashed'}
-                                    borderRadius={10}
-                                    color={'gray.400'}
-                                    className='cursor-pointer aspect-[2.3/1]'
-                                >
-                                    <div>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 m-auto">
-                                            <path fillRule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clipRule="evenodd" />
-                                        </svg>
-                                        <h2>immagine copertina</h2>
-                                    </div>
-                                </Center>}
+                                onClick={() => {
+                                    setTypeCroppedImage('cover')
+                                    handleClick(null, 'cover')
+                                }}
+                                marginBottom={1}
+                                width={'full'}
+                                //minHeight={['52', '64']}
+                                fontSize={['xs', 'sm']}
+                                borderWidth={1}
+                                borderColor={'gray.200'}
+                                borderStyle={'dashed'}
+                                borderRadius={10}
+                                color={'gray.400'}
+                                className='cursor-pointer aspect-[2.3/1]'
+                            >
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 m-auto">
+                                        <path fillRule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clipRule="evenodd" />
+                                    </svg>
+                                    <h2>immagine copertina</h2>
+                                </div>
+                            </Center>}
 
-                                {image && <Image
-                                    width={'full'}
-                                    height={['52', '64']}
-                                    borderRadius={10}
-                                    marginBottom={1}
-                                    zIndex={0}
-                                    objectFit='cover'
-                                    onClick={() => {
-                                        setTypeCroppedImage('cover')
-                                        handleClick(null, 'cover')
-                                    }}
-                                    className='z-0'
-                                    src={image.url} /* 'https://bit.ly/dan-abramov' */
-                                    alt={shop_name}
-                                />}
-                                <Box
-                                    onClick={() => {
-                                        setTypeCroppedImage('profile')
-                                        handleClick(null, 'profile')
-                                    }
-                                    }
-                                    marginBottom={1}
-                                    width={['32', '40']}
-                                    height={['32', '40']}
-                                    mt={[-16, -20]}
-                                    zIndex={50}
-                                    borderWidth={1}
-                                    borderColor={imageProfile ? 'white' : 'gray.200'}
-                                    borderStyle={imageProfile ? 'none' : 'dashed'}
-                                    background={'white'}
-                                    borderRadius={'full'}
-                                    color={'gray.400'}
-                                    fontSize={['xs', 'sm']}
-                                    className='cursor-pointer ml-6 md:ml-8'
-                                    display={'flex'}
-                                >
-                                    {!imageProfile ? (
+                            {image && <Image
+                                width={'full'}
+                                height={['52', '64']}
+                                borderRadius={10}
+                                marginBottom={1}
+                                zIndex={0}
+                                objectFit='cover'
+                                onClick={() => {
+                                    setTypeCroppedImage('cover')
+                                    handleClick(null, 'cover')
+                                }}
+                                className='z-0'
+                                src={image.url} /* 'https://bit.ly/dan-abramov' */
+                                alt={shop_name}
+                            />}
+                            <Box
+                                onClick={() => {
+                                    setTypeCroppedImage('profile')
+                                    handleClick(null, 'profile')
+                                }
+                                }
+                                marginBottom={1}
+                                width={['32', '40']}
+                                height={['32', '40']}
+                                mt={[-16, -20]}
+                                zIndex={50}
+                                borderWidth={1}
+                                borderColor={imageProfile ? 'white' : 'gray.200'}
+                                borderStyle={imageProfile ? 'none' : 'dashed'}
+                                background={'white'}
+                                borderRadius={'full'}
+                                color={'gray.400'}
+                                fontSize={['xs', 'sm']}
+                                className='cursor-pointer ml-6 md:ml-8'
+                                display={'flex'}
+                            >
+                                {!imageProfile ? (
+                                    <Box
+                                        borderRadius={'full'}
+                                        width={'full'}
+                                        height={'full'}
+                                        background={'white'}
+                                        textAlign={'center'}
+                                        display={'flex'}
+                                    >
                                         <Box
-                                            borderRadius={'full'}
-                                            width={'full'}
-                                            height={'full'}
-                                            background={'white'}
-                                            textAlign={'center'}
-                                            display={'flex'}
+                                            alignItems={'center'}
+                                            margin={'auto'}
                                         >
-                                            <Box
-                                                alignItems={'center'}
-                                                margin={'auto'}
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 z-50 m-auto">
-                                                    <path fillRule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clipRule="evenodd" />
-                                                </svg>
-                                                <h2>immagine profilo</h2>
-                                            </Box>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 z-50 m-auto">
+                                                <path fillRule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clipRule="evenodd" />
+                                            </svg>
+                                            <h2>immagine profilo</h2>
+                                        </Box>
 
 
+                                    </Box>
+
+                                )
+                                    : (
+                                        <Box
+                                            className='border-[5px] border-white rounded-full
+                                                w-36 h-36 md:w-40 md:h-40
+                                                '
+                                        >
+
+
+                                            <Image
+
+
+                                                borderRadius={'full'}
+
+                                                marginBottom={1}
+                                                objectFit='cover'
+                                                src={imageProfile.url} /* 'https://bit.ly/dan-abramov' */
+                                                alt={shop_name}
+                                            />
                                         </Box>
 
                                     )
-                                        : (
-                                            <Box
-                                                className='border-[5px] border-white rounded-full
-                                                w-36 h-36 md:w-40 md:h-40
-                                                '
-                                            >
+                                }
 
 
-                                                <Image
+                            </Box>
+                            <input
+                                ref={hiddenFileInputProfileImage}
+                                type="file" id="file" multiple accept="image/*"
+                                className='hidden'
+                                onChange={(e) => {
+                                    onSelectFileInput(e, typeCroppedImage === 'cover' ? 'cover' : 'profile');
+                                }} />
+
+                            {<canvas
+                                ref={previewCanvasRef}
+                                className='hidden'
+                            // style={{
+                            //     border: '1px solid black',
+                            //     objectFit: 'contain',
+                            //     width: completedCrop.width,
+                            //     height: completedCrop.height,
+                            // }}
+                            />}
+                        </Div_input_creation>
 
 
-                                                    borderRadius={'full'}
-
-                                                    marginBottom={1}
-                                                    objectFit='cover'
-                                                    src={imageProfile.url} /* 'https://bit.ly/dan-abramov' */
-                                                    alt={shop_name}
-                                                />
-                                            </Box>
-
-                                        )
-                                    }
 
 
-                                </Box>
-                                <input
-                                    ref={hiddenFileInputProfileImage}
-                                    type="file" id="file" multiple accept="image/*"
-                                    className='hidden'
+                        <Div_input_creation text='Nome del negozio (visualizzato dagli utenti)'>
+                            <InputGroup >
+                                <Input
+                                    maxLength={35}
+                                    rounded={10}
+                                    paddingY={6}
+                                    autoComplete="new-password"
+                                    type="text"
+                                    // value={shop_name}
+                                    {...register("name", { required: true, maxLength: 30 })}
+                                    // onChange={(event) => changeInput(event, 'shop_name')}
+                                    isInvalid={false}
+                                />
+                            </InputGroup>
+                        </Div_input_creation>
+                        <Div_input_creation text='Descrizione del negozio (opzionale, max 700 caratteri)'>
+                            <InputGroup >
+
+                                <Textarea
+
+                                    size='sm'
+                                    maxLength={700}
+                                    rounded={10}
+                                    paddingY={3}
+                                    autoComplete="descrition-text-shop"
+                                    height={48}
+                                    // value={shop_name}
+                                    {...register("info.description", { required: false, maxLength: 700 })}
+                                    // onChange={(event) => changeInput(event, 'shop_name')}
+                                    isInvalid={false}
+                                />
+                            </InputGroup>
+                        </Div_input_creation>
+                        <Div_input_creation text='Numero di telefono'>
+                            <InputGroup
+                            >
+                                <InputLeftAddon children='+39' paddingY={6}
+                                    textColor={`${isValid_shop_phone === false ? 'red.900' : 'gray.500'}`}
+                                    borderColor={`${isValid_shop_phone === false ? 'red.900' : 'gray.200'}`}
+                                />
+                                <Input
+                                    maxLength={12}
+                                    autoComplete='off'
+                                    rounded={10}
+                                    paddingY={6}
+                                    type='tel'
+                                    isInvalid={false}
+                                    borderColor={`${isValid_shop_phone === false ? 'red.900' : 'gray.200'}`}
+                                    //value={shop_phone}
+                                    // onBlur={() => checkInput('shop_phone')}
+                                    // onChange={(event) => changeInput(event, 'shop_phone')}
+                                    {...register("info.phone", { required: true, minLength: 6, maxLength: 12 })}
+                                />
+                            </InputGroup>
+                            {isValid_shop_phone === false && <p className='text-sm md:text-xs text-red-600'>Inserisci un numero corretto</p>}
+                        </Div_input_creation>
+                        <Div_input_creation text='minimo spedizione gratuita (opzionale)'>
+                            <InputGroup
+                            >
+                                <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} />
+                                <Input
+                                    rounded={10}
+                                    paddingY={6}
+                                    autoComplete='off'
+                                    type="string"
+                                    {...register("price", {
+                                        required: true,
+                                    })}
+                                    onWheel={(e: any) => e.target.blur()}
+                                    placeholder={'34,99'}
+                                    textAlign={"end"}
+                                    isInvalid={false}
                                     onChange={(e) => {
-                                        onSelectFileInput(e, typeCroppedImage === 'cover' ? 'cover' : 'profile');
-                                    }} />
 
-                                {<canvas
-                                    ref={previewCanvasRef}
-                                    className='hidden'
-                                // style={{
-                                //     border: '1px solid black',
-                                //     objectFit: 'contain',
-                                //     width: completedCrop.width,
-                                //     height: completedCrop.height,
-                                // }}
-                                />}
-                            </Div_input_creation>
-
-
-
-
-                            <Div_input_creation text='Nome del negozio (visualizzato dagli utenti)'>
-                                <InputGroup >
-                                    <Input
-                                        maxLength={35}
-                                        rounded={10}
-                                        paddingY={6}
-                                        autoComplete="new-password"
-                                        type="text"
-                                        // value={shop_name}
-                                        {...register("name", { required: true, maxLength: 30 })}
-                                        // onChange={(event) => changeInput(event, 'shop_name')}
-                                        isInvalid={false}
-                                    />
-                                </InputGroup>
-                            </Div_input_creation>
-                            <Div_input_creation text='Descrizione del negozio (opzionale, max 700 caratteri)'>
-                                <InputGroup >
-
-                                    <Textarea
-
-                                        size='sm'
-                                        maxLength={700}
-                                        rounded={10}
-                                        paddingY={3}
-                                        autoComplete="descrition-text-shop"
-                                        height={48}
-                                        // value={shop_name}
-                                        {...register("info.description", { required: false, maxLength: 700 })}
-                                        // onChange={(event) => changeInput(event, 'shop_name')}
-                                        isInvalid={false}
-                                    />
-                                </InputGroup>
-                            </Div_input_creation>
-                            <Div_input_creation text='Numero di telefono'>
-                                <InputGroup
-                                >
-                                    <InputLeftAddon children='+39' paddingY={6}
-                                        textColor={`${isValid_shop_phone === false ? 'red.900' : 'gray.500'}`}
-                                        borderColor={`${isValid_shop_phone === false ? 'red.900' : 'gray.200'}`}
-                                    />
-                                    <Input
-                                        maxLength={12}
-                                        autoComplete='off'
-                                        rounded={10}
-                                        paddingY={6}
-                                        type='tel'
-                                        isInvalid={false}
-                                        borderColor={`${isValid_shop_phone === false ? 'red.900' : 'gray.200'}`}
-                                        //value={shop_phone}
-                                        // onBlur={() => checkInput('shop_phone')}
-                                        // onChange={(event) => changeInput(event, 'shop_phone')}
-                                        {...register("info.phone", { required: true, minLength: 6, maxLength: 12 })}
-                                    />
-                                </InputGroup>
-                                {isValid_shop_phone === false && <p className='text-sm md:text-xs text-red-600'>Inserisci un numero corretto</p>}
-                            </Div_input_creation>
-                            <Div_input_creation text='Tipologia negozio'>
+                                        const inputValue = onChangeNumberPrice(e)
+                                        return setValue('price', inputValue);
+                                    }}
+                                />
+                            </InputGroup>
+                            {isValid_shop_phone === false && <p className='text-sm md:text-xs text-red-600'>Inserisci un numero corretto</p>}
+                        </Div_input_creation>
+                        {/* <Div_input_creation text='Tipologia negozio'>
                                 <Select size='lg' marginBottom={2} onChange={changeShopType} fontSize={'md'}>
                                     {typeShop.map((option: string) => {
                                         return (<option
                                             key={option} value={option}>{option}</option>)
                                     })}
                                 </Select>
-                            </Div_input_creation>
-                            <Div_input_creation text={shopIsDigital ? 'Indirizzo sede operativa' : 'Indirizzo (es. via roma 41, Terni)'}>
-                                <div className={`${showAddress ? 'hidden' : ''} mb-1 w-full`}>
-                                    <div className='flex justify-between text-gray-400'>
+                            </Div_input_creation> */}
+                        <Div_input_creation text={shopIsDigital ? 'Indirizzo sede operativa' : 'Indirizzo (es. via roma 41, Terni)'}>
+                            <div className={`${showAddress ? 'hidden' : ''} mb-1 w-full`}>
+                                <div className='flex justify-between text-gray-400'>
 
-                                        {address.address !== '' && <svg
-                                            onClick={() => setShowAddress(true)}
-                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
-                                            className="w-4 h-4 cursor-pointer my-auto">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                        </svg>}
-                                    </div>
-                                    <InputGroup >
-                                        <Input
-                                            maxLength={50}
-                                            rounded={10}
-                                            paddingY={6}
-                                            type='text'
-                                            autoComplete="new-password"                                        //value={address_Mapbox}
-                                            isInvalid={false}
-                                            //onChange={(event) => changeInput(event, 'search_address')}
-                                            onChange={(e) => {
-                                                onChangeAddress(e.target.value)
-                                            }}
-                                        />
-                                    </InputGroup>
+                                    {address.address !== '' && <svg
+                                        onClick={() => setShowAddress(true)}
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
+                                        className="w-4 h-4 cursor-pointer my-auto">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>}
                                 </div>
-                            </Div_input_creation>
-
-
-                            <div className={` my-3`}>
-                                {addresses.map((element: any) => {
-                                    return (
-                                        <div key={element.id} onClick={() => handleEventSetAddress(element)} className=' pt-2 -ml-2  cursor-pointer hover:bg-gray-100 rounded-sm	'>
-                                            <Address_text_handle key={element.geometry.coordinates[0]} element={element} />
-                                        </div>
-                                    )
-                                })}
+                                <InputGroup >
+                                    <Input
+                                        maxLength={50}
+                                        rounded={10}
+                                        paddingY={6}
+                                        type='text'
+                                        autoComplete="new-password"                                        //value={address_Mapbox}
+                                        isInvalid={false}
+                                        //onChange={(event) => changeInput(event, 'search_address')}
+                                        onChange={(e) => {
+                                            onChangeAddress(e.target.value)
+                                        }}
+                                    />
+                                </InputGroup>
                             </div>
-                            <div
-                                className={`${showAddress ? '' : 'hidden'}`}>
-                                <div className='mb-1 w-full'>
-                                    <div className='flex justify-between text-gray-400'>
-                                        <p className='text-xs font-normal mb-px'>
-                                            Indirizzo
-                                        </p>
-                                        <svg
-                                            onClick={() => setShowAddress(false)}
-                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3 cursor-pointer my-auto">
-                                            <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
-                                        </svg>
-                                    </div>
+                        </Div_input_creation>
 
-                                    <InputGroup >
+
+                        <div className={` my-3`}>
+                            {addresses.map((element: any) => {
+                                return (
+                                    <div key={element.id} onClick={() => handleEventSetAddress(element)} className=' pt-2 -ml-2  cursor-pointer hover:bg-gray-100 rounded-sm	'>
+                                        <Address_text_handle key={element.geometry.coordinates[0]} element={element} />
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        <div
+                            className={`${showAddress ? '' : 'hidden'}`}>
+                            <div className='mb-1 w-full'>
+                                <div className='flex justify-between text-gray-400'>
+                                    <p className='text-xs font-normal mb-px'>
+                                        Indirizzo
+                                    </p>
+                                    <svg
+                                        onClick={() => setShowAddress(false)}
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3 cursor-pointer my-auto">
+                                        <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
+                                    </svg>
+                                </div>
+
+                                <InputGroup >
+                                    <Input
+                                        maxLength={30}
+                                        rounded={10}
+                                        paddingY={6}
+                                        type='tel'
+                                        value={address.address}
+                                        isInvalid={false}
+                                        readOnly
+                                        disabled={address?.address === undefined || address.address.length > 0}
+                                        _disabled={{
+                                            opacity: '1'
+                                        }}
+                                    //onChange={(event) => setAddress(event.target.value)}
+                                    />
+                                </InputGroup>
+                            </div>
+
+                            <Div_input_creation text=''>
+                                <InputGroup className='flex justify-between gap-2'>
+                                    <div className='mb-1 w-fit'>
+                                        <p className='text-xs text-gray-400 font-normal mb-px'>
+                                            Civico
+                                        </p>
                                         <Input
-                                            maxLength={30}
+                                            borderColor={`${isValid_shop_streetNumber === false ? 'red.900' : 'gray.200'}`}
+                                            width={'28'}
                                             rounded={10}
                                             paddingY={6}
-                                            type='tel'
-                                            value={address.address}
-                                            isInvalid={false}
-                                            readOnly
-                                            disabled={address?.address === undefined || address.address.length > 0}
+                                            type="number"
+                                            min={1}
+                                            max={999}
+                                            onWheel={(e: any) => e.target.blur()}
+                                            value={address.streetNumber}
+                                            onChange={(event) => {
+                                                const value = event.target.value
+                                                setAddress(prevstate => {
+                                                    return {
+                                                        ...prevstate,
+                                                        streetNumber: value.toString()
+                                                    }
+                                                })
+                                                if (value.length > 0) {
+                                                    setisValid_shop_streetNumber(true)
+                                                } else {
+                                                    setisValid_shop_streetNumber(false)
+                                                }
+                                            }}
+                                            disabled={streetNumberDisabled}
                                             _disabled={{
                                                 opacity: '1'
                                             }}
-                                        //onChange={(event) => setAddress(event.target.value)}
                                         />
-                                    </InputGroup>
-                                </div>
+                                    </div>
+                                    <Div_input_creation text='Città'>
+                                        <Input
+                                            width={'full'}
+                                            rounded={10}
+                                            paddingY={6}
+                                            type="text"
+                                            value={address.city}
+                                            readOnly
+                                            disabled={address?.city === undefined || address.city.length > 0}
+                                            _disabled={{
+                                                opacity: '1'
+                                            }}
+                                        //onChange={(event) => setCity(event.target.value)}
+                                        />
+                                    </Div_input_creation>
+                                </InputGroup>
+                            </Div_input_creation>
+                        </div>
 
+
+                        {!shopIsDigital &&
+                            <>
                                 <Div_input_creation text=''>
                                     <InputGroup className='flex justify-between gap-2'>
-                                        <div className='mb-1 w-fit'>
-                                            <p className='text-xs text-gray-400 font-normal mb-px'>
-                                                Civico
-                                            </p>
+                                        <Div_input_creation text='orario apertura'>
                                             <Input
-                                                borderColor={`${isValid_shop_streetNumber === false ? 'red.900' : 'gray.200'}`}
-                                                width={'28'}
                                                 rounded={10}
                                                 paddingY={6}
-                                                type="number"
-                                                min={1}
-                                                max={999}
-                                                onWheel={(e: any) => e.target.blur()}
-                                                value={address.streetNumber}
+                                                type="time"
+                                                value={open_hour}
                                                 onChange={(event) => {
-                                                    const value = event.target.value
-                                                    setAddress(prevstate => {
-                                                        return {
-                                                            ...prevstate,
-                                                            streetNumber: value.toString()
-                                                        }
-                                                    })
-                                                    if (value.length > 0) {
-                                                        setisValid_shop_streetNumber(true)
-                                                    } else {
-                                                        setisValid_shop_streetNumber(false)
-                                                    }
+                                                    setIsValid_Open_hour(true)
+                                                    setOpen_hour(event.target.value)
                                                 }}
-                                                disabled={streetNumberDisabled}
-                                                _disabled={{
-                                                    opacity: '1'
-                                                }}
+                                                onBlur={() => checkInput('open_hour')}
+                                                borderColor={`${isValid_open_hour === false ? 'red.900' : 'gray.200'}`}
                                             />
-                                        </div>
-                                        <Div_input_creation text='Città'>
+                                        </Div_input_creation>
+                                        <Div_input_creation text='orario chiusura'>
                                             <Input
-                                                width={'full'}
                                                 rounded={10}
                                                 paddingY={6}
-                                                type="text"
-                                                value={address.city}
-                                                readOnly
-                                                disabled={address?.city === undefined || address.city.length > 0}
-                                                _disabled={{
-                                                    opacity: '1'
+                                                type="time"
+                                                value={close_hour}
+                                                onChange={(event) => {
+                                                    setClose_hour(event.target.value)
+                                                    setIsValid_Close_hour(true)
                                                 }}
-                                            //onChange={(event) => setCity(event.target.value)}
+                                                onBlur={() => checkInput('close_hour')}
+                                                borderColor={`${isValid_close_hour === false ? 'red.900' : 'gray.200'}`}
                                             />
                                         </Div_input_creation>
                                     </InputGroup>
                                 </Div_input_creation>
-                            </div>
-
-
-                            {!shopIsDigital &&
-                                <>
-                                    <Div_input_creation text=''>
-                                        <InputGroup className='flex justify-between gap-2'>
-                                            <Div_input_creation text='orario apertura'>
-                                                <Input
-                                                    rounded={10}
-                                                    paddingY={6}
-                                                    type="time"
-                                                    value={open_hour}
-                                                    onChange={(event) => {
-                                                        setIsValid_Open_hour(true)
-                                                        setOpen_hour(event.target.value)
-                                                    }}
-                                                    onBlur={() => checkInput('open_hour')}
-                                                    borderColor={`${isValid_open_hour === false ? 'red.900' : 'gray.200'}`}
-                                                />
-                                            </Div_input_creation>
-                                            <Div_input_creation text='orario chiusura'>
-                                                <Input
-                                                    rounded={10}
-                                                    paddingY={6}
-                                                    type="time"
-                                                    value={close_hour}
-                                                    onChange={(event) => {
-                                                        setClose_hour(event.target.value)
-                                                        setIsValid_Close_hour(true)
-                                                    }}
-                                                    onBlur={() => checkInput('close_hour')}
-                                                    borderColor={`${isValid_close_hour === false ? 'red.900' : 'gray.200'}`}
-                                                />
-                                            </Div_input_creation>
-                                        </InputGroup>
-                                    </Div_input_creation>
-                                    <Div_input_creation text='giorni di apertura'>
-                                        <Select_multiple_options
-                                            handleChangeState={changeInput}
-                                            values={days.current} type={'day'}
-                                            selectedValueBefore={undefined}
-                                        />
-                                    </Div_input_creation>
-                                </>
-                            }
-                            <div className='flex justify-end mt-4'>
-                                <BlackButton
-                                    element='conferma'
-                                    borderRadius={5}
-                                    width={200}
-                                    heigth={12}
-                                    size={'sm'}
-                                    typeButton={'submit'}
-                                    disabled={false}
-                                //disabled={!address || address.streetNumber === '' || !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('info.opening.days') || watch('info.opening.days').length <= 0 || !isValid || !image?.file || !imageProfile?.file}
-                                />
-                            </div>
+                                <Div_input_creation text='giorni di apertura'>
+                                    <Select_multiple_options
+                                        handleChangeState={changeInput}
+                                        values={days.current} type={'day'}
+                                        selectedValueBefore={undefined}
+                                    />
+                                </Div_input_creation>
+                            </>
+                        }
+                        <div className='flex justify-end mt-4'>
+                            <BlackButton
+                                element='conferma'
+                                borderRadius={5}
+                                width={200}
+                                heigth={12}
+                                size={'sm'}
+                                typeButton={'submit'}
+                                disabled={false}
+                            //disabled={!address || address.streetNumber === '' || !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('info.opening.days') || watch('info.opening.days').length <= 0 || !isValid || !image?.file || !imageProfile?.file}
+                            />
                         </div>
-                    </form>
-                </div>
-            </Desktop_Layout>
+                    </div>
+                </form>
+            </div>
             <ModalReausable
                 marginTop={0}
                 title={typeCroppedImage === 'profile' ? 'inserisci immagine di profilo (ritaglia la foto)' : 'inserisci immagine di copertina (ritaglia la foto)'}
@@ -982,7 +1024,6 @@ const index = () => {
                         hiddenFileInputProfileImage.current.value = null;
                         setisProfileImageModalOpen(false)
                     }
-
                     }
                     handlerCancel={() => {
                         hiddenFileInputProfileImage.current.value = null;
@@ -990,7 +1031,8 @@ const index = () => {
                     }}
                 />
             </ModalReausable>
-        </Shop_UID_Required>
+        </Desktop_Layout>
+
 
 
     )
