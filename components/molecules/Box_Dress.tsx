@@ -16,7 +16,7 @@ import { isMobile } from 'react-device-detect'
 import { useRouter } from 'next/router'
 
 
-const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showStoreHeader?: boolean }> = ({ product, color, showStoreHeader }) => {
+const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean }> = ({ handleEventSelectedDress, product, color, showStoreHeader }) => {
 
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     const [width, height] = useWindowSize();
@@ -135,7 +135,7 @@ const Box_Dress: React.FC<{ product: Product; color?: string | undefined, showSt
                         background={'#FBFBFB'}
                     >
                         <Link
-
+                            onClick={handleEventSelectedDress}
                             onMouseLeave={() => {
                                 setShowSize(false)
                             }}
