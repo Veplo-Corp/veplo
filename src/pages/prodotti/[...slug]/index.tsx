@@ -173,6 +173,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         brand: false,
         fit: false
     });
+    const [cachedProducts, setcachedProducts] = useState(false)
     const [filter, setFilter] = useState<PropsFilter>({
 
     })
@@ -251,7 +252,10 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             console.log(scrollPosition);
             setTimeout(() => {
                 window.scrollTo(0, parseInt(scrollPosition));
+                setcachedProducts(true)
+
             }, 1000);
+
             setHasMoreData(true)
         }
         else {
@@ -341,7 +345,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         const filters = getFilterValue()
 
         if (Object.keys(filters).length < 1) {
-            if (window.history.state.key !== sessionStorage.getItem("keyProductsSession")) {
+            if (window.history.state.key !== sessionStorage.getItem("keyProductsSession") || cachedProducts) {
                 return setproductsFounded(products)
             }
             return
