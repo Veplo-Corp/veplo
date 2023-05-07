@@ -237,16 +237,16 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     useEffect(() => {
 
         // verificare se l'utente è arrivato sulla pagina con il pulsante "Indietro"
-        console.log(window.history.state.key === sessionStorage.getItem("key"));
-        console.log(window.history.state.key, sessionStorage.getItem("key"));
+        console.log(window.history.state.key === sessionStorage.getItem("keyProductsSession"));
+        console.log(window.history.state.key, sessionStorage.getItem("keyProductsSession"));
 
 
-        if (window.history.state.key === sessionStorage.getItem("key")) {
+        if (window.history.state.key === sessionStorage.getItem("keyProductsSession")) {
             setproductsFounded([])
             const productsFounded = sessionStorage.getItem("productsFounded");
             if (!productsFounded) return
             setproductsFounded(JSON.parse(productsFounded))
-            const scrollPosition = sessionStorage.getItem('scrollPosition');
+            const scrollPosition = sessionStorage.getItem('scrollPositionProducts');
             if (!scrollPosition) return
             console.log(scrollPosition);
             setTimeout(() => {
@@ -341,7 +341,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         const filters = getFilterValue()
 
         if (Object.keys(filters).length < 1) {
-            if (window.history.state.key !== sessionStorage.getItem("key")) {
+            if (window.history.state.key !== sessionStorage.getItem("keyProductsSession")) {
                 return setproductsFounded(products)
             }
             return
@@ -703,9 +703,9 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                                     leaveTo="opacity-0"
                                                                 >
                                                                     <Box_Dress handleEventSelectedDress={() => {
-                                                                        sessionStorage.setItem("key", window.history.state.key)
+                                                                        sessionStorage.setItem("keyProductsSession", window.history.state.key)
                                                                         sessionStorage.setItem("productsFounded", JSON.stringify(productsFounded))
-                                                                        sessionStorage.setItem('scrollPosition', window.pageYOffset.toString());
+                                                                        sessionStorage.setItem('scrollPositionProducts', window.pageYOffset.toString());
                                                                     }} showStoreHeader={true} product={product} color={typeof colors === 'string' ? colors : undefined}></Box_Dress>
                                                                 </Transition>
 
