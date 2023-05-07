@@ -251,7 +251,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             console.log(scrollPosition);
             setTimeout(() => {
                 window.scrollTo(0, parseInt(scrollPosition));
-            }, 500);
+            }, 1000);
             setHasMoreData(true)
         }
         else {
@@ -341,7 +341,10 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         const filters = getFilterValue()
 
         if (Object.keys(filters).length < 1) {
-            return setproductsFounded(products)
+            if (window.history.state.key !== sessionStorage.getItem("key")) {
+                return setproductsFounded(products)
+            }
+            return
         }
         fetchSpecificItem(filters);
 
@@ -358,7 +361,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         setFilter({})
         setTimeout(() => {
             setLoading(false)
-        }, 1000);
+        }, 700);
 
     }, [gender])
 
