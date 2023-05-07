@@ -86,7 +86,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
 
     return (
         <>
-            {product?.variations[0].photos[0] &&
+            {product?.variations[0]?.photos[0] &&
                 <Box
                 >
 

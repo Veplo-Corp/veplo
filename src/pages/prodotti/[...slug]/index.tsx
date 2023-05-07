@@ -202,7 +202,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 filters: {
                     macroCategory: category,
                     gender: gender,
-                    ...filter
+                    ...filter,
+                    microCategory: microCategory ? microCategory : ''
                 }
             }
         })
@@ -294,38 +295,45 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     const mountedRef = useRef(true)
 
     const fetchSpecificItem = useCallback(async (filters: any) => {
-        console.log('gender', gender);
-        console.log(microCategory);
-
-        try {
-            const newProducts = async () => {
-                return await getProducts({
-                    variables: {
-                        offset: 0,
-                        limit: RANGE,
-                        filters: {
-                            macroCategory: toUpperCaseFirstLetter(category),
-                            //inserire la microcategoria
-                            microCategory: microCategory ? microCategory : '',
-                            gender: gender,
-                            ...filters
-                        }
-                    }
-                })
+        setTimeout(() => {
+            console.log('gender', gender);
+            if (microCategory) {
+                filters = {
+                    ...filters,
+                    microCategory
+                }
             }
-            newProducts().then(products => {
-                console.log(products);
+            console.log(filters);
 
-                if (!products.data?.products.products) return
-                console.log(products.data?.products.products);
+            try {
+                const newProducts = async () => {
+                    return await getProducts({
+                        variables: {
+                            offset: 0,
+                            limit: RANGE,
+                            filters: {
+                                macroCategory: toUpperCaseFirstLetter(category),
+                                gender: gender,
+                                ...filters
+                            }
+                        }
+                    })
+                }
+                newProducts().then(products => {
+                    console.log(products);
 
-                setproductsFounded(products.data?.products.products)
-                setHasMoreData(true)
-            })
-        } catch (error) {
-            console.log(error);
+                    if (!products.data?.products.products) return
+                    console.log(products.data?.products.products);
 
-        }
+                    setproductsFounded(products.data?.products.products)
+                    setHasMoreData(true)
+                })
+            } catch (error) {
+                console.log(error);
+
+            }
+        }, 500);
+
     }, [mountedRef, gender, microCategory]) // add variable as dependency
 
     useEffect(() => {
@@ -339,18 +347,20 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
         return () => {
             mountedRef.current = false;   // clean up function
+
         };
-    }, [router.query, fetchSpecificItem]);
+    }, [router.query]);
 
 
 
 
     useEffect(() => {
+        setFilter({})
         setTimeout(() => {
             setLoading(false)
-        }, 200);
+        }, 1000);
 
-    }, [])
+    }, [gender])
 
 
 
@@ -950,22 +960,37 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                         if (element.name === router.query.colors) {
                                             let filter = getFilterValue();
                                             delete filter['colors'];
-                                            return router.push({
+                                            router.replace({
                                                 pathname: router.asPath.split('?')[0],
                                                 query: {
                                                     ...filter
-                                                }
+                                                },
+
                                             },
+                                                undefined
                                             )
+                                            setFilter(prevstate => {
+                                                const newPrevstate = prevstate
+                                                delete newPrevstate.colors
+                                                return {
+                                                    ...newPrevstate,
+
+                                                }
+                                            })
                                         } else {
                                             const filter = getFilterValue();
-                                            router.push({
+
+                                            router.replace({
                                                 pathname: router.asPath.split('?')[0],
                                                 query: {
                                                     ...filter,
                                                     colors: [element.name]
-                                                }
-                                            })
+                                                },
+
+                                            },
+                                                undefined,
+                                                { shallow: true }
+                                            )
                                         }
                                     }
                                     }
@@ -1155,7 +1180,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 </Stack> */}
 
                 </ModalReausable>
-            </div>
+            </div >
         </>
 
 
