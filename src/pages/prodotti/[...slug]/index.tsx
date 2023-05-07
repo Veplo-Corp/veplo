@@ -34,7 +34,7 @@ import { motion } from 'framer-motion';
 import Shop_not_Allowed from '../../../../components/utils/Shop_not_Allowed';
 
 
-const RANGE = 5
+const RANGE = 2
 
 
 export async function getStaticPaths() {
