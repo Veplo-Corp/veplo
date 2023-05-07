@@ -92,7 +92,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
 
                     {showStoreHeader && <Link
                         prefetch={false}
-
+                        onClick={handleEventSelectedDress}
                         href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
                         <Box
                             display={'flex'}
