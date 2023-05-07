@@ -341,9 +341,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     }, [mountedRef, gender, microCategory]) // add variable as dependency
 
     useEffect(() => {
-
         const filters = getFilterValue()
-
+        setHasMoreData(true)
         if (Object.keys(filters).length < 1) {
             if (window.history.state.key !== sessionStorage.getItem("keyProductsSession") || cachedProducts) {
                 return setproductsFounded(products)
@@ -984,14 +983,15 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             })
                                         } else {
                                             const filter = getFilterValue();
-                                            setHasMoreData(true)
                                             router.replace({
                                                 pathname: router.asPath.split('?')[0],
                                                 query: {
                                                     ...filter,
                                                     colors: [element.name]
                                                 },
-                                            }
+                                            },
+                                                undefined,
+                                                { shallow: true }
                                             )
                                         }
                                     }
