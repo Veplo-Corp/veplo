@@ -341,7 +341,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         const filters = getFilterValue()
 
         if (Object.keys(filters).length < 1) {
-            return
+            return setproductsFounded(products)
         }
         fetchSpecificItem(filters);
 
@@ -956,7 +956,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             }
                                         })
                                         setHasMoreData(true)
-
                                         if (element.name === router.query.colors) {
                                             let filter = getFilterValue();
                                             delete filter['colors'];
@@ -965,7 +964,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                 query: {
                                                     ...filter
                                                 },
-
                                             },
                                                 undefined
                                             )
@@ -974,19 +972,16 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                 delete newPrevstate.colors
                                                 return {
                                                     ...newPrevstate,
-
                                                 }
                                             })
                                         } else {
                                             const filter = getFilterValue();
-
                                             router.replace({
                                                 pathname: router.asPath.split('?')[0],
                                                 query: {
                                                     ...filter,
                                                     colors: [element.name]
                                                 },
-
                                             },
                                                 undefined,
                                                 { shallow: true }
