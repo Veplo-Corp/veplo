@@ -342,14 +342,18 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
     useEffect(() => {
         const filters = getFilterValue()
-        setHasMoreData(true)
+
         if (Object.keys(filters).length < 1) {
+            console.log('RIMESSO setHasMoreData(true) qui');
+            setHasMoreData(true)
             if (window.history.state.key !== sessionStorage.getItem("keyProductsSession") || cachedProducts) {
                 return setproductsFounded(products)
             }
             return
         }
         fetchSpecificItem(filters);
+        setHasMoreData(true)
+        console.log('RIMESSO setHasMoreData(true)');
 
         return () => {
             mountedRef.current = false;   // clean up function
