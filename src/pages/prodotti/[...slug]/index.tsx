@@ -965,6 +965,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                         setHasMoreData(true)
                                         if (element.name === router.query.colors) {
                                             let filter = getFilterValue();
+                                            setHasMoreData(true)
                                             delete filter['colors'];
                                             router.replace({
                                                 pathname: router.asPath.split('?')[0],
@@ -983,6 +984,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             })
                                         } else {
                                             const filter = getFilterValue();
+                                            setHasMoreData(true)
                                             router.replace({
                                                 pathname: router.asPath.split('?')[0],
                                                 query: {
