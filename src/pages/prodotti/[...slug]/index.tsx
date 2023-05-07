@@ -251,7 +251,11 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             if (!scrollPosition) return
             console.log(scrollPosition);
             setTimeout(() => {
-                window.scrollTo(0, parseInt(scrollPosition));
+                //window.scrollTo(0, parseInt(scrollPosition));
+                window.scrollTo({
+                    top: parseInt(scrollPosition),
+                    behavior: "smooth"
+                });
                 setcachedProducts(true)
 
             }, 1000);
