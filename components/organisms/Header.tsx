@@ -179,7 +179,6 @@ const Header = () => {
                                     height={'fit-content'}
                                     onClick={() => {
                                         if (!user?.uid) {
-                                            console.log(router.asPath);
 
                                             return router.push({
                                                 pathname: '/user/login',

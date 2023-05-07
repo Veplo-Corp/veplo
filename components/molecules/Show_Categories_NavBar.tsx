@@ -63,7 +63,6 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: () => vo
                         if (categoryForUrl) {
                             categorySelectedUrl = createUrlSchema([gender, categoryForUrl])
                         }
-                        console.log(categorySelectedUrl);
 
                         return (
                             <Link
