@@ -991,9 +991,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                     ...filter,
                                                     colors: [element.name]
                                                 },
-                                            },
-                                                undefined,
-                                                { shallow: true }
+                                            }
                                             )
                                         }
                                     }
