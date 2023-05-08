@@ -41,6 +41,9 @@ const GET_USER = gql`
                         }
                     }
                 }
+                warnings {
+                    variationId
+                }
             } 
             orders(
                 limit:1000,
