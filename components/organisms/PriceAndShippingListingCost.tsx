@@ -18,7 +18,7 @@ const PriceAndShippingListingCost: FC<{ subTotal: number, total: number, shippin
                     Subtotale
                 </Box>
                 <Box>
-                    {subTotal.toFixed(2).replace('.', ',')} €
+                    {subTotal.toFixed(2).replace('.', ',')}€
                 </Box>
             </Box>
             <Box
@@ -29,7 +29,7 @@ const PriceAndShippingListingCost: FC<{ subTotal: number, total: number, shippin
                     Spedizione
                 </Box>
                 <Box>
-                    {shippingCost.toFixed(2).replace('.', ',')} €
+                    {shippingCost ? shippingCost.toFixed(2).replace('.', ',') + '€' : 'gratis'}
                 </Box>
             </Box>
             <Divider

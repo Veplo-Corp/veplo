@@ -66,7 +66,7 @@ interface IFormInput {
             hours: string[],
         },
     },
-    price?: number | string
+    minimumAmountForFreeShipping?: number | string
 
 
 }
@@ -474,12 +474,12 @@ const index = () => {
 
 
 
-            const price = watch('price')
+            const minimumAmountForFreeShipping = watch('minimumAmountForFreeShipping')
 
-            if (typeof price === 'string' && Number(price.replace(',', '.')) > 0) {
+            if (typeof minimumAmountForFreeShipping === 'string' && Number(minimumAmountForFreeShipping.replace(',', '.')) > 0) {
                 Shop = {
                     ...Shop,
-                    price: Number(price.replace(',', '.'))
+                    minimumAmountForFreeShipping: parseInt(minimumAmountForFreeShipping.replace(',', '.'))
                 }
             }
 
@@ -794,18 +794,18 @@ const index = () => {
                                     rounded={10}
                                     paddingY={6}
                                     autoComplete='off'
-                                    type="string"
-                                    {...register("price", {
+                                    type="number"
+                                    {...register("minimumAmountForFreeShipping", {
                                         required: true,
                                     })}
                                     onWheel={(e: any) => e.target.blur()}
-                                    placeholder={'34,99'}
+                                    placeholder={'numero intero'}
                                     textAlign={"end"}
                                     isInvalid={false}
+                                    step={1}
                                     onChange={(e) => {
-
                                         const inputValue = onChangeNumberPrice(e)
-                                        return setValue('price', inputValue);
+                                        return setValue('minimumAmountForFreeShipping', inputValue);
                                     }}
                                 />
                             </InputGroup>

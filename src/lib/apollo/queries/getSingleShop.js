@@ -17,6 +17,7 @@ const GET_SHOP_AND_PRODUCTS = gql`
             profilePhoto
             profileCover
             isDigitalOnly
+            minimumAmountForFreeShipping
             info{
                 phone
                 description

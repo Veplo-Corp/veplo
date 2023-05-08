@@ -60,6 +60,7 @@ export async function getStaticProps(ctx: any) {
 
 const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
     //TODO lazyload scroll products
+    console.log(shop);
 
 
 
@@ -119,39 +120,62 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
 
                     className='w-full object-cover aspect-[2.3/1] lg:rounded-[10px]'
                 />
-                <Box
-                    marginBottom={1}
-                    width={['28', '40']}
-                    height={['28', '40']}
-                    mt={[-14, -20]}
-                    zIndex={50}
-                    borderWidth={1}
-                    borderColor={'white'}
-                    background={'white'}
-                    borderRadius={'full'}
-                    color={'gray.400'}
-                    fontSize={['xs', 'sm']}
-                    className='ml-5 md:ml-8'
-                    display={'flex'}
+                <Box display={'flex'}
+                    justifyContent={'space-between'}
                 >
                     <Box
-                        borderRadius={'full'}
-                        width={'full'}
-                        height={'full'}
+                        marginBottom={1}
+                        width={['28', '40']}
+                        height={['28', '40']}
+                        mt={[-14, -20]}
+                        zIndex={50}
+                        borderWidth={1}
+                        borderColor={'white'}
                         background={'white'}
-                        textAlign={'center'}
+                        borderRadius={'full'}
+                        color={'gray.400'}
+                        fontSize={['xs', 'sm']}
+                        className='ml-5 md:ml-8'
                         display={'flex'}
                     >
+                        <Box
+                            borderRadius={'full'}
+                            width={'full'}
+                            height={'full'}
+                            background={'white'}
+                            textAlign={'center'}
+                            display={'flex'}
+                        >
 
-                        <LazyLoadImage src={
-                            imageKitUrl(shop.profilePhoto)
-                        }
-                            //PlaceholderSrc={PlaceholderImage}
-                            alt={shop.name}
-                            className='m-auto h-full w-full p-[4px] lg:p-[5px] rounded-full'
-                        />
+                            <LazyLoadImage src={
+                                imageKitUrl(shop.profilePhoto)
+                            }
+                                //PlaceholderSrc={PlaceholderImage}
+                                alt={shop.name}
+                                className='m-auto h-full w-full p-[4px] lg:p-[5px] rounded-full'
+                            />
+                        </Box>
+
                     </Box>
+                    {shop.minimumAmountForFreeShipping && <Text
+                        fontSize={['sm', 'md']}
+                        fontWeight={'bold'}
+                        py={0}
+                        px={2}
+                        bgColor={'#D9D9D9'}
+                        top={3}
+                        left={3}
+                        borderRadius={'full'}
+                        noOfLines={1}
+                        mr={[1, 0]}
+                        mt={4}
+                        width={'fit-content'}
+                        height={'fit-content'}
+                    >
+                        spedizione gratuita da {shop.minimumAmountForFreeShipping.toLocaleString().replace('.', '.')}€
+                    </Text>}
                 </Box>
+
                 <Box
                     mt={[4, 6]}
                     className='px-5 lg:p-0'
@@ -160,11 +184,16 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
                         display={'flex'}
                         justifyContent={'space-between'}
                     >
-                        <Text
-                            className='font-bold text-2xl lg:text-4xl my-auto'
-                        >
-                            {shop.name}
-                        </Text>
+                        <Box>
+
+                            <Text
+                                className='font-bold text-2xl lg:text-4xl my-auto'
+                            >
+                                {shop.name}
+                            </Text>
+
+                        </Box>
+
 
 
                         <PopoverComponent
