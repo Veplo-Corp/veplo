@@ -7,8 +7,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import useWindowSize from '../Hooks/useWindowSize'
 import { imageKitUrl } from '../utils/imageKitUrl'
-import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
-import { Transition } from '@headlessui/react'
+
 import Link from 'next/link'
 import { toProductPage } from '../utils/toProductPage'
 import createUrlSchema from '../utils/create_url'
@@ -128,7 +127,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
                         </Box>
                     </Link>}
 
-                    <Box minW='20' borderRadius='10px' h={'full'} overflow='hidden' className='cursor-pointer relative rounded-3xl aspect-[4.2/5]'
+                    <Box minW='20' borderRadius='15px' h={'full'} overflow='hidden' className='cursor-pointer relative rounded-3xl aspect-[4.2/5]'
                         borderWidth={1}
                         position={'relative'}
                         borderColor={'#F3F3F3'}
@@ -224,6 +223,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
                                 left={3}
                                 borderRadius={'full'}
                                 noOfLines={1}
+                                mr={3}
                             >
                                 {product.name.toLocaleUpperCase()}
                             </Text>

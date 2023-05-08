@@ -61,9 +61,6 @@ export async function getStaticProps(ctx: any) {
     const microgategoryNameUrl: string = slug[1];
     const searchedText: string = slug[3];
 
-
-
-
     const apolloClient = initApollo()
 
     try {
@@ -90,8 +87,6 @@ export async function getStaticProps(ctx: any) {
         if (elementGenderMacrocategory.gender) {
             filter.gender = elementGenderMacrocategory.gender === 'uomo' ? 'm' : 'f'
         }
-
-
 
 
         const { data, errors } = await apolloClient.query({
@@ -695,7 +690,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     >
                                         <div className={` flex items-center justify-center`}>
                                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 md:gap-5 gap-y-5 w-full">
-
                                                 {productsFounded.length > 0 ?
                                                     (
                                                         productsFounded.map((product: Product) => {

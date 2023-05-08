@@ -25,6 +25,7 @@ export interface Shop {
             coordinates: number[]
         }
     },
+    minimumAmountForFreeShipping?: number
 }
 
 export interface ShopAndProducts extends Shop {

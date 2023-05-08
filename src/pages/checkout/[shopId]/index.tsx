@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { Box, Button, Divider, Text, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -15,6 +15,10 @@ import { Cart, ProductVariation } from '../../../interfaces/carts.interface';
 import CRATE_CHECKOUT_URL from '../../../lib/apollo/mutations/checkout';
 import EDIT_CART from '../../../lib/apollo/mutations/editCart';
 import { editVariationFromCart } from '../../../store/reducers/carts';
+import GET_SHOP from '../../../lib/apollo/queries/getShop';
+import { Shop } from '../../../interfaces/shop.interface';
+
+const SHIPPING_COST = 4.99;
 
 const index = () => {
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
@@ -23,11 +27,21 @@ const index = () => {
     const [checkoutUrlMutation] = useMutation(CRATE_CHECKOUT_URL);
     const dispatch = useDispatch();
     const [editCart] = useMutation(EDIT_CART);
-    const [isDisabled, setIsDisabled] = useState(false)
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [getShop, shopQuery] = useLazyQuery(GET_SHOP);
+    const [shop, setShop] = useState<Shop>();
+
+    console.log(cart);
 
     useEffect(() => {
-        const { shopId } = router.query
+        const { shopId } = router.query;
 
+        if (!shopId) return
+        getShop({
+            variables: {
+                id: shopId
+            }
+        })
         const cart = cartsDispatch.filter(cart => cart.shopInfo.id === shopId)[0]
         if (cart) {
             console.log(cart);
@@ -37,6 +51,12 @@ const index = () => {
             setCart(undefined)
         }
     }, [cartsDispatch, router])
+
+    useEffect(() => {
+        if (!shopQuery.data) return
+        setShop(shopQuery.data.shop)
+    }, [shopQuery])
+
 
     const checkoutUrl = async () => {
         setIsDisabled(true)
@@ -134,7 +154,6 @@ const index = () => {
                                     mb={[4]}
                                 >
                                     {cart?.shopInfo.name}
-
                                 </Text>
                             </Link>
 
@@ -157,7 +176,7 @@ const index = () => {
                                 })}
 
                             </VStack>
-                            <PriceAndShippingListingCost subTotal={cart.total} total={cart.total + 4.99} shippingCost={4.99} />
+                            <PriceAndShippingListingCost subTotal={cart.total} total={cart.total + (!shop?.minimumAmountForFreeShipping || shop?.minimumAmountForFreeShipping > cart.total ? SHIPPING_COST : 0)} shippingCost={!shop?.minimumAmountForFreeShipping || shop?.minimumAmountForFreeShipping > cart.total ? SHIPPING_COST : 0} />
 
                             <Box
                                 display={'flex'}
@@ -193,7 +212,7 @@ const index = () => {
                                 </Button>
                             </Box>
 
-                            <Box
+                            {!shop?.minimumAmountForFreeShipping || shop?.minimumAmountForFreeShipping > cart.total && <Box
                                 mt={5}
                                 width={'full'}
                                 background={'gray.100'}
@@ -211,7 +230,7 @@ const index = () => {
                                 >
                                     Costo fisso per la spedizione 4,99€
                                 </Text>
-                            </Box>
+                            </Box>}
                         </div>
                     </Desktop_Layout>
                 </>
