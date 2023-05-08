@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
-import { Box, Button, Divider, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Divider, ListItem, Text, UnorderedList, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
@@ -17,6 +17,7 @@ import EDIT_CART from '../../../lib/apollo/mutations/editCart';
 import { editVariationFromCart } from '../../../store/reducers/carts';
 import GET_SHOP from '../../../lib/apollo/queries/getShop';
 import { Shop } from '../../../interfaces/shop.interface';
+import ModalReausable from '../../../../components/organisms/ModalReausable';
 
 const SHIPPING_COST = 4.99;
 
@@ -24,24 +25,49 @@ const index = () => {
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
     const [cart, setCart] = useState<Cart>()
     const router = useRouter()
-    const [checkoutUrlMutation] = useMutation(CRATE_CHECKOUT_URL);
+    const [checkoutUrlMutation, { error }] = useMutation(CRATE_CHECKOUT_URL);
     const dispatch = useDispatch();
     const [editCart] = useMutation(EDIT_CART);
     const [isDisabled, setIsDisabled] = useState(false);
     const [getShop, shopQuery] = useLazyQuery(GET_SHOP);
     const [shop, setShop] = useState<Shop>();
+    const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
 
-    console.log(cart);
+    // Inizializza uno stato per il timeout
+    const [timeoutId, setTimeoutId] = useState<any>(null);
+
+    // Definisce la funzione con il timeout
+    function myFunctionWithTimeout() {
+        // Cancella il timeout precedente, se presente
+        clearTimeout(timeoutId);
+
+        // Imposta un nuovo timeout di 5 secondi
+        const newTimeoutId = setTimeout(function () {
+            const { shopId } = router.query;
+            const cart = cartsDispatch.filter(cart => cart.shopInfo.id === shopId)[0]
+            if (!cart) {
+                router.back()
+            }
+
+        }, 4000);
+
+        // Aggiorna lo stato con l'id del nuovo timeout
+        setTimeoutId(newTimeoutId);
+    }
+
+    console.log(error?.graphQLErrors);
 
     useEffect(() => {
         const { shopId } = router.query;
 
-        if (!shopId) return
+        if (!shopId || !cartsDispatch) return
+        myFunctionWithTimeout()
         getShop({
             variables: {
                 id: shopId
             }
         })
+        console.log(cartsDispatch);
         const cart = cartsDispatch.filter(cart => cart.shopInfo.id === shopId)[0]
         if (cart) {
             console.log(cart);
@@ -52,10 +78,17 @@ const index = () => {
         }
     }, [cartsDispatch, router])
 
+
+
     useEffect(() => {
         if (!shopQuery.data) return
         setShop(shopQuery.data.shop)
     }, [shopQuery])
+
+    useEffect(() => {
+        if (!error) return
+        setIsErrorModalOpen(true)
+    }, [error])
 
 
     const checkoutUrl = async () => {
@@ -92,20 +125,19 @@ const index = () => {
                 if (element.productId === variation.productId) {
                     const newVariations = cart.productVariations.filter(variationElement => variationElement.variationId !== variation.variationId || variationElement.size !== variation.size)
                     console.log(cart.productVariations, newVariations);
-
                     const newCart = {
                         ...cart,
                         productVariations: newVariations,
                         total: newTotalHandler(newVariations)
                     }
                     editedCart = newCart
+                    break;
                 }
             }
         }
 
         if (!editedCart) return
 
-        console.log(editedCart);
 
         let NewCarts: Cart[] = [];
 
@@ -128,10 +160,38 @@ const index = () => {
             })
         );
 
+
     }
 
     const pushToProduct = (variation: ProductVariation) => {
         router.push('/prodotto/' + variation.productId + '/' + createUrlSchema([variation.brand, variation.name]) + '?colore=' + variation.color)
+    }
+
+    const handleDeleteVariations = async () => {
+        const errorVariations = error?.graphQLErrors;
+        if (!errorVariations) return
+        console.log(errorVariations);
+        for await (const errorVariation of errorVariations) {
+            if (typeof errorVariation.path !== 'string') return
+            let id: string = errorVariation.path
+            id = id.trim()
+            console.log(id);
+            if (!cart) return
+            const variations = cart.productVariations.filter(element => element.variationId === id)
+            console.log(variations);
+            for await (const variation of variations) {
+                await editCart({
+                    variables: {
+                        productVariationId: variation.variationId,
+                        size: variation.size,
+                        quantity: 0
+                    }
+                })
+            }
+        }
+        return router.reload();
+
+
     }
 
     return (
@@ -232,6 +292,63 @@ const index = () => {
                                 </Text>
                             </Box>}
                         </div>
+                        <ModalReausable title='Carrello ingombrante' isOpen={isErrorModalOpen} closeModal={() => setIsErrorModalOpen(false)} >
+                            <Text mt={2}
+                                mb={3}
+                                fontSize={'md'}
+                                fontWeight={'medium'}
+                            >
+                                Dobbiamo eliminare dal carrello questi prodotti perchè non sono più disponibili o la quantità selezionata è terminata:
+                            </Text>
+                            <UnorderedList
+                                fontSize={'md'}
+                                fontWeight={'bold'}
+                            >
+                                {error?.graphQLErrors.map((error, index) => {
+                                    if (typeof error.path !== 'string') return (<></>)
+                                    let id: string = error.path
+                                    id = id.trim()
+                                    console.log(id);
+                                    console.log(cart.productVariations);
+                                    const variations = cart.productVariations.filter(element => element.variationId === id)
+                                    console.log(variations);
+                                    return (
+                                        <div key={index}>
+                                            {
+                                                variations.map((variation, index) => {
+                                                    return (
+                                                        <ListItem
+                                                            key={index}
+                                                        >
+                                                            {variation.name}
+                                                        </ListItem>)
+                                                })
+                                            }
+                                        </div>
+                                    )
+
+
+                                })}
+                            </UnorderedList>
+                            <ButtonGroup gap='2'
+                                display={'flex'}
+                                justifyContent={'right'}
+                                mt={5}
+                            >
+
+                                <Button colorScheme='orange'
+                                    borderRadius={'full'}
+                                    paddingX={6}
+                                    paddingY={5}
+                                    size={'sm'}
+                                    disabled={false}
+                                    //disabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
+                                    onClick={handleDeleteVariations}
+                                >Conferma
+                                </Button>
+                            </ButtonGroup>
+
+                        </ModalReausable>
                     </Desktop_Layout>
                 </>
             ) :

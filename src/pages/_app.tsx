@@ -185,6 +185,8 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
             const carts: Cart[] = data?.data?.user.carts.carts;
             const orders: Order[] = data?.data?.user.orders;
+            const warnings: { variationId: string }[] = data?.data?.user?.carts?.warnings
+
 
             if (carts?.length > 0) {
               dispatch(
