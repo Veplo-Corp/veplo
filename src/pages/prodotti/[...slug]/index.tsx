@@ -138,9 +138,8 @@ interface PropsOpenModal {
 
 
 interface PropsFilter {
-    category?: string,
-    sizes?: string,
-    colors?: string,
+    sizes?: string[],
+    colors?: string[],
     price?: {
         min?: number,
         max?: number
@@ -228,6 +227,9 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
 
 
+
+
+
     //const fetchMoreData = async () => { }
 
     useEffect(() => {
@@ -254,35 +256,33 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 setcachedProducts(true)
 
             }, 1000);
-
             setHasMoreData(true)
+
         }
         else {
-
-            setHasMoreData(true)
-            const microcategory: any = Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.find(element => element.name === category)
             setproductsFounded(products)
-            if (!microcategory?.types) {
-                setSizeProduct('')
-                return setMicrocategory([])
-            }
-            setMicrocategory(microcategory?.types);
-            setSizeProduct(microcategory.sizes);
 
-            const { slug } = router.query
-            if (typeof slug === 'object' && slug?.length === 3) {
-                setSlug(slug)
-            }
-            setFilter({})
+        }
+        setHasMoreData(true)
+        const microcategory: any = Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.find(element => element.name === category)
+        if (!microcategory?.types) {
+            setSizeProduct('')
+            return setMicrocategory([])
         }
 
-
+        setMicrocategory(microcategory?.types);
+        setSizeProduct(microcategory.sizes);
+        const { slug } = router.query
+        if (typeof slug === 'object' && slug?.length === 3) {
+            setSlug(slug)
+        }
 
 
     }, [products])
 
 
     useEffect(() => {
+        setFilter({})
         if (gender) {
             setInLocalStorage('genderSelected', gender)
             dispatch(
@@ -290,8 +290,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             );
         }
     }, [gender])
-
-
 
 
 
@@ -341,9 +339,10 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
     useEffect(() => {
         const filters = getFilterValue()
+        console.log('PASSAAAAA');
+
 
         if (Object.keys(filters).length < 1) {
-            console.log('RIMESSO setHasMoreData(true) qui');
             setHasMoreData(true)
             if (window.history.state.key !== sessionStorage.getItem("keyProductsSession") || cachedProducts) {
                 return setproductsFounded(products)
@@ -352,7 +351,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         }
         fetchSpecificItem(filters);
         setHasMoreData(true)
-        console.log('RIMESSO setHasMoreData(true)');
 
         return () => {
             mountedRef.current = false;   // clean up function
@@ -364,7 +362,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
 
     useEffect(() => {
-        setFilter({})
         setTimeout(() => {
             setLoading(false)
         }, 700);
@@ -385,49 +382,47 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
 
             if (typeof colors === 'string' && colors !== undefined) {
-
-                setFilter(prevstate => {
-                    return {
-                        ...prevstate,
-                        colors: colors
-                    }
-                })
                 filter['colors'] = [colors]
 
             }
             if (typeof sizes === 'string') {
-                setFilter(prevstate => {
-                    return {
-                        ...prevstate,
-                        sizes: sizes
-                    }
-                })
                 filter['sizes'] = [sizes.split(' ')[0]]
             }
-            if (typeof minPrice === 'string') {
-                setFilter(prevstate => {
-                    return {
-                        ...prevstate,
-                        price: {
-                            ...prevstate.price,
-                            min: Number(minPrice)
-                        }
-                    }
-                })
-                filter['minPrice'] = Number(minPrice)
-            }
-            if (typeof maxPrice === 'string') {
-                setFilter(prevstate => {
-                    return {
-                        ...prevstate,
-                        price: {
-                            ...prevstate.price,
-                            max: Number(maxPrice)
-                        }
-                    }
-                })
-                filter['maxPrice'] = Number(maxPrice)
-            }
+
+            //! da rivedere logica quando inseriamo max e min price perchè questa non funziona
+            // if (typeof minPrice === 'string') {
+            //     setFilter(prevstate => {
+            //         return {
+            //             ...prevstate,
+            //             price: {
+            //                 ...prevstate.price,
+            //                 min: Number(minPrice)
+            //             }
+            //         }
+            //     })
+            //     filter['minPrice'] = Number(minPrice)
+            // }
+            // if (typeof maxPrice === 'string') {
+            //     setFilter(prevstate => {
+            //         return {
+            //             ...prevstate,
+            //             price: {
+            //                 ...prevstate.price,
+            //                 max: Number(maxPrice)
+            //             }
+            //         }
+            //     })
+            //     filter['maxPrice'] = Number(maxPrice)
+            // }
+
+            console.log(filter);
+
+            setFilter(prevstate => {
+                return {
+                    ...filter
+                }
+            })
+
 
             return filter
         }
@@ -574,7 +569,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             })
                                         }}
                                     >
-                                        {filter.sizes ? 'Taglia ' + filter.sizes.toLocaleUpperCase() : 'Taglia'}
+                                        {filter.sizes ? 'Taglia ' + filter.sizes[0].toLocaleUpperCase() : 'Taglia'}
                                     </Button>
                                     }
                                     <Button
