@@ -140,10 +140,8 @@ interface PropsOpenModal {
 interface PropsFilter {
     sizes?: string[],
     colors?: string[],
-    price?: {
-        min?: number,
-        max?: number
-    },
+    maxPrice?: number,
+    minPrice?: number
     brand?: string,
     fit?: string
 }
@@ -282,7 +280,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
 
     useEffect(() => {
-        setFilter({})
         if (gender) {
             setInLocalStorage('genderSelected', gender)
             dispatch(
@@ -338,11 +335,16 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     }, [mountedRef, gender, microCategory]) // add variable as dependency
 
     useEffect(() => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+        }, 700);
         const filters = getFilterValue()
-        console.log('PASSAAAAA');
+        console.log(filters);
 
 
         if (Object.keys(filters).length < 1) {
+            setFilter({})
             setHasMoreData(true)
             if (window.history.state.key !== sessionStorage.getItem("keyProductsSession") || cachedProducts) {
                 return setproductsFounded(products)
@@ -361,12 +363,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
 
 
-    useEffect(() => {
-        setTimeout(() => {
-            setLoading(false)
-        }, 700);
-
-    }, [gender])
 
 
 
@@ -390,30 +386,14 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             }
 
             //! da rivedere logica quando inseriamo max e min price perchè questa non funziona
-            // if (typeof minPrice === 'string') {
-            //     setFilter(prevstate => {
-            //         return {
-            //             ...prevstate,
-            //             price: {
-            //                 ...prevstate.price,
-            //                 min: Number(minPrice)
-            //             }
-            //         }
-            //     })
-            //     filter['minPrice'] = Number(minPrice)
-            // }
-            // if (typeof maxPrice === 'string') {
-            //     setFilter(prevstate => {
-            //         return {
-            //             ...prevstate,
-            //             price: {
-            //                 ...prevstate.price,
-            //                 max: Number(maxPrice)
-            //             }
-            //         }
-            //     })
-            //     filter['maxPrice'] = Number(maxPrice)
-            // }
+            if (typeof minPrice === 'string') {
+
+                filter['minPrice'] = Number(minPrice)
+            }
+            if (typeof maxPrice === 'string') {
+
+                filter['maxPrice'] = Number(maxPrice)
+            }
 
             console.log(filter);
 
@@ -658,9 +638,9 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             })
                                         }}
                                     >
-                                        {filter.price?.min ? 'da ' + filter.price?.min + '€ ' : ''}
-                                        {filter.price?.max ? 'fino a ' + filter.price?.max + '€' : ''}
-                                        {!filter.price?.min && !filter.price?.max ? 'Prezzo' : ''}
+                                        {filter.minPrice ? 'da ' + filter.minPrice + '€ ' : ''}
+                                        {filter.maxPrice ? 'fino a ' + filter.maxPrice + '€' : ''}
+                                        {!filter.minPrice && !filter.maxPrice ? 'Prezzo' : ''}
                                     </Button>
                                 </div>
 
@@ -1021,23 +1001,23 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             minPrice?: number,
                             maxPrice?: number
                         } = {}
-                        if (filter.price?.min) {
-                            price['minPrice'] = filter.price?.min
+                        if (filter.minPrice) {
+                            price['minPrice'] = filter.minPrice
                         }
-                        if (filter.price?.max && (!filter.price?.min || filter.price?.max > filter.price?.min)) {
-                            console.log(filter.price?.max);
-                            console.log(filter.price?.min);
+                        if (filter.maxPrice && (!filter.minPrice || filter.maxPrice > filter.minPrice)) {
+                            console.log(filter.maxPrice);
+                            console.log(filter.minPrice);
 
-                            price['maxPrice'] = filter.price?.max
+                            price['maxPrice'] = filter.maxPrice
                         } else {
                             delete filterValues['maxPrice']
                         }
 
-                        if (filterValues.maxPrice !== filter.price?.max || filterValues.minPrice !== filter.price?.min) {
-                            if (!filter.price?.max) {
+                        if (filterValues.maxPrice !== filter.maxPrice || filterValues.minPrice !== filter.minPrice) {
+                            if (!filter.maxPrice) {
                                 delete filterValues['maxPrice']
                             }
-                            if (!filter.price?.min) {
+                            if (!filter.minPrice) {
                                 delete filterValues['minPrice']
                             }
 
@@ -1076,7 +1056,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             borderWidth={0}
                             autoComplete='off'
                             type="number"
-                            value={filter.price?.min || ""}
+                            value={filter.minPrice || ""}
                             onWheel={(e: any) => e.target.blur()}
                             placeholder={'minimo'}
                             _placeholder={{
@@ -1095,10 +1075,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     setFilter(prevstate => {
                                         return {
                                             ...prevstate,
-                                            price: {
-                                                ...prevstate.price,
-                                                min: number
-                                            }
+                                            minPrice: number
                                         }
                                     })
                                 }
@@ -1116,7 +1093,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             paddingY={6}
                             autoComplete='off'
                             type="number"
-                            value={filter.price?.max || ""}
+                            value={filter.maxPrice || ""}
                             onWheel={(e: any) => e.target.blur()}
                             placeholder={'massimo'}
                             fontSize={['md', 'lg']}
@@ -1135,10 +1112,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     setFilter(prevstate => {
                                         return {
                                             ...prevstate,
-                                            price: {
-                                                ...prevstate.price,
-                                                max: number
-                                            }
+                                            maxPrice: number
                                         }
                                     })
                                 }
