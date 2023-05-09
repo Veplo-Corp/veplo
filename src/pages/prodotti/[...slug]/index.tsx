@@ -289,7 +289,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 changeGenderSelected(gender)
             );
         }
-    }, [gender])
+    }, [gender, category])
 
 
 
