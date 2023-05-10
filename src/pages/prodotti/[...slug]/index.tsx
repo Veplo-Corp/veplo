@@ -30,11 +30,46 @@ import ModalReausable from '../../../../components/organisms/ModalReausable';
 import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First_Letter';
 import { findMicrocategoryName } from '../../../../components/utils/find_microcategory_name';
 import Div_input_creation from '../../../../components/atoms/Div_input_creation';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Shop_not_Allowed from '../../../../components/utils/Shop_not_Allowed';
 
 
 const RANGE = 2
+
+//motion
+const listItemVariants = {
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.5,
+            ease: "easeOut",
+        },
+    },
+    hidden: {
+        opacity: 0,
+        y: 50,
+        transition: {
+            duration: 0.5,
+            ease: "easeOut",
+        },
+    },
+};
+
+const listVariants = {
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1,
+        },
+    },
+    hidden: {
+        opacity: 0,
+        transition: {
+            staggerChildren: 0.1,
+        },
+    },
+};
 
 
 export async function getStaticPaths() {
@@ -667,30 +702,28 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 md:gap-5 gap-y-5 w-full">
                                                 {productsFounded.length > 0 ?
                                                     (
-                                                        productsFounded.map((product: Product) => {
+                                                        <AnimatePresence>
+                                                            {productsFounded.map((product: Product) => {
 
-                                                            const { colors } = router.query
-                                                            return (
-                                                                <Transition
-                                                                    key={product.id}
-                                                                    appear={productsFounded.length > 0}
-                                                                    show={productsFounded.length > 0}
-                                                                    enter="transition-opacity duration-500 transform"
-                                                                    enterFrom="opacity-0"
-                                                                    enterTo="opacity-100"
-                                                                    leave="transition-opacity duration-500 transform"
-                                                                    leaveFrom="opacity-0"
-                                                                    leaveTo="opacity-0"
-                                                                >
-                                                                    <Box_Dress handleEventSelectedDress={() => {
-                                                                        sessionStorage.setItem("keyProductsSession", window.history.state.key)
-                                                                        sessionStorage.setItem("productsFounded", JSON.stringify(productsFounded))
-                                                                        sessionStorage.setItem('scrollPositionProducts', window.pageYOffset.toString());
-                                                                    }} showStoreHeader={true} product={product} color={typeof colors === 'string' ? colors : undefined}></Box_Dress>
-                                                                </Transition>
+                                                                const { colors } = router.query
+                                                                return (
+                                                                    <motion.div
+                                                                        key={product.id}
+                                                                        variants={listItemVariants}
+                                                                        initial="hidden"
+                                                                        animate="visible"
+                                                                        exit="hidden"
+                                                                    >
+                                                                        <Box_Dress handleEventSelectedDress={() => {
+                                                                            sessionStorage.setItem("keyProductsSession", window.history.state.key)
+                                                                            sessionStorage.setItem("productsFounded", JSON.stringify(productsFounded))
+                                                                            sessionStorage.setItem('scrollPositionProducts', window.pageYOffset.toString());
+                                                                        }} showStoreHeader={true} product={product} color={typeof colors === 'string' ? colors : undefined}></Box_Dress>
 
-                                                            )
-                                                        })
+                                                                    </motion.div>
+                                                                )
+                                                            })}
+                                                        </AnimatePresence>
                                                     )
                                                     : (
                                                         <></>
