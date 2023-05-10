@@ -639,24 +639,36 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                             mt={5}
                             borderWidth={1}
                             borderRadius={10}
-                            paddingY={[5, 5]}
-                            paddingX={[2, 5]}
+
                         >
-                            <Disclosure>
+                            <Disclosure
+
+                            >
                                 {({ open }) => (
-                                    <Box>
-                                        <Disclosure.Button className="flex text-center m-auto">
-                                            <Text
-                                                fontSize={'lg'}
-                                                fontWeight={'bold'}
+                                    <Box
+                                        paddingY={[5, 5]}
+                                        paddingX={[2, 5]}
+                                    >
+                                        <Disclosure.Button className="flex text-center w-full h-full"
+
+                                        >
+                                            <Box
+                                                className='m-auto flex'
                                             >
-                                                Caratteristiche
-                                            </Text>
-                                            <NavArrowDown
-                                                strokeWidth={3}
-                                                className={`${open ? 'rotate-180 transform' : ''
-                                                    } h-6 w-6 my-auto ml-1`}
-                                            />
+                                                <Text
+                                                    fontSize={'lg'}
+                                                    fontWeight={'bold'}
+                                                    margin={'auto'}
+                                                >
+                                                    Caratteristiche
+                                                </Text>
+                                                <NavArrowDown
+                                                    strokeWidth={3}
+                                                    className={`${open ? 'rotate-180 transform' : ''
+                                                        } h-6 w-6 my-auto ml-1`}
+                                                />
+                                            </Box>
+
                                         </Disclosure.Button>
                                         <Transition
                                             show={open}
