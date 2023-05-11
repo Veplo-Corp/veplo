@@ -48,7 +48,7 @@ const listItemVariants = {
     },
     hidden: {
         opacity: 0,
-        y: 50,
+        y: 0,
         transition: {
             duration: 0.5,
             ease: "easeOut",
@@ -56,20 +56,7 @@ const listItemVariants = {
     },
 };
 
-const listVariants = {
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1,
-        },
-    },
-    hidden: {
-        opacity: 0,
-        transition: {
-            staggerChildren: 0.1,
-        },
-    },
-};
+
 
 
 export async function getStaticPaths() {
