@@ -117,7 +117,6 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
                 }
                     //PlaceholderSrc={PlaceholderImage}
                     alt={shop.name}
-
                     className='w-full object-cover aspect-[2.3/1] lg:rounded-[10px]'
                 />
                 <Box display={'flex'}
@@ -128,7 +127,7 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
                         width={['28', '40']}
                         height={['28', '40']}
                         mt={[-14, -20]}
-                        zIndex={50}
+                        zIndex={10}
                         borderWidth={1}
                         borderColor={'white'}
                         background={'white'}

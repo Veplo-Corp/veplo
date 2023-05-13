@@ -136,7 +136,16 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     const [product, setproduct] = useState<Product>(productFounded)
     const [variationSelected, setVariationSelected] = useState<Variation>(productFounded.variations[0])
-    const [colorSelected, setColorSelected] = useState<string>(productFounded.variations[0].color[0])
+    const [colorSelected, setColorSelected] = useState<string>()
+
+
+    if (!variationSelected) {
+        return (
+            <Desktop_Layout>
+                <></>
+            </Desktop_Layout>
+        )
+    }
 
     const dispatch = useDispatch();
 
@@ -211,9 +220,9 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         }
 
         setInLocalStorage('genderSelected', product.info.gender)
-        dispatch(
-            changeGenderSelected(product.info.gender)
-        );
+        // dispatch(
+        //     changeGenderSelected(product.info.gender)
+        // );
 
         //! lista di prodotti del negozio
         const fetchData = async () => {
@@ -582,7 +591,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                         </Box>}
                         {product.colors && <div className='mt-2'>
                             <CircleColorSelected
-                                colorSelected={colorSelected}
+                                colorSelected={colorSelected ? colorSelected : ''}
                                 colors={
                                     product.colors
                                 }

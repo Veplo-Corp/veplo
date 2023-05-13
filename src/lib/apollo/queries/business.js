@@ -22,6 +22,7 @@ const GET_BUSINESS = gql`
                 createdAt
                 status
                 profilePhoto
+                minimumAmountForFreeShipping
                 profileCover
                 isDigitalOnly
                 info{

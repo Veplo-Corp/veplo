@@ -10,12 +10,14 @@ import { imageKitUrl } from '../utils/imageKitUrl';
 
 
 const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
-    console.log(shop);
+    console.log(shop.minimumAmountForFreeShipping);
 
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<Shop>({
         mode: "all",
         defaultValues: shop
     });
+
+
 
 
     return (
@@ -104,7 +106,27 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                     className='w-full aspect-[4.8/3] object-cover rounded-md mb-4'
                 />
             </Div_input_creation>
-            <Div_input_creation text='Giorni di apertura'>
+            <Div_input_creation text='ordine minimo per spedizione gratuita'>
+                <InputGroup
+                >
+                    <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} />
+                    <Input
+                        maxLength={12}
+                        rounded={10}
+                        paddingY={6}
+                        type='tel'
+                        isInvalid={false}
+                        disabled={true}
+                        _disabled={{
+                            opacity: '1',
+                            background: 'gray.50',
+                        }}
+                        {...register("minimumAmountForFreeShipping", { required: true, minLength: 6, maxLength: 12 })}
+                    />
+                </InputGroup>
+
+            </Div_input_creation>
+            {/* <Div_input_creation text='Giorni di apertura'>
                 <InputGroup>
                     <Input
                         autoComplete='off'
@@ -142,7 +164,7 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                         className='cursor-not-allowed'
                     />
                 </InputGroup>
-            </Div_input_creation>
+            </Div_input_creation> */}
             {/* descrizione negozio  */}
             {/* <Div_input_creation text='Descrizione negozio (massimo 400 lettere)'>
                     <InputGroup>
