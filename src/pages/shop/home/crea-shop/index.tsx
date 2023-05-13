@@ -786,7 +786,7 @@ const index = () => {
                             </InputGroup>
                             {isValid_shop_phone === false && <p className='text-sm md:text-xs text-red-600'>Inserisci un numero corretto</p>}
                         </Div_input_creation>
-                        <Div_input_creation text='minimo spedizione gratuita (opzionale)'>
+                        <Div_input_creation text='ordine minimo per spedizione gratuita (opzionale)'>
                             <InputGroup
                             >
                                 <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} />

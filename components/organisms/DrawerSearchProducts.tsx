@@ -6,18 +6,31 @@ import { Disclosure, Tab } from '@headlessui/react'
 import createUrlSchema from '../utils/create_url'
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
 import { useSelector } from 'react-redux'
+import { getFromLocalStorage } from '../utils/getFromLocalStorage'
 
 const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, closeDrawer }) => {
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [categories] = useState(CATEGORIES)
     const router = useRouter();
-    const user: Firebase_User = useSelector((state: any) => state.user.user);
+
 
     useEffect(() => {
-        if (user?.genderSelected) {
-            setSelectedIndex(user?.genderSelected === 'm' ? 1 : 0)
+        const gender = getFromLocalStorage('genderSelected')
+        setSelectedIndex(gender === 'm' ? 1 : 0)
+        console.log(gender);
+
+        function onVariableChange(event: any) {
+            if (event.key === 'genderSelected') {
+                if (!event.newValue) return
+                setSelectedIndex(event.newValue === 'm' ? 1 : 0);
+            }
         }
-    }, [user])
+        window.addEventListener('storage', onVariableChange);
+
+        return () => {
+            window.removeEventListener('storage', onVariableChange);
+        }
+    }, []);
 
 
     const classNames = (...classes: any[]) => {
@@ -75,7 +88,11 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
 
                     >
                         <Tab.Group
-                            selectedIndex={selectedIndex} onChange={setSelectedIndex}
+                            selectedIndex={selectedIndex} onChange={(e: any) => {
+                                console.log(e);
+                                if (e === 2) return
+                                setSelectedIndex(e)
+                            }}
                         >
                             <Tab.List className='w-full flex justify-between h-12 border-0	border-b border-inherit'>
                                 {/* <Tab></Tab> */}

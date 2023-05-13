@@ -54,9 +54,7 @@ export const getStaticProps = async () => {
 }
 
 const index: FC<{ shops: Shop[] }> = ({ shops }) => {
-    useEffect(() => {
-        removeFromLocalStorage('genderSelected')
-    }, [])
+
 
     console.log("SHOPS", shops);
 
