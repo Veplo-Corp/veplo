@@ -112,7 +112,7 @@ const Header = () => {
 
     return (
         <>
-            <header className="inset-x-0 top-0 z-50 sticky bg-white"
+            <header className="inset-x-0 top-0 z-50 sticky bg-white h-26"
                 onMouseLeave={() => {
                     setshowMacrocategory(false)
                 }
