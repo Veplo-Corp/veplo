@@ -304,9 +304,9 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     useEffect(() => {
         if (gender) {
             setInLocalStorage('genderSelected', gender)
-            dispatch(
-                changeGenderSelected(gender)
-            );
+            // dispatch(
+            //     changeGenderSelected(gender)
+            // );
         }
     }, [gender, category])
 
