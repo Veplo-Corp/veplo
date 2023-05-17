@@ -32,6 +32,7 @@ import { findMicrocategoryName } from '../../../../components/utils/find_microca
 import Div_input_creation from '../../../../components/atoms/Div_input_creation';
 import { AnimatePresence, motion } from 'framer-motion';
 import Shop_not_Allowed from '../../../../components/utils/Shop_not_Allowed';
+import NoIndexSeo from '../../../../components/organisms/NoIndexSeo';
 
 
 const RANGE = 2
@@ -437,6 +438,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
     return (
         <>
+            <NoIndexSeo />
+
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`${category === '' ? 'Abbigliamento' : category} ${gender === 'f' ? 'donna' : 'uomo'} | Veplo`}

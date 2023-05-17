@@ -330,7 +330,6 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
                   transition={{ duration: 0.5 }}
                 >
                   <Header />
-
                 </motion.div>
               </motion.header>
             }

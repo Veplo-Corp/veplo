@@ -2,7 +2,7 @@ import Head from 'next/head'
 import React, { FC } from 'react'
 
 
-const NoIndexSeo: FC<{title:string}> = ({title}) => {
+const NoIndexSeo: FC<{ title?: string }> = ({ title }) => {
     return (
         <Head>
             <title>{title}</title>

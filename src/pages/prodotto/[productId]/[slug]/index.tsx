@@ -42,6 +42,7 @@ import Box_Dress from '../../../../../components/molecules/Box_Dress';
 import { ArrowRight, NavArrowDown } from 'iconoir-react';
 import { sortAndFilterSizes } from '../../../../../components/utils/sortAndFilterSizes';
 import { Disclosure, Transition } from '@headlessui/react';
+import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo';
 
 
 
@@ -483,6 +484,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     return (
         <>
             {product && <Desktop_Layout>
+                <NoIndexSeo />
 
                 <PostMeta
                     canonicalUrl={'https://www.veplo.it' + router.asPath}
