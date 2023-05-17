@@ -28,6 +28,7 @@ import { MoreHoriz, MoreHorizCircle, Phone, PinAlt } from 'iconoir-react'
 import PopoverComponent from '../../../../../components/molecules/PopoverComponent'
 import { numberOfLineText } from '../../../../../components/utils/numberOfLineText'
 import { isMobile } from 'react-device-detect'
+import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo'
 
 export async function getStaticPaths() {
     return {
@@ -100,6 +101,8 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
         <Desktop_Layout
             noPaddingXMobile={true}
         >
+            <NoIndexSeo />
+
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`${toUpperCaseFirstLetter(shop.name)} a ${shop.address.city}, ${shop.address.street} - CAP ${shop.address.postcode} - Veplo.it`}

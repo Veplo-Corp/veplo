@@ -13,6 +13,7 @@ import Input_Search_Item from '../../../components/atoms/Input_Search_Item';
 import PostMeta from '../../../components/organisms/PostMeta';
 import Link from 'next/link';
 import { removeFromLocalStorage } from '../../../components/utils/removeFromLocalStorage';
+import NoIndexSeo from '../../../components/organisms/NoIndexSeo';
 
 
 
@@ -67,6 +68,7 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
 
     return (
         <Desktop_Layout>
+            <NoIndexSeo />
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`Negozi di Abbigliamento | Veplo`}
