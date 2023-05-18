@@ -460,7 +460,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             await getSimilarProductOnShop({
                 variables: {
                     productId: product.id,
-                    limit: 8,
+                    limit: 6,
                     offset: 0,
                     shopId: product.shopInfo.id
                 },
