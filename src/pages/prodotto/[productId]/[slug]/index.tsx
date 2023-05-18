@@ -11,20 +11,14 @@ import Size_Box from '../../../../../components/atoms/Size_Box';
 import Horizontal_Line from '../../../../../components/atoms/Horizontal_Line';
 import createUrlSchema from '../../../../../components/utils/create_url';
 import { Color, COLORS } from '../../../../../components/mook/colors';
-import { createTextCategory } from '../../../../../components/utils/createTextCategory';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-import GET_PRODUCTS_FROM_SHOP from '../../../../lib/apollo/queries/geetProductsShop';
-import { toProductPage } from '../../../../../components/utils/toProductPage';
+import GET_SIMILAR_PRODUCT_ON_SHOP from '../../../../lib/apollo/queries/getSimilarProductOnShop';
 import Image_Product from '../../../../../components/organisms/Image_Product';
-import GET_SINGLE_SHOP from '../../../../lib/apollo/queries/getSingleShop';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { imageKitUrl } from '../../../../../components/utils/imageKitUrl';
 import PostMeta from '../../../../../components/organisms/PostMeta';
 import Link from 'next/link';
 import CircleColorSelected from '../../../../../components/atoms/CircleColorSelected';
-import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter';
-import BlackButton from '../../../../../components/atoms/BlackButton';
 import ModalReausable from '../../../../../components/organisms/ModalReausable'
 import CartDrawer from '../../../../../components/organisms/CartDrawer';
 import EDIT_CART from '../../../../lib/apollo/mutations/editCart';
@@ -34,15 +28,16 @@ import { editVariationFromCart } from '../../../../store/reducers/carts';
 import { Firebase_User } from '../../../../interfaces/firebase_user.interface';
 import { newTotalHandler } from '../../../../../components/utils/newTotalHandler';
 import { setInLocalStorage } from '../../../../../components/utils/setInLocalStorage';
-import { changeGenderSelected } from '../../../../store/reducers/user';
 import { sortShopsInCart } from '../../../../../components/utils/sortShopsInCart';
 import { handleErrorGraphQL } from '../../../../../components/utils/handleError_graphQL';
 import expirationTimeTokenControll from '../../../../../components/utils/expirationTimeTokenControll';
 import Box_Dress from '../../../../../components/molecules/Box_Dress';
-import { ArrowRight, NavArrowDown } from 'iconoir-react';
+import { NavArrowDown } from 'iconoir-react';
 import { sortAndFilterSizes } from '../../../../../components/utils/sortAndFilterSizes';
 import { Disclosure, Transition } from '@headlessui/react';
 import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo';
+import { InView, useInView } from 'react-intersection-observer';
+import { AnimatePresence, motion } from 'framer-motion';
 
 
 
@@ -51,18 +46,18 @@ import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo';
 // This gets called on every request
 export async function getServerSideProps(ctx: any) {
 
-    const sizes = [
-        "xxs",
-        "xs",
-        "s",
-        "m",
-        "l",
-        "xl",
-        "xxl",
-        "3xl",
-        "4xl",
-        "5xl",
-    ]
+    // const sizes = [
+    //     "xxs",
+    //     "xs",
+    //     "s",
+    //     "m",
+    //     "l",
+    //     "xl",
+    //     "xxl",
+    //     "3xl",
+    //     "4xl",
+    //     "5xl",
+    // ]
     const { productId } = ctx.params
     // Call an external API endpoint to get posts.
     // You can use any data fetching library
@@ -125,12 +120,17 @@ export async function getServerSideProps(ctx: any) {
 
 
 const index: React.FC<{ productFounded: Product, errorLog?: string, initialApolloState: any }> = ({ productFounded, errorLog, initialApolloState }) => {
+    const { ref, inView, entry } = useInView({
+        /* Optional options */
+        threshold: 0,
+    });
+
     const colors = useRef<Color[]>(COLORS)
     const router = useRouter();
     const { slug } = router.query;
     const [sizeSelected, setSizeSelected] = useState<string>('')
     const [isOpenModalSize, setisOpenModalSize] = useState(false)
-    const [getFilterProduct, shopProductsData] = useLazyQuery(GET_PRODUCTS_FROM_SHOP);
+    const [getSimilarProductOnShop, shopProductsData] = useLazyQuery(GET_SIMILAR_PRODUCT_ON_SHOP);
     const [openDrawerCart, setOpenDrawerCart] = useState(false)
     const [editCart, elementEditCart] = useMutation(EDIT_CART);
     const cartsDispatchProduct: Cart[] = useSelector((state: any) => state.carts.carts);
@@ -175,6 +175,8 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
 
 
+
+
     useEffect(() => {
 
         if (errorLog) {
@@ -199,14 +201,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         }
     }, [router.query.colore])
 
-
-
-
-
-
-
-
-
     useEffect(() => {
         if (!product) return
         //const category = createTextCategory(product.info.macroCategory, product.info.microCategory)
@@ -224,25 +218,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         // dispatch(
         //     changeGenderSelected(product.info.gender)
         // );
-
-        //! lista di prodotti del negozio
-        const fetchData = async () => {
-            await getFilterProduct({
-                variables: {
-                    id: product.shopInfo.id,
-                    limit: 8,
-                    offset: 0,
-                },
-                fetchPolicy: 'cache-first',
-            })
-        }
-
-        setTimeout(() => {
-            fetchData()
-        }, 100);
-
-
-
 
     }, [product])
 
@@ -280,11 +255,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
 
 
-
-
-    // return (
-    //     <></>
-    // )
 
     const changeDressColor = (color: string) => {
         const variation = product.variations.find(variation => variation.color.toLowerCase() == color.toLowerCase())
@@ -478,6 +448,23 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
         }
     }
+
+    const handleVisibilityChange = async (inView: boolean) => {
+        if (inView) {
+            // Funzione da eseguire quando il componente diventa visibile
+            //! lista di prodotti del negozio
+
+            await getSimilarProductOnShop({
+                variables: {
+                    productId: product.id,
+                    limit: 8,
+                    offset: 0,
+                    shopId: product.shopInfo.id
+                },
+                fetchPolicy: 'cache-first',
+            })
+        }
+    };
 
     return (
         <>
@@ -784,44 +771,77 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 >
                     {product.shopInfo.name}
                 </Box>
-                <Link
-                    prefetch={false}
-                    href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
-                    <Box
-                        fontWeight='normal'
-                        as='h1'
-                        noOfLines={1}
-                        mb={5}
-                        className='text-xl md:text-2xl w-fit'
-                        lineHeight={'normal'}
-                    >
-                        Altri prodotti di <span className='underline '>{product.shopInfo.name}</span>
-                    </Box>
-                </Link>
-
+                <InView as="div" onChange={(inView, entry) => { handleVisibilityChange(inView) }} >
+                    <Link
+                        prefetch={false}
+                        href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
+                        <Box
+                            fontWeight='normal'
+                            as='h1'
+                            noOfLines={1}
+                            mb={5}
+                            className='text-xl md:text-2xl w-fit'
+                            lineHeight={'normal'}
+                        >
+                            Altri prodotti di <span className='underline '>{product.shopInfo.name}</span>
+                        </Box>
+                    </Link>
+                </InView>
                 <div
-                    className="overflow-x-scroll flex gap-4 pb-4"
+                    className="overflow-x-scroll flex gap-4 pb-4 min-h-[300px]"
                 >
-                    {shopProductsData && shopProductsData?.data?.shop.products.products.map((product: Product) => {
+                    <AnimatePresence>
 
-                        return (
-                            <div
-                                key={product.id}
-                                className={'flex gap-4 w-fit'} >
-                                <Box
-                                    overflow='hidden'
-                                    mb={2}
-                                    className={`lg:w-96 w-72 `}/*  aspect-[8.5/12] */
-                                >
-                                    <Box_Dress showStoreHeader={false} product={product} color={typeof colors === 'string' ? colors : undefined} />
+                        {shopProductsData && shopProductsData?.data?.product.productsLikeThis.map((product: Product, index: number) => {
+                            //motion
+                            const listItemVariants = {
+                                visible: {
+                                    opacity: 1,
+                                    y: 0,
+                                    transition: {
+                                        delay: index * 0.1,
+                                        duration: 0.5,
+                                        ease: "easeOut",
+                                    },
+                                },
+                                hidden: {
+                                    opacity: 0,
+                                    y: 0,
+                                    transition: {
+                                        duration: 0.5,
+                                        ease: "easeOut",
+                                    },
+                                },
+                            };
+                            return (
+                                <div
+                                    key={product.id}
+                                    className={'flex gap-4 w-fit'} >
+                                    <Box
+                                        overflow='hidden'
+                                        mb={2}
+                                        className={`lg:w-96 w-72 `}/*  aspect-[8.5/12] */
+                                    >
+                                        <motion.div
+                                            key={product.id}
+                                            variants={listItemVariants}
+                                            initial="hidden"
+                                            animate="visible"
+                                            exit="hidden"
+                                        >
 
-                                </Box>
-                            </div>
+                                            <Box_Dress showStoreHeader={false} product={product} color={typeof colors === 'string' ? colors : undefined} />
+                                        </motion.div>
 
+                                    </Box>
+                                </div>
+                            )
 
-                        )
-                    })
-                    }
+                        })
+
+                        }
+                    </AnimatePresence>
+
 
                 </div>
 

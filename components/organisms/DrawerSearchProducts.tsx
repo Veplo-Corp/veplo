@@ -89,7 +89,6 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
                     >
                         <Tab.Group
                             selectedIndex={selectedIndex} onChange={(e: any) => {
-                                console.log(e);
                                 if (e === 2) return
                                 setSelectedIndex(e)
                             }}
