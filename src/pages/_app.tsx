@@ -37,7 +37,6 @@ import { Cart } from '../interfaces/carts.interface'
 import { resetCarts, setCarts } from '../store/reducers/carts'
 import { Order } from '../interfaces/order.interface'
 import { detroyOrders, setOrders } from '../store/reducers/orders'
-import { motion } from 'framer-motion';
 
 
 const theme = extendTheme({
@@ -290,25 +289,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
 
 
 
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
 
-  const handleScroll = () => {
-    const currentScrollY = window.scrollY;
-    if (currentScrollY > lastScrollY && isHeaderVisible && currentScrollY > 60) {
-      setIsHeaderVisible(false);
-    } else if (currentScrollY < lastScrollY && !isHeaderVisible) {
-      setIsHeaderVisible(true);
-    }
-    setLastScrollY(currentScrollY);
-  }
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [lastScrollY, isHeaderVisible]);
 
 
   return (
@@ -318,20 +299,9 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
         <ChakraProvider theme={theme}>
           <Auth>
             {router.asPath !== '/' && !router.query?.fbclid &&
-              <motion.header
-                className='inset-x-0 top-0 z-50 sticky'
-                initial={{ y: 0 }}
-                animate={{ y: isHeaderVisible ? 0 : -100 }}
-                transition={{ duration: 0.5 }}
-              >
-                <motion.div
-                  initial={{ opacity: 1 }}
-                  animate={{ opacity: isHeaderVisible ? 1 : 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Header />
-                </motion.div>
-              </motion.header>
+
+              <Header />
+
             }
 
             {loading ? (

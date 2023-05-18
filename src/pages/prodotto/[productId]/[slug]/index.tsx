@@ -476,8 +476,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
             }
 
-
-
         }
     }
 

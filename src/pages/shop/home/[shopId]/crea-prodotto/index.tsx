@@ -108,6 +108,8 @@ export const TRAITS = [
 
 
 const index = () => {
+    console.log('EII');
+
     const { addToast } = ToastOpen();
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, getValues, setValue, control, formState } = useForm<IFormInputProduct>({
         mode: "all",
