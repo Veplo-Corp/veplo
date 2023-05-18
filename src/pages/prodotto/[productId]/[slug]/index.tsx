@@ -138,7 +138,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     const [product, setproduct] = useState<Product>(productFounded)
     const [variationSelected, setVariationSelected] = useState<Variation>(productFounded.variations[0])
     const [colorSelected, setColorSelected] = useState<string>()
-
+    const [productsLikeThis, setproductsLikeThis] = useState<Product[]>()
 
     if (!variationSelected) {
         return (
@@ -213,6 +213,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 undefined, { shallow: true }
             )
         }
+        setproductsLikeThis(undefined)
 
         setInLocalStorage('genderSelected', product.info.gender)
         // dispatch(
@@ -450,9 +451,11 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     }
 
     const handleVisibilityChange = async (inView: boolean) => {
+
         if (inView) {
             // Funzione da eseguire quando il componente diventa visibile
             //! lista di prodotti del negozio
+            console.log('AOOOOO passa qui');
 
             await getSimilarProductOnShop({
                 variables: {
@@ -462,6 +465,10 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     shopId: product.shopInfo.id
                 },
                 fetchPolicy: 'cache-first',
+            }).then(element => {
+                if (element) {
+                    setproductsLikeThis(element?.data?.product.productsLikeThis)
+                }
             })
         }
     };
@@ -792,7 +799,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 >
                     <AnimatePresence>
 
-                        {shopProductsData && shopProductsData?.data?.product.productsLikeThis.map((product: Product, index: number) => {
+                        {productsLikeThis && productsLikeThis.map((product: Product, index: number) => {
                             //motion
                             const listItemVariants = {
                                 visible: {
