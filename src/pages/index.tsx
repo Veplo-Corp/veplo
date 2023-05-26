@@ -373,16 +373,8 @@ const Home: NextPage = () => {
                   <img src="/home_svg/GirlHodie.jpg" alt=""
                     className='hidden lg:flex contrast-[.85] brightness-[.9] w-96 aspect-[9/10] object-cover'
                   />
-                  <Text
-                    position={'absolute'}
-                    bottom={1}
-                    right={1}
-                    fontSize={'2xs'}
-                    color={'gray.500'}
-                  >Immagine di Oladimeji Odunsi</Text>
+
                 </Box>
-
-
 
               </Box>
             </Box>
