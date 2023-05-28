@@ -69,13 +69,13 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
     return (
         <Desktop_Layout>
             <NoIndexSeo />
-            <PostMeta
+            {/* <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`Negozi di Abbigliamento | Veplo`}
                 subtitle={`Negozi di Abbigliamento | Cerca tra tutto l'abbigliamento per uomo e donna in vendita | Abbigliamento · Scarpe · Vestiti`}
                 image={''}
                 description={`Negozi di Abbigliamento | Cerca tra tutto l'abbigliamento per uomo e donna in vendita | Abbigliamento · Scarpe · Vestiti`}
-            />
+            /> */}
             {/* <div className='md:flex justify-end'>
                 
                 <div className='my-auto mt-2'>
