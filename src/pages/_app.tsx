@@ -91,13 +91,12 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         //setUserProperties(analytics, { favorite_food: 'apples' });
         const idToken = await userAuth.getIdToken(true)
         setAuthTokenInSessionStorage(idToken)
-        console.log(userAuth);
         const tokenResult = await userAuth.getIdTokenResult()
         //console.log(tokenResult);
 
         //handle refresh token
-        console.log(new Date > new Date(tokenResult.expirationTime));
-        console.log(new Date(tokenResult.expirationTime));
+        // console.log(new Date > new Date(tokenResult.expirationTime));
+        // console.log(new Date(tokenResult.expirationTime));
 
 
 
@@ -148,7 +147,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             .then(async (value) => {
               //redirect to the right page based on status
               const business: Business = value.data?.business
-              console.log(value);
 
               if (business?.status === 'stripe_id_requested') {
                 router.push('/shop/crea-business-account')
@@ -205,7 +203,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
         return
       } else if (!userAuth) {
-        console.log('effettua il logout matto');
+        console.log('effettua il logout');
         apolloClient.clearStore()
         dispatch(resetCarts())
         dispatch(detroyOrders())

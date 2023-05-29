@@ -61,7 +61,7 @@ export const STATUS_ORDER_SHOP = [
             color: 'green'
         },
         orderStatus: {
-            text: 'Completato',
+            text: 'consegnato',
             color: 'green',
         },
         description: 'Ordine consegnato',
@@ -70,8 +70,8 @@ export const STATUS_ORDER_SHOP = [
     {
         code: 'CANC01',
         payment: {
-            text: 'Annullato',
-            color: 'red'
+            text: 'Rimborso in corso',
+            color: 'yellow'
         },
         orderStatus: {
             text: 'Cancellato',
@@ -84,14 +84,14 @@ export const STATUS_ORDER_SHOP = [
     {
         code: 'REF01',
         payment: {
-            text: 'Saldato',
-            color: 'green'
+            text: 'Rimborsato',
+            color: 'red'
         },
         orderStatus: {
             text: 'Rimborsato',
             color: 'blackAlpha',
         },
-        description: "l'ordine che hai annullato è stato rimborsato con successo",
+        description: "ordine rimborsato con successo",
 
     },
     //*cliente richiede rimborso e fa il reso

@@ -13,7 +13,7 @@ const Shop_not_Allowed: React.FC<{ children: any }> = ({ children }) => {
         //if (user && user.statusAuthentication === 'logged_in') return
         if (user?.isBusiness) {
             if (user.favouriteShop) {
-                router.push('/shop/home/' + user.favouriteShop.id + '/ordini')
+                router.push('/shop/home/' + user.favouriteShop.id + '/ordini?statusOrder=all')
                 return
             }
             router.push('/shop/home')
