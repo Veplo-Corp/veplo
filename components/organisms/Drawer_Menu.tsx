@@ -21,7 +21,7 @@ const Drawer_Menu: React.FC<{ user: any, isOpen: boolean, closeDrawer: () => voi
     const listShop = [
         {
             title: `monitora ordini`,
-            url: `/shop/home/${userDispatch?.favouriteShop?.id}/ordini?statusOrder=all`
+            url: `/shop/home/${userDispatch?.favouriteShop?.id}/ordini?statusOrder=tutti`
         },
         {
             title: 'visualizza prodotti',
