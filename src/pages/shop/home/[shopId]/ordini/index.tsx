@@ -18,24 +18,32 @@ const limit = 1000;
 
 const typeStatus = [
     {
-        text: 'Tutti',
+        text: 'tutti',
         statuses: null
     },
     {
-        text: 'Da spedire',
+        text: 'da spedire',
         statuses: ["PAY01"]
     },
     {
-        text: 'Spediti',
+        text: 'spediti',
         statuses: ["SHIP01", "SHIP02"]
     },
     {
-        text: 'Consegnati',
+        text: 'consegnati',
         statuses: ["SHIP03"]
     },
     {
-        text: 'Annullati',
+        text: 'annullati',
         statuses: ["CANC01", "REF01"]
+    },
+    {
+        text: 'resi',
+        statuses: ["RET01", "RET02", "REF02"]
+    },
+    {
+        text: 'ordini mai arrivati',
+        statuses: ["CANC02", "REF03"]
     }
 ]
 
