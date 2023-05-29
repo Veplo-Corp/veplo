@@ -63,6 +63,10 @@ const GET_ORDER = gql`
                     state
                 }
             }  
+            history {
+                date
+                status
+              }
         }   
     }
 `
