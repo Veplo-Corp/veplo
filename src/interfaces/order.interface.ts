@@ -57,7 +57,11 @@ export interface Order {
         name: string,
         address: Address,
         phone: string
-    }
+    },
+    history: {
+        date: string
+        status: string
+    }[],
     productVariations: ProductVariationInOrder[],
 
 }

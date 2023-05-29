@@ -106,6 +106,10 @@ const GET_USER = gql`
                         state
                     }
                 }
+                history {
+                    date
+                    status
+                  }
             }
         }
     }

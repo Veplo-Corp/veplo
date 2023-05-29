@@ -706,7 +706,7 @@ const index = () => {
                                     thickness='4px'
                                     speed='0.65s'
                                     emptyColor='gray.200'
-                                    color='green.500'
+                                    color='white'
                                     size='lg'
                                 />
                             )

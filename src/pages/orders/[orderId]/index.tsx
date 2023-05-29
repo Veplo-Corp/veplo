@@ -13,6 +13,10 @@ import createUrlSchema from '../../../../components/utils/create_url';
 import { imageKitUrl } from '../../../../components/utils/imageKitUrl';
 import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First_Letter';
 import { Order } from '../../../interfaces/order.interface';
+import { getDateFromMongoDBDate } from '../../../../components/utils/getDateFromMongoDBDate';
+import ModalReausable from '../../../../components/organisms/ModalReausable';
+import FormReturn from '../../../../components/molecules/FormReturn';
+import { ToastOpen } from '../../../../components/utils/Toast';
 
 
 
@@ -24,6 +28,8 @@ const index = () => {
     const [order, setOrder] = useState<Order>();
     const [orderStatus, setOrderStatus] = useState<{ text: string, color: string }>();
     const [loading, setLoading] = useState(true)
+    const [isOpenModalReturn, setIsOpenModalReturn] = useState(false)
+    const { addToast } = ToastOpen();
 
     useEffect(() => {
         const { orderId } = router.query
@@ -43,6 +49,20 @@ const index = () => {
             text: status.text,
             color: status.color
         })
+    }
+
+    const handleSubmitButton = (form: {
+        orderCode: string,
+        phone: string,
+        email: string,
+    }) => {
+        //effettuare richiesta reso qui
+        //mettere in RET01
+        //creare collection per richiesta reso
+        console.log(form);
+        setIsOpenModalReturn(false)
+        return addToast({ position: 'top', title: "Richiesta reso inviata", status: 'success', duration: 5000, isClosable: true })
+
     }
 
     return (
@@ -108,7 +128,7 @@ const index = () => {
                                     fontWeight={'bold'}
                                     fontSize={'md'}
                                 >
-                                    Ordine effetuato
+                                    {order.status === 'SHIP03' ? 'Ordine consegnato' : 'Ordine effettuato'}
                                 </Text>
                                 <Text
                                     fontWeight={'medium'}
@@ -116,7 +136,12 @@ const index = () => {
                                     mt={0}
                                     mb={-1}
                                 >
-                                    {('0' + new Date(+order.createdAt).getDate()).slice(-2)}/{('0' + (new Date(+order.createdAt).getMonth() + 1)).slice(-2)}/{new Date(+order.createdAt).getFullYear()}
+                                    {order.status === 'SHIP03' ?
+                                        getDateFromMongoDBDate(order.history.find(status => status.status === 'SHIP03')?.date)
+                                        :
+                                        getDateFromMongoDBDate(order.createdAt)
+                                    }
+
                                 </Text>
                             </Box>
                             <Box
@@ -148,9 +173,13 @@ const index = () => {
 
                         </Box>
 
-                        <Text>
-                            {order.code}
-                        </Text>
+                        <Box
+                            mt={[4, 2]}
+                            fontWeight={'medium'}
+                            display={'flex'}
+                        >
+                            <Text fontWeight={'semibold'} mr={1}>ORDINE: </Text>{order.code}
+                        </Box>
                         <VStack
                             mt={[6, 4]}
                             width={'full'}
@@ -182,11 +211,36 @@ const index = () => {
                                 mt={5}
 
                             >
-
                                 Traccia il mio pacco
                             </Button>
-
                         </Link>}
+                        {
+                            order.status === 'SHIP03' &&
+                            <Box
+                                display={'flex'}
+                                gap={2}
+                                mt={5}
+                            >
+                                <Text
+                                    my={'auto'}
+                                    fontSize={'md'}
+                                    fontWeight={'medium'}
+
+                                >
+                                    Vuoi effettuare il reso?
+                                </Text>
+                                <Button
+                                    my={'auto'}
+                                    onClick={() => { setIsOpenModalReturn(true) }}
+                                    borderRadius={'md'}
+                                    size={'md'}
+
+                                    variant='link'
+                                    type={'submit'}
+                                    colorScheme='black'
+                                >Invia richiesta</Button>
+                            </Box>
+                        }
 
 
                     </div>}
@@ -196,6 +250,13 @@ const index = () => {
                     <Loading />
                 )
             }
+            <ModalReausable title='' closeModal={() => setIsOpenModalReturn(false)} isOpen={isOpenModalReturn}>
+                <FormReturn
+                    handleSubmitButton={handleSubmitButton}
+
+                    email={order?.user.email} orderCode={order?.code} phone={order?.recipient.phone} />
+            </ModalReausable>
+
         </>
 
     )
