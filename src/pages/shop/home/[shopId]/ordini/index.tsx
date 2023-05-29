@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
-import { Box, Tag, Text } from '@chakra-ui/react';
+import { Box, Select, Tag, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,8 +14,30 @@ import { addShopFavouriteToLocalStorage } from '../../../../../../components/uti
 import { addFavouriteShopBusiness } from '../../../../../store/reducers/user';
 
 
-const limit = 15;
+const limit = 1000;
 
+const typeStatus = [
+    {
+        text: 'Tutti',
+        statuses: null
+    },
+    {
+        text: 'Da spedire',
+        statuses: ["PAY01"]
+    },
+    {
+        text: 'Spediti',
+        statuses: ["SHIP01", "SHIP02"]
+    },
+    {
+        text: 'Consegnati',
+        statuses: ["SHIP03"]
+    },
+    {
+        text: 'Annullati',
+        statuses: ["CANC01", "REF01"]
+    }
+]
 
 function index() {
     const dispatch = useDispatch();
@@ -26,43 +48,36 @@ function index() {
     const [orders, setOrders] = useState<Order[]>([]);
     const [hasMoreData, setHasMoreData] = useState(false)
     useEffect(() => {
-        const { shopId } = router.query
-        if (user?.isBusiness || shopId) {
+        const { shopId, statusOrder } = router.query
+
+        if (user?.isBusiness && shopId && statusOrder) {
+            const status = typeStatus.find(status => status.text === statusOrder)?.statuses
+            console.log(status);
+            //setOrders([])
+            setHasMoreData(true)
             getOrders({
                 variables: {
                     id: shopId,
-                    statuses: null,
+                    statuses: status,
                     limit: limit,
                     offset: 0
+                }
+            }).then((data: any) => {
+                console.log(data);
+
+                if (data?.data?.shop?.orders) {
+                    if (data?.data?.shop.orders.length % limit === 0) {
+                        setHasMoreData(true)
+                    } else {
+                        setHasMoreData(false)
+                    }
+                    setOrders(data?.data?.shop.orders)
                 }
             })
         }
     }, [user, router])
 
-    useEffect(() => {
-        const { shopId } = router.query
-        if (data?.shop.orders) {
-            if (data?.shop.orders.length % limit === 0) {
-                setHasMoreData(true)
-            } else {
-                setHasMoreData(false)
-            }
-            if (orders.length === 0) {
-                setOrders(data?.shop.orders)
-                console.log(data?.shop);
 
-                const element = {
-                    id: shopId,
-                    name: data?.shop?.name,
-                    street: data?.shop?.address?.city + ', ' + data?.shop?.address?.street
-                }
-                addShopFavouriteToLocalStorage(element)
-                dispatch(
-                    addFavouriteShopBusiness(element)
-                )
-            }
-        }
-    }, [data])
 
     const handleMoreOrders = () => {
         setHasMoreData(false)
@@ -89,14 +104,24 @@ function index() {
         })
     }
 
-
-
-
+    const handleStatusSelected = (status: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(status.target.value);
+        router.push({
+            pathname: router.asPath.split('?')[0],
+            query: {
+                statusOrder: status.target.value
+            }
+        })
+    }
 
     return (
         <Desktop_Layout>
             <NoIndexSeo title={`Ordini | Veplo Shop`} />
-            {data?.shop &&
+            {data?.shop && <Box
+                display={'flex'}
+                justifyContent={'space-between'}
+            >
+
                 <Box
                     mb={4}
                 >
@@ -118,7 +143,21 @@ function index() {
                         color={'gray.500'}
                     >{data?.shop?.address?.city}, {data?.shop?.address?.street}</Text>
                 </Box>
-            }
+                <Select
+                    size='lg'
+                    my={'auto'}
+                    onChange={(option: any) => { handleStatusSelected(option) }}
+                    fontSize={'md'}
+                    width={'fit-content'}
+                    value={router.query.statusOrder}
+                >
+                    {typeStatus.map((option: { text: string, statuses: string[] | null }) => {
+                        return (<option
+                            key={option.text} value={option.text}>{option.text}</option>)
+                    })}
+                </Select>
+            </Box>}
+
 
             {orders && <TableOrdersShop orders={orders} moreData={hasMoreData} handleMoreOrders={handleMoreOrders} />}
         </Desktop_Layout>

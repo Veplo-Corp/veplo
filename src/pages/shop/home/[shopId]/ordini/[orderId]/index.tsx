@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation } from '@apollo/client'
-import { Box, Button, Input, InputGroup, Tag, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Input, InputGroup, Tag, Text, VStack } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -14,8 +14,11 @@ import { ToastOpen } from '../../../../../../../components/utils/Toast'
 import { Firebase_User } from '../../../../../../interfaces/firebase_user.interface'
 import { Order } from '../../../../../../interfaces/order.interface'
 import ADD_CODE_AND_COURIER_TO_ORDER from '../../../../../../lib/apollo/mutations/addCodeAndCourierToOrder'
+import ORDER_DELETED_BY_SHOP from '../../../../../../lib/apollo/mutations/orderDeletedByShop'
+
 import GET_ORDER from '../../../../../../lib/apollo/queries/getOrder'
 import Link from 'next/link'
+import ModalReausable from '../../../../../../../components/organisms/ModalReausable'
 
 const index = () => {
     const { addToast } = ToastOpen();
@@ -28,13 +31,13 @@ const index = () => {
         mode: "all",
     });
     const [orderStatus, setOrderStatus] = useState<{ text: string, color: string }>();
+    const [isOpenModalDeleteOrder, setIsOpenModalDeleteOrder] = useState(false)
 
     const [editCurrierInfo] = useMutation(ADD_CODE_AND_COURIER_TO_ORDER, {
         update(cache, el, query) {
             console.log(cache);
             console.log(el);
             console.log(query);
-
             const OrderCacheId = cache.identify({ id: query.variables?.id, __typename: 'Order' })
             console.log(OrderCacheId);
             cache.modify({
@@ -54,9 +57,32 @@ const index = () => {
                 broadcast: false // Include this to prevent automatic query refresh
             });
             addToast({ position: 'top', title: 'Spedizione inserita con successo', description: `hai inserito con successo il codice di spedizione dell'ordine ${order?.code} `, status: 'success', duration: 5000, isClosable: false })
-            router.push(`/shop/home/${router.query?.shopId}/ordini`)
+            router.back()
         }
     })
+
+    const [deleteOrderByShop] = useMutation(ORDER_DELETED_BY_SHOP, {
+        update(cache, el, query) {
+            console.log(cache);
+            console.log(el);
+            console.log(query);
+            const OrderCacheId = cache.identify({ id: query.variables?.orderId, __typename: 'Order' })
+            console.log(OrderCacheId);
+            cache.modify({
+                id: OrderCacheId, //productId
+                fields: {
+                    status(/* cachedvalue */) {
+                        return "CANC01"
+                    },
+                },
+                broadcast: false // Include this to prevent automatic query refresh
+            });
+            router.back()
+        }
+
+    })
+
+
 
 
     useEffect(() => {
@@ -69,8 +95,8 @@ const index = () => {
                 }
             }).then(response => {
                 if (response?.data) {
-                    console.log(response.data);
                     setOrder(response.data?.order)
+                    handleStatus(response.data?.order.status)
                 }
 
             })
@@ -78,7 +104,6 @@ const index = () => {
     }, [user, router])
 
     const onSubmitFormOrder = async (orderInfo: { courier: string, code: string }) => {
-        console.log(orderInfo);
         try {
             await editCurrierInfo({
                 variables: {
@@ -87,7 +112,6 @@ const index = () => {
                 }
             })
         } catch (error: any) {
-            console.log(error);
 
         }
 
@@ -100,6 +124,18 @@ const index = () => {
             text: status.description,
             color: status.orderStatus.color
         })
+    }
+
+    const deleteOrder = async () => {
+        try {
+            await deleteOrderByShop({
+                variables: {
+                    orderId: order?.id,
+                }
+            })
+        } catch (error: any) {
+
+        }
     }
 
     return (
@@ -303,11 +339,13 @@ const index = () => {
                                     <>
                                         <Text
                                             fontSize={'2xl'}
-                                            fontWeight={'medium'}
+                                            fontWeight={'semibold'}
                                         >
                                             Inserisci spedizione
                                         </Text>
-                                        <form onSubmit={handleSubmit(onSubmitFormOrder)}>
+                                        <form onSubmit={handleSubmit(onSubmitFormOrder)}
+                                            className='mb-4'
+                                        >
                                             <InputGroup
                                                 gap={5}
                                                 mt={4}
@@ -374,9 +412,34 @@ const index = () => {
                                                 }}
                                             >Conferma</Button>
                                         </form>
+                                        <Box
+                                            display={'flex'}
+                                            gap={2}
+                                            mt={10}
+                                        >
+                                            <Text
+                                                my={'auto'}
+                                                fontSize={'sm'}
+                                                fontWeight={'medium'}
+
+                                            >
+                                                Non puoi evadere l'ordine?
+                                            </Text>
+                                            <Button
+                                                my={'auto'}
+                                                onClick={() => { setIsOpenModalDeleteOrder(true) }}
+                                                borderRadius={'md'}
+                                                size={'sm'}
+
+                                                variant='link'
+                                                type={'submit'}
+                                                colorScheme='red'
+                                            >Cancella ordine</Button>
+                                        </Box>
+
                                     </>
                                 }
-                                {(order?.status !== 'CRE01' && order?.status !== 'PAY01') &&
+                                {(order?.status !== 'CRE01' && order?.status !== 'PAY01' && order?.status !== 'CANC01' && order?.status !== 'REF01') &&
                                     <>
                                         <Text
                                             fontSize={'2xl'}
@@ -467,7 +530,31 @@ const index = () => {
                     </>
                 }
             </Desktop_Layout >
-
+            <ModalReausable title='Attenzione' closeModal={() => setIsOpenModalDeleteOrder(false)} isOpen={isOpenModalDeleteOrder}>
+                <Box
+                    marginTop={2}
+                    fontSize={'md'}
+                    fontWeight={'normal'}
+                    color={'gray.500'}
+                >
+                    sei sicuro di voler cancellare l'ordine?
+                </Box>
+                <ButtonGroup gap='2'
+                    marginTop={5}
+                    textAlign={'end'}
+                >
+                    <Button
+                        onClick={() => { setIsOpenModalDeleteOrder(false) }}
+                        variant={'outline'}
+                        colorScheme='facebook'>Chiudi
+                    </Button>
+                    <Button
+                        onClick={() => { deleteOrder() }}
+                        variant={'solid'}
+                        colorScheme='red'>Cancella Ordine
+                    </Button>
+                </ButtonGroup>
+            </ModalReausable>
             <Modal_Help_Customer_Care isOpen={isOpenHelpModal} onClose={() => setIsOpenHelpModal(false)} />
         </>
 

@@ -33,7 +33,7 @@ const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders
                 <TableCaption
                     marginBottom={10}
                 >
-                    {moreData ?
+                    {moreData && orders.length > 0 ?
                         (
                             <Center>
                                 <Button
