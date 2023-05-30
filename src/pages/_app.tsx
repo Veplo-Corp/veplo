@@ -163,7 +163,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         }
         if (!isBusiness && tokenResult.claims.mongoId) {
           getUser().then((data) => {
-
             if (!data.data) return
             dispatch(
               login({
