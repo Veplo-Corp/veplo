@@ -20,6 +20,7 @@ import { getFromLocalStorage } from '../utils/getFromLocalStorage';
 import { Cart } from '../../src/interfaces/carts.interface';
 import createUrlSchema from '../utils/create_url';
 import { motion } from 'framer-motion';
+import { isMobile } from 'react-device-detect';
 
 const Header = () => {
     const router = useRouter()
@@ -113,6 +114,7 @@ const Header = () => {
 
 
     const handleScroll = () => {
+        if (!isMobile) return
         const currentScrollY = window.scrollY;
         if (currentScrollY > lastScrollY && isHeaderVisible && currentScrollY > 60) {
             setIsHeaderVisible(false);
