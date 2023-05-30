@@ -28,6 +28,7 @@ export const userState = createSlice({
     logout: (state) => {
 
       state.user = {
+        genderSelected: state?.user?.genderSelected ? state?.user?.genderSelected : '',
         statusAuthentication: 'logged_out'
       }
 
