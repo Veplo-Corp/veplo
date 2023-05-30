@@ -15,6 +15,8 @@ import { Firebase_User } from '../../../../../../interfaces/firebase_user.interf
 import { Order } from '../../../../../../interfaces/order.interface'
 import ADD_CODE_AND_COURIER_TO_ORDER from '../../../../../../lib/apollo/mutations/addCodeAndCourierToOrder'
 import ORDER_DELETED_BY_SHOP from '../../../../../../lib/apollo/mutations/orderDeletedByShop'
+import RETURNED_ORDER_HAS_ARRIVED from '../../../../../../lib/apollo/mutations/returnedOrderHasArrived'
+
 
 import GET_ORDER from '../../../../../../lib/apollo/queries/getOrder'
 import Link from 'next/link'
@@ -31,7 +33,9 @@ const index = () => {
         mode: "all",
     });
     const [orderStatus, setOrderStatus] = useState<{ text: string, color: string }>();
-    const [isOpenModalDeleteOrder, setIsOpenModalDeleteOrder] = useState(false)
+    const [isOpenModalDeleteOrder, setIsOpenModalDeleteOrder] = useState(false);
+    const [isOpenModalConfirmationReturnOrder, setisOpenModalConfirmationReturnOrder] = useState(false)
+
 
     const [editCurrierInfo] = useMutation(ADD_CODE_AND_COURIER_TO_ORDER, {
         update(cache, el, query) {
@@ -82,6 +86,26 @@ const index = () => {
 
     })
 
+    const [returnedOrderHasArrived] = useMutation(RETURNED_ORDER_HAS_ARRIVED, {
+        update(cache, el, query) {
+            console.log(cache);
+            console.log(el);
+            console.log(query);
+            const OrderCacheId = cache.identify({ id: query.variables?.orderId, __typename: 'Order' })
+            console.log(OrderCacheId);
+            cache.modify({
+                id: OrderCacheId, //productId
+                fields: {
+                    status(/* cachedvalue */) {
+                        return "RET02"
+                    },
+                },
+                broadcast: false // Include this to prevent automatic query refresh
+            });
+        }
+
+    })
+
 
 
 
@@ -112,9 +136,7 @@ const index = () => {
                 }
             })
         } catch (error: any) {
-
         }
-
     }
 
     const handleStatus = (orderStatus: string) => {
@@ -134,6 +156,20 @@ const index = () => {
                 }
             })
         } catch (error: any) {
+            console.log(error);
+
+        }
+    }
+
+    const handleConfirmReturn = async () => {
+        try {
+            await returnedOrderHasArrived({
+                variables: {
+                    id: order?.id,
+                }
+            })
+        } catch (error: any) {
+            console.log(error);
 
         }
     }
@@ -218,6 +254,7 @@ const index = () => {
                         <Box
                             className='w-full md:w-3/4 xl:w-1/2 m-auto mt-8 mb-32'
                         >
+
                             <GrayBox>
                                 <Text
                                     fontSize={'2xl'}
@@ -439,7 +476,7 @@ const index = () => {
 
                                     </>
                                 }
-                                {(order?.status !== 'CRE01' && order?.status !== 'PAY01' && order?.status !== 'CANC01' && order?.status !== 'REF01') &&
+                                {(order?.status === 'SHIP01' || order?.status === 'SHIP02' || order?.status === 'SHIP03' || order?.status === 'CANC02' || order?.status === 'REF03') &&
                                     <>
                                         <Text
                                             fontSize={'2xl'}
@@ -525,6 +562,69 @@ const index = () => {
                                         </Link>}
                                     </>
                                 }
+                                {(order?.status === 'RET01' || order?.status === 'RET02') &&
+                                    <>
+                                        <Text
+                                            fontSize={'2xl'}
+                                            fontWeight={'semibold'}
+                                            mb={0}
+                                        >
+                                            Procedura reso in corso
+                                        </Text>
+
+                                        <Text
+                                            fontSize={'sm'}
+                                            fontWeight={'medium'}
+                                            color={'gray.800'}
+                                            lineHeight={'short'}
+                                            mb={5}
+
+                                        >come funziona la procedura di reso con Veplo? <Link href=""
+                                            className='underline'
+                                        >politica di reso</Link>
+                                        </Text>
+
+                                        <ButtonGroup gap={2}>
+
+                                            <Button
+                                                margin={'auto'}
+                                                width={'full'}
+                                                mt={2}
+                                                colorScheme='green'
+                                                padding={4}
+                                                px={10}
+                                                size={'md'}
+                                                onClick={() => {
+                                                    setisOpenModalConfirmationReturnOrder(true)
+                                                }}
+                                            >
+                                                Conferma ricezione reso
+                                            </Button>
+                                            <Button
+                                                margin={'auto'}
+                                                width={'full'}
+                                                mt={2}
+                                                bg={'black.900'}
+                                                color={'white'}
+
+                                                _hover={{ bg: 'black.900' }}
+                                                _focus={{
+                                                    bg: 'black.900'
+                                                }}
+                                                onClick={() => setIsOpenHelpModal(true)}
+                                                _active={{
+                                                    transform: 'scale(0.98)',
+                                                }}
+                                                padding={4}
+                                                px={10}
+                                                size={'md'}
+                                            >Ho bisogno di aiuto</Button>
+                                        </ButtonGroup>
+
+
+
+                                    </>
+                                }
                             </GrayBox>
                         </Box>
                     </>
@@ -552,6 +652,34 @@ const index = () => {
                         onClick={() => { deleteOrder() }}
                         variant={'solid'}
                         colorScheme='red'>Cancella Ordine
+                    </Button>
+                </ButtonGroup>
+            </ModalReausable>
+            <ModalReausable title='Conferma reso' closeModal={() => setisOpenModalConfirmationReturnOrder(false)} isOpen={isOpenModalConfirmationReturnOrder}>
+                <Box
+                    marginTop={2}
+                    fontSize={'md'}
+                    fontWeight={'normal'}
+                    color={'gray.800'}
+                >
+                    Confermando accetterai il reso totale dell'ordine.
+                    <br />
+                    Se il reso è solo parziale, contattaci direttamente cliccando su "Ho bisogno di aiuto".
+                </Box>
+                <ButtonGroup gap='2'
+                    marginTop={5}
+                    textAlign={'end'}
+                    float={'right'}
+                >
+                    <Button
+                        onClick={() => { setisOpenModalConfirmationReturnOrder(false) }}
+                        variant={'outline'}
+                        colorScheme='red'>Chiudi
+                    </Button>
+                    <Button
+                        onClick={() => { handleConfirmReturn() }}
+                        variant={'solid'}
+                        colorScheme='green'>Accetta reso
                     </Button>
                 </ButtonGroup>
             </ModalReausable>

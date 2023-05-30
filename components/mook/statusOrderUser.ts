@@ -46,12 +46,12 @@ export const STATUS = [
     {
         code: 'RET01',
         text: 'Richiesta reso',
-        color: 'yellow',
+        color: 'blue',
     },
     //*business riceve il reso e accetta reso
     {
         code: 'RET02',
-        text: 'Reso ricevuto',
+        text: 'Reso ricevuto e accettato',
         color: 'green',
     },
     //*rimborsato cliente per reso
