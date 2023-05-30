@@ -178,6 +178,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     const dispatch = useDispatch();
     const [getProducts, productsFounder] = useLazyQuery(GET_PRODUCTS);
     const [microcategory, setMicrocategory] = useState<string[]>([])
+    const [macrocategory, setMacrocategory] = useState<string>(category)
     const [sizeProduct, setSizeProduct] = useState<string>();
     const [isOpen, setIsOpen] = useState<PropsOpenModal>({
         orderBy: false,
@@ -328,6 +329,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
             try {
                 const newProducts = async () => {
+
                     return await getProducts({
                         variables: {
                             offset: 0,
@@ -355,7 +357,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             }
         }, 500);
 
-    }, [mountedRef, gender, microCategory]) // add variable as dependency
+    }, [mountedRef, gender, microCategory, category]) // add variable as dependency
 
     useEffect(() => {
         setLoading(true)

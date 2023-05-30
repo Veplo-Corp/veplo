@@ -72,5 +72,4 @@ export const STATUS = [
         text: 'Ordine rimborsato',
         color: 'green',
     },
-
 ]

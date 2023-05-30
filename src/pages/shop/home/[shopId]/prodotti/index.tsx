@@ -72,7 +72,6 @@ const index = () => {
                 dispatch(
                     addFavouriteShopBusiness(element)
                 )
-
             }
         })
         return () => {
