@@ -182,7 +182,7 @@ const index = () => {
                 {order &&
                     <>
                         <Box
-                            className='w-screen md:w-3/4 xl:w-1/2 m-auto mt-8'
+                            className='w-full md:w-3/4 xl:w-1/2 m-auto mt-8'
                         >
                             {orderStatus &&
                                 <Box
@@ -449,7 +449,7 @@ const index = () => {
                                                 }}
                                             >Conferma</Button>
                                         </form>
-                                        <Box
+                                        <ButtonGroup
                                             display={'flex'}
                                             gap={2}
                                             mt={10}
@@ -472,7 +472,7 @@ const index = () => {
                                                 type={'submit'}
                                                 colorScheme='red'
                                             >Cancella ordine</Button>
-                                        </Box>
+                                        </ButtonGroup>
 
                                     </>
                                 }
@@ -584,16 +584,20 @@ const index = () => {
                                         >politica di reso</Link>
                                         </Text>
 
-                                        <ButtonGroup gap={2}>
+                                        <Box
+                                            display={['', 'flex']}
+                                            gap={2}
+
+                                        >
 
                                             <Button
-                                                margin={'auto'}
-                                                width={'full'}
-                                                mt={2}
+
+                                                width={['full', 'fit-content']}
                                                 colorScheme='green'
                                                 padding={4}
                                                 px={10}
                                                 size={'md'}
+                                                mb={[2, 0]}
                                                 onClick={() => {
                                                     setisOpenModalConfirmationReturnOrder(true)
                                                 }}
@@ -601,9 +605,7 @@ const index = () => {
                                                 Conferma ricezione reso
                                             </Button>
                                             <Button
-                                                margin={'auto'}
-                                                width={'full'}
-                                                mt={2}
+                                                width={['full', 'fit-content']}
                                                 bg={'black.900'}
                                                 color={'white'}
 
@@ -619,7 +621,7 @@ const index = () => {
                                                 px={10}
                                                 size={'md'}
                                             >Ho bisogno di aiuto</Button>
-                                        </ButtonGroup>
+                                        </Box>
 
 
 
