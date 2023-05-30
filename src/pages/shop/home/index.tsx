@@ -2,7 +2,7 @@ import { useLazyQuery } from '@apollo/client'
 import { Box, Tag, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import AlertChacraUI from '../../../../components/atoms/AlertChacraUI'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import StripeAccountAlert from '../../../../components/molecules/StripeAccountAlert'
@@ -13,6 +13,8 @@ import { Business } from '../../../interfaces/business.interface'
 import { Firebase_User } from '../../../interfaces/firebase_user.interface'
 import { Shop } from '../../../interfaces/shop.interface'
 import GET_BUSINESS from '../../../lib/apollo/queries/business'
+import { addShopFavouriteToLocalStorage } from '../../../../components/utils/shop_localStorage'
+import { addFavouriteShopBusiness } from '../../../store/reducers/user'
 
 interface Props {
     business: Business
@@ -20,6 +22,7 @@ interface Props {
 
 const index = () => {
     const router = useRouter();
+    const dispatch = useDispatch();
 
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     const [getBusiness, { error, data }] = useLazyQuery<Props>(GET_BUSINESS);
@@ -55,8 +58,19 @@ const index = () => {
         }
     }, [user])
 
-    const toShop = (id: string) => {
-        return router.push(`/shop/home/${id}/ordini?statusOrder=tutti`)
+    const toShop = (shop: Shop) => {
+        if (shop.id && (!user.favouriteShop?.id || user.favouriteShop?.id !== shop.id)) {
+            const element = {
+                id: shop.id,
+                name: shop?.name,
+                street: shop?.address.city + ', ' + shop?.address.street
+            }
+            addShopFavouriteToLocalStorage(element)
+            dispatch(
+                addFavouriteShopBusiness(element)
+            )
+        }
+        return router.push(`/shop/home/${shop.id}/ordini?statusOrder=tutti`)
     }
 
 
@@ -114,7 +128,7 @@ const index = () => {
                                 _active={{
                                     transform: 'scale(0.99)',
                                 }}
-                                onClick={() => toShop(shop.id)}
+                                onClick={() => toShop(shop)}
                             >
                                 <img
                                     className='aspect-[12/7] object-cover'
