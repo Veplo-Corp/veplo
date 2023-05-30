@@ -61,11 +61,15 @@ const FormReturn: FC<{ orderCode?: string, phone?: string, email?: string, handl
                         codice ordine
                     </Text>
                     <Input
+                        disabled={true}
                         placeholder='codice ordine'
                         id='order_code'
                         type='text'
                         py={5}
                         rounded={'10px'}
+                        _disabled={{
+                            color: 'gray.800'
+                        }}
                         _placeholder={{
                             //color: 'gray.200',
                             fontWeight: '600'
@@ -162,7 +166,7 @@ const FormReturn: FC<{ orderCode?: string, phone?: string, email?: string, handl
             >
                 {!isLoading
                     ?
-                    'invia richiesta'
+                    'attiva richiesta'
                     :
                     <Spinner
                         thickness='4px'

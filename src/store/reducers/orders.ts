@@ -25,7 +25,7 @@ export const userState = createSlice({
         },
         detroyOrders: (state) => {
             state.orders = []
-        },
+        }
 
     },
 });

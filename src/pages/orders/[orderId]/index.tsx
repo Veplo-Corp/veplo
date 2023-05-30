@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
 import Loading from '../../../../components/molecules/Loading';
 import ProductVariationInOrder from '../../../../components/molecules/ProductVariationInOrder';
@@ -17,26 +17,47 @@ import { getDateFromMongoDBDate } from '../../../../components/utils/getDateFrom
 import ModalReausable from '../../../../components/organisms/ModalReausable';
 import FormReturn from '../../../../components/molecules/FormReturn';
 import { ToastOpen } from '../../../../components/utils/Toast';
+import { useMutation } from '@apollo/client';
+import RETURN_ORDER from '../../../lib/apollo/mutations/returnOrder';
+import { setOrders } from '../../../store/reducers/orders';
 
 
 
 
 
 const index = () => {
-    const router = useRouter()
+    const router = useRouter();
+    const dispatch = useDispatch();
     const orders: Order[] = useSelector((state: any) => state.orders.orders);
     const [order, setOrder] = useState<Order>();
     const [orderStatus, setOrderStatus] = useState<{ text: string, color: string }>();
     const [loading, setLoading] = useState(true)
     const [isOpenModalReturn, setIsOpenModalReturn] = useState(false)
     const { addToast } = ToastOpen();
+    const [returnOrder] = useMutation(RETURN_ORDER, {
+        update(cache, el, query) {
+            console.log(cache);
+            console.log(el);
+            console.log(query);
+            const OrderCacheId = cache.identify({ id: query.variables?.returnOrderId, __typename: 'Order' })
+            console.log(OrderCacheId);
+            cache.modify({
+                id: OrderCacheId, //productId
+                fields: {
+                    status(/* cachedvalue */) {
+                        return "RET01"
+                    },
+                },
+                broadcast: false // Include this to prevent automatic query refresh
+            });
+        }
+    })
 
     useEffect(() => {
         const { orderId } = router.query
-        if (!orderId) return
+        if (!orderId || orders.length <= 0) return
         const order = orders.filter(order => order.id === orderId)[0]
         setOrder(order)
-
         handleStatus(order?.status)
     }, [router?.query, orders])
 
@@ -51,7 +72,7 @@ const index = () => {
         })
     }
 
-    const handleSubmitButton = (form: {
+    const handleSubmitButton = async (form: {
         orderCode: string,
         phone: string,
         email: string,
@@ -59,9 +80,37 @@ const index = () => {
         //effettuare richiesta reso qui
         //mettere in RET01
         //creare collection per richiesta reso
-        console.log(form);
-        setIsOpenModalReturn(false)
-        return addToast({ position: 'top', title: "Richiesta reso inviata", status: 'success', duration: 5000, isClosable: true })
+        try {
+            await returnOrder({
+                variables: {
+                    returnOrderId: order?.id
+                }
+            })
+            console.log(form);
+            setIsOpenModalReturn(false)
+            setOrder(prevState => {
+                if (!prevState) return
+                return {
+                    ...prevState,
+                    status: "RET01"
+                }
+            })
+            handleStatus("RET01")
+            //cambia l'order status in Redux
+            const newOrders = orders.map(order => {
+                if (order.code === form.orderCode) {
+                    return { ...order, ["status"]: "RET01" }
+                }
+                return order
+            })
+            dispatch(
+                setOrders(newOrders)
+            )
+        } catch {
+            //aggiungere errore chiamat
+            // se superati più di 15 giorni
+        }
+
 
     }
 
@@ -79,7 +128,7 @@ const index = () => {
                                 <Tag
                                     className='m-auto md:m-0'
                                     mt={[0, 4]}
-                                    mb={4}
+
                                     px={4}
                                     py={2}
                                     borderRadius={'full'}
@@ -91,10 +140,24 @@ const index = () => {
                                 </Tag>
                             </Box>
                         }
+                        {/*  <div className='mt-4'>
+                            <GrayBox>
+                                <Text
+                                    fontSize={'2xl'}
+                                    fontWeight={'semibold'}
+                                    mb={2}
+                                >
+                                    Indirizzo reso
+                                </Text>
+                                
+                            </GrayBox>
+                        </div> */}
+
+
                         <Box
                             display={['', 'flex']}
                             justifyContent={'space-between'}
-
+                            mt={4}
                         >
                             <Box
                                 mb={2}
