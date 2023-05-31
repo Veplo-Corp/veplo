@@ -14,7 +14,7 @@ import { Image } from '@chakra-ui/react'
 import { useDebounceEffect } from '../../../../../components/utils/useDebounceEffect'
 import { canvasPreview } from '../../../../../components/molecules/Canva_previews'
 import { storage } from '../../../../config/firebase'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { useMutation } from '@apollo/client'
 import CREATE_SHOP from '../../../../lib/apollo/mutations/createShop'
 import { ToastOpen } from '../../../../../components/utils/Toast'
@@ -33,6 +33,8 @@ import { addShopFavouriteToLocalStorage } from '../../../../../components/utils/
 import ModalReausable from '../../../../../components/organisms/ModalReausable'
 import ImageCrop from '../../../../../components/molecules/ImageCrop'
 import { onChangeNumberPrice } from '../../../../../components/utils/onChangePrice'
+import SelectMultipleOptions from '../../../../../components/atoms/SelectMultipleOptions'
+import { SHOP_CATEGORIES } from '../../../../../components/mook/shopCategories'
 
 
 
@@ -50,6 +52,7 @@ interface IFormInput {
     profileCover: string,
     profilePhoto: string,
     isDigitalOnly?: boolean,
+    categories: string[],
     address?: {
         city: string | undefined
         street: string
@@ -150,6 +153,8 @@ const index = () => {
     });
 
 
+
+
     const { addToast } = ToastOpen();
     const router = useRouter()
     //*useForm Registration Shop
@@ -245,6 +250,7 @@ const index = () => {
 
 
     }
+
 
 
 
@@ -470,6 +476,7 @@ const index = () => {
                     //postcode: address.postcode,
                     location: address.location
                 },
+                categories: e.categories
             }
 
 
@@ -745,6 +752,22 @@ const index = () => {
                                 />
                             </InputGroup>
                         </Div_input_creation>
+                        <Div_input_creation text='Categoria prodotti (opzionale, massimo 2)'>
+                            <Controller
+                                control={control}
+                                name="categories"
+                                rules={{ required: false }}
+                                render={() => (
+                                    <SelectMultipleOptions
+                                        limitNumber={2}
+                                        handleValue={(value) => {
+                                            setValue('categories', value);
+                                        }}
+                                        values={SHOP_CATEGORIES.sort()}
+                                    />
+                                )}
+                            />
+                        </Div_input_creation>
                         <Div_input_creation text='Descrizione del negozio (opzionale, max 700 caratteri)'>
                             <InputGroup >
 
@@ -996,8 +1019,8 @@ const index = () => {
                                 heigth={12}
                                 size={'sm'}
                                 typeButton={'submit'}
-                                disabled={false}
-                            //disabled={!address || address.streetNumber === '' || !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('info.opening.days') || watch('info.opening.days').length <= 0 || !isValid || !image?.file || !imageProfile?.file}
+                                //disabled={false}
+                                disabled={!address || address.streetNumber === '' /*|| !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('info.opening.days') || watch('info.opening.days').length <= 0 */ || !isValid || !image?.file || !imageProfile?.file || watch('categories')?.length <= 0}
                             />
                         </div>
                     </div>
