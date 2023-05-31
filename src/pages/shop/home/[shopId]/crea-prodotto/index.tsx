@@ -691,7 +691,7 @@ const index = () => {
                             if (isLoading) return
                             createProductHandler()
                         }}
-                        disabled={productVariations.length <= 0 || !watch('name') || !watch('brand') || !watch('macrocategory') || !watch('microcategory') || !watch('price')}
+                        disabled={isLoading || productVariations.length <= 0 || !watch('name') || !watch('brand') || !watch('macrocategory') || !watch('microcategory') || !watch('price')}
                         px={12}
                         py={7}
                         rounded={'lg'}
