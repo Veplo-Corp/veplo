@@ -604,7 +604,7 @@ const index = () => {
             <div className='flex '>
                 <form className="p-3 px-0 lg:px-16 xl:px-24 w-full md:w-3/4 lg:w-7/12 m-auto" onSubmit={handleSubmit(submitData)}>
                     <div className='w-full'>
-                        <h1 className='italic text-xl lg:text-2xl font-extrabold mb-4'>Crea un nuovo negozio!</h1>
+                        <h1 className='text-xl lg:text-2xl font-extrabold mb-4'>Crea il tuo store</h1>
 
                         <Div_input_creation text='Immagine di copertina e profilo'>
                             {!image && <Center
@@ -754,7 +754,7 @@ const index = () => {
                                 />
                             </InputGroup>
                         </Div_input_creation>
-                        <Div_input_creation text='Categoria prodotti (opzionale, massimo 2)'>
+                        <Div_input_creation text='Categoria prodotti (massimo 2)'>
                             <Controller
                                 control={control}
                                 name="categories"
