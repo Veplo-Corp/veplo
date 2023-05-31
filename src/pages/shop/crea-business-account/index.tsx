@@ -92,6 +92,7 @@ const index = () => {
                         router.push(result.url)
                     } catch (e: any) {
                         setIsLoading(false)
+
                         console.log(e);
 
                     }
