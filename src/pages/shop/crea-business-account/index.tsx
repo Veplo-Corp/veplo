@@ -18,6 +18,7 @@ interface Props {
 }
 
 const index = () => {
+    const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
     const [isBusinessVAT, setisBusinessVAT] = useState<boolean | null>(null)
     const [businessPhoneNumber, setbusinessPhoneNumber] = useState('')
@@ -61,7 +62,9 @@ const index = () => {
             <form
                 className='m-auto w-11/12 md:w-8/12 lg:w-6/12 xl:w-1/3'
                 onSubmit={handleSubmit(async (data) => {
+                    setIsLoading(true)
                     try {
+
                         console.log(data);
                         const options: Props = {
                             businessName: data.businessName,
@@ -85,8 +88,10 @@ const index = () => {
                             body: JSON.stringify({ stripeId })
                         })
                         const result = await response.json()
+                        setIsLoading(false)
                         router.push(result.url)
                     } catch (e: any) {
+                        setIsLoading(false)
                         console.log(e);
 
                     }
@@ -155,7 +160,7 @@ const index = () => {
                 <BoxExplenationStripe textBold='Conferma informazioni' />
 
                 <BlackButton
-                    disabled={!isValid}
+                    disabled={!isValid || isLoading}
                     typeButton='submit'
                     element='Conferma Informazioni'
                     borderRadius={10}
