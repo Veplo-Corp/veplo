@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Box, Button, Center, Input, InputGroup, InputLeftAddon, Select, Textarea } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, Center, Input, InputGroup, InputLeftAddon, Select, Spinner, Textarea } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import BlackButton from '../../../../../components/atoms/BlackButton'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout'
@@ -83,7 +83,7 @@ const typeShop = [
 const index = () => {
     const [uploadPhotos] = useMutation(UPLOAD_PHOTO)
     const user: Firebase_User = useSelector((state: any) => state.user.user);
-
+    const [isLoading, setIsLoading] = useState(false)
     const [createShop, createShopElement] = useMutation(CREATE_SHOP, {
         update(cache, el, query) {
             console.log(el.data);
@@ -440,7 +440,7 @@ const index = () => {
     const submitData = async (e: IFormInput) => {
         // const url = await uploadPhotoFirebase(image?.blob, `/${user.uid}/shop_image/immagine`)
         // console.log(url);
-
+        setIsLoading(true)
 
         try {
             //uploadImage cover
@@ -540,8 +540,10 @@ const index = () => {
                 name: e.name,
                 id: isCreatedShop.data.createShop
             })
+            setIsLoading(false)
             return router.push('/shop/home/' + isCreatedShop.data.createShop + '/prodotti')
         } catch (e) {
+            setIsLoading(false)
             console.log(e);
             addToast({ position: 'top', title: 'Errore durante la creazione dello Shop', description: "non siamo riusciti a creare il tuo shop. riprova più tardi o contattaci", status: 'error', duration: 5000, isClosable: false })
         }
@@ -1013,14 +1015,27 @@ const index = () => {
                         }
                         <div className='flex justify-end mt-4'>
                             <BlackButton
-                                element='conferma'
+                                element={
+                                    !isLoading
+                                        ?
+                                        'conferma'
+                                        :
+                                        <Spinner
+                                            thickness='4px'
+                                            speed='0.65s'
+                                            emptyColor='gray.400'
+                                            color='white'
+                                            size='lg'
+                                        />
+
+                                }
                                 borderRadius={5}
                                 width={200}
                                 heigth={12}
                                 size={'sm'}
                                 typeButton={'submit'}
                                 //disabled={false}
-                                disabled={!address || address.streetNumber === '' /*|| !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('info.opening.days') || watch('info.opening.days').length <= 0 */ || !isValid || !image?.file || !imageProfile?.file || watch('categories')?.length <= 0}
+                                disabled={isLoading || !address || address.streetNumber === '' /*|| !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('info.opening.days') || watch('info.opening.days').length <= 0 */ || !isValid || !image?.file || !imageProfile?.file || watch('categories')?.length <= 0}
                             />
                         </div>
                     </div>
