@@ -35,7 +35,7 @@ const index = () => {
     const [orderStatus, setOrderStatus] = useState<{ text: string, color: string }>();
     const [isOpenModalDeleteOrder, setIsOpenModalDeleteOrder] = useState(false);
     const [isOpenModalConfirmationReturnOrder, setisOpenModalConfirmationReturnOrder] = useState(false)
-
+    const [isOpenModalRejectReturn, setIsOpenModalRejectReturn] = useState(false)
 
     const [editCurrierInfo] = useMutation(ADD_CODE_AND_COURIER_TO_ORDER, {
         update(cache, el, query) {
@@ -91,7 +91,7 @@ const index = () => {
             console.log(cache);
             console.log(el);
             console.log(query);
-            const OrderCacheId = cache.identify({ id: query.variables?.orderId, __typename: 'Order' })
+            const OrderCacheId = cache.identify({ id: query.variables?.id, __typename: 'Order' })
             console.log(OrderCacheId);
             cache.modify({
                 id: OrderCacheId, //productId
@@ -168,6 +168,9 @@ const index = () => {
                     id: order?.id,
                 }
             })
+            setisOpenModalConfirmationReturnOrder(false)
+            addToast({ position: 'top', title: 'Reso confermato', status: 'success', duration: 5000, isClosable: false })
+            router.back()
         } catch (error: any) {
             console.log(error);
 
@@ -562,7 +565,7 @@ const index = () => {
                                         </Link>}
                                     </>
                                 }
-                                {(order?.status === 'RET01' || order?.status === 'RET02') &&
+                                {(order?.status === 'RET01') &&
                                     <>
                                         <Text
                                             fontSize={'2xl'}
@@ -589,9 +592,7 @@ const index = () => {
                                             gap={2}
 
                                         >
-
                                             <Button
-
                                                 width={['full', 'fit-content']}
                                                 colorScheme='green'
                                                 padding={4}
@@ -621,6 +622,30 @@ const index = () => {
                                                 px={10}
                                                 size={'md'}
                                             >Ho bisogno di aiuto</Button>
+                                        </Box>
+                                        <Box
+                                            display={'flex'}
+                                            gap={1}
+                                            mt={5}
+                                        >
+                                            <Text
+                                                my={'auto'}
+                                                fontSize={'sm'}
+                                                fontWeight={'medium'}
+
+                                            >
+                                                Vuoi rifiutare il reso?
+                                            </Text>
+                                            <Button
+                                                my={'auto'}
+                                                onClick={() => { setIsOpenModalRejectReturn(true) }}
+                                                borderRadius={'md'}
+                                                size={'sm'}
+
+                                                variant='link'
+                                                type={'submit'}
+                                                colorScheme='red'
+                                            >rifiuta reso</Button>
                                         </Box>
 
 
@@ -684,6 +709,25 @@ const index = () => {
                         colorScheme='green'>Accetta reso
                     </Button>
                 </ButtonGroup>
+            </ModalReausable>
+            <ModalReausable title='Rifiuta reso' closeModal={() => setIsOpenModalRejectReturn(false)} isOpen={isOpenModalRejectReturn}>
+                <ButtonGroup gap='2'
+                    marginTop={5}
+                    textAlign={'end'}
+                    float={'right'}
+                >
+                    <Button
+                        onClick={() => { setIsOpenModalRejectReturn(false) }}
+                        variant={'outline'}
+                        colorScheme='red'>Annulla
+                    </Button>
+                    <Button
+                        onClick={() => { setIsOpenModalRejectReturn(false) }}
+                        variant={'solid'}
+                        colorScheme='green'>Rifiuta reso
+                    </Button>
+                </ButtonGroup>
+
             </ModalReausable>
             <Modal_Help_Customer_Care isOpen={isOpenHelpModal} onClose={() => setIsOpenHelpModal(false)} />
         </>
