@@ -5,6 +5,7 @@ import { Shop } from '../../src/interfaces/shop.interface';
 import Div_input_creation from '../atoms/Div_input_creation'
 import { DAYS } from '../mook/days';
 import { imageKitUrl } from '../utils/imageKitUrl';
+import SelectMultipleOptions from '../atoms/SelectMultipleOptions';
 
 
 
@@ -105,6 +106,26 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                 <img src={imageKitUrl(shop.profileCover)}
                     className='w-full aspect-[4.8/3] object-cover rounded-md mb-4'
                 />
+            </Div_input_creation>
+            <Div_input_creation text='Categories'>
+                <InputGroup>
+                    <Input
+                        autoComplete='off'
+                        maxLength={35}
+                        rounded={10}
+                        paddingY={6}
+                        type="text"
+                        {...register(`categories`, { required: true, maxLength: 30 })}
+                        isInvalid={false}
+                        disabled={true}
+                        _disabled={{
+                            opacity: '1',
+                            background: 'gray.50'
+                        }}
+                        className='cursor-not-allowed'
+                    />
+
+                </InputGroup>
             </Div_input_creation>
             <Div_input_creation text='ordine minimo per spedizione gratuita'>
                 <InputGroup

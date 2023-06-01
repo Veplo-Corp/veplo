@@ -10,6 +10,7 @@ const GET_SHOP = gql`
             id
             businessId
             name
+            categories
             createdAt
             status
             profilePhoto

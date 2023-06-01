@@ -3,6 +3,7 @@ import { gql } from '@apollo/client'
 const GET_SHOPS_BY_LOCATION = gql`
     query shops($limit: Int!, $offset: Int!, $filters: ShopFilters!) {
     shops(limit: $limit, offset: $offset, filters: $filters) {
+      categories
       id
       businessId
       businessStatus

@@ -4,6 +4,7 @@ export interface Shop {
     businessId: string,
     name: string,
     createdAt: string,
+    categories?: string[],
     status: 'not_active' | 'active',
     isDigitalOnly: boolean,
     info: {
