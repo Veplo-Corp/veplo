@@ -16,7 +16,7 @@ const index = () => {
     const [showPassword, setshowPassword] = useState<boolean>(false)
 
     const { addToast } = ToastOpen();
-    const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<{ password: string }>({
+    const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<{ reset_password: string }>({
         mode: "all"
     });
     useEffect(() => {
@@ -89,14 +89,14 @@ const index = () => {
     const handleSubmitChangePassword = (event: any) => {
         const { oobCode, lang } = router.query
         event.preventDefault();
-        console.log(watch('password'));
+        console.log(watch('reset_password'));
         if (!oobCode || !lang) return
         const continueUrl =
             process.env.NODE_ENV === 'production' ?
                 'https://www.veplo.it/' :
                 'http://localhost:3000/'
         // Display reset password handler and UI.
-        handleResetPassword(auth, oobCode, continueUrl, lang, watch('password'));
+        handleResetPassword(auth, oobCode, continueUrl, lang, watch('reset_password'));
     }
     return (
         <Desktop_Layout>
@@ -137,7 +137,7 @@ const index = () => {
                                             borderWidth={2}
                                             borderLeftWidth={0}
                                             borderColor={'gray.900'}
-                                            {...register("password", { required: true, minLength: 8 })}
+                                            {...register("reset_password", { required: true, minLength: 8 })}
                                             autoComplete={'off'}
                                             type={showPassword ? 'text' : 'password'}
                                             name="reset_password"
