@@ -18,6 +18,7 @@ const GET_BUSINESS = gql`
             shops {
                 id
                 businessId
+                categories
                 name
                 createdAt
                 status
