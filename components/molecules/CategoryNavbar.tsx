@@ -41,7 +41,6 @@ const CategoryNavbar: FC<{ showMacrocategory: boolean }> = ({ showMacrocategory 
     }, [user])
 
     const findGenderSelected = () => {
-        console.log('AOOOO', user);
 
         let gender: string = '';
         if (user?.genderSelected === 'f') {

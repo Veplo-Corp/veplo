@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import BlackButton from '../atoms/BlackButton'
 import resetPassword from '../../components/utils/resetPassword'
 import Div_input_creation from '../atoms/Div_input_creation';
+import { ToastOpen } from '../utils/Toast';
 
 export interface UserInfo {
     name: string,
@@ -31,13 +32,16 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
     const [email, setemail] = useState<string>('')
     const [isValidEmail, setisValidEmail] = useState<boolean | null>(null)
     const [isValidPassword, setisValidPassword] = useState<boolean | null>(null)
-    const [password, setpassword] = useState<string>('')
+    const [password, setpassword] = useState<string>('');
+    const [isLoading, setisLoading] = useState(false)
     const [userInfo, setUserInfo] = useState<UserInfo>({
         name: '',
         surname: '',
         gender: null,
         dateOfBirth: '',
     })
+    const { addToast } = ToastOpen();
+
 
 
     const emailHandler = (event: any) => {
@@ -385,7 +389,21 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
                     ></BlackButton>
                 </div>}
             {type === 'reset_password' && <div className='w-full flex justify-end pt-2 md:pt-1' onClick={() => resetPassword(email)}>
-                <Button disabled={isValidEmail == null || false} onClick={() => resetPassword(email)} colorScheme={'orange'} borderRadius={10} size={'md'}>resetta password</Button>
+                <Button disabled={isValidEmail == null || false || isLoading} onClick={async () => {
+                    setisLoading(true)
+                    try {
+                        const result = await resetPassword(email)
+                        return addToast({ position: 'top', title: 'controlla la casella mail', description: 'ti abbiamo inviato una mail per resettare la password', status: 'success', duration: 5000, isClosable: true })
+
+                    } catch (e) {
+                        console.log(e);
+                        setisLoading(false)
+                    }
+
+
+
+                }
+                } colorScheme={'orange'} borderRadius={10} size={'md'}>resetta password</Button>
             </div>}
             <div className='flex mt-2 md:mt-4'>
                 {(type === 'registration') && <LoginButton />}

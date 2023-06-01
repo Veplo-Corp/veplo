@@ -36,6 +36,9 @@ const BlackButton: React.FC<Props> = ({ element, borderRadius, size, typeButton,
             _active={{
                 transform: 'scale(0.98)',
             }}
+            _disabled={{
+                bg: 'black.900'
+            }}
             leftIcon={leftIcon}
         >{element}</Button>
     )
