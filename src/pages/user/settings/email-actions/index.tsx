@@ -139,7 +139,9 @@ const index = () => {
                                             borderColor={'gray.900'}
                                             {...register("password", { required: true, minLength: 8 })}
                                             autoComplete={'off'}
-                                            type={showPassword ? 'text' : 'password'} name="password" id="password"
+                                            type={showPassword ? 'text' : 'password'}
+                                            name="reset_password"
+                                            id="reset_password"
                                             focusBorderColor='gray.900'
                                             variant='unstyled'
                                             placeholder="password"
