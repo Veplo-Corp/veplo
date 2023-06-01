@@ -33,6 +33,21 @@ const ProductVariationInOrder: FC<{ variation: ProductVariationInOrder }> = ({ v
                         fontWeight={'medium'}
                     >
                         {toUpperCaseFirstLetter(variation.name)} ({variation.color})
+
+                        <Box
+                            fontSize={'xs'}
+                            fontWeight={'light'}
+                            color={'gray.500'}
+                            mt={-1}
+                        >
+                            {toUpperCaseFirstLetter(variation.brand)}
+                        </Box>
+                        <Box
+                            fontSize={'xs'}
+                            fontWeight={'normal'}
+                        >
+                            {variation.size.toUpperCase()} / Quantità {variation.quantity}
+                        </Box>
                     </Box>
                     <Box
 
@@ -77,23 +92,7 @@ const ProductVariationInOrder: FC<{ variation: ProductVariationInOrder }> = ({ v
 
 
 
-                <Box
-                >
-                    <Box
-                        fontSize={'xs'}
-                        fontWeight={'light'}
-                        color={'gray.500'}
-                        mt={-1}
-                    >
-                        {toUpperCaseFirstLetter(variation.brand)}
-                    </Box>
-                    <Box
-                        fontSize={'xs'}
-                        fontWeight={'normal'}
-                    >
-                        {variation.size.toUpperCase()} / Quantità {variation.quantity}
-                    </Box>
-                </Box>
+
             </Box>
 
 
