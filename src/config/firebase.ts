@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import { getApp, getApps, initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 import { getAnalytics } from "firebase/analytics";
 
@@ -10,7 +10,9 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  verifyPasswordResetCode,
+  confirmPasswordReset
 } from 'firebase/auth';
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -34,7 +36,7 @@ let firebaseConfig;
 
 
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'production') {
   firebaseConfig = {
     apiKey: "AIzaSyD2Qy57T2kfvcmUXsgId8X2aUPJbnqvq34",
     authDomain: "dintorni-prod.firebaseapp.com",
@@ -61,7 +63,7 @@ if (process.env.NODE_ENV === 'production') {
 
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 
 
@@ -85,7 +87,8 @@ export {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
-
+  verifyPasswordResetCode,
+  confirmPasswordReset,
   sendPasswordResetEmail,
   storage,
   analytics
