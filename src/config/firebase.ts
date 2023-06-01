@@ -36,7 +36,7 @@ let firebaseConfig;
 
 
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'production') {
   firebaseConfig = {
     apiKey: "AIzaSyD2Qy57T2kfvcmUXsgId8X2aUPJbnqvq34",
     authDomain: "dintorni-prod.firebaseapp.com",
