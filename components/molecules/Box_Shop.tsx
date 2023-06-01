@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Image } from '@chakra-ui/react'
+import { Box, HStack, Image, Tag, TagLabel } from '@chakra-ui/react'
 import { Shop } from '../../src/interfaces/shop.interface'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
@@ -28,38 +28,64 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                 className='w-96 lg:w-full object-cover aspect-[2.3/1] lg:min-h-[200px] rounded-[15px]'
             />
             <Box
-                marginBottom={1}
-                width={['20', '32']}
-                height={['20', '32']}
-                mt={[-10, -16]}
-                zIndex={50}
-                borderWidth={1}
-                borderColor={'white'}
-                background={'white'}
-                borderRadius={'full'}
-                color={'gray.400'}
-                fontSize={['xs', 'sm']}
-                className='ml-5 md:ml-8 w-full'
                 display={'flex'}
+                justifyContent={'space-between'}
             >
                 <Box
-                    borderRadius={'full'}
-                    width={'full'}
-                    height={'full'}
+                    marginBottom={1}
+                    width={['20', '32']}
+                    height={['20', '32']}
+                    mt={[-10, -16]}
+                    zIndex={50}
+                    borderWidth={1}
+                    borderColor={'white'}
                     background={'white'}
-                    textAlign={'center'}
+                    borderRadius={'full'}
+                    color={'gray.400'}
+                    fontSize={['xs', 'sm']}
+                    className='ml-5 md:ml-8 w-full'
                     display={'flex'}
                 >
+                    <Box
+                        borderRadius={'full'}
+                        width={'full'}
+                        height={'full'}
+                        background={'white'}
+                        textAlign={'center'}
+                        display={'flex'}
+                    >
 
-                    <LazyLoadImage src={
-                        imageKitUrl(shop.profilePhoto)
-                    }
-                        //PlaceholderSrc={PlaceholderImage}
-                        alt={shop.name}
-                        className='m-auto h-full w-full p-[4px] lg:p-[5px] rounded-full'
-                    />
+                        <LazyLoadImage src={
+                            imageKitUrl(shop.profilePhoto)
+                        }
+                            //PlaceholderSrc={PlaceholderImage}
+                            alt={shop.name}
+                            className='m-auto h-full w-full p-[4px] lg:p-[5px] rounded-full'
+                        />
+                    </Box>
                 </Box>
+                {shop.categories && <Box
+                    mt={2}
+                >
+                    <HStack spacing={1.5}>
+                        {shop.categories.map((category) => (
+                            <Tag
+                                paddingX={3}
+                                paddingY={[1.5, 1]}
+                                key={category}
+                                borderRadius='full'
+                                fontWeight={'medium'}
+                                variant='solid'
+                                bg={'primary.bg'}
+                                color={'primary.text'}
+                            >
+                                <TagLabel>{category}</TagLabel>
+                            </Tag>
+                        ))}
+                    </HStack>
+                </Box>}
             </Box>
+
             <Box pb={1} px={3} display={'flex'} gap={1.5}>
                 <Box
                     fontWeight='extrabold'
