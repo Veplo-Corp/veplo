@@ -45,10 +45,10 @@ const theme = extendTheme({
       100: "#4D4D4D",
       900: "#000000",
     },
-    brand: {
-      100: "#D91818",
-      // ...
-      900: "#D91818",
+    primary: {
+      bg: '#FF5A78',
+      text: '#fff',
+      card: '#0A99FF',
     },
   },
   zIndex: {
