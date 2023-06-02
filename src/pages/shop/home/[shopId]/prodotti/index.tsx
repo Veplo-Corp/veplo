@@ -28,6 +28,7 @@ import GET_BUSINESS from '../../../../../lib/apollo/queries/business';
 import { Business } from '../../../../../interfaces/business.interface';
 import { addFavouriteShopBusiness } from '../../../../../store/reducers/user';
 import { Shop } from '../../../../../interfaces/shop.interface';
+import ShopInfoSection from '../../../../../../components/molecules/ShopInfoSection';
 
 interface Props {
     business: Business
@@ -141,31 +142,10 @@ const index = () => {
         <Desktop_Layout>
             <NoIndexSeo title={`Prodotti | Veplo Shop`} />
             {shop &&
-                <Box
-                    mb={4}
-                >
-                    <Tag size={'md'} variant='solid'
-                        colorScheme={shop?.status === 'active' ? 'green' : 'red'}
-                    >
-                        {shop?.status === 'active' ? 'attivo' : 'non attivo'}
-                    </Tag>
-                    <Text
-                        mt={-1}
-                        fontSize={'2xl'}
-                        fontWeight={'extrabold'}
-                        fontStyle={'italic'}
-                    >{shop.name}</Text>
-                    <Text
-                        mt={-1}
-                        fontSize={'sm'}
-                        fontWeight={'semibold'}
-                        color={'gray.500'}
-                    >{shop.address.city}, {shop.address.street}</Text>
-                </Box>
+                <ShopInfoSection shop={shop} />
             }
 
             {user && user.statusAuthentication === 'logged_in' && shopId !== '' &&
-
                 <Table_Products_Shop idShop={shopId} deleteProduct={handleDeleteProductModal} />}
             <Modal_Error_Shop title={'Elimina prodotto'} description={'confermando eliminerai il prodotto dal tuo negozio'} closeText={'annulla'} openModalMath={mathNumber} confirmText={'conferma'} data={productToDeleteData} handleEvent={deleteProductEvent} />
 

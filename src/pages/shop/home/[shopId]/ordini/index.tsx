@@ -12,6 +12,7 @@ import GET_SHOP_ORDERS from '../../../../../lib/apollo/queries/shopOrders';
 import { Shop } from '../../../../../interfaces/shop.interface';
 import { addShopFavouriteToLocalStorage } from '../../../../../../components/utils/shop_localStorage';
 import { addFavouriteShopBusiness } from '../../../../../store/reducers/user';
+import ShopInfoSection from '../../../../../../components/molecules/ShopInfoSection';
 
 
 const limit = 1000;
@@ -125,50 +126,35 @@ function index() {
     return (
         <Desktop_Layout>
             <NoIndexSeo title={`Ordini | Veplo Shop`} />
-            {data?.shop && <Box
-                display={'flex'}
-                justifyContent={'space-between'}
-            >
-
+            {data?.shop &&
                 <Box
+                    display={'flex'}
+                    justifyContent={'space-between'}
                     mb={4}
                 >
-                    <Tag size={'md'} variant='solid'
-                        colorScheme={data?.shop?.status === 'active' ? 'green' : 'red'}
+
+                    <ShopInfoSection shop={data?.shop} />
+                    <Select
+                        size={['sm', 'md']}
+                        my={'auto'}
+                        mb={0}
+                        onChange={(option: any) => { handleStatusSelected(option) }}
+                        fontSize={['xs', 'md']}
+                        width={'fit-content'}
+                        value={router.query.statusOrder}
+
                     >
-                        {data?.shop?.status === 'active' ? 'attivo' : 'non attivo'}
-                    </Tag>
-                    <Text
-                        mt={-1}
-                        fontSize={'2xl'}
-                        fontWeight={'extrabold'}
-                        fontStyle={'italic'}
-                    >{data?.shop?.name}</Text>
-                    <Text
-                        mt={-1}
-                        fontSize={'sm'}
-                        fontWeight={'semibold'}
-                        color={'gray.500'}
-                    >{data?.shop?.address?.city}, {data?.shop?.address?.street}</Text>
+                        {typeStatus.map((option: { text: string, statuses: string[] | null }) => {
+                            return (<option
+                                key={option.text} value={option.text}>{option.text}</option>)
+                        })}
+                    </Select>
                 </Box>
-                <Select
-                    size='lg'
-                    my={'auto'}
-                    onChange={(option: any) => { handleStatusSelected(option) }}
-                    fontSize={'md'}
-                    width={'fit-content'}
-                    value={router.query.statusOrder}
-                >
-                    {typeStatus.map((option: { text: string, statuses: string[] | null }) => {
-                        return (<option
-                            key={option.text} value={option.text}>{option.text}</option>)
-                    })}
-                </Select>
-            </Box>}
+            }
 
 
             {orders && <TableOrdersShop orders={orders} moreData={hasMoreData} handleMoreOrders={handleMoreOrders} />}
-        </Desktop_Layout>
+        </Desktop_Layout >
     )
 }
 

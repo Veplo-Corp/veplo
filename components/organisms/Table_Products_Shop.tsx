@@ -180,7 +180,9 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
 
 
     return (
-        <div>
+        <div
+            className='mt-2'
+        >
 
             <div className='md:flex md:justify-between'>
                 <Button

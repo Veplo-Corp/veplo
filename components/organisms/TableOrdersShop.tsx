@@ -23,6 +23,7 @@ import {
 import { Order } from '../../src/interfaces/order.interface'
 import { STATUS_ORDER_SHOP } from '../mook/statusOrderBusiness';
 import { useRouter } from 'next/router';
+import { isMobile } from 'react-device-detect';
 
 
 
@@ -66,30 +67,30 @@ const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders
                         >
                             ORDINE
                         </Th>
-                        <Th
+                        {!isMobile && <Th
                             p={[2, 4]}
                             fontSize={'sm'}
                         >
                             CLIENTE
-                        </Th>
-                        <Th
+                        </Th>}
+                        {!isMobile && <Th
                             p={[2, 4]}
                             fontSize={'sm'}
                         >
                             PAGAMENTO
-                        </Th>
+                        </Th>}
                         <Th
                             p={[2, 4]}
                             fontSize={'sm'}
                         >
                             TOTALE
                         </Th>
-                        <Th
+                        {!isMobile && <Th
                             p={[2, 4]}
                             fontSize={'sm'}
                         >
                             DATA CREAZIONE
-                        </Th>
+                        </Th>}
                         <Th
                             p={[2, 4]}
                             fontSize={'sm'}
@@ -111,7 +112,7 @@ const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders
                             <Tr
                                 key={order.id}
                                 fontSize={['xs', 'medium']}
-                                height={[10, 16]}
+                                height={[14, 16]}
                                 _hover={{
                                     background: 'gray.50'
                                 }}
@@ -127,7 +128,7 @@ const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders
                                         {order.code.toLocaleUpperCase()}
                                     </Text>
                                 </Td>
-                                <Td
+                                {!isMobile && <Td
                                     paddingRight={0}
                                     paddingY={0}
                                     paddingLeft={[2, 4]}
@@ -137,16 +138,15 @@ const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders
                                     >
                                         {order.recipient.name}
                                     </Text>
-                                </Td>
-                                <Td
+                                </Td>}
+                                {!isMobile && <Td
                                     paddingRight={0}
                                     paddingY={0}
                                     paddingLeft={[2, 4]}
                                 >
                                     <Tag
                                         className='m-auto md:m-0'
-                                        mt={[0, 4]}
-                                        mb={4}
+                                        mx={'auto'}
                                         px={2}
                                         py={1}
                                         borderRadius={'full'}
@@ -155,12 +155,11 @@ const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders
                                     >
                                         {status ? status?.payment.text : 'Errore'}
                                     </Tag>
-                                </Td>
+                                </Td>}
                                 <Td
                                     paddingRight={0}
                                     paddingY={0}
                                     paddingLeft={[2, 4]}
-
                                 >
                                     <Text
                                         fontWeight={'normal'}
@@ -168,7 +167,7 @@ const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders
                                         {order.totalDetails.total} €
                                     </Text>
                                 </Td>
-                                <Td
+                                {!isMobile && <Td
                                     paddingRight={0}
                                     paddingY={0}
                                     paddingLeft={[2, 4]}
@@ -179,7 +178,7 @@ const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders
                                     >
                                         {('0' + new Date(+order.createdAt).getDate()).slice(-2)}/{('0' + (new Date(+order.createdAt).getMonth() + 1)).slice(-2)}/{new Date(+order.createdAt).getFullYear()}
                                     </Text>
-                                </Td>
+                                </Td>}
                                 <Td
                                     paddingRight={0}
                                     paddingY={0}

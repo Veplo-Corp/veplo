@@ -107,7 +107,7 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                     className='w-full aspect-[4.8/3] object-cover rounded-md mb-4'
                 />
             </Div_input_creation>
-            <Div_input_creation text='Categories'>
+            <Div_input_creation text='Categorie'>
                 <InputGroup>
                     <Input
                         autoComplete='off'

@@ -517,22 +517,23 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
                                     {microcategory.length > 0 && <Button
                                         minW={'fit-content'}
-                                        bg={slug[1] !== 'tutto' ? 'black' : 'white'}
                                         position={'relative'}
+                                        bg={slug[1] !== 'tutto' ? 'black' : 'white'}
                                         color={slug[1] !== 'tutto' ? 'white' : 'black'}
                                         _hover={
                                             {
                                                 bg: slug[1] !== 'tutto' ? 'black' : 'white'
                                             }
                                         }
+                                        _focus={{
+                                            bg: slug[1] !== 'tutto' ? 'black' : 'white'
+                                        }}
                                         borderWidth={1}
                                         borderColor={'#DFDFDF'}
                                         borderRadius={'10px'}
                                         padding={6}
                                         fontWeight={'bold'}
-                                        _focus={{
-                                            bg: slug[1] !== 'tutto' ? 'black' : 'white'
-                                        }}
+
                                         _active={{
                                             transform: 'scale(0.98)',
                                         }}
@@ -551,16 +552,21 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     {sizeProduct && sizeProduct.length > 0 && <Button
 
                                         minW={'fit-content'}
-                                        bg={'white'}
                                         position={'relative'}
-                                        color={'black'}
-                                        _hover={{ bg: 'white' }}
+
                                         borderWidth={1}
                                         borderColor={'#DFDFDF'}
                                         borderRadius={'10px'}
                                         padding={6}
+                                        bg={filter.sizes ? 'black' : 'white'}
+                                        color={filter.sizes ? 'white' : 'black'}
+                                        _hover={
+                                            {
+                                                bg: filter.sizes ? 'black' : 'white'
+                                            }
+                                        }
                                         _focus={{
-                                            bg: 'white'
+                                            bg: filter.sizes ? 'black' : 'white'
                                         }}
                                         _active={{
                                             transform: 'scale(0.98)',
@@ -576,23 +582,28 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             })
                                         }}
                                     >
-                                        {filter.sizes ? 'Taglia ' + filter.sizes[0].toLocaleUpperCase() : 'Taglia'}
+                                        {filter.sizes ? 'taglia ' + filter.sizes[0].toLocaleUpperCase() : 'Taglia'}
                                     </Button>
                                     }
                                     <Button
                                         minW={'fit-content'}
-                                        bg={'white'}
                                         position={'relative'}
-                                        color={'black'}
-                                        _hover={{ bg: 'white' }}
+                                        bg={filter.colors && filter.colors?.length > 0 ? 'black' : 'white'}
+                                        color={filter.colors && filter.colors?.length > 0 ? 'white' : 'black'}
+                                        _hover={
+                                            {
+                                                bg: filter.colors && filter.colors?.length > 0 ? 'black' : 'white'
+                                            }
+                                        }
+                                        _focus={{
+                                            bg: filter.colors && filter.colors?.length > 0 ? 'black' : 'white'
+                                        }}
+
                                         borderWidth={1}
                                         borderColor={'#DFDFDF'}
                                         borderRadius={'10px'}
                                         padding={6}
                                         fontWeight={'bold'}
-                                        _focus={{
-                                            bg: 'white'
-                                        }}
                                         _active={{
                                             transform: 'scale(0.98)',
                                         }}
@@ -606,10 +617,9 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             })
                                         }}
                                     >
-                                        {filter.colors ? filter.colors : 'Colore'}
+                                        {filter.colors ? filter.colors[0].toLocaleLowerCase() : 'Colore'}
                                     </Button>
                                     {false && <Button
-
                                         minW={'fit-content'}
                                         bg={'white'}
                                         position={'relative'}
@@ -638,20 +648,23 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                         Ordina
                                     </Button>}
                                     <Button
-
                                         minW={'fit-content'}
-                                        bg={'white'}
-                                        position={'relative'}
-                                        color={'black'}
-                                        _hover={{ bg: 'white' }}
+                                        bg={filter.maxPrice || filter.minPrice ? 'black' : 'white'}
+                                        color={filter.maxPrice || filter.minPrice ? 'white' : 'black'}
+                                        _hover={
+                                            {
+                                                bg: filter.maxPrice || filter.minPrice ? 'black' : 'white'
+                                            }
+                                        }
+                                        _focus={{
+                                            bg: filter.maxPrice || filter.minPrice ? 'black' : 'white'
+                                        }}
                                         borderWidth={1}
                                         borderColor={'#DFDFDF'}
                                         borderRadius={'10px'}
                                         padding={6}
                                         fontWeight={'bold'}
-                                        _focus={{
-                                            bg: 'white'
-                                        }}
+
                                         _active={{
                                             transform: 'scale(0.98)',
                                         }}
