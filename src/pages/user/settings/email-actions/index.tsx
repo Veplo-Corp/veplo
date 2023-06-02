@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
-import { Auth, confirmPasswordReset, signInWithEmailAndPassword, verifyPasswordResetCode } from 'firebase/auth';
+import { Auth, applyActionCode, confirmPasswordReset, signInWithEmailAndPassword, verifyPasswordResetCode } from 'firebase/auth';
 import { auth } from '../../../../config/firebase';
 import { ToastOpen } from '../../../../../components/utils/Toast';
 import { useForm } from 'react-hook-form';
@@ -19,6 +19,12 @@ const index = () => {
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<{ reset_password: string }>({
         mode: "all"
     });
+
+    const continueUrl =
+        process.env.NODE_ENV === 'production' ?
+            'https://www.veplo.it/' :
+            'http://localhost:3000/'
+
     useEffect(() => {
         const { mode } = router.query
         if (!mode) return
@@ -34,8 +40,10 @@ const index = () => {
                 //handleRecoverEmail(auth, oobCode, lang);
                 break;
             case 'verifyEmail':
+                const { oobCode, lang } = router.query
+
                 // Display email verification handler and UI.
-                //handleVerifyEmail(auth, oobCode, continueUrl, lang);
+                handleVerifyEmail(auth, oobCode, continueUrl, lang);
                 break;
             default:
             // Error: invalid mode.
@@ -45,6 +53,29 @@ const index = () => {
 
         }
     }, [router.query?.mode])
+
+    function handleVerifyEmail(auth: Auth, actionCode: any, continueUrl: string, lang: any) {
+        // Localize the UI to the selected language as determined by the lang
+        // parameter.
+        // Try to apply the email verification code.
+        applyActionCode(auth, actionCode).then((resp) => {
+            // Email address has been verified.
+
+            // TODO: Display a confirmation message to the user.
+            // You could also provide the user with a link back to the app.
+
+            // TODO: If a continue URL is available, display a button which on
+            // click redirects the user back to the app via continueUrl with
+            // additional state determined from that URL's parameters.
+            addToast({ position: 'top', title: 'Email convalidata!', status: 'success', duration: 5000, isClosable: false })
+            router.push(continueUrl)
+
+        }).catch((error) => {
+            addToast({ position: 'top', title: 'Errore durante la convalida mail', description: "non siamo riusciti ad aggiornare la password. Riprova più tardi", status: 'error', duration: 5000, isClosable: false })
+            // Code is invalid or expired. Ask the user to verify their email address
+            // again.
+        });
+    }
 
     function handleResetPassword(auth: Auth, actionCode: any, continueUrl: string, lang: any, newPassword: string) {
 
@@ -91,10 +122,7 @@ const index = () => {
         event.preventDefault();
         console.log(watch('reset_password'));
         if (!oobCode || !lang) return
-        const continueUrl =
-            process.env.NODE_ENV === 'production' ?
-                'https://www.veplo.it/' :
-                'http://localhost:3000/'
+
         // Display reset password handler and UI.
         handleResetPassword(auth, oobCode, continueUrl, lang, watch('reset_password'));
     }
