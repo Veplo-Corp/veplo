@@ -36,11 +36,11 @@ const index = () => {
   useEffect(() => {
 
     if (user && user?.shopId) {
-      router.push('/shop/prodotti')
+      router.replace('/shop/prodotti')
     }
     //da rivedere la logica
     if (user?.uid && user.statusAuthentication === 'logged_out') {
-      router.push('/')
+      router.replace('/')
     }
     if (type) {
       settypeForm(type)
@@ -110,14 +110,14 @@ const index = () => {
         setLoading(false)
 
         if (typeof router.query?.callbackUrl === 'string') {
-          return router.push(router.query?.callbackUrl)
+          return router.replace(router.query?.callbackUrl)
         }
         else if (!isBusiness) {
-          return router.push('/')
+          return router.replace('/')
         }
 
         else if (isBusiness) {
-          return router.push('/shop/home')
+          return router.replace('/shop/home')
         }
       } catch (error: any) {
         setLoading(true)

@@ -13,7 +13,7 @@ export interface ErrorModal {
     data?: any
 }
 
-const Modal_Error_Shop: React.FC<ErrorModal> = ({ title, description, closeText, confirmText, openModalMath,handleEvent, data  }) => {    
+const Modal_Error_Shop: React.FC<ErrorModal> = ({ title, description, closeText, confirmText, openModalMath, handleEvent, data }) => {
     let [isOpen, setIsOpen] = useState(false)
 
     function closeModal() {
@@ -28,7 +28,7 @@ const Modal_Error_Shop: React.FC<ErrorModal> = ({ title, description, closeText,
 
     return (
         <Transition appear show={isOpen} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={closeModal}>
+            <Dialog as="div" className="relative z-50" onClose={closeModal}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -74,12 +74,13 @@ const Modal_Error_Shop: React.FC<ErrorModal> = ({ title, description, closeText,
                                             {closeText}
                                         </Button>
                                     </div>
-                                    {confirmText && confirmText.length>0 &&
+                                    {confirmText && confirmText.length > 0 &&
                                         <div className="mt-4">
                                             <Button
-                                                onClick={() => {                                                    
+                                                onClick={() => {
                                                     handleEvent(data)
-                                                    closeModal()}}
+                                                    closeModal()
+                                                }}
                                                 colorScheme={'red'}
                                             >
                                                 {confirmText}

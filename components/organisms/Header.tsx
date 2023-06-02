@@ -135,7 +135,7 @@ const Header = () => {
 
         <>
             <motion.header
-                className='inset-x-0 top-0 z-50 sticky'
+                className='inset-x-0 top-0 z-40 sticky'
                 initial={{ y: 0 }}
                 animate={{ y: isHeaderVisible ? 0 : -100 }}
                 transition={{ duration: 0.5 }}
