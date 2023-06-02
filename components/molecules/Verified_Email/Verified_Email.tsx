@@ -14,13 +14,13 @@ const Verified_Email = () => {
     }
 
     return (
-        <Alert status='warning' maxW={1000} className='m-auto mb-2' >
+        <Alert status='warning' maxW={1000} className='m-auto mb-10' >
             <AlertIcon />
             <Box className='w-full'>
                 <AlertTitle className='hidden md:flex'>Convalida la tua mail!</AlertTitle>
                 <AlertDescription className='text-md'>
                     <span className='leading-0'>
-                        Controlla la casella mail e convalida l'account, poi ricarica la pagina
+                        Controlla la casella mail e convalida l'account
                     </span>
                     <br />
                     <div className='flex lg:hidden mt-2 '>

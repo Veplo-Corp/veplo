@@ -12,7 +12,8 @@ import {
   signOut,
   sendPasswordResetEmail,
   verifyPasswordResetCode,
-  confirmPasswordReset
+  confirmPasswordReset,
+  applyActionCode
 } from 'firebase/auth';
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -90,6 +91,7 @@ export {
   verifyPasswordResetCode,
   confirmPasswordReset,
   sendPasswordResetEmail,
+  applyActionCode,
   storage,
   analytics
 }
