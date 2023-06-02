@@ -112,7 +112,7 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
             />
 
             <Box
-                className='lg:w-8/12 m-auto -p-10 mb-6 lg:mb-9'
+                className='lg:w-7/12 m-auto -p-10 mb-6 lg:mb-9'
 
             >
                 <LazyLoadImage src={
@@ -273,7 +273,7 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
             </Box>
 
             {productsFounded &&
-                <div className="grid grid-cols-1 px-3 lg:px-0 md:grid-cols-3 gap-5 w-full lg:w-3/4 mx-auto">
+                <div className="grid grid-cols-1 px-3 lg:px-0 md:grid-cols-3 gap-5 w-full lg:w-8/12 mx-auto">
                     {productsFounded.map((product) => {
                         return (
                             <div

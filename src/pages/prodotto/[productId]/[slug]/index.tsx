@@ -181,8 +181,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
         if (errorLog) {
             console.log(errorLog);
-
-            router.push({
+            router.replace({
                 pathname: '/404',
                 query: { error: errorLog },
             })
@@ -207,7 +206,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         //setTextCategory(category)
         const url_slug_correct = createUrlSchema([product.info.brand, product.name])
         if (url_slug_correct !== slug) {
-            router.push({
+            router.replace({
                 pathname: `/prodotto/${router.query.productId}/${url_slug_correct}`,
             },
                 undefined, { shallow: true }
@@ -263,12 +262,16 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         setVariationSelected(variation)
         setColorSelected(variation.color)
         setSizeSelected('')
-        router.push({
+        router.replace({
             pathname: router.asPath.split('?')[0],
             query: { colore: color }
         },
             undefined, { shallow: true }
         )
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
     }
 
     const addToCart = async (product: Product) => {
@@ -276,7 +279,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         if (!user?.uid) {
             console.log(router.asPath);
 
-            return router.push({
+            return router.replace({
                 pathname: '/user/login',
                 query: {
                     type: 'login',

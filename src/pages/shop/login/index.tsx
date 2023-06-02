@@ -57,7 +57,7 @@ const index = () => {
       console.log(user);
 
       if (user?.isBusiness === true) {
-        router.push('/shop/home')
+        router.replace('/shop/home')
       }
     }
     if (type) {
@@ -85,7 +85,7 @@ const index = () => {
         await sendEmailVerificationHanlder()
         const account = await setBusinessAccount()
         console.log(account);
-        await router.push('/shop/crea-business-account')
+        await router.replace('/shop/crea-business-account')
         router.reload()
         // setemail('')
         // setpassword('')
@@ -113,10 +113,10 @@ const index = () => {
           //   title: errorForModal?.title,
           //   description: errorForModal?.description
           // }))
-          router.push('/')
+          router.replace('/')
           throw new Error('auth/user-not-shop', { cause: 'err' })
         }
-        router.push('/shop/home')
+        router.replace('/shop/home')
 
       } catch (error: any) {
         const errorMessage = error.message;
