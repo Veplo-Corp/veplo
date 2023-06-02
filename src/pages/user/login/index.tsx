@@ -49,7 +49,8 @@ const index = () => {
 
   const handleSubmit = async (email: string, password: string, userInfo: UserInfo) => {
     console.log(userInfo);
-    setLoading(true)
+    setLoading(true);
+
 
     if (typeForm === 'registration') {
       try {
@@ -87,7 +88,6 @@ const index = () => {
           return router.push(router.query?.callbackUrl)
         } else {
           return router.push('/')
-
         }
       } catch (error: any) {
         console.log(error);
@@ -139,35 +139,35 @@ const index = () => {
 
   return (
     <Desktop_Layout>
-      {loading ?
-        (
-          <Loading />
-        )
-        :
-        (
-          <div className='flex w-full mt-8 md:mt-10' >
 
-            <div className='md:p-3 space-y-4 m-auto'>
-              {router.query?.callbackUrl && <Box
-                padding={4}
-                background={'#F2F2F2'}
-                borderRadius={'10px'}
-              >
-                <Text
-                  fontWeight={'semibold'}
-                  fontSize={'lg'}
-                >
-                  per aggiungere prodotti alla borsa<br />bisogna effettuare l'accesso
-                </Text>
-              </Box>}
-              <Login_or_Registration
-                account='user'
-                handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo account`} />
-            </div>
-          </div>
-        )
-      }
-    </Desktop_Layout>
+      <div className='flex w-full mt-8 md:mt-10' >
+        <div className={`${loading ? '' : 'hidden'} m-auto`}>
+          <Loading />
+        </div>
+
+        <div className={`md:p-3 space-y-4 m-auto ${loading ? 'hidden' : ''}`}>
+          {router.query?.callbackUrl && <Box
+            padding={4}
+            background={'#F2F2F2'}
+            borderRadius={'10px'}
+          >
+            <Text
+              fontWeight={'semibold'}
+              fontSize={'lg'}
+            >
+              per aggiungere prodotti alla borsa<br />bisogna effettuare l'accesso
+            </Text>
+          </Box>}
+          <Login_or_Registration
+            account='user'
+            handleSubmitToPage={handleSubmit}
+            handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }}
+
+            type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo account`} />
+        </div>
+      </div>
+
+    </Desktop_Layout >
   )
 }
 
