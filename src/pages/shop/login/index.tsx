@@ -83,10 +83,6 @@ const index = () => {
         setAuthTokenInSessionStorage(idToken)
         console.log(idToken);
         await sendEmailVerificationHanlder()
-
-
-
-
         const account = await setBusinessAccount()
         console.log(account);
         await router.push('/shop/crea-business-account')
@@ -120,6 +116,7 @@ const index = () => {
           router.push('/')
           throw new Error('auth/user-not-shop', { cause: 'err' })
         }
+        router.push('/shop/home')
 
       } catch (error: any) {
         const errorMessage = error.message;
@@ -131,7 +128,6 @@ const index = () => {
         }))
         dispatch(handleOpenModal);
         setLoading(false)
-        router.push('/shop/home')
       }
       setTimeout(() => {
         setLoading(false)
@@ -146,36 +142,39 @@ const index = () => {
 
   return (
     <>
-      {
-        loading ?
-          (
-            <Loading />
-          )
-          :
-          (
-            <Desktop_Layout>
-              <PostMeta
-                canonicalUrl='https://www.veplo.it/shop/login'
-                title={`Login Negozio | Veplo Shop`}
-                subtitle={`accedi o registra un negozio  | Veplo.it`}
-                image={''}
-                description={`accedi o registra un negozio  | Veplo.it`}
-              />
-              {!user.uid && <div className='max-w-md mx-auto md:max-w-full md:flex md:m-auto  w-full mt-8 md:mt-10 md:justify-between' >
-                <div className={`md:p-3 w-full md:w-3/4 my-auto space-y-4 max-w-md mx-auto`}>
-                  <Login_or_Registration
-                    account='business'
-                    handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo negozio`} />
+
+      <Desktop_Layout>
+        <PostMeta
+          canonicalUrl='https://www.veplo.it/shop/login'
+          title={`Login Negozio | Veplo Shop`}
+          subtitle={`accedi o registra un negozio  | Veplo.it`}
+          image={''}
+          description={`accedi o registra un negozio  | Veplo.it`}
+        />
+        <div className={`${loading ? '' : 'hidden'} m-auto`}>
+          <Loading />
+        </div>
+        <div
+          className={`${loading ? 'hidden' : ''}`}
+        >
+          {!user.uid &&
+            <div className={` max-w-md mx-auto md:max-w-full md:flex md:m-auto  w-full mt-8 md:mt-10 md:justify-between`} >
+
+              <div className={`md:p-3 w-full md:w-3/4 my-auto space-y-4 max-w-md mx-auto`}>
+                <Login_or_Registration
+                  account='business'
+                  handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo negozio`} />
+              </div>
+              {typeForm === 'registration' &&
+                <div className='md:my-auto md:w-5/12 md:mr-10 mt-10 md:mt-0'>
+                  <List_Explanation_Veplo_Shop />
                 </div>
-                {typeForm === 'registration' &&
-                  <div className='md:my-auto md:w-5/12 md:mr-10 mt-10 md:mt-0'>
-                    <List_Explanation_Veplo_Shop />
-                  </div>
-                }
-              </div>}
-            </Desktop_Layout>
-          )
-      }
+              }
+            </div>}
+        </div>
+
+      </Desktop_Layout>
+
     </>
     /* <div className='flex justify-between w-full'>
       <form className="p-3 space-y-4 w-full md:w-1/2" onSubmit={handleSubmit}>

@@ -205,6 +205,7 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
                                 </>
                             } />
                     </InputGroup>
+                    {isValidPassword === false && <p className='text-sm md:text-xs text-red-600'>la password deve contenere almeno 8 caratteri</p>}
 
                 </div>
             }
