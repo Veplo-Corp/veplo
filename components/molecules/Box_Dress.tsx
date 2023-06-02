@@ -94,6 +94,9 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
                         onClick={handleEventSelectedDress}
                         href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
                         <Box
+                            _active={{
+                                transform: 'scale(0.99)',
+                            }}
                             display={'flex'}
                             mb={3}
                         >
@@ -127,7 +130,11 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
                         </Box>
                     </Link>}
 
-                    <Box minW='20' borderRadius='15px' h={'full'} overflow='hidden' className='cursor-pointer relative rounded-3xl aspect-[4.2/5]'
+                    <Box minW='20'
+                        _active={{
+                            transform: 'scale(0.99)',
+                        }}
+                        borderRadius='15px' h={'full'} overflow='hidden' className='cursor-pointer relative rounded-3xl aspect-[4.2/5]'
                         borderWidth={1}
                         position={'relative'}
                         borderColor={'#F3F3F3'}
@@ -151,16 +158,16 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
                                         background={'#FFFFFF'}
                                         borderWidth={1}
                                         borderColor={'#F3F3F3'}
-                                        p={2}
+                                        p={1.5}
                                         borderRadius={'10px'}
                                         textAlign={'center'}
                                         minW={28}
+                                        fontSize={'lg'}
                                     >
 
                                         {listOfSizesAvailable.slice(0, 4).map(size => {
                                             return (
                                                 <Box key={size}
-                                                    fontSize={'xl'}
                                                     fontWeight={'bold'}
                                                     paddingX={7}
                                                     paddingY={2}
@@ -174,7 +181,6 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
                                         })}
                                         {listOfSizesAvailable.length > 4 &&
                                             <Box
-                                                fontSize={'xl'}
                                                 fontWeight={'bold'}
                                                 paddingX={4}
                                                 paddingY={2}
