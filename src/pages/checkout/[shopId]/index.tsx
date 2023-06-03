@@ -255,19 +255,16 @@ const index = () => {
                                     paddingInline={16}
                                     width={'fit-content'}
                                     height={'fit-content'}
-                                    bg={'black.900'}
-                                    color={'white'}
-                                    _hover={{ bg: 'black.900' }}
-                                    _focus={{
-                                        bg: 'black.900'
+                                    variant={'primary'}
+                                    _disabled={{
+                                        bg: 'primary.bg'
                                     }}
-                                    _active={{
-                                        transform: 'scale(0.98)',
+                                    _hover={{
+
+                                        color: 'primary.text'
                                     }}
                                     disabled={isDisabled}
-                                    _disabled={{
-                                        background: 'black'
-                                    }}
+
                                 >Procedi
                                 </Button>
                             </Box>
