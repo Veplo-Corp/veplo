@@ -41,14 +41,75 @@ import { detroyOrders, setOrders } from '../store/reducers/orders'
 
 const theme = extendTheme({
   colors: {
+
+    lime: {
+      50: '#f2ffde',
+      100: '#defcb2',
+      200: '#caf884',
+      300: '#b5f554',
+      400: '#a1f226',
+      500: '#88d90d',
+      600: '#69a905',
+      700: '#4a7801',
+      800: '#2b4800',
+      900: '#0b1900',
+    },
     black: {
       100: "#4D4D4D",
       900: "#000000",
     },
     primary: {
       bg: '#FF5A78',
-      text: '#fff',
-      card: '#0A99FF',
+      text: '#FFFFFF',
+      secondaryText: "#E0E0E0"
+    },
+    secondary: {
+      bg: "#37D1A9",
+      text: '#FFFFFF',
+    }
+  },
+  components: {
+    Button: {
+      baseStyle: {
+        fontWeight: "bold",
+      },
+      variants: {
+        primary: {
+          bg: "primary.bg", // Usa il colore primario come sfondo
+          color: "white", // Testo bianco
+          _hover: {
+            bg: "primary.bg", // Cambia il colore in primario al passaggio del mouse
+            opacity: 1,
+            color: "primary.text"
+          },
+          _active: {
+            bg: "primary.bg",
+            transform: 'scale(0.98)',
+          },
+          _disabled: {
+            bg: "primary.bg",
+            opacity: 1,
+            transform: "scale(0.98)",
+            // _hover: {
+            //   bg: "primary.bg", // Mantieni il colore di sfondo primario quando disabilitato e fai hover
+            //   color: "primary.text", // Cambia il colore del testo quando disabilitato e fai hover
+            // },
+          },
+
+        },
+        secondary: {
+          bg: "secondary.bg", // Usa il colore primario come sfondo
+          color: "white", // Testo bianco
+          _hover: {
+            bg: "secondary.bg", // Cambia il colore in primario al passaggio del mouse
+          },
+          _active: {
+            bg: "secondary.bg",
+            transform: 'scale(0.98)',
+          }
+
+        },
+      },
     },
   },
   zIndex: {

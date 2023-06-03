@@ -124,7 +124,7 @@ export const STATUS_ORDER_SHOP = [
     {
         code: 'RET03',
         payment: {
-            text: 'Pagato',
+            text: 'N/A',
             color: 'blackAlpha'
         },
         orderStatus: {

@@ -2,7 +2,7 @@ import { Box, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay } f
 import { useRouter } from 'next/router'
 import React, { FC, useEffect, useState } from 'react'
 import { CATEGORIES } from '../mook/categories'
-import { Disclosure, Tab } from '@headlessui/react'
+import { Disclosure, Tab, Transition } from '@headlessui/react'
 import createUrlSchema from '../utils/create_url'
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
 import { useSelector } from 'react-redux'
@@ -97,13 +97,14 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
                                 {/* <Tab></Tab> */}
                                 {Object.keys(categories).map((category) => (
                                     <Tab
+
                                         key={category}
                                         className={({ selected }) =>
                                             classNames(
                                                 'text-lg font-semibold w-2/6',
                                                 selected
-                                                    ? 'bg-black text-white' /* underline underline-offset-2 */
-                                                    : ''
+                                                    ? 'bg-[#FF5A78] text-white ring-white  ' /* underline underline-offset-2 */
+                                                    : 'ring-white '
                                             )
                                         }
                                     >
@@ -158,31 +159,43 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
                                                                         </svg>
                                                                     </Disclosure.Button>
                                                                     <Disclosure.Panel>
-                                                                        <div
+                                                                        <Transition
+                                                                            show={open}
+                                                                            enter="transition ease-out duration-1000"
+                                                                            enterFrom="opacity-0"
+                                                                            enterTo="opacity-100"
+                                                                            leave="transition ease-in duration-150"
+                                                                            leaveFrom="opacity-100"
+                                                                            leaveTo="opacity-0"
+                                                                        >
+                                                                            <div
 
-                                                                            onClick={() => {
-                                                                                handleCategoryClicked(catObject.name, indexArray)
-                                                                            }}
-                                                                            key={idx} className='bg-slate-50 py-2 px-6 h-12 border-0 border-b text-md font-semibold flex cursor-pointer'>
-                                                                            <p className='my-auto'>
-                                                                                Tutti i prodotti della categoria
-                                                                            </p>
-                                                                        </div>
-                                                                        {catObject.types.map((type: string, idx) => {
-                                                                            return (
-                                                                                <div
+                                                                                onClick={() => {
+                                                                                    handleCategoryClicked(catObject.name, indexArray)
+                                                                                }}
+                                                                                key={idx} className='bg-slate-50 py-2 px-6 h-12 border-0 border-b text-md font-semibold flex cursor-pointer'>
+                                                                                <p className='my-auto'>
+                                                                                    Tutti i prodotti della categoria
+                                                                                </p>
+                                                                            </div>
+                                                                            {catObject.types.map((type: string, idx) => {
+                                                                                return (
+                                                                                    <div
 
-                                                                                    onClick={() => {
-                                                                                        handleCategoryClicked(catObject.name, indexArray, type)
-                                                                                    }}
-                                                                                    key={idx} className='bg-slate-50 py-2 px-6 h-12 border-0 border-b text-md font-semibold flex cursor-pointer'>
-                                                                                    <p className='my-auto'>
-                                                                                        {type.charAt(0).toUpperCase() + type.slice(1)}
+                                                                                        onClick={() => {
+                                                                                            handleCategoryClicked(catObject.name, indexArray, type)
+                                                                                        }}
+                                                                                        key={idx} className='bg-slate-50 py-2 px-6 h-12 border-0 border-b text-md font-semibold flex cursor-pointer'>
+                                                                                        <p className='my-auto'>
+                                                                                            {type.charAt(0).toUpperCase() + type.slice(1)}
 
-                                                                                    </p>
-                                                                                </div>
-                                                                            )
-                                                                        })}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                )
+                                                                            })}
+                                                                        </Transition>
+
+
                                                                     </Disclosure.Panel>
                                                                 </>
                                                             )}

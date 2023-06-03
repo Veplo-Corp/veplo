@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React, { FC } from 'react'
 import { Order } from '../../src/interfaces/order.interface'
 import { STATUS } from '../mook/statusOrderUser';
+import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals';
 
 
 const OrderCart: FC<{ order: Order }> = ({ order }) => {
@@ -37,7 +38,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                     fontSize={'md'}
                     fontWeight={'bold'}
                 >
-                    {(order.totalDetails.total).toFixed(2).replace('.', ',')} €
+                    {formatNumberWithTwoDecimals(Number(order.totalDetails.total))}€
                 </Box>
             </Box>
             <Box

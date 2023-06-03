@@ -92,13 +92,13 @@ const CategoryNavbar: FC<{ showMacrocategory: boolean }> = ({ showMacrocategory 
                                 </Box>
                                 {
                                     (genderSelected === type.url && (!router.pathname.includes("/negozi"))) && <Box
-                                        className={`h-[8px] bg-red-500 mt-[-12px]`}>
+                                        className={`h-[8px] bg-[#FF5A78] mt-[-12px]`}>
                                     </Box>
                                 }
 
                                 {
                                     (type.url.includes("negozi") && router.pathname.includes("/negozi")) && <Box
-                                        className={`h-[8px] bg-red-500 mt-[-12px]`}>
+                                        className={`h-[8px] bg-[#FF5A78] mt-[-12px]`}>
                                     </Box>
                                 }
                             </div>

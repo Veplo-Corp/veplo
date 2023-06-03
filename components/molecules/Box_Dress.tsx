@@ -13,6 +13,7 @@ import { toProductPage } from '../utils/toProductPage'
 import createUrlSchema from '../utils/create_url'
 import { isMobile } from 'react-device-detect'
 import { useRouter } from 'next/router'
+import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals'
 
 
 const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean }> = ({ handleEventSelectedDress, product, color, showStoreHeader }) => {
@@ -244,10 +245,12 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
                                     <>
                                         <Box onClick={() => {
 
-                                        }} h={6}
-                                            marginLeft={1}
+                                        }}
+                                            h={[7, 6]}
+                                            marginLeft={1.5}
                                             paddingX={2}
-                                            borderRadius={'10px'} bg={'#D9D9D9'}
+                                            borderRadius={'10px'}
+                                            bg={'#D9D9D9'}
                                             //borderWidth={1} borderColor={'gray.200'}
                                             style={{
                                                 boxShadow: 'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
@@ -255,7 +258,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
                                             borderWidth={'1px'}
                                             borderColor={'white'}
                                             fontWeight={'semibold'}
-                                            fontSize={'sm'}
+                                            fontSize={['md', 'sm']}
                                             textAlign={'center'}
                                             pt={'1px'}
                                         >
@@ -269,27 +272,28 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
                                 position={'absolute'}
                                 bottom={0}
                                 right={0}
-                                paddingX={5}
+                                paddingX={[7, 7]}
                                 paddingY={product.price?.v2 ? '6px' : '12px'}
-                                background={'#B55844'}
+                                background={'primary.bg'}
                                 roundedTopLeft={'15px'}
 
                             >
                                 <Text
-                                    fontSize={['20px', '16px']}
+                                    fontSize={['22px', '18px']}
                                     fontWeight={'bold'}
-                                    color={'white'}
+                                    color={'primary.text'}
                                 >
-                                    {product.price?.v2 ? Number(product.price?.v2).toFixed(2).replace('.', ',') : Number(product.price?.v1).toFixed(2).replace('.', ',')}€
+                                    {product.price?.v2 ? formatNumberWithTwoDecimals(Number(product.price?.v2)) : formatNumberWithTwoDecimals(Number(product.price?.v1))}€
                                 </Text>
                                 {product.price?.v2 && <Text
                                     mt={-2}
-                                    fontSize={['18px', '14px']}
+                                    fontSize={['16px', '14px']}
                                     fontWeight={'medium'}
-                                    color={'#BEA6A0'}
+                                    color={'primary.secondaryText'}
                                     decoration={'line-through'}
                                 >
-                                    {Number(product.price?.v1).toFixed(2).replace('.', ',')}
+                                    {formatNumberWithTwoDecimals(Number(product.price?.v1))}€
+
                                 </Text>}
                             </Box>
 
