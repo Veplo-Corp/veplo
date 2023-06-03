@@ -40,7 +40,7 @@ const typeStatus = [
     },
     {
         text: 'resi',
-        statuses: ["RET01", "RET02", "REF02"]
+        statuses: ["RET01", "RET02", "RET03", "REF02"]
     },
     {
         text: 'ordini mai arrivati',

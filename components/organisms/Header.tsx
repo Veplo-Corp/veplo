@@ -238,7 +238,8 @@ const Header = () => {
                                                 <Tag
                                                     position={'absolute'}
                                                     borderRadius={'full'}
-                                                    colorScheme={'orange'}
+                                                    bg={'primary.bg'}
+                                                    color={'primary.text'}
                                                     className='-top-2 -right-2.5'
 
                                                 >
@@ -246,7 +247,6 @@ const Header = () => {
                                                         fontSize={'sm'}
                                                         mx={'auto'}
                                                         fontWeight={'bold'}
-                                                        color={'black'}
                                                     >
                                                         {numberOfProductsInCarts}
                                                     </Text>
@@ -276,19 +276,12 @@ const Header = () => {
                                                 className='hidden md:flex'
                                             >
                                                 <Button
-
-                                                    bgColor={'#6772E5'}
                                                     fontSize={'md'}
                                                     fontWeight={'semibold'}
                                                     textColor={'white'}
                                                     size={'sm'}
                                                     mr={'2'}
-                                                    _hover={{
-                                                        background: '#6772E5'
-                                                    }}
-                                                    _active={{
-                                                        background: '#6772E5'
-                                                    }}
+                                                    variant={'primary'}
                                                     type='submit'
                                                 >
                                                     Vai alla Dashboard Pagamenti

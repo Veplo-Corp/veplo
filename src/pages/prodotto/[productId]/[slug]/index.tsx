@@ -38,6 +38,7 @@ import { Disclosure, Transition } from '@headlessui/react';
 import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo';
 import { InView, useInView } from 'react-intersection-observer';
 import { AnimatePresence, motion } from 'framer-motion';
+import { formatNumberWithTwoDecimals } from '../../../../../components/utils/formatNumberWithTwoDecimals';
 
 
 
@@ -526,15 +527,15 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 lineHeight={['4']}
                                 my={'auto'}
                             >
-                                {product.price?.v2 && <span className=' text-red-700 font-bold'>{product.price?.v2.toFixed(2).replace('.', ',')} €<br /></span>}
+                                {product.price?.v2 && <span className=' text-red-700 font-bold'>{formatNumberWithTwoDecimals(product.price?.v2)} €<br /></span>}
 
                                 <span
                                     className={`${product.price?.v2 ? 'text-slate-500 font-normal text-sm ' : ''} mr-2`}
                                 >
-                                    {product.price.v2 && <span>prima era: </span>}<span className={`${product.price?.v2 ? 'line-through' : ''}`}>{product.price?.v1.toFixed(2).replace('.', ',')} €</span>
+                                    {product.price.v2 && <span>prima era: </span>}<span className={`${product.price?.v2 ? 'line-through' : ''}`}>{formatNumberWithTwoDecimals(product.price?.v1)} €</span>
                                     {product.price.discountPercentage &&
                                         <span className='ml-2 text-red-500'>
-                                            -{product.price.discountPercentage.toString().replace('.', ',')}%
+                                            -{formatNumberWithTwoDecimals(product.price.discountPercentage)}%
                                         </span>}
                                 </span>
 
@@ -656,7 +657,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                         paddingX={[2, 5]}
                                     >
                                         <Disclosure.Button className="flex text-center w-full h-full"
-
                                         >
                                             <Box
                                                 className='m-auto flex'
@@ -676,92 +676,79 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                             </Box>
 
                                         </Disclosure.Button>
-                                        <Transition
-                                            show={open}
-                                            enter="transition ease-out duration-150 transform"
-                                            enterFrom="opacity-0 scale-95"
-                                            enterTo="opacity-100 scale-100"
-                                            leave="transition ease-in duration-75 transform"
-                                            leaveFrom="opacity-100 scale-100"
-                                            leaveTo="opacity-0 scale-95"
-                                        >
-                                            <Disclosure.Panel className="pl-1 pt-4 pb-2 text-sm text-gray-500">
+                                        <Disclosure.Panel className="pl-1 pt-4 pb-2 text-sm text-gray-500">
 
-                                                <Box
-                                                    className='grid grid-cols-3 lg:grid-cols-4 w-fit gap-x-1 gap-y-4 lg:gap-4'
+                                            <Box
+                                                className='grid grid-cols-3 lg:grid-cols-4 w-fit gap-x-1 gap-y-4 lg:gap-4'
+                                            >
+                                                <Text
+                                                    fontSize={'md'}
+                                                    fontWeight={'semibold'}
+                                                    color={'black'}
                                                 >
-                                                    <Text
-                                                        fontSize={'md'}
-                                                        fontWeight={'semibold'}
-                                                        color={'black'}
-                                                    >
-                                                        Materiale
-                                                    </Text>
-                                                    <Text
-                                                        fontSize={'md'}
-                                                        fontWeight={'normal'}
-                                                        color={'#909090'}
-                                                        className='col-span-2 lg:col-span-3'
-                                                    >
-                                                        {product.info.materials?.length && product.info.materials?.length > 0 ? product.info.materials.join(', ') : 'non disponibile'}
-                                                    </Text>
-                                                    <Text
-                                                        fontSize={'md'}
-                                                        fontWeight={'semibold'}
-                                                        color={'black'}
-                                                    >
-                                                        Fit
-                                                    </Text>
-                                                    <Text
-                                                        fontSize={'md'}
-                                                        fontWeight={'normal'}
-                                                        color={'#909090'}
-                                                        className='col-span-2 lg:col-span-3'
-                                                    >
-                                                        {product.info.fit ? product.info.fit : 'non disponibile'}
-                                                    </Text>
-                                                    <Text
-                                                        fontSize={'md'}
-                                                        fontWeight={'semibold'}
-                                                        color={'black'}
-                                                    >
-                                                        Lunghezza
-                                                    </Text>
-                                                    <Text
-                                                        fontSize={'md'}
-                                                        fontWeight={'normal'}
-                                                        color={'#909090'}
-                                                        className='col-span-2 lg:col-span-3'
-                                                    >
-                                                        {product.info.length ? product.info.length : 'non disponibile'}
-                                                    </Text>
-                                                    {product.info.description && product.info.description?.length > 0 &&
-                                                        <>
-                                                            <Text
-                                                                fontSize={'md'}
-                                                                fontWeight={'semibold'}
-                                                                color={'black'}
-                                                            >
-                                                                Descrizione
-                                                            </Text>
-                                                            <Text
-                                                                fontSize={'md'}
-                                                                fontWeight={'normal'}
-                                                                color={'#909090'}
-                                                                className='col-span-2 lg:col-span-3'
-                                                            >   {
-                                                                    product.info.description
-                                                                }
-                                                            </Text>
-                                                        </>
-                                                    }
-                                                </Box>
+                                                    Materiale
+                                                </Text>
+                                                <Text
+                                                    fontSize={'md'}
+                                                    fontWeight={'normal'}
+                                                    color={'#909090'}
+                                                    className='col-span-2 lg:col-span-3'
+                                                >
+                                                    {product.info.materials?.length && product.info.materials?.length > 0 ? product.info.materials.join(', ') : 'non disponibile'}
+                                                </Text>
+                                                <Text
+                                                    fontSize={'md'}
+                                                    fontWeight={'semibold'}
+                                                    color={'black'}
+                                                >
+                                                    Fit
+                                                </Text>
+                                                <Text
+                                                    fontSize={'md'}
+                                                    fontWeight={'normal'}
+                                                    color={'#909090'}
+                                                    className='col-span-2 lg:col-span-3'
+                                                >
+                                                    {product.info.fit ? product.info.fit : 'non disponibile'}
+                                                </Text>
+                                                <Text
+                                                    fontSize={'md'}
+                                                    fontWeight={'semibold'}
+                                                    color={'black'}
+                                                >
+                                                    Lunghezza
+                                                </Text>
+                                                <Text
+                                                    fontSize={'md'}
+                                                    fontWeight={'normal'}
+                                                    color={'#909090'}
+                                                    className='col-span-2 lg:col-span-3'
+                                                >
+                                                    {product.info.length ? product.info.length : 'non disponibile'}
+                                                </Text>
+                                                {product.info.description && product.info.description?.length > 0 &&
+                                                    <>
+                                                        <Text
+                                                            fontSize={'md'}
+                                                            fontWeight={'semibold'}
+                                                            color={'black'}
+                                                        >
+                                                            Descrizione
+                                                        </Text>
+                                                        <Text
+                                                            fontSize={'md'}
+                                                            fontWeight={'normal'}
+                                                            color={'#909090'}
+                                                            className='col-span-2 lg:col-span-3'
+                                                        >   {
+                                                                product.info.description
+                                                            }
+                                                        </Text>
+                                                    </>
+                                                }
+                                            </Box>
 
-                                            </Disclosure.Panel>
-
-
-                                        </Transition>
-
+                                        </Disclosure.Panel>
                                     </Box>
                                 )}
                             </Disclosure>

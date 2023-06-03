@@ -145,7 +145,7 @@ const index = () => {
           <Loading />
         </div>
 
-        <div className={`md:p-3 space-y-4 m-auto ${loading ? 'hidden' : ''}`}>
+        <div className={`lg:min-w-[60vh] md:p-3 space-y-4 m-auto ${loading ? 'hidden' : ''}`}>
           {router.query?.callbackUrl && <Box
             padding={4}
             background={'#F2F2F2'}

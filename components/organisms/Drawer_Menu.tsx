@@ -215,7 +215,7 @@ const Drawer_Menu: React.FC<{ user: any, isOpen: boolean, closeDrawer: () => voi
                         className='text-center w-full '
                     >
                         <Button
-                            colorScheme={'orange'}
+                            variant="secondary"
                             className='w-11/12 m-auto mb-4 '
                             onClick={() => {
                                 setIsOpenHelpModal(true)

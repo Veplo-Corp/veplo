@@ -55,6 +55,8 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
         if (/\S+@\S+\.\S+/.test(email)) {
             return setisValidEmail(true)
         }
+        console.log('eccolo');
+
         setisValidEmail(false)
     }
 
@@ -145,7 +147,7 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
             </div>
             {type !== 'reset_password' &&
                 <div
-                    className='mb-3'
+                    className='mb-0'
                 >
                     <InputGroup
                         _hover={{
@@ -213,7 +215,7 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
                 type === 'registration' && account === 'user' &&
                 <>
                     <div
-                        className='mb-2'
+                        className='mb-2 mt-3'
                     >
                         <InputGroup
                             _hover={{
@@ -380,32 +382,51 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
             }
             {type !== 'reset_password' &&
                 <div className='w-full flex justify-end pt-2'>
-                    <BlackButton disabled={!isValidEmail || !isValidPassword || (type === 'registration' && account === 'user' ? (userInfo.name === '' || userInfo.surname === '' || userInfo.gender === '') : false)
-                    }
-                        heigth={12}
+
+                    <Button
+                        variant={'primary'}
+                        disabled={!isValidEmail || !isValidPassword || (type === 'registration' && account === 'user' ? (userInfo.name === '' || userInfo.surname === '' || userInfo.gender === '') : false)}
+                        height={12}
                         width={52}
-                        typeButton='submit' element={type == 'registration' ? 'registrati' : 'accedi'}
+                        type='submit'
                         borderRadius={10}
                         size={'md'}
-                    ></BlackButton>
+                        _disabled={{
+                            bg: 'primary.bg'
+                        }}
+                        _hover={{
+
+                            color: 'primary.text'
+                        }}
+
+                    >
+                        {type == 'registration' ? 'registrati' : 'accedi'}
+                    </Button>
                 </div>}
-            {type === 'reset_password' && <div className='w-full flex justify-end pt-2 md:pt-1' onClick={() => resetPassword(email)}>
-                <Button disabled={isValidEmail == null || false || isLoading} onClick={async () => {
-                    setisLoading(true)
-                    try {
-                        const result = await resetPassword(email)
-                        return addToast({ position: 'top', title: 'controlla la casella mail', description: 'ti abbiamo inviato una mail per resettare la password', status: 'success', duration: 5000, isClosable: true })
+            {type === 'reset_password' &&
+                <div className='w-full flex justify-end pt-2 md:pt-1' >
+                    <Button disabled={!isValidEmail || isLoading} onClick={async () => {
+                        setisLoading(true)
+                        try {
+                            const result = await resetPassword(email)
+                            return addToast({ position: 'top', title: 'controlla la casella mail', description: 'ti abbiamo inviato una mail per resettare la password', status: 'success', duration: 5000, isClosable: true })
 
-                    } catch (e) {
-                        console.log(e);
-                        setisLoading(false)
+                        } catch (e) {
+                            console.log(e);
+                            setisLoading(false)
+                        }
                     }
+                    }
+                        variant={'secondary'}
+                        _disabled={{
+                            bg: 'secondary.bg'
+                        }}
+                        _hover={{
 
-
-
-                }
-                } colorScheme={'orange'} borderRadius={10} size={'md'}>resetta password</Button>
-            </div>}
+                            color: 'secondary.text'
+                        }}
+                        borderRadius={10} size={'md'}>resetta password</Button>
+                </div>}
             <div className='flex mt-2 md:mt-4'>
                 {(type === 'registration') && <LoginButton />}
                 {(type === 'reset_password') && <LoginButton />}

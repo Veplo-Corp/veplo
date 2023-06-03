@@ -15,6 +15,7 @@ import VariationBoxList from '../molecules/VariationBoxList'
 import { sortShopsInCart } from '../utils/sortShopsInCart'
 import expirationTimeTokenControll from '../utils/expirationTimeTokenControll'
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
+import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals'
 
 const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, closeDrawer }) => {
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
@@ -271,16 +272,10 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                                         paddingInline={10}
                                         width={'full'}
                                         height={'fit-content'}
-                                        bg={'black.900'}
                                         color={'white'}
-                                        _hover={{ bg: 'black.900' }}
-                                        _focus={{
-                                            bg: 'black.900'
-                                        }}
-                                        _active={{
-                                            transform: 'scale(0.98)',
-                                        }}
-                                    >procedi {cart.total.toString().replace('.', ',')} €</Button>
+                                        variant="primary"
+
+                                    >procedi {formatNumberWithTwoDecimals(cart.total)} €</Button>
                                     <Divider
                                         colorScheme={'red'}
                                         size={'md'}

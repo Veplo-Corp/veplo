@@ -4,6 +4,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Cart, ProductVariation } from '../../src/interfaces/carts.interface'
 import { imageKitUrl } from '../utils/imageKitUrl'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
+import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals'
 
 const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation: ProductVariation) => void, deleteVariation: (variation: ProductVariation) => void }> = ({ variation, toProduct, deleteVariation }) => {
     return (
@@ -93,12 +94,12 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
                             >
                                 <p
                                     className={`${variation?.price.v2 && variation?.price?.v2 > 0 ? 'line-through  text-gray-400' : 'font-semibold'}`}
-                                > {variation.price.v1.toString().replace('.', ',')} €
+                                > {formatNumberWithTwoDecimals(variation.price.v1)} €
                                 </p>
                                 {variation?.price.v2 && variation.price.v2 > 0 &&
                                     <p
                                         className='font-semibold ml-1'
-                                    >{variation?.price.v2 && variation.price.v2.toString().replace('.', ',')} € </p>
+                                    >{variation?.price.v2 && formatNumberWithTwoDecimals(variation.price.v2)} € </p>
                                 }
                             </Box>
                             <Box
@@ -111,12 +112,12 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
                                         px={2}
                                         py={1}
                                         width={'fit-content'}
-                                        color={'white'}
-                                        bgColor={'#38A736'}
+                                        color={'secondary.text'}
+                                        bgColor={'secondary.bg'}
                                         borderRadius={'full'}
                                         fontSize={'2xs'}
                                         height={'fit-content'}
-                                    >- {variation.price.discountPercentage.toString().replace('.', ',')} %
+                                    >- {formatNumberWithTwoDecimals(variation.price.discountPercentage)} %
                                     </Tag>}
                             </Box>
 

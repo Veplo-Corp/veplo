@@ -4,6 +4,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { ProductVariationInOrder } from '../../src/interfaces/order.interface'
 import { imageKitUrl } from '../utils/imageKitUrl'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
+import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals'
 
 const ProductVariationInOrder: FC<{ variation: ProductVariationInOrder }> = ({ variation }) => {
     return (
@@ -59,7 +60,7 @@ const ProductVariationInOrder: FC<{ variation: ProductVariationInOrder }> = ({ v
                         >
                             <p
                                 className={`${variation?.price.v2 && variation?.price?.v2 > 0 ? 'line-through  text-gray-400' : 'font-semibold'}`}
-                            > {variation.price.v1.toString().replace('.', ',')} €
+                            > {formatNumberWithTwoDecimals(variation.price.v1)} €
                             </p>
                             {variation?.price.v2 && variation.price.v2 > 0 &&
                                 <p
@@ -83,7 +84,7 @@ const ProductVariationInOrder: FC<{ variation: ProductVariationInOrder }> = ({ v
                                     borderRadius={'full'}
                                     fontSize={'2xs'}
                                     height={'fit-content'}
-                                >- {variation.price.discountPercentage.toString().replace('.', ',')} %
+                                >- {formatNumberWithTwoDecimals(variation.price.discountPercentage)} %
                                 </Tag>}
                         </Box>
                     </Box>
