@@ -497,7 +497,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                 </Text>
 
                                                 {element.name === category && <Box
-                                                    className={`h-[8px] bg-red-500 mt-[-12px]`}>
+                                                    className={`h-[8px] bg-[#FF5A78] mt-[-12px]`}>
                                                 </Box>}
                                             </Link>
 
