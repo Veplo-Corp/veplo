@@ -260,7 +260,6 @@ const index = () => {
                                         bg: 'primary.bg'
                                     }}
                                     _hover={{
-
                                         color: 'primary.text'
                                     }}
                                     disabled={isDisabled}
