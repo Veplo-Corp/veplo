@@ -274,7 +274,6 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                                         height={'fit-content'}
                                         color={'white'}
                                         variant="primary"
-
                                     >procedi {formatNumberWithTwoDecimals(cart.total)} €</Button>
                                     <Divider
                                         colorScheme={'red'}
