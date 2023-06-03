@@ -272,29 +272,37 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
                                 position={'absolute'}
                                 bottom={0}
                                 right={0}
-                                paddingX={[7, 7]}
+                                minW={20}
+                                paddingX={3}
+                                display={'flex'}
+
                                 paddingY={product.price?.v2 ? '6px' : '12px'}
                                 background={'primary.bg'}
                                 roundedTopLeft={'15px'}
 
                             >
-                                <Text
-                                    fontSize={['22px', '18px']}
-                                    fontWeight={'bold'}
-                                    color={'primary.text'}
+                                <Box
+                                    mx={'auto'}
                                 >
-                                    {product.price?.v2 ? formatNumberWithTwoDecimals(Number(product.price?.v2)) : formatNumberWithTwoDecimals(Number(product.price?.v1))}€
-                                </Text>
-                                {product.price?.v2 && <Text
-                                    mt={-2}
-                                    fontSize={['16px', '14px']}
-                                    fontWeight={'medium'}
-                                    color={'primary.secondaryText'}
-                                    decoration={'line-through'}
-                                >
-                                    {formatNumberWithTwoDecimals(Number(product.price?.v1))}€
+                                    <Text
+                                        fontSize={['22px', '18px']}
+                                        fontWeight={'bold'}
+                                        color={'primary.text'}
+                                    >
+                                        {product.price?.v2 ? formatNumberWithTwoDecimals(Number(product.price?.v2)) : formatNumberWithTwoDecimals(Number(product.price?.v1))}€
+                                    </Text>
+                                    {product.price?.v2 && <Text
+                                        mt={-2}
+                                        fontSize={['16px', '14px']}
+                                        fontWeight={'medium'}
+                                        color={'primary.secondaryText'}
+                                        decoration={'line-through'}
+                                    >
+                                        {formatNumberWithTwoDecimals(Number(product.price?.v1))}€
 
-                                </Text>}
+                                    </Text>}
+                                </Box>
+
                             </Box>
 
 
