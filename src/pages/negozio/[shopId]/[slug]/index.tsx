@@ -273,7 +273,7 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
             </Box>
 
             {productsFounded &&
-                <div className="grid grid-cols-1 px-3 lg:px-0 md:grid-cols-3 gap-5 w-full lg:w-8/12 mx-auto">
+                <div className="grid grid-cols-1 px-3 lg:px-0 md:grid-cols-3 gap-5 w-full lg:w-8/12 mx-auto mb-10">
                     {productsFounded.map((product) => {
                         return (
                             <div

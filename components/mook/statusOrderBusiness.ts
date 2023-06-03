@@ -118,7 +118,20 @@ export const STATUS_ORDER_SHOP = [
             text: 'Reso accettato',
             color: 'green',
         },
-        description: 'hai ricevuto il prodotto in reso',
+        description: 'hai ricevuto il reso',
+    },
+    //*business riceve il reso e rifiuta reso
+    {
+        code: 'RET03',
+        payment: {
+            text: 'Pagato',
+            color: 'blackAlpha'
+        },
+        orderStatus: {
+            text: 'Reso rifiutato',
+            color: 'blackAlpha',
+        },
+        description: 'hai rifiutato il reso',
     },
     //*rimborsato cliente per reso
     {
