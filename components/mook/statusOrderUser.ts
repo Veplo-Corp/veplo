@@ -54,6 +54,12 @@ export const STATUS = [
         text: 'Reso ricevuto e accettato',
         color: 'green',
     },
+    //*cliente richiede rimborso e fa il reso
+    {
+        code: 'RET03',
+        text: 'Reso rifiutato',
+        color: 'blue',
+    },
     //*rimborsato cliente per reso
     {
         code: 'REF02',

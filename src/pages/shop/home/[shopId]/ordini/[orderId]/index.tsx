@@ -16,6 +16,7 @@ import { Order } from '../../../../../../interfaces/order.interface'
 import ADD_CODE_AND_COURIER_TO_ORDER from '../../../../../../lib/apollo/mutations/addCodeAndCourierToOrder'
 import ORDER_DELETED_BY_SHOP from '../../../../../../lib/apollo/mutations/orderDeletedByShop'
 import RETURNED_ORDER_HAS_ARRIVED from '../../../../../../lib/apollo/mutations/returnedOrderHasArrived'
+import DENY_RETURN from '../../../../../../lib/apollo/mutations/denyReturn'
 
 
 import GET_ORDER from '../../../../../../lib/apollo/queries/getOrder'
@@ -106,6 +107,26 @@ const index = () => {
 
     })
 
+    const [denyReturn] = useMutation(DENY_RETURN, {
+        update(cache, el, query) {
+            console.log(cache);
+            console.log(el);
+            console.log(query);
+            const OrderCacheId = cache.identify({ id: query.variables?.orderId, __typename: 'Order' })
+            console.log(OrderCacheId);
+            cache.modify({
+                id: OrderCacheId, //productId
+                fields: {
+                    status(/* cachedvalue */) {
+                        return "RET03"
+                    },
+                },
+                broadcast: false // Include this to prevent automatic query refresh
+            });
+        }
+
+    })
+
 
 
 
@@ -175,6 +196,17 @@ const index = () => {
             console.log(error);
 
         }
+    }
+
+    const handleDenyReturn = () => {
+        setIsOpenModalRejectReturn(false)
+        denyReturn({
+            variables: {
+                orderId: order?.id,
+            }
+        })
+        addToast({ position: 'top', title: 'Reso rifiutato con successo', status: 'success', duration: 5000, isClosable: false })
+        router.back()
     }
 
     return (
@@ -722,7 +754,7 @@ const index = () => {
                         colorScheme='red'>Annulla
                     </Button>
                     <Button
-                        onClick={() => { setIsOpenModalRejectReturn(false) }}
+                        onClick={handleDenyReturn}
                         variant={'solid'}
                         colorScheme='green'>Rifiuta reso
                     </Button>
