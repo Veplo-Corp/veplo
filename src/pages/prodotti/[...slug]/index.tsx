@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
-import { Box, Button, HStack, Input, InputGroup, Skeleton, SkeletonCircle, SkeletonText, Stack, Text, VStack, color } from '@chakra-ui/react';
+import { Box, Button, HStack, Input, InputGroup, Select, Skeleton, SkeletonCircle, SkeletonText, Stack, Text, VStack, color } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
@@ -449,11 +449,10 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 image={''}
                 description={`Tutto l'abbigliamento ${gender === 'f' ? 'donna' : 'uomo'} - ${category === '' ? 'Vestiti' : category} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
             />
-            <div className='relative'>
-                <Desktop_Layout>
-                    <Shop_not_Allowed>
+            <div className='relative  min-h-[120vh]'>
+                <Shop_not_Allowed>
 
-                        {/* {gender &&
+                    {/* {gender &&
                     <Text
                         mt={5}
                         fontSize={'lg'}
@@ -463,353 +462,377 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                         {gender === 'f' ? 'Donna' : 'Uomo'} | {category ? category : "tutto l'abbligliamento"}
                     </Text>
                 } */}
-
-
-                        <Box width={'full'}
-                            display={'flex'}
+                    <Box
+                        className='lg:w-10/12 mx-2 lg:mx-auto'
+                    >
+                        <Box
+                            minWidth={'3xs'}
+                            className='flex mt-2 lg:mt-4 gap-4 lg:gap-5 overflow-x-auto'
                         >
-                            <Box
-                                minWidth={'3xs'}
-                                className='hidden lg:table lg:mt-4 ml-2'
-                            >
-                                {Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.map(element => {
-
-
-                                    return (
-                                        <Box
-                                            key={element.name}
-                                            mb={4}
-                                            width={'fit-content'}
+                            {Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.map(element => {
+                                return (
+                                    <Box
+                                        key={element.name}
+                                        mb={4}
+                                        className='whitespace-nowrap'
+                                    >
+                                        <Link
+                                            prefetch={false}
+                                            href={'/prodotti/' + (gender == 'f' ? 'donna' : 'uomo') + '-' + element.url + '/tutto/rilevanza'}
                                         >
-                                            <Link
-                                                prefetch={false}
-                                                href={'/prodotti/' + (gender == 'f' ? 'donna' : 'uomo') + '-' + element.url + '/tutto/rilevanza'}
+                                            <Text
+                                                textAlign={'start'}
+                                                cursor={'pointer'}
+                                                color={'secondaryBlack.text'}
+                                                fontSize={'14px'}
+                                                className={`hover:underline hover:underline-offset-2  ${element.name === category ? 'underline underline-offset-2 font-extrabold' : 'font-medium'}`}
                                             >
-                                                <Text
-                                                    textAlign={'start'}
-                                                    cursor={'pointer'}
-                                                    fontWeight={'bold'}
-                                                    fontSize={'md'}
-                                                    className='hover:underline'
-                                                >
-                                                    {element.name}
+                                                {element.name}
 
-                                                </Text>
+                                            </Text>
 
-                                                {element.name === category && <Box
-                                                    className={`h-[8px] bg-[#FF5A78] mt-[-12px]`}>
-                                                </Box>}
-                                            </Link>
+                                        </Link>
+                                    </Box>
+                                )
+                            })}
+                        </Box>
+                        <Text
+                            color={'black'}
+                            fontSize={'xl'}
+                            fontWeight={'black'}
+                            mb={6}
+                            mt={8}
+                        >
+                            {microCategory ? toUpperCaseFirstLetter(microCategory) : "Tutto l'abbigliamento"}
+                        </Text>
+                        <Box
 
-
-                                        </Box>
-                                    )
-                                })}
-                            </Box>
-
-                            <Box
-                                className='w-full relative lg:mt-2'
+                            justifyContent={'space-between'}
+                            className='hidden lg:flex'
+                        >
+                            <div
+                                className='mb-12 overflow-x-scroll lg:overflow-hidden flex gap-4'
                             >
-
-                                <div
-                                    className='mb-2 overflow-x-scroll lg:overflow-hidden flex gap-4 pb-3'
-                                >
-
-                                    {microcategory.length > 0 && <Button
-                                        minW={'fit-content'}
-                                        position={'relative'}
-                                        bg={slug[1] !== 'tutto' ? 'black' : 'white'}
-                                        color={slug[1] !== 'tutto' ? 'white' : 'black'}
-                                        _hover={
-                                            {
-                                                bg: slug[1] !== 'tutto' ? 'black' : 'white'
-                                            }
-                                        }
-                                        _focus={{
+                                {microcategory.length > 0 && <Button
+                                    minW={'fit-content'}
+                                    position={'relative'}
+                                    bg={slug[1] !== 'tutto' ? 'black' : 'white'}
+                                    color={slug[1] !== 'tutto' ? 'white' : 'secondaryBlack.text'}
+                                    _hover={
+                                        {
                                             bg: slug[1] !== 'tutto' ? 'black' : 'white'
-                                        }}
-                                        borderWidth={1}
-                                        borderColor={'#DFDFDF'}
-                                        borderRadius={'10px'}
-                                        padding={6}
-                                        fontWeight={'bold'}
-
-                                        _active={{
-                                            transform: 'scale(0.98)',
-                                        }}
-                                        fontSize={'18px'}
-                                        onClick={() => {
-                                            setIsOpen(prevstate => {
-                                                return {
-                                                    ...prevstate,
-                                                    category: true
-                                                }
-                                            })
-                                        }}
-                                    >
-                                        {slug[1] !== 'tutto' ? microCategory : 'Categoria'}
-                                    </Button>}
-                                    {sizeProduct && sizeProduct.length > 0 && <Button
-
-                                        minW={'fit-content'}
-                                        position={'relative'}
-
-                                        borderWidth={1}
-                                        borderColor={'#DFDFDF'}
-                                        borderRadius={'10px'}
-                                        padding={6}
-                                        bg={filter.sizes ? 'black' : 'white'}
-                                        color={filter.sizes ? 'white' : 'black'}
-                                        _hover={
-                                            {
-                                                bg: filter.sizes ? 'black' : 'white'
-                                            }
                                         }
-                                        _focus={{
-                                            bg: filter.sizes ? 'black' : 'white'
-                                        }}
-                                        _active={{
-                                            transform: 'scale(0.98)',
-                                        }}
-                                        fontSize={'18px'}
-                                        fontWeight={'bold'}
-                                        onClick={() => {
-                                            setIsOpen(prevstate => {
-                                                return {
-                                                    ...prevstate,
-                                                    size: true
-                                                }
-                                            })
-                                        }}
-                                    >
-                                        {filter.sizes ? 'taglia ' + filter.sizes[0].toLocaleUpperCase() : 'Taglia'}
-                                    </Button>
                                     }
-                                    <Button
-                                        minW={'fit-content'}
-                                        position={'relative'}
-                                        bg={filter.colors && filter.colors?.length > 0 ? 'black' : 'white'}
-                                        color={filter.colors && filter.colors?.length > 0 ? 'white' : 'black'}
-                                        _hover={
-                                            {
-                                                bg: filter.colors && filter.colors?.length > 0 ? 'black' : 'white'
+                                    _focus={{
+                                        bg: slug[1] !== 'tutto' ? 'black' : 'white'
+                                    }}
+                                    borderWidth={1}
+                                    borderColor={'secondaryBlack.borderColor'}
+                                    borderRadius={'10px'}
+                                    height={12}
+                                    paddingX={8}
+                                    fontWeight={'bold'}
+
+                                    _active={{
+                                        transform: 'scale(0.98)',
+                                    }}
+                                    fontSize={'16px'}
+                                    onClick={() => {
+                                        setIsOpen(prevstate => {
+                                            return {
+                                                ...prevstate,
+                                                category: true
                                             }
+                                        })
+                                    }}
+                                >
+                                    {slug[1] !== 'tutto' ? microCategory : 'Categoria'}
+                                </Button>}
+                                {sizeProduct && sizeProduct.length > 0 && <Button
+                                    minW={'fit-content'}
+                                    position={'relative'}
+                                    borderWidth={1}
+                                    borderColor={'secondaryBlack.borderColor'}
+                                    borderRadius={'10px'}
+                                    height={12}
+                                    paddingX={8}
+
+                                    bg={filter.sizes ? 'black' : 'white'}
+                                    color={filter.sizes ? 'white' : 'secondaryBlack.text'}
+                                    _hover={
+                                        {
+                                            bg: filter.sizes ? 'black' : 'white'
                                         }
-                                        _focus={{
+                                    }
+                                    _focus={{
+                                        bg: filter.sizes ? 'black' : 'white'
+                                    }}
+                                    _active={{
+                                        transform: 'scale(0.98)',
+                                    }}
+                                    fontSize={'16px'}
+                                    fontWeight={'bold'}
+                                    onClick={() => {
+                                        setIsOpen(prevstate => {
+                                            return {
+                                                ...prevstate,
+                                                size: true
+                                            }
+                                        })
+                                    }}
+                                >
+                                    {filter.sizes ? 'taglia ' + filter.sizes[0].toLocaleUpperCase() : 'Taglia'}
+                                </Button>
+                                }
+                                <Button
+                                    minW={'fit-content'}
+                                    position={'relative'}
+                                    bg={filter.colors && filter.colors?.length > 0 ? 'black' : 'white'}
+                                    color={filter.colors && filter.colors?.length > 0 ? 'white' : 'secondaryBlack.text'}
+                                    _hover={
+                                        {
                                             bg: filter.colors && filter.colors?.length > 0 ? 'black' : 'white'
-                                        }}
+                                        }
+                                    }
+                                    _focus={{
+                                        bg: filter.colors && filter.colors?.length > 0 ? 'black' : 'white'
+                                    }}
 
-                                        borderWidth={1}
-                                        borderColor={'#DFDFDF'}
-                                        borderRadius={'10px'}
-                                        padding={6}
-                                        fontWeight={'bold'}
-                                        _active={{
-                                            transform: 'scale(0.98)',
-                                        }}
-                                        fontSize={'18px'}
-                                        onClick={() => {
-                                            setIsOpen(prevstate => {
-                                                return {
-                                                    ...prevstate,
-                                                    color: true
-                                                }
-                                            })
-                                        }}
-                                    >
-                                        {filter.colors ? filter.colors[0].toLocaleLowerCase() : 'Colore'}
-                                    </Button>
-                                    {false && <Button
-                                        minW={'fit-content'}
-                                        bg={'white'}
-                                        position={'relative'}
-                                        color={'black'}
-                                        _hover={{ bg: 'white' }}
-                                        borderWidth={1}
-                                        borderColor={'#DFDFDF'}
-                                        borderRadius={'10px'}
-                                        padding={6}
-                                        _focus={{
-                                            bg: 'white'
-                                        }}
-                                        _active={{
-                                            transform: 'scale(0.98)',
-                                        }}
-                                        fontSize={'18px'}
-                                        onClick={() => {
-                                            setIsOpen(prevstate => {
-                                                return {
-                                                    ...prevstate,
-                                                    orderBy: true
-                                                }
-                                            })
-                                        }}
-                                    >
-                                        Ordina
-                                    </Button>}
-                                    <Button
-                                        minW={'fit-content'}
-                                        bg={filter.maxPrice || filter.minPrice ? 'black' : 'white'}
-                                        color={filter.maxPrice || filter.minPrice ? 'white' : 'black'}
-                                        _hover={
-                                            {
-                                                bg: filter.maxPrice || filter.minPrice ? 'black' : 'white'
+                                    borderWidth={1}
+                                    borderColor={'secondaryBlack.borderColor'}
+                                    borderRadius={'10px'}
+                                    height={12}
+                                    paddingX={8}
+                                    fontWeight={'bold'}
+                                    _active={{
+                                        transform: 'scale(0.98)',
+                                    }}
+                                    fontSize={'16px'}
+                                    onClick={() => {
+                                        setIsOpen(prevstate => {
+                                            return {
+                                                ...prevstate,
+                                                color: true
                                             }
-                                        }
-                                        _focus={{
+                                        })
+                                    }}
+                                >
+                                    {filter.colors ? toUpperCaseFirstLetter(filter.colors[0].toLocaleLowerCase()) : 'Colore'}
+                                </Button>
+                                {false && <Button
+                                    minW={'fit-content'}
+                                    bg={'white'}
+                                    position={'relative'}
+                                    color={'black'}
+                                    _hover={{ bg: 'white' }}
+                                    borderWidth={1}
+                                    borderColor={'secondaryBlack.borderColor'}
+                                    borderRadius={'10px'}
+                                    height={12}
+                                    paddingX={8}
+                                    _focus={{
+                                        bg: 'white'
+                                    }}
+                                    _active={{
+                                        transform: 'scale(0.98)',
+                                    }}
+                                    fontSize={'16px'}
+                                    onClick={() => {
+                                        setIsOpen(prevstate => {
+                                            return {
+                                                ...prevstate,
+                                                orderBy: true
+                                            }
+                                        })
+                                    }}
+                                >
+                                    Ordina
+                                </Button>}
+                                <Button
+                                    minW={'fit-content'}
+                                    bg={filter.maxPrice || filter.minPrice ? 'black' : 'white'}
+                                    color={filter.maxPrice || filter.minPrice ? 'white' : 'secondaryBlack.text'}
+                                    _hover={
+                                        {
                                             bg: filter.maxPrice || filter.minPrice ? 'black' : 'white'
-                                        }}
-                                        borderWidth={1}
-                                        borderColor={'#DFDFDF'}
-                                        borderRadius={'10px'}
-                                        padding={6}
-                                        fontWeight={'bold'}
-
-                                        _active={{
-                                            transform: 'scale(0.98)',
-                                        }}
-                                        fontSize={'18px'}
-                                        onClick={() => {
-                                            setIsOpen(prevstate => {
-                                                return {
-                                                    ...prevstate,
-                                                    price: true
-                                                }
-                                            })
-                                        }}
-                                    >
-                                        {filter.minPrice ? 'da ' + filter.minPrice + '€ ' : ''}
-                                        {filter.maxPrice ? 'fino a ' + filter.maxPrice + '€' : ''}
-                                        {!filter.minPrice && !filter.maxPrice ? 'Prezzo' : ''}
-                                    </Button>
-                                </div>
-
-                                {!loading ?
-                                    (<InfiniteScroll
-                                        dataLength={productsFounded.length}
-                                        next={fetchMoreData}
-                                        hasMore={hasMoreData}
-                                        loader={
-                                            <>
-                                                {productsFounded[3] && <Text textAlign={'center'}
-                                                    fontWeight={'bold'}
-                                                >
-                                                    caricamento
-                                                </Text>}
-                                            </>
                                         }
-                                        endMessage={
-                                            <></>
+                                    }
+                                    _focus={{
+                                        bg: filter.maxPrice || filter.minPrice ? 'black' : 'white'
+                                    }}
+                                    borderWidth={1}
+                                    borderColor={'secondaryBlack.borderColor'}
+                                    borderRadius={'10px'}
+                                    height={12}
+                                    paddingX={8}
+                                    fontWeight={'bold'}
 
-                                        }
-                                    >
-                                        <div className={` flex items-center justify-center`}>
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 md:gap-5 gap-y-5 w-full">
-                                                {productsFounded.length > 0 ?
-                                                    (
-                                                        <AnimatePresence>
-                                                            {productsFounded.map((product: Product) => {
+                                    _active={{
+                                        transform: 'scale(0.98)',
+                                    }}
+                                    fontSize={'16px'}
+                                    onClick={() => {
+                                        setIsOpen(prevstate => {
+                                            return {
+                                                ...prevstate,
+                                                price: true
+                                            }
+                                        })
+                                    }}
+                                >
+                                    {filter.minPrice ? 'da ' + filter.minPrice + '€ ' : ''}
+                                    {filter.maxPrice ? 'fino a ' + filter.maxPrice + '€' : ''}
+                                    {!filter.minPrice && !filter.maxPrice ? 'Prezzo' : ''}
+                                </Button>
+                            </div>
+                            <Select
+                                width={'fit-content'}
+                                size={'lg'}
+                                borderRadius={'10px'}
+                                bg={'#F2F2F2'}
+                                focusBorderColor="transparent"
+                                borderColor={'#F2F2F2'}
+                                color={'secondaryBlack.text'}
+                                fontWeight={'semibold'}
+                                fontSize={'16px'}
+                                height={12}
+                            >
+                                <option value='Rilevanza'>Rilevanza</option>
+                                <option value='Ultime uscite'>Ultime uscite</option>
+                                <option value='Prezzo crescente'>Prezzo crescente</option>
+                                <option value='Prezzo decrescente'>Prezzo decrescente</option>
+                            </Select>
+                        </Box>
 
-                                                                const { colors } = router.query
-                                                                return (
-                                                                    <motion.div
-                                                                        key={product.id}
-                                                                        variants={listItemVariants}
-                                                                        initial="hidden"
-                                                                        animate="visible"
-                                                                        exit="hidden"
-                                                                    >
-                                                                        <Box_Dress handleEventSelectedDress={() => {
-                                                                            sessionStorage.setItem("keyProductsSession", window.history.state.key)
-                                                                            sessionStorage.setItem("productsFounded", JSON.stringify(productsFounded))
-                                                                            sessionStorage.setItem('scrollPositionProducts', window.pageYOffset.toString());
-                                                                        }} showStoreHeader={true} product={product} color={typeof colors === 'string' ? colors : undefined}></Box_Dress>
 
-                                                                    </motion.div>
-                                                                )
-                                                            })}
-                                                        </AnimatePresence>
-                                                    )
-                                                    : (
-                                                        <></>
-                                                    )
-                                                }
 
-                                            </div>
+                        {!loading ?
+                            (<InfiniteScroll
+                                dataLength={productsFounded.length}
+                                next={fetchMoreData}
+                                hasMore={hasMoreData}
+                                loader={
+                                    <>
+                                        {productsFounded[3] && <Text textAlign={'center'}
+                                            fontWeight={'bold'}
+                                        >
+                                            caricamento
+                                        </Text>}
+                                    </>
+                                }
+                                endMessage={
+                                    <></>
 
-                                        </div>
-                                    </InfiniteScroll>)
-                                    : (
-                                        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-5 gap-y-5 w-full">
-                                            {[1, 2, 3, 4].map((index) => {
-                                                return (
-                                                    <Box
-                                                        key={index}
-                                                    >
-                                                        <HStack
-                                                            mb={3}
-                                                            padding='0' bg='white' display={'flex'} gap={1.5}>
-                                                            <SkeletonCircle size='14' />
-                                                            <Box
-                                                                margin={'auto'}
+                                }
+                            >
+                                <div className={` flex items-center justify-center`}>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 md:gap-5 gap-y-5 w-full">
+                                        {productsFounded.length > 0 ?
+                                            (
+                                                <AnimatePresence>
+                                                    {productsFounded.map((product: Product) => {
+
+                                                        const { colors } = router.query
+                                                        return (
+                                                            <motion.div
+                                                                key={product.id}
+                                                                variants={listItemVariants}
+                                                                initial="hidden"
+                                                                animate="visible"
+                                                                exit="hidden"
                                                             >
-                                                                <SkeletonText
-                                                                    width={[56, 48]}
+                                                                <Box_Dress handleEventSelectedDress={() => {
+                                                                    sessionStorage.setItem("keyProductsSession", window.history.state.key)
+                                                                    sessionStorage.setItem("productsFounded", JSON.stringify(productsFounded))
+                                                                    sessionStorage.setItem('scrollPositionProducts', window.pageYOffset.toString());
+                                                                }} showStoreHeader={true} product={product} color={typeof colors === 'string' ? colors : undefined}></Box_Dress>
 
-                                                                    noOfLines={1} skeletonHeight={'3'} />
-                                                                <SkeletonText mt='2'
-                                                                    width={[36, 28]}
+                                                            </motion.div>
+                                                        )
+                                                    })}
+                                                </AnimatePresence>
+                                            )
+                                            : (
+                                                <></>
+                                            )
+                                        }
 
-                                                                    noOfLines={1} skeletonHeight={'2.5'} />
-                                                            </Box>
+                                    </div>
 
-                                                        </HStack>
-                                                        <Skeleton
-                                                            startColor={'gray.100'}
-                                                            endColor={'gray.300'}
+                                </div>
+                            </InfiniteScroll>)
+                            : (
+                                <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-5 gap-y-5 w-full">
+                                    {[1, 2, 3, 4].map((index) => {
+                                        return (
+                                            <Box
+                                                key={index}
+                                            >
+                                                <HStack
+                                                    mb={3}
+                                                    padding='0' bg='white' display={'flex'} gap={1.5}>
+                                                    <SkeletonCircle size='14' />
+                                                    <Box
+                                                        margin={'auto'}
+                                                    >
+                                                        <SkeletonText
+                                                            width={[56, 48]}
 
-                                                            //height={['250px', '150', '500px']}
-                                                            className={'h-[450px] lg:h-[350px] xl:h-[400px]'}
-                                                            borderRadius={'3xl'}
-                                                        />
+                                                            noOfLines={1} skeletonHeight={'3'} />
+                                                        <SkeletonText mt='2'
+                                                            width={[36, 28]}
+
+                                                            noOfLines={1} skeletonHeight={'2.5'} />
                                                     </Box>
 
-                                                )
-                                            })}
+                                                </HStack>
+                                                <Skeleton
+                                                    startColor={'gray.100'}
+                                                    endColor={'gray.300'}
 
-                                        </div>
-                                    )
-                                }
-                                {
-                                    !loading && productsFounded.length <= 0 &&
-                                    <Box
-                                        mt={[10, 20]}
-                                        display={'flex'}
-                                        color={'#707070'}
-                                        fontWeight={'extrabold'}
-                                        textAlign={'center'}
-                                        fontSize={['2xl', '3xl']}
-                                        mx={10}
+                                                    //height={['250px', '150', '500px']}
+                                                    className={'h-[450px] lg:h-[350px] xl:h-[400px]'}
+                                                    borderRadius={'3xl'}
+                                                />
+                                            </Box>
+
+                                        )
+                                    })}
+
+                                </div>
+                            )
+                        }
+                        {
+                            !loading && productsFounded.length <= 0 &&
+                            <Box
+                                mt={[10, 20]}
+                                display={'flex'}
+                                color={'#707070'}
+                                fontWeight={'extrabold'}
+                                textAlign={'center'}
+                                fontSize={['2xl', '3xl']}
+                                mx={10}
+                            >
+                                <Box
+                                    marginX={'auto'}
+                                >
+                                    <img src="/error/cryingBoy.svg" className="w-32 md:w-48 mx-auto" alt="" />
+                                    <Text
+                                        mt={[6, 3]}
                                     >
-                                        <Box
-                                            marginX={'auto'}
-                                        >
-                                            <img src="/error/cryingBoy.svg" className="w-32 md:w-48 mx-auto" alt="" />
-                                            <Text
-                                                mt={[6, 3]}
-                                            >
-                                                Nessun prodotto trovato
-                                            </Text>
-                                        </Box>
-                                    </Box>}
-                            </Box>
+                                        Nessun prodotto trovato
+                                    </Text>
+                                </Box>
+                            </Box>}
 
 
 
-                        </Box>
-                    </Shop_not_Allowed>
 
-                </Desktop_Layout >
+
+                    </Box>
+                </Shop_not_Allowed>
+
+
                 {/* {gender && <FIlter_Button gender={gender} macrocategory={category ? category : "Tutto l'abbigliamento"} />} */}
 
                 {/* Modal Categorie */}
@@ -1090,10 +1113,10 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                         marginTop={4}
                     >
 
-                        {/* <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} /> */}
+                        {/* <InputLeftAddon rounded={10}    height={12} children='€' paddingInline={6} /> */}
                         <Input
                             rounded={10}
-                            paddingY={6}
+                            height={12}
                             borderWidth={0}
                             autoComplete='off'
                             type="number"
@@ -1128,10 +1151,10 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             -
                         </span>
 
-                        {/* <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} /> */}
+                        {/* <InputLeftAddon rounded={10}    height={12} children='€' paddingInline={6} /> */}
                         <Input
                             rounded={10}
-                            paddingY={6}
+                            height={12}
                             autoComplete='off'
                             type="number"
                             value={filter.maxPrice || ""}

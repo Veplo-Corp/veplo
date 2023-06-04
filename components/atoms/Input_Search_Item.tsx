@@ -20,7 +20,7 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: (text: string)
     }
 
     return (
-        <div className='w-auto md:w-56 lg:w-56 xl:w-72' >
+        <div className='w-auto md:w-56 xl:w-96' >
             <InputGroup>
                 <Input
                     type='text'
@@ -41,7 +41,7 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: (text: string)
                     py={2}
                     pl={4}
                     size='md'
-                    fontSize={'18px'}
+                    fontSize={'md'}
                     focusBorderColor='gray.300'
                     fontWeight={'semibold'}
                     bg={'#F2F2F2'}
