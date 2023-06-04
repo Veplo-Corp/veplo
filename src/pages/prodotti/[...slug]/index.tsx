@@ -34,6 +34,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Shop_not_Allowed from '../../../../components/utils/Shop_not_Allowed';
 import NoIndexSeo from '../../../../components/organisms/NoIndexSeo';
 import { Filter } from 'iconoir-react';
+import DrawerFilter from '../../../../components/organisms/DrawerFilter';
 
 
 const RANGE = 2
@@ -181,6 +182,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     const [getProducts, productsFounder] = useLazyQuery(GET_PRODUCTS);
     const [microcategoryTypes, setMicrocategoryTypes] = useState<string[]>([])
     const [microcategory, setMicrocategory] = useState<string>()
+    const [drawerFilter, setDrawerFilter] = useState(true)
 
     const [sizeProduct, setSizeProduct] = useState<string>();
     const [isOpen, setIsOpen] = useState<PropsOpenModal>({
@@ -520,11 +522,13 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     gap={2}
                                 >
                                     <Button
+
                                         height={12}
                                         variant={'grayPrimary'}
                                         gap={1}
                                         paddingX={4}
                                         borderRadius={'10px'}
+                                        onClick={() => { setDrawerFilter(true) }}
                                     >
                                         <Filter
                                             className='w-6 h-6'
@@ -1285,6 +1289,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
                 </ModalReausable>
             </div >
+            <DrawerFilter isOpen={drawerFilter} closeDrawer={() => { setDrawerFilter(false) }} />
         </>
 
 
