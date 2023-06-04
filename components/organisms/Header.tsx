@@ -190,7 +190,7 @@ const Header = () => {
                                             <Popover.Button
                                                 className={`
                                                     ${open ? '' : 'text-opacity-90'}
-                                                    group inline-flex items-center rounded-md px-3 py-2 text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+                                                    group inline-flex items-center rounded-md px-1 py-2 text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
                                             >
                                                 <Text
                                                     fontSize={'lg'}
@@ -215,7 +215,7 @@ const Header = () => {
                                                 leaveTo="opacity-0 translate-y-1"
                                             >
                                                 <Popover.Panel
-                                                    className="left-2 top-10 py-2 px-4 absolute grid grid-cols-1 cursor-pointer z-10 min-w-[15vh] bg-white border border-gray-200 rounded-xl">
+                                                    className="left-1 top-10 py-2 px-4 absolute grid grid-cols-1 cursor-pointer z-10 min-w-[15vh] bg-white border border-gray-200 rounded-xl">
 
                                                     {['Donna', 'Uomo'].map((element) => {
                                                         return (
