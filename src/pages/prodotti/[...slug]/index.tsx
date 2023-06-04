@@ -182,7 +182,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     const [getProducts, productsFounder] = useLazyQuery(GET_PRODUCTS);
     const [microcategoryTypes, setMicrocategoryTypes] = useState<string[]>([])
     const [microcategory, setMicrocategory] = useState<string>()
-    const [drawerFilter, setDrawerFilter] = useState(true)
+    const [drawerFilter, setDrawerFilter] = useState(false)
+
 
     const [sizeProduct, setSizeProduct] = useState<string>();
     const [isOpen, setIsOpen] = useState<PropsOpenModal>({
@@ -507,7 +508,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                         <Text
                             color={'black'}
                             fontSize={'xl'}
-                            fontWeight={'black'}
+                            fontWeight={'extrabold'}
                             mb={[3, 6]}
                             mt={[4, 8]}
                         >
