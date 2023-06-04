@@ -495,9 +495,9 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                         image={imageKitUrl(variationSelected.photos[0], 171, 247)}
                         description={`${product.name.toUpperCase()} ${product.info.brand} - ${product.info.macroCategory} - Veplo.it`} />
 
-                    <div className='md:flex justify-between w-full mb-5 lg:mb-0 '>
+                    <div className='md:flex justify-between w-full mb-5 lg:mb-0 gap-5'>
                         <Image_Product variation={variationSelected} />
-                        <Box className='md:block lg:mt-2'>
+                        <Box className='md:block max-w-[50%]'>
                             <Text
                                 fontWeight='medium'
                                 as='h2'
