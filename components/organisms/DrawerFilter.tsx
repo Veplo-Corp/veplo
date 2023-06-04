@@ -13,7 +13,8 @@ const DrawerFilter: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen
         >
             <DrawerOverlay />
             <DrawerContent
-                borderRadius={'3xl'}
+                //borderRadius={'3xl'}
+                borderTopRadius={'3xl'}
             >
 
                 <DrawerHeader
