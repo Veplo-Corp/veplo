@@ -384,21 +384,20 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
                 <div className='w-full flex justify-end pt-2'>
 
                     <Button
-                        variant={'primary'}
+                        variant={'black'}
+                        _disabled={{
+                            bg: '#000000'
+                        }}
+                        _hover={{
+                            color: 'primary.text'
+                        }}
+
                         disabled={!isValidEmail || !isValidPassword || (type === 'registration' && account === 'user' ? (userInfo.name === '' || userInfo.surname === '' || userInfo.gender === '') : false)}
                         height={12}
                         width={52}
                         type='submit'
                         borderRadius={10}
                         size={'md'}
-                        _disabled={{
-                            bg: 'primary.bg'
-                        }}
-                        _hover={{
-
-                            color: 'primary.text'
-                        }}
-
                     >
                         {type == 'registration' ? 'registrati' : 'accedi'}
                     </Button>
