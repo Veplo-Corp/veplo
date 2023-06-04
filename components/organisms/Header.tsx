@@ -220,6 +220,7 @@ const Header = () => {
                                                     {['Donna', 'Uomo'].map((element) => {
                                                         return (
                                                             <Link
+                                                                key={element}
                                                                 href={`/prodotti/${element.toLocaleLowerCase()}-abbigliamento/tutto/rilevanza`}
                                                             >
                                                                 <Popover.Button
@@ -368,10 +369,9 @@ const Header = () => {
                                                     bg={'primary.bg'}
                                                     color={'primary.text'}
                                                     className='-top-2 -right-2.5'
-
                                                 >
                                                     <Text
-                                                        fontSize={'sm'}
+                                                        fontSize={['xs', 'sm']}
                                                         mx={'auto'}
                                                         fontWeight={'bold'}
                                                     >

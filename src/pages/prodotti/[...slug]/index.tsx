@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
-import { Box, Button, HStack, Input, InputGroup, Select, Skeleton, SkeletonCircle, SkeletonText, Stack, Text, VStack, color } from '@chakra-ui/react';
+import { Box, Button, HStack, Input, InputGroup, Select, Skeleton, SkeletonCircle, SkeletonText, Stack, Text, VStack, color, useBreakpointValue } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
@@ -33,6 +33,7 @@ import Div_input_creation from '../../../../components/atoms/Div_input_creation'
 import { AnimatePresence, motion } from 'framer-motion';
 import Shop_not_Allowed from '../../../../components/utils/Shop_not_Allowed';
 import NoIndexSeo from '../../../../components/organisms/NoIndexSeo';
+import { Filter } from 'iconoir-react';
 
 
 const RANGE = 2
@@ -170,6 +171,7 @@ interface PropsFilter {
 }
 
 const index: FC<{ products: Product[], category: string, microCategory: string, gender: 'f' | 'm' }> = ({ products, microCategory, category, gender }) => {
+    const isSmallView = useBreakpointValue({ base: true, lg: false });
 
     const router = useRouter();
     const [loading, setLoading] = useState(true);
@@ -177,8 +179,9 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     const [productsFounded, setproductsFounded] = useState<Product[]>([])
     const dispatch = useDispatch();
     const [getProducts, productsFounder] = useLazyQuery(GET_PRODUCTS);
-    const [microcategory, setMicrocategory] = useState<string[]>([])
-    const [macrocategory, setMacrocategory] = useState<string>(category)
+    const [microcategoryTypes, setMicrocategoryTypes] = useState<string[]>([])
+    const [microcategory, setMicrocategory] = useState<string>()
+
     const [sizeProduct, setSizeProduct] = useState<string>();
     const [isOpen, setIsOpen] = useState<PropsOpenModal>({
         orderBy: false,
@@ -286,14 +289,14 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
         }
         setHasMoreData(true)
-        const microcategory: any = Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.find(element => element.name === category)
-        if (!microcategory?.types) {
+        const microcategoryTypes: any = Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.find(element => element.name === category)
+        if (!microcategoryTypes?.types) {
             setSizeProduct('')
-            return setMicrocategory([])
+            return setMicrocategoryTypes([])
         }
 
-        setMicrocategory(microcategory?.types);
-        setSizeProduct(microcategory.sizes);
+        setMicrocategoryTypes(microcategoryTypes?.types);
+        setSizeProduct(microcategoryTypes.sizes);
         const { slug } = router.query
         if (typeof slug === 'object' && slug?.length === 3) {
             setSlug(slug)
@@ -304,13 +307,16 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
 
     useEffect(() => {
+        setMicrocategory(microCategory)
         if (gender) {
             setInLocalStorage('genderSelected', gender)
             dispatch(
                 changeGenderSelected(gender)
             );
         }
-    }, [gender, category])
+
+
+    }, [gender, category, microCategory])
 
 
 
@@ -469,7 +475,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             minWidth={'3xs'}
                             className='flex mt-2 lg:mt-4 gap-4 lg:gap-5 overflow-x-auto'
                         >
-                            {Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.map(element => {
+                            {Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1).map(element => {
                                 return (
                                     <Box
                                         key={element.name}
@@ -500,209 +506,270 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             color={'black'}
                             fontSize={'xl'}
                             fontWeight={'black'}
-                            mb={6}
-                            mt={8}
+                            mb={[3, 6]}
+                            mt={[4, 8]}
                         >
-                            {microCategory ? toUpperCaseFirstLetter(microCategory) : "Tutto l'abbigliamento"}
+                            {category ? toUpperCaseFirstLetter(category) : "Tutto l'abbigliamento"}
                         </Text>
-                        <Box
+                        {isSmallView
+                            ? (
+                                <Box
+                                    justifyContent={'space-between'}
+                                    display={'flex'}
+                                    mb={6}
+                                    gap={2}
+                                >
+                                    <Button
+                                        height={12}
+                                        variant={'grayPrimary'}
+                                        gap={1}
+                                        paddingX={4}
+                                        borderRadius={'10px'}
+                                    >
+                                        <Filter
+                                            className='w-6 h-6'
+                                            strokeWidth={2.5}
+                                        />
+                                        <Text
+                                            fontSize={'lg'}
+                                            fontWeight={'semibold'}
+                                        >
+                                            3
+                                        </Text>
+                                    </Button>
+                                    <Select
+                                        _active={{
+                                            transform: 'scale(0.98)'
+                                        }}
+                                        icon={
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                            </svg>
+                                        }
+                                        width={'full'}
+                                        size={'lg'}
+                                        borderRadius={'10px'}
+                                        bg={'#F2F2F2'}
+                                        focusBorderColor="transparent"
+                                        borderColor={'#F2F2F2'}
+                                        color={'secondaryBlack.text'}
+                                        fontWeight={'semibold'}
+                                        fontSize={'lg'}
+                                        height={12}
+                                    >
+                                        <option value='Rilevanza'>Rilevanza</option>
+                                        <option value='Ultime uscite'>Ultime uscite</option>
+                                        <option value='Prezzo crescente'>Prezzo crescente</option>
+                                        <option value='Prezzo decrescente'>Prezzo decrescente</option>
+                                    </Select>
+                                </Box>
+                            )
+                            : (<Box
 
-                            justifyContent={'space-between'}
-                            className='hidden lg:flex'
-                        >
-                            <div
-                                className='mb-12 overflow-x-scroll lg:overflow-hidden flex gap-4'
+                                justifyContent={'space-between'}
+                                display={'flex'}
                             >
-                                {microcategory.length > 0 && <Button
-                                    minW={'fit-content'}
-                                    position={'relative'}
-                                    bg={slug[1] !== 'tutto' ? 'black' : 'white'}
-                                    color={slug[1] !== 'tutto' ? 'white' : 'secondaryBlack.text'}
-                                    _hover={
-                                        {
+                                <div
+                                    className='mb-12 overflow-x-scroll lg:overflow-hidden flex gap-4'
+                                >
+                                    {microcategoryTypes.length > 0 && <Button
+                                        minW={'fit-content'}
+                                        position={'relative'}
+                                        bg={slug[1] !== 'tutto' ? 'black' : 'white'}
+                                        color={slug[1] !== 'tutto' ? 'white' : 'secondaryBlack.text'}
+                                        _hover={
+                                            {
+                                                bg: slug[1] !== 'tutto' ? 'black' : 'white'
+                                            }
+                                        }
+                                        _focus={{
                                             bg: slug[1] !== 'tutto' ? 'black' : 'white'
-                                        }
-                                    }
-                                    _focus={{
-                                        bg: slug[1] !== 'tutto' ? 'black' : 'white'
-                                    }}
-                                    borderWidth={1}
-                                    borderColor={'secondaryBlack.borderColor'}
-                                    borderRadius={'10px'}
-                                    height={12}
-                                    paddingX={8}
-                                    fontWeight={'bold'}
+                                        }}
+                                        borderWidth={1}
+                                        borderColor={'secondaryBlack.borderColor'}
+                                        borderRadius={'10px'}
+                                        height={12}
+                                        paddingX={8}
+                                        fontWeight={'bold'}
 
-                                    _active={{
-                                        transform: 'scale(0.98)',
-                                    }}
-                                    fontSize={'16px'}
-                                    onClick={() => {
-                                        setIsOpen(prevstate => {
-                                            return {
-                                                ...prevstate,
-                                                category: true
+                                        _active={{
+                                            transform: 'scale(0.98)',
+                                        }}
+                                        fontSize={'16px'}
+                                        onClick={() => {
+                                            setIsOpen(prevstate => {
+                                                return {
+                                                    ...prevstate,
+                                                    category: true
+                                                }
+                                            })
+                                        }}
+                                    >
+                                        {slug[1] !== 'tutto' ? microCategory : 'Categoria'}
+                                    </Button>}
+                                    {sizeProduct && sizeProduct.length > 0 && <Button
+                                        minW={'fit-content'}
+                                        position={'relative'}
+                                        borderWidth={1}
+                                        borderColor={'secondaryBlack.borderColor'}
+                                        borderRadius={'10px'}
+                                        height={12}
+                                        paddingX={8}
+
+                                        bg={filter.sizes ? 'black' : 'white'}
+                                        color={filter.sizes ? 'white' : 'secondaryBlack.text'}
+                                        _hover={
+                                            {
+                                                bg: filter.sizes ? 'black' : 'white'
                                             }
-                                        })
-                                    }}
-                                >
-                                    {slug[1] !== 'tutto' ? microCategory : 'Categoria'}
-                                </Button>}
-                                {sizeProduct && sizeProduct.length > 0 && <Button
-                                    minW={'fit-content'}
-                                    position={'relative'}
-                                    borderWidth={1}
-                                    borderColor={'secondaryBlack.borderColor'}
-                                    borderRadius={'10px'}
-                                    height={12}
-                                    paddingX={8}
-
-                                    bg={filter.sizes ? 'black' : 'white'}
-                                    color={filter.sizes ? 'white' : 'secondaryBlack.text'}
-                                    _hover={
-                                        {
+                                        }
+                                        _focus={{
                                             bg: filter.sizes ? 'black' : 'white'
-                                        }
+                                        }}
+                                        _active={{
+                                            transform: 'scale(0.98)',
+                                        }}
+                                        fontSize={'16px'}
+                                        fontWeight={'bold'}
+                                        onClick={() => {
+                                            setIsOpen(prevstate => {
+                                                return {
+                                                    ...prevstate,
+                                                    size: true
+                                                }
+                                            })
+                                        }}
+                                    >
+                                        {filter.sizes ? 'taglia ' + filter.sizes[0].toLocaleUpperCase() : 'Taglia'}
+                                    </Button>
                                     }
-                                    _focus={{
-                                        bg: filter.sizes ? 'black' : 'white'
-                                    }}
-                                    _active={{
-                                        transform: 'scale(0.98)',
-                                    }}
-                                    fontSize={'16px'}
-                                    fontWeight={'bold'}
-                                    onClick={() => {
-                                        setIsOpen(prevstate => {
-                                            return {
-                                                ...prevstate,
-                                                size: true
+                                    <Button
+                                        minW={'fit-content'}
+                                        position={'relative'}
+                                        bg={filter.colors && filter.colors?.length > 0 ? 'black' : 'white'}
+                                        color={filter.colors && filter.colors?.length > 0 ? 'white' : 'secondaryBlack.text'}
+                                        _hover={
+                                            {
+                                                bg: filter.colors && filter.colors?.length > 0 ? 'black' : 'white'
                                             }
-                                        })
-                                    }}
-                                >
-                                    {filter.sizes ? 'taglia ' + filter.sizes[0].toLocaleUpperCase() : 'Taglia'}
-                                </Button>
-                                }
-                                <Button
-                                    minW={'fit-content'}
-                                    position={'relative'}
-                                    bg={filter.colors && filter.colors?.length > 0 ? 'black' : 'white'}
-                                    color={filter.colors && filter.colors?.length > 0 ? 'white' : 'secondaryBlack.text'}
-                                    _hover={
-                                        {
+                                        }
+                                        _focus={{
                                             bg: filter.colors && filter.colors?.length > 0 ? 'black' : 'white'
-                                        }
-                                    }
-                                    _focus={{
-                                        bg: filter.colors && filter.colors?.length > 0 ? 'black' : 'white'
-                                    }}
+                                        }}
 
-                                    borderWidth={1}
-                                    borderColor={'secondaryBlack.borderColor'}
-                                    borderRadius={'10px'}
-                                    height={12}
-                                    paddingX={8}
-                                    fontWeight={'bold'}
-                                    _active={{
-                                        transform: 'scale(0.98)',
-                                    }}
-                                    fontSize={'16px'}
-                                    onClick={() => {
-                                        setIsOpen(prevstate => {
-                                            return {
-                                                ...prevstate,
-                                                color: true
+                                        borderWidth={1}
+                                        borderColor={'secondaryBlack.borderColor'}
+                                        borderRadius={'10px'}
+                                        height={12}
+                                        paddingX={8}
+                                        fontWeight={'bold'}
+                                        _active={{
+                                            transform: 'scale(0.98)',
+                                        }}
+                                        fontSize={'16px'}
+                                        onClick={() => {
+                                            setIsOpen(prevstate => {
+                                                return {
+                                                    ...prevstate,
+                                                    color: true
+                                                }
+                                            })
+                                        }}
+                                    >
+                                        {filter.colors ? toUpperCaseFirstLetter(filter.colors[0].toLocaleLowerCase()) : 'Colore'}
+                                    </Button>
+                                    {false && <Button
+                                        minW={'fit-content'}
+                                        bg={'white'}
+                                        position={'relative'}
+                                        color={'black'}
+                                        _hover={{ bg: 'white' }}
+                                        borderWidth={1}
+                                        borderColor={'secondaryBlack.borderColor'}
+                                        borderRadius={'10px'}
+                                        height={12}
+                                        paddingX={8}
+                                        _focus={{
+                                            bg: 'white'
+                                        }}
+                                        _active={{
+                                            transform: 'scale(0.98)',
+                                        }}
+                                        fontSize={'16px'}
+                                        onClick={() => {
+                                            setIsOpen(prevstate => {
+                                                return {
+                                                    ...prevstate,
+                                                    orderBy: true
+                                                }
+                                            })
+                                        }}
+                                    >
+                                        Ordina
+                                    </Button>}
+                                    <Button
+                                        minW={'fit-content'}
+                                        bg={filter.maxPrice || filter.minPrice ? 'black' : 'white'}
+                                        color={filter.maxPrice || filter.minPrice ? 'white' : 'secondaryBlack.text'}
+                                        _hover={
+                                            {
+                                                bg: filter.maxPrice || filter.minPrice ? 'black' : 'white'
                                             }
-                                        })
-                                    }}
-                                >
-                                    {filter.colors ? toUpperCaseFirstLetter(filter.colors[0].toLocaleLowerCase()) : 'Colore'}
-                                </Button>
-                                {false && <Button
-                                    minW={'fit-content'}
-                                    bg={'white'}
-                                    position={'relative'}
-                                    color={'black'}
-                                    _hover={{ bg: 'white' }}
-                                    borderWidth={1}
-                                    borderColor={'secondaryBlack.borderColor'}
-                                    borderRadius={'10px'}
-                                    height={12}
-                                    paddingX={8}
-                                    _focus={{
-                                        bg: 'white'
-                                    }}
-                                    _active={{
-                                        transform: 'scale(0.98)',
-                                    }}
-                                    fontSize={'16px'}
-                                    onClick={() => {
-                                        setIsOpen(prevstate => {
-                                            return {
-                                                ...prevstate,
-                                                orderBy: true
-                                            }
-                                        })
-                                    }}
-                                >
-                                    Ordina
-                                </Button>}
-                                <Button
-                                    minW={'fit-content'}
-                                    bg={filter.maxPrice || filter.minPrice ? 'black' : 'white'}
-                                    color={filter.maxPrice || filter.minPrice ? 'white' : 'secondaryBlack.text'}
-                                    _hover={
-                                        {
+                                        }
+                                        _focus={{
                                             bg: filter.maxPrice || filter.minPrice ? 'black' : 'white'
-                                        }
-                                    }
-                                    _focus={{
-                                        bg: filter.maxPrice || filter.minPrice ? 'black' : 'white'
-                                    }}
-                                    borderWidth={1}
-                                    borderColor={'secondaryBlack.borderColor'}
-                                    borderRadius={'10px'}
-                                    height={12}
-                                    paddingX={8}
-                                    fontWeight={'bold'}
+                                        }}
+                                        borderWidth={1}
+                                        borderColor={'secondaryBlack.borderColor'}
+                                        borderRadius={'10px'}
+                                        height={12}
+                                        paddingX={8}
+                                        fontWeight={'bold'}
 
+                                        _active={{
+                                            transform: 'scale(0.98)',
+                                        }}
+                                        fontSize={'16px'}
+                                        onClick={() => {
+                                            setIsOpen(prevstate => {
+                                                return {
+                                                    ...prevstate,
+                                                    price: true
+                                                }
+                                            })
+                                        }}
+                                    >
+                                        {filter.minPrice ? 'da ' + filter.minPrice + '€ ' : ''}
+                                        {filter.maxPrice ? 'fino a ' + filter.maxPrice + '€' : ''}
+                                        {!filter.minPrice && !filter.maxPrice ? 'Prezzo' : ''}
+                                    </Button>
+                                </div>
+                                <Select
                                     _active={{
-                                        transform: 'scale(0.98)',
+                                        transform: 'scale(0.98)'
                                     }}
+                                    icon={
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                        </svg>
+                                    }
+                                    width={'fit-content'}
+                                    size={'lg'}
+                                    borderRadius={'10px'}
+                                    bg={'#F2F2F2'}
+                                    focusBorderColor="transparent"
+                                    borderColor={'#F2F2F2'}
+                                    color={'secondaryBlack.text'}
+                                    fontWeight={'semibold'}
                                     fontSize={'16px'}
-                                    onClick={() => {
-                                        setIsOpen(prevstate => {
-                                            return {
-                                                ...prevstate,
-                                                price: true
-                                            }
-                                        })
-                                    }}
+                                    height={12}
                                 >
-                                    {filter.minPrice ? 'da ' + filter.minPrice + '€ ' : ''}
-                                    {filter.maxPrice ? 'fino a ' + filter.maxPrice + '€' : ''}
-                                    {!filter.minPrice && !filter.maxPrice ? 'Prezzo' : ''}
-                                </Button>
-                            </div>
-                            <Select
-                                width={'fit-content'}
-                                size={'lg'}
-                                borderRadius={'10px'}
-                                bg={'#F2F2F2'}
-                                focusBorderColor="transparent"
-                                borderColor={'#F2F2F2'}
-                                color={'secondaryBlack.text'}
-                                fontWeight={'semibold'}
-                                fontSize={'16px'}
-                                height={12}
-                            >
-                                <option value='Rilevanza'>Rilevanza</option>
-                                <option value='Ultime uscite'>Ultime uscite</option>
-                                <option value='Prezzo crescente'>Prezzo crescente</option>
-                                <option value='Prezzo decrescente'>Prezzo decrescente</option>
-                            </Select>
-                        </Box>
+                                    <option value='Rilevanza'>Rilevanza</option>
+                                    <option value='Ultime uscite'>Ultime uscite</option>
+                                    <option value='Prezzo crescente'>Prezzo crescente</option>
+                                    <option value='Prezzo decrescente'>Prezzo decrescente</option>
+                                </Select>
+                            </Box>)}
 
 
 
@@ -852,7 +919,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                         className={`${sizeProduct === 'shoes_sizes' ? 'grid grid-cols-2 md:grid-cols-4 gap-5' : ''} min-w-[300px]`}
 
                     >
-                        {microcategory.map((element: string) => {
+                        {microcategoryTypes.map((element: string) => {
                             let url = router.asPath.split('?')[1] ?
                                 `/prodotti/${slug[0]}/${createUrlSchema([element])}/${slug[2]}?${router.asPath.split('?')[1]}`
                                 : `/prodotti/${slug[0]}/${createUrlSchema([element])}/${slug[2]}`
