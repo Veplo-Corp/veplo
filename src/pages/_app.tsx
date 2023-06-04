@@ -176,13 +176,11 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         const idToken = await userAuth.getIdToken(true)
         setAuthTokenInSessionStorage(idToken)
         const tokenResult = await userAuth.getIdTokenResult()
-        //console.log(tokenResult);
+        console.log(tokenResult);
 
         //handle refresh token
         // console.log(new Date > new Date(tokenResult.expirationTime));
         // console.log(new Date(tokenResult.expirationTime));
-
-
 
         // user is logged in, send the user's details to redux, store the current user in the state
         const isBusiness = tokenResult.claims.isBusiness ? true : false;
