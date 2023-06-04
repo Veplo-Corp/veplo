@@ -37,7 +37,7 @@ const Header = () => {
     const [isOpenUserDrawerSearch, setisOpenUserDrawerSearch] = useState(false)
     const [stripeDashboardVisible, setStripeDashboardVisible] = useState(false);
     const [stripeId, setStripeId] = useState<string>();
-    const [gender, setGender] = useState('')
+    const [gender, setGender] = useState<string>()
 
     const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
 
@@ -298,7 +298,7 @@ const Header = () => {
                                                     background={'secondary.bg'}
                                                 >
                                                     <Link
-                                                        href={`/prodotti/${gender}-abbigliamento/tutto/rilevanza`}
+                                                        href={gender ? `/prodotti/${gender}-abbigliamento/tutto/rilevanza` : '/'}
                                                         className='flex gap-2'
                                                     >
                                                         <TShirt
@@ -365,18 +365,19 @@ const Header = () => {
 
                                                     </Button>)
                                                     : (
-                                                        <Box
+                                                        <Button
 
+                                                            variant={'secondary'}
                                                             marginY={'auto'}
                                                             height={'fit-content'}
-
                                                             cursor={'pointer'}
-                                                            className='rounded-[10px] p-2 relative'
+                                                            rounded={'10px'}
+                                                            className=' p-2 hidden lg:flex relative'
                                                             background={'secondary.bg'}
                                                         >
                                                             <Link
-                                                                href={`/prodotti/${gender}-abbigliamento/tutto/rilevanza`}
-                                                                className='flex gap-2'
+                                                                href={gender ? `/prodotti/${gender}-abbigliamento/tutto/rilevanza` : '/'}
+                                                                className='flex gap-2 px-2'
                                                             >
                                                                 <Text
                                                                     color={'secondary.text'}
@@ -394,7 +395,7 @@ const Header = () => {
                                                                 />
 
                                                             </Link>
-                                                        </Box>
+                                                        </Button>
                                                     )}
                                             </>
 
