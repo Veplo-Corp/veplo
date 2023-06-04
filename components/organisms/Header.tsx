@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface';
 import User_Popover from '../molecules/User_Popover';
 import Navbar from '../molecules/Old-Home_Navbar'
 import CategoryNavbar from '../molecules/CategoryNavbar';
-import { Box, Button, Tag, Text } from '@chakra-ui/react';
+import { Box, Button, Select, Tag, Text, useBreakpointValue } from '@chakra-ui/react';
 import Drawer_Menu from './Drawer_Menu';
 import CartDrawer from './CartDrawer';
 import Drawer_User_Search from './Old-Drawer_User_Search';
@@ -13,7 +13,7 @@ import DrawerSearchProducts from './DrawerSearchProducts';
 import { useLazyQuery } from '@apollo/client';
 import GET_BUSINESS from '../../src/lib/apollo/queries/business';
 import { Business } from '../../src/interfaces/business.interface';
-import { Medal1St, Search, ShoppingBag, User } from 'iconoir-react';
+import { Medal1St, NavArrowDown, Search, ShoppingBag, SmallShopAlt, User } from 'iconoir-react';
 import Input_Search_Item from '../atoms/Input_Search_Item';
 import { useRouter } from 'next/router';
 import { getFromLocalStorage } from '../utils/getFromLocalStorage';
@@ -21,8 +21,12 @@ import { Cart } from '../../src/interfaces/carts.interface';
 import createUrlSchema from '../utils/create_url';
 import { motion } from 'framer-motion';
 import { isMobile } from 'react-device-detect';
+import { Popover, Transition } from '@headlessui/react'
+import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
 
 const Header = () => {
+    const isButtonHidden = useBreakpointValue({ base: true, lg: false });
+
     const router = useRouter()
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
@@ -33,6 +37,7 @@ const Header = () => {
     const [isOpenUserDrawerSearch, setisOpenUserDrawerSearch] = useState(false)
     const [stripeDashboardVisible, setStripeDashboardVisible] = useState(false);
     const [stripeId, setStripeId] = useState<string>();
+    const [gender, setGender] = useState('')
 
     const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
 
@@ -63,6 +68,16 @@ const Header = () => {
                 }
             })
         }
+        let gender = getFromLocalStorage('genderSelected')
+        if (gender === 'f') {
+            setGender('donna')
+        }
+        if (gender === 'm') {
+            setGender('uomo')
+        }
+
+
+
 
         return () => {
 
@@ -155,9 +170,9 @@ const Header = () => {
                         }
                         }
                     >
-                        <nav className="flex items-center justify-between px-4 md:px-6 py-4 lg:px-8" aria-label="Global">
-                            <div className="flex lg:flex-1">
-                                {<Link
+                        <nav className="flex items-center justify-between px-2 md:px-6 py-4 lg:px-0 lg:w-10/12 mx-auto" aria-label="Global">
+                            {(user.statusAuthentication === 'logged_in' && user.isBusiness) && <div className="flex lg:flex-1">
+                                <Link
                                     prefetch={false}
                                     href={`${user?.isBusiness ? '/shop/home' : '/'}`}
                                     className="-m-1.5 p-1.5">
@@ -166,8 +181,69 @@ const Header = () => {
                                         src={'/static/veplo.svg'}
                                         alt='Veplo'
                                     />
-                                </Link>}
-                            </div>
+                                </Link>
+                            </div>}
+                            {(!user.isBusiness && isButtonHidden) &&
+                                <Popover className="relative flex gap-1">
+                                    {({ open }) => (
+                                        <>
+                                            <Popover.Button
+                                                className={`
+                                                    ${open ? '' : 'text-opacity-90'}
+                                                    group inline-flex items-center rounded-md px-3 py-2 text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+                                            >
+                                                <Text
+                                                    fontSize={'lg'}
+                                                    fontWeight={'extrabold'}
+                                                    color={'secondaryBlack.text'}
+                                                >
+                                                    {toUpperCaseFirstLetter(gender)}
+                                                </Text>
+                                                <NavArrowDown
+                                                    className='my-auto mb-[-1px]'
+                                                    strokeWidth={2.5}
+                                                    fontSize={'lg'}
+                                                />
+                                            </Popover.Button>
+                                            <Transition
+                                                as={Fragment}
+                                                enter="transition ease-out duration-200"
+                                                enterFrom="opacity-0 translate-y-1"
+                                                enterTo="opacity-100 translate-y-0"
+                                                leave="transition ease-in duration-150"
+                                                leaveFrom="opacity-100 translate-y-0"
+                                                leaveTo="opacity-0 translate-y-1"
+                                            >
+                                                <Popover.Panel
+                                                    className="left-2 top-10 py-2 px-4 absolute grid grid-cols-1 cursor-pointer z-10 min-w-[15vh] bg-white border border-gray-200 rounded-xl">
+
+                                                    {['Donna', 'Uomo'].map((element) => {
+                                                        return (
+                                                            <Link
+                                                                href={`/prodotti/${element.toLocaleLowerCase()}-abbigliamento/tutto/rilevanza`}
+                                                            >
+                                                                <Popover.Button
+                                                                    className='text-left font-bold text-lg py-1'
+
+                                                                >
+                                                                    {element}
+                                                                </Popover.Button>
+                                                            </Link>
+
+                                                        )
+                                                    })}
+                                                </Popover.Panel>
+                                            </Transition>
+                                        </>
+
+                                    )}
+                                </Popover>
+
+
+
+
+
+                            }
 
                             <div>
                                 {!(user.statusAuthentication === 'logged_in' && user.isBusiness) &&
@@ -181,13 +257,33 @@ const Header = () => {
                                         <div className='hidden lg:flex'>
                                             <Input_Search_Item
                                                 handleChangeValue={(text) => handleAutoComplete(text)}
-                                                placeholder='Cerca...'
+                                                placeholder='Cerca i tuoi vestiti preferiti'
                                                 onConfirmText={(value) => {
                                                     handleSearchText(value)
                                                 }}
                                             />
                                         </div>
+                                        <Box
 
+                                            marginY={'auto'}
+                                            height={'fit-content'}
+
+                                            cursor={'pointer'}
+                                            className='rounded-[10px] p-2 relative lg:hidden'
+                                            background={'secondary.bg'}
+                                        >
+                                            <Link
+                                                href={'/negozi'}
+                                                className='flex gap-2'
+                                            >
+                                                <SmallShopAlt
+                                                    strokeWidth={2}
+                                                    className="w-6 h-6 my-auto"
+                                                    color='white'
+                                                />
+                                            </Link>
+
+                                        </Box>
                                         <Box
                                             marginY={'auto'}
                                             height={'fit-content'}
@@ -207,6 +303,37 @@ const Header = () => {
 
 
                                         </Box>
+                                        {!isButtonHidden && <Button
+
+                                            variant={'secondary'}
+                                            marginY={'auto'}
+                                            height={'fit-content'}
+                                            cursor={'pointer'}
+                                            rounded={'10px'}
+                                            className=' p-2 hidden lg:flex relative'
+                                            background={'secondary.bg'}
+                                        >
+                                            <Link
+                                                href={'/negozi'}
+                                                className='flex gap-2 px-2'
+                                            >
+                                                <Text
+                                                    color={'secondary.text'}
+                                                    fontWeight={'semibold'}
+                                                    my={'auto'}
+                                                    fontSize={'md'}
+
+                                                >
+                                                    Negozi
+                                                </Text>
+                                                <SmallShopAlt
+                                                    strokeWidth={2}
+                                                    className="w-6 h-6 my-auto"
+                                                    color='white'
+                                                />
+                                            </Link>
+
+                                        </Button>}
                                         <Box
                                             marginY={'auto'}
                                             height={'fit-content'}
@@ -259,8 +386,6 @@ const Header = () => {
                                             height={'fit-content'}
                                         >
                                             <User_Popover />
-
-
                                         </Box>
 
 

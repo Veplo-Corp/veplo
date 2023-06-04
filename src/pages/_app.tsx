@@ -66,6 +66,13 @@ const theme = extendTheme({
     secondary: {
       bg: "#37D1A9",
       text: '#FFFFFF',
+    },
+    primaryBlack: {
+      text: '#2A2A2A'
+    },
+    secondaryBlack: {
+      text: '#3A3A3A',
+      borderColor: '#EFEFEF'
     }
   },
   components: {
@@ -107,7 +114,6 @@ const theme = extendTheme({
             bg: "secondary.bg",
             transform: 'scale(0.98)',
           }
-
         },
       },
     },

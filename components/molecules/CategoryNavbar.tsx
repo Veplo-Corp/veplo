@@ -14,11 +14,7 @@ const typesCategory = [
     {
         title: 'Uomo',
         url: 'uomo'
-    },
-    {
-        title: 'Negozi',
-        url: 'negozi'
-    },
+    }
 ]
 
 const CategoryNavbar: FC<{ showMacrocategory: boolean }> = ({ showMacrocategory }) => {
@@ -59,28 +55,29 @@ const CategoryNavbar: FC<{ showMacrocategory: boolean }> = ({ showMacrocategory 
         <div className='hidden lg:flex'>
             <Box
                 display={'flex'}
-                gap={10}
+                gap={4}
             >
                 {
                     typesCategory.map(type => {
                         return (
                             <div
                                 key={type.title}
-                                onMouseEnter={() => {
-                                    if (type.url === 'negozi') {
-                                        setGenderSelected('')
-                                        setcategoryCardOpen(false)
-                                        return
-                                    }
+                            // onMouseEnter={() => {
+                            //     // if (type.url === 'negozi') {
+                            //     //     setGenderSelected('')
+                            //     //     setcategoryCardOpen(false)
+                            //     //     return
+                            //     // }
 
-                                    setGenderSelected(type.url)
-                                    setcategoryCardOpen(true)
-                                }}
+                            //     setGenderSelected(type.url)
+                            //     setcategoryCardOpen(true)
+                            // }}
                             >
                                 <Box
-                                    fontWeight={'semibold'}
-                                    fontSize={'xl'}
+                                    fontWeight={'black'}
+                                    fontSize={'lg'}
                                     width={'fit-content'}
+                                    color={'primaryBlack.text'}
                                 >
                                     <Link
                                         prefetch={false}
@@ -95,22 +92,16 @@ const CategoryNavbar: FC<{ showMacrocategory: boolean }> = ({ showMacrocategory 
                                         className={`h-[8px] bg-[#FF5A78] mt-[-12px]`}>
                                     </Box>
                                 }
-
-                                {
-                                    (type.url.includes("negozi") && router.pathname.includes("/negozi")) && <Box
-                                        className={`h-[8px] bg-[#FF5A78] mt-[-12px]`}>
-                                    </Box>
-                                }
                             </div>
 
                         )
                     })
                 }
             </Box >
-            {categoryCardOpen && showMacrocategory &&
+            {/* {categoryCardOpen && showMacrocategory &&
 
                 <Show_Categories_NavBar gender={genderSelected} closeCategory={() => setcategoryCardOpen(false)} />
-            }
+            } */}
         </div >
 
 
