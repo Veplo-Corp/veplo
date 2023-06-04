@@ -41,23 +41,6 @@ import { detroyOrders, setOrders } from '../store/reducers/orders'
 
 const theme = extendTheme({
   colors: {
-
-    lime: {
-      50: '#f2ffde',
-      100: '#defcb2',
-      200: '#caf884',
-      300: '#b5f554',
-      400: '#a1f226',
-      500: '#88d90d',
-      600: '#69a905',
-      700: '#4a7801',
-      800: '#2b4800',
-      900: '#0b1900',
-    },
-    black: {
-      100: "#4D4D4D",
-      900: "#000000",
-    },
     primary: {
       bg: '#FF5A78',
       text: '#FFFFFF',
@@ -112,6 +95,17 @@ const theme = extendTheme({
           },
           _active: {
             bg: "secondary.bg",
+            transform: 'scale(0.98)',
+          }
+        },
+        grayPrimary: {
+          bg: "#F2F2F2", // Usa il colore primario come sfondo
+          color: "secondaryBlack.text", // Testo bianco
+          _hover: {
+            bg: "#F2F2F2", // Cambia il colore in primario al passaggio del mouse
+          },
+          _active: {
+            bg: "#F2F2F2",
             transform: 'scale(0.98)',
           }
         },
