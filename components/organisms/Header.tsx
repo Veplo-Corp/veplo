@@ -13,7 +13,7 @@ import DrawerSearchProducts from './DrawerSearchProducts';
 import { useLazyQuery } from '@apollo/client';
 import GET_BUSINESS from '../../src/lib/apollo/queries/business';
 import { Business } from '../../src/interfaces/business.interface';
-import { Medal1St, NavArrowDown, Search, ShoppingBag, SmallShopAlt, User } from 'iconoir-react';
+import { Medal1St, NavArrowDown, Search, ShoppingBag, SmallShopAlt, TShirt, User } from 'iconoir-react';
 import Input_Search_Item from '../atoms/Input_Search_Item';
 import { useRouter } from 'next/router';
 import { getFromLocalStorage } from '../utils/getFromLocalStorage';
@@ -197,7 +197,7 @@ const Header = () => {
                                                     fontWeight={'extrabold'}
                                                     color={'secondaryBlack.text'}
                                                 >
-                                                    {toUpperCaseFirstLetter(gender)}
+                                                    {gender ? toUpperCaseFirstLetter(gender) : 'Seleziona'}
                                                 </Text>
                                                 <NavArrowDown
                                                     className='my-auto mb-[-1px]'
@@ -264,27 +264,52 @@ const Header = () => {
                                                 }}
                                             />
                                         </div>
-                                        <Box
+                                        {router.asPath.includes('prodott')
+                                            ? (<Box
 
-                                            marginY={'auto'}
-                                            height={'fit-content'}
+                                                marginY={'auto'}
+                                                height={'fit-content'}
 
-                                            cursor={'pointer'}
-                                            className='rounded-[10px] p-2 relative lg:hidden'
-                                            background={'secondary.bg'}
-                                        >
-                                            <Link
-                                                href={'/negozi'}
-                                                className='flex gap-2'
+                                                cursor={'pointer'}
+                                                className='rounded-[10px] p-2 relative lg:hidden'
+                                                background={'secondary.bg'}
                                             >
-                                                <SmallShopAlt
-                                                    strokeWidth={2}
-                                                    className="w-6 h-6 my-auto"
-                                                    color='white'
-                                                />
-                                            </Link>
+                                                <Link
+                                                    href={'/negozi'}
+                                                    className='flex gap-2'
 
-                                        </Box>
+                                                >
+                                                    <SmallShopAlt
+                                                        strokeWidth={2}
+                                                        className="w-6 h-6 my-auto"
+                                                        color='white'
+                                                    />
+                                                </Link>
+
+                                            </Box>)
+                                            : (
+                                                <Box
+
+                                                    marginY={'auto'}
+                                                    height={'fit-content'}
+
+                                                    cursor={'pointer'}
+                                                    className='rounded-[10px] p-2 relative lg:hidden'
+                                                    background={'secondary.bg'}
+                                                >
+                                                    <Link
+                                                        href={`/prodotti/${gender}-abbigliamento/tutto/rilevanza`}
+                                                        className='flex gap-2'
+                                                    >
+                                                        <TShirt
+                                                            strokeWidth={2}
+                                                            className="w-6 h-6 my-auto"
+                                                            color='white'
+                                                        />
+                                                    </Link>
+                                                </Box>
+                                            )
+                                        }
                                         <Box
                                             marginY={'auto'}
                                             height={'fit-content'}
@@ -304,37 +329,76 @@ const Header = () => {
 
 
                                         </Box>
-                                        {!isButtonHidden && <Button
 
-                                            variant={'secondary'}
-                                            marginY={'auto'}
-                                            height={'fit-content'}
-                                            cursor={'pointer'}
-                                            rounded={'10px'}
-                                            className=' p-2 hidden lg:flex relative'
-                                            background={'secondary.bg'}
-                                        >
-                                            <Link
-                                                href={'/negozi'}
-                                                className='flex gap-2 px-2'
-                                            >
-                                                <Text
-                                                    color={'secondary.text'}
-                                                    fontWeight={'semibold'}
-                                                    my={'auto'}
-                                                    fontSize={'md'}
+                                        {!isButtonHidden &&
+                                            <>
+                                                {router.asPath.includes('prodott') ?
+                                                    (<Button
 
-                                                >
-                                                    Negozi
-                                                </Text>
-                                                <SmallShopAlt
-                                                    strokeWidth={2}
-                                                    className="w-6 h-6 my-auto"
-                                                    color='white'
-                                                />
-                                            </Link>
+                                                        variant={'secondary'}
+                                                        marginY={'auto'}
+                                                        height={'fit-content'}
+                                                        cursor={'pointer'}
+                                                        rounded={'10px'}
+                                                        className=' p-2 hidden lg:flex relative'
+                                                        background={'secondary.bg'}
+                                                    >
+                                                        <Link
+                                                            href={'/negozi'}
+                                                            className='flex gap-2 px-2'
+                                                        >
+                                                            <Text
+                                                                color={'secondary.text'}
+                                                                fontWeight={'semibold'}
+                                                                my={'auto'}
+                                                                fontSize={'md'}
 
-                                        </Button>}
+                                                            >
+                                                                Negozi
+                                                            </Text>
+                                                            <SmallShopAlt
+                                                                strokeWidth={2}
+                                                                className="w-6 h-6 my-auto"
+                                                                color='white'
+                                                            />
+                                                        </Link>
+
+                                                    </Button>)
+                                                    : (
+                                                        <Box
+
+                                                            marginY={'auto'}
+                                                            height={'fit-content'}
+
+                                                            cursor={'pointer'}
+                                                            className='rounded-[10px] p-2 relative'
+                                                            background={'secondary.bg'}
+                                                        >
+                                                            <Link
+                                                                href={`/prodotti/${gender}-abbigliamento/tutto/rilevanza`}
+                                                                className='flex gap-2'
+                                                            >
+                                                                <Text
+                                                                    color={'secondary.text'}
+                                                                    fontWeight={'semibold'}
+                                                                    my={'auto'}
+                                                                    fontSize={'md'}
+
+                                                                >
+                                                                    Prodotti
+                                                                </Text>
+                                                                <TShirt
+                                                                    strokeWidth={2}
+                                                                    className="w-6 h-6 my-auto"
+                                                                    color='white'
+                                                                />
+
+                                                            </Link>
+                                                        </Box>
+                                                    )}
+                                            </>
+
+                                        }
                                         <Box
                                             marginY={'auto'}
                                             height={'fit-content'}

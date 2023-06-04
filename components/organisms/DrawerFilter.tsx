@@ -19,7 +19,7 @@ const DrawerFilter: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen
 
                 <DrawerHeader
                     color={'secondaryBlack.text'}
-                    py={5} px={8} fontSize={'24px'} fontWeight={'extrabold'}
+                    py={5} px={6} fontSize={'24px'} fontWeight={'extrabold'}
                     display={'flex'}
                     justifyContent={'space-between'}
                 >

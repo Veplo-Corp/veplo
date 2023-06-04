@@ -630,15 +630,9 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                             paddingInline={10}
                             width={'full'}
                             height={'fit-content'}
-                            bg={'black.900'}
-                            color={'white'}
-                            _hover={{ bg: 'black.900' }}
-                            _focus={{
-                                bg: 'black.900'
-                            }}
-                            _active={{
-                                transform: 'scale(0.98)',
-                            }}
+
+                            variant={'black'}
+
                         >aggiungi alla borsa{sizeSelected && <span className='ml-[5px]'>- {sizeSelected.toLocaleUpperCase()}</span>}
                         </Button>
 

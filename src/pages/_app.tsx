@@ -109,6 +109,29 @@ const theme = extendTheme({
             transform: 'scale(0.98)',
           }
         },
+        black: {
+          bg: "#000000", // Usa il colore primario come sfondo
+          color: "white", // Testo bianco
+          _hover: {
+            bg: "#000000", // Cambia il colore in primario al passaggio del mouse
+            opacity: 1,
+            color: "primary.text"
+          },
+          _active: {
+            bg: "#000000",
+            transform: 'scale(0.98)',
+          },
+          _disabled: {
+            bg: "#000000",
+            opacity: 1,
+            transform: "scale(0.98)",
+            // _hover: {
+            //   bg: "primary.bg", // Mantieni il colore di sfondo primario quando disabilitato e fai hover
+            //   color: "primary.text", // Cambia il colore del testo quando disabilitato e fai hover
+            // },
+          },
+
+        },
       },
     },
   },
