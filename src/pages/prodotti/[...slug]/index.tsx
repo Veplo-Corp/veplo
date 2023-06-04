@@ -472,7 +472,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                     </Text>
                 } */}
                     <Box
-                        className='lg:w-10/12 mx-2 lg:mx-auto'
+                        className='lg:w-10/12 2xl:w-9/12 mx-2 lg:mx-auto'
                     >
                         <Box
                             minWidth={'3xs'}
