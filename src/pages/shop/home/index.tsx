@@ -95,7 +95,10 @@ const index = () => {
                     <AddNewShopCard />
                     {data?.business?.shops && data.business.shops.map((shop) => {
                         return (
-                            <BusinessShopCard shop={shop} toShop={toShop} />
+                            <div key={shop.id}>
+                                <BusinessShopCard shop={shop} toShop={toShop} />
+
+                            </div>
                         )
                     })
                     }
