@@ -496,7 +496,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                         description={`${product.name.toUpperCase()} ${product.info.brand} - ${product.info.macroCategory} - Veplo.it`} />
                     <div className='md:flex justify-between w-full mb-5 lg:mb-0 gap-5'>
                         <Image_Product variation={variationSelected} />
-                        <Box className='md:block max-w-[50%]'>
+                        <Box className='md:block lg:max-w-[50%]'>
                             <Text
                                 fontWeight='medium'
                                 as='h2'
