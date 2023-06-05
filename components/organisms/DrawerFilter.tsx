@@ -9,6 +9,7 @@ import { COLORS } from '../mook/colors'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 import SelectStringOption from '../atoms/SelectStringOption'
 import SelectColor from '../atoms/SelectColor'
+import { SIZES } from '../mook/sizes'
 
 const DrawerFilter: FC<{ isOpenDrawer: boolean, closeDrawer: () => void, microcategoryTypes: string[], sizeProduct: string, microCategory: string }> = ({ isOpenDrawer, closeDrawer, microcategoryTypes, microCategory, sizeProduct }) => {
     const router = useRouter()
@@ -68,31 +69,64 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, closeDrawer: () => void, microca
 
                     </DrawerHeader>
                     <DrawerBody
-                        minH={'50vh'}
+                        minH={'45vh'}
                     >
                         <Box
-                            gap={2}
-                            display={'flex'}
                         >
 
-                            <SelectStringOption
-                                placeholder='Categoria'
-                                values={microcategoryTypes}
-                                defaultValue={''}
-                                handleClick={(microcategory: string) => {
-                                    console.log(microcategory);
+                            {microcategoryTypes.length > 0 &&
+                                <Box
+                                    display={'flex'}
+                                    gap={2}
+                                    mb={2}
+                                >
+                                    {microcategoryTypes.length > 0 && <SelectStringOption
+                                        placeholder='Categoria'
+                                        values={microcategoryTypes}
+                                        defaultValue={''}
+                                        handleClick={(microcategory: string) => {
+                                            console.log(microcategory);
 
-                                }}
-                            />
-                            <SelectColor
-                                placeholder='Colore'
-                                colors={COLORS}
-                                defaultValue={''}
-                                handleClick={(color) => {
-                                }}
-                            />
+                                        }}
+                                    />}
+                                    {sizeProduct && sizeProduct.length && (sizeProduct === 'man_clothes_sizes' || sizeProduct === 'woman_clothes_sizes' || sizeProduct === 'shoes_sizes') && <SelectStringOption
+                                        placeholder='Taglia'
+                                        values={SIZES[sizeProduct].map(size => {
+                                            return size.toLocaleUpperCase()
+                                        })}
+                                        defaultValue={''}
+                                        handleClick={(microcategory: string) => {
+                                            console.log(microcategory);
+
+                                        }}
+                                    />}
+                                </Box>}
+                            <Box
+                                display={'flex'}
+                                gap={2}
+                                mb={3}
+                            >
+                                <SelectColor
+                                    placeholder='Colore'
+                                    colors={COLORS}
+                                    defaultValue={''}
+                                    handleClick={(color) => {
+                                    }}
+                                />
+
+                            </Box>
+
+
+
                         </Box>
-
+                        <Button
+                            variant={'grayPrimary'}
+                            px={20}
+                            py={5}
+                            fontSize={'sm'}
+                        >
+                            Resetta filtri
+                        </Button>
 
                     </DrawerBody>
                 </DrawerContent>
