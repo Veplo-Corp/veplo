@@ -153,7 +153,7 @@ export async function getStaticProps(ctx: any) {
                 category: macrogategoryName,
                 products: data?.products.products,
                 microCategory: microgategoryName,
-                sortType: sortType ? sortType : 'tutto'
+                sortType: sortType ? sortType : 'rilevanza'
             },
             revalidate: 10 //seconds
         }
@@ -191,7 +191,7 @@ export interface PropsFilter {
     maxPrice?: number,
     minPrice?: number
     brand?: string,
-    fit?: string
+    fit?: string,
 }
 
 const index: FC<{ products: Product[], category: string, microCategory: string, gender: 'f' | 'm', sortType: string }> = ({ products, microCategory, category, gender, sortType }) => {
@@ -199,6 +199,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     console.log(sortType);
 
     const router = useRouter();
+    console.log(router);
+
     const [loading, setLoading] = useState(true);
     const [hasMoreData, setHasMoreData] = useState(true);
     const [productsFounded, setproductsFounded] = useState<Product[]>([])
@@ -585,12 +587,12 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             className='w-6 h-6'
                                             strokeWidth={2.5}
                                         />
-                                        <Text
+                                        {filterCount > 0 && <Text
                                             fontSize={'lg'}
                                             fontWeight={'semibold'}
                                         >
                                             {filterCount}
-                                        </Text>
+                                        </Text>}
                                     </Button>
                                     <Select
                                         _active={{
@@ -612,13 +614,13 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                         fontSize={'lg'}
                                         height={12}
                                         onChange={changeSort}
+                                        value={SORT_PRODUCT.find(type => type.url.toLowerCase() === sortType.toLowerCase())?.url}
                                     >
                                         {SORT_PRODUCT.map((sortElement) => {
                                             return (
                                                 <option key={sortElement.text} value={sortElement.url}>{sortElement.text}</option>
                                             )
                                         })}
-
 
                                     </Select>
                                 </Box>
@@ -1255,7 +1257,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 color: '#A19F9F'
                             }}
                             fontWeight={'semibold'}
-
                             fontSize={['md', 'lg']}
                             background={'#F2F2F2'}
                             textAlign={"center"}
@@ -1345,7 +1346,35 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
                 </ModalReausable>
             </div >
-            <DrawerFilter microcategoryTypes={microcategoryTypes} microCategory={microCategory} sizeProduct={sizeProduct ? sizeProduct : ''} isOpenDrawer={drawerFilter} closeDrawer={() => { setDrawerFilter(false) }} />
+            <DrawerFilter
+                defaultFilter={filter}
+                microcategoryTypes={microcategoryTypes}
+                defaultMicroCategory={microCategory}
+                sizeProduct={sizeProduct ? sizeProduct : ''}
+                isOpenDrawer={drawerFilter}
+                closeDrawer={(filter, microCategory) => {
+
+
+                    // router.replace({
+                    //     pathname: `/prodotti/${gender === 'm' ? 'uomo' : 'donna'}-${category ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortType ? sortType : 'rilevanza'}`,
+                    //     query: {
+                    //         ...filter
+                    //     }
+                    // })
+
+
+                    //controlla se il path nuovo è uguale a quello vecchio per non pushare senza senso
+                    let pathname = `/prodotti/${gender === 'm' ? 'uomo' : 'donna'}-${category ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortType ? sortType : 'rilevanza'}`;
+                    const query = new URLSearchParams(filter as Record<string, string>).toString();
+                    if (query) {
+                        pathname = pathname + `?${query}`;
+                    }
+                    if (router.asPath !== pathname) {
+                        router.push(pathname)
+                    }
+                    setDrawerFilter(false)
+                }}
+            />
         </>
 
 
