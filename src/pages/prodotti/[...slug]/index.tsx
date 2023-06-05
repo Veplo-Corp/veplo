@@ -59,6 +59,26 @@ const listItemVariants = {
     },
 };
 
+const SORT_PRODUCT = [
+    {
+        text: 'Rilevanza',
+        url: 'rilevanza'
+    },
+    {
+        text: 'Ultime uscite',
+        url: 'ultime-uscite'
+    },
+    {
+        text: 'Prezzo decrescente',
+        url: 'prezzo-decrescente'
+    },
+    {
+        text: 'Prezzo crescente',
+        url: 'prezzo-crescente'
+    },
+
+]
+
 
 
 
@@ -84,7 +104,7 @@ export async function getStaticProps(ctx: any) {
 
     const elementGenderMacrocategory: { gender: string | null, macrocategory: string | null } = getGenderandMacrocategory(slug[0]);
     const microgategoryNameUrl: string = slug[1];
-    const searchedText: string = slug[3];
+    const sortType: string = slug[2];
 
     const apolloClient = initApollo()
 
@@ -125,12 +145,15 @@ export async function getStaticProps(ctx: any) {
 
 
 
+
+
         return {
             props: {
                 gender: filter.gender,
                 category: macrogategoryName,
                 products: data?.products.products,
-                microCategory: microgategoryName
+                microCategory: microgategoryName,
+                sortType: sortType ? sortType : 'tutto'
             },
             revalidate: 10 //seconds
         }
@@ -151,7 +174,7 @@ export async function getStaticProps(ctx: any) {
 
 }
 
-interface PropsOpenModal {
+export interface PropsOpenModal {
     orderBy: boolean,
     category: boolean,
     size: boolean,
@@ -162,7 +185,7 @@ interface PropsOpenModal {
 }
 
 
-interface PropsFilter {
+export interface PropsFilter {
     sizes?: string[],
     colors?: string[],
     maxPrice?: number,
@@ -171,8 +194,9 @@ interface PropsFilter {
     fit?: string
 }
 
-const index: FC<{ products: Product[], category: string, microCategory: string, gender: 'f' | 'm' }> = ({ products, microCategory, category, gender }) => {
+const index: FC<{ products: Product[], category: string, microCategory: string, gender: 'f' | 'm', sortType: string }> = ({ products, microCategory, category, gender, sortType }) => {
     const isSmallView = useBreakpointValue({ base: true, lg: false });
+    console.log(sortType);
 
     const router = useRouter();
     const [loading, setLoading] = useState(true);
@@ -183,6 +207,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     const [microcategoryTypes, setMicrocategoryTypes] = useState<string[]>([])
     const [microcategory, setMicrocategory] = useState<string>()
     const [drawerFilter, setDrawerFilter] = useState(false)
+    const [filterCount, setfilterCount] = useState(0)
 
 
     const [sizeProduct, setSizeProduct] = useState<string>();
@@ -253,6 +278,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         }
     }
 
+    console.log('microcategory', microCategory);
+
 
 
 
@@ -310,7 +337,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
 
     useEffect(() => {
-        setMicrocategory(microCategory)
+        //setMicrocategory(microCategory)
         if (gender) {
             setInLocalStorage('genderSelected', gender)
             dispatch(
@@ -319,7 +346,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         }
 
 
-    }, [gender, category, microCategory])
+    }, [gender, category])
 
 
 
@@ -369,14 +396,14 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     }, [mountedRef, gender, microCategory, category]) // add variable as dependency
 
     useEffect(() => {
+        filterLength()
         setLoading(true)
         setTimeout(() => {
             setLoading(false)
         }, 700);
         const filters = getFilterValue()
+
         console.log(filters);
-
-
         if (Object.keys(filters).length < 1) {
             setFilter({})
             setHasMoreData(true)
@@ -386,6 +413,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             return
         }
         fetchSpecificItem(filters);
+        filterLength(filters)
+
         setHasMoreData(true)
 
         return () => {
@@ -442,6 +471,27 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         }
         return {}
 
+    }
+
+    const filterLength = (filter?: PropsFilter) => {
+        let count = 0;
+        if (microCategory) count = 1;
+        if (!filter) return setfilterCount(count)
+        if (Object.keys(filter)) {
+            count += Object.keys(filter)?.length
+        }
+        return setfilterCount(count)
+    }
+
+
+    const changeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const sortUrl = SORT_PRODUCT.find(element => element.url === e.target.value)?.url
+        router.replace({
+            pathname: `/prodotti/${gender === 'm' ? 'uomo' : 'donna'}-${category ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortUrl ? sortUrl : 'rilevanza'}`,
+            query: {
+                ...filter
+            }
+        })
     }
 
 
@@ -539,7 +589,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             fontSize={'lg'}
                                             fontWeight={'semibold'}
                                         >
-                                            3
+                                            {filterCount}
                                         </Text>
                                     </Button>
                                     <Select
@@ -561,220 +611,227 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                         fontWeight={'semibold'}
                                         fontSize={'lg'}
                                         height={12}
+                                        onChange={changeSort}
                                     >
-                                        <option value='Rilevanza'>Rilevanza</option>
-                                        <option value='Ultime uscite'>Ultime uscite</option>
-                                        <option value='Prezzo crescente'>Prezzo crescente</option>
-                                        <option value='Prezzo decrescente'>Prezzo decrescente</option>
+                                        {SORT_PRODUCT.map((sortElement) => {
+                                            return (
+                                                <option key={sortElement.text} value={sortElement.url}>{sortElement.text}</option>
+                                            )
+                                        })}
+
+
                                     </Select>
                                 </Box>
                             )
-                            : (<Box
+                            : (
+                                <Box
 
-                                justifyContent={'space-between'}
-                                display={'flex'}
-                            >
-                                <div
-                                    className='mb-12 overflow-x-scroll lg:overflow-hidden flex gap-4'
+                                    justifyContent={'space-between'}
+                                    display={'flex'}
                                 >
-                                    {microcategoryTypes.length > 0 && <Button
-                                        minW={'fit-content'}
-                                        position={'relative'}
-                                        bg={slug[1] !== 'tutto' ? 'black' : 'white'}
-                                        color={slug[1] !== 'tutto' ? 'white' : 'secondaryBlack.text'}
-                                        _hover={
-                                            {
+                                    <div
+                                        className='mb-12 overflow-x-scroll lg:overflow-hidden flex gap-4'
+                                    >
+                                        {microcategoryTypes.length > 0 && <Button
+                                            minW={'fit-content'}
+                                            position={'relative'}
+                                            bg={slug[1] !== 'tutto' ? 'black' : 'white'}
+                                            color={slug[1] !== 'tutto' ? 'white' : 'secondaryBlack.text'}
+                                            _hover={
+                                                {
+                                                    bg: slug[1] !== 'tutto' ? 'black' : 'white'
+                                                }
+                                            }
+                                            _focus={{
                                                 bg: slug[1] !== 'tutto' ? 'black' : 'white'
-                                            }
-                                        }
-                                        _focus={{
-                                            bg: slug[1] !== 'tutto' ? 'black' : 'white'
-                                        }}
-                                        borderWidth={1}
-                                        borderColor={'secondaryBlack.borderColor'}
-                                        borderRadius={'10px'}
-                                        height={12}
-                                        paddingX={8}
-                                        fontWeight={'bold'}
+                                            }}
+                                            borderWidth={1}
+                                            borderColor={'secondaryBlack.borderColor'}
+                                            borderRadius={'10px'}
+                                            height={12}
+                                            paddingX={8}
+                                            fontWeight={'bold'}
 
-                                        _active={{
-                                            transform: 'scale(0.98)',
-                                        }}
-                                        fontSize={'16px'}
-                                        onClick={() => {
-                                            setIsOpen(prevstate => {
-                                                return {
-                                                    ...prevstate,
-                                                    category: true
+                                            _active={{
+                                                transform: 'scale(0.98)',
+                                            }}
+                                            fontSize={'16px'}
+                                            onClick={() => {
+                                                setIsOpen(prevstate => {
+                                                    return {
+                                                        ...prevstate,
+                                                        category: true
+                                                    }
+                                                })
+                                            }}
+                                        >
+                                            {slug[1] !== 'tutto' ? microCategory : 'Categoria'}
+                                        </Button>}
+                                        {sizeProduct && sizeProduct.length > 0 && <Button
+                                            minW={'fit-content'}
+                                            position={'relative'}
+                                            borderWidth={1}
+                                            borderColor={'secondaryBlack.borderColor'}
+                                            borderRadius={'10px'}
+                                            height={12}
+                                            paddingX={8}
+
+                                            bg={filter.sizes ? 'black' : 'white'}
+                                            color={filter.sizes ? 'white' : 'secondaryBlack.text'}
+                                            _hover={
+                                                {
+                                                    bg: filter.sizes ? 'black' : 'white'
                                                 }
-                                            })
-                                        }}
-                                    >
-                                        {slug[1] !== 'tutto' ? microCategory : 'Categoria'}
-                                    </Button>}
-                                    {sizeProduct && sizeProduct.length > 0 && <Button
-                                        minW={'fit-content'}
-                                        position={'relative'}
-                                        borderWidth={1}
-                                        borderColor={'secondaryBlack.borderColor'}
-                                        borderRadius={'10px'}
-                                        height={12}
-                                        paddingX={8}
-
-                                        bg={filter.sizes ? 'black' : 'white'}
-                                        color={filter.sizes ? 'white' : 'secondaryBlack.text'}
-                                        _hover={
-                                            {
+                                            }
+                                            _focus={{
                                                 bg: filter.sizes ? 'black' : 'white'
-                                            }
+                                            }}
+                                            _active={{
+                                                transform: 'scale(0.98)',
+                                            }}
+                                            fontSize={'16px'}
+                                            fontWeight={'bold'}
+                                            onClick={() => {
+                                                setIsOpen(prevstate => {
+                                                    return {
+                                                        ...prevstate,
+                                                        size: true
+                                                    }
+                                                })
+                                            }}
+                                        >
+                                            {filter.sizes ? 'Taglia ' + filter.sizes[0].toLocaleUpperCase() : 'Taglia'}
+                                        </Button>
                                         }
-                                        _focus={{
-                                            bg: filter.sizes ? 'black' : 'white'
-                                        }}
-                                        _active={{
-                                            transform: 'scale(0.98)',
-                                        }}
-                                        fontSize={'16px'}
-                                        fontWeight={'bold'}
-                                        onClick={() => {
-                                            setIsOpen(prevstate => {
-                                                return {
-                                                    ...prevstate,
-                                                    size: true
+                                        <Button
+                                            minW={'fit-content'}
+                                            position={'relative'}
+                                            bg={filter.colors && filter.colors?.length > 0 ? 'black' : 'white'}
+                                            color={filter.colors && filter.colors?.length > 0 ? 'white' : 'secondaryBlack.text'}
+                                            _hover={
+                                                {
+                                                    bg: filter.colors && filter.colors?.length > 0 ? 'black' : 'white'
                                                 }
-                                            })
-                                        }}
-                                    >
-                                        {filter.sizes ? 'taglia ' + filter.sizes[0].toLocaleUpperCase() : 'Taglia'}
-                                    </Button>
-                                    }
-                                    <Button
-                                        minW={'fit-content'}
-                                        position={'relative'}
-                                        bg={filter.colors && filter.colors?.length > 0 ? 'black' : 'white'}
-                                        color={filter.colors && filter.colors?.length > 0 ? 'white' : 'secondaryBlack.text'}
-                                        _hover={
-                                            {
+                                            }
+                                            _focus={{
                                                 bg: filter.colors && filter.colors?.length > 0 ? 'black' : 'white'
-                                            }
-                                        }
-                                        _focus={{
-                                            bg: filter.colors && filter.colors?.length > 0 ? 'black' : 'white'
-                                        }}
+                                            }}
 
-                                        borderWidth={1}
-                                        borderColor={'secondaryBlack.borderColor'}
-                                        borderRadius={'10px'}
-                                        height={12}
-                                        paddingX={8}
-                                        fontWeight={'bold'}
-                                        _active={{
-                                            transform: 'scale(0.98)',
-                                        }}
-                                        fontSize={'16px'}
-                                        onClick={() => {
-                                            setIsOpen(prevstate => {
-                                                return {
-                                                    ...prevstate,
-                                                    color: true
+                                            borderWidth={1}
+                                            borderColor={'secondaryBlack.borderColor'}
+                                            borderRadius={'10px'}
+                                            height={12}
+                                            paddingX={8}
+                                            fontWeight={'bold'}
+                                            _active={{
+                                                transform: 'scale(0.98)',
+                                            }}
+                                            fontSize={'16px'}
+                                            onClick={() => {
+                                                setIsOpen(prevstate => {
+                                                    return {
+                                                        ...prevstate,
+                                                        color: true
+                                                    }
+                                                })
+                                            }}
+                                        >
+                                            {filter.colors ? toUpperCaseFirstLetter(filter.colors[0].toLocaleLowerCase()) : 'Colore'}
+                                        </Button>
+                                        {false && <Button
+                                            minW={'fit-content'}
+                                            bg={'white'}
+                                            position={'relative'}
+                                            color={'black'}
+                                            _hover={{ bg: 'white' }}
+                                            borderWidth={1}
+                                            borderColor={'secondaryBlack.borderColor'}
+                                            borderRadius={'10px'}
+                                            height={12}
+                                            paddingX={8}
+                                            _focus={{
+                                                bg: 'white'
+                                            }}
+                                            _active={{
+                                                transform: 'scale(0.98)',
+                                            }}
+                                            fontSize={'16px'}
+                                            onClick={() => {
+                                                setIsOpen(prevstate => {
+                                                    return {
+                                                        ...prevstate,
+                                                        orderBy: true
+                                                    }
+                                                })
+                                            }}
+                                        >
+                                            Ordina
+                                        </Button>}
+                                        <Button
+                                            minW={'fit-content'}
+                                            bg={filter.maxPrice || filter.minPrice ? 'black' : 'white'}
+                                            color={filter.maxPrice || filter.minPrice ? 'white' : 'secondaryBlack.text'}
+                                            _hover={
+                                                {
+                                                    bg: filter.maxPrice || filter.minPrice ? 'black' : 'white'
                                                 }
-                                            })
-                                        }}
-                                    >
-                                        {filter.colors ? toUpperCaseFirstLetter(filter.colors[0].toLocaleLowerCase()) : 'Colore'}
-                                    </Button>
-                                    {false && <Button
-                                        minW={'fit-content'}
-                                        bg={'white'}
-                                        position={'relative'}
-                                        color={'black'}
-                                        _hover={{ bg: 'white' }}
-                                        borderWidth={1}
-                                        borderColor={'secondaryBlack.borderColor'}
-                                        borderRadius={'10px'}
-                                        height={12}
-                                        paddingX={8}
-                                        _focus={{
-                                            bg: 'white'
-                                        }}
-                                        _active={{
-                                            transform: 'scale(0.98)',
-                                        }}
-                                        fontSize={'16px'}
-                                        onClick={() => {
-                                            setIsOpen(prevstate => {
-                                                return {
-                                                    ...prevstate,
-                                                    orderBy: true
-                                                }
-                                            })
-                                        }}
-                                    >
-                                        Ordina
-                                    </Button>}
-                                    <Button
-                                        minW={'fit-content'}
-                                        bg={filter.maxPrice || filter.minPrice ? 'black' : 'white'}
-                                        color={filter.maxPrice || filter.minPrice ? 'white' : 'secondaryBlack.text'}
-                                        _hover={
-                                            {
+                                            }
+                                            _focus={{
                                                 bg: filter.maxPrice || filter.minPrice ? 'black' : 'white'
-                                            }
-                                        }
-                                        _focus={{
-                                            bg: filter.maxPrice || filter.minPrice ? 'black' : 'white'
-                                        }}
-                                        borderWidth={1}
-                                        borderColor={'secondaryBlack.borderColor'}
-                                        borderRadius={'10px'}
-                                        height={12}
-                                        paddingX={8}
-                                        fontWeight={'bold'}
+                                            }}
+                                            borderWidth={1}
+                                            borderColor={'secondaryBlack.borderColor'}
+                                            borderRadius={'10px'}
+                                            height={12}
+                                            paddingX={8}
+                                            fontWeight={'bold'}
 
+                                            _active={{
+                                                transform: 'scale(0.98)',
+                                            }}
+                                            fontSize={'16px'}
+                                            onClick={() => {
+                                                setIsOpen(prevstate => {
+                                                    return {
+                                                        ...prevstate,
+                                                        price: true
+                                                    }
+                                                })
+                                            }}
+                                        >
+                                            {filter.minPrice ? 'da ' + filter.minPrice + '€ ' : ''}
+                                            {filter.maxPrice ? 'fino a ' + filter.maxPrice + '€' : ''}
+                                            {!filter.minPrice && !filter.maxPrice ? 'Prezzo' : ''}
+                                        </Button>
+                                    </div>
+                                    <Select
                                         _active={{
-                                            transform: 'scale(0.98)',
+                                            transform: 'scale(0.98)'
                                         }}
+                                        icon={
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                            </svg>
+                                        }
+                                        width={'fit-content'}
+                                        size={'lg'}
+                                        borderRadius={'10px'}
+                                        bg={'#F2F2F2'}
+                                        focusBorderColor="transparent"
+                                        borderColor={'#F2F2F2'}
+                                        color={'secondaryBlack.text'}
+                                        fontWeight={'semibold'}
                                         fontSize={'16px'}
-                                        onClick={() => {
-                                            setIsOpen(prevstate => {
-                                                return {
-                                                    ...prevstate,
-                                                    price: true
-                                                }
-                                            })
-                                        }}
+                                        height={12}
+                                        onChange={changeSort}
                                     >
-                                        {filter.minPrice ? 'da ' + filter.minPrice + '€ ' : ''}
-                                        {filter.maxPrice ? 'fino a ' + filter.maxPrice + '€' : ''}
-                                        {!filter.minPrice && !filter.maxPrice ? 'Prezzo' : ''}
-                                    </Button>
-                                </div>
-                                <Select
-                                    _active={{
-                                        transform: 'scale(0.98)'
-                                    }}
-                                    icon={
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                        </svg>
-                                    }
-                                    width={'fit-content'}
-                                    size={'lg'}
-                                    borderRadius={'10px'}
-                                    bg={'#F2F2F2'}
-                                    focusBorderColor="transparent"
-                                    borderColor={'#F2F2F2'}
-                                    color={'secondaryBlack.text'}
-                                    fontWeight={'semibold'}
-                                    fontSize={'16px'}
-                                    height={12}
-                                >
-                                    <option value='Rilevanza'>Rilevanza</option>
-                                    <option value='Ultime uscite'>Ultime uscite</option>
-                                    <option value='Prezzo crescente'>Prezzo crescente</option>
-                                    <option value='Prezzo decrescente'>Prezzo decrescente</option>
-                                </Select>
-                            </Box>)}
+                                        {SORT_PRODUCT.map((sortElement) => {
+                                            return (
+                                                <option key={sortElement.text} value={sortElement.url}>{sortElement.text}</option>
+                                            )
+                                        })}
+                                    </Select>
+                                </Box>)}
 
 
 
@@ -910,7 +967,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 {/* Modal Categorie */}
                 <ModalReausable
                     marginTop={32}
-
                     title='Categoria' closeModal={() => {
                         setIsOpen(prevstate => {
                             return {
@@ -922,7 +978,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                     <Box
                         mt={3}
                         className={`${sizeProduct === 'shoes_sizes' ? 'grid grid-cols-2 md:grid-cols-4 gap-5' : ''} min-w-[300px]`}
-
                     >
                         {microcategoryTypes.map((element: string) => {
                             let url = router.asPath.split('?')[1] ?
@@ -1100,7 +1155,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                 pathname: router.asPath.split('?')[0],
                                                 query: {
                                                     ...filter,
-                                                    colors: [element.name]
+                                                    colors: [element.name.toLocaleLowerCase()]
                                                 },
                                             },
                                                 undefined,
@@ -1290,7 +1345,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
                 </ModalReausable>
             </div >
-            <DrawerFilter isOpen={drawerFilter} closeDrawer={() => { setDrawerFilter(false) }} />
+            <DrawerFilter microcategoryTypes={microcategoryTypes} microCategory={microCategory} sizeProduct={sizeProduct ? sizeProduct : ''} isOpenDrawer={drawerFilter} closeDrawer={() => { setDrawerFilter(false) }} />
         </>
 
 

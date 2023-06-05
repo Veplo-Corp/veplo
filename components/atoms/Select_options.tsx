@@ -13,8 +13,6 @@ const Select_options: React.FC<{ values: Categories | any, handleClick?: any, ty
     const [isListboxDisabled, setIsListboxDisabled] = useState(disabled || false)
 
 
-
-
     const handleEvent = (value: any) => {
         setSelected(value)
         handleClick(value)
