@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Box, Button, Center, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Text, useDisclosure, VStack } from '@chakra-ui/react'
 import { Cancel } from 'iconoir-react'
 import ModalReausable from './ModalReausable'
@@ -10,20 +10,33 @@ import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 import SelectStringOption from '../atoms/SelectStringOption'
 import SelectColor from '../atoms/SelectColor'
 import { SIZES } from '../mook/sizes'
+import SelectMaxMinPrice from '../atoms/SelectMaxMinPrice'
 
-const DrawerFilter: FC<{ isOpenDrawer: boolean, closeDrawer: () => void, microcategoryTypes: string[], sizeProduct: string, microCategory: string }> = ({ isOpenDrawer, closeDrawer, microcategoryTypes, microCategory, sizeProduct }) => {
+const DrawerFilter: FC<{ defaultFilter: PropsFilter, isOpenDrawer: boolean, closeDrawer: (filter: PropsFilter, microCategory: string | undefined) => void, microcategoryTypes: string[], sizeProduct: string, defaultMicroCategory: string }> = ({ defaultFilter, isOpenDrawer, closeDrawer, microcategoryTypes, defaultMicroCategory, sizeProduct }) => {
     const router = useRouter()
-    const [isOpen, setIsOpen] = useState<PropsOpenModal>({
-        orderBy: false,
-        category: false,
-        size: false,
-        color: false,
-        price: false,
-        brand: false,
-        fit: false
-    });
+    // const [isOpen, setIsOpen] = useState<PropsOpenModal>({
+    //     orderBy: false,
+    //     category: false,
+    //     size: false,
+    //     color: false,
+    //     price: false,
+    //     brand: false,
+    //     fit: false
+    // });
 
     const [filter, setFilter] = useState<PropsFilter>({})
+    const [microCategory, setMicroCategory] = useState<string>()
+
+    useEffect(() => {
+
+        setFilter(defaultFilter)
+        setMicroCategory(defaultMicroCategory)
+    }, [defaultFilter, defaultMicroCategory])
+
+    console.log(microCategory);
+
+    const sizeFilter = filter && filter.sizes ? filter.sizes[0] : ''
+
 
     return (
         <>
@@ -31,7 +44,7 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, closeDrawer: () => void, microca
                 isOpen={isOpenDrawer}
                 placement='bottom'
                 size={'lg'}
-                onClose={closeDrawer}
+                onClose={() => closeDrawer(filter, microCategory)}
             >
                 <DrawerOverlay
                 />
@@ -59,7 +72,7 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, closeDrawer: () => void, microca
                             w={12}
                             p={0}
                             variant={'grayPrimary'}
-                            onClick={closeDrawer}
+                            onClick={() => closeDrawer(filter, microCategory)}
                         >
                             <Cancel
                                 strokeWidth={2.8}
@@ -83,23 +96,34 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, closeDrawer: () => void, microca
                                     {microcategoryTypes.length > 0 && <SelectStringOption
                                         placeholder='Categoria'
                                         values={microcategoryTypes}
-                                        defaultValue={''}
+                                        defaultValue={microCategory}
                                         handleClick={(microcategory: string) => {
-                                            console.log(microcategory);
+                                            if (!microcategory) return
+                                            setMicroCategory(microcategory.toLowerCase())
 
                                         }}
                                     />}
-                                    {sizeProduct && sizeProduct.length && (sizeProduct === 'man_clothes_sizes' || sizeProduct === 'woman_clothes_sizes' || sizeProduct === 'shoes_sizes') && <SelectStringOption
-                                        placeholder='Taglia'
-                                        values={SIZES[sizeProduct].map(size => {
-                                            return size.toLocaleUpperCase()
-                                        })}
-                                        defaultValue={''}
-                                        handleClick={(microcategory: string) => {
-                                            console.log(microcategory);
-
-                                        }}
-                                    />}
+                                    {sizeProduct && sizeProduct.length && (sizeProduct === 'man_clothes_sizes' || sizeProduct === 'woman_clothes_sizes' || sizeProduct === 'shoes_sizes') &&
+                                        <SelectStringOption
+                                            placeholder='Taglia'
+                                            values={SIZES[sizeProduct].map(size => {
+                                                return size.toLocaleUpperCase()
+                                            })}
+                                            //defaultValue={SIZES[sizeProduct].find((size) => { size.startsWith(filter?.sizes && typeof filter?.sizes[0] === 'string' ? filter?.sizes[0].toLocaleLowerCase() : 'l') })}
+                                            defaultValue={
+                                                sizeFilter !== '' ? SIZES[sizeProduct].find((size) => size.startsWith(sizeFilter.toLocaleLowerCase()))?.toLocaleUpperCase()
+                                                    : ''
+                                            }
+                                            handleClick={(size: string) => {
+                                                if (!size) return
+                                                setFilter(prevstate => {
+                                                    return {
+                                                        ...prevstate,
+                                                        sizes: [size.split(' ')[0].toLowerCase()]
+                                                    }
+                                                })
+                                            }}
+                                        />}
                                 </Box>}
                             <Box
                                 display={'flex'}
@@ -109,21 +133,28 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, closeDrawer: () => void, microca
                                 <SelectColor
                                     placeholder='Colore'
                                     colors={COLORS}
-                                    defaultValue={''}
+                                    defaultValue={filter.colors ? toUpperCaseFirstLetter(filter.colors[0]) : ''}
                                     handleClick={(color) => {
+                                        setFilter(prevstate => {
+                                            return {
+                                                ...prevstate,
+                                                colors: [color.toLowerCase()]
+                                            }
+                                        })
                                     }}
                                 />
-
+                                <SelectMaxMinPrice handleChange={() => { }} />
                             </Box>
-
-
-
                         </Box>
                         <Button
                             variant={'grayPrimary'}
                             px={20}
                             py={5}
                             fontSize={'sm'}
+                            onClick={() => {
+                                setFilter({})
+                                setMicroCategory('')
+                            }}
                         >
                             Resetta filtri
                         </Button>
@@ -141,41 +172,3 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, closeDrawer: () => void, microca
 
 export default DrawerFilter
 
-/* 
-{COLORS.map(element => {
-                        return (
-                            <Box
-                                key={element.cssColor}
-                                width={'full'}
-                                _hover={{
-                                    background: 'gray.100'
-                                }}
-                                background={element.name === router.query.colors ? 'gray.100' : 'white'}
-                                p={2}
-                                textAlign={'center'}
-                                cursor={'pointer'}
-                                borderRadius={'lg'}
-                                fontSize={'md'}
-                                fontWeight={'semibold'}
-                                onClick={() => {
-                                }
-                                }
-                            >
-                                <div
-                                    className='flex m-auto'
-                                >
-                                    <div className='my-auto mr-2'>
-                                        <Circle_Color colors={[element.cssColor]} dimension={4} space={0} />
-
-                                    </div>
-                                    <Text
-                                        my={'auto'}
-                                    >
-                                        {element.name}
-                                    </Text>
-                                </div>
-
-                            </Box>)
-                    })}
-
-*/

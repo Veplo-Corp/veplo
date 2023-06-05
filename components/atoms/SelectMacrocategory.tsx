@@ -17,7 +17,7 @@ const SelectMacrocategory: FC<{ selectedValueBefore: string, handleClick: (value
             <div className={`z-1 relative mt-1 border border-gray rounded-lg ${true ? 'bg-white' : 'bg-gray-200'}`}>
                 <Listbox.Button className="cursor-default w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0">
 
-                    {selected ? <span className="block truncate text-start">{selected.name || selected} </span> : <span className="block truncate text-start text-white">--</span>}
+                    {selected ? <span className="block truncate text-start">{selected?.name || selected} </span> : <span className="block truncate text-start text-white">--</span>}
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <ChevronUpDownIcon
                             className="h-5 w-5 text-gray-400"
