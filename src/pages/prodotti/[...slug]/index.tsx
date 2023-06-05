@@ -1116,7 +1116,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                     _hover={{
                                         background: 'gray.100'
                                     }}
-                                    background={element.name === router.query.colors ? 'gray.100' : 'white'}
+                                    background={element.name.toLocaleLowerCase() === router.query.colors ? 'gray.100' : 'white'}
                                     p={2}
                                     textAlign={'center'}
                                     cursor={'pointer'}
@@ -1132,7 +1132,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             }
                                         })
                                         setHasMoreData(true)
-                                        if (element.name === router.query.colors) {
+                                        if (element.name.toLocaleLowerCase() === router.query.colors) {
                                             let filter = getFilterValue();
                                             setHasMoreData(true)
                                             delete filter['colors'];
