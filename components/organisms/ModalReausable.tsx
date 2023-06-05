@@ -21,7 +21,8 @@ const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isO
 
     return (
         <Transition appear show={isOpen} as={Fragment}>
-            <Dialog as="div" className="relative z-50" onClose={handleCloseButton}>
+            <Dialog as="div" className="relative z-50"
+                onClose={handleCloseButton}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -33,7 +34,7 @@ const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isO
                 >
                     <div className="fixed inset-0 bg-black bg-opacity-25" />
                 </Transition.Child>
-                <div className="fixed inset-0 overflow-y-auto">
+                <div className="fixed inset-0 overflow-y-auto ">
                     <div className={`flex ${positionTopModal ? 'min-h-full md:min-h-fit' : 'min-h-full'} ${marginTop ? `md:mt-${marginTop}` : ''} items-center justify-center p-4 text-center`}>
                         <Transition.Child
                             as={Fragment}

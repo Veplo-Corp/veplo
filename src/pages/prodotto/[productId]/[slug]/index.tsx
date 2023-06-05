@@ -494,7 +494,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                         subtitle={`${product.name.toUpperCase()} ${product.info.brand} - ${product.info.macroCategory} a ${product.price.v2 ? product.price.v2 : product.price.v1}€ | vivi Veplo`}
                         image={imageKitUrl(variationSelected.photos[0], 171, 247)}
                         description={`${product.name.toUpperCase()} ${product.info.brand} - ${product.info.macroCategory} - Veplo.it`} />
-
                     <div className='md:flex justify-between w-full mb-5 lg:mb-0 gap-5'>
                         <Image_Product variation={variationSelected} />
                         <Box className='md:block max-w-[50%]'>
