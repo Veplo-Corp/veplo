@@ -255,10 +255,11 @@ const index = () => {
                                     paddingInline={16}
                                     width={'fit-content'}
                                     height={'fit-content'}
-                                    variant={'primary'}
+                                    variant={'black'}
                                     _disabled={{
-                                        bg: 'primary.bg'
+                                        bg: '#000000'
                                     }}
+
                                     _hover={{
                                         color: 'primary.text'
                                     }}

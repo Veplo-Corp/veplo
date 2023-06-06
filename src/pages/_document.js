@@ -20,7 +20,7 @@ export default function Document() {
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" async />
         {/* charset="UTF-8" */}
-        <script type="text/javascript"
+        {process.env.NODE_ENV === 'production' && <script type="text/javascript"
           dangerouslySetInnerHTML={{
             __html: `
         var _iub = _iub || [];
@@ -28,7 +28,7 @@ _iub.csConfiguration = {"invalidateConsentWithoutLog":true,"perPurposeConsent":t
         `}}
         >
 
-        </script>
+        </script>}
       </Head>
 
       <body>
