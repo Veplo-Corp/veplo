@@ -67,7 +67,9 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
 
 
     return (
-        <Desktop_Layout>
+        <div
+            className='mt-5'
+        >
             <NoIndexSeo />
             {/* <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
@@ -108,7 +110,7 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
                 </Tag>
 
             }
-            <div className="grid grid-cols-1 md:pt-1 sm:grid-cols-1 lg:grid-cols-2 gap-10 w-full lg:w-3/4 m-auto justify-items-center mt-4	">
+            <div className="grid grid-cols-1 md:pt-1 sm:grid-cols-1 lg:grid-cols-2 gap-10 w-full lg:w-10/12 m-auto justify-items-center mt-4	">
                 {shops.length &&
                     shops.map((shop) => {
 
@@ -122,7 +124,7 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
                 }
             </div>
 
-        </Desktop_Layout>
+        </div>
     )
 }
 
