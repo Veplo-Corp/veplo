@@ -290,16 +290,13 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     //const fetchMoreData = async () => { }
 
     useEffect(() => {
-
         // verificare se l'utente è arrivato sulla pagina con il pulsante "Indietro"
         console.log(window.history.state.key === sessionStorage.getItem("keyProductsSession"));
         console.log(window.history.state.key, sessionStorage.getItem("keyProductsSession"));
-
-
         if (window.history.state.key === sessionStorage.getItem("keyProductsSession")) {
             setproductsFounded([])
             const productsFounded = sessionStorage.getItem("productsFounded");
-            if (!productsFounded) return
+            if (!productsFounded) return setproductsFounded(products)
             setproductsFounded(JSON.parse(productsFounded))
             const scrollPosition = sessionStorage.getItem('scrollPositionProducts');
             if (!scrollPosition) return
@@ -318,7 +315,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         }
         else {
             setproductsFounded(products)
-
         }
         setHasMoreData(true)
         const microcategoryTypes: any = Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.find(element => element.name === category)
@@ -326,15 +322,12 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             setSizeProduct('')
             return setMicrocategoryTypes([])
         }
-
         setMicrocategoryTypes(microcategoryTypes?.types);
         setSizeProduct(microcategoryTypes.sizes);
         const { slug } = router.query
         if (typeof slug === 'object' && slug?.length === 3) {
             setSlug(slug)
         }
-
-
     }, [products])
 
 
@@ -346,8 +339,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 changeGenderSelected(gender)
             );
         }
-
-
     }, [gender, category])
 
 
@@ -364,7 +355,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 }
             }
             console.log(filters);
-
             try {
                 const newProducts = async () => {
 
@@ -853,7 +843,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                 }
                                 endMessage={
                                     <></>
-
                                 }
                             >
                                 <div className={` flex items-center justify-center`}>
