@@ -31,7 +31,7 @@ import { isMobile } from 'react-device-detect'
 import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo'
 import { CATEGORIES } from '../../../../../components/mook/categories'
 
-const RANGE = 5
+const RANGE = 3
 
 export async function getStaticPaths() {
     return {
@@ -175,8 +175,8 @@ const index: React.FC<{ shop: ShopAndProducts, gender: string }> = ({ shop, gend
                 }
                     //PlaceholderSrc={PlaceholderImage}
                     alt={shop.name}
-                    className='w-full object-cover aspect-[3/1] lg:rounded-[10px]'
-                /> {/* 2.3 */}
+                    className='w-full object-cover aspect-[2.3/1] lg:aspect-[3/1] lg:rounded-[10px]'
+                />
                 <Box display={'flex'}
                     justifyContent={'space-between'}
                 >
@@ -331,7 +331,12 @@ const index: React.FC<{ shop: ShopAndProducts, gender: string }> = ({ shop, gend
                             return (
                                 <Button
                                     onClick={() => {
-                                        router.replace(`/negozio/${shop.id}/${createUrlSchema([shop.name])}/${gender}`)
+                                        if (gender !== genderSelected) {
+                                            router.replace(`/negozio/${shop.id}/${createUrlSchema([shop.name])}/${gender}`)
+                                        } else {
+                                            setGenderSelected('')
+                                            router.replace(`/negozio/${shop.id}/${createUrlSchema([shop.name])}`)
+                                        }
                                     }}
                                     key={gender}
                                     borderWidth={1}
