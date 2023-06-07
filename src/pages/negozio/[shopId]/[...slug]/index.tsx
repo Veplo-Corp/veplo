@@ -331,6 +331,10 @@ const index: React.FC<{ shop: ShopAndProducts, gender: string }> = ({ shop, gend
                             return (
                                 <Button
                                     onClick={() => {
+                                        //elimina sessionStorage
+                                        sessionStorage.removeItem("keyShopSession")
+                                        sessionStorage.removeItem("productsFoundedInShop")
+                                        sessionStorage.removeItem('scrollPositionShop');
                                         if (gender !== genderSelected) {
                                             router.replace(`/negozio/${shop.id}/${createUrlSchema([shop.name])}/${gender}`)
                                         } else {
