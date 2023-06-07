@@ -197,7 +197,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
         <Drawer
             isOpen={isOpen}
             placement='right'
-            size={['sm', 'md']}
+            size={['sm', 'sm']}
             onClose={closeDrawer}
         >
             <DrawerOverlay />
@@ -268,13 +268,14 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                                         type={'button'}
                                         borderRadius={'xl'}
                                         size={'lg'}
+                                        fontWeight={'bold'}
                                         padding={5}
                                         paddingInline={10}
                                         width={'full'}
                                         height={'fit-content'}
                                         color={'white'}
                                         variant="primary"
-                                    >procedi {formatNumberWithTwoDecimals(cart.total)} €</Button>
+                                    >{formatNumberWithTwoDecimals(cart.total)} €</Button>
                                     <Divider
                                         colorScheme={'red'}
                                         size={'md'}
