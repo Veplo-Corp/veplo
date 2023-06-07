@@ -471,16 +471,11 @@ const index = () => {
                                                 px={10}
                                                 width={'fit-content'}
                                                 height={'fit-content'}
-                                                bg={'black.900'}
-                                                color={'white'}
+                                                variant={'black'}
                                                 type={'submit'}
                                                 _hover={{ bg: 'black.900' }}
                                                 _focus={{
                                                     bg: 'black.900'
-                                                }}
-
-                                                _active={{
-                                                    transform: 'scale(0.98)',
                                                 }}
                                             >Conferma</Button>
                                         </form>
@@ -566,17 +561,14 @@ const index = () => {
                                                 px={10}
                                                 width={'fit-content'}
                                                 height={'fit-content'}
-                                                bg={'black.900'}
-                                                color={'white'}
-
+                                                variant={'black'}
+                                                type={'submit'}
                                                 _hover={{ bg: 'black.900' }}
                                                 _focus={{
                                                     bg: 'black.900'
                                                 }}
                                                 onClick={() => setIsOpenHelpModal(true)}
-                                                _active={{
-                                                    transform: 'scale(0.98)',
-                                                }}
+
                                             >Modifica</Button>}
 
                                         </Box>

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Box_Shop from '../../../../../components/molecules/Box_Shop'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout'
-import { Box, Button, defineStyle, Divider, Flex, Spacer, Text } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, defineStyle, Divider, Flex, Spacer, Text } from '@chakra-ui/react'
 import Box_Dress from '../../../../../components/molecules/Box_Dress'
 import { useRouter } from 'next/router'
 import Horizontal_Line from '../../../../../components/atoms/Horizontal_Line'
@@ -29,6 +29,9 @@ import PopoverComponent from '../../../../../components/molecules/PopoverCompone
 import { numberOfLineText } from '../../../../../components/utils/numberOfLineText'
 import { isMobile } from 'react-device-detect'
 import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo'
+import { CATEGORIES } from '../../../../../components/mook/categories'
+
+const RANGE = 10
 
 export async function getStaticPaths() {
     return {
@@ -38,18 +41,19 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(ctx: any) {
-    let { shopId } = ctx.params;
-    const apolloClient = initApollo()
-
+    let { shopId, slug } = ctx.params;
+    const apolloClient = initApollo();
+    //!creare filtro per gender
     const { data } = await apolloClient.query({
         query: GET_SHOP_AND_PRODUCTS,
-        variables: { id: shopId, limit: 50, offset: 0 },
+        variables: { id: shopId, limit: RANGE, offset: 0 },
     })
-    console.log(data);
+    const gender = slug[1];
 
     return {
         props: {
             shop: data.shop,
+            gender: gender ? gender : null
         },
         revalidate: 60, // In seconds
     }
@@ -59,12 +63,11 @@ export async function getStaticProps(ctx: any) {
 
 
 
-const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
+const index: React.FC<{ shop: ShopAndProducts, gender: string }> = ({ shop, gender }) => {
+    console.log(gender);
+
     //TODO lazyload scroll products
     console.log(shop);
-
-
-
     const router = useRouter();
     const [addressForMaps, setaddressForMaps] = useState('')
     const [productsFounded, setproductsFounded] = useState<Product[]>([])
@@ -72,7 +75,8 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [showAllDescriptionShop, setshowAllDescriptionShop] = useState(false)
     const [descriptionRefTextLength, setDescriptionRefTextLength] = useState(0)
-    const descriptionRefText = useRef<any>(null)
+    const descriptionRefText = useRef<any>(null);
+    const [genderSelected, setGenderSelected] = useState<string>()
 
     useEffect(() => {
         if (descriptionRefText.current) {
@@ -91,9 +95,51 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
     }
 
     useEffect(() => {
+
+        if (window.history.state.key === sessionStorage.getItem("keyShopSession")) {
+            setproductsFounded([])
+            const productsFounded = sessionStorage.getItem("productsFoundedInShop");
+            if (!productsFounded) return setproductsFounded(shop.products.products)
+            setproductsFounded(JSON.parse(productsFounded))
+            const scrollPosition = sessionStorage.getItem('scrollPositionShop');
+            console.log('scrollPosition', scrollPosition);
+
+            if (!scrollPosition) return
+            console.log(scrollPosition);
+            setTimeout(() => {
+                //window.scrollTo(0, parseInt(scrollPosition));
+                window.scrollTo({
+                    top: parseInt(scrollPosition),
+                    behavior: "smooth"
+                });
+            }, 1000);
+            setHasMoreData(true)
+        }
+        else {
+            setproductsFounded(shop.products.products)
+        }
+        setGenderSelected(gender)
         createAddressForMAps()
-        setproductsFounded(shop.products.products)
     }, [shop])
+
+
+    const fetchMoreData = async () => {
+        const data = await getMoreProducts({
+            variables: {
+                id: shop.id,
+                limit: RANGE,
+                offset: productsFounded.length
+            }
+        })
+
+        const products = data.data.shop.products.products;
+        setproductsFounded(prevState => {
+            return [
+                ...prevState,
+                ...products
+            ]
+        })
+    }
 
 
 
@@ -112,7 +158,7 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
             />
 
             <Box
-                className='lg:w-7/12 m-auto -p-10 mb-6 lg:mb-9'
+                className='lg:w-9/12 m-auto -p-10 mb-6 lg:mb-9'
 
             >
                 <LazyLoadImage src={
@@ -120,8 +166,8 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
                 }
                     //PlaceholderSrc={PlaceholderImage}
                     alt={shop.name}
-                    className='w-full object-cover aspect-[2.3/1] lg:rounded-[10px]'
-                />
+                    className='w-full object-cover aspect-[3/1] lg:rounded-[10px]'
+                /> {/* 2.3 */}
                 <Box display={'flex'}
                     justifyContent={'space-between'}
                 >
@@ -268,24 +314,93 @@ const index: React.FC<{ shop: ShopAndProducts }> = ({ shop }) => {
                             </Text>}
                         </>
                     }
+                    <ButtonGroup
+                        gap={0}
+                        mt={3}
+                    >
+                        {Object.keys(CATEGORIES).map(gender => {
+                            return (
+                                <Button
+                                    onClick={() => {
+                                        router.replace(`/negozio/${shop.id}/${createUrlSchema([shop.name])}/${gender}`)
+                                    }}
+                                    key={gender}
+                                    borderWidth={1}
+                                    borderColor={'secondaryBlack.borderColor'}
+                                    borderRadius={'10px'}
+                                    height={12}
+                                    paddingX={8}
+                                    bg={genderSelected === gender ? 'black' : 'white'}
+                                    color={genderSelected === gender ? 'white' : 'secondaryBlack.text'}
+                                    _hover={
+                                        {
+                                            bg: genderSelected === gender ? 'black' : 'white'
+                                        }
+                                    }
+                                    _focus={{
+                                        bg: genderSelected === gender ? 'black' : 'white'
+                                    }}
+                                    _active={{
+                                        transform: 'scale(0.98)',
+                                    }}
+                                    fontSize={'16px'}
+                                    fontWeight={'bold'}
+                                >
+                                    {toUpperCaseFirstLetter(gender)}
+                                </Button>
+                            )
+                        })}
+                    </ButtonGroup>
                 </Box>
 
             </Box>
 
-            {productsFounded &&
-                <div className="grid grid-cols-1 px-3 lg:px-0 md:grid-cols-3 gap-5 w-full lg:w-8/12 mx-auto mb-10">
-                    {productsFounded.map((product) => {
-                        return (
-                            <div
-                                key={product.id}
+
+            <InfiniteScroll
+                dataLength={productsFounded.length}
+                next={fetchMoreData}
+                hasMore={hasMoreData}
+                className='min-h-[130vh]'
+                loader={
+                    <Box mb={5}>
+                        {productsFounded[3] &&
+                            <Text textAlign={'center'}
+                                fontWeight={'bold'}
                             >
-                                <Box_Dress product={product}
-                                    showStoreHeader={isMobile}
-                                ></Box_Dress>
-                            </div>
-                        )
-                    })}
-                </div>}
+                                caricamento
+                            </Text>}
+                    </Box>
+                }
+                endMessage={
+                    <></>
+                }
+            >
+                {productsFounded &&
+                    <div className="grid grid-cols-1 px-3 lg:px-0 md:grid-cols-3 gap-5 w-full lg:w-9/12 mx-auto mb-10">
+
+                        {productsFounded.map((product) => {
+                            return (
+                                <div
+                                    key={product.id}
+                                >
+                                    <Box_Dress product={product}
+                                        showStoreHeader={isMobile}
+                                        handleEventSelectedDress={() => {
+                                            sessionStorage.setItem("keyShopSession", window.history.state.key)
+                                            sessionStorage.setItem("productsFoundedInShop", JSON.stringify(productsFounded))
+
+                                            sessionStorage.setItem('scrollPositionShop', window.pageYOffset.toString());
+                                        }}
+                                    ></Box_Dress>
+                                </div>
+
+                            )
+                        })}
+                    </div>
+                }
+            </InfiniteScroll>
+
+
 
             <Modal_Info_Store isOpen={isOpen} onClose={() => setIsOpen(false)} shop={shop} />
 
