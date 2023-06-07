@@ -31,7 +31,7 @@ import { isMobile } from 'react-device-detect'
 import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo'
 import { CATEGORIES } from '../../../../../components/mook/categories'
 
-const RANGE = 10
+const RANGE = 5
 
 export async function getStaticPaths() {
     return {
@@ -112,7 +112,7 @@ const index: React.FC<{ shop: ShopAndProducts, gender: string }> = ({ shop, gend
                     top: parseInt(scrollPosition),
                     behavior: "smooth"
                 });
-            }, 1000);
+            }, 500);
             setHasMoreData(true)
         }
         else {
@@ -133,6 +133,15 @@ const index: React.FC<{ shop: ShopAndProducts, gender: string }> = ({ shop, gend
         })
 
         const products = data.data.shop.products.products;
+
+
+        if (shop.products.products.length % RANGE !== 0 || products?.data?.products.length === 0) {
+            setHasMoreData(false)
+            return console.log('no more data');
+        }
+
+
+
         setproductsFounded(prevState => {
             return [
                 ...prevState,
