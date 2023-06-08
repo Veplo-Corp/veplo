@@ -107,11 +107,10 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop,
     }
 
     useEffect(() => {
-
         if (window.history.state.key === sessionStorage.getItem("keyShopSession")) {
             setproductsFounded([])
             const productsFounded = sessionStorage.getItem("productsFoundedInShop");
-            if (!productsFounded) return setproductsFounded(shop.products.products)
+            if (!productsFounded) return setproductsFounded(shop?.products?.products)
             setproductsFounded(JSON.parse(productsFounded))
             const scrollPosition = sessionStorage.getItem('scrollPositionShop');
             console.log('scrollPosition', scrollPosition);
