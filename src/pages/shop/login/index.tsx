@@ -30,7 +30,6 @@ import List_Explanation_Veplo_Shop from '../../../../components/molecules/List_E
 const index = () => {
   const router = useRouter()
   const { type }: any /* 'registration' | 'login' | 'reset_password' */ = router.query
-  //const [setIsShop] = useMutation(SET_IS_SHOP)
   const [setBusinessAccount] = useMutation(CREATE_BUSINESS_ACCOUNT)
   const [loading, setLoading] = useState(true)
   // const [showPassword, setshowPassword] = useState<boolean>(false)

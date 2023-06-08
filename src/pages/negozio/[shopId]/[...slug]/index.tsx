@@ -30,6 +30,7 @@ import { numberOfLineText } from '../../../../../components/utils/numberOfLineTe
 import { isMobile } from 'react-device-detect'
 import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo'
 import { CATEGORIES } from '../../../../../components/mook/categories'
+import { GetShopQuery } from '../../../../lib/apollo/generated/graphql'
 
 const RANGE = 3
 
@@ -44,11 +45,14 @@ export async function getStaticProps(ctx: any) {
     let { shopId, slug } = ctx.params;
     const apolloClient = initApollo();
     //!creare filtro per gender
-    const { data } = await apolloClient.query({
+    const { data }: { data: GetShopQuery } = await apolloClient.query({
         query: GET_SHOP_AND_PRODUCTS,
         variables: { id: shopId, limit: RANGE, offset: 0 },
     })
     const gender = slug[1];
+
+
+
 
     return {
         props: {
@@ -63,7 +67,14 @@ export async function getStaticProps(ctx: any) {
 
 
 
-const index: React.FC<{ shop: ShopAndProducts, gender: string }> = ({ shop, gender }) => {
+const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop, gender }) => {
+
+    if (!shop) return (
+        /* gestire errore in caso shop non viene preso */
+        <>
+        </>
+    )
+
     console.log(gender);
 
     //TODO lazyload scroll products
@@ -91,15 +102,15 @@ const index: React.FC<{ shop: ShopAndProducts, gender: string }> = ({ shop, gend
 
 
     const createAddressForMAps = () => {
+        if (!shop.address?.street || !shop.address.city) return "indirizzo non trovato"
         setaddressForMaps(shop.address.street.replaceAll(' ', '+') + ', ' + shop.address.city.replaceAll(' ', '+'))
     }
 
     useEffect(() => {
-
         if (window.history.state.key === sessionStorage.getItem("keyShopSession")) {
             setproductsFounded([])
             const productsFounded = sessionStorage.getItem("productsFoundedInShop");
-            if (!productsFounded) return setproductsFounded(shop.products.products)
+            if (!productsFounded) return setproductsFounded(shop?.products?.products)
             setproductsFounded(JSON.parse(productsFounded))
             const scrollPosition = sessionStorage.getItem('scrollPositionShop');
             console.log('scrollPosition', scrollPosition);
@@ -149,6 +160,8 @@ const index: React.FC<{ shop: ShopAndProducts, gender: string }> = ({ shop, gend
             ]
         })
     }
+
+
 
 
 

@@ -189,12 +189,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
           ISODate = new Date(userAuth.metadata.creationTime)
         }
         let date_for_redux = ('0' + ISODate.getDate()).slice(-2) + '/' + ('0' + Number(ISODate.getMonth() + 1)).slice(-2) + '/' + ISODate.getFullYear();
-        // const { data, error } = await apolloClient.query({
-        //   query: GET_SHOP_BY_FIREBASE_ID,
-        //   variables: { firebaseId: userAuth.uid },
-        //   //!useless
-        //   fetchPolicy: 'cache-first',
-        // })
         if (isBusiness) {
           dispatch(
             login({

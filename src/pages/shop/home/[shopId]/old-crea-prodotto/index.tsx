@@ -16,7 +16,6 @@ import { CATEGORIES, Categories, Category } from '../../../../../../components/m
 import { Color, COLORS } from '../../../../../../components/mook/colors'
 import { MACROCATEGORY, Macrocategory } from '../../../../../../components/mook/macrocategories'
 import { MICROCATEGORY, Microcategory } from '../../../../../../components/mook/microcategories'
-import Drawer_Add_Image from '../../../../../../components/organisms/Drawer_Add_Image'
 import Modal_Error_Shop from '../../../../../../components/organisms/Modal_Error_Shop'
 import NoIndexSeo from '../../../../../../components/organisms/NoIndexSeo'
 import Product_Form from '../../../../../../components/organisms/Product_Form'
@@ -29,7 +28,6 @@ import { initApollo } from '../../../../../lib/apollo'
 import CREATE_PRODUCT from '../../../../../lib/apollo/mutations/createProduct'
 import EDIT_PRODUCT from '../../../../../lib/apollo/mutations/editProduct'
 import GET_PRODUCTS_FROM_SHOP from '../../../../../lib/apollo/queries/geetProductsShop'
-import GET_SHOP_BY_FIREBASE_ID from '../../../../../lib/apollo/queries/getShopByFirebaseId'
 import { setModalTitleAndDescription } from '../../../../../store/reducers/modal_error'
 
 
