@@ -29,9 +29,6 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
     const [showSize, setShowSize] = useState(false)
     const router = useRouter()
 
-
-
-
     useEffect(() => {
         if (!product.variations) return
         const colors = product.variations.map((variation: any) => {
