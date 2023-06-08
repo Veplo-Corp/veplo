@@ -1,3 +1,13 @@
+import React from 'react'
+
+const Drawer_Add_Image = () => {
+    return (
+        <div>Drawer_Add_Image</div>
+    )
+}
+
+export default Drawer_Add_Image
+
 // import React, { useEffect, useRef, useState } from 'react'
 // import { Alert, AlertIcon, Box, Button, Center, Highlight, List, ListItem, UnorderedList } from '@chakra-ui/react'
 // import BlackButton from '../atoms/BlackButton'
