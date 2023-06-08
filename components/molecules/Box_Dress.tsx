@@ -7,6 +7,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import useWindowSize from '../Hooks/useWindowSize'
 import { imageKitUrl } from '../utils/imageKitUrl'
+import createUrlScheme from "../utils/create_url"
 
 import Link from 'next/link'
 import { toProductPage } from '../utils/toProductPage'
@@ -17,31 +18,38 @@ import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimal
 import { Product } from '../../src/lib/apollo/generated/graphql'
 
 
-const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: any; color?: string | undefined, showStoreHeader?: boolean }> = ({ handleEventSelectedDress, product, color, showStoreHeader }) => {
+const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean }> = ({ handleEventSelectedDress, product, color, showStoreHeader }) => {
 
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     const [width, height] = useWindowSize();
     //const [dimensionUrl, setDimensionUrl] = useState('&tr=w-571,h-825')
-    const [urlProduct, seturlProduct] = useState<string>('')
+    const [urlProduct, seturlProduct] = useState<string | undefined>()
     const [indexPhoto, setindexPhoto] = useState(0)
     const [listOfSizesAvailable, setListOfSizesAvailable] = useState<string[]>([])
     const [showSize, setShowSize] = useState(false)
     const router = useRouter()
+
+
+
+
     useEffect(() => {
         if (!product.variations) return
         const colors = product.variations.map((variation: any) => {
             return COLORS.find(color => color.name === variation.color)?.cssColor
         })
-        setProductcolorsCSS(colors)
-        seturlProduct(product?.variations[indexPhoto].photos[0] ? product?.variations[indexPhoto].photos[0] : '')
 
+        console.log(product.variations[indexPhoto].photos?.[0]);
+
+
+        setProductcolorsCSS(colors)
+        seturlProduct(product.variations[indexPhoto].photos?.[0] ? product.variations[indexPhoto].photos?.[0] : '');
         if (color) {
             const indexPhoto = product?.variations.findIndex((variation: any) => variation.color === color)
             if (indexPhoto >= 0) {
                 console.log(indexPhoto);
                 setindexPhoto(indexPhoto)
                 //rimetti a 0
-                seturlProduct(product?.variations[indexPhoto].photos[0])
+                seturlProduct(typeof product?.variations[indexPhoto]?.photos?.[0] === 'string' ? product?.variations[indexPhoto]?.photos?.[0] : '')
             }
         }
 
@@ -88,14 +96,14 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: any;
 
     return (
         <>
-            {product?.variations[0]?.photos[0] &&
+            {product?.variations?.[0].photos?.[0] &&
                 <Box
                 >
 
                     {showStoreHeader && <Link
                         prefetch={false}
                         onClick={handleEventSelectedDress}
-                        href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
+                        href={product?.shopInfo?.name && product?.shopInfo?.id ? `/negozio/${product?.shopInfo?.id}/${createUrlSchema([product.shopInfo.name])}` : ''}>
                         <Box
                             _active={{
                                 transform: 'scale(0.99)',
@@ -104,8 +112,8 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: any;
                             mb={3}
                         >
                             <Avatar
-                                name={product.shopInfo.name}
-                                src={imageKitUrl(product.shopInfo.profilePhoto, 100, 100)}
+                                name={product?.shopInfo?.name ? product?.shopInfo?.name : ''}
+                                src={product?.shopInfo?.profilePhoto ? imageKitUrl(product.shopInfo.profilePhoto, 100, 100) : ''}
                                 bg='white'
                                 size={'md'}
                                 borderWidth={1}
@@ -119,7 +127,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: any;
                                     fontWeight={'semibold'}
                                     fontSize={'md'}
                                 >
-                                    {product.shopInfo.name}
+                                    {product?.shopInfo?.name}
                                 </Text>
                                 <Text
                                     fontWeight={'normal'}
@@ -127,7 +135,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: any;
                                     mt={-2}
                                     color={'#909090'}
                                 >
-                                    {product.info.brand}
+                                    {product?.info?.brand}
                                 </Text>
                             </Box>
                         </Box>
@@ -149,7 +157,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: any;
                                 setShowSize(false)
                             }}
                             prefetch={false}
-                            href={color ? `/prodotto/${product.id}/${toProductPage(product)}?colore=${color}` : `/prodotto/${product.id}/${toProductPage(product)}`}>
+                            href={color ? `/prodotto/${product.id}/${product?.info?.brand && product.name ? createUrlScheme([product.info.brand, product.name]) : ''}?colore=${color}` : `/prodotto/${product.id}/${product?.info?.brand && product.name ? createUrlScheme([product.info.brand, product.name]) : ''}`}>
                             {showSize &&
                                 <ScaleFade
                                     initialScale={0.7} in={showSize}
@@ -204,7 +212,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: any;
                                     setShowSize(true)
                                 }}
 
-                                src={isMobile ? imageKitUrl(urlProduct) : imageKitUrl(urlProduct, 447, 660)}
+                                src={isMobile && urlProduct ? imageKitUrl(urlProduct) : imageKitUrl(urlProduct ? urlProduct : '', 447, 660)}
 
                                 // onMouseEnter={() => {
                                 //     if (!product?.variations[indexPhoto].photos[1]) return
@@ -213,9 +221,9 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: any;
                                 // onMouseLeave={() => {
                                 //     seturlProduct(product?.variations[indexPhoto].photos[0])
                                 // }}
-                                placeholderSrc={imageKitUrl(urlProduct)}
+                                //placeholderSrc={imageKitUrl(urlProduct)}
                                 //effect="blur"
-                                alt={product.name}
+                                alt={product.name ? product.name : 'immagine non trovata'}
                                 className="w-fit min-h-[240px] md:min-h-0 aspect-[4.2/5] object-cover "
 
 
@@ -234,7 +242,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: any;
                                 noOfLines={1}
                                 mr={3}
                             >
-                                {product.name.toLocaleUpperCase()}
+                                {product?.name?.toLocaleUpperCase()}
                             </Text>
                             <Box
                                 position={'absolute'}
