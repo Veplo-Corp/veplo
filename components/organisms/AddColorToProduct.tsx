@@ -9,7 +9,6 @@ import SelectSize from '../atoms/SelectSize';
 import SelectStringOption from '../atoms/SelectStringOption';
 import { Color, COLORS } from '../mook/colors';
 import { SIZES } from '../mook/sizes';
-import Drawer_Add_Image from './Drawer_Add_Image';
 import ModalReausable from './ModalReausable';
 import ImageCrop from '../molecules/ImageCrop';
 import { PixelCrop } from 'react-image-crop'
@@ -423,10 +422,7 @@ const AddColorToProduct: FC<{ category: string, deleteCard: () => void, confirmC
                     </Button>
                 </ButtonGroup>
             </Box>
-            {/* <Drawer_Add_Image openDraw={openDrawNumber} imagesUploadedBefore={[]} confirmPhotos={(images: string[]) => {
-                console.log(images);
-                setImages(images)
-            }} /> */}
+
 
             <ModalReausable
                 marginTop={0}

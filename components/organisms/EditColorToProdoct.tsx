@@ -9,7 +9,6 @@ import SelectSize from '../atoms/SelectSize';
 import SelectStringOption from '../atoms/SelectStringOption';
 import { Color, COLORS } from '../mook/colors';
 import { SIZES } from '../mook/sizes';
-import Drawer_Add_Image from './Drawer_Add_Image';
 
 const quantity = Array.from({ length: 100 }, (_, i) => i + 1)
 
@@ -266,10 +265,10 @@ const EditColorToProduct: FC<{ category: string, confirmCard: (variation: Variat
                     </Button> */}
                 </ButtonGroup>
             </Box>
-            <Drawer_Add_Image openDraw={openDrawNumber} imagesUploadedBefore={defaultCardValue.photos} confirmPhotos={(images: string[]) => {
+            {/* <Drawer_Add_Image openDraw={openDrawNumber} imagesUploadedBefore={defaultCardValue.photos} confirmPhotos={(images: string[]) => {
                 console.log(images);
                 setImages(images)
-            }} />
+            }} /> */}
         </>
 
 
