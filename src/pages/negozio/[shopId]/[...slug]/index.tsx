@@ -30,7 +30,7 @@ import { numberOfLineText } from '../../../../../components/utils/numberOfLineTe
 import { isMobile } from 'react-device-detect'
 import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo'
 import { CATEGORIES } from '../../../../../components/mook/categories'
-import { GetShopQuery } from '../../../../lib/apollo/generated/graphql'
+import { GetShopQuery, ProductsQueryResponse } from '../../../../lib/apollo/generated/graphql'
 
 const RANGE = 3
 
@@ -81,7 +81,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop,
     console.log(shop);
     const router = useRouter();
     const [addressForMaps, setaddressForMaps] = useState('')
-    const [productsFounded, setproductsFounded] = useState<Product[]>([])
+    const [productsFounded, setproductsFounded] = useState<ProductsQueryResponse["products"]>([])
     const [hasMoreData, setHasMoreData] = useState(true)
     const [isOpen, setIsOpen] = useState(false)
     const [showAllDescriptionShop, setshowAllDescriptionShop] = useState(false)
@@ -110,7 +110,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop,
         if (window.history.state.key === sessionStorage.getItem("keyShopSession")) {
             setproductsFounded([])
             const productsFounded = sessionStorage.getItem("productsFoundedInShop");
-            if (!productsFounded) return setproductsFounded(shop?.products?.products)
+            if (!productsFounded || !shop?.products?.products) return setproductsFounded(shop.products.products)
             setproductsFounded(JSON.parse(productsFounded))
             const scrollPosition = sessionStorage.getItem('scrollPositionShop');
             console.log('scrollPosition', scrollPosition);
@@ -163,8 +163,6 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop,
 
 
 
-
-
     return (
         <Desktop_Layout
             noPaddingXMobile={true}
@@ -173,21 +171,19 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop,
 
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
-                title={`${toUpperCaseFirstLetter(shop.name)} a ${shop.address.city}, ${shop.address.street} - CAP ${shop.address.postcode} - Veplo.it`}
-                subtitle={`Visita il negozio di abbigliamento ${shop.name} a ${shop.address.city}, ${shop.address.street} - CAP ${shop.address.postcode} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
-                image={shop.profileCover}
-                description={`Visita il negozio di abbigliamento ${shop.name} a ${shop.address.city}, ${shop.address.street} - CAP ${shop.address.postcode} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
+                title={`${shop.name ? toUpperCaseFirstLetter(shop.name) : 'Brand'} - Veplo.it`}
+                subtitle={`Visita il negozio di abbigliamento ${shop.name} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
+                image={shop?.profileCover ? shop?.profileCover : ''}
+                description={`Visita il negozio di abbigliamento ${shop.name} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
             />
 
             <Box
                 className='lg:w-9/12 m-auto -p-10 mb-6 lg:mb-9'
 
             >
-                <LazyLoadImage src={
-                    imageKitUrl(shop.profileCover)
-                }
+                <LazyLoadImage src={shop.profileCover ? imageKitUrl(shop.profileCover) : ''}
                     //PlaceholderSrc={PlaceholderImage}
-                    alt={shop.name}
+                    alt={shop.name ? shop.name : 'immagine non trovata'}
                     className='w-full object-cover aspect-[2.3/1] lg:aspect-[3/1] lg:rounded-[10px]'
                 />
                 <Box display={'flex'}
@@ -218,10 +214,12 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop,
                         >
 
                             <LazyLoadImage src={
-                                imageKitUrl(shop.profilePhoto)
+                                shop.profilePhoto ?
+                                    imageKitUrl(shop.profilePhoto) :
+                                    ''
                             }
                                 //PlaceholderSrc={PlaceholderImage}
-                                alt={shop.name}
+                                alt={shop.name ? shop.name : 'immagine non trovata'}
                                 className='m-auto h-full w-full p-[4px] lg:p-[5px] rounded-full'
                             />
                         </Box>
@@ -277,7 +275,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop,
                                         />,
                                         handleClick: () => {
                                             console.log('merlo');
-                                            if (typeof window !== 'undefined') {
+                                            if (typeof window !== 'undefined' && shop.info) {
                                                 window.location.href = 'tel:+39' + shop.info.phone;
 
                                             }
@@ -291,7 +289,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop,
                                         />,
                                         handleClick: () => {
                                             console.log('merlo');
-                                            if (typeof window !== 'undefined') {
+                                            if (typeof window !== 'undefined' && shop.address) {
                                                 window.open(
                                                     'https://www.google.it/maps/search/' + shop.address.city + ' ' + shop.address.postcode + ' ' + shop.address.street,
                                                     '_blank' // <- This is what makes it open in a new window.
@@ -316,7 +314,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop,
 
                     </Box>
 
-                    {shop.info.description &&
+                    {shop.info && shop.info.description &&
                         <>
                             <Text
                                 noOfLines={!showAllDescriptionShop || descriptionRefTextLength <= 3 ? 3 : 100}
@@ -348,6 +346,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop,
                                         sessionStorage.removeItem("keyShopSession")
                                         sessionStorage.removeItem("productsFoundedInShop")
                                         sessionStorage.removeItem('scrollPositionShop');
+                                        if (!shop.name) return
                                         if (gender !== genderSelected) {
                                             router.replace(`/negozio/${shop.id}/${createUrlSchema([shop.name])}/${gender}`)
                                         } else {
@@ -433,7 +432,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop,
 
 
 
-            <Modal_Info_Store isOpen={isOpen} onClose={() => setIsOpen(false)} shop={shop} />
+            {/* {false && <Modal_Info_Store isOpen={isOpen} onClose={() => setIsOpen(false)} shop={shop} />} */}
 
         </Desktop_Layout>
 
