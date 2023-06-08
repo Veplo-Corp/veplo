@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,7 @@ import Loading from '../../../../components/molecules/Loading';
 import Login_or_Registration, { UserInfo } from '../../../../components/organisms/Login_or_Registration'
 import { handleErrorFirebase } from '../../../../components/utils/handleErrorFirebase';
 import { setAuthTokenInSessionStorage } from '../../../../components/utils/setAuthTokenInSessionStorage';
-import { auth } from '../../../config/firebase';
+import { auth, provider } from '../../../config/firebase';
 import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 import { handleOpenModal, setModalTitleAndDescription } from '../../../store/reducers/modal_error';
 import { login } from '../../../store/reducers/user';
@@ -46,6 +46,9 @@ const index = () => {
       settypeForm(type)
     }
   }, [type])
+
+
+
 
   const handleSubmit = async (email: string, password: string, userInfo: UserInfo) => {
     console.log(userInfo);
@@ -137,6 +140,65 @@ const index = () => {
     }
   }
 
+  const handleGoogle = async () => {
+    let result: UserCredential | undefined;
+    try {
+      result = await signInWithPopup(auth, provider)
+
+    } catch (error: any) {
+      const errorMessage = error.message;
+      //console.log(errorCode);
+      console.log(error);
+      const errorForModal = handleErrorFirebase(errorMessage)
+      dispatch(setModalTitleAndDescription({
+        title: errorForModal?.title,
+        description: errorForModal?.description
+      }))
+      setLoading(false)
+    }
+
+
+    console.log(result);
+    if (result === undefined) return
+
+    const fullName = result.user.displayName ? result.user.displayName.split(" ") : null;
+    const idToken = await result.user.getIdToken(true);
+    setAuthTokenInSessionStorage(idToken)
+    createUser({
+      variables: {
+        options: {
+          name: fullName ? fullName[0] : null,
+          surname: fullName ? fullName?.slice(1).join(" ") : null
+        }
+      }
+    }).then((response: any) => {
+      console.log(response);
+      dispatch(
+        login({
+          email: result ? result.user.email : '',
+          uid: result ? result.user.uid : '',
+          idToken: idToken,
+          emailVerified: false,
+          createdAt: 'now',
+          accountId: response?.data.createUser,
+          userInfo: {
+            name: fullName ? fullName[0] : null
+          }
+        })
+      );
+
+    }).catch((error) => {
+      console.log(error);
+    })
+    if (typeof router.query?.callbackUrl === 'string') {
+      return router.push(router.query?.callbackUrl)
+    } else {
+      return router.push('/')
+    }
+
+
+  }
+
   return (
     <Desktop_Layout>
 
@@ -162,7 +224,7 @@ const index = () => {
             account='user'
             handleSubmitToPage={handleSubmit}
             handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }}
-
+            handleGoogle={handleGoogle}
             type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo account`} />
         </div>
       </div>

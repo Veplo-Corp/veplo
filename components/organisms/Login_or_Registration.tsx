@@ -27,7 +27,7 @@ const typeInterest = [
     }
 ]
 
-const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubmitToPage: any, handleType: any, type: 'registration' | 'login' | 'reset_password', title: string }> = ({ account, handleSubmitToPage, handleType, type, title }) => {
+const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubmitToPage: any, handleType: any, type: 'registration' | 'login' | 'reset_password', title: string, handleGoogle: () => void }> = ({ account, handleSubmitToPage, handleType, type, title, handleGoogle }) => {
     const [showPassword, setshowPassword] = useState<boolean>(false)
     const [email, setemail] = useState<string>('')
     const [isValidEmail, setisValidEmail] = useState<boolean | null>(null)
@@ -381,9 +381,8 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
 
             }
             {type !== 'reset_password' &&
-                <div className='w-full flex justify-end pt-2'>
-
-                    <Button
+                <div className='w-full flex justify-end pt-2 gap-2'>
+                    {account === 'user' && <Button
                         variant={'black'}
                         _disabled={{
                             bg: '#000000'
@@ -392,15 +391,34 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
                             color: 'primary.text'
                         }}
 
-                        disabled={!isValidEmail || !isValidPassword || (type === 'registration' && account === 'user' ? (userInfo.name === '' || userInfo.surname === '' || userInfo.gender === '') : false)}
+                        height={12}
+                        width={52}
+                        borderRadius={10}
+                        size={'md'}
+                        type='button'
+                        onClick={handleGoogle}
+                    >
+                        {type == 'registration' ? 'registrati con Google' : 'accedi con Google'}
+                    </Button>}
+                    <Button
+                        variant={'black'}
+                        _disabled={{
+                            bg: '#000000'
+                        }}
+                        _hover={{
+                            color: 'primary.text'
+                        }}
                         height={12}
                         width={52}
                         type='submit'
                         borderRadius={10}
                         size={'md'}
+                        disabled={!isValidEmail || !isValidPassword || (type === 'registration' && account === 'user' ? (userInfo.name === '' || userInfo.surname === '' || userInfo.gender === '') : false)}
+
                     >
                         {type == 'registration' ? 'registrati' : 'accedi'}
                     </Button>
+
                 </div>}
             {type === 'reset_password' &&
                 <div className='w-full flex justify-end pt-2 md:pt-1' >

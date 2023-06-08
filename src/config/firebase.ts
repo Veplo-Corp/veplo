@@ -13,7 +13,10 @@ import {
   sendPasswordResetEmail,
   verifyPasswordResetCode,
   confirmPasswordReset,
-  applyActionCode
+  applyActionCode,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithRedirect
 } from 'firebase/auth';
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -65,8 +68,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // Initialize Firebase
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-
-
+const provider = new GoogleAuthProvider();
 
 
 // Initialize Cloud Storage and get a reference to the service
@@ -92,6 +94,9 @@ export {
   confirmPasswordReset,
   sendPasswordResetEmail,
   applyActionCode,
+  signInWithPopup,
+  signInWithRedirect,
+  provider,
   storage,
   analytics
 }
