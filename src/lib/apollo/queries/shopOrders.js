@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client'
 
 const GET_SHOP_ORDERS = gql`
+
     query shop(
         $id: ID!,
         $statuses: [String!],

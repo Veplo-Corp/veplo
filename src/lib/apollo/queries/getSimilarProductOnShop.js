@@ -3,7 +3,7 @@ import { gql } from '@apollo/client'
 
 //! INSERIRE BRAND
 const GET_SIMILAR_PRODUCT_ON_SHOP = gql`
-query Product($productId: ID!, $offset: Int!, $limit: Int!, $shopId: ID) {
+query getSimilarProducts($productId: ID!, $offset: Int!, $limit: Int!, $shopId: ID) {
     product(id: $productId) {
         productsLikeThis(offset: $offset, limit: $limit, shopId: $shopId) {
             id

@@ -1,9 +1,8 @@
 import { gql } from '@apollo/client'
 
 
-//! INSERIRE BRAND
 const GET_PRODUCTS_FROM_SHOP = gql`
-    query GetSingleShop(
+    query GetProductsFromSingleShop(
         $id: ID!
         $limit: Int!
         $offset: Int!

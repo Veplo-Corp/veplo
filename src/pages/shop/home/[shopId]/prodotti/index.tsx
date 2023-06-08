@@ -13,7 +13,6 @@ import { auth } from '../../../../../config/firebase';
 import { initApollo } from '../../../../../lib/apollo';
 import DELETE_PRODUCT from '../../../../../lib/apollo/mutations/deleteProduct';
 import GET_PRODUCTS_FROM_SHOP from '../../../../../lib/apollo/queries/geetProductsShop';
-import GET_SHOP_BY_FIREBASE_ID from '../../../../../lib/apollo/queries/getShopByFirebaseId';
 import GET_SINGLE_PRODUCT from '../../../../../lib/apollo/queries/getSingleProduct';
 import Verified_Email from '../../../../../../components/molecules/Verified_Email/Verified_Email';
 import Shop_UID_Required from '../../../../../../components/utils/Shop_UID_Required';
