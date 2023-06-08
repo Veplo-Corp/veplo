@@ -16,7 +16,6 @@ import { Microcategory, MICROCATEGORY } from '../mook/microcategories';
 import { Sizes, SIZES } from '../mook/sizes';
 import { onChangeNumberPrice } from '../utils/onChangePrice';
 import { ToastOpen } from '../utils/Toast';
-import Drawer_Add_Image from './Drawer_Add_Image';
 import Modal_Error_Shop from './Modal_Error_Shop';
 
 
@@ -313,7 +312,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                 </div>
             </form>
 
-            <Controller
+            {/* <Controller
                 control={control}
                 name="photos"
                 rules={{ required: false }}
@@ -326,7 +325,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                         setValue('photos', images);
                     }} />
                 )}
-            />
+            /> */}
 
         </>
     )
