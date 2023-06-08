@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useLayoutEffect, useState } from 'react'
 import { Avatar, Box, Fade, Image, ScaleFade, Text, VStack } from '@chakra-ui/react'
 import Circle_Color from '../atoms/Circle_Color'
-import { Product, Variation } from '../../src/interfaces/product.interface'
+import { Variation } from '../../src/interfaces/product.interface'
 import { COLORS } from '../mook/colors'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
@@ -14,9 +14,10 @@ import createUrlSchema from '../utils/create_url'
 import { isMobile } from 'react-device-detect'
 import { useRouter } from 'next/router'
 import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals'
+import { Product } from '../../src/lib/apollo/generated/graphql'
 
 
-const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean }> = ({ handleEventSelectedDress, product, color, showStoreHeader }) => {
+const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: any; color?: string | undefined, showStoreHeader?: boolean }> = ({ handleEventSelectedDress, product, color, showStoreHeader }) => {
 
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     const [width, height] = useWindowSize();
@@ -27,14 +28,15 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
     const [showSize, setShowSize] = useState(false)
     const router = useRouter()
     useEffect(() => {
-        const colors = product.variations.map((variation: Variation) => {
+        if (!product.variations) return
+        const colors = product.variations.map((variation: any) => {
             return COLORS.find(color => color.name === variation.color)?.cssColor
         })
         setProductcolorsCSS(colors)
-        seturlProduct(product?.variations[indexPhoto].photos[0])
+        seturlProduct(product?.variations[indexPhoto].photos[0] ? product?.variations[indexPhoto].photos[0] : '')
 
         if (color) {
-            const indexPhoto = product?.variations.findIndex(variation => variation.color === color)
+            const indexPhoto = product?.variations.findIndex((variation: any) => variation.color === color)
             if (indexPhoto >= 0) {
                 console.log(indexPhoto);
                 setindexPhoto(indexPhoto)
@@ -56,12 +58,12 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
             "5xl",
         ]
 
-        const totalSize: string[] = product.variations.map((variation: Variation) => {
+        const totalSize: string[] = product.variations.map((variation: any) => {
             return variation.lots.map((lot: any) => {
                 return lot.size
             })
 
-        }).flat().filter((value, index, self) => {
+        }).flat().filter((value: any, index: any, self: any) => {
             return self.indexOf(value) === index;
         }).sort().sort(function (a: string, b: string) {
             return sizes.indexOf(a) - sizes.indexOf(b)
