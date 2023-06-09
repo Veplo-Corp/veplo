@@ -233,7 +233,7 @@ const LoginAndRegistrationForm: FC<{
                             height={14}
                             id="firstName"
                             {...register("firstName", {
-                                required: false,
+                                required: true,
                             })}
                             type="text"
                         >
@@ -251,7 +251,7 @@ const LoginAndRegistrationForm: FC<{
                             height={14}
                             id="lastName"
                             {...register("lastName", {
-                                required: false,
+                                required: true,
                             })}
                             type="text"
                         >
@@ -370,7 +370,8 @@ const LoginAndRegistrationForm: FC<{
                             mt={[0, 2]}
                             display={'grid'}
                             gap={0.5}
-                            mb={[8, 0]}
+                            //mb={[8, 0]}
+                            className={`${person === 'business' ? 'mb-20' : 'mb-8'}`}
                         >
                             <ButtonRedirectPage
                                 text={'non hai ancora un account?'}

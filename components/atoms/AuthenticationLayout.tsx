@@ -1,4 +1,4 @@
-import { Box, useBreakpointValue } from '@chakra-ui/react'
+import { Box, Text, useBreakpointValue } from '@chakra-ui/react'
 import React, { FC, ReactNode } from 'react'
 
 const AuthenticationLayout: FC<{ children: ReactNode }> = ({ children }) => {
@@ -8,6 +8,8 @@ const AuthenticationLayout: FC<{ children: ReactNode }> = ({ children }) => {
         <Box
             className='min-w-screen min-h-[100vh] w-full h-full relative z-0'
         >
+
+
             {!isSmallView ?
                 (<>
                     <svg
