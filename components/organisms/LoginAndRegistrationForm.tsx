@@ -1,7 +1,19 @@
 import { Box, Button, Input, InputGroup, InputLeftElement, InputRightElement, Spinner, Text } from '@chakra-ui/react';
+import { UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { EyeClose, EyeEmpty, Lock, Mail } from 'iconoir-react';
+import { useRouter } from 'next/router';
 import React, { FC, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { handleErrorFirebase } from '../utils/handleErrorFirebase';
+import { setModalTitleAndDescription } from '../../src/store/reducers/modal_error';
+import { useDispatch } from 'react-redux';
+import { useMutation } from '@apollo/client';
+import CREATE_USER from '../../src/lib/apollo/mutations/createUser';
+import CREATE_BUSINESS_ACCOUNT from '../../src/lib/apollo/mutations/createBusinessAccount';
+import { auth, provider } from '../../src/config/firebase';
+import { setAuthTokenInSessionStorage } from '../utils/setAuthTokenInSessionStorage';
+import { sendEmailVerificationHanlder } from '../utils/emailVerification';
+import { login } from '../../src/store/reducers/user';
 
 export type InputFormLogin = {
     email: string,
@@ -13,21 +25,200 @@ export type InputFormLogin = {
 const LoginAndRegistrationForm: FC<{
     type: 'login' | 'registration' | 'reset_password' | undefined, person: 'user' | 'business' | undefined,
     handleChangeTypeOrPerson: (type: 'login' | 'registration' | 'reset_password', person: 'user' | 'business') => void,
-    handleEvent: (data: InputFormLogin) => void,
-    signInWithGoogle: () => void,
-    isLoading: boolean
 }> =
-    ({ type, person, handleChangeTypeOrPerson, handleEvent, signInWithGoogle, isLoading }) => {
+    ({ type, person, handleChangeTypeOrPerson }) => {
+        const [isLoading, setIsLoading] = useState(false)
+        const router = useRouter();
         const { register, handleSubmit, reset, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<InputFormLogin>({
             mode: "onBlur"
         });
-
+        const dispatch = useDispatch();
+        const [createUser] = useMutation(CREATE_USER);
+        const [setBusinessAccount] = useMutation(CREATE_BUSINESS_ACCOUNT)
         const [showPassword, setShowPassword] = useState(false)
 
 
         const onSubmit: SubmitHandler<InputFormLogin> = (data, e) => {
             console.log(data);
             handleEvent(data)
+        }
+
+        const handleEvent = async (data: InputFormLogin) => {
+            setIsLoading(true)
+            if (type === 'login') {
+                try {
+                    const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password)
+                    const tokenResult = await userCredential.user.getIdTokenResult();
+                    const isBusiness = tokenResult.claims.isBusiness ? true : false
+                    setIsLoading(false)
+
+                    if (typeof router.query?.callbackUrl === 'string') {
+                        return router.replace(router.query?.callbackUrl)
+                    }
+                    else if (!isBusiness) {
+                        return router.replace('/negozi')
+                    }
+                    else if (isBusiness) {
+                        return router.replace('/shop/home')
+                    }
+                } catch (error: any) {
+                    setIsLoading(true)
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    //console.log(errorCode);
+                    console.log(error);
+                    const errorForModal = handleErrorFirebase(errorMessage)
+                    dispatch(setModalTitleAndDescription({
+                        title: errorForModal?.title,
+                        description: errorForModal?.description
+                    }))
+                    setIsLoading(false)
+
+                }
+            }
+            else if (type === 'registration') {
+                try {
+                    // Signedup
+                    if (person === 'user') {
+                        const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
+                        //! age ora è Int, ma verrà gestita come date o string con rilascio
+                        let idToken = await userCredential.user.getIdToken(true);
+                        const response = await createUser({
+                            variables: {
+                                options: {
+                                    name: data.firstName,
+                                    surname: data.lastName,
+                                }
+                            }
+                        })
+                        console.log(response);
+                        idToken = await userCredential.user.getIdToken(true);
+                        setAuthTokenInSessionStorage(idToken)
+                        dispatch(
+                            login({
+                                email: userCredential.user.email,
+                                uid: userCredential.user.uid,
+                                idToken: idToken,
+                                emailVerified: false,
+                                createdAt: 'now',
+                                accountId: response?.data.createUser,
+                                userInfo: {
+                                    name: data.firstName
+                                }
+                            })
+                        );
+                        setIsLoading(false)
+                        if (typeof router.query?.callbackUrl === 'string') {
+                            return router.replace(router.query?.callbackUrl)
+                        } else {
+                            return router.replace('/negozi')
+                        }
+                    } if (person === 'business') {
+                        try {
+                            const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
+                            // Signed in 
+                            const idToken = await userCredential.user.getIdToken(true);
+                            setAuthTokenInSessionStorage(idToken)
+                            console.log(idToken);
+                            await sendEmailVerificationHanlder()
+                            const account = await setBusinessAccount()
+                            console.log(account);
+                            await router.replace('/shop/crea-business-account')
+                            router.reload()
+                            // setemail('')
+                            // setpassword('')
+                        } catch (error: any) {
+                            const errorCode = error.code;
+                            const errorMessage = error.message;
+                            //console.log(errorCode);
+                            console.log(errorCode);
+                            const errorForModal = handleErrorFirebase(error.code)
+                            dispatch(setModalTitleAndDescription({
+                                title: errorForModal?.title,
+                                description: errorForModal?.description
+                            }))
+                            setIsLoading(false)
+                        }
+                        setIsLoading(false)
+
+                    }
+
+                } catch (error: any) {
+                    console.log(error);
+                    setIsLoading(false)
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    //console.log(errorCode);
+                    console.log(errorCode);
+                    const errorForModal = handleErrorFirebase(error.code)
+                    dispatch(setModalTitleAndDescription({
+                        title: errorForModal?.title,
+                        description: errorForModal?.description
+                    }))
+                }
+            }
+        }
+
+        const signInWithGoogle = async () => {
+            if (person !== 'user') return
+            setIsLoading(true)
+            let result: UserCredential | undefined;
+            try {
+                result = await signInWithPopup(auth, provider)
+
+            } catch (error: any) {
+                setIsLoading(false)
+
+                const errorMessage = error.message;
+                //console.log(errorCode);
+                console.log(error);
+                const errorForModal = handleErrorFirebase(errorMessage)
+                // dispatch(setModalTitleAndDescription({
+                //     title: errorForModal?.title,
+                //     description: errorForModal?.description
+                // }))
+            }
+
+
+            if (result === undefined) return
+
+            const fullName = result.user.displayName ? result.user.displayName.split(" ") : null;
+            const idToken = await result.user.getIdToken(true);
+            setAuthTokenInSessionStorage(idToken)
+            createUser({
+                variables: {
+                    options: {
+                        name: fullName ? fullName[0] : null,
+                        surname: fullName ? fullName?.slice(1).join(" ") : null
+                    }
+                }
+            }).then((response: any) => {
+                console.log(response);
+                dispatch(
+                    login({
+                        email: result ? result.user.email : '',
+                        uid: result ? result.user.uid : '',
+                        idToken: idToken,
+                        emailVerified: false,
+                        createdAt: 'now',
+                        accountId: response?.data.createUser,
+                        userInfo: {
+                            name: fullName ? fullName[0] : null
+                        }
+                    })
+                );
+                setIsLoading(false)
+
+            }).catch((error) => {
+                console.log(error);
+                setIsLoading(false)
+
+            })
+            if (typeof router.query?.callbackUrl === 'string') {
+                return router.replace(router.query?.callbackUrl)
+            } else {
+                return router.replace('/negozi')
+            }
         }
 
 
