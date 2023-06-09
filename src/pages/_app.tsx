@@ -56,6 +56,10 @@ const theme = extendTheme({
     secondaryBlack: {
       text: '#3A3A3A',
       borderColor: '#EFEFEF'
+    },
+    inputLoginColor: {
+      bg: "#F2F2F2",
+      text: '#A19F9F',
     }
   },
   components: {
@@ -119,6 +123,31 @@ const theme = extendTheme({
           },
           _active: {
             bg: "#000000",
+            transform: 'scale(0.98)',
+          },
+          _disabled: {
+            bg: "#000000",
+            opacity: 1,
+            transform: "scale(0.98)",
+            // _hover: {
+            //   bg: "primary.bg", // Mantieni il colore di sfondo primario quando disabilitato e fai hover
+            //   color: "primary.text", // Cambia il colore del testo quando disabilitato e fai hover
+            // },
+          },
+
+        },
+        whitePrimary: {
+          bg: "#FFFFFF", // Usa il colore primario come sfondo
+          color: "#A19F9F", // Testo bianco
+          borderWidth: 1,
+          borderColor: "#F2F2F2",
+          _hover: {
+            bg: "#FFFFFF", // Cambia il colore in primario al passaggio del mouse
+            opacity: 1,
+            color: "#A19F9F"
+          },
+          _active: {
+            bg: "#A19F9F",
             transform: 'scale(0.98)',
           },
           _disabled: {
@@ -365,13 +394,14 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
 
 
 
+
   return (
     <Provider store={store}>
 
       <ApolloProvider client={apolloClient} > {/* client={clientApollo} */}
         <ChakraProvider theme={theme}>
           <Auth>
-            {router.asPath !== '/' && !router.query?.fbclid &&
+            {router.asPath !== '/' && !router.pathname.includes("/login") && !router.query?.fbclid &&
 
               <Header />
 
@@ -385,7 +415,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
             ) : (
               <main className={sans.className}>
                 <Component {...pageProps} />
-                {router.asPath !== '/' && !router.query?.fbclid && <Footer />}
+                {router.asPath !== '/' && !router.pathname.includes("/login") && !router.query?.fbclid && <Footer />}
               </main>
             )}
 
