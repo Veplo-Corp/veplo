@@ -27,15 +27,7 @@ const BlackButton: React.FC<Props> = ({ element, borderRadius, size, typeButton,
             paddingInline={10}
             width={width}
             height={heigth}
-            bg={'black.900'}
-            color={'white'}
-            _focus={{
-                bg: 'black.900'
-            }}
-            _active={{
-                transform: 'scale(0.98)',
-            }}
-
+            variant={'black'}
             _disabled={{
                 bg: '#000000'
             }}

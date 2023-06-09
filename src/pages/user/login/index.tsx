@@ -20,6 +20,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { EyeClose, EyeEmpty, Lock, Mail } from 'iconoir-react';
 import LoginAndRegistrationForm, { InputFormLogin } from '../../../../components/organisms/LoginAndRegistrationForm';
 import { signInUser } from '../../../../components/utils/signInUser';
+import { sendEmailVerificationHanlder } from '../../../../components/utils/emailVerification';
+import CREATE_BUSINESS_ACCOUNT from '../../../lib/apollo/mutations/createBusinessAccount';
 
 type InputForm = {
   email: string,
@@ -36,6 +38,7 @@ const index = () => {
   const dispatch = useDispatch();
   const [createUser] = useMutation(CREATE_USER);
   const [getUser] = useLazyQuery(GET_USER);
+  const [setBusinessAccount] = useMutation(CREATE_BUSINESS_ACCOUNT)
 
 
 
@@ -95,9 +98,9 @@ const index = () => {
   //         })
   //       );
   //       if (typeof router.query?.callbackUrl === 'string') {
-  //         return router.push(router.query?.callbackUrl)
+  //         return router.replace(router.query?.callbackUrl)
   //       } else {
-  //         return router.push('/')
+  //         return router.replace('/')
   //       }
   //     } catch (error: any) {
   //       console.log(error);
@@ -147,62 +150,7 @@ const index = () => {
   //   }
   // }
 
-  const handleGoogle = async () => {
-    let result: UserCredential | undefined;
-    try {
-      result = await signInWithPopup(auth, provider)
 
-    } catch (error: any) {
-      const errorMessage = error.message;
-      //console.log(errorCode);
-      console.log(error);
-      const errorForModal = handleErrorFirebase(errorMessage)
-      dispatch(setModalTitleAndDescription({
-        title: errorForModal?.title,
-        description: errorForModal?.description
-      }))
-      setIsLoading(false)
-    }
-
-
-    console.log(result);
-    if (result === undefined) return
-
-    const fullName = result.user.displayName ? result.user.displayName.split(" ") : null;
-    const idToken = await result.user.getIdToken(true);
-    setAuthTokenInSessionStorage(idToken)
-    createUser({
-      variables: {
-        options: {
-          name: fullName ? fullName[0] : null,
-          surname: fullName ? fullName?.slice(1).join(" ") : null
-        }
-      }
-    }).then((response: any) => {
-      console.log(response);
-      dispatch(
-        login({
-          email: result ? result.user.email : '',
-          uid: result ? result.user.uid : '',
-          idToken: idToken,
-          emailVerified: false,
-          createdAt: 'now',
-          accountId: response?.data.createUser,
-          userInfo: {
-            name: fullName ? fullName[0] : null
-          }
-        })
-      );
-
-    }).catch((error) => {
-      console.log(error);
-    })
-    if (typeof router.query?.callbackUrl === 'string') {
-      return router.push(router.query?.callbackUrl)
-    } else {
-      return router.push('/')
-    }
-  }
 
 
 
@@ -242,14 +190,164 @@ const index = () => {
 
       }
     }
+    else if (type === 'registration') {
+      try {
+        // Signedup
+        if (person === 'user') {
+          const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
+          //! age ora è Int, ma verrà gestita come date o string con rilascio
+          let idToken = await userCredential.user.getIdToken(true);
+          const response = await createUser({
+            variables: {
+              options: {
+                name: data.firstName,
+                surname: data.lastName,
+              }
+            }
+          })
+          console.log(response);
+          idToken = await userCredential.user.getIdToken(true);
+          setAuthTokenInSessionStorage(idToken)
+          dispatch(
+            login({
+              email: userCredential.user.email,
+              uid: userCredential.user.uid,
+              idToken: idToken,
+              emailVerified: false,
+              createdAt: 'now',
+              accountId: response?.data.createUser,
+              userInfo: {
+                name: data.firstName
+              }
+            })
+          );
+          setIsLoading(false)
+          if (typeof router.query?.callbackUrl === 'string') {
+            return router.replace(router.query?.callbackUrl)
+          } else {
+            return router.replace('/negozi')
+          }
+        } if (person === 'business') {
+          try {
+            const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
+            // Signed in 
+            const idToken = await userCredential.user.getIdToken(true);
+            setAuthTokenInSessionStorage(idToken)
+            console.log(idToken);
+            await sendEmailVerificationHanlder()
+            const account = await setBusinessAccount()
+            console.log(account);
+            await router.replace('/shop/crea-business-account')
+            router.reload()
+            // setemail('')
+            // setpassword('')
+          } catch (error: any) {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            //console.log(errorCode);
+            console.log(errorCode);
+            const errorForModal = handleErrorFirebase(error.code)
+            dispatch(setModalTitleAndDescription({
+              title: errorForModal?.title,
+              description: errorForModal?.description
+            }))
+            setIsLoading(false)
+          }
+          setIsLoading(false)
+
+        }
+
+      } catch (error: any) {
+        console.log(error);
+        setIsLoading(false)
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        //console.log(errorCode);
+        console.log(errorCode);
+        const errorForModal = handleErrorFirebase(error.code)
+        dispatch(setModalTitleAndDescription({
+          title: errorForModal?.title,
+          description: errorForModal?.description
+        }))
+      }
+    }
   }
 
-  const signInWithGoogle = () => {
 
+
+  const signInWithGoogle = async () => {
+    if (person !== 'user') return
+    setIsLoading(true)
+    let result: UserCredential | undefined;
+    try {
+      result = await signInWithPopup(auth, provider)
+
+    } catch (error: any) {
+      const errorMessage = error.message;
+      //console.log(errorCode);
+      console.log(error);
+      const errorForModal = handleErrorFirebase(errorMessage)
+      dispatch(setModalTitleAndDescription({
+        title: errorForModal?.title,
+        description: errorForModal?.description
+      }))
+      setIsLoading(false)
+    }
+
+
+    if (result === undefined) return
+
+    const fullName = result.user.displayName ? result.user.displayName.split(" ") : null;
+    const idToken = await result.user.getIdToken(true);
+    setAuthTokenInSessionStorage(idToken)
+    createUser({
+      variables: {
+        options: {
+          name: fullName ? fullName[0] : null,
+          surname: fullName ? fullName?.slice(1).join(" ") : null
+        }
+      }
+    }).then((response: any) => {
+      console.log(response);
+      dispatch(
+        login({
+          email: result ? result.user.email : '',
+          uid: result ? result.user.uid : '',
+          idToken: idToken,
+          emailVerified: false,
+          createdAt: 'now',
+          accountId: response?.data.createUser,
+          userInfo: {
+            name: fullName ? fullName[0] : null
+          }
+        })
+      );
+      setIsLoading(false)
+
+    }).catch((error) => {
+      console.log(error);
+      setIsLoading(false)
+
+    })
+    if (typeof router.query?.callbackUrl === 'string') {
+      return router.replace(router.query?.callbackUrl)
+    } else {
+      return router.replace('/negozi')
+    }
   }
 
   return (
     <AuthenticationLayout>
+
+      <Button
+        className='absolute top-3 left-1 lg:top-5 lg:left-3'
+        fontSize={['25px', '3xl']}
+        fontWeight={'black'}
+        colorScheme='white'
+        onClick={() => {
+          router.replace('/negozi')
+        }}
+      >VEPLO</Button>
       <LoginAndRegistrationForm
         isLoading={isLoading}
         type={(type === 'login' || type === 'registration' || type === 'reset_password') ? type : undefined}
