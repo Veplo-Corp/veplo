@@ -162,6 +162,7 @@ const index = () => {
               <div className={`md:p-3 w-full md:w-3/4 my-auto space-y-4 max-w-md mx-auto`}>
                 <Login_or_Registration
                   account='business'
+                  handleGoogle={() => { }}
                   handleSubmitToPage={handleSubmit} handleType={(type: "registration" | "login" | "reset_password") => { settypeForm(type) }} type={typeForm} title={`${typeForm === 'login' ? 'Accedi al ' : ''}${typeForm === 'registration' ? 'Registra il ' : ''}${typeForm === 'reset_password' ? 'Resetta la password del ' : ''}tuo negozio`} />
               </div>
               {typeForm === 'registration' &&
