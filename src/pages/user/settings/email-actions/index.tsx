@@ -5,19 +5,20 @@ import { Auth, applyActionCode, confirmPasswordReset, signInWithEmailAndPassword
 import { auth } from '../../../../config/firebase';
 import { ToastOpen } from '../../../../../components/utils/Toast';
 import { useForm } from 'react-hook-form';
-import { Box } from 'iconoir-react';
-import { Button, ButtonGroup, Input, InputGroup, InputLeftAddon, InputRightAddon, Text } from '@chakra-ui/react';
+import { EyeClose, EyeEmpty, Lock, Mail } from 'iconoir-react';
+import { Box, Button, ButtonGroup, Input, InputGroup, InputLeftAddon, InputLeftElement, InputRightAddon, InputRightElement, Spinner, Text } from '@chakra-ui/react';
 import Div_input_creation from '../../../../../components/atoms/Div_input_creation';
 import BlackButton from '../../../../../components/atoms/BlackButton';
 
 const index = () => {
     const router = useRouter();
     const [mode, setMode] = useState<'' | 'resetPassword' | 'recoverEmail' | 'verifyEmail'>('')
-    const [showPassword, setshowPassword] = useState<boolean>(false)
+    const [showPassword, setShowPassword] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const { addToast } = ToastOpen();
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<{ reset_password: string }>({
-        mode: "all"
+        mode: "onBlur"
     });
 
     const continueUrl =
@@ -126,6 +127,7 @@ const index = () => {
         // Display reset password handler and UI.
         handleResetPassword(auth, oobCode, continueUrl, lang, watch('reset_password'));
     }
+
     return (
         <Desktop_Layout>
             {
@@ -133,90 +135,131 @@ const index = () => {
                     <>
                         {mode === 'resetPassword' &&
                             <form
-                                className='m-auto w-11/12 md:w-1/2 lg:w-4/12 xl:w-1/3 mt-10'
+                                className='m-auto w-full sm:w-96 px-2 mt-10'
                                 onSubmit={handleSubmitChangePassword}>
-                                <h1 className="font-black text-2xl md:text-2xl text-black-900 mb-2 max-w-xs md:max-w-md">Resetta password</h1>
-
-                                <Div_input_creation text='Nuova password'>
-                                    <InputGroup
-                                        _hover={{
-                                            borderColor: 'gray.900'
-                                        }}
-                                    >
-                                        <InputLeftAddon children={
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                                            </svg>
-                                        }
-                                            background={'white'}
-                                            borderWidth={2}
-                                            borderColor={'gray.900'}
-                                            borderRightWidth={0}
-                                            borderRadius={'5px'}
-                                            height={'14'}
-                                        />
-                                        <Input
-
-                                            fontSize={'md'}
-                                            fontWeight={'medium'}
-                                            _placeholder={{
-                                                color: "gray.600"
-                                            }}
-                                            borderWidth={2}
-                                            borderLeftWidth={0}
-                                            borderColor={'gray.900'}
-                                            {...register("reset_password", { required: true, minLength: 8 })}
-                                            autoComplete={'off'}
-                                            type={showPassword ? 'text' : 'password'}
-                                            name="reset_password"
-                                            id="reset_password"
-                                            focusBorderColor='gray.900'
-                                            variant='unstyled'
-                                            placeholder="password"
-                                            borderRadius={'5px'}
-                                        />
-                                        <InputRightAddon
-                                            background={'white'}
-                                            borderWidth={2}
-                                            borderColor={'gray.900'}
-                                            borderLeftWidth={0}
-                                            height={'14'}
-                                            onClick={() => setshowPassword(!showPassword)}
-                                            borderRadius={'5px'}
-                                            children={
-                                                <>
-                                                    {!showPassword && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    </svg>}
-                                                    {showPassword && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
-                                                    </svg>
-                                                    }
-                                                </>
-                                            } />
-                                    </InputGroup>
-                                    <Text
-                                        fontSize={'sm'}
-                                        fontWeight={'medium'}
-                                    >
-                                        inserisci almeno 8 caratteri
-                                    </Text>
-                                </Div_input_creation>
-                                <ButtonGroup
-                                    float={'right'}
+                                <Text
+                                    fontSize={'27px'}
+                                    fontWeight={'black'}
+                                    mb={1.5}
                                 >
-                                    <BlackButton
-                                        element='Conferma'
-                                        borderRadius={5}
-                                        width={150}
-                                        heigth={12}
-                                        size={'md'}
-                                        typeButton={'submit'}
-                                        disabled={!isValid}
+                                    Resetta password
+                                </Text>
+                                <InputGroup
+                                    mt={3}
+                                    fontWeight={'medium'}
+                                    bg={'inputLoginColor.bg'}
+                                    fontSize={'12px'}
+                                    size={'lg'}
+                                    width={'full'}
+                                    borderRadius={'3xl'}
+                                    borderWidth={0}
+                                >
+                                    <Input
+                                        borderWidth={0}
+                                        focusBorderColor='primary.text'
+                                        borderRadius={'10px'}
+                                        placeholder='password'
+                                        _placeholder={{
+                                            color: 'inputLoginColor.text',
+                                            fontWeight: '500'
+                                        }}
+                                        height={14}
+                                        id="password"
+                                        {...register("reset_password", {
+                                            required: true,
+                                            minLength: {
+                                                value: 8,
+                                                message: 'La password deve essere di almeno 8 caratteri',
+                                            },
+                                        })}
+                                        type={showPassword ? "text" : "password"}
+                                    >
+                                    </Input>
+                                    <InputLeftElement
+                                        mt={1}
+                                        ml={1}
+                                        pointerEvents='none'
+                                        children={
+                                            <Lock
+                                                color='#A19F9F'
+                                                fontSize={16}
+                                                strokeWidth={1.4}
+                                            />
+                                        }
                                     />
-                                </ButtonGroup>
+                                    <InputRightElement
+                                        mt={1}
+                                        ml={1}
+                                        cursor={'pointer'}
+                                        onClick={() => {
+                                            setShowPassword(prevstate => {
+                                                return !prevstate
+                                            })
+                                        }}
+                                        children={
+                                            showPassword ? (<EyeEmpty
+                                                color='#A19F9F'
+                                                fontSize={16}
+                                                strokeWidth={1.4}
+                                            />) : (
+                                                <EyeClose
+                                                    color='#A19F9F'
+                                                    fontSize={16}
+                                                    strokeWidth={1.4}
+                                                />
+                                            )
+                                        }
+                                    />
 
+                                </InputGroup>
+                                <Button
+                                    mt={3}
+                                    mb={3}
+                                    type={"submit"}
+                                    borderRadius={'xl'}
+                                    size={'lg'}
+                                    fontWeight={'extrabold'}
+                                    padding={5}
+                                    paddingInline={10}
+                                    width={'full'}
+                                    height={'55px'}
+                                    color={'white'}
+                                    variant="primary"
+                                    _disabled={{
+                                        bg: 'primary.bg'
+                                    }}
+                                    _hover={{
+                                        color: 'primary.text'
+                                    }}
+                                    disabled={!isValid || isLoading}
+                                >
+                                    {!isLoading &&
+                                        <Box
+                                            display={'flex'}
+                                            gap={2}
+                                        >
+                                            <span>
+                                                conferma
+                                            </span>
+                                            <img
+                                                className='w-[18px] my-auto mb-[2px]'
+                                                alt=''
+                                                src='https://em-content.zobj.net/thumbs/240/apple/354/bellhop-bell_1f6ce-fe0f.png'
+                                            />
+
+                                        </Box>
+
+                                    }
+
+                                    {isLoading && <Spinner
+                                        thickness='4px'
+                                        speed='0.65s'
+                                        emptyColor='primary.bg'
+                                        color='white'
+                                        size='lg'
+                                    />}
+
+                                </Button>
                             </form>
 
 

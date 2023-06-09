@@ -14,6 +14,8 @@ import { auth, provider } from '../../src/config/firebase';
 import { setAuthTokenInSessionStorage } from '../utils/setAuthTokenInSessionStorage';
 import { sendEmailVerificationHanlder } from '../utils/emailVerification';
 import { login } from '../../src/store/reducers/user';
+import resetPassword from '../utils/resetPassword';
+import { ToastOpen } from '../utils/Toast';
 
 export type InputFormLogin = {
     email: string,
@@ -36,6 +38,7 @@ const LoginAndRegistrationForm: FC<{
         const [createUser] = useMutation(CREATE_USER);
         const [setBusinessAccount] = useMutation(CREATE_BUSINESS_ACCOUNT)
         const [showPassword, setShowPassword] = useState(false)
+        const { addToast } = ToastOpen();
 
 
         const onSubmit: SubmitHandler<InputFormLogin> = (data, e) => {
@@ -155,6 +158,17 @@ const LoginAndRegistrationForm: FC<{
                         title: errorForModal?.title,
                         description: errorForModal?.description
                     }))
+                }
+            }
+            else if (type === 'reset_password') {
+                setIsLoading(true)
+                try {
+                    const result = await resetPassword(data.email)
+                    return addToast({ position: 'top', title: 'controlla la casella mail', description: 'ti abbiamo inviato una mail per resettare la password', status: 'success', duration: 5000, isClosable: true })
+                    setIsLoading(false)
+
+                } catch (e) {
+                    setIsLoading(false)
                 }
             }
         }
@@ -478,10 +492,12 @@ const LoginAndRegistrationForm: FC<{
                                     {type === 'reset_password' && 'Invia mail'}
                                     {type === 'login' && 'Accedi'}
                                 </span>
-                                <img
+                                {(type === 'registration' || type === 'login') && <img
                                     className='w-[18px] my-auto mb-[2px]'
+                                    alt=''
                                     src='https://em-content.zobj.net/thumbs/240/apple/354/bellhop-bell_1f6ce-fe0f.png'
-                                />
+                                />}
+
                             </Box>
 
                         }
@@ -495,6 +511,17 @@ const LoginAndRegistrationForm: FC<{
                         />}
 
                     </Button>
+                    {type === 'registration' &&
+                        <Text
+                            mb={4}
+                            mt={-2}
+                            fontSize={['xs', 'xs']}
+                            color={'inputLoginColor.text'}
+                            width={['full', 96]}
+                        >
+                            Registrandoti per un account, accetti i nostri <a href='https://www.veplo.it/policies/termini-e-condizioni' className='underline'>Termini di utilizzo</a>. Si prega di consultare la nostra <a href='https://www.iubenda.com/privacy-policy/62612516' className='underline'>Privacy Policy</a>.
+                        </Text>
+                    }
                     {(person !== 'business') &&
                         <>
                             <div className="relative flex py-0 items-center">
@@ -531,17 +558,7 @@ const LoginAndRegistrationForm: FC<{
                             </Button>
                         </>
                     }
-                    {type === 'registration' &&
-                        <Text
-                            mb={[4, 0]}
-                            mt={-2}
-                            fontSize={['xs', 'xs']}
-                            color={'inputLoginColor.text'}
-                            width={['full', 96]}
-                        >
-                            Registrandoti per un account, accetti i nostri <a href='https://www.veplo.it/policies/termini-e-condizioni' className='underline'>Termini di utilizzo</a>. Si prega di consultare la nostra <a href='https://www.iubenda.com/privacy-policy/62612516' className='underline'>Privacy Policy</a>.
-                        </Text>
-                    }
+
                     {(type !== 'login') &&
                         <Box
                             mt={2}
