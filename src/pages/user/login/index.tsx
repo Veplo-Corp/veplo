@@ -18,7 +18,8 @@ import { Box, Button, Divider, Input, InputGroup, InputLeftAddon, InputLeftEleme
 import AuthenticationLayout from '../../../../components/atoms/AuthenticationLayout';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { EyeClose, EyeEmpty, Lock, Mail } from 'iconoir-react';
-import LoginAndRegistrationForm from '../../../../components/organisms/LoginAndRegistrationForm';
+import LoginAndRegistrationForm, { InputFormLogin } from '../../../../components/organisms/LoginAndRegistrationForm';
+import { signInUser } from '../../../../components/utils/signInUser';
 
 type InputForm = {
   email: string,
@@ -29,9 +30,8 @@ type InputForm = {
 
 const index = () => {
   const router = useRouter()
-  const { type }: any = router.query;
-  const [loading, setLoading] = useState(true)
-  const [typeForm, settypeForm] = useState<'registration' | 'login' | 'reset_password'>('registration')
+  const { type, person } = router.query;
+  const [isLoading, setIsLoading] = useState(false)
   const user: Firebase_User = useSelector((state: any) => state.user.user);
   const dispatch = useDispatch();
   const [createUser] = useMutation(CREATE_USER);
@@ -45,33 +45,21 @@ const index = () => {
   });
 
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 1000);
-  }, [])
 
 
   useEffect(() => {
 
-    if (user && user?.shopId) {
-      router.replace('/shop/prodotti')
+    if (user && user?.isBusiness) {
+      router.replace('/shop/home')
     }
-    //da rivedere la logica
-    if (user?.uid && user.statusAuthentication === 'logged_out') {
-      router.replace('/')
-    }
-    if (type) {
-      settypeForm(type)
-    }
-  }, [type])
+  }, [user])
 
 
 
 
   // const handleSubmit = async (email: string, password: string, userInfo: UserInfo) => {
   //   console.log(userInfo);
-  //   setLoading(true);
+  //   setIsLoading(true);
 
 
   //   if (typeForm === 'registration') {
@@ -113,7 +101,7 @@ const index = () => {
   //       }
   //     } catch (error: any) {
   //       console.log(error);
-  //       setLoading(false)
+  //       setIsLoading(false)
   //       const errorCode = error.code;
   //       const errorMessage = error.message;
   //       //console.log(errorCode);
@@ -129,7 +117,7 @@ const index = () => {
   //       const userCredential = await signInWithEmailAndPassword(auth, email, password)
   //       const tokenResult = await userCredential.user.getIdTokenResult();
   //       const isBusiness = tokenResult.claims.isBusiness ? true : false
-  //       setLoading(false)
+  //       setIsLoading(false)
 
   //       if (typeof router.query?.callbackUrl === 'string') {
   //         return router.replace(router.query?.callbackUrl)
@@ -142,7 +130,7 @@ const index = () => {
   //         return router.replace('/shop/home')
   //       }
   //     } catch (error: any) {
-  //       setLoading(true)
+  //       setIsLoading(true)
   //       const errorCode = error.code;
   //       const errorMessage = error.message;
   //       //console.log(errorCode);
@@ -152,7 +140,7 @@ const index = () => {
   //         title: errorForModal?.title,
   //         description: errorForModal?.description
   //       }))
-  //       setLoading(false)
+  //       setIsLoading(false)
 
   //       dispatch(handleOpenModal)
   //     }
@@ -173,7 +161,7 @@ const index = () => {
         title: errorForModal?.title,
         description: errorForModal?.description
       }))
-      setLoading(false)
+      setIsLoading(false)
     }
 
 
@@ -216,42 +204,61 @@ const index = () => {
     }
   }
 
-  const onSubmit: SubmitHandler<InputForm> = (data, e) => {
-    console.log(data, e);
+
+
+
+
+  const handleEvent = async (data: InputFormLogin) => {
+    setIsLoading(true)
+    if (type === 'login') {
+      signInUser(data.email, data.password)
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password)
+        const tokenResult = await userCredential.user.getIdTokenResult();
+        const isBusiness = tokenResult.claims.isBusiness ? true : false
+        setIsLoading(false)
+
+        if (typeof router.query?.callbackUrl === 'string') {
+          return router.replace(router.query?.callbackUrl)
+        }
+        else if (!isBusiness) {
+          return router.replace('/negozi')
+        }
+        else if (isBusiness) {
+          return router.replace('/shop/home')
+        }
+      } catch (error: any) {
+        setIsLoading(true)
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        //console.log(errorCode);
+        console.log(error);
+        const errorForModal = handleErrorFirebase(errorMessage)
+        dispatch(setModalTitleAndDescription({
+          title: errorForModal?.title,
+          description: errorForModal?.description
+        }))
+        setIsLoading(false)
+
+      }
+    }
   }
 
-  const LoginButton = () => {
-    return (
-      <Box
-        mt={3}
-        display={'flex'}
-        gap={0.5}
-        fontSize={'16px'}
-      >
-        <Text
-          color={'inputLoginColor.text'}
-          className='mr-1 text-black	'>hai già un account?</Text>
-        <Button
+  const signInWithGoogle = () => {
 
-          color={'primaryBlack.text'}
-          onClick={() => {
-            //handleType('login')
-          }
-          }
-          variant='link'
-          fontSize={'16px'}
-        >
-          Accedi
-        </Button>
-
-      </Box>
-    )
   }
 
   return (
     <AuthenticationLayout>
       <LoginAndRegistrationForm
-        type={'login'}
+        isLoading={isLoading}
+        type={(type === 'login' || type === 'registration' || type === 'reset_password') ? type : undefined}
+        person={(person === 'business' || person === 'user') ? person : undefined}
+        handleChangeTypeOrPerson={(type, person) => {
+          router.replace(`/user/login?type=${type}&person=${person}`)
+        }}
+        handleEvent={handleEvent}
+        signInWithGoogle={signInWithGoogle}
       />
 
       {/* <div className='flex w-full mt-8 md:mt-10' >

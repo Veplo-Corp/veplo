@@ -24,17 +24,17 @@ const User_Popover = () => {
         {
             name: 'Accedi',
             description: 'accedi al tuo account',
-            href: '/user/login?type=login',
+            href: '/user/login?type=login&person=user',
         },
         {
             name: 'Registrati',
             description: 'registrati per poter usufruire di tutti i servizi',
-            href: '/user/login?type=registration',
+            href: '/user/login?type=registration&person=user',
         },
         {
             name: 'Sei un negozio?',
             description: 'accedi o registra gratis il tuo account',
-            href: '/shop/login?type=login',
+            href: '/user/login?type=registration&person=business',
         },
     ]
 
@@ -52,7 +52,7 @@ const User_Popover = () => {
         {
             name: 'Esci',
             description: 'disconnetti accont',
-            href: '/user/login?type=login',
+            href: '/user/login?type=login&person=user',
         },
 
     ]
