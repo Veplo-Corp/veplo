@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { FC } from 'react'
 import GET_TERMS_AND_CONDITIONS from '../../../lib/apollo/dato_CMS/queries/getTermsAndConditions';
 import { useQuery } from '@apollo/client';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
 import { Text } from '@chakra-ui/react';
 import { Box } from 'iconoir-react';
+import { GetStaticProps } from 'next';
+import { initApollo } from '../../../lib/apollo';
 
 interface Paragraph {
     id: string,
@@ -25,18 +27,26 @@ interface Standard_paragraph {
     data: Data
 }
 
-const index = () => {
+export const getStaticProps: GetStaticProps<{}> = async () => {
 
-    const { loading, error, data, fetchMore } = useQuery<Data>(GET_TERMS_AND_CONDITIONS,
-        {
-            context: {
-                clientName: 'DATO_CMS_LINK'
-            }
+    const apolloClient = initApollo()
+
+
+    const { data } = await apolloClient.query({
+        query: GET_TERMS_AND_CONDITIONS,
+        context: {
+            clientName: 'DATO_CMS_LINK'
         }
-    );
+    })
 
-    console.log(data);
-    console.log(error);
+    return {
+        props: { data },
+        revalidate: 3600
+    }
+}
+
+const index: FC<{ data: Data }> = ({ data }) => {
+
 
 
     return (

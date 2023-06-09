@@ -16,6 +16,7 @@ import { sendEmailVerificationHanlder } from '../utils/emailVerification';
 import { login } from '../../src/store/reducers/user';
 import resetPassword from '../utils/resetPassword';
 import { ToastOpen } from '../utils/Toast';
+import Link from 'next/link';
 
 export type InputFormLogin = {
     email: string,
@@ -520,7 +521,7 @@ const LoginAndRegistrationForm: FC<{
                             color={'inputLoginColor.text'}
                             width={['full', 96]}
                         >
-                            Registrandoti per un account, accetti i nostri <a href='https://www.veplo.it/policies/termini-e-condizioni' className='underline'>Termini di utilizzo</a>. Si prega di consultare la nostra <a href='https://www.iubenda.com/privacy-policy/62612516' className='underline'>Privacy Policy</a>.
+                            Registrandoti per un account, accetti i nostri <Link href='https://www.veplo.it/policies/termini-e-condizioni' className='underline'>Termini di utilizzo</Link>. Si prega di consultare la nostra <a href='https://www.iubenda.com/privacy-policy/62612516' className='underline'>Privacy Policy</a>.
                         </Text>
                     }
                     {(person !== 'business') &&
