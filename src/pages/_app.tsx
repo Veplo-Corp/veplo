@@ -401,7 +401,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
       <ApolloProvider client={apolloClient} > {/* client={clientApollo} */}
         <ChakraProvider theme={theme}>
           <Auth>
-            {router.asPath !== '/' && !router.pathname.includes("/login") && !router.query?.fbclid &&
+            {router.asPath !== '/' && !router.pathname.includes("/login") && !router.pathname.includes("/settings/email-actions") && !router.query?.fbclid &&
 
               <Header />
 
@@ -415,7 +415,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
             ) : (
               <main className={sans.className}>
                 <Component {...pageProps} />
-                {router.asPath !== '/' && !router.pathname.includes("/login") && !router.query?.fbclid && <Footer />}
+                {router.asPath !== '/' && !router.pathname.includes("/login") && !router.pathname.includes("/settings/email-actions") && !router.query?.fbclid && <Footer />}
               </main>
             )}
 

@@ -169,7 +169,7 @@ const index = () => {
                                         borderWidth={0}
                                         focusBorderColor='primary.text'
                                         borderRadius={'10px'}
-                                        placeholder='password'
+                                        placeholder='nuova password'
                                         _placeholder={{
                                             color: 'inputLoginColor.text',
                                             fontWeight: '500'
