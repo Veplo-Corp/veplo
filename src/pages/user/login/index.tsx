@@ -46,7 +46,7 @@ const index = () => {
           router.replace('/negozi')
         }}
       >VEPLO</Button>
-      <Box className='mt-[18vh] px-4 md:px-0'>
+      <Box className='mt-[15vh] lg:mt-[12vh] px-4 md:px-0'>
         <LoginAndRegistrationForm
           type={(type === 'login' || type === 'registration' || type === 'reset_password') ? type : undefined}
           person={(person === 'business' || person === 'user') ? person : undefined}
