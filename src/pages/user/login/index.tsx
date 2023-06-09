@@ -250,7 +250,9 @@ const index = () => {
 
   return (
     <AuthenticationLayout>
-      <LoginAndRegistrationForm />
+      <LoginAndRegistrationForm
+        type={'login'}
+      />
 
       {/* <div className='flex w-full mt-8 md:mt-10' >
         <div className={`${loading ? '' : 'hidden'} m-auto`}>

@@ -6,7 +6,7 @@ const AuthenticationLayout: FC<{ children: ReactNode }> = ({ children }) => {
 
     return (
         <Box
-            className='min-w-screen min-h-screen w-full h-full relative z-0'
+            className='min-w-screen min-h-[100vh] w-full h-full relative z-0'
         >
             {!isSmallView ?
                 (<>
@@ -47,7 +47,7 @@ const AuthenticationLayout: FC<{ children: ReactNode }> = ({ children }) => {
                 (
                     <>
                         <svg
-                            className='absolute top-0 max-h-[20vh] -left-20 min-400:-left-5'
+                            className='absolute top-0 max-h-[15vh] min-380:max-h-[20vh]   -left-20 min-380:-left-5'
                             width="315" height="187" viewBox="0 0 315 187" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M-9.49027 107.995C282.127 70.7473 284.542 12.9397 249.297 -11.3081" stroke="#FF5A78" strokeWidth="100" />
                             <path d="M131.209 21.5216C197.237 45.5538 259.386 41.3455 270.022 12.1221C280.659 -17.1013 235.755 -60.2735 169.727 -84.3057C103.7 -108.338 41.5508 -104.13 30.9143 -74.9062C20.2779 -45.6828 65.1815 -2.51059 131.209 21.5216Z" fill="#FF5A78" />
@@ -55,8 +55,8 @@ const AuthenticationLayout: FC<{ children: ReactNode }> = ({ children }) => {
                             <path d="M78.5468 62.556C144.575 86.5882 206.723 82.3799 217.36 53.1565C227.996 23.9331 183.093 -19.2391 117.065 -43.2713C51.0369 -67.3035 -11.1118 -63.0952 -21.7482 -33.8718C-32.3847 -4.64836 12.5189 38.5238 78.5468 62.556Z" fill="#FF5A78" />
                         </svg>
                         <svg
-                            className='absolute bottom-0 max-h-[15vh] -left-10 min-400:max-h-[23vh] min-400:-left-0  '
-                            width="300" height="236" viewBox="0 0 390 236" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            className='absolute bottom-0  max-h-[16vh] -left-24 min-380:max-h-[20vh] min-380:-left-0  '
+                            width="350" height="236" viewBox="0 0 390 236" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <ellipse cx="314.644" cy="71.7073" rx="64.5082" ry="45.5567" transform="rotate(30 314.644 71.7073)" fill="#FF5A78" />
                             <ellipse cx="27.383" cy="121.726" rx="63.7257" ry="54.3543" transform="rotate(90 27.383 121.726)" fill="#FF5A78" />
                             <ellipse cx="127.657" cy="232.308" rx="63.7257" ry="54.3543" transform="rotate(90 127.657 232.308)" fill="#FF5A78" />
