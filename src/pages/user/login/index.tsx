@@ -7,6 +7,7 @@ import { Box, Button } from '@chakra-ui/react';
 import AuthenticationLayout from '../../../../components/atoms/AuthenticationLayout';
 
 import LoginAndRegistrationForm, { InputFormLogin } from '../../../../components/organisms/LoginAndRegistrationForm';
+import Head from 'next/head';
 
 type InputForm = {
   email: string,
@@ -36,7 +37,9 @@ const index = () => {
 
   return (
     <AuthenticationLayout>
-
+      <Head>
+        <meta name="theme-color" content="#FF5A78" />
+      </Head>
       <Button
         className='absolute top-3 left-1 lg:top-5 lg:left-3'
         fontSize={['25px', '3xl']}
