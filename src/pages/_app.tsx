@@ -147,7 +147,7 @@ const theme = extendTheme({
             color: "#A19F9F"
           },
           _active: {
-            bg: "#A19F9F",
+            bg: "#FFFFFF",
             transform: 'scale(0.98)',
           },
           _disabled: {

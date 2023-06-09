@@ -27,7 +27,7 @@ const index = () => {
         const abortController = new AbortController();
         if (user && user.statusAuthentication === 'not_yet_authenticated') return
         if (!user || !user.isBusiness) {
-            router.push('/shop/login?type=login')
+            router.push('/user/login?type=login&person=business')
             return
         }
         getBusiness({

@@ -47,7 +47,7 @@ const AuthenticationLayout: FC<{ children: ReactNode }> = ({ children }) => {
                 (
                     <>
                         <svg
-                            className='absolute top-0 max-h-[15vh] min-380:max-h-[20vh]   -left-20 min-380:-left-5'
+                            className='absolute top-0 max-h-[15vh] min-380:max-h-[20vh]   -left-20 min-380:-left-7'
                             width="315" height="187" viewBox="0 0 315 187" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M-9.49027 107.995C282.127 70.7473 284.542 12.9397 249.297 -11.3081" stroke="#FF5A78" strokeWidth="100" />
                             <path d="M131.209 21.5216C197.237 45.5538 259.386 41.3455 270.022 12.1221C280.659 -17.1013 235.755 -60.2735 169.727 -84.3057C103.7 -108.338 41.5508 -104.13 30.9143 -74.9062C20.2779 -45.6828 65.1815 -2.51059 131.209 21.5216Z" fill="#FF5A78" />

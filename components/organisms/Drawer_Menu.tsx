@@ -60,7 +60,7 @@ const Drawer_Menu: React.FC<{ user: any, isOpen: boolean, closeDrawer: () => voi
         deleteFavouriteShopFromLocalStorage()
 
         //set OpenModal 1 in Header
-        router.push('/shop/login?type=login')
+        router.push('/user/login?type=login&person=business')
         closeDrawer()
     }
 
