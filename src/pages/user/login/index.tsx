@@ -348,16 +348,19 @@ const index = () => {
           router.replace('/negozi')
         }}
       >VEPLO</Button>
-      <LoginAndRegistrationForm
-        isLoading={isLoading}
-        type={(type === 'login' || type === 'registration' || type === 'reset_password') ? type : undefined}
-        person={(person === 'business' || person === 'user') ? person : undefined}
-        handleChangeTypeOrPerson={(type, person) => {
-          router.replace(`/user/login?type=${type}&person=${person}`)
-        }}
-        handleEvent={handleEvent}
-        signInWithGoogle={signInWithGoogle}
-      />
+      <Box className='mt-[18vh]'>
+        <LoginAndRegistrationForm
+          isLoading={isLoading}
+          type={(type === 'login' || type === 'registration' || type === 'reset_password') ? type : undefined}
+          person={(person === 'business' || person === 'user') ? person : undefined}
+          handleChangeTypeOrPerson={(type, person) => {
+            router.replace(`/user/login?type=${type}&person=${person}`)
+          }}
+          handleEvent={handleEvent}
+          signInWithGoogle={signInWithGoogle}
+        />
+      </Box>
+
 
       {/* <div className='flex w-full mt-8 md:mt-10' >
         <div className={`${loading ? '' : 'hidden'} m-auto`}>

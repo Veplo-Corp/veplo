@@ -65,7 +65,7 @@ const LoginAndRegistrationForm: FC<{
         return (
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className='h-screen w-full flex'
+                className='m-auto'
             >
                 <Box
                     px={[4, 0]}
