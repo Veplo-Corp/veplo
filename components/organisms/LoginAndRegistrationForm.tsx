@@ -482,7 +482,7 @@ const LoginAndRegistrationForm: FC<{
                         _hover={{
                             color: 'primary.text'
                         }}
-                        disabled={!isValid || isLoading}
+                        disabled={isLoading}
                     >
                         {!isLoading &&
                             <Box
