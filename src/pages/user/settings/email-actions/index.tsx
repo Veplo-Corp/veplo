@@ -83,11 +83,10 @@ const index = () => {
 
         // Localize the UI to the selected language as determined by the lang
         // parameter.
-
+        setIsLoading(true)
         // Verify the password reset code is valid.
         verifyPasswordResetCode(auth, actionCode).then((email) => {
             const accountEmail = email;
-
             // TODO: Show the reset screen with the user's email and ask the user for
             // the new password.
 
@@ -109,9 +108,13 @@ const index = () => {
                 addToast({ position: 'top', title: 'Errore durante modifica della password', description: "non siamo riusciti ad aggiornare la password. Riprova più tardi", status: 'error', duration: 5000, isClosable: false })
                 // Error occurred during confirmation. The code might have expired or the
                 // password is too weak.
+                setIsLoading(false)
+
             });
         }).catch((error) => {
             console.log(error);
+            setIsLoading(false)
+
             addToast({ position: 'top', title: 'Link reset password scaduto', description: "richiedi un nuovo link per resettare la password", status: 'error', duration: 5000, isClosable: false })
 
             // Invalid or expired action code. Ask user to try to reset the password
