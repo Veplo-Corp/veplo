@@ -164,8 +164,9 @@ const LoginAndRegistrationForm: FC<{
                 setIsLoading(true)
                 try {
                     const result = await resetPassword(data.email)
-                    return addToast({ position: 'top', title: 'controlla la casella mail', description: 'ti abbiamo inviato una mail per resettare la password', status: 'success', duration: 5000, isClosable: true })
                     setIsLoading(false)
+
+                    return addToast({ position: 'top', title: 'controlla la casella mail', description: 'ti abbiamo inviato una mail per resettare la password', status: 'success', duration: 5000, isClosable: true })
 
                 } catch (e) {
                     setIsLoading(false)
