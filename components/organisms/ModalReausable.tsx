@@ -2,6 +2,7 @@ import { Box, Button, IconButton, Text } from '@chakra-ui/react'
 import { Dialog, Transition } from '@headlessui/react'
 import React, { useEffect } from 'react'
 import { Fragment, useState } from 'react'
+import ButtonClose from '../atoms/ButtonClose'
 
 export interface ErrorModal {
     title: string,
@@ -35,7 +36,7 @@ const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isO
                     <div className="fixed inset-0 bg-black bg-opacity-25" />
                 </Transition.Child>
                 <div className="fixed inset-0 overflow-y-auto ">
-                    <div className={`flex ${positionTopModal ? 'min-h-full md:min-h-fit' : 'min-h-full'} ${marginTop ? `md:mt-${marginTop}` : ''} items-center justify-center p-4 text-center`}>
+                    <div className={`flex ${positionTopModal ? 'min-h-full md:min-h-fit' : 'min-h-full'} ${marginTop ? `md:mt-${marginTop}` : ''} items-center justify-center p-3 text-center`}>
                         <Transition.Child
                             as={Fragment}
                             enter="ease-out duration-300"
@@ -45,7 +46,7 @@ const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isO
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className={`w-full ${positionTopModal ? 'w-full md:w-fit' : 'max-w-md'}  transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}>
+                            <Dialog.Panel className={`w-full ${positionTopModal ? 'w-full md:w-fit' : 'max-w-md'}  transform overflow-hidden rounded-2xl bg-white p-6  text-left align-middle shadow-xl transition-all`}>
                                 <Dialog.Title
                                     as="h3"
                                     className="text-lg font-medium leading-6 text-gray-900 flex justify-between"
@@ -60,14 +61,12 @@ const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isO
                                     <Box
                                         cursor={'pointer'}
                                     >
-                                        <svg
-
-                                            onClick={closeModal}
-                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
+                                        <ButtonClose
+                                            handleEvent={closeModal}
+                                        />
                                     </Box>
                                 </Dialog.Title>
+
                                 {children}
                             </Dialog.Panel>
                         </Transition.Child>

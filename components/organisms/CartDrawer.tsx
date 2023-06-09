@@ -210,7 +210,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                     <h3
                         className='text-xl bold'
                     >
-                        Borsa
+                        Carrello
                     </h3>
                     <Box
                         cursor={'pointer'}

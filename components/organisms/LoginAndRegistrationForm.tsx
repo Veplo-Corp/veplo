@@ -227,7 +227,7 @@ const LoginAndRegistrationForm: FC<{
                 <Box
                     display={'flex'}
                     gap={0.5}
-                    fontSize={'16px'}
+                    fontSize={'15px'}
                 >
                     <Text
                         color={'inputLoginColor.text'}
@@ -259,7 +259,6 @@ const LoginAndRegistrationForm: FC<{
                 className='m-auto'
             >
                 <Box
-                    px={[4, 0]}
                     marginX={'auto'}
                     marginY={'auto'}
                     zIndex={'10'}
@@ -454,7 +453,7 @@ const LoginAndRegistrationForm: FC<{
                         type={"submit"}
                         borderRadius={'xl'}
                         size={'lg'}
-                        fontWeight={'bold'}
+                        fontWeight={'extrabold'}
                         padding={5}
                         paddingInline={10}
                         width={'full'}
@@ -480,7 +479,7 @@ const LoginAndRegistrationForm: FC<{
                                     {type === 'login' && 'Accedi'}
                                 </span>
                                 <img
-                                    className='w-[18px] my-auto mb-[3px]'
+                                    className='w-[18px] my-auto mb-[2px]'
                                     src='https://em-content.zobj.net/thumbs/240/apple/354/bellhop-bell_1f6ce-fe0f.png'
                                 />
                             </Box>
@@ -545,8 +544,8 @@ const LoginAndRegistrationForm: FC<{
                     }
                     {(type !== 'login') &&
                         <Box
-                            mt={[0, 0, 0, 2]}
-                            mb={[8, 0]}
+                            mt={2}
+
                         >
                             <ButtonRedirectPage
                                 text={'hai già un account?'}
@@ -558,11 +557,11 @@ const LoginAndRegistrationForm: FC<{
 
                     {type === 'login' &&
                         <Box
-                            mt={[0, 2]}
+                            mt={[2, 2]}
                             display={'grid'}
                             gap={0.5}
-                            //mb={[8, 0]}
-                            className={`${person === 'business' ? 'mb-20' : 'mb-8'}`}
+                        //mb={[8, 0]}
+                        //className={`${person === 'business' ? 'mb-20' : 'mb-8'}`}
                         >
                             <ButtonRedirectPage
                                 text={'non hai ancora un account?'}

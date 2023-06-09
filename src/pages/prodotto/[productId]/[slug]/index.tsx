@@ -39,6 +39,7 @@ import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo';
 import { InView, useInView } from 'react-intersection-observer';
 import { AnimatePresence, motion } from 'framer-motion';
 import { formatNumberWithTwoDecimals } from '../../../../../components/utils/formatNumberWithTwoDecimals';
+import LoginAndRegistrationForm from '../../../../../components/organisms/LoginAndRegistrationForm';
 
 
 
@@ -140,6 +141,8 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     const [variationSelected, setVariationSelected] = useState<Variation>(productFounded.variations[0])
     const [colorSelected, setColorSelected] = useState<string>()
     const [productsLikeThis, setproductsLikeThis] = useState<Product[]>()
+    const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
+    const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('registration')
 
     if (!variationSelected) {
         return (
@@ -278,16 +281,17 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     const addToCart = async (product: Product) => {
         //qui si invita a fare login
         if (!user?.uid) {
-            console.log(router.asPath);
+            // console.log(router.asPath);
 
-            return router.replace({
-                pathname: '/user/login',
-                query: {
-                    type: 'login',
-                    callbackUrl: router.asPath
-                },
+            // return router.replace({
+            //     pathname: '/user/login',
+            //     query: {
+            //         type: 'login',
+            //         callbackUrl: router.asPath
+            //     },
 
-            })
+            // })
+            setIsOpenLoginModal(true)
         }
 
         const resolve = await expirationTimeTokenControll(user.expirationTime)
@@ -637,7 +641,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
                                 variant={'black'}
 
-                            >aggiungi alla borsa{sizeSelected && <span className='ml-[5px]'>- {sizeSelected.toLocaleUpperCase()}</span>}
+                            >aggiungi all carrello{sizeSelected && <span className='ml-[5px]'>- {sizeSelected.toLocaleUpperCase()}</span>}
                             </Button>
 
                             <Box
@@ -855,13 +859,26 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     fontWeight={'normal'}
                     color={'gray.500'}
                 >
-                    Inserisci la taglia prima di aggiungere il prodotto alla borsa
+                    Inserisci la taglia prima di aggiungere il prodotto al carrello
                 </Box>
-
 
             </ModalReausable>
             <CartDrawer isOpen={openDrawerCart} closeDrawer={() => setOpenDrawerCart(false)} />
+            <ModalReausable
+                marginTop={0}
+                title='' isOpen={isOpenLoginModal}
+                closeModal={() => setIsOpenLoginModal(false)}
+            >
+                <LoginAndRegistrationForm
+                    type={typeLogin}
+                    person='user'
+                    handleChangeTypeOrPerson={(type, person) => {
+                        if (person === 'business') return
+                        setTypeLogin(type)
+                    }}
+                />
 
+            </ModalReausable>
 
         </>
 
