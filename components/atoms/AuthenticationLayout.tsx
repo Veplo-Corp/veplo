@@ -6,7 +6,7 @@ const AuthenticationLayout: FC<{ children: ReactNode }> = ({ children }) => {
 
     return (
         <Box
-            className='min-w-screen min-h-[100vh] w-full h-full relative z-0'
+            className='min-w-screen w-full h-[100vh] relative z-0'
         >
 
 
