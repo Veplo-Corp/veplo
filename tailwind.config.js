@@ -8,7 +8,7 @@ module.exports = {
     extend: {
       screens: {
         'min-0': { min: '0px' },
-        'min-400': { min: '400px' },
+        'min-380': { min: '380px' },
       },
     },
   },
