@@ -11,6 +11,7 @@ import SelectStringOption from '../atoms/SelectStringOption'
 import SelectColor from '../atoms/SelectColor'
 import { SIZES } from '../mook/sizes'
 import SelectMaxMinPrice from '../atoms/SelectMaxMinPrice'
+import ButtonClose from '../atoms/ButtonClose'
 
 const DrawerFilter: FC<{ defaultFilter: PropsFilter, isOpenDrawer: boolean, closeDrawer: (filter: PropsFilter, microCategory: string | undefined) => void, microcategoryTypes: string[], sizeProduct: string, defaultMicroCategory: string }> = ({ defaultFilter, isOpenDrawer, closeDrawer, microcategoryTypes, defaultMicroCategory, sizeProduct }) => {
     const router = useRouter()
@@ -65,20 +66,11 @@ const DrawerFilter: FC<{ defaultFilter: PropsFilter, isOpenDrawer: boolean, clos
                         >
                             Filtri
                         </Text>
+                        <ButtonClose
+                            handleEvent={() => closeDrawer(filter, microCategory)}
+                        />
 
-                        <Button
-                            borderRadius={'full'}
-                            h={12}
-                            w={12}
-                            p={0}
-                            variant={'grayPrimary'}
-                            onClick={() => closeDrawer(filter, microCategory)}
-                        >
-                            <Cancel
-                                strokeWidth={2.8}
-                                className='w-7 h-7'
-                            />
-                        </Button>
+
 
                     </DrawerHeader>
                     <DrawerBody
