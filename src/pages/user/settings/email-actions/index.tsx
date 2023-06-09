@@ -9,6 +9,7 @@ import { EyeClose, EyeEmpty, Lock, Mail } from 'iconoir-react';
 import { Box, Button, ButtonGroup, Input, InputGroup, InputLeftAddon, InputLeftElement, InputRightAddon, InputRightElement, Spinner, Text } from '@chakra-ui/react';
 import Div_input_creation from '../../../../../components/atoms/Div_input_creation';
 import BlackButton from '../../../../../components/atoms/BlackButton';
+import AuthenticationLayout from '../../../../../components/atoms/AuthenticationLayout';
 
 const index = () => {
     const router = useRouter();
@@ -129,9 +130,19 @@ const index = () => {
     }
 
     return (
-        <Desktop_Layout>
-            {
-                mode !== '' ? (
+        <AuthenticationLayout>
+
+            <Button
+                className='absolute top-3 left-1 lg:top-5 lg:left-3'
+                fontSize={['25px', '3xl']}
+                fontWeight={'black'}
+                colorScheme='white'
+                onClick={() => {
+                    router.replace('/negozi')
+                }}
+            >VEPLO</Button>
+            <Box className='mt-[15vh] lg:mt-[22vh] px-4 md:px-0'>
+                {mode !== '' ? (
                     <>
                         {mode === 'resetPassword' &&
                             <form
@@ -212,6 +223,12 @@ const index = () => {
                                     />
 
                                 </InputGroup>
+                                {errors.reset_password && <Text
+                                    pl={2}
+                                    mt={0.5}
+                                    fontSize={'sm'}
+                                    fontWeight={'medium'}
+                                    role="alert">{errors.reset_password.message}</Text>}
                                 <Button
                                     mt={3}
                                     mb={3}
@@ -267,9 +284,10 @@ const index = () => {
                     </>
                 ) : (
                     <></>
-                )
-            }
-        </Desktop_Layout>
+                )}
+            </Box>
+        </AuthenticationLayout>
+
 
     )
 }
