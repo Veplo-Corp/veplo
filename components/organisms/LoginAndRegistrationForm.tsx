@@ -587,7 +587,7 @@ const LoginAndRegistrationForm: FC<{
                             Registrandoti per un account, accetti i nostri <Link href='https://www.veplo.it/policies/termini-e-condizioni' className='underline'>Termini di utilizzo</Link>. Si prega di consultare la nostra <a href='https://www.iubenda.com/privacy-policy/62612516' className='underline'>Privacy Policy</a>.
                         </Text>
                     }
-                    {(person !== 'business') &&
+                    {type !== 'reset_password' && person !== 'business' &&
                         <>
                             <div className="relative flex py-0 items-center">
                                 <div className="flex-grow border-t border-[#F2F2F2]"></div>
