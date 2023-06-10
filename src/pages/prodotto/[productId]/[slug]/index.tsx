@@ -141,8 +141,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     const [variationSelected, setVariationSelected] = useState<Variation>(productFounded.variations[0])
     const [colorSelected, setColorSelected] = useState<string>()
     const [productsLikeThis, setproductsLikeThis] = useState<Product[]>()
-    const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
-    const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('registration')
 
     if (!variationSelected) {
         return (
@@ -279,20 +277,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     }
 
     const addToCart = async (product: Product) => {
-        //qui si invita a fare login
-        if (!user?.uid) {
-            // console.log(router.asPath);
 
-            // return router.replace({
-            //     pathname: '/user/login',
-            //     query: {
-            //         type: 'login',
-            //         callbackUrl: router.asPath
-            //     },
-
-            // })
-            setIsOpenLoginModal(true)
-        }
 
         const resolve = await expirationTimeTokenControll(user.expirationTime)
         if (!resolve) return
@@ -434,14 +419,20 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             //aggiungi al carrello
 
 
+
             try {
-                const edited = await editCart({
-                    variables: {
-                        productVariationId: variationSelected.id,
-                        size: sizeSelected,
-                        quantity: ++productVariationQuantity
-                    }
-                })
+                if (user.uid) {
+                    const edited = await editCart({
+                        variables: {
+                            productVariationId: variationSelected.id,
+                            size: sizeSelected,
+                            quantity: ++productVariationQuantity
+                        }
+                    })
+                } else if (!user.uid) {
+                    localStorage.setItem('cart', JSON.stringify(NewCarts))
+                }
+
                 // if (!edited.data?.editCart) return //mettere un errore qui
                 dispatch(
                     editVariationFromCart({
@@ -864,22 +855,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
             </ModalReausable>
             <CartDrawer isOpen={openDrawerCart} closeDrawer={() => setOpenDrawerCart(false)} />
-            <ModalReausable
-                marginTop={0}
-                title='' isOpen={isOpenLoginModal}
-                closeModal={() => setIsOpenLoginModal(false)}
-            >
-                <LoginAndRegistrationForm
-                    type={typeLogin}
-                    person='user'
-                    handleChangeTypeOrPerson={(type, person) => {
-                        if (person === 'business') return
-                        setTypeLogin(type)
-                    }}
-                />
-
-            </ModalReausable>
-
         </>
 
     )

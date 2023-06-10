@@ -6,13 +6,9 @@ export const sortShopsInCart = (carts: Cart[]) => {
 
     const newCarts = carts.slice().sort((a, b) =>
         a.shopInfo.name.localeCompare(b.shopInfo.name)
-        // if (a.shopInfo.name < b.shopInfo.name) {
-        //     return 1;
-        // }
-        // if (a.shopInfo.name < b.shopInfo.name) {
-        //     return -1;
-        // }
-        // return 0;
+
     );
+
+
     return newCarts
 }

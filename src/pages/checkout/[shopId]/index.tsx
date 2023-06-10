@@ -18,11 +18,15 @@ import { editVariationFromCart } from '../../../store/reducers/carts';
 import GET_SHOP from '../../../lib/apollo/queries/getShop';
 import { Shop } from '../../../interfaces/shop.interface';
 import ModalReausable from '../../../../components/organisms/ModalReausable';
+import { Firebase_User } from '../../../interfaces/firebase_user.interface';
+import LoginAndRegistrationForm from '../../../../components/organisms/LoginAndRegistrationForm';
 
 const SHIPPING_COST = 4.99;
 
 const index = () => {
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
+    const user: Firebase_User = useSelector((state: any) => state.user.user);
+
     const [cart, setCart] = useState<Cart>()
     const router = useRouter()
     const [checkoutUrlMutation, { error }] = useMutation(CRATE_CHECKOUT_URL);
@@ -32,6 +36,9 @@ const index = () => {
     const [getShop, shopQuery] = useLazyQuery(GET_SHOP);
     const [shop, setShop] = useState<Shop>();
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
+    const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
+    const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('registration')
+
 
     // Inizializza uno stato per il timeout
     const [timeoutId, setTimeoutId] = useState<any>(null);
@@ -46,7 +53,7 @@ const index = () => {
             const { shopId } = router.query;
             const cart = cartsDispatch.filter(cart => cart.shopInfo.id === shopId)[0]
             if (!cart) {
-                router.back()
+                router.push('/negozi')
             }
 
         }, 4000);
@@ -92,6 +99,12 @@ const index = () => {
 
 
     const checkoutUrl = async () => {
+        if (user.isBusiness) return
+
+
+        if (!user.uid) {
+            return setIsOpenLoginModal(true)
+        }
         setIsDisabled(true)
         try {
             const create = await checkoutUrlMutation({
@@ -243,11 +256,9 @@ const index = () => {
                                 justifyContent={'end'}
                             >
                                 <Button
-
                                     mt={4}
                                     mb={3}
                                     onClick={checkoutUrl}
-
                                     type={'button'}
                                     borderRadius={'xl'}
                                     size={'md'}
@@ -259,7 +270,6 @@ const index = () => {
                                     _disabled={{
                                         bg: '#000000'
                                     }}
-
                                     _hover={{
                                         color: 'primary.text'
                                     }}
@@ -353,6 +363,21 @@ const index = () => {
                     <Loading />
                 )
             }
+            <ModalReausable
+                marginTop={0}
+                title='' isOpen={isOpenLoginModal}
+                closeModal={() => setIsOpenLoginModal(false)}
+            >
+                <LoginAndRegistrationForm
+                    type={typeLogin}
+                    person='user'
+                    handleChangeTypeOrPerson={(type, person) => {
+                        if (person === 'business') return
+                        setTypeLogin(type)
+                    }}
+                />
+
+            </ModalReausable>
         </>
 
 

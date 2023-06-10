@@ -6,7 +6,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { handleErrorFirebase } from '../utils/handleErrorFirebase';
 import { setModalTitleAndDescription } from '../../src/store/reducers/modal_error';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useMutation } from '@apollo/client';
 import CREATE_USER from '../../src/lib/apollo/mutations/createUser';
 import CREATE_BUSINESS_ACCOUNT from '../../src/lib/apollo/mutations/createBusinessAccount';
@@ -17,6 +17,7 @@ import { login } from '../../src/store/reducers/user';
 import resetPassword from '../utils/resetPassword';
 import { ToastOpen } from '../utils/Toast';
 import Link from 'next/link';
+import { Cart } from '../../src/lib/apollo/generated/graphql';
 
 export type InputFormLogin = {
     email: string,
@@ -31,6 +32,9 @@ const LoginAndRegistrationForm: FC<{
 }> =
     ({ type, person, handleChangeTypeOrPerson }) => {
         const [isLoading, setIsLoading] = useState(false)
+        const cartsDispatchProduct: Cart[] = useSelector((state: any) => state.carts.carts);
+        console.log(cartsDispatchProduct);
+
         const router = useRouter();
         const { register, handleSubmit, reset, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<InputFormLogin>({
             mode: "onBlur"
@@ -55,7 +59,6 @@ const LoginAndRegistrationForm: FC<{
                     const tokenResult = await userCredential.user.getIdTokenResult();
                     const isBusiness = tokenResult.claims.isBusiness ? true : false
                     setIsLoading(false)
-
                     if (typeof router.query?.callbackUrl === 'string') {
                         return router.replace(router.query?.callbackUrl)
                     }

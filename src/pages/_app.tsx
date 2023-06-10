@@ -199,6 +199,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
       //signOut(auth)
       const apolloClient = initApollo()
       if (userAuth) {
+
         //analytics
         //setUserId(analytics, userAuth.uid);
         //setUserProperties(analytics, { favorite_food: 'apples' });
@@ -307,11 +308,23 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
         return
       } else if (!userAuth) {
+
         console.log('effettua il logout');
         apolloClient.clearStore()
         dispatch(resetCarts())
         dispatch(detroyOrders())
+        const carts = localStorage.getItem('cart')
+        if (carts) {
+          const cartsJSON = JSON.parse(carts)
+
+          if (cartsJSON.length > 0) {
+            dispatch(
+              setCarts(cartsJSON)
+            )
+          }
+        }
         return dispatch(logout())
+
       }
       return
     });
