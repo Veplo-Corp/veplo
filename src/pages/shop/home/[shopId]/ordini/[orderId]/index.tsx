@@ -61,7 +61,7 @@ const index = () => {
                 },
                 broadcast: false // Include this to prevent automatic query refresh
             });
-            addToast({ position: 'top', title: 'Spedizione inserita con successo', description: `hai inserito con successo il codice di spedizione dell'ordine ${order?.code} `, status: 'success', duration: 5000, isClosable: false })
+            addToast({ position: 'top', title: 'Spedizione inserita con successo', description: `hai inserito con successo il codice di spedizione dell'ordine ${order?.code} `, status: 'success', duration: 5000, isClosable: true })
             router.back()
         }
     })
@@ -190,7 +190,7 @@ const index = () => {
                 }
             })
             setisOpenModalConfirmationReturnOrder(false)
-            addToast({ position: 'top', title: 'Reso confermato', status: 'success', duration: 5000, isClosable: false })
+            addToast({ position: 'top', title: 'Reso confermato', status: 'success', duration: 5000, isClosable: true })
             router.back()
         } catch (error: any) {
             console.log(error);
@@ -205,7 +205,7 @@ const index = () => {
                 orderId: order?.id,
             }
         })
-        addToast({ position: 'top', title: 'Reso rifiutato con successo', status: 'success', duration: 5000, isClosable: false })
+        addToast({ position: 'top', title: 'Reso rifiutato con successo', status: 'success', duration: 5000, isClosable: true })
         router.back()
     }
 

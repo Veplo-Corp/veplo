@@ -379,7 +379,7 @@ const index = () => {
                     options
                 }
             })
-            addToast({ position: 'top', title: 'Prodotto modificato con successo', status: 'success', duration: 3000, isClosable: false })
+            addToast({ position: 'top', title: 'Prodotto modificato con successo', status: 'success', duration: 3000, isClosable: true })
 
         } catch {
 
@@ -392,7 +392,7 @@ const index = () => {
 
     const handleDeleteVariation = async (variationId: string, color: string) => {
         if (product && product.variations?.length <= 1) {
-            return addToast({ position: 'top', title: "Impossibile cancellare il colore", description: "hai solo un colore disponibile per questo prodotto", status: 'error', duration: 5000, isClosable: false })
+            return addToast({ position: 'top', title: "Impossibile cancellare il colore", description: "hai solo un colore disponibile per questo prodotto", status: 'error', duration: 5000, isClosable: true })
         }
         try {
 
