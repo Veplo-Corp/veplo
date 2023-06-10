@@ -88,7 +88,7 @@ const LoginAndRegistrationForm: FC<{
                 if (cartsDispatchProduct.length > 0) {
                     setTimeout(() => {
                         router.reload()
-                    }, 500);
+                    }, 1000);
                 }
                 return
             }
@@ -97,7 +97,7 @@ const LoginAndRegistrationForm: FC<{
                 if (cartsDispatchProduct.length > 0) {
                     setTimeout(() => {
                         router.reload()
-                    }, 500);
+                    }, 1000);
 
                 }
                 return
@@ -260,7 +260,7 @@ const LoginAndRegistrationForm: FC<{
                         surname: fullName ? fullName?.slice(1).join(" ") : null
                     }
                 }
-            }).then((response: any) => {
+            }).then(async (response: any) => {
                 console.log(response);
                 dispatch(
                     login({
@@ -275,18 +275,22 @@ const LoginAndRegistrationForm: FC<{
                         }
                     })
                 );
-                setIsLoading(false)
 
-            }).catch((error) => {
-                console.log(error);
+                await handleCartInLocalStorage()
+                redirectUser(false)
                 setIsLoading(false)
+            }).catch(async (error) => {
+
+                setIsLoading(false)
+                if (!result) return
+                const tokenResult = await result.user.getIdTokenResult();
+                const isBusiness = tokenResult.claims.isBusiness ? true : false;
+                if (isBusiness) return router.replace('/shop/home/')
+                await handleCartInLocalStorage()
+                redirectUser(isBusiness)
 
             })
-            if (typeof router.query?.callbackUrl === 'string') {
-                return router.replace(router.query?.callbackUrl)
-            } else {
-                return router.replace('/negozi')
-            }
+
         }
 
 
