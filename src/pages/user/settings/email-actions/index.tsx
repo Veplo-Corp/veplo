@@ -36,7 +36,7 @@ const index = () => {
         catch (e: any) {
             console.log(e.code);
             if ('auth/invalid-action-code') {
-                addToast({ position: 'top', title: 'Link scaduto', description: 'richiedi un nuovo link per il reset della password', status: 'error', duration: 5000, isClosable: false })
+                addToast({ position: 'top', title: 'Link scaduto', description: 'richiedi un nuovo link per il reset della password', status: 'error', duration: 5000, isClosable: true })
                 router.push('/negozi')
             }
         }
@@ -83,11 +83,11 @@ const index = () => {
             // TODO: If a continue URL is available, display a button which on
             // click redirects the user back to the app via continueUrl with
             // additional state determined from that URL's parameters.
-            addToast({ position: 'top', title: 'Email convalidata!', status: 'success', duration: 5000, isClosable: false })
+            addToast({ position: 'top', title: 'Email convalidata!', status: 'success', duration: 5000, isClosable: true })
             router.push(continueUrl)
 
         }).catch((error) => {
-            addToast({ position: 'top', title: 'Errore durante la convalida mail', description: "non siamo riusciti ad aggiornare la password. Riprova più tardi", status: 'error', duration: 5000, isClosable: false })
+            addToast({ position: 'top', title: 'Errore durante la convalida mail', description: "non siamo riusciti ad aggiornare la password. Riprova più tardi", status: 'error', duration: 5000, isClosable: true })
             // Code is invalid or expired. Ask the user to verify their email address
             // again.
         });
@@ -119,7 +119,7 @@ const index = () => {
                 router.push(continueUrl)
             }).catch((error) => {
                 console.log(error);
-                addToast({ position: 'top', title: 'Errore durante modifica della password', description: "non siamo riusciti ad aggiornare la password. Riprova più tardi", status: 'error', duration: 5000, isClosable: false })
+                addToast({ position: 'top', title: 'Errore durante modifica della password', description: "non siamo riusciti ad aggiornare la password. Riprova più tardi", status: 'error', duration: 5000, isClosable: true })
                 // Error occurred during confirmation. The code might have expired or the
                 // password is too weak.
                 setIsLoading(false)
@@ -129,7 +129,7 @@ const index = () => {
             console.log(error);
             setIsLoading(false)
 
-            addToast({ position: 'top', title: 'Link reset password scaduto', description: "richiedi un nuovo link per resettare la password", status: 'error', duration: 5000, isClosable: false })
+            addToast({ position: 'top', title: 'Link reset password scaduto', description: "richiedi un nuovo link per resettare la password", status: 'error', duration: 5000, isClosable: true })
 
             // Invalid or expired action code. Ask user to try to reset the password
             // again.
