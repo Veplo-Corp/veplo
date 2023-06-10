@@ -369,6 +369,7 @@ const index = () => {
                 closeModal={() => setIsOpenLoginModal(false)}
             >
                 <LoginAndRegistrationForm
+                    open='modal'
                     type={typeLogin}
                     person='user'
                     handleChangeTypeOrPerson={(type, person) => {

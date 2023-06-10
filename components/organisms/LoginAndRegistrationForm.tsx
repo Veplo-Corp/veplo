@@ -18,6 +18,7 @@ import resetPassword from '../utils/resetPassword';
 import { ToastOpen } from '../utils/Toast';
 import Link from 'next/link';
 import { Cart } from '../../src/lib/apollo/generated/graphql';
+import EDIT_CART from '../../src/lib/apollo/mutations/editCart';
 
 export type InputFormLogin = {
     email: string,
@@ -29,11 +30,11 @@ export type InputFormLogin = {
 const LoginAndRegistrationForm: FC<{
     type: 'login' | 'registration' | 'reset_password' | undefined, person: 'user' | 'business' | undefined,
     handleChangeTypeOrPerson: (type: 'login' | 'registration' | 'reset_password', person: 'user' | 'business') => void,
+    open?: 'modal' | 'fullPage' | undefined
 }> =
-    ({ type, person, handleChangeTypeOrPerson }) => {
+    ({ type, person, handleChangeTypeOrPerson, open }) => {
         const [isLoading, setIsLoading] = useState(false)
         const cartsDispatchProduct: Cart[] = useSelector((state: any) => state.carts.carts);
-        console.log(cartsDispatchProduct);
 
         const router = useRouter();
         const { register, handleSubmit, reset, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<InputFormLogin>({
@@ -44,11 +45,66 @@ const LoginAndRegistrationForm: FC<{
         const [setBusinessAccount] = useMutation(CREATE_BUSINESS_ACCOUNT)
         const [showPassword, setShowPassword] = useState(false)
         const { addToast } = ToastOpen();
+        const [editCart] = useMutation(EDIT_CART);
+
 
 
         const onSubmit: SubmitHandler<InputFormLogin> = (data, e) => {
             console.log(data);
             handleEvent(data)
+        }
+
+        const handleCartInLocalStorage = async () => {
+            if (cartsDispatchProduct.length <= 0) return
+            for await (const cart of cartsDispatchProduct) {
+                if (!cart?.productVariations) return
+                for await (const variation of cart?.productVariations) {
+                    try {
+                        await editCart({
+                            variables: {
+                                productVariationId: variation.variationId,
+                                size: variation.size,
+                                quantity: variation.quantity
+                            }
+                        })
+                    }
+                    catch {
+                        console.log('errore cart');
+                    }
+                }
+            }
+
+
+        }
+
+        const redirectUser = (isBusiness: boolean) => {
+            // rimani nella stessa pagina in modal
+            localStorage.removeItem('carts')
+            if (open === 'modal') {
+                return router.reload()
+            }
+            if (typeof router.query?.callbackUrl === 'string') {
+                router.replace(router.query?.callbackUrl)
+                if (cartsDispatchProduct.length > 0) {
+                    setTimeout(() => {
+                        router.reload()
+                    }, 500);
+                }
+                return
+            }
+            else if (!isBusiness) {
+                router.replace('/negozi')
+                if (cartsDispatchProduct.length > 0) {
+                    setTimeout(() => {
+                        router.reload()
+                    }, 500);
+
+                }
+                return
+            }
+            else if (isBusiness) {
+                return router.replace('/shop/home')
+            }
         }
 
         const handleEvent = async (data: InputFormLogin) => {
@@ -57,17 +113,12 @@ const LoginAndRegistrationForm: FC<{
                 try {
                     const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password)
                     const tokenResult = await userCredential.user.getIdTokenResult();
-                    const isBusiness = tokenResult.claims.isBusiness ? true : false
+                    const isBusiness = tokenResult.claims.isBusiness ? true : false;
+                    setAuthTokenInSessionStorage(tokenResult.token)
+                    await handleCartInLocalStorage()
                     setIsLoading(false)
-                    if (typeof router.query?.callbackUrl === 'string') {
-                        return router.replace(router.query?.callbackUrl)
-                    }
-                    else if (!isBusiness) {
-                        return router.replace('/negozi')
-                    }
-                    else if (isBusiness) {
-                        return router.replace('/shop/home')
-                    }
+
+                    redirectUser(isBusiness)
                 } catch (error: any) {
                     setIsLoading(true)
                     const errorCode = error.code;
@@ -101,6 +152,7 @@ const LoginAndRegistrationForm: FC<{
                         console.log(response);
                         idToken = await userCredential.user.getIdToken(true);
                         setAuthTokenInSessionStorage(idToken)
+                        await handleCartInLocalStorage()
                         dispatch(
                             login({
                                 email: userCredential.user.email,
@@ -115,11 +167,8 @@ const LoginAndRegistrationForm: FC<{
                             })
                         );
                         setIsLoading(false)
-                        if (typeof router.query?.callbackUrl === 'string') {
-                            return router.replace(router.query?.callbackUrl)
-                        } else {
-                            return router.replace('/negozi')
-                        }
+                        redirectUser(false)
+
                     } if (person === 'business') {
                         try {
                             const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)

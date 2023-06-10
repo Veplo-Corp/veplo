@@ -430,7 +430,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                         }
                     })
                 } else if (!user.uid) {
-                    localStorage.setItem('cart', JSON.stringify(NewCarts))
+                    localStorage.setItem('carts', JSON.stringify(NewCarts))
                 }
 
                 // if (!edited.data?.editCart) return //mettere un errore qui

@@ -126,13 +126,15 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
     const deleteVariation = async (variation: ProductVariation) => {
         const resolve = await expirationTimeTokenControll(user.expirationTime)
         if (!resolve) return
-        await editCart({
-            variables: {
-                productVariationId: variation.variationId,
-                size: variation.size,
-                quantity: 0
-            }
-        })
+        if (user.uid) {
+            await editCart({
+                variables: {
+                    productVariationId: variation.variationId,
+                    size: variation.size,
+                    quantity: 0
+                }
+            })
+        }
 
         let editedCart: Cart | undefined = undefined;
 
@@ -177,6 +179,11 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                 carts: NewCarts
             })
         );
+
+        if (!user.uid) {
+            localStorage.setItem('carts', JSON.stringify(NewCarts))
+        }
+
 
         if (NewCarts.length <= 0) {
             closeDrawer()

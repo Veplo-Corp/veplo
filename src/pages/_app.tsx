@@ -313,7 +313,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         apolloClient.clearStore()
         dispatch(resetCarts())
         dispatch(detroyOrders())
-        const carts = localStorage.getItem('cart')
+        const carts = localStorage.getItem('carts')
         if (carts) {
           const cartsJSON = JSON.parse(carts)
 
