@@ -264,51 +264,36 @@ const Header = () => {
                                                 }}
                                             />
                                         </div>
-                                        {router.asPath.includes('prodott')
-                                            ? (<Box
-
+                                        {isButtonHidden
+                                            &&
+                                            <Box
                                                 marginY={'auto'}
-                                                height={'fit-content'}
-
+                                                height={'full'}
                                                 cursor={'pointer'}
-                                                className='rounded-[10px] p-2 relative lg:hidden'
+                                                className='rounded-[10px]  relative lg:hidden'
                                                 background={'secondary.bg'}
                                             >
                                                 <Link
-                                                    href={'/negozi'}
-                                                    className='flex gap-2'
-
+                                                    className='flex gap-2 p-2'
+                                                    href={router.asPath.includes('prodott') ? '/negozi' : (gender ? `/prodotti/${gender}-abbigliamento/tutto/rilevanza` : '/')}
                                                 >
-                                                    <SmallShopAlt
-                                                        strokeWidth={2}
-                                                        className="w-6 h-6 my-auto"
-                                                        color='white'
-                                                    />
-                                                </Link>
-
-                                            </Box>)
-                                            : (
-                                                <Box
-
-                                                    marginY={'auto'}
-                                                    height={'fit-content'}
-
-                                                    cursor={'pointer'}
-                                                    className='rounded-[10px] p-2 relative lg:hidden'
-                                                    background={'secondary.bg'}
-                                                >
-                                                    <Link
-                                                        href={gender ? `/prodotti/${gender}-abbigliamento/tutto/rilevanza` : '/'}
-                                                        className='flex gap-2'
-                                                    >
-                                                        <TShirt
+                                                    {router.asPath.includes('prodott') ?
+                                                        (<SmallShopAlt
                                                             strokeWidth={2}
                                                             className="w-6 h-6 my-auto"
                                                             color='white'
-                                                        />
-                                                    </Link>
-                                                </Box>
-                                            )
+                                                        />)
+                                                        : (
+                                                            <TShirt
+                                                                strokeWidth={2}
+                                                                className="w-6 h-6 my-auto"
+                                                                color='white'
+                                                            />
+                                                        )
+                                                    }
+                                                </Link>
+
+                                            </Box>
                                         }
                                         <Box
                                             marginY={'auto'}
@@ -332,71 +317,51 @@ const Header = () => {
 
                                         {!isButtonHidden &&
                                             <>
-                                                {router.asPath.includes('prodott') ?
-                                                    (<Button
+
+
+                                                <Link
+                                                    href={router.asPath.includes('prodott') ? '/negozi' : (gender ? `/prodotti/${gender}-abbigliamento/tutto/rilevanza` : '/')}
+                                                    className='flex h-full w-full'
+                                                >
+                                                    <Button
 
                                                         variant={'secondary'}
                                                         marginY={'auto'}
-                                                        height={'fit-content'}
                                                         cursor={'pointer'}
                                                         rounded={'10px'}
-                                                        className=' p-2 hidden lg:flex relative'
+                                                        className='hidden lg:flex gap-2'
                                                         background={'secondary.bg'}
+                                                        height={'full'}
+                                                        px={6}
                                                     >
-                                                        <Link
-                                                            href={'/negozi'}
-                                                            className='flex gap-2 px-2'
-                                                        >
-                                                            <Text
-                                                                color={'secondary.text'}
-                                                                fontWeight={'semibold'}
-                                                                my={'auto'}
-                                                                fontSize={'md'}
+                                                        <Text
+                                                            color={'secondary.text'}
+                                                            fontWeight={'semibold'}
+                                                            my={'auto'}
+                                                            fontSize={'md'}
 
-                                                            >
-                                                                Negozi
-                                                            </Text>
-                                                            <SmallShopAlt
+                                                        >
+                                                            {router.asPath.includes('prodott') ? 'Negozi' : 'Prodotti'}
+
+                                                        </Text>
+
+                                                        {router.asPath.includes('prodott') ?
+                                                            (<SmallShopAlt
                                                                 strokeWidth={2}
                                                                 className="w-6 h-6 my-auto"
                                                                 color='white'
-                                                            />
-                                                        </Link>
-
-                                                    </Button>)
-                                                    : (
-                                                        <Button
-
-                                                            variant={'secondary'}
-                                                            marginY={'auto'}
-                                                            height={'fit-content'}
-                                                            cursor={'pointer'}
-                                                            rounded={'10px'}
-                                                            className=' p-2 hidden lg:flex relative'
-                                                            background={'secondary.bg'}
-                                                        >
-                                                            <Link
-                                                                href={gender ? `/prodotti/${gender}-abbigliamento/tutto/rilevanza` : '/'}
-                                                                className='flex gap-2 px-2'
-                                                            >
-                                                                <Text
-                                                                    color={'secondary.text'}
-                                                                    fontWeight={'semibold'}
-                                                                    my={'auto'}
-                                                                    fontSize={'md'}
-
-                                                                >
-                                                                    Prodotti
-                                                                </Text>
+                                                            />)
+                                                            : (
                                                                 <TShirt
                                                                     strokeWidth={2}
                                                                     className="w-6 h-6 my-auto"
                                                                     color='white'
                                                                 />
+                                                            )
+                                                        }
+                                                    </Button>
+                                                </Link>
 
-                                                            </Link>
-                                                        </Button>
-                                                    )}
                                             </>
 
                                         }
