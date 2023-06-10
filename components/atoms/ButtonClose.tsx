@@ -11,6 +11,9 @@ const ButtonClose: FC<{ handleEvent: () => void }> = ({ handleEvent }) => {
             p={0}
             variant={'grayPrimary'}
             onClick={handleEvent}
+            _focus={{
+                boxShadow: 'none'
+            }}
         >
             <Cancel
                 strokeWidth={2.8}

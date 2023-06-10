@@ -243,7 +243,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                 <DrawerBody
                     padding={[3, 4]}
                 >
-                    <VStack gap={4}>
+                    <VStack gap={[2, 3]}>
                         {cartsDispatch && cartsDispatch.map((cart, index) => {
                             return (
                                 <Box key={index} width={'full'}>
@@ -255,12 +255,13 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                                         <Text
                                             onClick={() => {
                                                 router.push(`/negozio/${cart.shopInfo.id}/${createUrlSchema([cart.shopInfo.name])}`)
+                                                closeDrawer()
                                             }}
                                             cursor={'pointer'}
-                                            fontSize={'2xl'}
+                                            fontSize={['lg', 'xl']}
                                             fontWeight={'bold'}
                                             width={'fit-content'}
-                                            mb={3}
+                                            mb={[2, 3]}
                                         >{toUpperCaseFirstLetter(cart.shopInfo.name)}</Text>
                                         <VStack
                                             gap={1}
@@ -293,6 +294,9 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                                         height={'fit-content'}
                                         color={'white'}
                                         variant="primary"
+                                        _focus={{
+                                            boxShadow: 'none'
+                                        }}
                                     >{formatNumberWithTwoDecimals(cart.total)} €</Button>
                                     <Divider
                                         colorScheme={'red'}
