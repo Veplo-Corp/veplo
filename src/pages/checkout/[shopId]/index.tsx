@@ -43,32 +43,17 @@ const index = () => {
     // Inizializza uno stato per il timeout
     const [timeoutId, setTimeoutId] = useState<any>(null);
 
-    // Definisce la funzione con il timeout
-    function myFunctionWithTimeout() {
-        // Cancella il timeout precedente, se presente
-        clearTimeout(timeoutId);
 
-        // Imposta un nuovo timeout di 5 secondi
-        const newTimeoutId = setTimeout(function () {
-            const { shopId } = router.query;
-            const cart = cartsDispatch.filter(cart => cart.shopInfo.id === shopId)[0]
-            if (!cart) {
-                router.push('/negozi')
-            }
-
-        }, 4000);
-
-        // Aggiorna lo stato con l'id del nuovo timeout
-        setTimeoutId(newTimeoutId);
-    }
 
     console.log(error?.graphQLErrors);
 
     useEffect(() => {
         const { shopId } = router.query;
-
-        if (!shopId || !cartsDispatch) return
-        myFunctionWithTimeout()
+        if (!shopId || user.statusAuthentication === 'not_yet_authenticated') return
+        if (!cartsDispatch) {
+            router.push('/negozi')
+            return
+        }
         getShop({
             variables: {
                 id: shopId
@@ -82,8 +67,9 @@ const index = () => {
         }
         if (!cart) {
             setCart(undefined)
+            router.push('/negozi')
         }
-    }, [cartsDispatch, router])
+    }, [user])
 
 
 
@@ -122,13 +108,20 @@ const index = () => {
     }
 
     const deleteVariation = async (variation: ProductVariation) => {
-        await editCart({
-            variables: {
-                productVariationId: variation.variationId,
-                size: variation.size,
-                quantity: 0
+        try {
+            if (user.uid) {
+                await editCart({
+                    variables: {
+                        productVariationId: variation.variationId,
+                        size: variation.size,
+                        quantity: 0
+                    }
+                })
             }
-        })
+        } catch {
+
+        }
+
 
         let editedCart: Cart | undefined = undefined;
 
@@ -159,19 +152,27 @@ const index = () => {
                 ...cartsDispatch.filter(cart => cart.shopInfo.id !== editedCart?.shopInfo.id),
                 editedCart
             ]
+            dispatch(
+                editVariationFromCart({
+                    //add new Carts
+                    carts: NewCarts
+                })
+            );
         } else {
             NewCarts = [
                 ...cartsDispatch.filter(cart => cart.shopInfo.id !== editedCart?.shopInfo.id)]
+            dispatch(
+                editVariationFromCart({
+                    //add new Carts
+                    carts: NewCarts
+                })
+            );
+            return router.push('/negozi')
         }
 
 
 
-        dispatch(
-            editVariationFromCart({
-                //add new Carts
-                carts: NewCarts
-            })
-        );
+
 
 
     }
@@ -184,24 +185,32 @@ const index = () => {
         const errorVariations = error?.graphQLErrors;
         if (!errorVariations) return
         console.log(errorVariations);
-        for await (const errorVariation of errorVariations) {
-            if (typeof errorVariation.path !== 'string') return
-            let id: string = errorVariation.path
-            id = id.trim()
-            console.log(id);
-            if (!cart) return
-            const variations = cart.productVariations.filter(element => element.variationId === id)
-            console.log(variations);
-            for await (const variation of variations) {
-                await editCart({
-                    variables: {
-                        productVariationId: variation.variationId,
-                        size: variation.size,
-                        quantity: 0
-                    }
-                })
-            }
+        if (!user.uid) {
+            return
         }
+        try {
+            for await (const errorVariation of errorVariations) {
+                if (typeof errorVariation.path !== 'string') return
+                let id: string = errorVariation.path
+                id = id.trim()
+                console.log(id);
+                if (!cart) return
+                const variations = cart.productVariations.filter(element => element.variationId === id)
+                console.log(variations);
+                for await (const variation of variations) {
+                    await editCart({
+                        variables: {
+                            productVariationId: variation.variationId,
+                            size: variation.size,
+                            quantity: 0
+                        }
+                    })
+                }
+            }
+        } catch {
+
+        }
+
         return router.reload();
 
 

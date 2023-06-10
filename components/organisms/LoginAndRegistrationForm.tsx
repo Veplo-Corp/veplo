@@ -253,34 +253,42 @@ const LoginAndRegistrationForm: FC<{
             const fullName = result.user.displayName ? result.user.displayName.split(" ") : null;
             const idToken = await result.user.getIdToken(true);
             setAuthTokenInSessionStorage(idToken)
-            createUser({
-                variables: {
-                    options: {
-                        name: fullName ? fullName[0] : null,
-                        surname: fullName ? fullName?.slice(1).join(" ") : null
+
+            try {
+
+
+
+                const response = await createUser({
+                    variables: {
+                        options: {
+                            name: fullName ? fullName[0] : null,
+                            surname: fullName ? fullName?.slice(1).join(" ") : null
+                        }
                     }
-                }
-            }).then(async (response: any) => {
+                })
+
                 console.log(response);
+                const idToken = await result.user.getIdToken(true);
+                setAuthTokenInSessionStorage(idToken)
+                await handleCartInLocalStorage()
                 dispatch(
                     login({
-                        email: result ? result.user.email : '',
-                        uid: result ? result.user.uid : '',
+                        email: result.user.email,
+                        uid: result.user.uid,
                         idToken: idToken,
                         emailVerified: false,
                         createdAt: 'now',
                         accountId: response?.data.createUser,
                         userInfo: {
-                            name: fullName ? fullName[0] : null
+                            name: fullName ? fullName[0] : null,
                         }
                     })
                 );
 
-                await handleCartInLocalStorage()
-                redirectUser(false)
                 setIsLoading(false)
-            }).catch(async (error) => {
+                redirectUser(false)
 
+            } catch {
                 setIsLoading(false)
                 if (!result) return
                 const tokenResult = await result.user.getIdTokenResult();
@@ -288,8 +296,7 @@ const LoginAndRegistrationForm: FC<{
                 if (isBusiness) return router.replace('/shop/home/')
                 await handleCartInLocalStorage()
                 redirectUser(isBusiness)
-
-            })
+            }
 
         }
 

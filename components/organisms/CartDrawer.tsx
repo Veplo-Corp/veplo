@@ -127,13 +127,18 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
         const resolve = await expirationTimeTokenControll(user.expirationTime)
         if (!resolve) return
         if (user.uid) {
-            await editCart({
-                variables: {
-                    productVariationId: variation.variationId,
-                    size: variation.size,
-                    quantity: 0
-                }
-            })
+            try {
+                await editCart({
+                    variables: {
+                        productVariationId: variation.variationId,
+                        size: variation.size,
+                        quantity: 0
+                    }
+                })
+            } catch {
+
+            }
+
         }
 
         let editedCart: Cart | undefined = undefined;
