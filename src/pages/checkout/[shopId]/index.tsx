@@ -51,7 +51,7 @@ const index = () => {
         const { shopId } = router.query;
         if (!shopId || user.statusAuthentication === 'not_yet_authenticated') return
         if (!cartsDispatch) {
-            router.push('/negozi')
+            router.replace('/negozi')
             return
         }
         getShop({
@@ -68,7 +68,7 @@ const index = () => {
         if (!cart) {
             //in futuro mettiamo carrello non trovato e non reindiriziamo a negozi
             setCart(undefined)
-            router.push('/negozi')
+            router.replace('/negozi')
         }
     }, [user])
 
@@ -168,7 +168,7 @@ const index = () => {
                     carts: NewCarts
                 })
             );
-            return router.push('/negozi')
+            return router.replace('/negozi')
         }
 
 
