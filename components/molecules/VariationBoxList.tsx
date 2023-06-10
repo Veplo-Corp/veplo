@@ -6,6 +6,7 @@ import { imageKitUrl } from '../utils/imageKitUrl'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals'
 import { Cancel } from 'iconoir-react'
+import ButtonClose from '../atoms/ButtonClose'
 const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation: ProductVariation) => void, deleteVariation: (variation: ProductVariation) => void }> = ({ variation, toProduct, deleteVariation }) => {
     return (
         <Box
@@ -31,7 +32,7 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
                     justifyContent={'space-between'}
                 >
                     <Box
-                        fontSize={'normal'}
+                        fontSize={['sm', 'medium']}
                         fontWeight={'medium'}
                         cursor={'pointer'}
                         onClick={() => toProduct(variation)}
