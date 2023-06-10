@@ -37,7 +37,7 @@ const index = () => {
     const [shop, setShop] = useState<Shop>();
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
     const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
-    const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('registration')
+    const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('login')
 
 
     // Inizializza uno stato per il timeout

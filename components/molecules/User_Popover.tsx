@@ -34,7 +34,7 @@ const User_Popover = () => {
         {
             name: 'Sei un negozio?',
             description: 'accedi o registra gratis il tuo account',
-            href: '/user/login?type=registration&person=business',
+            href: '/user/login?type=login&person=business',
         },
     ]
 
