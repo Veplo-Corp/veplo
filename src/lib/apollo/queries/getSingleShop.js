@@ -5,6 +5,7 @@ const GET_SHOP_AND_PRODUCTS = graphql(`
         $id: ID!
         $limit: Int!
         $offset: Int!
+        $filters: ProductFilters
         ) {
         shop(
             id: $id
@@ -38,6 +39,7 @@ const GET_SHOP_AND_PRODUCTS = graphql(`
             products(
                 limit: $limit
                 offset: $offset
+                filters: $filters
             ) 
             {
                 products{

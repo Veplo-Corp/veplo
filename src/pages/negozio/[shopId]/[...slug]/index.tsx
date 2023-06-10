@@ -45,11 +45,20 @@ export async function getStaticProps(ctx: any) {
     let { shopId, slug } = ctx.params;
     const apolloClient = initApollo();
     //!creare filtro per gender
+    const gender = slug[1];
+
     const { data }: { data: GetShopQuery } = await apolloClient.query({
         query: GET_SHOP_AND_PRODUCTS,
-        variables: { id: shopId, limit: RANGE, offset: 0 },
+        variables: {
+            id: shopId,
+            limit: RANGE,
+            offset: 0,
+            filters: {
+                gender: gender ? (gender === 'uomo' ? 'm' : 'f') : null
+            }
+        },
     })
-    const gender = slug[1];
+    console.log(gender);
 
 
 
@@ -57,7 +66,7 @@ export async function getStaticProps(ctx: any) {
     return {
         props: {
             shop: data.shop,
-            gender: gender ? gender : null
+            gender: gender ? (gender === 'uomo' ? 'm' : 'f') : null
         },
         revalidate: 60, // In seconds
     }
@@ -67,7 +76,7 @@ export async function getStaticProps(ctx: any) {
 
 
 
-const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop, gender }) => {
+const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ shop, gender }) => {
 
     if (!shop) return (
         /* gestire errore in caso shop non viene preso */
@@ -87,7 +96,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop,
     const [showAllDescriptionShop, setshowAllDescriptionShop] = useState(false)
     const [descriptionRefTextLength, setDescriptionRefTextLength] = useState(0)
     const descriptionRefText = useRef<any>(null);
-    const [genderSelected, setGenderSelected] = useState<string>()
+    const [genderSelected, setGenderSelected] = useState<'f' | 'm'>()
 
     useEffect(() => {
         if (descriptionRefText.current) {
@@ -129,24 +138,31 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop,
         else {
             setproductsFounded(shop.products.products)
         }
-        setGenderSelected(gender)
+        if (gender) {
+            setGenderSelected(gender)
+        }
         createAddressForMAps()
     }, [shop])
 
 
     const fetchMoreData = async () => {
+        console.log(genderSelected);
+
         const data = await getMoreProducts({
             variables: {
                 id: shop.id,
                 limit: RANGE,
-                offset: productsFounded.length
+                offset: productsFounded.length,
+                filters: {
+                    gender: genderSelected ? genderSelected : null
+                }
             }
         })
 
         const products = data.data.shop.products.products;
 
 
-        if (shop.products.products.length % RANGE !== 0 || products?.data?.products.length === 0) {
+        if (shop.products.products.length % RANGE !== 0 || products.length <= 0) {
             setHasMoreData(false)
             return console.log('no more data');
         }
@@ -339,6 +355,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop,
                         mt={3}
                     >
                         {Object.keys(CATEGORIES).map(gender => {
+                            const genderInitial = gender === 'uomo' ? 'm' : 'f'
                             return (
                                 <Button
                                     onClick={() => {
@@ -347,10 +364,10 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop,
                                         sessionStorage.removeItem("productsFoundedInShop")
                                         sessionStorage.removeItem('scrollPositionShop');
                                         if (!shop.name) return
-                                        if (gender !== genderSelected) {
+                                        if (genderInitial !== genderSelected) {
                                             router.replace(`/negozio/${shop.id}/${createUrlSchema([shop.name])}/${gender}`)
                                         } else {
-                                            setGenderSelected('')
+                                            setGenderSelected(undefined)
                                             router.replace(`/negozio/${shop.id}/${createUrlSchema([shop.name])}`)
                                         }
                                     }}
@@ -360,15 +377,15 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: string }> = ({ shop,
                                     borderRadius={'10px'}
                                     height={12}
                                     paddingX={8}
-                                    bg={genderSelected === gender ? 'black' : 'white'}
-                                    color={genderSelected === gender ? 'white' : 'secondaryBlack.text'}
+                                    bg={genderSelected === genderInitial ? 'black' : 'white'}
+                                    color={genderSelected === genderInitial ? 'white' : 'secondaryBlack.text'}
                                     _hover={
                                         {
-                                            bg: genderSelected === gender ? 'black' : 'white'
+                                            bg: genderSelected === genderInitial ? 'black' : 'white'
                                         }
                                     }
                                     _focus={{
-                                        bg: genderSelected === gender ? 'black' : 'white'
+                                        bg: genderSelected === genderInitial ? 'black' : 'white'
                                     }}
                                     _active={{
                                         transform: 'scale(0.98)',

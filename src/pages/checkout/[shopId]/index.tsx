@@ -66,6 +66,7 @@ const index = () => {
             setCart(cart)
         }
         if (!cart) {
+            //in futuro mettiamo carrello non trovato e non reindiriziamo a negozi
             setCart(undefined)
             router.push('/negozi')
         }
