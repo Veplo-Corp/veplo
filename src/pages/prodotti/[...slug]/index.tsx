@@ -199,7 +199,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     console.log(sortType);
 
     const router = useRouter();
-    console.log(router);
+    console.log(products);
 
     const [loading, setLoading] = useState(true);
     const [hasMoreData, setHasMoreData] = useState(true);
@@ -502,17 +502,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             />
             <div className='relative  min-h-[120vh]'>
                 <Shop_not_Allowed>
-
-                    {/* {gender &&
-                    <Text
-                        mt={5}
-                        fontSize={'lg'}
-                        fontWeight={'semibold'}
-                        marginBottom={4}
-                    >
-                        {gender === 'f' ? 'Donna' : 'Uomo'} | {category ? category : "tutto l'abbligliamento"}
-                    </Text>
-                } */}
                     <Box
                         className='lg:w-10/12 2xl:w-9/12  mx-2 lg:mx-auto'
                     >

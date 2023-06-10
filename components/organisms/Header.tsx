@@ -404,17 +404,17 @@ const Header = () => {
                                             marginY={'auto'}
                                             height={'fit-content'}
                                             onClick={() => {
-                                                if (!user?.uid) {
+                                                // if (!user?.uid) {
 
-                                                    return router.push({
-                                                        pathname: '/user/login',
-                                                        query: {
-                                                            type: 'login',
-                                                            callbackUrl: router.asPath
-                                                        },
+                                                //     return router.push({
+                                                //         pathname: '/user/login',
+                                                //         query: {
+                                                //             type: 'login',
+                                                //             callbackUrl: router.asPath
+                                                //         },
 
-                                                    })
-                                                }
+                                                //     })
+                                                // }
                                                 setOpenDrawerCart(true)
                                             }}
                                             cursor={'pointer'}

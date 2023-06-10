@@ -24,6 +24,8 @@ const Shop_not_Allowed: React.FC<{ children: any }> = ({ children }) => {
     }, [user])
 
 
+    console.log('LOGGATO', user.statusAuthentication);
+
 
     return (
         <div>

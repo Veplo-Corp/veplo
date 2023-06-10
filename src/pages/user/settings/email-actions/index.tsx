@@ -27,14 +27,29 @@ const index = () => {
             'https://www.veplo.it/' :
             'http://localhost:3000/'
 
+
+    const verifyFirebaseCode = async (auth: Auth, oobCode: any) => {
+        try {
+            const codeIsVerified = await verifyPasswordResetCode(auth, oobCode)
+            console.log(codeIsVerified);
+        }
+        catch (e: any) {
+            console.log(e.code);
+            if ('auth/invalid-action-code') {
+                addToast({ position: 'top', title: 'Link scaduto', description: 'richiedi un nuovo link per il reset della password', status: 'error', duration: 5000, isClosable: false })
+                router.push('/negozi')
+            }
+        }
+    }
+
     useEffect(() => {
-        const { mode } = router.query
-        if (!mode) return
+        const { mode, oobCode, lang } = router.query
+        if (!mode && typeof oobCode !== 'string') return
         // Handle the user management action.
         //link https://firebase.google.com/docs/auth/custom-email-handler?hl=it
         switch (mode) {
             case 'resetPassword':
-
+                verifyFirebaseCode(auth, oobCode)
                 setMode('resetPassword')
                 break;
             case 'recoverEmail':
@@ -42,7 +57,6 @@ const index = () => {
                 //handleRecoverEmail(auth, oobCode, lang);
                 break;
             case 'verifyEmail':
-                const { oobCode, lang } = router.query
 
                 // Display email verification handler and UI.
                 handleVerifyEmail(auth, oobCode, continueUrl, lang);
@@ -262,13 +276,11 @@ const index = () => {
                                                 conferma
                                             </span>
                                             <img
-                                                className='w-[18px] my-auto mb-[2px]'
+                                                className='w-[18px] my-auto mb-[3px] lg:mb-[2px]'
                                                 alt=''
                                                 src='https://em-content.zobj.net/thumbs/240/apple/354/bellhop-bell_1f6ce-fe0f.png'
                                             />
-
                                         </Box>
-
                                     }
 
                                     {isLoading && <Spinner
