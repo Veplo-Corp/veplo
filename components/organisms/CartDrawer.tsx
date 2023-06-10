@@ -16,6 +16,7 @@ import { sortShopsInCart } from '../utils/sortShopsInCart'
 import expirationTimeTokenControll from '../utils/expirationTimeTokenControll'
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
 import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals'
+import ButtonClose from '../atoms/ButtonClose'
 
 const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, closeDrawer }) => {
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
@@ -209,7 +210,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
         <Drawer
             isOpen={isOpen}
             placement='right'
-            size={['sm', 'sm']}
+            size={['xs', 'sm']}
             onClose={closeDrawer}
         >
             <DrawerOverlay />
@@ -217,14 +218,16 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                 <DrawerHeader
                     borderBottomWidth='1px'
                     className='flex justify-between'
-                    paddingLeft={[3, 4]}
+                    pl={[3, 4]}
+                    pr={[2, 3]}
+                    py={2}
                 >
                     <h3
-                        className='text-xl bold'
+                        className='text-xl font-semibold my-auto'
                     >
                         Carrello
                     </h3>
-                    <Box
+                    {/* <Box
                         cursor={'pointer'}
                         marginY={'auto'}
                         onClick={closeDrawer}
@@ -232,7 +235,10 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
-                    </Box>
+                    </Box> */}
+                    <ButtonClose
+                        handleEvent={closeDrawer}
+                    />
                 </DrawerHeader>
                 <DrawerBody
                     padding={[3, 4]}
@@ -278,10 +284,10 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                                             pushToCheckout(cart.shopInfo.id)
                                         }}
                                         type={'button'}
-                                        borderRadius={'xl'}
+                                        borderRadius={'10px'}
                                         size={'lg'}
                                         fontWeight={'bold'}
-                                        padding={5}
+                                        padding={4}
                                         paddingInline={10}
                                         width={'full'}
                                         height={'fit-content'}
