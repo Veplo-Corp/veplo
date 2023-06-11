@@ -203,42 +203,7 @@ const EditColorToProduct: FC<{ category: string, confirmCard: (variation: Variat
                 >
                     aggiungi taglia
                 </Button>
-                <Div_input_creation text='Carica immagini'>
-                    <Box
-                        rounded={10}
-                        padding={3.5}
-                        mt={1}
-                        backgroundColor={`${images.length < 2 ? 'white' : 'gray.100'}`}
-                        borderWidth={1}
-                        borderColor={'gray.200'}
-                        lineHeight='tight'
-                        noOfLines={1}
-                        fontSize='sm'
-                        className='cursor-pointer'
-                        onClick={() => {
-                            setOpenDrawNumber(Math.random())
-                        }}
-                    >
-                        <div
-                            className={`w-full flex justify-between ${images.length < 2 ? 'text-gray-500' : 'text-gray-900'}  `}
-                        >
-                            <span>
-                                {images.length < 2 ? 'carica immagini del prodotto' : 'immagini caricate correttamente'}
-                            </span>
-                            {images.length < 2 ?
-                                (<DownloadIcon
-                                    className="h-5 w-5 text-gray-400 my-auto"
-                                    aria-hidden="true"
-                                />) : (
-                                    <CheckIcon
-                                        className="h-5 w-5 text-gray-400 my-auto"
-                                        aria-hidden="true"
-                                    />
-                                )
-                            }
-                        </div>
-                    </Box>
-                </Div_input_creation>
+
                 <ButtonGroup gap='2'
                     display={'flex'}
                     justifyContent={'right'}
