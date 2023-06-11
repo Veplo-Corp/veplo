@@ -18,7 +18,7 @@ import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimal
 import { Product } from '../../src/lib/apollo/generated/graphql'
 
 
-const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean }> = ({ handleEventSelectedDress, product, color, showStoreHeader }) => {
+const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean, productLink: string }> = ({ handleEventSelectedDress, product, color, showStoreHeader, productLink }) => {
 
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     const [width, height] = useWindowSize();
@@ -154,7 +154,9 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
                                 setShowSize(false)
                             }}
                             prefetch={false}
-                            href={color ? `/prodotto/${product.id}/${product?.info?.brand && product.name ? createUrlScheme([product.info.brand, product.name]) : ''}?colore=${color}` : `/prodotto/${product.id}/${product?.info?.brand && product.name ? createUrlScheme([product.info.brand, product.name]) : ''}`}>
+                            href={productLink}
+                        //href={color ? `/prodotto/${product.id}/${product?.info?.brand && product.name ? createUrlScheme([product.info.brand, product.name]) : ''}?colore=${color}` : `/prodotto/${product.id}/${product?.info?.brand && product.name ? createUrlScheme([product.info.brand, product.name]) : ''}`}
+                        >
                             {showSize &&
                                 <ScaleFade
                                     initialScale={0.7} in={showSize}

@@ -1,11 +1,11 @@
-import { Box, IconButton, Image, Modal, ModalBody, ModalContent, ModalOverlay, ModalCloseButton, ModalHeader } from '@chakra-ui/react'
+import { Box, IconButton, Image, Modal, ModalBody, ModalContent, ModalOverlay, ModalCloseButton, ModalHeader, useBreakpointValue, CloseButton } from '@chakra-ui/react'
 //!pronestor - not the original library! because it doesn't work with react 18
 import { TransformComponent, TransformWrapper } from '@pronestor/react-zoom-pan-pinch'
 import React, { useEffect, useState } from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Product, Variation } from '../../src/interfaces/product.interface'
 import { imageKitUrl } from '../utils/imageKitUrl'
-import { isMobile } from 'react-device-detect'
+import ButtonClose from '../atoms/ButtonClose'
 
 const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variation }) => {
     if (!variation) {
@@ -35,27 +35,37 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
 
     }, [variation])
 
+    const isSmallView = useBreakpointValue({ base: true, sm: false });
+
+
     return (
         <>
 
             <Modal size={['lg', 'lg', 'full', 'full']}
 
-                isCentered={false/* isMobile ? false : true */} isOpen={isOpen} onClose={() => setisOpen(false)}
+                isCentered={false/* isSmallView ? false : true */} isOpen={isOpen} onClose={() => setisOpen(false)}
             >
                 <ModalOverlay
                     bg='blackAlpha.300'
                     backdropFilter='blur(10px)'
                 />
                 <ModalContent
-                    margin={isMobile ? '' : 0}
-                    marginTop={isMobile ? 14 : 0}
+                    margin={isSmallView ? '' : 0}
+                    marginTop={isSmallView ? '18vh' : 0}
                     width={'fit-content'}
                 >
-                    <ModalCloseButton zIndex={'popover'}
-                        size={'lg'}
-                        onClick={() => setisOpen(false)}
-                    />
+
                     <ModalBody padding={0} >
+                        <Box
+                            position={'absolute'}
+                            right={3}
+                            top={3}
+                            zIndex={50}
+                        >
+                            <ButtonClose handleEvent={() => setisOpen(false)} />
+
+                        </Box>
+
                         <div className='hidden md:flex'>
                             <TransformWrapper
                                 maxScale={2}

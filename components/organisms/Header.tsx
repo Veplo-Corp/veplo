@@ -26,7 +26,6 @@ import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
 
 const Header = () => {
     const isButtonHidden = useBreakpointValue({ base: true, lg: false });
-
     const router = useRouter()
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
@@ -75,9 +74,6 @@ const Header = () => {
         if (gender === 'm') {
             setGender('uomo')
         }
-
-
-
 
         return () => {
 
@@ -239,11 +235,6 @@ const Header = () => {
 
                                     )}
                                 </Popover>
-
-
-
-
-
                             }
 
                             <div>
@@ -251,7 +242,6 @@ const Header = () => {
                                     <CategoryNavbar showMacrocategory={showMacrocategory} />
                                 }
                             </div>
-
                             <div className="flex lg:flex-1 lg:justify-end ">
                                 {!(user.statusAuthentication === 'logged_in' && user.isBusiness) &&
                                     <div className='flex gap-3'>

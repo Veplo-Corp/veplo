@@ -192,28 +192,36 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
     useEffect(() => {
 
-        const color = router.query.colore
-        if (typeof color === 'string' && product) {
-            const variation = product.variations.find(variation => variation.color.toLowerCase() == color.toLowerCase())
+        const { colors, sizes } = router.query;
+
+        if (typeof sizes === 'string') {
+            console.log(sizes);
+            setSizeSelected(sizes)
+        }
+        if (typeof colors === 'string' && product) {
+            const variation = product.variations.find(variation => variation.color.toLowerCase() == colors.toLowerCase())
             if (!variation) return
             setVariationSelected(variation)
             setColorSelected(variation.color)
             return
         }
-    }, [router.query.colore])
+
+    }, [router.query])
+
+
 
     useEffect(() => {
         if (!product) return
         //const category = createTextCategory(product.info.macroCategory, product.info.microCategory)
         //setTextCategory(category)
-        const url_slug_correct = createUrlSchema([product.info.brand, product.name])
-        if (url_slug_correct !== slug) {
-            router.replace({
-                pathname: `/prodotto/${router.query.productId}/${url_slug_correct}`,
-            },
-                undefined, { shallow: true }
-            )
-        }
+        // const url_slug_correct = createUrlSchema([product.info.brand, product.name])
+        // if (url_slug_correct !== slug) {
+        //     router.replace({
+        //         pathname: `/prodotto/${router.query.productId}/${url_slug_correct}`,
+        //     },
+        //         undefined, { shallow: true }
+        //     )
+        // }
         setproductsLikeThis(undefined)
 
         setInLocalStorage('genderSelected', product.info.gender)
@@ -266,7 +274,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         setSizeSelected('')
         router.replace({
             pathname: router.asPath.split('?')[0],
-            query: { colore: color }
+            query: { colors: color.toLocaleLowerCase() }
         },
             undefined, { shallow: true }
         )
@@ -471,6 +479,8 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             })
         }
     };
+
+
 
     return (
         <>
@@ -820,7 +830,9 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                                 exit="hidden"
                                             >
 
-                                                <Box_Dress showStoreHeader={false} product={product} color={typeof colors === 'string' ? colors : undefined} />
+                                                <Box_Dress
+                                                    productLink={`/prodotto/${product.id}/${product?.info?.brand}-${product.name}${router.asPath.split('?')[1] ? '?' + router.asPath.split('?')[1] : ''}`}
+                                                    showStoreHeader={false} product={product} color={typeof colors === 'string' ? colors : undefined} />
                                             </motion.div>
 
                                         </Box>
