@@ -116,6 +116,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
     }
 
     useEffect(() => {
+        setHasMoreData(true)
         if (window.history.state.key === sessionStorage.getItem("keyShopSession")) {
             setproductsFounded([])
             const productsFounded = sessionStorage.getItem("productsFoundedInShop");
@@ -142,7 +143,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
             setGenderSelected(gender)
         }
         createAddressForMAps()
-    }, [shop])
+    }, [shop, gender])
 
 
     const fetchMoreData = async () => {
@@ -319,12 +320,10 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                             }
                             icon={
                                 <MoreHoriz
-
                                     className='m-auto'
                                     height={'full'}
                                     width={'full'}
                                     strokeWidth={2}
-
                                 />
                             } />
 
@@ -438,6 +437,8 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
 
                                             sessionStorage.setItem('scrollPositionShop', window.pageYOffset.toString());
                                         }}
+                                        productLink={`/prodotto/${product.id}/${product?.info?.brand}-${product.name}`}
+
                                     ></Box_Dress>
                                 </div>
 

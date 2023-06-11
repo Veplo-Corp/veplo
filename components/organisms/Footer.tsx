@@ -52,10 +52,10 @@ const Footer = () => {
                                 ></script>
                             </li>
 
-                            {/* <li className="mb-4">
-                                <a href="#" className="hover:underline">Termini &amp; Condizioni</a>
+                            <li className="mb-4">
+                                <Link href="/policies/termini-e-condizioni" className="hover:underline">Termini &amp; Condizioni</Link>
                             </li>
-                            <li>
+                            {/* <li>
                                 <a href="#" className="hover:underline">Trasparenza</a>
                             </li> */}
                         </ul>

@@ -50,6 +50,7 @@ const GET_PRODUCTS_FROM_SHOP = gql`
                             name 
                             city
                             status
+                            profilePhoto
                         }
                     }
                 } 

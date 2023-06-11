@@ -14,6 +14,7 @@ import PostMeta from '../../../components/organisms/PostMeta';
 import Link from 'next/link';
 import { removeFromLocalStorage } from '../../../components/utils/removeFromLocalStorage';
 import NoIndexSeo from '../../../components/organisms/NoIndexSeo';
+import { getFromLocalStorage } from '../../../components/utils/getFromLocalStorage';
 
 
 
@@ -60,9 +61,20 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
     console.log("SHOPS", shops);
 
     const router = useRouter()
-
+    const [gender, setGender] = useState<string>()
     const [inputSearchShop, setInputSearchShop] = useState('')
     console.log(shops);
+
+    useEffect(() => {
+        let gender = getFromLocalStorage('genderSelected')
+        if (gender === 'f') {
+            setGender('donna')
+        }
+        if (gender === 'm') {
+            setGender('uomo')
+        }
+    }, [])
+
 
 
 
@@ -116,7 +128,7 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
 
                         return (
                             <Link
-                                prefetch={false} key={shop.id} href={`/negozio/${shop.id}/${createUrlSchema([shop.name])}`}>
+                                prefetch={false} key={shop.id} href={`/negozio/${shop.id}/${createUrlSchema([shop.name])}${gender ? '/' + gender : ''}`}>
                                 <Box_Shop scale={'scale(0.99)'} eventHandler={() => { }} shop={shop} />
                             </Link>
                         )
