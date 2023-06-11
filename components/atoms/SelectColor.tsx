@@ -29,7 +29,7 @@ const SelectColor: FC<{ defaultValue?: string, handleClick: (value: any) => void
     return (
         <Listbox value={selected} onChange={handleEvent}
         >
-            <div className={`z-1 relative mt-1 border border-gray rounded-lg w-fit lg:w-full `}>
+            <div className={`z-1 relative mt-1 border border-gray rounded-lg w-fit lg:w-full h-full`}>
                 <Listbox.Button className="cursor-default w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-md  leading-5 text-gray-900 focus:ring-0">
                     {placeholder && !selected && <span className="block truncate text-start ">{placeholder}</span>}
                     {selected && <span className="block truncate text-start ">{selected?.name || selected} </span>}

@@ -3,6 +3,7 @@ import React, { FC, useRef, useState } from 'react'
 import ReactCrop, { Crop, PixelCrop } from 'react-image-crop'
 import BlackButton from '../atoms/BlackButton'
 import { useDebounceEffect } from '../utils/useDebounceEffect'
+import 'react-image-crop/dist/ReactCrop.css'
 
 interface Props {
     imageSrc: any,
@@ -51,7 +52,7 @@ const ImageCrop: FC<Props> = ({ ...props }) => {
 
                 <ReactCrop
                     className='w-full h-fit max-h-[65vh] border-2 border-gray'
-
+                    //className="border-2 border-dashed border-red-500 transition-all duration-300"
                     crop={crop}
                     circularCrop={props.circularCrop}
                     onChange={(_, percentCrop) => setCrop(percentCrop)}
@@ -65,7 +66,8 @@ const ImageCrop: FC<Props> = ({ ...props }) => {
                 >
 
                     <img
-                        className='object-contain'
+
+                        className='object-contain border-none'
                         src={props.imageSrc} ref={imgRef}
                     />
 

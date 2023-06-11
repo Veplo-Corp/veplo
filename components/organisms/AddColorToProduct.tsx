@@ -187,13 +187,19 @@ const AddColorToProduct: FC<{ category: string, deleteCard: () => void, confirmC
                     Aggiungi colore
                 </h3>
                 <Div_input_creation text='Colore'>
-                    <SelectColor
-                        colors={colors}
-                        defaultValue={color}
-                        handleClick={(color) => {
-                            setColor(color)
-                        }}
-                    />
+                    <Box
+                        width={80}
+                        height={12}
+                    >
+                        <SelectColor
+                            colors={colors}
+                            defaultValue={color}
+                            handleClick={(color) => {
+                                setColor(color)
+                            }}
+                        />
+                    </Box>
+
                 </Div_input_creation>
                 <div className='w-10/12'>
                     <div className='flex justify-between text-sm text-gray-600 font-norma'>
