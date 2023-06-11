@@ -385,7 +385,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             //CART INESISTENTE
             if (!Cart) {
                 console.log('passa');
-
                 const newProductVariation: ProductVariation = {
                     id: variationSelected.id,
                     variationId: variationSelected.id,
