@@ -857,7 +857,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                                         sessionStorage.setItem('scrollPositionProducts', window.pageYOffset.toString());
                                                                     }}
                                                                     productLink={`/prodotto/${product.id}/${product?.info?.brand}-${product.name}${router.asPath.split('?')[1] ? '?' + router.asPath.split('?')[1] : ''}`}
-                                                                    showStoreHeader={true} product={product} color={typeof colors === 'string' ? colors : undefined}></Box_Dress>
+                                                                    showStoreHeader={true} product={product} color={filter.colors?.[0] ? filter.colors[0] : undefined}></Box_Dress>
 
                                                             </motion.div>
                                                         )
