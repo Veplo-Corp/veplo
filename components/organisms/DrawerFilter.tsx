@@ -101,6 +101,7 @@ const DrawerFilter: FC<{ defaultFilter: PropsFilter, isOpenDrawer: boolean, clos
                                             values={SIZES[sizeProduct].map(size => {
                                                 return size.toLocaleUpperCase()
                                             })}
+                                            fit='fit'
                                             //defaultValue={SIZES[sizeProduct].find((size) => { size.startsWith(filter?.sizes && typeof filter?.sizes[0] === 'string' ? filter?.sizes[0].toLocaleLowerCase() : 'l') })}
                                             defaultValue={
                                                 sizeFilter !== '' ? SIZES[sizeProduct].find((size) => size.startsWith(sizeFilter.toLocaleLowerCase()))?.toLocaleUpperCase()
@@ -125,6 +126,7 @@ const DrawerFilter: FC<{ defaultFilter: PropsFilter, isOpenDrawer: boolean, clos
                                 <SelectColor
                                     placeholder='Colore'
                                     colors={COLORS}
+                                    fit='fit'
                                     defaultValue={filter.colors ? toUpperCaseFirstLetter(filter.colors[0]) : ''}
                                     handleClick={(color) => {
                                         setFilter(prevstate => {

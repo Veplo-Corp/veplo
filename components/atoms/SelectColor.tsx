@@ -6,7 +6,7 @@ import { Color, COLORS } from '../mook/colors'
 import Circle_Color from './Circle_Color'
 import { NavArrowDown } from 'iconoir-react'
 
-const SelectColor: FC<{ defaultValue?: string, handleClick: (value: any) => void, colors: Color[], placeholder?: string }> = ({ defaultValue, handleClick, colors, placeholder }) => {
+const SelectColor: FC<{ defaultValue?: string, handleClick: (value: any) => void, colors: Color[], placeholder?: string, fit?: 'fit' | 'full' }> = ({ defaultValue, handleClick, colors, placeholder, fit }) => {
     const [selected, setSelected] = useState<any>(null);
 
     const handleEvent = (value: any) => {
@@ -46,7 +46,7 @@ const SelectColor: FC<{ defaultValue?: string, handleClick: (value: any) => void
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <Listbox.Options className="z-10 w-fit bg-white absolute mt-1 max-h-44 md:max-h-60 overflow-auto rounded-md bg-whitetext-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-md">
+                    <Listbox.Options className={`z-10 w-${fit === 'fit' ? 'fit' : 'full'} bg-white absolute mt-1 max-h-44 md:max-h-60 overflow-auto rounded-md bg-whitetext-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-md`}>
                         {colors.map((color, valueIdx: number) => {
                             return (
                                 <Listbox.Option
