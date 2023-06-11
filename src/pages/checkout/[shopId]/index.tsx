@@ -66,11 +66,13 @@ const index = () => {
             setCart(cart)
         }
         if (!cart) {
+            console.log('CART', cart);
+
             //in futuro mettiamo carrello non trovato e non reindiriziamo a negozi
             setCart(undefined)
             router.replace('/negozi')
         }
-    }, [user])
+    }, [user, cartsDispatch])
 
 
 
