@@ -37,6 +37,8 @@ const ImageCrop: FC<Props> = ({ ...props }) => {
 
 
 
+
+
     return (
         <Box
             minWidth={['container.xs', 'container.xs', 'container.sm', 'container.md']}

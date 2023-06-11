@@ -302,11 +302,12 @@ const index = () => {
         console.log(values);
 
         let photos: any = [];
-        for (const variation of productVariations) {
+        for await (const variation of productVariations) {
             for (const photo of variation.photos) {
                 photos.push(photo.file)
             }
         }
+
 
         console.log(photos);
         try {

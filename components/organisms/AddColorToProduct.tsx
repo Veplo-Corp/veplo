@@ -92,7 +92,6 @@ const AddColorToProduct: FC<{ category: string, deleteCard: () => void, confirmC
         hiddenFileInputImage.current.click();
         if (e.target.files) {
             try {
-
                 const file = e.target.files[0];
                 const image = await resizeFile(file);
                 setImgSrc(image)
@@ -148,6 +147,10 @@ const AddColorToProduct: FC<{ category: string, deleteCard: () => void, confirmC
                             file: file,
                             position: images.length
                         }
+
+                        console.log(newImage);
+
+
                         setImages(prevstate => {
                             return [
                                 ...prevstate,
@@ -192,6 +195,7 @@ const AddColorToProduct: FC<{ category: string, deleteCard: () => void, confirmC
                         height={12}
                     >
                         <SelectColor
+                            placeholder='colore'
                             colors={colors}
                             defaultValue={color}
                             handleClick={(color) => {
