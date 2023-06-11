@@ -20,6 +20,9 @@ import { Product } from '../../src/lib/apollo/generated/graphql'
 
 const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean, productLink: string }> = ({ handleEventSelectedDress, product, color, showStoreHeader, productLink }) => {
 
+
+    console.log(color);
+
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     const [width, height] = useWindowSize();
     //const [dimensionUrl, setDimensionUrl] = useState('&tr=w-571,h-825')
@@ -35,14 +38,17 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
             return COLORS.find(color => color.name === variation.color)?.cssColor
         })
 
-        console.log(product.variations[indexPhoto].photos?.[0]);
 
 
         setProductcolorsCSS(colors)
         seturlProduct(product.variations[indexPhoto].photos?.[0] ? product.variations[indexPhoto].photos?.[0] : '');
         if (color) {
-            const indexPhoto = product?.variations.findIndex((variation: any) => variation.color === color)
+            product?.variations
+            const indexPhoto = product?.variations.findIndex((variation: any) => variation.color.toLowerCase() === color.toLowerCase())
+            console.log(indexPhoto);
+
             if (indexPhoto >= 0) {
+
                 console.log(indexPhoto);
                 setindexPhoto(indexPhoto)
                 //rimetti a 0
