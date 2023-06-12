@@ -198,9 +198,9 @@ const index = () => {
         }
     }
 
-    const handleDenyReturn = () => {
+    const handleDenyReturn = async () => {
         setIsOpenModalRejectReturn(false)
-        denyReturn({
+        await denyReturn({
             variables: {
                 orderId: order?.id,
             }
@@ -473,10 +473,7 @@ const index = () => {
                                                 height={'fit-content'}
                                                 variant={'black'}
                                                 type={'submit'}
-                                                _hover={{ bg: 'black.900' }}
-                                                _focus={{
-                                                    bg: 'black.900'
-                                                }}
+
                                             >Conferma</Button>
                                         </form>
                                         <ButtonGroup
@@ -631,17 +628,9 @@ const index = () => {
                                             </Button>
                                             <Button
                                                 width={['full', 'fit-content']}
-                                                bg={'black.900'}
-                                                color={'white'}
-
-                                                _hover={{ bg: 'black.900' }}
-                                                _focus={{
-                                                    bg: 'black.900'
-                                                }}
+                                                variant={'black'}
                                                 onClick={() => setIsOpenHelpModal(true)}
-                                                _active={{
-                                                    transform: 'scale(0.98)',
-                                                }}
+
                                                 padding={4}
                                                 px={10}
                                                 size={'md'}
