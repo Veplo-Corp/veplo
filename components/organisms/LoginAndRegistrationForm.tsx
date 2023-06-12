@@ -262,8 +262,8 @@ const LoginAndRegistrationForm: FC<{
                 const response = await createUser({
                     variables: {
                         options: {
-                            name: fullName ? fullName[0] : null,
-                            surname: fullName ? fullName?.slice(1).join(" ") : null
+                            name: fullName ? fullName[0] : '',
+                            surname: fullName ? fullName?.slice(1).join(" ") : ''
                         }
                     }
                 })
@@ -281,7 +281,7 @@ const LoginAndRegistrationForm: FC<{
                         createdAt: 'now',
                         accountId: response?.data.createUser,
                         userInfo: {
-                            name: fullName ? fullName[0] : null,
+                            name: fullName ? fullName[0] : 'nome',
                         }
                     })
                 );
