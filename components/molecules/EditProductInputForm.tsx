@@ -1,4 +1,4 @@
-import { Button, Input, InputGroup, InputLeftAddon, InputRightAddon, Textarea } from '@chakra-ui/react';
+import { Button, Input, InputGroup, InputLeftAddon, InputRightAddon, Text, Textarea } from '@chakra-ui/react';
 import React, { FC, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form';
 import { Variation } from '../../src/interfaces/product.interface';
@@ -53,11 +53,20 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                         rounded={10}
                         paddingY={6}
                         type="text"
-                        {...register("name", { required: true })}
+                        {...register("name", {
+                            required: true,
+                            pattern: /^[A-Za-z0-9 ]+$/
+                        })}
                         isInvalid={false}
                     />
                 </InputGroup>
             </Div_input_creation>
+            {errors.name && <Text
+                pl={2}
+                mt={0}
+                fontSize={'sm'}
+                fontWeight={'medium'}
+                role="alert">I caratteri speciali non sono accettati</Text>}
             <Div_input_creation text='Prezzo'>
                 <InputGroup
 
@@ -317,15 +326,14 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                 paddingInline={10}
                 width={'full'}
                 height={'fit-content'}
-                bg={'black.900'}
-                color={'white'}
-                _hover={{ bg: 'black.900' }}
-                _focus={{
-                    bg: 'black.900'
+                variant={'black'}
+                _disabled={{
+                    bg: '#000000'
                 }}
-                _active={{
-                    transform: 'scale(0.98)',
+                _hover={{
+                    color: 'primary.text'
                 }}
+                disabled={!isValid}
             >Modifica informazioni</Button>
         </form>
 
