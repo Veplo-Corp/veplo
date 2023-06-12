@@ -1,6 +1,9 @@
 export const TRAITS = [
     'eco-friendly',
-    'vegan',
     'handmade',
-    'vintage'
+    'vintage',
+    'vegano',
+    'riciclato',
+    'cruelty-free',
+    'fibre naturali',
 ]

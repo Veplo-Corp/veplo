@@ -29,7 +29,7 @@ const Shop_not_Allowed: React.FC<{ children: any }> = ({ children }) => {
 
     return (
         <div>
-            {(user.statusAuthentication === 'logged_out' || (user.statusAuthentication === 'logged_in' && !user.isBusiness)) && <>{children}</>}
+            <>{children}</>
         </div>
 
     )

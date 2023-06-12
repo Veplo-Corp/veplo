@@ -81,7 +81,11 @@ const LoginAndRegistrationForm: FC<{
             // rimani nella stessa pagina in modal
             localStorage.removeItem('carts')
             if (open === 'modal') {
-                return router.reload()
+                setTimeout(() => {
+                    router.reload()
+                }, 1000);
+                return
+
             }
             if (typeof router.query?.callbackUrl === 'string') {
                 router.replace(router.query?.callbackUrl)
