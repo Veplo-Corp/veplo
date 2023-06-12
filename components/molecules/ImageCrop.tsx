@@ -102,7 +102,7 @@ const ImageCrop: FC<Props> = ({ ...props }) => {
                     heigth={12}
                     size={'sm'}
                     typeButton={'button'}
-                    disabled={false}
+                    isDisabled={false}
                 />
 
             </div>
