@@ -37,6 +37,7 @@ import { Cart } from '../interfaces/carts.interface'
 import { resetCarts, setCarts } from '../store/reducers/carts'
 import { Order } from '../interfaces/order.interface'
 import { detroyOrders, setOrders } from '../store/reducers/orders'
+import { setBrands } from '../store/reducers/brands'
 
 
 const theme = extendTheme({
@@ -173,11 +174,26 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
   const router = useRouter()
   // console.log(address_user);
   const modal: ErrorModal = useSelector((state: any) => state.modal.modal);
-
+  // const brands: string[] | undefined = useSelector((state: any) => state.brands.brands);
+  // console.log(brands);
 
   const dispatch = useDispatch();
   const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
   const [getUser] = useLazyQuery(GET_USER);
+
+
+  const fetchBrandsFromDB = async () => {
+    const endpoint = `/api/brands`
+    const response = await fetch(endpoint, {
+      method: "GET",
+      mode: "no-cors", // no-cors, *cors, same-origin
+    })
+    const result = await response.json()
+    if (!result) return
+    dispatch(
+      setBrands(result)
+    );
+  }
 
 
 
@@ -188,14 +204,14 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
     const address_user = getAddressFromLocalStorage();
 
 
-
-    dispatch(
-      setAddress({
-        address: address_user
-      })
-    );
+    // dispatch(
+    //   setAddress({
+    //     address: address_user
+    //   })
+    // );
 
     onAuthStateChanged(auth, async (userAuth) => {
+
       //signOut(auth)
       const apolloClient = initApollo()
       if (userAuth) {
@@ -328,6 +344,8 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
       }
       return
     });
+    fetchBrandsFromDB()
+
   }, []);
 
 
