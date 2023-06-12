@@ -166,11 +166,14 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     useEffect(() => {
         console.log(elementEditCart.error?.graphQLErrors);
         console.log(elementEditCart.error?.graphQLErrors[0].name);
-        if (!elementEditCart.error?.graphQLErrors[0].name || !elementEditCart.error?.graphQLErrors[0].path || typeof elementEditCart.error?.graphQLErrors[0].path !== 'string') return
-        const error = handleErrorGraphQL({
-            name: elementEditCart.error?.graphQLErrors[0].name,
-            path: elementEditCart.error?.graphQLErrors[0].path
-        })
+        // if (!elementEditCart.error?.graphQLErrors[0].name || !elementEditCart.error?.graphQLErrors[0].path || typeof elementEditCart.error?.graphQLErrors[0].path !== 'string') return
+        // const error = handleErrorGraphQL({
+        //     name: elementEditCart.error?.graphQLErrors[0].name,
+        //     path: elementEditCart.error?.graphQLErrors[0].path
+        // })
+        if (elementEditCart.error?.graphQLErrors[0].name === "too much quantity for this product's variation") {
+            setOpenDrawerCart(true)
+        }
     }, [elementEditCart.error])
 
 
@@ -191,9 +194,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     }, [errorLog])
 
     useEffect(() => {
-
         const { colors, sizes } = router.query;
-
         if (typeof sizes === 'string') {
             console.log(sizes);
             setSizeSelected(sizes)
@@ -641,7 +642,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
                                 variant={'black'}
 
-                            >aggiungi all carrello{sizeSelected && <span className='ml-[5px]'>- {sizeSelected.toLocaleUpperCase()}</span>}
+                            >aggiungi al carrello{sizeSelected && <span className='ml-[5px]'>- {sizeSelected.toLocaleUpperCase()}</span>}
                             </Button>
 
                             <Box
@@ -830,7 +831,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                             >
 
                                                 <Box_Dress
-                                                    productLink={`/prodotto/${product.id}/${product?.info?.brand}-${product.name}${router.asPath.split('?')[1] ? '?' + router.asPath.split('?')[1] : ''}`}
+                                                    productLink={`/prodotto/${product.id}/${product?.info?.brand}-${product.name}`}
                                                     showStoreHeader={false} product={product} color={typeof colors === 'string' ? colors : undefined} />
                                             </motion.div>
 

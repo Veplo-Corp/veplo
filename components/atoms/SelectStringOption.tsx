@@ -6,7 +6,6 @@ import { NavArrowDown } from 'iconoir-react'
 
 const SelectStringOption: FC<{ defaultValue?: number | string, values: string[] | number[], handleClick: (value: any) => void, placeholder?: string, fit?: 'fit' | 'full' }> = ({ defaultValue, values, handleClick, placeholder, fit }) => {
     const [selected, setSelected] = useState<any>('');
-
     useEffect(() => {
         if (defaultValue === undefined) return
         setSelected(defaultValue)
@@ -23,6 +22,8 @@ const SelectStringOption: FC<{ defaultValue?: number | string, values: string[] 
         setSelected(undefined)
         handleClick(undefined)
     }, [values])
+
+
 
 
 
@@ -56,7 +57,7 @@ const SelectStringOption: FC<{ defaultValue?: number | string, values: string[] 
                     leaveTo="opacity-0"
                 >
                     <Listbox.Options
-                        className={`z-10 bg-white absolute mt-1 max-h-44 w-${fit === 'fit' ? 'fit' : 'full'} overflow-auto rounded-md bg-whitetext-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm`}>
+                        className={`z-10 bg-white absolute mt-1 max-h-44 ${fit === 'fit' ? 'w-fit' : 'w-full'} overflow-auto rounded-md bg-whitetext-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm`}>
 
                         {values?.map((value: any, valueIdx: number) => {
                             return (
@@ -64,7 +65,8 @@ const SelectStringOption: FC<{ defaultValue?: number | string, values: string[] 
 
                                     key={valueIdx}
                                     className={({ active }) =>
-                                        `relative cursor-default select-none py-2 pr-6 pl-10 ${active ? 'bg-blue-700 text-white' : 'text-black-900'
+                                        `relative 
+                                        cursor-default select-none py-2 pr-6 pl-10 ${active ? 'bg-blue-700 text-white' : 'text-black-900'
                                         }`
                                     }
                                     value={value}

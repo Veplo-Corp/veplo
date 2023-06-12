@@ -72,7 +72,7 @@ const index = () => {
             setCart(undefined)
             router.replace('/negozi')
         }
-    }, [user, cartsDispatch])
+    }, [user, cartsDispatch, router.query])
 
 
 
