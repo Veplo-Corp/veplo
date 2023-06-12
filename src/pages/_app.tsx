@@ -353,9 +353,13 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
       }
       return
     });
-    //fetchBrandsFromDB()
-
   }, []);
+
+  useEffect(() => {
+    fetchBrandsFromDB()
+
+  }, [])
+
 
 
 
