@@ -4,6 +4,7 @@ import addressState from './reducers/address_user';
 import modalState from './reducers/modal_error';
 import cartsState from './reducers/carts';
 import ordersState from './reducers/orders';
+import brandsState from './reducers/brands';
 
 
 export const store = configureStore({
@@ -12,8 +13,8 @@ export const store = configureStore({
     address: addressState,
     modal: modalState,
     carts: cartsState,
-    orders: ordersState
-
+    orders: ordersState,
+    brands: brandsState
   },
 })
 

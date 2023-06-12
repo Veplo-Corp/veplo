@@ -686,11 +686,6 @@ const index = () => {
                         </div>
                     )
                 }
-                <Button
-                    isDisabled={true}
-                >
-                    true
-                </Button>
                 <div
                     className='text-center'
                 >
