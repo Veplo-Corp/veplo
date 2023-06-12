@@ -307,9 +307,14 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             const warnings: { variationId: string }[] = data?.data?.user?.carts?.warnings
 
 
+
             if (carts?.length > 0) {
               dispatch(
                 setCarts(carts)
+              )
+            } else {
+              dispatch(
+                resetCarts()
               )
             }
 
