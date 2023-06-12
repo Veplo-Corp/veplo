@@ -264,7 +264,7 @@ const index = () => {
                     </Button>
 
                     <Button
-                        disabled={userName.name.length <= 0 || userName.surname.length <= 0}
+                        isDisabled={userName.name.length <= 0 || userName.surname.length <= 0}
                         onClick={editNameOrSurname}
                         colorScheme='green'
                         minWidth={28}

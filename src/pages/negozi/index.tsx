@@ -58,12 +58,10 @@ export const getStaticProps = async () => {
 const index: FC<{ shops: Shop[] }> = ({ shops }) => {
 
 
-    console.log("SHOPS", shops);
 
     const router = useRouter()
     const [gender, setGender] = useState<string>()
     const [inputSearchShop, setInputSearchShop] = useState('')
-    console.log(shops);
 
     useEffect(() => {
         let gender = getFromLocalStorage('genderSelected')

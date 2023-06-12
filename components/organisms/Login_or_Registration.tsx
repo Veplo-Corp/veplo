@@ -413,7 +413,7 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
                         type='submit'
                         borderRadius={10}
                         size={'md'}
-                        disabled={!isValidEmail || !isValidPassword || (type === 'registration' && account === 'user' ? (userInfo.name === '' || userInfo.surname === '' || userInfo.gender === '') : false)}
+                        isDisabled={!isValidEmail || !isValidPassword || (type === 'registration' && account === 'user' ? (userInfo.name === '' || userInfo.surname === '' || userInfo.gender === '') : false)}
 
                     >
                         {type == 'registration' ? 'registrati' : 'accedi'}

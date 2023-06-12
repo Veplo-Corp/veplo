@@ -215,7 +215,7 @@ const EditColorToProduct: FC<{ category: string, confirmCard: (variation: Variat
                         paddingX={6}
                         paddingY={5}
                         size={'sm'}
-                        disabled={false}
+                        isDisabled={false}
                         //disabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
                         onClick={
                             confirmButton

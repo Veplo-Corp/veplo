@@ -333,7 +333,7 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                 _hover={{
                     color: 'primary.text'
                 }}
-                disabled={!isValid}
+                isDisabled={!isValid}
             >Modifica informazioni</Button>
         </form>
 

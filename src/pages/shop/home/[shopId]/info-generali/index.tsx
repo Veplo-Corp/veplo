@@ -69,7 +69,7 @@ const index: FC<{}> = () => {
                 heigth={12}
                 size={'sm'}
                 typeButton={'button'}
-                disabled={false}
+                isDisabled={false}
               />
             </div>
           </div>

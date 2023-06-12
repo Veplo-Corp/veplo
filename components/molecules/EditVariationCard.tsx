@@ -256,9 +256,9 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], 
                                 paddingX={6}
                                 paddingY={5}
                                 size={'sm'}
-                                disabled={false}
+                                isDisabled={false}
                                 variant={'outline'}
-                                //disabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
+                                //isDisabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
                                 onClick={() => {
                                     seteditMode(false)
                                     const lots: Size[] = [];
@@ -281,8 +281,8 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], 
                                 paddingX={6}
                                 paddingY={5}
                                 size={'sm'}
-                                disabled={false}
-                                //disabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
+                                isDisabled={false}
+                                //isDisabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
                                 onClick={
                                     () => {
                                         const variations = variationTranslate.filter(variation => variation.size !== '' && variation.quantity >= 0)

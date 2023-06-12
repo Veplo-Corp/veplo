@@ -289,7 +289,7 @@ const index = () => {
                                     _hover={{
                                         color: 'primary.text'
                                     }}
-                                    disabled={isDisabled}
+                                    isDisabled={isDisabled}
 
                                 >Procedi
                                 </Button>
@@ -364,7 +364,7 @@ const index = () => {
                                     paddingX={6}
                                     paddingY={5}
                                     size={'sm'}
-                                    disabled={false}
+                                    isDisabled={false}
                                     //disabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
                                     onClick={handleDeleteVariations}
                                 >Conferma

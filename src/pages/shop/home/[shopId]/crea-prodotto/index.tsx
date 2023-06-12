@@ -686,6 +686,11 @@ const index = () => {
                         </div>
                     )
                 }
+                <Button
+                    isDisabled={true}
+                >
+                    true
+                </Button>
                 <div
                     className='text-center'
                 >
@@ -704,7 +709,7 @@ const index = () => {
                             if (isLoading) return
                             createProductHandler()
                         }}
-                        disabled={isLoading || productVariations.length <= 0 || !watch('name') || !watch('brand') || !watch('macrocategory') || !watch('microcategory') || !watch('price') || !isValid}
+                        isDisabled={isLoading || productVariations.length <= 0 || !watch('name') || !watch('brand') || !watch('macrocategory') || !watch('microcategory') || !watch('price') || !isValid}
                         px={12}
                         py={7}
                         rounded={'lg'}

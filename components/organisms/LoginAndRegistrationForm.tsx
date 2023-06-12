@@ -545,7 +545,7 @@ const LoginAndRegistrationForm: FC<{
                         _hover={{
                             color: 'primary.text'
                         }}
-                        disabled={isLoading}
+                        isDisabled={isLoading}
                     >
                         {!isLoading &&
                             <Box
@@ -608,7 +608,7 @@ const LoginAndRegistrationForm: FC<{
                                 height={'55px'}
                                 variant="whitePrimary"
                                 onClick={signInWithGoogle}
-                                disabled={isLoading}
+                                isDisabled={isLoading}
                                 _disabled={{
                                     bg: '#FFFFFF'
                                 }}

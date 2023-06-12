@@ -287,7 +287,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                             variant='outline'
                             colorScheme={'blackAlpha'}
                             color={'blackAlpha.900'}
-                            disabled={false} >
+                            isDisabled={false} >
 
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -307,7 +307,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                             width={200}
                             heigth={12}
                             //  disabled={false}
-                            disabled={type === 'edit' ? false : (!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0] || !watch('photos')[1])}
+                            isDisabled={type === 'edit' ? false : (!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0] || !watch('photos')[1])}
                         />
 
                     </div>
