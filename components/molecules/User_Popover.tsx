@@ -145,7 +145,9 @@ const User_Popover = () => {
                                                 console.log('eccolo');
 
                                                 await signOut(auth)
+
                                                 deleteAuthTokenInSessionStorage()
+                                                router.reload()
                                             }
                                             if (!action.href) return
                                             router.push(action.href)
