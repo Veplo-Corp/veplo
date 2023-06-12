@@ -10,7 +10,10 @@ import SelectStringOption from '../atoms/SelectStringOption';
 import { onChangeNumberPrice } from '../utils/onChangePrice';
 import ProductVariationCard from './ProductVariationCard';
 import SelectMultipleOptions from '../atoms/SelectMultipleOptions';
-import { FIT, LENGTH, MATERIALS, TRAITS } from '../../src/pages/shop/home/[shopId]/crea-prodotto';
+import { MATERIALS } from '../mook/productParameters/materials';
+import { FIT } from '../mook/productParameters/fit';
+import { TRAITS } from '../mook/productParameters/traits';
+import { LENGTH } from '../mook/productParameters/length';
 
 
 
