@@ -265,7 +265,7 @@ const index = () => {
                                     _hover={{
                                         color: 'primary.text'
                                     }}
-                                    disabled={!isValid || isLoading}
+                                    isDisabled={!isValid || isLoading}
                                 >
                                     {!isLoading &&
                                         <Box

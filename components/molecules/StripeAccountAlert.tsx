@@ -31,7 +31,7 @@ const StripeAccountAlert: FC<{ stripeId: string }> = ({ stripeId }) => {
                     <br />
                     <div className='flex lg:hidden mt-2 '>
                         <Button
-                            disabled={loading}
+                            isDisabled={loading}
                             colorScheme={'black'} variant='link' onClick={handleKYCProcess}>
                             <span className='underline'>
                                 abilita Stripe
@@ -42,7 +42,7 @@ const StripeAccountAlert: FC<{ stripeId: string }> = ({ stripeId }) => {
             </Box>
             <div className='hidden lg:flex justify-end'>
                 <Button onClick={handleKYCProcess} colorScheme={'orange'}
-                    disabled={loading}
+                    isDisabled={loading}
                 >
                     abilita Stripe
                 </Button>

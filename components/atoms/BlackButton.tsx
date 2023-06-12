@@ -7,19 +7,19 @@ type Props = {
     borderRadius: number,
     size: string,
     typeButton: "button" | "submit" | "reset",
-    disabled: boolean,
+    isDisabled: boolean,
     width?: number | string,
     heigth?: number,
     onClick?: any,
     leftIcon?: any
 }
 
-const BlackButton: React.FC<Props> = ({ element, borderRadius, size, typeButton, disabled, width, heigth, onClick, leftIcon }) => {
+const BlackButton: React.FC<Props> = ({ element, borderRadius, size, typeButton, isDisabled, width, heigth, onClick, leftIcon }) => {
 
     return (
         <Button
             onClick={onClick}
-            disabled={disabled}
+            isDisabled={isDisabled}
             type={typeButton}
             borderRadius={borderRadius}
             size={size}

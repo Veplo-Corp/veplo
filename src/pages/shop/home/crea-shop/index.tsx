@@ -1035,7 +1035,7 @@ const index = () => {
                                 size={'sm'}
                                 typeButton={'submit'}
                                 //disabled={false}
-                                disabled={isLoading || !address || address.streetNumber === '' /*|| !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('info.opening.days') || watch('info.opening.days').length <= 0 */ || !isValid || !image?.file || !imageProfile?.file || watch('categories')?.length <= 0}
+                                isDisabled={isLoading || !address || address.streetNumber === '' /*|| !open_hour || !close_hour || !isValid_close_hour || !isValid_open_hour || !isValid_shop_streetNumber || !watch('info.opening.days') || watch('info.opening.days').length <= 0 */ || !isValid || !image?.file || !imageProfile?.file || watch('categories')?.length <= 0}
                             />
                         </div>
                     </div>

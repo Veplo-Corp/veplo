@@ -56,7 +56,7 @@ const index = () => {
                     </button>
                 </section> */}
                     <BlackButton
-                        disabled={false}
+                        isDisabled={false}
                         typeButton='submit'
                         element='Continua il processo'
                         borderRadius={10}
