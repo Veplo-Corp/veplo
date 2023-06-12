@@ -28,7 +28,7 @@ const index = () => {
       router.replace('/shop/home')
     }
     if (user.statusAuthentication === 'logged_in' && !user?.isBusiness) {
-      router.replace('/shop/negozi')
+      router.replace('/negozi')
     }
   }, [user])
 
