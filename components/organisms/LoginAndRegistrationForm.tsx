@@ -299,7 +299,6 @@ const LoginAndRegistrationForm: FC<{
                 const isBusiness = tokenResult.claims.isBusiness ? true : false;
                 if (isBusiness) return router.replace('/shop/home/')
                 await handleCartInLocalStorage()
-                return
                 redirectUser(isBusiness)
             }
 
