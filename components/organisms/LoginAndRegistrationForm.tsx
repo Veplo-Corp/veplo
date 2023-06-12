@@ -258,13 +258,17 @@ const LoginAndRegistrationForm: FC<{
             const idToken = await result.user.getIdToken(true);
             setAuthTokenInSessionStorage(idToken)
 
+
             const surname = fullName?.slice(1).join(" ")
+            console.log(result.user.displayName);
+            console.log(surname);
+
             try {
                 const response = await createUser({
                     variables: {
                         options: {
                             name: typeof fullName?.[0] === 'string' ? fullName[0] : '',
-                            surname: surname ? surname : null
+                            surname: surname ? surname : " "
                         }
                     }
                 })
