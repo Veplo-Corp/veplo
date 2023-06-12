@@ -12,6 +12,7 @@ import SelectColor from '../atoms/SelectColor'
 import { SIZES } from '../mook/sizes'
 import SelectMaxMinPrice from '../atoms/SelectMaxMinPrice'
 import ButtonClose from '../atoms/ButtonClose'
+import Autocomplete from '../atoms/Autocomplete_Headless'
 
 const DrawerFilter: FC<{ defaultFilter: PropsFilter, isOpenDrawer: boolean, closeDrawer: (filter: PropsFilter, microCategory: string | undefined) => void, microcategoryTypes: string[], sizeProduct: string, defaultMicroCategory: string }> = ({ defaultFilter, isOpenDrawer, closeDrawer, microcategoryTypes, defaultMicroCategory, sizeProduct }) => {
     const router = useRouter()
@@ -141,6 +142,22 @@ const DrawerFilter: FC<{ defaultFilter: PropsFilter, isOpenDrawer: boolean, clos
                                 />
                                 <SelectMaxMinPrice handleChange={() => { }} />
                             </Box>
+                            {/* <Box
+                                display={'flex'}
+                                gap={2}
+                                mb={2}
+                            >
+
+                                <Autocomplete
+                                    placeholder='Brand'
+                                    selectedValue={''}
+                                    handleChangeValues={(brand: any) => {
+                                        // // setValue('brand', brand);
+                                        console.log(brand);
+
+                                    }} />
+                            </Box> */}
+
                         </Box>
                         <Button
                             variant={'grayPrimary'}

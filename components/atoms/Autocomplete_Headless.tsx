@@ -1,28 +1,41 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { Combobox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import { BRANDS } from '../mook/brands'
+import { useSelector } from 'react-redux'
 
 
-const Autocomplete: React.FC<{ handleChangeValues?: any, selectedValue?: string }> = ({ handleChangeValues, selectedValue }) => {
+const Autocomplete: React.FC<{ handleChangeValues?: any, selectedValue?: string, placeholder?: string }> = ({ handleChangeValues, selectedValue, placeholder }) => {
 
     const [selected, setSelected] = useState(selectedValue || '')
     const [query, setQuery] = useState('')
     const [filteredValues, setFilteredValues] = useState<any>([])
-    const brands = useRef<string[]>(BRANDS)
+    const brandsRedux: string[] = useSelector((state: any) => state.brands.brands)
+    const [brands, setBrands] = useState([''])
+
+    useEffect(() => {
+        if (brandsRedux && brandsRedux.length > 0) {
+            setBrands(brandsRedux)
+        }
+    }, [brandsRedux])
+
+
+
 
 
     useEffect(() => {
 
 
+        if (query === '') return
+
         setFilteredValues((prevstate: any) => {
+            if (!brands) return
             return query === '' || query.length < 3
-                ? brands.current.filter((value) =>
+                ? brands.filter((value) =>
                     value
                         .toLowerCase()
                         .replace(/\s+/g, '')
                         .startsWith(query.toLowerCase().replace(/\s+/g, ''))
-                ).slice(0, 700) : brands.current.filter((value) =>
+                ).slice(0, 700) : brands.filter((value) =>
                     value
                         .toLowerCase()
                         .replace(/\s+/g, '')
@@ -44,6 +57,7 @@ const Autocomplete: React.FC<{ handleChangeValues?: any, selectedValue?: string 
                     <div className="border border-gray rounded-lg">
                         {brands && <Combobox.Input
                             autoComplete='off'
+                            placeholder='mario'
                             className="w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0"
                             //displayValue={(value) => value}
                             onChange={(event) => setQuery(event.target.value)}
@@ -77,6 +91,7 @@ const Autocomplete: React.FC<{ handleChangeValues?: any, selectedValue?: string 
                                             `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-blue-700 text-white' : 'text-gray-900'
                                             }`
                                         }
+
                                         value={value}
                                     >
                                         {({ selected, active }) => (

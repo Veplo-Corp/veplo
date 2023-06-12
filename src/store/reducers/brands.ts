@@ -7,8 +7,8 @@ import axios from 'axios'
 
 // Define the initial state using that type
 
-const initialState: { brands: string[] | undefined } = {
-    brands: undefined
+const initialState: { brands: string[] } = {
+    brands: ['']
 }
 
 
@@ -17,7 +17,6 @@ export const brandsState = createSlice({
     initialState: initialState,
     reducers: {
         setBrands: (state, action) => {
-
             state.brands = action.payload
 
         },

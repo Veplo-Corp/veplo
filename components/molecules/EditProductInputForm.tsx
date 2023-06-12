@@ -188,6 +188,7 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                 <Controller
                     control={control}
                     name="brand"
+
                     rules={{ required: false }}
                     render={({ field: { onChange, onBlur, value, ref } }) => (
                         <Autocomplete

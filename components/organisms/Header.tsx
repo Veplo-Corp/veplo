@@ -302,7 +302,6 @@ const Header = () => {
                                                 className="w-6 h-6 my-auto"
                                             />
 
-
                                         </Box>
 
                                         {!isButtonHidden &&
