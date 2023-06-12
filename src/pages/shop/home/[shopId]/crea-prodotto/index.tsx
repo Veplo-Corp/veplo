@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { Box, Button, ButtonGroup, IconButton, Input, InputGroup, InputLeftAddon, Spinner, Textarea, useToast } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, IconButton, Input, InputGroup, InputLeftAddon, Spinner, Text, Textarea, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -412,6 +412,9 @@ const index = () => {
 
 
 
+
+
+
     return (
         <Desktop_Layout>
             <NoIndexSeo title='Crea prodotto | Veplo' />
@@ -427,11 +430,20 @@ const index = () => {
                             rounded={10}
                             paddingY={6}
                             type="text"
-                            {...register("name", { required: true })}
+                            {...register("name", {
+                                required: true,
+                                pattern: /^[A-Za-z0-9 ]+$/
+                            })}
                             isInvalid={false}
                         />
                     </InputGroup>
                 </Div_input_creation>
+                {errors.name && <Text
+                    pl={2}
+                    mt={0}
+                    fontSize={'sm'}
+                    fontWeight={'medium'}
+                    role="alert">I caratteri speciali non sono accettati</Text>}
                 <Div_input_creation text='Prezzo'>
                     <InputGroup
 
@@ -498,7 +510,7 @@ const index = () => {
                         render={() => (
                             <SelectStringOption
                                 values={microcategoriesSelected}
-                                defaultValue={''}
+                                defaultValue={undefined}
                                 handleClick={(microcategory: string) => {
                                     setValue('microcategory', microcategory);
                                 }}
@@ -515,7 +527,7 @@ const index = () => {
                             paddingTop={2}
                             autoComplete="descrition-text-shop"
                             // value={shop_name}
-                            {...register("description", { required: true })}
+                            {...register("description", { required: false })}
                             // onChange={(event) => changeInput(event, 'shop_name')}
                             isInvalid={false}
                         />
@@ -692,7 +704,7 @@ const index = () => {
                             if (isLoading) return
                             createProductHandler()
                         }}
-                        disabled={isLoading || productVariations.length <= 0 || !watch('name') || !watch('brand') || !watch('macrocategory') || !watch('microcategory') || !watch('price')}
+                        disabled={isLoading || productVariations.length <= 0 || !watch('name') || !watch('brand') || !watch('macrocategory') || !watch('microcategory') || !watch('price') || !isValid}
                         px={12}
                         py={7}
                         rounded={'lg'}

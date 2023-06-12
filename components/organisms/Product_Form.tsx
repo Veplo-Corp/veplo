@@ -127,7 +127,10 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                                 rounded={10}
                                 paddingY={6}
                                 type="text"
-                                {...register("name", { required: true })}
+                                {...register("name", {
+                                    required: true,
+                                    pattern: /^[A-Za-z0-9 ]+$/
+                                })}
                                 isInvalid={false}
                             />
                         </InputGroup>
@@ -303,7 +306,7 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
                             size={'sm'}
                             width={200}
                             heigth={12}
-                            //disabled={false}
+                            //  disabled={false}
                             disabled={type === 'edit' ? false : (!isDirty || !isValid || !watch('brand') || !watch('colors') || !watch('colors')[0] || !watch('macrocategory') || !watch('microcategory') || !watch('sizes') || !watch('sizes')[0] || !watch('photos')[1])}
                         />
 
