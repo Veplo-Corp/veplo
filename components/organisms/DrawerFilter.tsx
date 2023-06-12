@@ -85,16 +85,18 @@ const DrawerFilter: FC<{ defaultFilter: PropsFilter, isOpenDrawer: boolean, clos
                                     gap={2}
                                     mb={2}
                                 >
-                                    {microcategoryTypes.length > 0 && <SelectStringOption
-                                        placeholder='Categoria'
-                                        values={microcategoryTypes}
-                                        defaultValue={microCategory}
-                                        handleClick={(microcategory: string) => {
-                                            if (!microcategory) return
-                                            setMicroCategory(microcategory.toLowerCase())
+                                    {microcategoryTypes.length > 0 &&
+                                        <SelectStringOption
+                                            placeholder='Categoria'
+                                            fit='fit'
+                                            values={microcategoryTypes}
+                                            defaultValue={microCategory}
+                                            handleClick={(microcategory: string) => {
+                                                if (!microcategory) return
+                                                setMicroCategory(microcategory.toLowerCase())
 
-                                        }}
-                                    />}
+                                            }}
+                                        />}
                                     {sizeProduct && sizeProduct.length && (sizeProduct === 'man_clothes_sizes' || sizeProduct === 'woman_clothes_sizes' || sizeProduct === 'shoes_sizes') &&
                                         <SelectStringOption
                                             placeholder='Taglia'

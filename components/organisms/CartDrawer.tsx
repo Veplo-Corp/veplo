@@ -197,7 +197,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
     }
 
     const pushToProduct = (variation: ProductVariation) => {
-        router.push('/prodotto/' + variation.productId + '/' + createUrlSchema([variation.brand, variation.name]) + '?colore=' + variation.color)
+        router.push('/prodotto/' + variation.productId + '/' + createUrlSchema([variation.brand, variation.name]) + '?colors=' + variation.color.toLowerCase())
         closeDrawer()
     }
 
