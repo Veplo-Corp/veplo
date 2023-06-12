@@ -120,10 +120,11 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
                 </Tag>
 
             }
-            <div className="grid grid-cols-1 md:pt-1 sm:grid-cols-1 lg:grid-cols-2 gap-10 w-full lg:w-10/12 2xl:w-9/12 m-auto justify-items-center mt-4	">
+            <Box className="sm:grid md:pt-1 sm:grid-cols-1 lg:grid-cols-2 gap-10 w-full lg:w-10/12 2xl:w-9/12 m-auto justify-items-center mt-4"
+                px={[2, 2, 0]}
+            >
                 {shops.length &&
                     shops.map((shop) => {
-
                         return (
                             <Link
                                 prefetch={false} key={shop.id} href={`/negozio/${shop.id}/${createUrlSchema([shop.name])}${gender ? '/' + gender : ''}`}>
@@ -132,7 +133,7 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
                         )
                     })
                 }
-            </div>
+            </Box>
 
         </div>
     )

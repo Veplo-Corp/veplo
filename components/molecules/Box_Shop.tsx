@@ -13,8 +13,8 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
 
 
     return (
-        <Box onClick={() => eventHandler(shop)} width={'full'}
-            mb={'2'} overflow='hidden' className='cursor-pointe min-h-[100px] content-start'
+        <Box onClick={() => eventHandler(shop)}
+            mb={'2'} className='cursor-pointer min-h-[100px]'
             _active={{
                 transform: `${scale}`,
             }}>
@@ -24,8 +24,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
             }
                 //PlaceholderSrc={PlaceholderImage}
                 alt={shop.name}
-
-                className='w-96 lg:w-full object-cover aspect-[2.3/1] lg:min-h-[200px] rounded-[15px]'
+                className='object-cover aspect-[2.3/1] w-full lg:min-h-[200px] rounded-[15px]'
             />
             <Box
                 display={'flex'}
@@ -70,6 +69,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                     <HStack spacing={1.5}>
                         {shop.categories.map((category) => (
                             <Tag
+                                size={['sm', 'md']}
                                 paddingX={3}
                                 paddingY={[1.5, 1]}
                                 key={category}
@@ -91,7 +91,8 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                     fontWeight='extrabold'
                     as='h2'
                     noOfLines={1}
-                    fontSize={'xl'}
+                    fontSize={['lg', 'xl']}
+
                     lineHeight={'normal'}
                     mb={0}
                 >
@@ -107,6 +108,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                     color={'#909090'}
                     lineHeight={'4'}
                     mb={0.5}
+                    noOfLines={1}
                 >
                     {shop.address.city}
                 </Box>
