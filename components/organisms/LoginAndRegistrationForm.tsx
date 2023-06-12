@@ -254,7 +254,7 @@ const LoginAndRegistrationForm: FC<{
 
             if (result === undefined) return
 
-            const fullName = result.user.displayName ? result.user.displayName.split(" ") : null;
+            const fullName = result.user.displayName ? result.user.displayName.split(" ") : [''];
             const idToken = await result.user.getIdToken(true);
             setAuthTokenInSessionStorage(idToken)
 
@@ -263,7 +263,7 @@ const LoginAndRegistrationForm: FC<{
                     variables: {
                         options: {
                             name: typeof fullName?.[0] === 'string' ? fullName[0] : '',
-                            surname: typeof fullName?.slice(1).join(" ") === 'string' ? fullName?.slice(1).join(" ") : ''
+                            surname: typeof fullName?.slice(1)?.join(" ") === 'string' ? fullName?.slice(1).join(" ") : ''
                         }
                     }
                 })
