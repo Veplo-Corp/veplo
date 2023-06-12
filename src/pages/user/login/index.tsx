@@ -24,8 +24,11 @@ const index = () => {
 
   useEffect(() => {
 
-    if (user && user?.isBusiness) {
+    if (user.statusAuthentication === 'logged_in' && user?.isBusiness) {
       router.replace('/shop/home')
+    }
+    if (user.statusAuthentication === 'logged_in' && !user?.isBusiness) {
+      router.replace('/shop/negozi')
     }
   }, [user])
 
