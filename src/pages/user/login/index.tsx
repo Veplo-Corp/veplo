@@ -27,9 +27,9 @@ const index = () => {
     if (user.statusAuthentication === 'logged_in' && user?.isBusiness) {
       router.replace('/shop/home')
     }
-    if (user.statusAuthentication === 'logged_in' && !user?.isBusiness) {
-      router.replace('/negozi')
-    }
+    // if (user.statusAuthentication === 'logged_in' && !user?.isBusiness) {
+    //   router.replace('/negozi')
+    // }
   }, [user])
 
 

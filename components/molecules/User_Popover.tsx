@@ -147,7 +147,9 @@ const User_Popover = () => {
                                                 await signOut(auth)
 
                                                 deleteAuthTokenInSessionStorage()
-                                                router.reload()
+                                                setTimeout(() => {
+                                                    router.reload()
+                                                }, 1000);
                                             }
                                             if (!action.href) return
                                             router.push(action.href)
