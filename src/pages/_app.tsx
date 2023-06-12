@@ -332,8 +332,12 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
         console.log('effettua il logout');
         apolloClient.clearStore()
-        dispatch(resetCarts())
-        dispatch(detroyOrders())
+        dispatch(
+          resetCarts()
+        )
+        dispatch(
+          detroyOrders()
+        )
         const carts = localStorage.getItem('carts')
         if (carts) {
           const cartsJSON = JSON.parse(carts)
@@ -349,7 +353,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
       }
       return
     });
-    fetchBrandsFromDB()
+    //fetchBrandsFromDB()
 
   }, []);
 

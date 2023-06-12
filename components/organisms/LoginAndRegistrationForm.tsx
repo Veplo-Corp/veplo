@@ -259,9 +259,6 @@ const LoginAndRegistrationForm: FC<{
             setAuthTokenInSessionStorage(idToken)
 
             try {
-
-
-
                 const response = await createUser({
                     variables: {
                         options: {
@@ -288,10 +285,8 @@ const LoginAndRegistrationForm: FC<{
                         }
                     })
                 );
-
                 setIsLoading(false)
                 redirectUser(false)
-
             } catch {
                 setIsLoading(false)
                 if (!result) return
