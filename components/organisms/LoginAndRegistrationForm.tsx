@@ -258,12 +258,13 @@ const LoginAndRegistrationForm: FC<{
             const idToken = await result.user.getIdToken(true);
             setAuthTokenInSessionStorage(idToken)
 
+            const surname = fullName?.slice(1).join(" ")
             try {
                 const response = await createUser({
                     variables: {
                         options: {
                             name: typeof fullName?.[0] === 'string' ? fullName[0] : '',
-                            surname: typeof fullName?.slice(1)?.join(" ") === 'string' ? fullName?.slice(1).join(" ") : ''
+                            surname: surname ? surname : null
                         }
                     }
                 })
@@ -294,6 +295,7 @@ const LoginAndRegistrationForm: FC<{
                 const isBusiness = tokenResult.claims.isBusiness ? true : false;
                 if (isBusiness) return router.replace('/shop/home/')
                 await handleCartInLocalStorage()
+                return
                 redirectUser(isBusiness)
             }
 
