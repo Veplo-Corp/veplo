@@ -22,6 +22,10 @@ import CREATE_PRODUCT from '../../../../../lib/apollo/mutations/createProduct'
 import UPLOAD_PHOTO from '../../../../../lib/apollo/mutations/uploadPhotos'
 import GET_PRODUCTS_FROM_SHOP from '../../../../../lib/apollo/queries/geetProductsShop'
 import SelectMultipleOptions from '../../../../../../components/atoms/SelectMultipleOptions'
+import { MATERIALS } from '../../../../../../components/mook/productParameters/materials'
+import { FIT } from '../../../../../../components/mook/productParameters/fit'
+import { LENGTH } from '../../../../../../components/mook/productParameters/length'
+import { TRAITS } from '../../../../../../components/mook/productParameters/traits'
 
 export interface IFormInputProduct {
     name: string;
@@ -44,65 +48,9 @@ interface Macrocategory {
     gender: string
 }
 
-export const FIT = [
-    'skinny',
-    'slim',
-    'regular',
-    'baggy',
-    'oversize'
-]
 
-export const MATERIALS = [
-    //   "alpaca",
-    //   "angora",
-    //   "cammello",
-    "cashmere",
-    "lana",
-    "lambswool",
-    "mohair",
-    "pelle",
-    "seta",
-    "cotone",
-    "canapa",
-    "juta",
-    "lino",
-    "flanella",
-    //   "ramiè",
-    //   "viscosa",
-    //   "rayon",
-    //   "acrilico",
-    //   "elastan",
-    //   "poliestere",
-    //   "poliammide",
-    //   "alcantara",
-    //   "lurex",
-    "gomma",
-    //   "tencel",
-    //   "modal",
-    //   "polipropilene",
-    //   "poliuretano",
-    //   "lycra",
-    "nylon",
-    "gore-Tex",
-    "microfibra",
-    "pile",
-    "stoffa",
-    "chino",
-    "jeans",
-]
 
-export const LENGTH = [
-    'corto',
-    'normale',
-    'lungo'
-]
 
-export const TRAITS = [
-    'eco-friendly',
-    'vegan',
-    'handmade',
-    'vintage'
-]
 
 
 
