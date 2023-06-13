@@ -30,7 +30,7 @@ const index = () => {
     const dispatch = useDispatch();
     const orders: Order[] = useSelector((state: any) => state.orders.orders);
     const [order, setOrder] = useState<Order>();
-    const [orderStatus, setOrderStatus] = useState<{ text: string, color: string }>();
+    const [orderStatus, setOrderStatus] = useState<{ text: string, color: string, background: string }>();
     const [loading, setLoading] = useState(true)
     const [isOpenModalReturn, setIsOpenModalReturn] = useState(false)
     const { addToast } = ToastOpen();
@@ -68,7 +68,8 @@ const index = () => {
         if (!status) return
         setOrderStatus({
             text: status.text,
-            color: status.color
+            color: status.color,
+            background: status.background
         })
     }
 
@@ -133,8 +134,8 @@ const index = () => {
                                     py={2}
                                     borderRadius={'full'}
                                     size={'lg'}
-
-                                    colorScheme={orderStatus.color}
+                                    color={orderStatus.color}
+                                    background={orderStatus.background}
                                 >
                                     {orderStatus.text}
                                 </Tag>
