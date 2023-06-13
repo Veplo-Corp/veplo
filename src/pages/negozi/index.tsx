@@ -16,7 +16,27 @@ import { removeFromLocalStorage } from '../../../components/utils/removeFromLoca
 import NoIndexSeo from '../../../components/organisms/NoIndexSeo';
 import { getFromLocalStorage } from '../../../components/utils/getFromLocalStorage';
 
+import { AnimatePresence, motion } from 'framer-motion';
 
+//motion
+const listItemVariants = {
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.5,
+            ease: "easeOut",
+        },
+    },
+    hidden: {
+        opacity: 0,
+        y: 0,
+        transition: {
+            duration: 0.5,
+            ease: "easeOut",
+        },
+    },
+};
 
 
 
@@ -124,12 +144,21 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
                 px={[2, 2, 2, 0]}
             >
                 {shops.length &&
-                    shops.map((shop) => {
+                    shops.map((shop, index) => {
+
                         return (
-                            <Link
-                                prefetch={false} key={shop.id} href={`/negozio/${shop.id}/${createUrlSchema([shop.name])}${gender ? '/' + gender : ''}`}>
-                                <Box_Shop scale={'scale(0.99)'} eventHandler={() => { }} shop={shop} />
-                            </Link>
+                            <motion.div
+                                key={shop.id}
+                                variants={listItemVariants}
+                                initial="hidden"
+                                animate="visible"
+                                exit="hidden"
+                            >
+                                <Link
+                                    prefetch={false} href={`/negozio/${shop.id}/${createUrlSchema([shop.name])}${gender ? '/' + gender : ''}`}>
+                                    <Box_Shop scale={'scale(0.99)'} eventHandler={() => { }} shop={shop} />
+                                </Link>
+                            </motion.div>
                         )
                     })
                 }
