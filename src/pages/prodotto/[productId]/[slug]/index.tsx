@@ -463,20 +463,22 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             // Funzione da eseguire quando il componente diventa visibile
             //! lista di prodotti del negozio
             console.log('AOOOOO passa qui');
+            setTimeout(async () => {
+                const element = await getSimilarProductOnShop({
+                    variables: {
+                        productId: product.id,
+                        limit: 6,
+                        offset: 0,
+                        shopId: product.shopInfo.id
+                    },
+                    fetchPolicy: 'cache-first',
+                })
 
-            await getSimilarProductOnShop({
-                variables: {
-                    productId: product.id,
-                    limit: 6,
-                    offset: 0,
-                    shopId: product.shopInfo.id
-                },
-                fetchPolicy: 'cache-first',
-            }).then(element => {
                 if (element) {
                     setproductsLikeThis(element?.data?.product.productsLikeThis)
                 }
-            })
+            }, 500);
+
         }
     };
 
