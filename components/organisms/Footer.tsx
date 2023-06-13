@@ -55,6 +55,9 @@ const Footer = () => {
                             <li className="mb-4">
                                 <Link href="/policies/termini-e-condizioni" className="hover:underline">Termini &amp; Condizioni</Link>
                             </li>
+                            <li className="mb-4">
+                                <Link href="/policies/reso-e-rimborsi" className="hover:underline">Politica di Reso</Link>
+                            </li>
                             {/* <li>
                                 <a href="#" className="hover:underline">Trasparenza</a>
                             </li> */}

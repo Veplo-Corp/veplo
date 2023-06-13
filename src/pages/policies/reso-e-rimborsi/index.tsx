@@ -20,7 +20,7 @@ export const getStaticProps: GetStaticProps<{}> = async () => {
 
         },
         variables: {
-            title: "Termini e Condizioni"
+            title: "Politica di Reso"
         },
     })
 
