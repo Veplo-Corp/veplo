@@ -1125,7 +1125,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             })
                                         } else {
                                             const filter = getFilterValue();
-                                            sessionStorage.clear("keyProductsSession")
+                                            sessionStorage.removeItem("keyProductsSession")
                                             router.replace({
                                                 pathname: router.asPath.split('?')[0],
                                                 query: {
