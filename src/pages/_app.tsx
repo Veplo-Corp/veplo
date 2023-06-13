@@ -61,9 +61,27 @@ const theme = extendTheme({
     inputLoginColor: {
       bg: "#F2F2F2",
       text: '#A19F9F',
+    },
+    successTag: {
+      text: "#FFFFFF",
+      bg: "#37D1A9"
+    },
+    pendingTag: {
+      text: "#2A2A2A",
+      bg: "#FFF7BC"
+    },
+    cancelTag: {
+      text: "#FFFFFF",
+      bg: "#C63F3F"
+    },
+    grayTag: {
+      text: "#2A2A2A",
+      bg: "#F2F2F2"
     }
   },
   components: {
+
+
     Button: {
       baseStyle: {
         fontWeight: "bold",
