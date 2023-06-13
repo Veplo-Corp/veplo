@@ -266,8 +266,14 @@ const index = () => {
                     <Button
                         isDisabled={userName.name.length <= 0 || userName.surname.length <= 0}
                         onClick={editNameOrSurname}
-                        colorScheme='green'
                         minWidth={28}
+                        variant={'primary'}
+                        _disabled={{
+                            bg: 'primary.bg'
+                        }}
+                        _hover={{
+                            color: 'primary.text'
+                        }}
                     >
                         {
                             !isLoading ? (

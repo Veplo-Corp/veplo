@@ -1,15 +1,16 @@
 
-const createUrlSchema = (parameters:string[]) => {
+const createUrlSchema = (parameters: string[] | undefined) => {
+    if (!parameters) return ''
     let url = ''
     for (const parameter of parameters) {
-        if(url === ''){
+        if (url === '') {
             url += parameter
         } else {
-            url += '-'+parameter
+            url += '-' + parameter
         }
     }
     return url.replace(/\s+/g, '-').toLowerCase();
-    
+
 }
 
 export default createUrlSchema

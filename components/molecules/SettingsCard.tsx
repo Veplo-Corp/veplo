@@ -6,7 +6,7 @@ const SettingsCard: FC<{ children: any, title: string }> = ({ children, title })
         <Box
             borderRadius={'3xl'}
             w={'full'}
-            background={'gray.100'}
+            background={'grayTag.bg'}
             borderWidth={1}
             borderColor={'gray.300'}
             alignContent={'center'}
@@ -15,7 +15,6 @@ const SettingsCard: FC<{ children: any, title: string }> = ({ children, title })
             <Box
                 fontSize={25}
                 fontWeight={'extrabold'}
-                fontStyle={'italic'}
             >
                 <Box
                     paddingY={5}
