@@ -6,7 +6,7 @@ import SettingsCard from '../../../../components/molecules/SettingsCard'
 
 const settings = [
     {
-        name: 'Configurazione Account',
+        name: 'Configura account',
         href: '/user/settings/edit-account',
     },
     /* {
