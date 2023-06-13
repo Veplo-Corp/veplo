@@ -13,7 +13,7 @@
     "watch": "graphql-codegen -w"
   },
   "dependencies": {
-    "@apollo/client": "^3.7.0",
+    "@apollo/client": "^3.7.15",
     "@chakra-ui/icons": "^2.0.11",
     "@chakra-ui/react": "^2.7.0",
     "@emotion/react": "^11.10.4",
