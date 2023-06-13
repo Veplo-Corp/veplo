@@ -477,7 +477,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 if (element) {
                     setproductsLikeThis(element?.data?.product.productsLikeThis)
                 }
-            }, 500);
+            }, 200);
 
         }
     };
