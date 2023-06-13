@@ -21,6 +21,9 @@ export interface Policies {
 }
 
 const Policy: FC<{ data: Policies }> = ({ data }) => {
+
+
+
     return (
         <div
             className='w-full px-4 lg:px-0 lg:w-10/12 m-auto'
@@ -59,7 +62,7 @@ const Policy: FC<{ data: Policies }> = ({ data }) => {
                         key={paragraph.id}
                     >
                         <Text
-                            mb={[1, 0]}
+                            mb={[1, 1]}
                             as={'h1'}
                             fontSize={['xl', '2xl']}
                             fontWeight={'bold'}
@@ -72,6 +75,7 @@ const Policy: FC<{ data: Policies }> = ({ data }) => {
                             fontSize={['sm', 'lg']}
                             fontWeight={'medium'}
                             mb={5}
+
                             dangerouslySetInnerHTML={{ __html: paragraph.text }}
                         ></Text>
 
@@ -79,8 +83,13 @@ const Policy: FC<{ data: Policies }> = ({ data }) => {
 
                 )
             })}
+
+
+
         </div>
     )
 }
 
 export default Policy
+
+

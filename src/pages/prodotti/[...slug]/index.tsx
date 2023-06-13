@@ -505,10 +505,16 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                         key={element.name}
                                         mb={4}
                                         className='whitespace-nowrap'
+
                                     >
                                         <Link
                                             prefetch={false}
-                                            href={'/prodotti/' + (gender == 'f' ? 'donna' : 'uomo') + '-' + element.url + '/tutto/rilevanza'}
+                                            href={element.url === createUrlSchema([category])
+                                                ?
+                                                '/prodotti/' + (gender == 'f' ? 'donna' : 'uomo') + '-abbigliamento/tutto/rilevanza'
+                                                :
+                                                '/prodotti/' + (gender == 'f' ? 'donna' : 'uomo') + '-' + element.url + '/tutto/rilevanza'
+                                            }
                                         >
                                             <Text
                                                 textAlign={'start'}
@@ -518,9 +524,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                 className={`hover:underline hover:underline-offset-2  ${element.name === category ? 'underline underline-offset-2 font-extrabold' : 'font-medium'}`}
                                             >
                                                 {element.name}
-
                                             </Text>
-
                                         </Link>
                                     </Box>
                                 )
@@ -1287,12 +1291,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
                     </Box>
                     {/* <Stack align={'end'} mt={2} >
-
                     <Button
-
                         mt={2}
-                        
-
                         type={'button'}
                         borderRadius={'xl'}
                         size={'md'}
@@ -1326,16 +1326,12 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 sizeProduct={sizeProduct ? sizeProduct : ''}
                 isOpenDrawer={drawerFilter}
                 closeDrawer={(filter, microCategory) => {
-
-
                     // router.replace({
                     //     pathname: `/prodotti/${gender === 'm' ? 'uomo' : 'donna'}-${category ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortType ? sortType : 'rilevanza'}`,
                     //     query: {
                     //         ...filter
                     //     }
                     // })
-
-
                     //controlla se il path nuovo è uguale a quello vecchio per non pushare senza senso
                     let pathname = `/prodotti/${gender === 'm' ? 'uomo' : 'donna'}-${category ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortType ? sortType : 'rilevanza'}`;
                     const query = new URLSearchParams(filter as Record<string, string>).toString();

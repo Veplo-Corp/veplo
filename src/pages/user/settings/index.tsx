@@ -9,17 +9,21 @@ const settings = [
         name: 'Configurazione Account',
         href: '/user/settings/edit-account',
     },
-    {
+    /* {
         name: 'come funzionano gli ordini',
         href: undefined,
-    },
-    {
+    }, */
+    /* {
         name: 'chi sono i negozi che vendono in veplo',
         href: undefined,
+    }, */
+    {
+        name: 'Voglio restituire un ordine',
+        href: '/policies/reso-e-rimborsi',
     },
     {
-        name: 'voglio restituire un ordine',
-        href: undefined,
+        name: 'Termini e Condizioni',
+        href: '/policies/termini-e-condizioni',
     }
 ]
 
@@ -38,19 +42,20 @@ const index = () => {
                             return (
                                 <div key={setting.name}>
                                     <Box
+                                        onClick={() => {
+                                            if (!setting.href) return
+                                            router.push(setting.href)
+                                        }
+                                        }
                                         paddingY={5}
                                         paddingX={8}
                                         display={'flex'}
+                                        cursor={'pointer'}
                                         justifyContent={'space-between'}
                                     >
                                         <Box>{setting.name}</Box>
                                         <Box
-                                            cursor={'pointer'}
-                                            onClick={() => {
-                                                if (!setting.href) return
-                                                router.push(setting.href)
-                                            }
-                                            }
+
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
