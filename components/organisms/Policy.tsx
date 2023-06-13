@@ -26,7 +26,7 @@ const Policy: FC<{ data: Policies }> = ({ data }) => {
 
     return (
         <div
-            className='w-full px-4 lg:px-0 lg:w-10/12 m-auto'
+            className='w-full lg:px-0 lg:w-10/12 m-auto'
         >
             <Text
                 as={'h1'}
