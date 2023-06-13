@@ -196,11 +196,7 @@ export interface PropsFilter {
 
 const index: FC<{ products: Product[], category: string, microCategory: string, gender: 'f' | 'm', sortType: string }> = ({ products, microCategory, category, gender, sortType }) => {
     const isSmallView = useBreakpointValue({ base: true, lg: false });
-    console.log(sortType);
-
     const router = useRouter();
-    console.log(products);
-
     const [loading, setLoading] = useState(true);
     const [hasMoreData, setHasMoreData] = useState(true);
     const [productsFounded, setproductsFounded] = useState<Product[]>([])
@@ -210,8 +206,6 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     const [microcategory, setMicrocategory] = useState<string>()
     const [drawerFilter, setDrawerFilter] = useState(false)
     const [filterCount, setfilterCount] = useState(0)
-
-
     const [sizeProduct, setSizeProduct] = useState<string>();
     const [isOpen, setIsOpen] = useState<PropsOpenModal>({
         orderBy: false,
@@ -280,20 +274,12 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         }
     }
 
-    console.log('microcategory', microCategory);
-
-
-
-
-
 
     //const fetchMoreData = async () => { }
 
-    useEffect(() => {
-        // verificare se l'utente è arrivato sulla pagina con il pulsante "Indietro"
-        console.log(window.history.state.key === sessionStorage.getItem("keyProductsSession"));
-        console.log(window.history.state.key, sessionStorage.getItem("keyProductsSession"));
+    const setDefaultProducts = () => {
         if (window.history.state.key === sessionStorage.getItem("keyProductsSession")) {
+            setLoading(false)
             setproductsFounded([])
             const productsFounded = sessionStorage.getItem("productsFounded");
             if (!productsFounded) return setproductsFounded(products)
@@ -301,22 +287,25 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
             const scrollPosition = sessionStorage.getItem('scrollPositionProducts');
             if (!scrollPosition) return
             console.log(scrollPosition);
+            //window.scrollTo(0, parseInt(scrollPosition));
             setTimeout(() => {
-                //window.scrollTo(0, parseInt(scrollPosition));
                 window.scrollTo({
                     top: parseInt(scrollPosition),
                     behavior: "smooth"
                 });
-                setcachedProducts(true)
-
-            }, 1000);
+            }, 500);
+            setcachedProducts(true)
             setHasMoreData(true)
+            return true
+        }
 
-        }
-        else {
-            setproductsFounded(products)
-        }
-        setHasMoreData(true)
+        return false
+
+
+    }
+
+    useEffect(() => {
+
         const microcategoryTypes: any = Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.find(element => element.name === category)
         if (!microcategoryTypes?.types) {
             setSizeProduct('')
@@ -346,67 +335,68 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     const mountedRef = useRef(true)
 
     const fetchSpecificItem = useCallback(async (filters: any) => {
-        setTimeout(() => {
-            console.log('gender', gender);
-            if (microCategory) {
-                filters = {
-                    ...filters,
-                    microCategory
-                }
+        console.log('gender', gender);
+        if (microCategory) {
+            filters = {
+                ...filters,
+                microCategory
             }
-            console.log(filters);
-            try {
-                const newProducts = async () => {
+        }
 
-                    return await getProducts({
-                        variables: {
-                            offset: 0,
-                            limit: RANGE,
-                            filters: {
-                                macroCategory: toUpperCaseFirstLetter(category),
-                                gender: gender,
-                                ...filters
-                            }
+        console.log(filters);
+        try {
+            setTimeout(async () => {
+                const newProducts = await getProducts({
+                    variables: {
+                        offset: 0,
+                        limit: RANGE,
+                        filters: {
+                            macroCategory: toUpperCaseFirstLetter(category),
+                            gender: gender,
+                            ...filters
                         }
-                    })
-                }
-                newProducts().then(products => {
-                    console.log(products);
-
-                    if (!products.data?.products.products) return
-                    console.log(products.data?.products.products);
-
-                    setproductsFounded(products.data?.products.products)
-                    setHasMoreData(true)
+                    }
                 })
-            } catch (error) {
-                console.log(error);
+                if (!newProducts?.data?.products.products) return setLoading(false)
+                console.log(newProducts.data?.products.products);
+                setproductsFounded(newProducts.data?.products.products)
+                setHasMoreData(true)
+                setLoading(false)
+            }, 200);
 
-            }
-        }, 500);
+            return
+        } catch (error) {
+            console.log(error);
+        }
 
     }, [mountedRef, gender, microCategory, category]) // add variable as dependency
 
     useEffect(() => {
         filterLength()
         setLoading(true)
-        setTimeout(() => {
-            setLoading(false)
-        }, 700);
+        if (!router.isReady) return
         const filters = getFilterValue()
+        filterLength(filters)
+        setHasMoreData(true)
 
-        console.log(filters);
+        const cachedData = setDefaultProducts()
+        console.log(cachedData);
+
+        if (cachedData) return
+
         if (Object.keys(filters).length < 1) {
             setFilter({})
+            setLoading(false)
             setHasMoreData(true)
-            if (window.history.state.key !== sessionStorage.getItem("keyProductsSession") || cachedProducts) {
-                return setproductsFounded(products)
-            }
+
+            // setHasMoreData(true)
+            // if (window.history.state.key !== sessionStorage.getItem("keyProductsSession") || cachedProducts) {
+            //     return setproductsFounded(products)
+            // }
+            setproductsFounded(products)
             return
         }
         fetchSpecificItem(filters);
-        filterLength(filters)
-
         setHasMoreData(true)
 
         return () => {
@@ -882,13 +872,14 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             >
                                                 <HStack
                                                     mb={3}
+                                                    ml={2}
                                                     padding='0' bg='white' display={'flex'} gap={1.5}>
                                                     <SkeletonCircle size='14' />
                                                     <Box
                                                         margin={'auto'}
                                                     >
                                                         <SkeletonText
-                                                            width={[56, 48]}
+                                                            width={[56, 64]}
 
                                                             noOfLines={1} skeletonHeight={'3'} />
                                                         <SkeletonText mt='2'
