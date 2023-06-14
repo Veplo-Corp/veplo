@@ -162,21 +162,22 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
 
                 </Box>
                 <div>
-                    {variation?.photos && variation.photos.map((image) => {
-                        return (
-                            <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
-                                borderWidth={1.5}
-                                className={` ${image == fullImage ? "border-black border-8" : "border-white"}   cursor-pointer
+                    <motion.div
+                        variants={LIST_ITEM_VARIANT}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                    >
+                        {variation?.photos && variation.photos.map((image) => {
+                            return (
+                                <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
+                                    borderWidth={1.5}
+                                    className={` ${image == fullImage ? "border-black border-8" : "border-white"}   cursor-pointer
                                         w-14
                                         xl:w-20
                                     `}
-                            >
-                                <motion.div
-                                    variants={LIST_ITEM_VARIANT}
-                                    initial="hidden"
-                                    animate="visible"
-                                    exit="hidden"
                                 >
+
                                     <Image src={
                                         imageKitUrl(image, 171, 247)
                                     }
@@ -187,11 +188,11 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                         className='aspect-[4.2/5] object-cover '
                                         loading="lazy"
                                     />
-                                </motion.div>
-                            </Box>
-                        )
-                    })}
 
+                                </Box>
+                            )
+                        })}
+                    </motion.div>
                 </div>
             </div>
 
