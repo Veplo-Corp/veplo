@@ -17,7 +17,7 @@ const Modal_Help_Customer_Care: FC<{ isOpen: boolean, onClose: () => void }> = (
             <ModalOverlay />
             <ModalContent
                 mx={[2, 0]}
-                p={5}
+                p={[3, 5]}
                 pt={[5, 8]}
                 borderRadius={'3xl'}
                 pb={[5, 12]}
@@ -51,8 +51,7 @@ const Modal_Help_Customer_Care: FC<{ isOpen: boolean, onClose: () => void }> = (
                     >
                         <Box>
                             <Mail
-                                width={60}
-                                height={60}
+                                className='w-12 h-12 lg:w-18 lg:h-18'
                                 strokeWidth={1.5}
                             />
                             <Text
@@ -75,7 +74,7 @@ const Modal_Help_Customer_Care: FC<{ isOpen: boolean, onClose: () => void }> = (
                                 Risponderemo il prima possibile
                             </Text>
                             <Text
-                                fontSize={'lg'}
+                                fontSize={['md', 'lg']}
                                 fontWeight={'medium'}
                             >
                                 <Link
@@ -87,7 +86,7 @@ const Modal_Help_Customer_Care: FC<{ isOpen: boolean, onClose: () => void }> = (
                                 </Link>
                             </Text>
                             <Text
-                                fontSize={'lg'}
+                                fontSize={['md', 'lg']}
                                 fontWeight={'medium'}
                             >
                                 <Link
@@ -101,8 +100,7 @@ const Modal_Help_Customer_Care: FC<{ isOpen: boolean, onClose: () => void }> = (
                         </Box>
                         <Box>
                             <PhoneOutcome
-                                width={60}
-                                height={60}
+                                className='w-12 h-12 lg:w-18 lg:h-18'
                                 strokeWidth={1.5}
                             />
                             <Text
@@ -126,13 +124,12 @@ const Modal_Help_Customer_Care: FC<{ isOpen: boolean, onClose: () => void }> = (
                             </Text>
 
                             <Text
-                                fontSize={'lg'}
+                                fontSize={['md', 'lg']}
                                 fontWeight={'medium'}
                             >
                                 <Link href="tel:+393403033922"
                                 >
                                     +39 3403033922
-
                                 </Link>
                             </Text>
                         </Box>
