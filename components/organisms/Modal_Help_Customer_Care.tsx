@@ -18,13 +18,15 @@ const Modal_Help_Customer_Care: FC<{ isOpen: boolean, onClose: () => void }> = (
             <ModalOverlay />
             <ModalContent
                 p={5}
+                pt={[5, 8]}
                 borderRadius={'3xl'}
+                pb={[5, 12]}
             >
                 <ModalHeader
                     display={'flex'}
                     justifyContent={'space-between'}
 
-                    pb={[-10, 5]}
+                    pb={[-10, 0]}
                 >
 
                     <Text
