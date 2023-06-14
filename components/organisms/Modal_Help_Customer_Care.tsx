@@ -13,10 +13,10 @@ const Modal_Help_Customer_Care: FC<{ isOpen: boolean, onClose: () => void }> = (
     return (
         <Modal isOpen={isOpen} onClose={onClose}
             size={['sm', '3xl']}
-
         >
             <ModalOverlay />
             <ModalContent
+                mx={[2, 0]}
                 p={5}
                 pt={[5, 8]}
                 borderRadius={'3xl'}
