@@ -35,29 +35,12 @@ import Shop_not_Allowed from '../../../../components/utils/Shop_not_Allowed';
 import NoIndexSeo from '../../../../components/organisms/NoIndexSeo';
 import { Filter } from 'iconoir-react';
 import DrawerFilter from '../../../../components/organisms/DrawerFilter';
+import { LIST_ITEM_VARIANT } from '../../../../components/mook/transition';
 
 
 const RANGE = 2
 
-//motion
-const listItemVariants = {
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.5,
-            ease: "easeOut",
-        },
-    },
-    hidden: {
-        opacity: 0,
-        y: 0,
-        transition: {
-            duration: 0.5,
-            ease: "easeOut",
-        },
-    },
-};
+
 
 const SORT_PRODUCT = [
     {
@@ -833,13 +816,13 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                         {productsFounded.length > 0 ?
                                             (
                                                 <AnimatePresence>
-                                                    {productsFounded.map((product: Product) => {
+                                                    {productsFounded.map((product: Product, index) => {
 
                                                         const { colors } = router.query
                                                         return (
                                                             <motion.div
-                                                                key={product.id}
-                                                                variants={listItemVariants}
+                                                                key={product.id + index}
+                                                                variants={LIST_ITEM_VARIANT}
                                                                 initial="hidden"
                                                                 animate="visible"
                                                                 exit="hidden"

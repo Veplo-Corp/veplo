@@ -519,7 +519,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 as='h1'
                                 noOfLines={2}
                                 mt='-1'
-                                fontSize='3xl'
+                                fontSize={['2xl', '3xl']}
                                 lineHeight={'33px'}
                                 pb='3'
                             >
