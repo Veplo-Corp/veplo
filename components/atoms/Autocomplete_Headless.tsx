@@ -57,7 +57,7 @@ const Autocomplete: React.FC<{ handleChangeValues?: any, selectedValue?: string,
                     <div className="border border-gray rounded-lg">
                         {brands && <Combobox.Input
                             autoComplete='off'
-                            placeholder='mario'
+                            placeholder=''
                             className="w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0"
                             //displayValue={(value) => value}
                             onChange={(event) => setQuery(event.target.value)}

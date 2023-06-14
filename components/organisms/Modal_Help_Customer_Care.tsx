@@ -1,49 +1,169 @@
 import { EmailIcon } from '@chakra-ui/icons'
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react'
+import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text } from '@chakra-ui/react'
 import Link from 'next/link'
 import React, { FC } from 'react'
+import ModalReausable from './ModalReausable'
+import ButtonClose from '../atoms/ButtonClose'
+import { useForm } from 'react-hook-form'
+import { Mail, PhoneOutcome, SendMail } from 'iconoir-react'
+
 
 const Modal_Help_Customer_Care: FC<{ isOpen: boolean, onClose: () => void }> = ({ isOpen, onClose, }) => {
+
     return (
         <Modal isOpen={isOpen} onClose={onClose}
-            size={['xs', 'sm']}
+            size={['sm', '3xl']}
+
         >
             <ModalOverlay />
-            <ModalContent>
-                <ModalHeader>Assistenza Negozi</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody pb={6}>
-                    <div className='w-full flex justify-between'>
-                        <p>Invia una mail a:</p>
-                        <Link
-                            prefetch={false}
-                            href="mailto:business@veplo.it"
-                            target="_blank" rel="noopener noreferrer"
-                            className='text-blue-700 underline'
-                        >
+            <ModalContent
+                p={5}
+                borderRadius={'3xl'}
+            >
+                <ModalHeader
+                    display={'flex'}
+                    justifyContent={'space-between'}
 
-                            business@veplo.it
-                        </Link>
-                    </div>
-                    <div className='w-full flex justify-between mt-4'>
-                        <p>Scrivi o chiama:</p>
-                        {/* <Link href="https://wa.me/+393403033922" >
-                            <a
-                                target="_blank" rel="noopener noreferrer"
-                                className='text-blue-700 underline'
-                            >+39 3403033922
-                            </a>
-                        </Link> */}
-                        <p>+39 3403033922</p>
-                    </div>
-                </ModalBody>
+                    pb={[-10, 5]}
+                >
 
-                <ModalFooter>
-                    <Button onClick={onClose}>Chiudi</Button>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
+                    <Text
+                        my={'auto'}
+                        fontSize={'lg'}
+                        fontWeight={'bold'}
+                    >
+
+
+                    </Text>
+
+                    <ButtonClose handleEvent={onClose} />
+                </ModalHeader>
+
+                <ModalBody>
+                    <Box
+                        display={['grid', 'flex']}
+                        gap={10}
+                        justifyContent={'space-between'}
+                    >
+                        <Box>
+                            <Mail
+                                width={60}
+                                height={60}
+                                strokeWidth={1.5}
+                            />
+                            <Text
+                                fontSize={'lg'}
+                                fontWeight={'extrabold'}
+                                mt={2}
+                            >
+                                <Link
+                                    prefetch={false}
+                                    href="mailto:business@veplo.it"
+                                    target="_blank" rel="noopener noreferrer"
+                                >
+                                    Scrivici
+                                </Link>
+                            </Text>
+                            <Text
+                                fontSize={'sm'}
+                                mb={2}
+                            >
+                                Risponderemo il prima possibile
+                            </Text>
+                            <Text
+                                fontSize={'lg'}
+                                fontWeight={'medium'}
+                            >
+                                <Link
+                                    prefetch={false}
+                                    href="mailto:info@veplo.it"
+                                    target="_blank" rel="noopener noreferrer"
+                                >
+                                    clienti: info@veplo.it
+                                </Link>
+                            </Text>
+                            <Text
+                                fontSize={'lg'}
+                                fontWeight={'medium'}
+                            >
+                                <Link
+                                    prefetch={false}
+                                    href="mailto:business@veplo.it"
+                                    target="_blank" rel="noopener noreferrer"
+                                >
+                                    negozi: business@veplo.it
+                                </Link>
+                            </Text>
+                        </Box>
+                        <Box>
+                            <PhoneOutcome
+                                width={60}
+                                height={60}
+                                strokeWidth={1.5}
+                            />
+                            <Text
+                                fontSize={'lg'}
+                                fontWeight={'extrabold'}
+                                mt={2}
+                            >
+                                <Link
+                                    prefetch={false}
+                                    href="mailto:business@veplo.it"
+                                    target="_blank" rel="noopener noreferrer"
+                                >
+                                    Chiamaci
+                                </Link>
+                            </Text>
+                            <Text
+                                fontSize={'sm'}
+                                mb={2}
+                            >
+                                dal lunedì al venerdì dalle 09:00 alle 18:00
+                            </Text>
+
+                            <Text
+                                fontSize={'lg'}
+                                fontWeight={'medium'}
+                            >
+                                <Link href="tel:+393403033922"
+                                >
+                                    +39 3403033922
+
+                                </Link>
+                            </Text>
+                        </Box>
+                    </Box>
+                </ModalBody >
+
+            </ModalContent >
+        </Modal >
     )
 }
 
 export default Modal_Help_Customer_Care
+
+
+
+// <div className='w-full flex justify-between'>
+//                         <p>Invia una mail a:</p>
+//                         <Link
+//                             prefetch={false}
+//                             href="mailto:business@veplo.it"
+//                             target="_blank" rel="noopener noreferrer"
+//                             className='text-blue-700 underline'
+//                         >
+
+//                             business@veplo.it
+//                         </Link>
+//                     </div>
+//                     <div className='w-full flex justify-between mt-4'>
+//                         <p>Scrivi o chiama:</p>
+//                         {/* <Link href="https://wa.me/+393403033922" >
+//                         <a
+//                             target="_blank" rel="noopener noreferrer"
+//                             className='text-blue-700 underline'
+//                         >+39 3403033922
+//                         </a>
+//                     </Link> */}
+//                         <p > +39 3403033922</p >
+//                     </div > 

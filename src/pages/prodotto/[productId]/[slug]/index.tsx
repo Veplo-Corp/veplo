@@ -627,9 +627,16 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 </Text>
                                 <Box
                                     cursor={'pointer'}
-                                    className='underline'
                                     onClick={() => setIsOpenModalGuideSize(true)}
+                                    display={'flex'}
+                                    gap={2}
                                 >
+                                    <img
+                                        className='h-[18px] my-auto'
+                                        loading='lazy'
+                                        src='https://em-content.zobj.net/thumbs/240/apple/354/straight-ruler_1f4cf.png'
+                                    >
+                                    </img>
                                     Guida alle taglie
                                 </Box>
                             </Box>
