@@ -39,7 +39,9 @@ const Modal_Help_Customer_Care: FC<{ isOpen: boolean, onClose: () => void }> = (
                     <ButtonClose handleEvent={onClose} />
                 </ModalHeader>
 
-                <ModalBody>
+                <ModalBody
+                    mt={[-5, 0]}
+                >
                     <Box
                         display={['grid', 'flex']}
                         gap={10}
