@@ -17,26 +17,9 @@ import NoIndexSeo from '../../../components/organisms/NoIndexSeo';
 import { getFromLocalStorage } from '../../../components/utils/getFromLocalStorage';
 
 import { AnimatePresence, motion } from 'framer-motion';
+import { LIST_ITEM_VARIANT } from '../../../components/mook/transition';
 
-//motion
-const listItemVariants = {
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.5,
-            ease: "easeOut",
-        },
-    },
-    hidden: {
-        opacity: 0,
-        y: 0,
-        transition: {
-            duration: 0.5,
-            ease: "easeOut",
-        },
-    },
-};
+
 
 
 
@@ -149,7 +132,7 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
                         return (
                             <motion.div
                                 key={shop.id}
-                                variants={listItemVariants}
+                                variants={LIST_ITEM_VARIANT}
                                 initial="hidden"
                                 animate="visible"
                                 exit="hidden"

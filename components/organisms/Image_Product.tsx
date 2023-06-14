@@ -6,6 +6,8 @@ import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Product, Variation } from '../../src/interfaces/product.interface'
 import { imageKitUrl } from '../utils/imageKitUrl'
 import ButtonClose from '../atoms/ButtonClose'
+import { LIST_ITEM_VARIANT } from '../mook/transition'
+import { AnimatePresence, motion } from 'framer-motion';
 
 const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variation }) => {
     if (!variation) {
@@ -138,15 +140,25 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                     </ModalBody>
                 </ModalContent>
             </Modal >
-            <div className='flex space-x-3 lg:space-x-4 w-full min-h-[380px] md:min-h-0 md:w-7/12 lg:w-1/2'>
-                <Box onClick={zoomImage} mb={[2, 5]} overflow='hidden' className='cursor-pointer w-full'>
-                    <LazyLoadImage src={imageKitUrl(fullImage)}
 
-                        //PlaceholderSrc={PlaceholderImage}
-                        //effect="blur"
-                        alt={variation.color + 'non trovato'}
-                        className='rounded-lg w-full aspect-[4.2/5] object-cover'
-                    />
+            <div className='flex space-x-3 lg:space-x-4 w-full min-h-[380px] md:min-h-0 md:w-7/12 lg:w-1/2'>
+
+                <Box onClick={zoomImage} mb={[2, 5]} overflow='hidden' className='cursor-pointer w-full'>
+
+                    <motion.div
+                        variants={LIST_ITEM_VARIANT}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                    >
+                        <LazyLoadImage src={imageKitUrl(fullImage)}
+
+                            //PlaceholderSrc={PlaceholderImage}
+                            //effect="blur"
+                            alt={variation.color + 'non trovato'}
+                            className='rounded-lg w-full aspect-[4.2/5] object-cover'
+                        />
+                    </motion.div>
 
                 </Box>
                 <div>
@@ -159,23 +171,30 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                         xl:w-20
                                     `}
                             >
-                                <Image src={
-                                    imageKitUrl(image, 171, 247)
-                                }
-                                    alt={variation.color + 'non trovato'}
-                                    width={'fit-content'}
-                                    maxH={'52'}
-                                    // height={'fit-content'}
-                                    className='aspect-[4.2/5] object-cover '
-                                    loading="lazy"
-                                />
-
+                                <motion.div
+                                    variants={LIST_ITEM_VARIANT}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="hidden"
+                                >
+                                    <Image src={
+                                        imageKitUrl(image, 171, 247)
+                                    }
+                                        alt={variation.color + 'non trovato'}
+                                        width={'fit-content'}
+                                        maxH={'52'}
+                                        // height={'fit-content'}
+                                        className='aspect-[4.2/5] object-cover '
+                                        loading="lazy"
+                                    />
+                                </motion.div>
                             </Box>
                         )
                     })}
 
                 </div>
             </div>
+
         </>
 
     )
