@@ -40,6 +40,8 @@ import { InView, useInView } from 'react-intersection-observer';
 import { AnimatePresence, motion } from 'framer-motion';
 import { formatNumberWithTwoDecimals } from '../../../../../components/utils/formatNumberWithTwoDecimals';
 import LoginAndRegistrationForm from '../../../../../components/organisms/LoginAndRegistrationForm';
+import GuideSize from '../../../../../components/organisms/GuideSize';
+import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter';
 
 
 
@@ -141,6 +143,8 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     const [variationSelected, setVariationSelected] = useState<Variation>(productFounded.variations[0])
     const [colorSelected, setColorSelected] = useState<string>()
     const [productsLikeThis, setproductsLikeThis] = useState<Product[]>()
+    const [isOpenModalGuideSize, setIsOpenModalGuideSize] = useState(false)
+
 
     if (!variationSelected) {
         return (
@@ -615,8 +619,19 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 mt='6'
                                 mb={3}
                                 fontSize='md'
+                                display={'flex'}
+                                justifyContent={'space-between'}
                             >
-                                Taglie disponibili
+                                <Text>
+                                    Taglie disponibili
+                                </Text>
+                                <Box
+                                    cursor={'pointer'}
+                                    className='underline'
+                                    onClick={() => setIsOpenModalGuideSize(true)}
+                                >
+                                    Guida alle taglie
+                                </Box>
                             </Box>
                             {product?.totalSizeAvailable && <Size_Box
                                 borderWidth='1px'
@@ -868,6 +883,18 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 </Box>
 
             </ModalReausable>
+            <ModalReausable
+                marginTop={10}
+                positionTopModal={true}
+                title={`${toUpperCaseFirstLetter(product.info.macroCategory)} da ${product.info.gender === 'm' ? 'uomo' : 'donna'}`} isOpen={isOpenModalGuideSize}
+                closeModal={() => setIsOpenModalGuideSize(false)}
+            >
+                <GuideSize
+                    gender={product.info.gender}
+                    macrocategory={product.info.macroCategory}
+                />
+
+            </ModalReausable>
             <CartDrawer isOpen={openDrawerCart} closeDrawer={() => setOpenDrawerCart(false)} />
         </>
 
@@ -875,146 +902,3 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 }
 
 export default index
-
-
-
-
-
-
-
-// <>
-// <Link
-//     prefetch={false}
-//     href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
-//     <Box
-//         fontWeight='light'
-//         as='h1'
-//         noOfLines={1}
-//         mt='6'
-//         mb={3}
-//         fontSize='md'
-//     >
-//         Altri prodotti simili di <span className='underline underline-offset-2 cursor-pointer'>{product.shopInfo.name}</span>
-//     </Box>
-// </Link>
-
-
-// <div className="overflow-x-scroll flex gap-4 pb-4">
-//     {shopProductsData && shopProductsData?.data?.shop.products.products.map((element: Product) => {
-//         let colorsCSS: string[] = [];
-//         if (element.variations) {
-//             element?.variations.map((variation) => {
-//                 const ColorCCS = COLORS.find(color => color.name === variation.color)
-//                 if (ColorCCS) {
-//                     colorsCSS.push(ColorCCS.cssColor)
-//                 }
-//             })
-//         }
-//         console.log(colorsCSS);
-
-
-//         return (
-//             <Link
-//                 prefetch={false}
-//                 key={element.id} href={`/prodotto/${element.id}/${toProductPage(element)}`}>
-//                 <div className={`${element.id === product.id ? 'hidden' : 'flex'} gap-4 w-fit`} >
-//                     <Box borderRadius='xl' overflow='hidden'
-//                         borderWidth={0.5}
-//                         className={`w-36`}/*  aspect-[8.5/12] */
-//                         _active={{
-//                             transform: 'scale(0.98)',
-//                         }}
-//                     >
-//                         <LazyLoadImage
-//                             src={
-//                                 imageKitUrl(element.variations[0].photos[0], 171, 247)
-//                             }//placeholderSrc={'/static/grayScreen.png'}
-//                             effect="blur"
-//                             alt={element.name}
-
-
-//                             className=' cursor-pointer hover:scale-105  object-cover'
-//                         />
-//                         <Box
-//                             fontWeight={['light', 'normal']}
-//                             as='h1'
-//                             fontSize={['2xs', 'xs']}
-//                             noOfLines={1}
-//                             marginX={'2'}
-//                             mt={'1'}
-//                             mb={-1}
-//                         >
-//                             {element.info.brand}
-//                         </Box>
-//                         <Box
-//                             fontWeight='semibold'
-//                             as='h1'
-//                             fontSize={['xs', 'xs']}
-//                             noOfLines={1}
-//                             marginX={'2'}
-//                         >
-//                             {element.name.toUpperCase()}
-//                             {/* {height} - {width} */}
-//                         </Box>
-//                         <Box
-//                             fontWeight={'bold'}
-//                             as='h4'
-//                             fontSize={'xs'}
-//                             color={'green.600'}
-//                             lineHeight='none'
-//                             noOfLines={1}
-//                             marginX={'2'}
-
-//                         >
-//                             <span
-//                                 className={`${element.price?.v2 ? 'text-slate-500 font-normal line-through text-[11px]' : ''}`}
-//                             >
-//                                 {Number(element.price?.v1).toFixed(2).replace('.', ',')} €
-//                             </span>
-//                             {element.price?.v2 && <span className=' text-red-700 font-bold ml-1'>{element.price?.v2.toFixed(2).replace('.', ',')} €</span>}
-//                         </Box>
-//                         <div className='text-right flex float-right mb-2 mx-2'>
-//                             <Circle_Color colors={colorsCSS} dimension={4} space={1} />
-//                         </div>
-//                     </Box>
-
-//                 </div>
-//             </Link>
-//         )
-//     })}
-//     <Link
-//         prefetch={false}
-//         href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}
-//         className={`flex gap-4 w-36 max-h-max justify-center`}
-//     >
-//         <div className='my-auto'>
-//             <Box borderRadius='lg' overflow='hidden'
-//                 borderWidth={0.5}
-//                 paddingY={'10'}
-//                 className={`w-36 h-full flex cursor-pointer bg-gray-50`}
-//                 // onClick={() => {
-//                 //     const slug = createUrlSchema([product.shopOptions.city, product.shopOptions.name])
-//                 //     router.push(`/negozio/${product.shopId}/${slug}`)
-//                 // }}
-//                 _active={{
-//                     transform: 'scale(0.98)',
-//                 }}
-//             >
-//                 <div className='m-auto text-center'>
-//                     <p className='mb-4'>
-//                         vai al<br /> negozio
-//                     </p>
-//                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 m-auto">
-//                         <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
-//                     </svg>
-
-//                 </div>
-
-
-//             </Box>
-//         </div>
-//     </Link>
-
-
-// </div>
-// </>

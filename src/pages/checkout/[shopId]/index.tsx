@@ -51,7 +51,11 @@ const index = () => {
         const { shopId } = router.query;
         if (!shopId || user.statusAuthentication === 'not_yet_authenticated') return
         if (!cartsDispatch) {
-            router.replace('/negozi')
+            if (shop) {
+                router.replace(`/negozio/${shop?.id}/${createUrlSchema([shop?.name])}`)
+            } else {
+                router.replace(`/negozi`)
+            }
             return
         }
         getShop({
@@ -70,7 +74,11 @@ const index = () => {
 
             //in futuro mettiamo carrello non trovato e non reindiriziamo a negozi
             setCart(undefined)
-            router.replace('/negozi')
+            if (shop) {
+                router.replace(`/negozio/${shop?.id}/${createUrlSchema([shop?.name])}`)
+            } else {
+                router.replace(`/negozi`)
+            }
         }
     }, [user, cartsDispatch, router.query])
 
@@ -170,7 +178,7 @@ const index = () => {
                     carts: NewCarts
                 })
             );
-            return router.replace('/negozi')
+            return
         }
 
 
