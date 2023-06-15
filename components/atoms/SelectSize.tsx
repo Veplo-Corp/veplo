@@ -56,7 +56,7 @@ const SelectSize: FC<{ defaultValue?: any, values: string[] | number[], handleCl
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <Listbox.Options className="z-10 bg-white absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-whitetext-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    <Listbox.Options className="z-10 bg-white absolute mt-1 max-h-60 w-fit overflow-auto rounded-md bg-whitetext-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
 
                         {values?.map((value: any, valueIdx: number) => {
                             //console.log(disabledSizes.map(element => element.size).find(element => element === value));
