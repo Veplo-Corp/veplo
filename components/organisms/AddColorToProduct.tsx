@@ -389,7 +389,7 @@ const AddColorToProduct: FC<{ category: string, deleteCard: () => void, confirmC
 
                             <input
                                 ref={hiddenFileInputImage}
-                                type="file" id="file" multiple accept="image/*"
+                                type="file" id="file" multiple accept="image/jpeg, image/jpg, image/webp"
                                 className='hidden'
                                 onChange={(e) => {
                                     onSelectFileInput(e);

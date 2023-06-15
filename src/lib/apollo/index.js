@@ -24,12 +24,15 @@ function createApolloClient() {
 
     const BACKEND_LINK = createUploadLink({
         uri: process.env.NEXT_PUBLIC_APOLLO_URI,
-        credentials: 'same-origin',
+        //credentials: 'same-origin',
+        // fetchOptions: {
+        //     mode: 'no-cors',
+        // },
     });
 
     const DATO_CMS_LINK = createHttpLink({
-        uri: 'https://graphql.datocms.com/',
-        credentials: 'same-origin',
+        uri: 'https://railway.veplo.it/query',
+        //credentials: 'same-origin',
     });
 
 
@@ -41,14 +44,11 @@ function createApolloClient() {
             authorization_token = sessionStorage.getItem('authorization_token');
         }
         // return the headers to the context so httpLink can read them
-        //let clientName;
-        //operation.getContext().clientName === 'DATO_CMS_LINK' ? `Bearer ${process.env.NEXT_PUBLIC_DATOCMS_API_TOKEN}` : `${authorization_token}`,
         return {
             headers: {
                 ...headers,
                 Authorization: authorization_token ? `${authorization_token}` : "",
                 'Apollo-Require-Preflight': 'true',
-                //authorization: `Bearer ${process.env.NEXT_PUBLIC_DATOCMS_API_TOKEN}`,
             }
         }
     });
@@ -65,23 +65,12 @@ function createApolloClient() {
 
     return new ApolloClient({
         ssrMode: typeof window !== 'undefined',
-
         link: ApolloLink.split(
             operation => operation.getContext().clientName === 'DATO_CMS_LINK',
             authLinkDATOCMS.concat(DATO_CMS_LINK), //if above 
             authLink.concat(BACKEND_LINK),
         ),
 
-        // link:
-        //     // ApolloLink.split(operation => { return operation.clientName }) === 'DATO_CMS_LINK'
-        //     //     ?
-        //     //     DATO_CMS_LINK
-        //     //     :
-        //     authLink.concat(ApolloLink.split(
-        //         operation => operation.getContext().clientName === 'DATO_CMS_LINK',
-        //         DATO_CMS_LINK, //if above 
-        //         BACKEND_LINK
-        //     )) /* authLink.concat(httpLink) */,
         cache: new InMemoryCache({
             typePolicies: {
                 Shop: {
@@ -152,7 +141,7 @@ export function useApollo(initialState) {
     )
 }
 
-//! other mode to initialize Apollo
+//! other way to initialize Apollo
 // import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 // import { setContext } from '@apollo/client/link/context';
 

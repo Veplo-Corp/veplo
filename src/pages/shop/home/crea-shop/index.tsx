@@ -718,7 +718,8 @@ const index = () => {
                             </Box>
                             <input
                                 ref={hiddenFileInputProfileImage}
-                                type="file" id="file" multiple accept="image/*"
+                                type="file" id="file" multiple
+                                accept="image/jpeg, image/jpg, image/webp"
                                 className='hidden'
                                 onChange={(e) => {
                                     onSelectFileInput(e, typeCroppedImage === 'cover' ? 'cover' : 'profile');

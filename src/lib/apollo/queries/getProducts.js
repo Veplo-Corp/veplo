@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client'
+import { graphql } from '../generated/gql'
 
-const GET_PRODUCTS = gql`
+const GET_PRODUCTS = graphql(`
     query products(
         $limit: Int!
         $offset: Int!
@@ -50,6 +51,6 @@ const GET_PRODUCTS = gql`
         } 
     }
     
-`
+`)
 
 export default GET_PRODUCTS;

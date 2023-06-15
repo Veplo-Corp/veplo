@@ -11,7 +11,7 @@ import SelectMultipleOptions from '../atoms/SelectMultipleOptions';
 
 
 const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
-    console.log(shop.minimumAmountForFreeShipping);
+    console.log(shop);
 
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<Shop>({
         mode: "all",
@@ -102,9 +102,14 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                 </InputGroup>
             </Div_input_creation>
             <h1 className='italic text-xl lg:text-2xl font-extrabold mt-6 mb-2 md:mb-4'>Informazioni aggiuntive</h1>
-            <Div_input_creation text='Immagine negozio'>
+            <Div_input_creation text='Immagine copertina'>
                 <img src={imageKitUrl(shop.profileCover)}
                     className='w-full aspect-[4.8/3] object-cover rounded-md mb-4'
+                />
+            </Div_input_creation>
+            <Div_input_creation text='Immagine profilo'>
+                <img src={imageKitUrl(shop.profilePhoto)}
+                    className='w-32 h-32 object-cover'
                 />
             </Div_input_creation>
             <Div_input_creation text='Categorie'>

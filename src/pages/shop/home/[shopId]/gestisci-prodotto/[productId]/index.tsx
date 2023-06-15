@@ -296,7 +296,7 @@ const index = () => {
             name?: string,
             info?: {
                 brand?: string,
-                traits: ('eco-friendly' | 'vegan' | 'handmade' | 'vintage')[] | [];
+                traits: string[] | [];
                 materials: string[] | [];
                 fit?: string;
                 length?: string;

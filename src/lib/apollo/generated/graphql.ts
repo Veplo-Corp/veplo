@@ -911,7 +911,7 @@ export type UserInput = {
   gender?: InputMaybe<Scalars['String']['input']>;
   location?: InputMaybe<LocationInput>;
   name: Scalars['String']['input'];
-  surname: Scalars['String']['input'];
+  surname?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UserOrder = {
