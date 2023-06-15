@@ -91,6 +91,7 @@ const EditColorToProduct: FC<{ category: string, confirmCard: (variation: Variat
                 </h3>
                 <Div_input_creation text='Colore'>
                     <SelectColor
+                        fit='fit'
                         colors={colors}
                         defaultValue={color}
                         handleClick={(color) => {
