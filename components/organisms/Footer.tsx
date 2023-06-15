@@ -65,6 +65,7 @@ const Footer = () => {
                                 </li>
                                 <li className="mb-4">
                                     <Box
+                                        cursor={'pointer'}
                                         onClick={() => setIsModalHelpOpen(true)}
                                         className="hover:underline">Hai bisogno di aiuto?</Box>
                                 </li>
