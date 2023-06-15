@@ -24,14 +24,14 @@ function createApolloClient() {
 
     const BACKEND_LINK = createUploadLink({
         uri: process.env.NEXT_PUBLIC_APOLLO_URI,
-        credentials: 'include',
+        //credentials: 'same-origin',
         // fetchOptions: {
         //     mode: 'no-cors',
         // },
     });
 
     const DATO_CMS_LINK = createHttpLink({
-        uri: 'https://railway.veplo.it/query',
+        uri: 'https://graphql.datocms.com/',
         //credentials: 'same-origin',
     });
 
