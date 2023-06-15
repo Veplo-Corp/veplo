@@ -10,13 +10,12 @@ const Autocomplete: React.FC<{ handleChangeValues?: any, selectedValue?: string,
     const [query, setQuery] = useState('')
     const [filteredValues, setFilteredValues] = useState<any>([])
     const brandsRedux: string[] = useSelector((state: any) => state.brands.brands)
-    const [brands, setBrands] = useState(['Nike', 'Adidas'])
+    const [brands, setBrands] = useState([''])
 
     useEffect(() => {
-        //! rimetti dopo il controllo di Tommaso su i Brands da BE
-        // if (brandsRedux && brandsRedux.length > 0) {
-        //     setBrands(brandsRedux)
-        // }
+        if (brandsRedux && brandsRedux.length > 0) {
+            setBrands(brandsRedux)
+        }
     }, [brandsRedux])
 
 
