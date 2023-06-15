@@ -17,6 +17,8 @@ import { addShopFavouriteToLocalStorage } from '../../../../components/utils/sho
 import { addFavouriteShopBusiness } from '../../../store/reducers/user'
 import AddNewShopCard from '../../../../components/molecules/AddNewShopCard'
 import BusinessShopCard from '../../../../components/molecules/BusinessShopCard'
+import { initApollo } from '../../../lib/apollo'
+import GET_SINGLE_PRODUCT from '../../../lib/apollo/queries/getSingleProduct'
 
 interface Props {
     business: Business
@@ -51,10 +53,38 @@ const index = () => {
                 //   router.push('/shop/continua-processo-kyc')  
                 // }
             })
+
+
+
         return () => {
 
         }
+
+
+
     }, [user])
+
+
+
+    //!test per tommaso golang
+
+    useEffect(() => {
+        const apolloClient = initApollo()
+
+        console.log(apolloClient);
+
+
+        // apolloClient.query({
+        //     query: GET_SINGLE_PRODUCT,
+        //     variables: { id: "641f2217ca22d34c3ca1ec35" }
+        // }).then(a => {
+        //     console.log(a);
+
+        // })
+
+
+    }, [])
+
 
     const toShop = (shop: Shop) => {
         if (shop.id && (!user.favouriteShop?.id || user.favouriteShop?.id !== shop.id)) {
