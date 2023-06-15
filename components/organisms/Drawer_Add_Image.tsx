@@ -452,7 +452,7 @@ export default Drawer_Add_Image
 //                         </div>
 //                         <input
 //                             ref={hiddenFileInput}
-//                             type="file" id="file" multiple accept="image/*"
+//                             type="file" id="file" multiple accept="image/jpeg, image/jpg, image/webp"
 //                             className='hidden'
 
 //                             onChange={(e) => {

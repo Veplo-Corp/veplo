@@ -5,37 +5,29 @@ import { useRouter } from 'next/router';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch } from 'react-redux';
-import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
 import Box_Dress from '../../../../components/molecules/Box_Dress';
-import FIlter_Button from '../../../../components/molecules/FIlter_Button';
 import { CATEGORIES } from '../../../../components/mook/categories';
 import PostMeta from '../../../../components/organisms/PostMeta';
 import { findMacrocategoryName } from '../../../../components/utils/find_macrocategory_name';
 import getGenderandMacrocategory from '../../../../components/utils/get_Gender_and_Macrocategory';
 import { setInLocalStorage } from '../../../../components/utils/setInLocalStorage';
-import { toProductPage } from '../../../../components/utils/toProductPage';
-import { Product } from '../../../interfaces/product.interface';
 import { initApollo } from '../../../lib/apollo';
 import GET_PRODUCTS from '../../../lib/apollo/queries/getProducts';
 import { changeGenderSelected } from '../../../store/reducers/user';
-import { Menu, Transition } from '@headlessui/react'
-import { ChevronDownIcon } from '@chakra-ui/icons';
 import createUrlSchema from '../../../../components/utils/create_url';
-import MenuBottonFilter from '../../../../components/atoms/MenuBottonFilter';
-import TransitionFilter from '../../../../components/atoms/TransitionFilter';
 import { SIZES } from '../../../../components/mook/sizes';
 import { COLORS } from '../../../../components/mook/colors';
 import Circle_Color from '../../../../components/atoms/Circle_Color';
 import ModalReausable from '../../../../components/organisms/ModalReausable';
 import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First_Letter';
 import { findMicrocategoryName } from '../../../../components/utils/find_microcategory_name';
-import Div_input_creation from '../../../../components/atoms/Div_input_creation';
 import { AnimatePresence, motion } from 'framer-motion';
 import Shop_not_Allowed from '../../../../components/utils/Shop_not_Allowed';
 import NoIndexSeo from '../../../../components/organisms/NoIndexSeo';
 import { Filter } from 'iconoir-react';
 import DrawerFilter from '../../../../components/organisms/DrawerFilter';
 import { LIST_ITEM_VARIANT } from '../../../../components/mook/transition';
+import { Product, ProductsQuery, ProductsQueryResponse } from '../../../lib/apollo/generated/graphql';
 
 
 const RANGE = 2
@@ -89,35 +81,38 @@ export async function getStaticProps(ctx: any) {
     const microgategoryNameUrl: string = slug[1];
     const sortType: string = slug[2];
 
+
     const apolloClient = initApollo()
 
+    if (!elementGenderMacrocategory.gender || !elementGenderMacrocategory.macrocategory) {
+        return {
+            errorLog: 'errore'
+        }
+    }
+
+    const macrogategoryName = findMacrocategoryName(elementGenderMacrocategory.macrocategory, elementGenderMacrocategory.gender) || ''
+    const microgategoryName = findMicrocategoryName(elementGenderMacrocategory.macrocategory, elementGenderMacrocategory.gender, microgategoryNameUrl) || ''
+    let filter: {
+        macroCategory?: string,
+        microCategory?: string,
+        gender?: 'm' | 'f'
+    } = {
+
+    }
+    if (macrogategoryName) {
+        filter.macroCategory = macrogategoryName
+    }
+    if (microgategoryName) {
+        filter.microCategory = microgategoryName
+    }
+    if (elementGenderMacrocategory.gender) {
+        filter.gender = elementGenderMacrocategory.gender === 'uomo' ? 'm' : 'f'
+    }
     try {
-        if (!elementGenderMacrocategory.gender || !elementGenderMacrocategory.macrocategory) {
-            throw new Error("categoria o gender non trovato");
-        }
-        const macrogategoryName = findMacrocategoryName(elementGenderMacrocategory.macrocategory, elementGenderMacrocategory.gender) || ''
-        const microgategoryName = findMicrocategoryName(elementGenderMacrocategory.macrocategory, elementGenderMacrocategory.gender, microgategoryNameUrl) || ''
 
 
-        let filter: {
-            macroCategory?: string,
-            microCategory?: string,
-            gender?: 'm' | 'f'
-        } = {
 
-        }
-        if (macrogategoryName) {
-            filter.macroCategory = macrogategoryName
-        }
-        if (microgategoryName) {
-            filter.microCategory = microgategoryName
-        }
-        if (elementGenderMacrocategory.gender) {
-            filter.gender = elementGenderMacrocategory.gender === 'uomo' ? 'm' : 'f'
-        }
-
-
-        const { data, errors } = await apolloClient.query({
+        const { data, errors }: { data: ProductsQuery, errors: any } = await apolloClient.query({
             query: GET_PRODUCTS,
             variables: {
                 offset: 0,
@@ -142,11 +137,12 @@ export async function getStaticProps(ctx: any) {
         }
     } catch (e: any) {
 
-
         return {
             props: {
-                gender: elementGenderMacrocategory.gender === 'uomo' ? 'm' : 'f',
-                category: elementGenderMacrocategory.macrocategory,
+                gender: filter.gender,
+                category: macrogategoryName,
+                sortType: sortType ? sortType : 'rilevanza',
+                microCategory: microgategoryName,
                 products: [],
                 errorLog: 'errore'
             },
@@ -177,14 +173,22 @@ export interface PropsFilter {
     fit?: string,
 }
 
-const index: FC<{ products: Product[], category: string, microCategory: string, gender: 'f' | 'm', sortType: string }> = ({ products, microCategory, category, gender, sortType }) => {
+const index: FC<{ products: Product[], category: string, microCategory: string, gender: 'f' | 'm', sortType: string, errorLog?: string }> = ({ products, microCategory, category, gender, sortType, errorLog }) => {
+
+    if (errorLog) {
+        return (
+            <div className='relative  min-h-[120vh]'>
+            </div>
+        )
+    }
+
     const isSmallView = useBreakpointValue({ base: true, lg: false });
     const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [hasMoreData, setHasMoreData] = useState(true);
     const [productsFounded, setproductsFounded] = useState<Product[]>([])
     const dispatch = useDispatch();
-    const [getProducts, productsFounder] = useLazyQuery(GET_PRODUCTS);
+    const [getProducts, productsFounder] = useLazyQuery<ProductsQuery>(GET_PRODUCTS);
     const [microcategoryTypes, setMicrocategoryTypes] = useState<string[]>([])
     const [microcategory, setMicrocategory] = useState<string>()
     const [drawerFilter, setDrawerFilter] = useState(false)
@@ -214,14 +218,14 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         console.log(filter);
 
 
-        if (products.length % RANGE !== 0 || productsFounder?.data?.products.length === 0) {
+        if (products.length % RANGE !== 0 || productsFounder?.data?.products.products.length === 0) {
             setHasMoreData(false)
             return console.log('no more data');
         }
 
 
 
-        const newProducts = await getProducts({
+        const response = await getProducts({
             variables: {
                 offset: productsFounded.length,
                 limit: RANGE,
@@ -236,12 +240,13 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
         })
 
 
-        if (newProducts.data?.products.products) {
-
+        if (typeof response.data?.products.products === 'object') {
+            const newProducts = response.data?.products.products;
+            if (!newProducts) return
             setproductsFounded(prevstate => {
                 const productsArray = [
                     ...prevstate,
-                    ...newProducts.data?.products.products
+                    ...newProducts
                 ]
                 console.log(productsArray);
 
@@ -250,7 +255,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                 ]
             })
 
-            if (newProducts.data?.products.products.length % RANGE !== 0 || newProducts.data?.products.products.length === 0) {
+            if (response.data?.products.products.length % RANGE !== 0 || response.data?.products.products.length === 0) {
                 setHasMoreData(false)
                 return console.log('no more data');
             }
@@ -452,7 +457,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
     const changeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const sortUrl = SORT_PRODUCT.find(element => element.url === e.target.value)?.url
         router.replace({
-            pathname: `/prodotti/${gender === 'm' ? 'uomo' : 'donna'}-${category ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortUrl ? sortUrl : 'rilevanza'}`,
+            pathname: `/prodotti/${gender === 'm' ? 'uomo' : 'donna'}-${typeof category === 'string' ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortUrl ? sortUrl : 'rilevanza'}`,
             query: {
                 ...filter
             }
@@ -818,10 +823,9 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                                 <AnimatePresence>
                                                     {productsFounded.map((product: Product, index) => {
 
-                                                        const { colors } = router.query
                                                         return (
                                                             <motion.div
-                                                                key={product.id + index}
+                                                                key={product?.id ? product?.id : Math.random() + index}
                                                                 variants={LIST_ITEM_VARIANT}
                                                                 initial="hidden"
                                                                 animate="visible"

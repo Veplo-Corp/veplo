@@ -39,29 +39,41 @@ export async function getStaticProps(ctx: any) {
     //!creare filtro per gender
     const gender = slug[1];
 
-    const { data }: { data: GetShopQuery } = await apolloClient.query({
-        query: GET_SHOP_AND_PRODUCTS,
-        variables: {
-            id: shopId,
-            limit: RANGE,
-            offset: 0,
-            filters: {
+    try {
+        const { data }: { data: GetShopQuery } = await apolloClient.query({
+            query: GET_SHOP_AND_PRODUCTS,
+            variables: {
+                id: shopId,
+                limit: RANGE,
+                offset: 0,
+                filters: {
+                    gender: gender ? (gender === 'uomo' ? 'm' : 'f') : null
+                }
+            },
+        })
+        console.log(gender);
+
+
+
+
+        return {
+            props: {
+                shop: data.shop,
                 gender: gender ? (gender === 'uomo' ? 'm' : 'f') : null
-            }
-        },
-    })
-    console.log(gender);
-
-
-
-
-    return {
-        props: {
-            shop: data.shop,
-            gender: gender ? (gender === 'uomo' ? 'm' : 'f') : null
-        },
-        revalidate: 60, // In seconds
+            },
+            revalidate: 60, // In seconds
+        }
+    } catch {
+        return {
+            props: {
+                shop: null,
+                gender: gender ? (gender === 'uomo' ? 'm' : 'f') : null
+            },
+            revalidate: 1, // In seconds
+        }
     }
+
+
 }
 
 
@@ -71,9 +83,10 @@ export async function getStaticProps(ctx: any) {
 const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ shop, gender }) => {
 
     if (!shop) return (
-        /* gestire errore in caso shop non viene preso */
-        <>
-        </>
+        /* gestire errore in caso shop non viene trovato */
+
+        <div className='min-h-[100vh]'>
+        </div>
     )
 
     console.log(gender);

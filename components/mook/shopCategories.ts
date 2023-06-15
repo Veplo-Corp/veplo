@@ -4,9 +4,10 @@ export const SHOP_CATEGORIES: string[] = [
     'handmade',
     'pop',
     'sostenibile',
-    'sportivo',
+    'sport',
     'streetwear',
     'tecnico',
     'urban',
-    'vintage'
+    'vintage',
+    'accessori'
 ]
