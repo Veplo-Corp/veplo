@@ -587,7 +587,7 @@ const LoginAndRegistrationForm: FC<{
                             color={'inputLoginColor.text'}
                             width={['full', 96]}
                         >
-                            Registrandoti per un account, accetti i nostri <Link href='https://www.veplo.it/policies/termini-e-condizioni' className='underline'>Termini di utilizzo</Link>. Si prega di consultare la nostra <a href='https://www.iubenda.com/privacy-policy/62612516' className='underline'>Privacy Policy</a>.
+                            Registrandoti per un account, accetti i nostri <Link href='/policies/termini-e-condizioni' className='underline'>Termini di utilizzo</Link>{person === 'business' ? <span> e i <Link href='/policies/termini-e-condizioni-vendita' className='underline'>Termini e Condizioni di Vendita</Link></span> : ''}. Si prega di consultare la nostra <a href='https://www.iubenda.com/privacy-policy/62612516' className='underline'>Privacy Policy</a>.
                         </Text>
                     }
                     {type !== 'reset_password' && person !== 'business' &&

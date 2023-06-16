@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 const GET_POLICY = gql`
 query allPolicies($title: String!) {
-  allPolicies(filter: {title: {matches: {pattern: $title}}}) {
+  policy(filter: {title: {eq: $title}}){
       title
       introduction
       paragraphs {
@@ -15,6 +15,8 @@ query allPolicies($title: String!) {
   }
 }
 `
+
+
 
 export default GET_POLICY;
 

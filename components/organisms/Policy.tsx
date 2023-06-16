@@ -17,7 +17,7 @@ export interface Policy {
 }
 
 export interface Policies {
-    allPolicies: Policy[]
+    policy: Policy
 }
 
 const Policy: FC<{ data: Policies }> = ({ data }) => {
@@ -34,9 +34,9 @@ const Policy: FC<{ data: Policies }> = ({ data }) => {
                 fontWeight={'bold'}
                 mb={[1, 2]}
             >
-                {data?.allPolicies[0].title}
+                {data?.policy.title}
             </Text>
-            {data?.allPolicies[0].startDate &&
+            {data?.policy.startDate &&
                 <Text
                     textAlign={'justify'}
                     as={'h1'}
@@ -45,18 +45,18 @@ const Policy: FC<{ data: Policies }> = ({ data }) => {
                     mb={5}
 
                 >
-                    {data?.allPolicies[0].startDate}
+                    {data?.policy.startDate}
                 </Text>}
-            {data?.allPolicies[0].introduction &&
+            {data?.policy.introduction &&
                 <Text
                     textAlign={'justify'}
                     as={'h1'}
                     fontSize={['sm', 'lg']}
                     fontWeight={'medium'}
                     mb={5}
-                    dangerouslySetInnerHTML={{ __html: data?.allPolicies[0].introduction }}
+                    dangerouslySetInnerHTML={{ __html: data?.policy.introduction }}
                 ></Text>}
-            {data?.allPolicies[0].paragraphs.map((paragraph) => {
+            {data?.policy.paragraphs.map((paragraph) => {
                 return (
                     <div
                         key={paragraph.id}
