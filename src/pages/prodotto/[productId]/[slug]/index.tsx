@@ -625,7 +625,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 <Text>
                                     Taglie disponibili
                                 </Text>
-                                <Box
+                                {product.info.macroCategory.toLowerCase() !== 'scarpe' && <Box
                                     cursor={'pointer'}
                                     onClick={() => setIsOpenModalGuideSize(true)}
                                     display={'flex'}
@@ -638,7 +638,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                     >
                                     </img>
                                     Guida alle taglie
-                                </Box>
+                                </Box>}
                             </Box>
                             {product?.totalSizeAvailable && <Size_Box
                                 borderWidth='1px'

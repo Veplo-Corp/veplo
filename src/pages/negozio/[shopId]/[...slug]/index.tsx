@@ -24,7 +24,7 @@ import { GetShopQuery, ProductsQueryResponse } from '../../../../lib/apollo/gene
 import { LIST_ITEM_VARIANT } from '../../../../../components/mook/transition'
 import { AnimatePresence, motion } from 'framer-motion';
 
-const RANGE = 3
+const RANGE = process.env.NODE_ENV === 'production' ? 10 : 3
 
 export async function getStaticPaths() {
     return {

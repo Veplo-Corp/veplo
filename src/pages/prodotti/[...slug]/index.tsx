@@ -30,7 +30,7 @@ import { LIST_ITEM_VARIANT } from '../../../../components/mook/transition';
 import { Product, ProductsQuery, ProductsQueryResponse } from '../../../lib/apollo/generated/graphql';
 
 
-const RANGE = 2
+const RANGE = process.env.NODE_ENV === 'production' ? 10 : 3
 
 
 
@@ -86,7 +86,10 @@ export async function getStaticProps(ctx: any) {
 
     if (!elementGenderMacrocategory.gender || !elementGenderMacrocategory.macrocategory) {
         return {
-            errorLog: 'errore'
+            props: {
+                errorLog: 'errore'
+            },
+            revalidate: 10 //seconds
         }
     }
 
@@ -109,9 +112,6 @@ export async function getStaticProps(ctx: any) {
         filter.gender = elementGenderMacrocategory.gender === 'uomo' ? 'm' : 'f'
     }
     try {
-
-
-
         const { data, errors }: { data: ProductsQuery, errors: any } = await apolloClient.query({
             query: GET_PRODUCTS,
             variables: {
@@ -120,8 +120,6 @@ export async function getStaticProps(ctx: any) {
                 filters: filter
             }
         })
-
-
 
 
 
@@ -455,9 +453,10 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
 
     const changeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
+
         const sortUrl = SORT_PRODUCT.find(element => element.url === e.target.value)?.url
         router.replace({
-            pathname: `/prodotti/${gender === 'm' ? 'uomo' : 'donna'}-${typeof category === 'string' ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortUrl ? sortUrl : 'rilevanza'}`,
+            pathname: `/prodotti/${gender === 'm' ? 'uomo' : 'donna'}-${typeof category === 'string' && category !== '' ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortUrl ? sortUrl : 'rilevanza'}`,
             query: {
                 ...filter
             }
