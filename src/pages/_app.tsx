@@ -233,7 +233,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
       //signOut(auth)
       const apolloClient = initApollo()
       if (userAuth) {
-
         //analytics
         //setUserId(analytics, userAuth.uid);
         //setUserProperties(analytics, { favorite_food: 'apples' });

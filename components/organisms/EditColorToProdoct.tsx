@@ -118,6 +118,7 @@ const EditColorToProduct: FC<{ category: string, confirmCard: (variation: Variat
                                     disabledSizes={productSizeSelected}
                                     values={sizeTypologySelected}
                                     defaultValue={element.size}
+
                                     handleClick={(size) => {
                                         console.log('lotocco', size);
                                         if (size === undefined) return

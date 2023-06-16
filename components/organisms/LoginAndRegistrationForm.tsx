@@ -233,11 +233,10 @@ const LoginAndRegistrationForm: FC<{
 
         const signInWithGoogle = async () => {
             if (person !== 'user') return
-            setIsLoading(true)
             let result: UserCredential | undefined;
             try {
                 result = await signInWithPopup(auth, provider)
-
+                setIsLoading(true)
             } catch (error: any) {
                 setIsLoading(false)
 
@@ -296,12 +295,12 @@ const LoginAndRegistrationForm: FC<{
                 setIsLoading(false)
                 if (!result) return
                 const tokenResult = await result.user.getIdTokenResult();
+                console.log(tokenResult);
                 const isBusiness = tokenResult.claims.isBusiness ? true : false;
                 if (isBusiness) return router.replace('/shop/home/')
                 await handleCartInLocalStorage()
                 redirectUser(isBusiness)
             }
-
         }
 
 
