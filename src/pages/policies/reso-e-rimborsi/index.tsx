@@ -24,7 +24,7 @@ export const getStaticProps: GetStaticProps<{}> = async () => {
         },
     })
 
-    if (data?.allPolicies[0]) {
+    if (data?.policy) {
         return {
             props: { data },
             revalidate: 60
@@ -45,7 +45,7 @@ const index: FC<{ data: Policies }> = ({ data }) => {
 
     return (
         <Desktop_Layout>
-            {data?.allPolicies[0] ?
+            {data?.policy ?
                 (
                     <Policy data={data} />
                 ) : (
