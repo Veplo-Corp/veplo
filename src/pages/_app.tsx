@@ -188,6 +188,12 @@ const theme = extendTheme({
   }
 })
 
+const sans = Work_Sans({
+  subsets: ['latin'],
+  variable: '--font-work-sans',
+})
+
+
 const Auth: React.FC<{ children: any }> = ({ children }) => {
   const router = useRouter()
   // console.log(address_user);
@@ -392,7 +398,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 //font
 
 //const sans = Open_Sans({ subsets: ['latin'] })
-const sans = Work_Sans({ subsets: ['latin'] })
 
 
 
@@ -474,7 +479,8 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
 
               </div>
             ) : (
-              <main className={sans.className}>
+              <main className={`${sans.variable} font-sans`}>
+
                 <Component {...pageProps} />
                 {router.asPath !== '/' && !router.pathname.includes("/login") && !router.pathname.includes("/settings/email-actions") && !router.query?.fbclid && <Footer />}
               </main>
