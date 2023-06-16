@@ -10,6 +10,10 @@ module.exports = {
         'min-0': { min: '0px' },
         'min-380': { min: '380px' },
       },
+      fontFamily: {
+        sans: ['var(--font-work-sans)'],
+        mono: ['var(--font-roboto-mono)'],
+      },
     },
   },
   plugins: [],
