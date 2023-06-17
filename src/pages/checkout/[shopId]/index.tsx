@@ -49,15 +49,8 @@ const index = () => {
 
     useEffect(() => {
         const { shopId } = router.query;
-        if (!shopId || user.statusAuthentication === 'not_yet_authenticated') return
-        if (!cartsDispatch) {
-            if (shop) {
-                router.replace(`/negozio/${shop?.id}/${createUrlSchema([shop?.name])}`)
-            } else {
-                router.replace(`/negozi`)
-            }
-            return
-        }
+        if (!router.isReady || !shopId || user.statusAuthentication === 'not_yet_authenticated' || !cartsDispatch) return
+
         getShop({
             variables: {
                 id: shopId
@@ -71,7 +64,6 @@ const index = () => {
         }
         if (!cart) {
             console.log('CART', cart);
-
             //in futuro mettiamo carrello non trovato e non reindiriziamo a negozi
             setCart(undefined)
             if (shop) {
