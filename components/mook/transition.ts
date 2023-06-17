@@ -9,7 +9,7 @@ export const LIST_ITEM_VARIANT = {
         },
     },
     hidden: {
-        opacity: 0,
+        opacity: 0.,
         y: 0,
         transition: {
             duration: 0.5,
