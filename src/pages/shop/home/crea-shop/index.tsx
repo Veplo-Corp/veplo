@@ -764,7 +764,9 @@ const index = () => {
                                     <SelectMultipleOptions
                                         limitNumber={2}
                                         handleValue={(value) => {
-                                            setValue('categories', value);
+                                            setValue('categories', value.map(value => {
+                                                return value.toLowerCase()
+                                            }));
                                         }}
                                         values={SHOP_CATEGORIES.sort()}
                                     />
