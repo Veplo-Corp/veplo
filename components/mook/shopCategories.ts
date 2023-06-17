@@ -1,13 +1,23 @@
+
+
 export const SHOP_CATEGORIES: string[] = [
-    'casual',
-    'elegante',
-    'handmade',
-    'pop',
-    'sostenibile',
-    'sport',
-    'streetwear',
-    'tecnico',
-    'urban',
-    'vintage',
-    'accessori'
+    "Activewear",
+    "Artigianale",
+    "Casual",
+    "Classico",
+    "Contemporary",
+    "Elegante",
+    "Essentials",
+    "Handmade",
+    "Informale",
+    "Lifestyle",
+    "Luxury",
+    "Pop",
+    "Sostenibile",
+    "Sportswear",
+    "Streetwear",
+    "Tecnico",
+    "Urban",
+    "Vintage",
+    "Workwear"
 ]
