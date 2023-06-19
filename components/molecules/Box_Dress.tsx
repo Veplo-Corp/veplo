@@ -40,11 +40,9 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
         if (color) {
             product?.variations
             const indexPhoto = product?.variations.findIndex((variation: any) => variation.color.toLowerCase() === color.toLowerCase())
-            console.log(indexPhoto);
 
             if (indexPhoto >= 0) {
 
-                console.log(indexPhoto);
                 setindexPhoto(indexPhoto)
                 //rimetti a 0
                 seturlProduct(typeof product?.variations[indexPhoto]?.photos?.[0] === 'string' ? product?.variations[indexPhoto]?.photos?.[0] : '')

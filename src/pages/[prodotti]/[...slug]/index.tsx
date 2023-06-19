@@ -4,7 +4,7 @@ import { Product, ProductsQuery } from '../../../lib/apollo/generated/graphql';
 import GET_PRODUCTS from '../../../lib/apollo/queries/getProducts';
 import getGenderandMacrocategory from '../../../../components/utils/get_Gender_and_Macrocategory';
 import { ParsedURL, parseURLProducts } from '../../../../components/utils/parseUrlProducts';
-import { Box, FilterProps, HStack, Skeleton, SkeletonCircle, SkeletonText, Text, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Button, FilterProps, HStack, Select, Skeleton, SkeletonCircle, SkeletonText, Text, useBreakpointValue } from '@chakra-ui/react';
 import PostMeta from '../../../../components/organisms/PostMeta';
 import NoIndexSeo from '../../../../components/organisms/NoIndexSeo';
 import { useRouter } from 'next/router';
@@ -22,6 +22,10 @@ import { CATEGORIES } from '../../../../components/mook/categories';
 import createUrlSchema from '../../../../components/utils/create_url';
 import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First_Letter';
 import Link from 'next/link';
+import { SORT_PRODUCT } from '../../../../components/mook/sort_products';
+import { Filter } from 'iconoir-react';
+import { getParamsFiltersFromObject } from '../../../../components/utils/getParamsFiltersFromObject';
+import FiltersSelections from '../../../../components/organisms/FiltersSelections';
 
 
 const RANGE = process.env.NODE_ENV === 'production' ? 10 : 3
@@ -36,7 +40,7 @@ export async function getStaticPaths() {
 
 
 export async function getStaticProps(ctx: any) {
-    let { slug } = ctx.params;
+    const { slug, prodotti } = ctx.params;
     const apolloClient = initApollo()
     const parsedURL: ParsedURL | Error = parseURLProducts(slug);
 
@@ -45,7 +49,8 @@ export async function getStaticProps(ctx: any) {
         return {
             props: {
                 slug: {},
-                error: 'Errore'
+                error: 'Errore',
+                typeProductsProps: prodotti === 'accessori' ? prodotti : 'abbigliamento'
             },
             // notFound: true,
             revalidate: 1 //seconds
@@ -53,20 +58,24 @@ export async function getStaticProps(ctx: any) {
     }
 
     try {
+        //TODO eliminare newParseURL non appena tommaso gestisce il sorting
+        const { sorting, ...newParseURL } = parsedURL
+
         const { data, errors }: { data: ProductsQuery, errors: any } = await apolloClient.query({
             query: GET_PRODUCTS,
             variables: {
                 offset: 0,
                 limit: RANGE,
                 filters: {
-                    ...parsedURL
-                }
+                    ...newParseURL
+                },
             }
         })
         return {
             props: {
                 filtersProps: parsedURL,
-                dataProducts: data?.products?.products
+                dataProducts: data?.products?.products,
+                typeProductsProps: prodotti === 'accessori' ? prodotti : 'abbigliamento'
             },
             revalidate: 10 //seconds
         }
@@ -75,7 +84,8 @@ export async function getStaticProps(ctx: any) {
             props: {
                 filtersProps: parsedURL,
                 products: [],
-                error: 'errore'
+                error: 'errore',
+                typeProductsProps: prodotti === 'accessori' ? prodotti : 'abbigliamento'
             },
             // notFound: true,
             revalidate: 1 //seconds
@@ -83,16 +93,14 @@ export async function getStaticProps(ctx: any) {
     }
 }
 
-interface ProductsFilter extends ParsedURL {
+export interface ProductsFilter extends ParsedURL {
     sizes?: string[],
     colors?: string[],
     maxPrice?: number, //numero intero
     minPrice?: number, //numero intero
 }
 
-const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Product[] }> = ({ filtersProps, error, dataProducts }) => {
-    console.log(filtersProps);
-    console.log(error);
+const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Product[], typeProductsProps: 'abbigliamento' | 'accessori' }> = ({ filtersProps, error, dataProducts, typeProductsProps }) => {
     const router = useRouter()
     const isSmallView = useBreakpointValue({ base: true, lg: false });
     const [isLoading, setIsLoading] = useState(true);
@@ -100,15 +108,20 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [filters, setFilters] = useState<ProductsFilter>(filtersProps)
     const [getProducts, { loading, refetch, data, subscribeToMore }] = useLazyQuery<ProductsQuery>(GET_PRODUCTS);
     const [hasMoreData, setHasMoreData] = useState(true);
-    const [resetProducts, setResetProducts] = useState(false);
+    const [filterCount, setfilterCount] = useState(0)
+    const [drawerFilterOpen, setDrawerFilterOpen] = useState(false)
+    const [typeProducts, setTypeProducts] = useState<'abbigliamento' | 'accessori'>('abbigliamento')
 
     const dispatch = useDispatch();
 
 
 
 
+
     useEffect(() => {
         if (!router.isReady) return
+        setHasMoreData(true)
+        setTypeProducts(typeProductsProps)
         //loading e hasmoredata resettati
         const fitlerSlug = router.asPath.split('?')[1]
         const filterParams = parseSlugUrlFilter(fitlerSlug)
@@ -132,7 +145,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                     setTimeout(async () => {
                         await getProducts({
                             variables: {
-                                offset: products.length,
+                                offset: products?.length >= 0 ? products?.length : 0,
                                 limit: RANGE,
                                 //inserire la microcategoria
                                 filters: {
@@ -148,7 +161,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             };
 
             fetchData();
-            setResetProducts(true)
 
         }
 
@@ -191,11 +203,11 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
     useEffect(() => {
         if (!data) return
-        setIsLoading(false)
         const newProducts = data.products.products ? data.products.products : [];
 
-        if (newProducts.length % RANGE !== 0) {
+        if (newProducts.length % RANGE !== 0 || newProducts.length <= 0) {
             setHasMoreData(false)
+            setIsLoading(false)
             return console.log('no more data');
         }
 
@@ -205,9 +217,23 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 ...newProducts
             ]
         })
+        setIsLoading(false)
+
     }, [data])
 
+    const changeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
 
+        const filtersParams = getParamsFiltersFromObject(filters)
+        console.log(filtersParams);
+
+        const sortUrl = SORT_PRODUCT.find(element => element.url === e.target.value)?.url
+        router.replace({
+            pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sortUrl ? sortUrl : 'rilevanza'}`,
+            query: {
+                ...filtersParams
+            }
+        })
+    }
 
 
     return (
@@ -222,9 +248,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 description={`Tutto l'abbigliamento da ${filters.gender === 'f' ? 'donna' : 'uomo'} - ${filters.macroCategory === 'abbigliamento' ? 'Vestiti' : filters.macroCategory} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
             />
             <div className='relative  min-h-[120vh]'>
-
-
-
                 <Shop_not_Allowed>
                     <Box
                         className='lg:w-10/12 2xl:w-9/12  mx-2 lg:mx-auto'
@@ -273,9 +296,109 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                         >
                             {filters.macroCategory ? toUpperCaseFirstLetter(filters.macroCategory) : "Tutto l'abbigliamento"}
                         </Text>
-                        {!isLoading ?
+                        {isSmallView
+                            ? (
+                                <Box
+                                    justifyContent={'space-between'}
+                                    display={'flex'}
+                                    mb={6}
+                                    gap={2}
+                                >
+                                    <Button
+
+                                        height={12}
+                                        variant={'grayPrimary'}
+                                        gap={1}
+                                        paddingX={4}
+                                        borderRadius={'10px'}
+                                        onClick={() => { setDrawerFilterOpen(true) }}
+                                    >
+                                        <Filter
+                                            className='w-6 h-6'
+                                            strokeWidth={2.5}
+                                        />
+                                        {filterCount > 0 && <Text
+                                            fontSize={'lg'}
+                                            fontWeight={'semibold'}
+                                        >
+                                            {filterCount}
+                                        </Text>}
+                                    </Button>
+
+                                    <Select
+                                        _active={{
+                                            transform: 'scale(0.98)'
+                                        }}
+                                        icon={
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                            </svg>
+                                        }
+                                        width={'full'}
+                                        size={'lg'}
+                                        borderRadius={'10px'}
+                                        bg={'#F2F2F2'}
+                                        focusBorderColor="transparent"
+                                        borderColor={'#F2F2F2'}
+                                        color={'secondaryBlack.text'}
+                                        fontWeight={'semibold'}
+                                        fontSize={'lg'}
+                                        height={12}
+                                        onChange={changeSort}
+                                        //TODO mettere filters.sort al posto di 'sort'
+                                        value={SORT_PRODUCT.find(type => type.url.toLowerCase() === 'sort'.toLowerCase())?.url}
+                                    >
+                                        {SORT_PRODUCT.map((sortElement) => {
+                                            return (
+                                                <option key={sortElement.text} value={sortElement.url}>{sortElement.text}</option>
+                                            )
+                                        })}
+
+                                    </Select>
+                                </Box>
+                            )
+                            : (
+                                <Box
+
+                                    justifyContent={'space-between'}
+                                    display={'flex'}
+                                    mt={0}
+                                    mb={10}
+                                >
+                                    <FiltersSelections
+                                        typeProducts={typeProducts}
+                                        filters={filters} handleConfirm={() => { }} />
+                                    <Select
+                                        _active={{
+                                            transform: 'scale(0.98)'
+                                        }}
+                                        icon={
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                            </svg>
+                                        }
+                                        width={'fit-content'}
+                                        size={'lg'}
+                                        borderRadius={'10px'}
+                                        bg={'#F2F2F2'}
+                                        focusBorderColor="transparent"
+                                        borderColor={'#F2F2F2'}
+                                        color={'secondaryBlack.text'}
+                                        fontWeight={'semibold'}
+                                        fontSize={'16px'}
+                                        height={12}
+                                        onChange={changeSort}
+                                    >
+                                        {SORT_PRODUCT.map((sortElement) => {
+                                            return (
+                                                <option key={sortElement.text} value={sortElement.url}>{sortElement.text}</option>
+                                            )
+                                        })}
+                                    </Select>
+                                </Box>)}
+                        {!isLoading && products ?
                             (<InfiniteScroll
-                                dataLength={products.length}
+                                dataLength={products?.length}
                                 next={fetchMoreData}
                                 hasMore={hasMoreData}
                                 loader={
@@ -369,7 +492,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             )
                         }
                         {
-                            !isLoading && products.length <= 0 &&
+                            !isLoading && products?.length <= 0 &&
                             <Box
                                 mt={[10, 20]}
                                 display={'flex'}

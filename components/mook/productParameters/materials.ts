@@ -1,3 +1,5 @@
+
+//TODO eliminare MATERIALS
 export const MATERIALS = [
     "acrilico",
     "alcantara",
@@ -34,3 +36,45 @@ export const MATERIALS = [
     "velluto a coste",
     "viscosa",
 ];
+
+export const MATERIALS_TYPES = [
+    {
+        name: 'clothes_materials',
+        type: [
+            "acrilico",
+            "alcantara",
+            "canapa",
+            "cashmere",
+            "chiffon",
+            "chino",
+            "cotone",
+            "eco-pelle",
+            "flanella",
+            "gore-Tex",
+            "gomma",
+            "jeans",
+            "lana",
+            "lino",
+            "microfibra",
+            "misto cashmere",
+            "misto cotone",
+            "misto lana",
+            "misto lino",
+            "misto poliestere",
+            "misto seta",
+            "nylon",
+            "pelle",
+            "pile",
+            "poliestere",
+            "raso",
+            "seta",
+            "stoffa",
+            "taffeta",
+            "tencel",
+            "velvet",
+            "velluto",
+            "velluto a coste",
+            "viscosa",
+        ]
+    }
+]

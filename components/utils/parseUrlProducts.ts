@@ -5,7 +5,7 @@ export interface ParsedURL {
     gender: string;
     macroCategory: string | null;
     microCategory: string | null;
-    //sorting: string;
+    sorting: string;
 }
 
 
@@ -28,12 +28,12 @@ export const parseURLProducts = (urlSegments: string[]): ParsedURL | Error => {
     const macroCategory: string | null = findMacrocategoryName(categories.slice(1).join('-'), gender); // Prendi le parti rimanenti come sottocategoria
 
     const microCategory: string | null = findMicrocategoryName(macroCategory || '', gender, urlSegments[1]); // La microcategoria è il secondo elemento dell'array
-    //const sorting: string = urlSegments[2]; // L'ordinamento è il terzo elemento dell'array
+    const sorting: string = urlSegments[2]; // L'ordinamento è il terzo elemento dell'array
 
     return {
         gender,
         macroCategory,
         microCategory,
-        //sorting
+        sorting
     };
 }
