@@ -22,6 +22,7 @@ export const parseSlugUrlFilter = (slug: string | undefined) => {
     if (maxPrice) {
         parsedParams['maxPrice'] = parseInt(maxPrice, 10);
     }
+    //TODO inserire anche traits, materials, length, fit
 
     return Object.keys(parsedParams).length ? parsedParams : undefined;
 }

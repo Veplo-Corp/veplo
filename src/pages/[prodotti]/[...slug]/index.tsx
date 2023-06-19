@@ -56,10 +56,10 @@ export async function getStaticProps(ctx: any) {
             revalidate: 1 //seconds
         }
     }
-
+    const { sorting, ...newParseURL } = parsedURL
     try {
         //TODO eliminare newParseURL non appena tommaso gestisce il sorting
-        const { sorting, ...newParseURL } = parsedURL
+
 
         const { data, errors }: { data: ProductsQuery, errors: any } = await apolloClient.query({
             query: GET_PRODUCTS,
@@ -73,7 +73,8 @@ export async function getStaticProps(ctx: any) {
         })
         return {
             props: {
-                filtersProps: parsedURL,
+                //TODO eliminare newParseURL non appena tommaso gestisce il sorting
+                filtersProps: newParseURL,
                 dataProducts: data?.products?.products,
                 typeProductsProps: prodotti === 'accessori' ? prodotti : 'abbigliamento'
             },
@@ -82,7 +83,8 @@ export async function getStaticProps(ctx: any) {
     } catch (e: any) {
         return {
             props: {
-                filtersProps: parsedURL,
+                //TODO eliminare newParseURL non appena tommaso gestisce il sorting
+                filtersProps: newParseURL,
                 products: [],
                 error: 'errore',
                 typeProductsProps: prodotti === 'accessori' ? prodotti : 'abbigliamento'
@@ -111,21 +113,19 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [filterCount, setfilterCount] = useState(0)
     const [drawerFilterOpen, setDrawerFilterOpen] = useState(false)
     const [typeProducts, setTypeProducts] = useState<'abbigliamento' | 'accessori'>('abbigliamento')
+    const [resetProducts, setResetProducts] = useState(false)
 
     const dispatch = useDispatch();
 
-
-
-
-
     useEffect(() => {
         if (!router.isReady) return
+        setResetProducts(true)
+        setIsLoading(true)
         setHasMoreData(true)
         setTypeProducts(typeProductsProps)
         //loading e hasmoredata resettati
         const fitlerSlug = router.asPath.split('?')[1]
-        const filterParams = parseSlugUrlFilter(fitlerSlug)
-        setIsLoading(true)
+        const filterParams: any = parseSlugUrlFilter(fitlerSlug)
 
         if (!filterParams) {
             setFilters(filtersProps)
@@ -134,7 +134,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
 
         else {
-            setProducts([])
             const newFilters = {
                 ...filtersProps,
                 ...filterParams,
@@ -145,7 +144,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                     setTimeout(async () => {
                         await getProducts({
                             variables: {
-                                offset: products?.length >= 0 ? products?.length : 0,
+                                offset: 0,
                                 limit: RANGE,
                                 //inserire la microcategoria
                                 filters: {
@@ -154,14 +153,19 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             }
                         })
                     }, 500);
-
                 } catch {
                     console.log('errore caricamento');
                 }
             };
-
             fetchData();
+            //TODO togli setisloading qui quando gestirai il sorting
+            setTimeout(() => {
+                setIsLoading(false)
+            }, 800);
 
+        }
+        return () => {
+            setIsLoading(false)
         }
 
     }, [router.query])
@@ -192,6 +196,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
     }
 
+
+
+
     useEffect(() => {
         if (filters.gender) {
             setInLocalStorage('genderSelected', filters.gender)
@@ -204,19 +211,28 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     useEffect(() => {
         if (!data) return
         const newProducts = data.products.products ? data.products.products : [];
-
         if (newProducts.length % RANGE !== 0 || newProducts.length <= 0) {
             setHasMoreData(false)
             setIsLoading(false)
             return console.log('no more data');
         }
 
-        setProducts(prevState => {
-            return [
-                ...prevState,
-                ...newProducts
-            ]
-        })
+        if (resetProducts) {
+            setProducts(prevState => {
+                return [
+                    ...newProducts
+                ]
+            })
+            setResetProducts(false)
+        } else {
+            setProducts(prevState => {
+                return [
+                    ...prevState,
+                    ...newProducts
+                ]
+            })
+        }
+
         setIsLoading(false)
 
     }, [data])
@@ -233,6 +249,57 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 ...filtersParams
             }
         })
+    }
+
+    const changeRouter = (value: string, filterParameter: string) => {
+        console.log(value, filterParameter);
+
+        const filtersParams = getParamsFiltersFromObject(filters)
+        if (filterParameter === 'macroCategory') {
+            router.replace({
+                //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
+                pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${createUrlSchema([value])}/tutto/rilevanza`,
+                query: {
+                    ...filtersParams
+                }
+            })
+        }
+        if (filterParameter === 'microCategory') {
+            router.replace({
+                //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
+                pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${createUrlSchema([value])}/rilevanza`,
+                query: {
+                    ...filtersParams
+                }
+            })
+        }
+        //TODO gestire anche  fit, length, materials, traits
+        else if (
+            filterParameter === 'colors'
+            //filterParameter === 'fit' || filterParameter === 'length' || filterParameter === 'materials' || filterParameter === 'traits'
+        ) {
+            router.replace({
+                pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                query: {
+                    ...filtersParams,
+                    [filterParameter]: value
+                }
+            })
+            return
+        }
+        else if (filterParameter === 'sizes') {
+            //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
+            const size = value?.split(' ')[0].toLocaleLowerCase()
+            router.replace({
+                pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                query: {
+                    ...filtersParams,
+                    sizes: size ? [value.split(' ')[0].toLocaleLowerCase()] : null
+                }
+            })
+        }
+
+
     }
 
 
@@ -367,7 +434,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 >
                                     <FiltersSelections
                                         typeProducts={typeProducts}
-                                        filters={filters} handleConfirm={() => { }} />
+                                        filters={filters} handleConfirmChange={changeRouter}
+
+                                    />
                                     <Select
                                         _active={{
                                             transform: 'scale(0.98)'

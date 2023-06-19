@@ -10,17 +10,26 @@ import { TRAITS_TYPES } from '../mook/productParameters/traits';
 import { COLORS_TYPES } from '../mook/productParameters/colors';
 import { Color } from '../mook/colors';
 import SelectOption from '../atoms/SelectOption';
+import { SIZES_TYPES } from '../mook/productParameters/sizes';
 
-const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirm: () => void, typeProducts: 'abbigliamento' | 'accessori' }> = ({ filters, handleConfirm, typeProducts }) => {
+interface FilterParameters {
+    name: 'macroCategory' | 'microCategory' | 'minPrice' | 'maxPrice' | 'colors' | 'fit' | 'traits' | 'length' | 'materials' | 'sizes',
+    parameters: undefined | number[] | string[] | Color[],
+    value: string | number | undefined | null
+}
+
+
+const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (value: string, filterParameter: string) => void, typeProducts: 'abbigliamento' | 'accessori' }> = ({ filters, handleConfirmChange, typeProducts }) => {
+
 
 
     //TODO creare interface
-    const [filterParameters, setFilterParameters] = useState<{ name: string, parameters: undefined | number[] | string[] | Color[], value: string | number | undefined | null }[]>()
+    const [filterParameters, setFilterParameters] = useState<FilterParameters[]>()
 
     const router = useRouter()
     useEffect(() => {
-
         if (!router.isReady) return
+
         console.log(filters.gender);
         const gender = filters.gender === 'm' ? 'uomo' : 'donna';
         //TODO inserire logica per accessori
@@ -28,7 +37,7 @@ const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirm: () => void
 
 
         const categories = CATEGORIES[gender][typeProducts];
-        let parsedFilter: { name: string, parameters: undefined | number[] | string[] | Color[], value: string | number | undefined | null }[] = [
+        let parsedFilter: FilterParameters[] = [
             {
                 name: "minPrice",
                 parameters: undefined,
@@ -52,10 +61,21 @@ const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirm: () => void
             if (types) {
                 parsedFilter.push({
                     name: 'colors',
-                    parameters: types,
+                    parameters: types.map(type => {
+                        return type.name
+                    }),
                     value: filters.colors?.[0] ? filters.colors?.[0] : undefined
                 })
             }
+
+            parsedFilter.push({
+                name: 'macroCategory',
+                parameters: categories.map(category => {
+                    return category.name
+                }),
+                value: undefined
+            })
+
             return setFilterParameters(parsedFilter)
         }
 
@@ -126,19 +146,45 @@ const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirm: () => void
             if (types) {
                 parsedFilter.push({
                     name: 'colors',
-                    parameters: types,
+                    parameters: types.map(type => {
+                        return type.name
+                    }),
                     value: filters.colors?.[0] ? filters.colors?.[0] : undefined
+                })
+            }
+        }
+
+        if (typeof categoryObject.sizes === 'string') {
+            const categoryObjectSizes: string = categoryObject.sizes
+
+            let types: string[] | undefined = SIZES_TYPES.find(sizeType => sizeType.name.toLowerCase() === categoryObjectSizes.toLowerCase())?.type
+
+
+            if (types) {
+                types = types.map(type => {
+                    return type.toLocaleUpperCase()
+                })
+                let defaultSize;
+                const size0 = filters.sizes?.[0]
+                if (size0) {
+                    defaultSize = types.find(type => type.startsWith(size0.toLocaleUpperCase()))
+                }
+                parsedFilter.push({
+                    name: 'sizes',
+                    parameters: types,
+                    value: defaultSize ? defaultSize : undefined
                 })
             }
         }
         console.log(parsedFilter);
         setFilterParameters(parsedFilter)
 
-
-
     }, [filters])
 
-
+    const handleChange = (value: string, filterParameter: string) => {
+        if (!value) return
+        handleConfirmChange(value, filterParameter)
+    }
 
 
     return (
@@ -148,14 +194,78 @@ const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirm: () => void
             mb={2}
         >
             {
+                filterParameters?.find(parameter => parameter.name === 'macroCategory') &&
+                <SelectOption
+                    values={filterParameters?.find(parameter => parameter.name === 'macroCategory')?.parameters}
+                    defaultValue={filterParameters?.find(parameter => parameter.name === 'macroCategory')?.value}
+                    placeholder={'categoria'}
+                    handleClick={(value) => handleChange(value, 'macroCategory')}
+                />
+            }
+            {
                 filterParameters?.find(parameter => parameter.name === 'microCategory') &&
                 <SelectOption
                     values={filterParameters?.find(parameter => parameter.name === 'microCategory')?.parameters}
                     defaultValue={filterParameters?.find(parameter => parameter.name === 'microCategory')?.value}
-                    placeholder={'categoria'}
-                    handleClick={() => { }}
+                    placeholder={'micro categoria'}
+                    handleClick={(value) => handleChange(value, 'microCategory')}
                 />
             }
+            {
+                filterParameters?.find(parameter => parameter.name === 'sizes') &&
+                <SelectOption
+                    values={filterParameters?.find(parameter => parameter.name === 'sizes')?.parameters}
+                    defaultValue={filterParameters?.find(parameter => parameter.name === 'sizes')?.value}
+                    placeholder={'taglie'}
+                    handleClick={(value) => handleChange(value, 'sizes')}
+                />
+            }
+            {
+                filterParameters?.find(parameter => parameter.name === 'colors') &&
+                <SelectOption
+                    values={filterParameters?.find(parameter => parameter.name === 'colors')?.parameters}
+                    defaultValue={filterParameters?.find(parameter => parameter.name === 'colors')?.value}
+                    placeholder={'colore'}
+                    handleClick={(value) => handleChange(value, 'colors')}
+                />
+            }
+            {
+                filterParameters?.find(parameter => parameter.name === 'fit') &&
+                <SelectOption
+                    values={filterParameters?.find(parameter => parameter.name === 'fit')?.parameters}
+                    defaultValue={filterParameters?.find(parameter => parameter.name === 'fit')?.value}
+                    placeholder={'fit'}
+                    handleClick={(value) => handleChange(value, 'fit')}
+                />
+            }
+            {/* 
+            {
+                filterParameters?.find(parameter => parameter.name === 'materials') &&
+                <SelectOption
+                    values={filterParameters?.find(parameter => parameter.name === 'materials')?.parameters}
+                    defaultValue={filterParameters?.find(parameter => parameter.name === 'materials')?.value}
+                    placeholder={'materiali'}
+                    handleClick={(value) => handleChange(value, 'materials')}
+                />
+            }
+            {
+                filterParameters?.find(parameter => parameter.name === 'length') &&
+                <SelectOption
+                    values={filterParameters?.find(parameter => parameter.name === 'length')?.parameters}
+                    defaultValue={filterParameters?.find(parameter => parameter.name === 'length')?.value}
+                    placeholder={'lunghezza'}
+                    handleClick={(value) => handleChange(value, 'length')}
+                />
+            }
+            {
+                filterParameters?.find(parameter => parameter.name === 'traits') &&
+                <SelectOption
+                    values={filterParameters?.find(parameter => parameter.name === 'traits')?.parameters}
+                    defaultValue={filterParameters?.find(parameter => parameter.name === 'traits')?.value}
+                    placeholder={'tipologia'}
+                    handleClick={(value) => handleChange(value, 'traits')}
+                />
+            } */}
         </Box>
     )
 }
