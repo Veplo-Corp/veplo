@@ -17,7 +17,7 @@ import { ProductsFilter } from '../../src/pages/[prodotti]/[...slug]'
 import { FilterParameters, findParsedFilter } from '../utils/findParsedFilter'
 import SelectOption from '../atoms/SelectOption'
 
-const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, typeProducts: 'abbigliamento' | 'accessori', closeDrawer: () => void, handleConfirm: (filters: ProductsFilter) => void }> = ({ isOpenDrawer, closeDrawer, filtersProps, typeProducts, handleConfirm }) => {
+const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, typeProducts: 'abbigliamento' | 'accessori', closeDrawer: () => void, handleConfirm: (filters: ProductsFilter | undefined) => void }> = ({ isOpenDrawer, closeDrawer, filtersProps, typeProducts, handleConfirm }) => {
 
     const isSmallView = useBreakpointValue({ base: true, lg: false });
     const router = useRouter();
@@ -187,7 +187,7 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, ty
                                 py={5}
                                 fontSize={'sm'}
                                 onClick={() => {
-                                    if (!filters) return
+
                                     handleConfirm(filters)
                                     return
                                 }}

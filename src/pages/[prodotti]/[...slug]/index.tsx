@@ -331,17 +331,23 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         })
     }
 
-    const routerConfirmDrawerFilter = (value: ProductsFilter) => {
-        if (typeof value.sizes?.[0] === 'string') {
-            let size = value.sizes?.[0]
-            value.sizes[0] = size.split(' ')[0].toLowerCase()
+    const routerConfirmDrawerFilter = (filtersDrawerModal: ProductsFilter | undefined) => {
+        if (!filtersDrawerModal) {
+
+            return router.push({
+                pathname: router.asPath.split('?')[0],
+            })
+        }
+        if (typeof filtersDrawerModal.sizes?.[0] === 'string') {
+            let size = filtersDrawerModal.sizes?.[0]
+            filtersDrawerModal.sizes[0] = size.split(' ')[0].toLowerCase()
         }
 
-        let filtersParams = getParamsFiltersFromObject(value)
+        let filtersParams = getParamsFiltersFromObject(filtersDrawerModal)
         console.log(filtersParams);
         //TODO inserire sorting
         return router.push({
-            pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof value.macroCategory === 'string' && value.macroCategory !== '' ? value.macroCategory.toLowerCase() : 'abbigliamento'}/${value.microCategory ? createUrlSchema([value.microCategory]) : 'tutto'}/rilevanza`,
+            pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filtersDrawerModal.macroCategory === 'string' && filtersDrawerModal.macroCategory !== '' ? filtersDrawerModal.macroCategory.toLowerCase() : 'abbigliamento'}/${filtersDrawerModal.microCategory ? createUrlSchema([filtersDrawerModal.microCategory]) : 'tutto'}/rilevanza`,
             query: {
                 ...filtersParams
             }
