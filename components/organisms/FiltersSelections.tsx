@@ -65,7 +65,7 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
 
     }
 
-    const handleConfirmModalFilter = (filters: ProductsFilter) => {
+    const handleConfirmModalFilter = (filters: ProductsFilter | undefined) => {
         filterDrawerConfirm(filters)
         return setDrawerFilterOpen(false)
 
