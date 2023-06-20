@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Box, Button, Center, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Text, useDisclosure, VStack } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Center, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Text, useBreakpointValue, useDisclosure, VStack } from '@chakra-ui/react'
 import { Cancel } from 'iconoir-react'
 import ModalReausable from './ModalReausable'
 import { PropsFilter, PropsOpenModal } from '../../src/pages/prodotti-old/[...slug]'
@@ -14,46 +14,24 @@ import SelectMaxMinPrice from '../atoms/SelectMaxMinPrice'
 import ButtonClose from '../atoms/ButtonClose'
 import Autocomplete from '../atoms/Autocomplete_Headless'
 
-const DrawerFilter: FC<{ defaultFilter: PropsFilter, isOpenDrawer: boolean, closeDrawer: (filter: PropsFilter, microCategory: string | undefined) => void, microcategoryTypes: string[], sizeProduct: string, defaultMicroCategory: string }> = ({ defaultFilter, isOpenDrawer, closeDrawer, microcategoryTypes, defaultMicroCategory, sizeProduct }) => {
-    const router = useRouter()
-    // const [isOpen, setIsOpen] = useState<PropsOpenModal>({
-    //     orderBy: false,
-    //     category: false,
-    //     size: false,
-    //     color: false,
-    //     price: false,
-    //     brand: false,
-    //     fit: false
-    // });
+const DrawerFilter: FC<{ isOpenDrawer: boolean, closeDrawer: () => void }> = ({ isOpenDrawer, closeDrawer }) => {
 
-    const [filter, setFilter] = useState<PropsFilter>({})
-    const [microCategory, setMicroCategory] = useState<string>()
-
-    useEffect(() => {
-
-        setFilter(defaultFilter)
-        setMicroCategory(defaultMicroCategory)
-    }, [defaultFilter, defaultMicroCategory])
-
-    console.log(microCategory);
-
-    const sizeFilter = filter && filter.sizes ? filter.sizes[0] : ''
+    const isSmallView = useBreakpointValue({ base: true, lg: false });
 
 
     return (
         <>
             <Drawer
                 isOpen={isOpenDrawer}
-                placement='bottom'
-                size={'lg'}
-                onClose={() => closeDrawer(filter, microCategory)}
+                placement={isSmallView ? 'bottom' : 'left'}
+                size={isSmallView ? 'lg' : 'sm'}
+                onClose={() => closeDrawer()}
             >
                 <DrawerOverlay
                 />
                 <DrawerContent
-                    borderTopRadius={'3xl'}
+                    borderTopRadius={isSmallView ? '3xl' : 'none'}
                 >
-
                     <DrawerHeader
                         color={'secondaryBlack.text'}
                         pt={5} px={6}
@@ -68,7 +46,7 @@ const DrawerFilter: FC<{ defaultFilter: PropsFilter, isOpenDrawer: boolean, clos
                             Filtri
                         </Text>
                         <ButtonClose
-                            handleEvent={() => closeDrawer(filter, microCategory)}
+                            handleEvent={() => closeDrawer()}
                         />
 
 
@@ -77,105 +55,35 @@ const DrawerFilter: FC<{ defaultFilter: PropsFilter, isOpenDrawer: boolean, clos
                     <DrawerBody
                         minH={'45vh'}
                     >
-                        <Box
+
+                        <ButtonGroup
+                            width={'full'}
                         >
+                            <Button
+                                variant={'grayPrimary'}
+                                px={20}
+                                py={5}
+                                fontSize={'sm'}
+                                onClick={() => {
 
-                            {microcategoryTypes.length > 0 &&
-                                <Box
-                                    display={'flex'}
-                                    gap={2}
-                                    mb={2}
-                                >
-                                    {microcategoryTypes.length > 0 &&
-                                        <SelectStringOption
-                                            placeholder='Categoria'
-                                            fit='fit'
-                                            values={microcategoryTypes}
-                                            defaultValue={microCategory}
-                                            handleClick={(microcategory: string) => {
-                                                if (!microcategory) return
-                                                setMicroCategory(microcategory.toLowerCase())
-
-                                            }}
-                                        />}
-                                    {sizeProduct && sizeProduct.length && (sizeProduct === 'man_clothes_sizes' || sizeProduct === 'woman_clothes_sizes' || sizeProduct === 'shoes_sizes') &&
-                                        <SelectStringOption
-                                            placeholder='Taglia'
-                                            values={SIZES[sizeProduct].map(size => {
-                                                return size.toLocaleUpperCase()
-                                            })}
-                                            fit='fit'
-                                            //defaultValue={SIZES[sizeProduct].find((size) => { size.startsWith(filter?.sizes && typeof filter?.sizes[0] === 'string' ? filter?.sizes[0].toLocaleLowerCase() : 'l') })}
-                                            defaultValue={
-                                                sizeFilter !== '' ? SIZES[sizeProduct].find((size) => size.startsWith(sizeFilter.toLocaleLowerCase()))?.toLocaleUpperCase()
-                                                    : ''
-                                            }
-                                            handleClick={(size: string) => {
-                                                if (!size) return
-                                                setFilter(prevstate => {
-                                                    return {
-                                                        ...prevstate,
-                                                        sizes: [size.split(' ')[0].toLowerCase()]
-                                                    }
-                                                })
-                                            }}
-                                        />}
-                                </Box>}
-                            <Box
-                                display={'flex'}
-                                gap={2}
-                                mb={3}
+                                }}
                             >
-                                <SelectColor
-                                    placeholder='Colore'
-                                    colors={COLORS}
-                                    fit='fit'
-                                    defaultValue={filter.colors ? toUpperCaseFirstLetter(filter.colors[0]) : ''}
-                                    handleClick={(color) => {
-                                        setFilter(prevstate => {
-                                            return {
-                                                ...prevstate,
-                                                colors: [color.toLowerCase()]
-                                            }
-                                        })
-                                    }}
-                                />
-                                <SelectMaxMinPrice handleChange={() => { }}
-                                    defaultValue={{
-                                        minPrice: filter.minPrice,
-                                        maxPrice: filter.maxPrice
-                                    }}
-                                />
-                            </Box>
-                            {/* <Box
-                                display={'flex'}
-                                gap={2}
-                                mb={2}
+                                Resetta filtri
+                            </Button>
+                            <Button
+                                variant={'primary'}
+                                px={20}
+                                py={5}
+                                fontSize={'sm'}
+                                onClick={() => {
+
+                                }}
                             >
+                                Conferma
+                            </Button>
+                        </ButtonGroup>
 
-                                <Autocomplete
-                                    placeholder='Brand'
-                                    selectedValue={''}
-                                    handleChangeValues={(brand: any) => {
-                                        // // setValue('brand', brand);
-                                        console.log(brand);
 
-                                    }} />
-                            </Box> */}
-
-                        </Box>
-                        <Button
-                            variant={'grayPrimary'}
-                            px={20}
-                            py={5}
-                            fontSize={'sm'}
-                            onClick={() => {
-                                setFilter({})
-                                setMicroCategory('')
-                            }}
-                        >
-                            Resetta filtri
-                        </Button>
 
                     </DrawerBody>
                 </DrawerContent>

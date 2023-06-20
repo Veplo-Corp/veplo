@@ -16,7 +16,7 @@ const SelectOption: FC<{ defaultValue: number | string | undefined | null, value
     const handleEvent = (value: any) => {
         if (value === undefined) return
         setSelected(value)
-        handleClick(value)
+        return handleClick(value)
     }
 
     useEffect(() => {
@@ -52,7 +52,6 @@ const SelectOption: FC<{ defaultValue: number | string | undefined | null, value
                         {values?.map((value: any, valueIdx: number) => {
                             return (
                                 <Listbox.Option
-
                                     key={valueIdx}
                                     className={({ active }) =>
                                         `relative 

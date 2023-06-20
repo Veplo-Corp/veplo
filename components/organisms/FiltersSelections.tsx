@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import { ProductsFilter } from '../../src/pages/[prodotti]/[...slug]'
-import { Box, Button, Text } from '@chakra-ui/react';
+import { Box, Button, Text, useBreakpointValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { CATEGORIES } from '../mook/categories';
 import { FIT_TYPES } from '../mook/productParameters/fit';
@@ -11,7 +11,7 @@ import { COLORS_TYPES } from '../mook/productParameters/colors';
 import { Color } from '../mook/colors';
 import SelectOption from '../atoms/SelectOption';
 import { SIZES_TYPES } from '../mook/productParameters/sizes';
-import { Filter } from 'iconoir-react';
+import { Filter, NavArrowRight } from 'iconoir-react';
 import DrawerFilter from './DrawerFilter';
 import SelectMaxMinPrice from '../atoms/SelectMaxMinPrice';
 
@@ -22,7 +22,9 @@ interface FilterParameters {
 }
 
 
-const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (value: string, filterParameter: string) => void, typeProducts: 'abbigliamento' | 'accessori', changePriceEventRouter: (parameters: { name: string, value: number }[]) => void }> = ({ filters, handleConfirmChange, typeProducts, changePriceEventRouter }) => {
+const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (value: string, filterParameter: string) => void, typeProducts: 'abbigliamento' | 'accessori', changePriceEventRouter: (parameters: { name: string, value: any }[]) => void }> = ({ filters, handleConfirmChange, typeProducts, changePriceEventRouter }) => {
+
+    const isSmallView = useBreakpointValue({ base: true, md: false });
 
 
 
@@ -190,19 +192,18 @@ const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (val
 
     const changePriceEvent = (minPrice: number | undefined | null | string, maxPrice: number | undefined | null | string) => {
         console.log(minPrice, maxPrice);
-        let parameters: { name: string, value: number }[] = [];
-        if (typeof minPrice === 'number' && minPrice >= 0) {
-            parameters.push({
-                name: 'minPrice',
-                value: minPrice
-            })
-        }
-        if (typeof maxPrice === 'number' && maxPrice >= 0) {
-            parameters.push({
-                name: 'maxPrice',
-                value: maxPrice
-            })
-        }
+        let parameters: { name: string, value: number | undefined | null | string }[] = [];
+
+        parameters.push({
+            name: 'minPrice',
+            value: minPrice
+        })
+
+        parameters.push({
+            name: 'maxPrice',
+            value: maxPrice
+        })
+
         if (parameters.length <= 0) return
         changePriceEventRouter(parameters)
 
@@ -211,11 +212,14 @@ const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (val
 
 
     return (
-        <>
-            <Box
+        <Box
+            display={'flex'}
+        >
+            {!isSmallView && <Box
                 display={'flex'}
                 gap={2}
                 mb={2}
+                mr={2}
             >
                 {
                     filterParameters?.find(parameter => parameter.name === 'macroCategory') &&
@@ -296,15 +300,22 @@ const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (val
                         handleClick={(value) => handleChange(value, 'traits')}
                     />
                 } */}
-                <Button
-                    height={12}
-                    variant={['grayPrimary', 'whiteButton']}
 
-                    gap={1}
-                    paddingX={4}
-                    borderRadius={'10px'}
-                    onClick={() => { setDrawerFilterOpen(true) }}
-                >
+            </Box>}
+            {isSmallView && <Button
+                height={12}
+                variant={['grayPrimary', 'whiteButton']}
+                gap={1}
+                paddingX={4}
+                borderRadius={'10px'}
+                onClick={() => {
+                    {
+                        console.log('eccolo');
+                        setDrawerFilterOpen(true)
+                    }
+                }}
+            >
+                <>
                     <Filter
                         className='w-6 h-6'
                         strokeWidth={2.5}
@@ -315,34 +326,40 @@ const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (val
                     >
                         {filterCount}
                     </Text>}
-                </Button>
-            </Box>
-            {/* <DrawerFilter
-                defaultFilter={filters}
-                microcategoryTypes={microcategoryTypes}
-                defaultMicroCategory={microCategory}
-                sizeProduct={sizeProduct ? sizeProduct : ''}
+                </>
+            </Button>}
+            {!isSmallView && filters.macroCategory && <Button
+                height={12}
+                variant={['grayPrimary', 'whiteButton']}
+                gap={1}
+                paddingX={4}
+                borderRadius={'10px'}
+                onClick={() => {
+                    {
+                        console.log('eccolo');
+                        setDrawerFilterOpen(true)
+                    }
+                }}
+            >
+                <Text
+                    fontSize={'md'}
+                    fontWeight={'semibold'}
+                >
+                    più filtri
+                </Text>
+                <NavArrowRight
+                    className='w-5 h-5 text-gray-400'
+                    strokeWidth={1.5}
+
+                />
+            </Button>}
+            <DrawerFilter
                 isOpenDrawer={drawerFilterOpen}
-                closeDrawer={(filter, microCategory) => {
-                    // router.replace({
-                    //     pathname: `/prodotti/${gender === 'm' ? 'uomo' : 'donna'}-${category ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortType ? sortType : 'rilevanza'}`,
-                    //     query: {
-                    //         ...filter
-                    //     }
-                    // })
-                    //controlla se il path nuovo è uguale a quello vecchio per non pushare senza senso
-                    let pathname = `/prodotti/${gender === 'm' ? 'uomo' : 'donna'}-${category ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortType ? sortType : 'rilevanza'}`;
-                    const query = new URLSearchParams(filter as Record<string, string>).toString();
-                    if (query) {
-                        pathname = pathname + `?${query}`;
-                    }
-                    if (router.asPath !== pathname) {
-                        router.push(pathname)
-                    }
+                closeDrawer={() => {
                     setDrawerFilterOpen(false)
                 }}
-            /> */}
-        </>
+            />
+        </Box >
 
     )
 }

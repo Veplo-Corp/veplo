@@ -28,13 +28,13 @@ const SelectMaxMinPrice: FC<{ defaultValue: { minPrice: number | undefined | nul
 
     return (
         <Listbox>
-            <div className={`z-1 relative border border-gray rounded-lg min-h-[50px]`}>
+            <div className={`z-1 relative border border-gray rounded-lg h-12`}>
                 <Listbox.Button
                     onFocus={handleEvent}
-                    className={`${price?.maxPrice || price?.minPrice ? 'bg-black text-white' : 'bg-white text-[#3A3A3A]'} cursor-default min-w-[100px] md:min-w-[70px] min-h-[45px] w-full border-none py-3.5 rounded-lg pl-3 pr-9 leading-5 bg-white   font-md font-semibold focus:ring-0`}>
+                    className={`${(price?.maxPrice || price?.minPrice) ? 'bg-black text-white' : 'bg-white text-[#3A3A3A]'} cursor-pointer  min-w-[100px] md:min-w-[70px] h-full  w-full border-none rounded-lg pl-3 pr-9 leading-5 bg-white   font-md font-semibold focus:ring-0`}>
                     {price?.minPrice || price?.maxPrice ? (
                         <>
-                            da {price?.minPrice ? price?.minPrice : 0}{price?.maxPrice ? ` a ${price?.maxPrice}` : '`'}
+                            da {price?.minPrice ? price?.minPrice + '€' : 0}{price?.maxPrice ? ` a ${price?.maxPrice}€` : ''}
                         </>
                     ) : (
                         <>
@@ -44,7 +44,7 @@ const SelectMaxMinPrice: FC<{ defaultValue: { minPrice: number | undefined | nul
                     }
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <NavArrowDown
-                            className="h-5 w-5 text-gray-400"
+                            className={`h-5 w-5 ${price?.maxPrice || price?.minPrice ? '' : 'text-gray-400'} `}
                             aria-hidden="true"
                         />
                     </span>

@@ -4,7 +4,7 @@ import { Product, ProductsQuery } from '../../../lib/apollo/generated/graphql';
 import GET_PRODUCTS from '../../../lib/apollo/queries/getProducts';
 import getGenderandMacrocategory from '../../../../components/utils/get_Gender_and_Macrocategory';
 import { ParsedURL, parseURLProducts } from '../../../../components/utils/parseUrlProducts';
-import { Box, Button, FilterProps, HStack, Select, Skeleton, SkeletonCircle, SkeletonText, Text, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Button, FilterProps, HStack, Select, Skeleton, SkeletonCircle, SkeletonText, Tag, TagLabel, TagRightIcon, Text, useBreakpointValue } from '@chakra-ui/react';
 import PostMeta from '../../../../components/organisms/PostMeta';
 import NoIndexSeo from '../../../../components/organisms/NoIndexSeo';
 import { useRouter } from 'next/router';
@@ -23,9 +23,10 @@ import createUrlSchema from '../../../../components/utils/create_url';
 import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First_Letter';
 import Link from 'next/link';
 import { SORT_PRODUCT } from '../../../../components/mook/sort_products';
-import { Filter } from 'iconoir-react';
+import { Cancel, Filter } from 'iconoir-react';
 import { getParamsFiltersFromObject } from '../../../../components/utils/getParamsFiltersFromObject';
 import FiltersSelections from '../../../../components/organisms/FiltersSelections';
+import TagFilter from '../../../../components/atoms/TagFilter';
 
 
 const RANGE = process.env.NODE_ENV === 'production' ? 10 : 3
@@ -104,7 +105,6 @@ export interface ProductsFilter extends ParsedURL {
 
 const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Product[], typeProductsProps: 'abbigliamento' | 'accessori' }> = ({ filtersProps, error, dataProducts, typeProductsProps }) => {
     const router = useRouter()
-    const isSmallView = useBreakpointValue({ base: true, lg: false });
     const [isLoading, setIsLoading] = useState(true);
     const [products, setProducts] = useState<Product[]>([])
     const [filters, setFilters] = useState<ProductsFilter>(filtersProps)
@@ -119,7 +119,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
     useEffect(() => {
         if (!router.isReady) return
-        setResetProducts(true)
         setIsLoading(true)
         setHasMoreData(true)
         setTypeProducts(typeProductsProps)
@@ -134,6 +133,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
 
         else {
+            setResetProducts(true)
+
             const newFilters = {
                 ...filtersProps,
                 ...filterParams,
@@ -214,7 +215,12 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         if (newProducts.length % RANGE !== 0 || newProducts.length <= 0) {
             setHasMoreData(false)
             setIsLoading(false)
-            return console.log('no more data');
+            // if (resetProducts) {
+            //     setProducts([])
+            //     setResetProducts(false)
+            // }
+            // return console.log('no more data');
+
         }
 
         if (resetProducts) {
@@ -282,7 +288,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
                 query: {
                     ...filtersParams,
-                    [filterParameter]: value
+                    [filterParameter]: value.toLocaleLowerCase()
                 }
             })
             return
@@ -302,11 +308,23 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
     }
 
+    const deleteFilterParams = (paramters: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting') => {
+        let filtersParams = getParamsFiltersFromObject(filters)
+        delete filtersParams[paramters]
+        //TODO inserire sorting
+        router.replace({
+            pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza'}`,
+            query: {
+                ...filtersParams
+            }
+        })
+    }
+
+
 
     return (
         <>
             <NoIndexSeo />
-
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`${filters.macroCategory ? filters.macroCategory : 'Abbigliamento'} ${filters.gender === 'f' ? 'donna' : 'uomo'} | Veplo`}
@@ -329,7 +347,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                         key={element.name}
                                         mb={4}
                                         className='whitespace-nowrap'
-
                                     >
                                         <Link
                                             prefetch={false}
@@ -358,132 +375,104 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             color={'black'}
                             fontSize={'xl'}
                             fontWeight={'extrabold'}
-                            mb={[3, 6]}
+                            mb={[3, 3]}
                             mt={[4, 8]}
                         >
                             {filters.macroCategory ? toUpperCaseFirstLetter(filters.macroCategory) : "Tutto l'abbigliamento"}
                         </Text>
-                        {isSmallView
-                            ? (
-                                <Box
-                                    justifyContent={'space-between'}
-                                    display={'flex'}
-                                    mb={6}
-                                    gap={2}
-                                >
-                                    <Button
-                                        height={12}
-                                        variant={'grayPrimary'}
-                                        gap={1}
-                                        paddingX={4}
-                                        borderRadius={'10px'}
-                                        onClick={() => { setDrawerFilterOpen(true) }}
-                                    >
-                                        <Filter
-                                            className='w-6 h-6'
-                                            strokeWidth={2.5}
-                                        />
-                                        {filterCount > 0 && <Text
-                                            fontSize={'lg'}
-                                            fontWeight={'semibold'}
-                                        >
-                                            {filterCount}
-                                        </Text>}
-                                    </Button>
 
-                                    <Select
-                                        _active={{
-                                            transform: 'scale(0.98)'
-                                        }}
-                                        icon={
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                            </svg>
-                                        }
-                                        width={'full'}
-                                        size={'lg'}
-                                        borderRadius={'10px'}
-                                        bg={'#F2F2F2'}
-                                        focusBorderColor="transparent"
-                                        borderColor={'#F2F2F2'}
-                                        color={'secondaryBlack.text'}
-                                        fontWeight={'semibold'}
-                                        fontSize={'lg'}
-                                        height={12}
-                                        onChange={changeSort}
-                                        //TODO mettere filters.sort al posto di 'sort'
-                                        value={SORT_PRODUCT.find(type => type.url.toLowerCase() === 'sort'.toLowerCase())?.url}
-                                    >
-                                        {SORT_PRODUCT.map((sortElement) => {
-                                            return (
-                                                <option key={sortElement.text} value={sortElement.url}>{sortElement.text}</option>
-                                            )
-                                        })}
+                        <Box
 
-                                    </Select>
-                                </Box>
-                            )
-                            : (
-                                <Box
+                            mt={0}
+                            mb={10}
+                        >
+                            <Box
+                                justifyContent={'space-between'}
+                                display={'flex'}
+                            >
+                                <FiltersSelections
+                                    typeProducts={typeProducts}
+                                    filters={filters} handleConfirmChange={changeRouter}
+                                    changePriceEventRouter={(parameters) => {
+                                        console.log(parameters);
+                                        let filtersParams: any = getParamsFiltersFromObject(filters)
 
-                                    justifyContent={'space-between'}
-                                    display={'flex'}
-                                    mt={0}
-                                    mb={10}
-                                >
-                                    <FiltersSelections
-                                        typeProducts={typeProducts}
-                                        filters={filters} handleConfirmChange={changeRouter}
-                                        changePriceEventRouter={(parameters) => {
-                                            console.log(parameters);
-                                            let filtersParams = getParamsFiltersFromObject(filters)
-
-                                            let newParams: any = {};
-                                            for (let i = 0; i < parameters.length; i++) {
+                                        let newParams: any = {};
+                                        for (let i = 0; i < parameters.length; i++) {
+                                            if (parameters[i].value > 0) {
                                                 newParams[parameters[i].name] = parameters[i].value
+                                            } else {
+                                                delete filtersParams[parameters[i].name]
                                             }
-
-                                            console.log(newParams);
-
-
-                                            //TODO gestire sorting appena possibile
-                                            router.replace({
-                                                pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
-                                                query: {
-                                                    ...filtersParams,
-                                                    ...newParams
-                                                }
-                                            })
-                                        }}
-                                    />
-                                    <Select
-                                        _active={{
-                                            transform: 'scale(0.98)'
-                                        }}
-                                        icon={
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                            </svg>
                                         }
-                                        width={'fit-content'}
-                                        size={'lg'}
-                                        borderRadius={'10px'}
-                                        bg={'#F2F2F2'}
-                                        focusBorderColor="transparent"
-                                        borderColor={'#F2F2F2'}
-                                        color={'secondaryBlack.text'}
-                                        fontWeight={'semibold'}
-                                        fontSize={'16px'}
-                                        height={12}
-                                        onChange={changeSort}
-                                    >
-                                        {SORT_PRODUCT.map((sortElement) => {
-                                            return (
-                                                <option key={sortElement.text} value={sortElement.url}>{sortElement.text}</option>
-                                            )
-                                        })}
-                                    </Select>
-                                </Box>)}
+
+
+                                        console.log(newParams);
+
+
+                                        //TODO gestire sorting appena possibile
+                                        router.replace({
+                                            pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                                            query: {
+                                                ...filtersParams,
+                                                ...newParams
+                                            }
+                                        })
+                                    }}
+                                />
+                                <Select
+                                    _active={{
+                                        transform: 'scale(0.98)'
+                                    }}
+                                    icon={
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                        </svg>
+                                    }
+                                    width={['full', 'fit-content']}
+                                    size={'lg'}
+                                    ml={2}
+                                    borderRadius={'10px'}
+                                    bg={'#F2F2F2'}
+                                    focusBorderColor="transparent"
+                                    borderColor={'#F2F2F2'}
+                                    color={'secondaryBlack.text'}
+                                    fontWeight={'semibold'}
+                                    fontSize={['18px', '16px']}
+                                    height={12}
+                                    onChange={changeSort}
+                                >
+                                    {SORT_PRODUCT.map((sortElement) => {
+                                        return (
+                                            <option key={sortElement.text} value={sortElement.url}>{sortElement.text}</option>
+                                        )
+                                    })}
+                                </Select>
+                            </Box>
+                            <HStack spacing={2} mt={2}>
+                                {Object.keys(filters).map((value) => (
+                                    <>
+                                        {value === 'microCategory'}
+                                        {(value === 'sizes' || value === 'maxPrice' || value === 'minPrice') && filters.sizes &&
+                                            <TagFilter
+                                                value={value}
+                                                text={
+                                                    { value === 'sizes' && <>Taglia {filters.sizes[0].toUpperCase()}</>}
+                                                {value === 'minPrice' && <>Prezzo minimo {filters.minPrice}€</>}
+                                                {value === 'maxPrice' && <>Prezzo massimo {filters.maxPrice}€</>}
+                                                }
+                                        handleEvent={deleteFilterParams}
+                                            
+                                            />
+                                        }
+
+                                    </>
+
+                                ))}
+                            </HStack>
+
+                        </Box>
+
                         {!isLoading && products ?
                             (<InfiniteScroll
                                 dataLength={products?.length}
