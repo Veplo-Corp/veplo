@@ -1,28 +1,50 @@
-import { Box, Input, InputGroup, Text } from '@chakra-ui/react'
+import { Box, Input, InputGroup, Text, useEventListenerMap } from '@chakra-ui/react'
 import { Listbox, Transition } from '@headlessui/react'
 import { Euro, NavArrowDown } from 'iconoir-react'
-import React, { FC, Fragment, useState } from 'react'
+import React, { FC, Fragment, useEffect, useState } from 'react'
 
-const SelectMaxMinPrice: FC<{ defaultValue?: { minPrice: number, maxPrice: number }, handleChange: (value: any) => void }> = ({ defaultValue, handleChange }) => {
-    const [price, setPrice] = useState<{ minPrice: string, maxPrice: string }>()
+const SelectMaxMinPrice: FC<{ defaultValue: { minPrice: number | undefined | null | string, maxPrice: number | undefined | null | string }, handleChange: (minPrice: number | undefined | null | string, maxPrice: number | undefined | null | string) => void }> = ({ defaultValue, handleChange }) => {
+    const [price, setPrice] = useState<{ minPrice: number | undefined | null | string, maxPrice: number | undefined | null | string }>()
+
+
+    useEffect(() => {
+        if (defaultValue) {
+            setPrice({
+                minPrice: defaultValue.minPrice,
+                maxPrice: defaultValue.maxPrice,
+            })
+        }
+    }, [defaultValue])
+
+
+
+    const handleEvent = () => {
+        if (defaultValue.minPrice !== price?.minPrice || defaultValue.maxPrice !== price?.maxPrice) {
+            handleChange(price?.minPrice, price?.maxPrice)
+        }
+    }
+
+
 
     return (
-        <Listbox >
-            <div className={`z-1 relative mt-1 border border-gray rounded-lg min-h-[50px]`}>
-                <Listbox.Button className="cursor-default min-w-[100px] md:min-w-[140px] min-h-[45px] w-full border-none py-3.5 rounded-lg pl-3 pr-10 leading-5 text-gray-900 focus:ring-0">
+        <Listbox>
+            <div className={`z-1 relative border border-gray rounded-lg h-12 w-fit`}>
+                <Listbox.Button
+                    onFocus={handleEvent}
+                    className={`${(price?.maxPrice || price?.minPrice) ? 'bg-black text-white' : 'bg-white text-[#3A3A3A]'} cursor-pointer  min-w-[100px] md:min-w-[70px] h-full  w-full border-none rounded-lg pl-3 pr-9 leading-5 bg-white   font-md font-semibold focus:ring-0`}>
                     {price?.minPrice || price?.maxPrice ? (
                         <>
-                            da {price?.minPrice ? price?.minPrice : 0}{price?.maxPrice ? `a ${price?.maxPrice}` : '`'}
+                            da {price?.minPrice ? price?.minPrice + '€' : 0}{price?.maxPrice ? ` a ${price?.maxPrice}€` : ''}
                         </>
                     ) : (
                         <>
-                            Prezzo
+                            prezzo
                         </>
                     )
                     }
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <NavArrowDown
-                            className="h-5 w-5 text-gray-400"
+                            className={`h-5 w-5 ${price?.maxPrice || price?.minPrice ? '' : 'text-gray-400'} `}
                             aria-hidden="true"
                         />
                     </span>
@@ -70,7 +92,26 @@ const SelectMaxMinPrice: FC<{ defaultValue?: { minPrice: number, maxPrice: numbe
                                         px={0}
                                         pr={'2px'}
                                         minW={'10'}
+                                        type='number'
+                                        defaultValue={typeof price?.minPrice === 'number' ? price?.minPrice : undefined}
+                                        onChange={(e) => {
 
+                                            if (!e.target.value) {
+                                                setPrice((preveState: any) => {
+                                                    return {
+                                                        ...preveState,
+                                                        minPrice: undefined
+                                                    }
+                                                })
+                                                return
+                                            }
+                                            setPrice((preveState: any) => {
+                                                return {
+                                                    ...preveState,
+                                                    minPrice: parseInt(e.target.value, 10)
+                                                }
+                                            })
+                                        }}
                                     />
                                     <Euro
                                         strokeWidth={2}
@@ -107,6 +148,25 @@ const SelectMaxMinPrice: FC<{ defaultValue?: { minPrice: number, maxPrice: numbe
                                         px={0}
                                         pr={'2px'}
                                         minW={'10'}
+                                        type='number'
+                                        defaultValue={typeof price?.maxPrice === 'number' ? price?.maxPrice : undefined}
+                                        onChange={(e) => {
+                                            if (!e.target.value) {
+                                                setPrice((preveState: any) => {
+                                                    return {
+                                                        ...preveState,
+                                                        maxPrice: undefined
+                                                    }
+                                                })
+                                                return
+                                            }
+                                            setPrice((preveState: any) => {
+                                                return {
+                                                    ...preveState,
+                                                    maxPrice: parseInt(e.target.value, 10)
+                                                }
+                                            })
+                                        }}
                                     />
                                     <Euro
                                         strokeWidth={2}
@@ -119,7 +179,7 @@ const SelectMaxMinPrice: FC<{ defaultValue?: { minPrice: number, maxPrice: numbe
                     </Listbox.Options>
                 </Transition>
             </div>
-        </Listbox>
+        </Listbox >
     )
 }
 

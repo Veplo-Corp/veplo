@@ -2,7 +2,12 @@ export type Category = {
     name: string,
     url: string,
     types: string[],
-    sizes: string
+    sizes: string | undefined,
+    traits: string | undefined,
+    materials: string | undefined,
+    fit: string | undefined,
+    length: string | undefined,
+    colors: string | undefined
 }
 
 export type Categories = {
@@ -33,6 +38,11 @@ export const CATEGORIES: Categories = {
                     "lunghi",
                 ],
                 sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "T-Shirt",
@@ -45,6 +55,11 @@ export const CATEGORIES: Categories = {
                     "jeans",
                 ],
                 sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Top",
@@ -56,6 +71,11 @@ export const CATEGORIES: Categories = {
                     "senza maniche",
                 ],
                 sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Camicie", //Camicie & Bluse
@@ -68,6 +88,11 @@ export const CATEGORIES: Categories = {
                     "eleganti"
                 ],
                 sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Bluse", //Camicie & Bluse
@@ -78,6 +103,11 @@ export const CATEGORIES: Categories = {
                     "trapezio"
                 ],
                 sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Pantaloni",
@@ -92,6 +122,11 @@ export const CATEGORIES: Categories = {
                     "zampa d'elefante",
                 ],
                 sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Jeans",
@@ -102,6 +137,11 @@ export const CATEGORIES: Categories = {
                     "zampa d'elefante"
                 ],
                 sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Felpe",
@@ -112,6 +152,11 @@ export const CATEGORIES: Categories = {
                     "senza cappuccio"
                 ],
                 sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Giacche",
@@ -129,6 +174,11 @@ export const CATEGORIES: Categories = {
                     "gilet",
                 ],
                 sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Blazer",
@@ -143,6 +193,11 @@ export const CATEGORIES: Categories = {
                     "jeans",
                 ],
                 sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Cappotti",
@@ -155,12 +210,22 @@ export const CATEGORIES: Categories = {
                     "piumini"
                 ],
                 sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Maglieria",
                 url: "maglieria",
                 types: ["cardigan", "maglioni"],
                 sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
 
             //!aggiunto costumi: ["costumi"],
@@ -172,6 +237,11 @@ export const CATEGORIES: Categories = {
                     "bikini"
                 ],
                 sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Gonne",
@@ -184,18 +254,33 @@ export const CATEGORIES: Categories = {
                     "jeans",
                 ],
                 sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Shorts",
                 url: "shorts",
                 types: ["basic", "sportivi"],
                 sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Bermuda",
                 url: "bermuda",
                 types: ["cargo", "jeans", "tuta", "basic"],
                 sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
 
             // {
@@ -216,6 +301,7 @@ export const CATEGORIES: Categories = {
             //             "merchandising ufficiale"
             //         ],
             //     sizes: "woman_clothes_sizes",
+
             // },
             {
                 //!aggiunte scarpe donna
@@ -246,6 +332,11 @@ export const CATEGORIES: Categories = {
                     "eleganti"
                 ],
                 sizes: "shoes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: undefined,
+                length: undefined,
+                colors: 'clothes_colors'
             },
         ],
     },
@@ -262,6 +353,12 @@ export const CATEGORIES: Categories = {
                     "jeans",
                 ],
                 sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
+
             },
             {
                 name: "Top",
@@ -273,6 +370,11 @@ export const CATEGORIES: Categories = {
                     "senza maniche",
                 ],
                 sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Camicie",
@@ -285,6 +387,11 @@ export const CATEGORIES: Categories = {
                     "eleganti"
                 ],
                 sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Felpe",
@@ -295,6 +402,11 @@ export const CATEGORIES: Categories = {
                     "senza cappuccio"
                 ],
                 sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Maglieria",
@@ -304,6 +416,11 @@ export const CATEGORIES: Categories = {
                     "pullover"
                 ],
                 sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Jeans",
@@ -312,6 +429,11 @@ export const CATEGORIES: Categories = {
                     "basic", "palazzo", "zampa d'elefante"
                 ],
                 sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Pantaloni",
@@ -328,6 +450,11 @@ export const CATEGORIES: Categories = {
 
                 ],
                 sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Bermuda",
@@ -336,6 +463,11 @@ export const CATEGORIES: Categories = {
                     "cargo", "jeans", "tuta", "basic"
                 ],
                 sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             // {
             //     name: "Abbigliamento sportivo",
@@ -369,6 +501,12 @@ export const CATEGORIES: Categories = {
                     "gilet",
                 ],
                 sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
+
             },
             {
                 name: "Cappotti",
@@ -381,6 +519,11 @@ export const CATEGORIES: Categories = {
                     "invernali"
                 ],
                 sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
             {
                 name: "Scarpe",
@@ -407,6 +550,11 @@ export const CATEGORIES: Categories = {
                     "eleganti"
                 ],
                 sizes: "shoes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: undefined,
+                length: undefined,
+                colors: 'clothes_colors'
             },
             {
                 name: "Costumi",
@@ -417,7 +565,13 @@ export const CATEGORIES: Categories = {
                     "slip"
                 ],
                 sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
             },
+
         ],
     },
 };

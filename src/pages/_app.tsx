@@ -110,6 +110,32 @@ const theme = extendTheme({
           },
 
         },
+        whiteButton: {
+          bg: "white", // Usa il colore primario come sfondo
+          color: "secondaryBlack.text", // Testo bianco
+          borderColor: "#gray",
+          borderWidth: "1px",
+          borderStyle: "solid",
+          _hover: {
+            bg: "white", // Cambia il colore in primario al passaggio del mouse
+            opacity: 1,
+            color: "secondaryBlack.text"
+          },
+          _active: {
+            bg: "white",
+            transform: 'scale(0.98)',
+          },
+          _disabled: {
+            bg: "white",
+            opacity: 1,
+            transform: "scale(0.98)",
+            // _hover: {
+            //   bg: "white", // Mantieni il colore di sfondo primario quando disabilitato e fai hover
+            //   color: "primary.text", // Cambia il colore del testo quando disabilitato e fai hover
+            // },
+          },
+
+        },
         secondary: {
           bg: "secondary.bg", // Usa il colore primario come sfondo
           color: "white", // Testo bianco
