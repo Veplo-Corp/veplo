@@ -314,7 +314,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             let filtersParams = getParamsFiltersFromObject(filters)
             //TODO inserire sorting
             return router.push({
-                pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/'tutto'/rilevanza'}`,
+                pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/tutto/rilevanza'}`,
                 query: {
                     ...filtersParams
                 }
@@ -333,16 +333,14 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
     const routerConfirmDrawerFilter = (filtersDrawerModal: ProductsFilter | undefined) => {
         if (!filtersDrawerModal) {
-
             return router.push({
-                pathname: router.asPath.split('?')[0],
+                pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/tutto/rilevanza`,
             })
         }
         if (typeof filtersDrawerModal.sizes?.[0] === 'string') {
             let size = filtersDrawerModal.sizes?.[0]
             filtersDrawerModal.sizes[0] = size.split(' ')[0].toLowerCase()
         }
-
         let filtersParams = getParamsFiltersFromObject(filtersDrawerModal)
         console.log(filtersParams);
         //TODO inserire sorting
@@ -415,7 +413,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                         >
                             {filters.macroCategory ? toUpperCaseFirstLetter(filters.macroCategory) : "Tutto l'abbigliamento"}
                         </Text>
-
                         <Box
 
                             mt={0}
@@ -430,7 +427,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     filters={filters}
                                     handleConfirmChange={changeRouter}
                                     filterDrawerConfirm={routerConfirmDrawerFilter}
-
                                     changePriceEventRouter={(parameters) => {
                                         console.log(parameters);
                                         let filtersParams: any = getParamsFiltersFromObject(filters)
