@@ -45,11 +45,13 @@ const Product_Form: React.FC<{ handleSubmitEvent: any, defaultValues: any, type?
             console.log(watch('sizes'));
             if (watch('gender') === 'F') {
                 const sizetype = categories.current.donna.abbigliamento.filter(category => category.name === watch('macrocategory'))[0].sizes;
+                if (!sizetype) return
                 console.log(sizetype);
                 handleSizeType(sizetype)
             } else if (watch('gender') === 'M') {
                 const sizetype = categories.current.uomo.abbigliamento.filter(category => category.name === watch('macrocategory'))[0].sizes;
                 console.log(sizetype);
+                if (!sizetype) return
 
                 handleSizeType(sizetype)
             }
