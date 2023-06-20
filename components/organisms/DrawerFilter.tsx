@@ -140,7 +140,12 @@ const DrawerFilter: FC<{ defaultFilter: PropsFilter, isOpenDrawer: boolean, clos
                                         })
                                     }}
                                 />
-                                <SelectMaxMinPrice handleChange={() => { }} />
+                                <SelectMaxMinPrice handleChange={() => { }}
+                                    defaultValue={{
+                                        minPrice: filter.minPrice,
+                                        maxPrice: filter.maxPrice
+                                    }}
+                                />
                             </Box>
                             {/* <Box
                                 display={'flex'}

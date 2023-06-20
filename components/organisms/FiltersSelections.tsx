@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import { ProductsFilter } from '../../src/pages/[prodotti]/[...slug]'
-import { Box } from '@chakra-ui/react';
+import { Box, Button, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { CATEGORIES } from '../mook/categories';
 import { FIT_TYPES } from '../mook/productParameters/fit';
@@ -11,6 +11,9 @@ import { COLORS_TYPES } from '../mook/productParameters/colors';
 import { Color } from '../mook/colors';
 import SelectOption from '../atoms/SelectOption';
 import { SIZES_TYPES } from '../mook/productParameters/sizes';
+import { Filter } from 'iconoir-react';
+import DrawerFilter from './DrawerFilter';
+import SelectMaxMinPrice from '../atoms/SelectMaxMinPrice';
 
 interface FilterParameters {
     name: 'macroCategory' | 'microCategory' | 'minPrice' | 'maxPrice' | 'colors' | 'fit' | 'traits' | 'length' | 'materials' | 'sizes',
@@ -19,13 +22,16 @@ interface FilterParameters {
 }
 
 
-const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (value: string, filterParameter: string) => void, typeProducts: 'abbigliamento' | 'accessori' }> = ({ filters, handleConfirmChange, typeProducts }) => {
+const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (value: string, filterParameter: string) => void, typeProducts: 'abbigliamento' | 'accessori', changePriceEventRouter: (parameters: { name: string, value: number }[]) => void }> = ({ filters, handleConfirmChange, typeProducts, changePriceEventRouter }) => {
 
 
 
     //TODO creare interface
     const [filterParameters, setFilterParameters] = useState<FilterParameters[]>()
+    const [drawerFilterOpen, setDrawerFilterOpen] = useState(false)
+    const [filterCount, setFilterCount] = useState(0)
 
+    filterCount
     const router = useRouter()
     useEffect(() => {
         if (!router.isReady) return
@@ -34,7 +40,6 @@ const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (val
         const gender = filters.gender === 'm' ? 'uomo' : 'donna';
         //TODO inserire logica per accessori
         if (typeProducts === 'accessori') return
-
 
         const categories = CATEGORIES[gender][typeProducts];
         let parsedFilter: FilterParameters[] = [
@@ -50,7 +55,6 @@ const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (val
             },
 
         ];
-
 
         //ricerca categoryObject della categoria selezionata
         const categoryObject = categories.find(category => category.name.toLowerCase() === filters.macroCategory?.toLowerCase())
@@ -127,7 +131,6 @@ const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (val
         }
         if (typeof categoryObject.traits === 'string') {
             const categoryObjectTraits: string = categoryObject.traits
-
             const types: string[] | undefined = TRAITS_TYPES.find(materialsType => materialsType.name.toLowerCase() === categoryObjectTraits.toLowerCase())?.type
             if (types) {
                 //TODO inserire anche traits
@@ -141,7 +144,6 @@ const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (val
 
         if (typeof categoryObject.colors === 'string') {
             const categoryObjectColors: string = categoryObject.colors
-
             const types: Color[] | undefined = COLORS_TYPES.find(colorsType => colorsType.name.toLowerCase() === categoryObjectColors.toLowerCase())?.type
             if (types) {
                 parsedFilter.push({
@@ -158,7 +160,6 @@ const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (val
             const categoryObjectSizes: string = categoryObject.sizes
 
             let types: string[] | undefined = SIZES_TYPES.find(sizeType => sizeType.name.toLowerCase() === categoryObjectSizes.toLowerCase())?.type
-
 
             if (types) {
                 types = types.map(type => {
@@ -187,86 +188,162 @@ const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (val
     }
 
 
+    const changePriceEvent = (minPrice: number | undefined | null | string, maxPrice: number | undefined | null | string) => {
+        console.log(minPrice, maxPrice);
+        let parameters: { name: string, value: number }[] = [];
+        if (typeof minPrice === 'number' && minPrice >= 0) {
+            parameters.push({
+                name: 'minPrice',
+                value: minPrice
+            })
+        }
+        if (typeof maxPrice === 'number' && maxPrice >= 0) {
+            parameters.push({
+                name: 'maxPrice',
+                value: maxPrice
+            })
+        }
+        if (parameters.length <= 0) return
+        changePriceEventRouter(parameters)
+
+    }
+
+
+
     return (
-        <Box
-            display={'flex'}
-            gap={2}
-            mb={2}
-        >
-            {
-                filterParameters?.find(parameter => parameter.name === 'macroCategory') &&
-                <SelectOption
-                    values={filterParameters?.find(parameter => parameter.name === 'macroCategory')?.parameters}
-                    defaultValue={filterParameters?.find(parameter => parameter.name === 'macroCategory')?.value}
-                    placeholder={'categoria'}
-                    handleClick={(value) => handleChange(value, 'macroCategory')}
+        <>
+            <Box
+                display={'flex'}
+                gap={2}
+                mb={2}
+            >
+                {
+                    filterParameters?.find(parameter => parameter.name === 'macroCategory') &&
+                    <SelectOption
+                        values={filterParameters?.find(parameter => parameter.name === 'macroCategory')?.parameters}
+                        defaultValue={filterParameters?.find(parameter => parameter.name === 'macroCategory')?.value}
+                        placeholder={'categoria'}
+                        handleClick={(value) => handleChange(value, 'macroCategory')}
+                    />
+                }
+                {
+                    filterParameters?.find(parameter => parameter.name === 'microCategory') &&
+                    <SelectOption
+                        values={filterParameters?.find(parameter => parameter.name === 'microCategory')?.parameters}
+                        defaultValue={filterParameters?.find(parameter => parameter.name === 'microCategory')?.value}
+                        placeholder={'micro categoria'}
+                        handleClick={(value) => handleChange(value, 'microCategory')}
+                    />
+                }
+                {
+                    filterParameters?.find(parameter => parameter.name === 'sizes') &&
+                    <SelectOption
+                        values={filterParameters?.find(parameter => parameter.name === 'sizes')?.parameters}
+                        defaultValue={filterParameters?.find(parameter => parameter.name === 'sizes')?.value}
+                        placeholder={'taglie'}
+                        handleClick={(value) => handleChange(value, 'sizes')}
+                    />
+                }
+                {
+                    filterParameters?.find(parameter => parameter.name === 'colors') &&
+                    <SelectOption
+                        values={filterParameters?.find(parameter => parameter.name === 'colors')?.parameters}
+                        defaultValue={filterParameters?.find(parameter => parameter.name === 'colors')?.value}
+                        placeholder={'colore'}
+                        handleClick={(value) => handleChange(value, 'colors')}
+                    />
+                }
+                <SelectMaxMinPrice handleChange={changePriceEvent}
+                    defaultValue={{
+                        minPrice: filterParameters?.find(parameter => parameter.name === 'minPrice')?.value,
+                        maxPrice: filterParameters?.find(parameter => parameter.name === 'maxPrice')?.value
+                    }}
                 />
-            }
-            {
-                filterParameters?.find(parameter => parameter.name === 'microCategory') &&
-                <SelectOption
-                    values={filterParameters?.find(parameter => parameter.name === 'microCategory')?.parameters}
-                    defaultValue={filterParameters?.find(parameter => parameter.name === 'microCategory')?.value}
-                    placeholder={'micro categoria'}
-                    handleClick={(value) => handleChange(value, 'microCategory')}
-                />
-            }
-            {
-                filterParameters?.find(parameter => parameter.name === 'sizes') &&
-                <SelectOption
-                    values={filterParameters?.find(parameter => parameter.name === 'sizes')?.parameters}
-                    defaultValue={filterParameters?.find(parameter => parameter.name === 'sizes')?.value}
-                    placeholder={'taglie'}
-                    handleClick={(value) => handleChange(value, 'sizes')}
-                />
-            }
-            {
-                filterParameters?.find(parameter => parameter.name === 'colors') &&
-                <SelectOption
-                    values={filterParameters?.find(parameter => parameter.name === 'colors')?.parameters}
-                    defaultValue={filterParameters?.find(parameter => parameter.name === 'colors')?.value}
-                    placeholder={'colore'}
-                    handleClick={(value) => handleChange(value, 'colors')}
-                />
-            }
-            {
-                filterParameters?.find(parameter => parameter.name === 'fit') &&
-                <SelectOption
-                    values={filterParameters?.find(parameter => parameter.name === 'fit')?.parameters}
-                    defaultValue={filterParameters?.find(parameter => parameter.name === 'fit')?.value}
-                    placeholder={'fit'}
-                    handleClick={(value) => handleChange(value, 'fit')}
-                />
-            }
-            {/* 
-            {
-                filterParameters?.find(parameter => parameter.name === 'materials') &&
-                <SelectOption
-                    values={filterParameters?.find(parameter => parameter.name === 'materials')?.parameters}
-                    defaultValue={filterParameters?.find(parameter => parameter.name === 'materials')?.value}
-                    placeholder={'materiali'}
-                    handleClick={(value) => handleChange(value, 'materials')}
-                />
-            }
-            {
-                filterParameters?.find(parameter => parameter.name === 'length') &&
-                <SelectOption
-                    values={filterParameters?.find(parameter => parameter.name === 'length')?.parameters}
-                    defaultValue={filterParameters?.find(parameter => parameter.name === 'length')?.value}
-                    placeholder={'lunghezza'}
-                    handleClick={(value) => handleChange(value, 'length')}
-                />
-            }
-            {
-                filterParameters?.find(parameter => parameter.name === 'traits') &&
-                <SelectOption
-                    values={filterParameters?.find(parameter => parameter.name === 'traits')?.parameters}
-                    defaultValue={filterParameters?.find(parameter => parameter.name === 'traits')?.value}
-                    placeholder={'tipologia'}
-                    handleClick={(value) => handleChange(value, 'traits')}
-                />
-            } */}
-        </Box>
+
+                {/* {
+                    filterParameters?.find(parameter => parameter.name === 'fit') &&
+                    <SelectOption
+                        values={filterParameters?.find(parameter => parameter.name === 'fit')?.parameters}
+                        defaultValue={filterParameters?.find(parameter => parameter.name === 'fit')?.value}
+                        placeholder={'fit'}
+                        handleClick={(value) => handleChange(value, 'fit')}
+                    />
+                }
+                {
+                    filterParameters?.find(parameter => parameter.name === 'materials') &&
+                    <SelectOption
+                        values={filterParameters?.find(parameter => parameter.name === 'materials')?.parameters}
+                        defaultValue={filterParameters?.find(parameter => parameter.name === 'materials')?.value}
+                        placeholder={'materiali'}
+                        handleClick={(value) => handleChange(value, 'materials')}
+                    />
+                }
+                {
+                    filterParameters?.find(parameter => parameter.name === 'length') &&
+                    <SelectOption
+                        values={filterParameters?.find(parameter => parameter.name === 'length')?.parameters}
+                        defaultValue={filterParameters?.find(parameter => parameter.name === 'length')?.value}
+                        placeholder={'lunghezza'}
+                        handleClick={(value) => handleChange(value, 'length')}
+                    />
+                }
+                {
+                    filterParameters?.find(parameter => parameter.name === 'traits') &&
+                    <SelectOption
+                        values={filterParameters?.find(parameter => parameter.name === 'traits')?.parameters}
+                        defaultValue={filterParameters?.find(parameter => parameter.name === 'traits')?.value}
+                        placeholder={'tipologia'}
+                        handleClick={(value) => handleChange(value, 'traits')}
+                    />
+                } */}
+                <Button
+                    height={12}
+                    variant={['grayPrimary', 'whiteButton']}
+
+                    gap={1}
+                    paddingX={4}
+                    borderRadius={'10px'}
+                    onClick={() => { setDrawerFilterOpen(true) }}
+                >
+                    <Filter
+                        className='w-6 h-6'
+                        strokeWidth={2.5}
+                    />
+                    {filterCount > 0 && <Text
+                        fontSize={'lg'}
+                        fontWeight={'semibold'}
+                    >
+                        {filterCount}
+                    </Text>}
+                </Button>
+            </Box>
+            {/* <DrawerFilter
+                defaultFilter={filters}
+                microcategoryTypes={microcategoryTypes}
+                defaultMicroCategory={microCategory}
+                sizeProduct={sizeProduct ? sizeProduct : ''}
+                isOpenDrawer={drawerFilterOpen}
+                closeDrawer={(filter, microCategory) => {
+                    // router.replace({
+                    //     pathname: `/prodotti/${gender === 'm' ? 'uomo' : 'donna'}-${category ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortType ? sortType : 'rilevanza'}`,
+                    //     query: {
+                    //         ...filter
+                    //     }
+                    // })
+                    //controlla se il path nuovo è uguale a quello vecchio per non pushare senza senso
+                    let pathname = `/prodotti/${gender === 'm' ? 'uomo' : 'donna'}-${category ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortType ? sortType : 'rilevanza'}`;
+                    const query = new URLSearchParams(filter as Record<string, string>).toString();
+                    if (query) {
+                        pathname = pathname + `?${query}`;
+                    }
+                    if (router.asPath !== pathname) {
+                        router.push(pathname)
+                    }
+                    setDrawerFilterOpen(false)
+                }}
+            /> */}
+        </>
+
     )
 }
 

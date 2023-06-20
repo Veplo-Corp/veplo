@@ -372,7 +372,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     gap={2}
                                 >
                                     <Button
-
                                         height={12}
                                         variant={'grayPrimary'}
                                         gap={1}
@@ -435,7 +434,27 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     <FiltersSelections
                                         typeProducts={typeProducts}
                                         filters={filters} handleConfirmChange={changeRouter}
+                                        changePriceEventRouter={(parameters) => {
+                                            console.log(parameters);
+                                            let filtersParams = getParamsFiltersFromObject(filters)
 
+                                            let newParams: any = {};
+                                            for (let i = 0; i < parameters.length; i++) {
+                                                newParams[parameters[i].name] = parameters[i].value
+                                            }
+
+                                            console.log(newParams);
+
+
+                                            //TODO gestire sorting appena possibile
+                                            router.replace({
+                                                pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                                                query: {
+                                                    ...filtersParams,
+                                                    ...newParams
+                                                }
+                                            })
+                                        }}
                                     />
                                     <Select
                                         _active={{
