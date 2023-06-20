@@ -1305,31 +1305,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
                 </ModalReausable>
             </div >
-            <DrawerFilter
-                defaultFilter={filter}
-                microcategoryTypes={microcategoryTypes}
-                defaultMicroCategory={microCategory}
-                sizeProduct={sizeProduct ? sizeProduct : ''}
-                isOpenDrawer={drawerFilter}
-                closeDrawer={(filter, microCategory) => {
-                    // router.replace({
-                    //     pathname: `/prodotti/${gender === 'm' ? 'uomo' : 'donna'}-${category ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortType ? sortType : 'rilevanza'}`,
-                    //     query: {
-                    //         ...filter
-                    //     }
-                    // })
-                    //controlla se il path nuovo è uguale a quello vecchio per non pushare senza senso
-                    let pathname = `/prodotti/${gender === 'm' ? 'uomo' : 'donna'}-${category ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortType ? sortType : 'rilevanza'}`;
-                    const query = new URLSearchParams(filter as Record<string, string>).toString();
-                    if (query) {
-                        pathname = pathname + `?${query}`;
-                    }
-                    if (router.asPath !== pathname) {
-                        router.push(pathname)
-                    }
-                    setDrawerFilter(false)
-                }}
-            />
+
         </>
 
 
