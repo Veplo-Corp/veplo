@@ -44,6 +44,8 @@ export async function getStaticProps(ctx: any) {
     const { slug, prodotti } = ctx.params;
     const apolloClient = initApollo()
     const parsedURL: ParsedURL | Error = parseURLProducts(slug);
+    console.log(parsedURL);
+
 
     if (parsedURL instanceof Error) {
         console.error(parsedURL.message);
@@ -60,7 +62,6 @@ export async function getStaticProps(ctx: any) {
     const { sorting, ...newParseURL } = parsedURL
     try {
         //TODO eliminare newParseURL non appena tommaso gestisce il sorting
-
 
         const { data, errors }: { data: ProductsQuery, errors: any } = await apolloClient.query({
             query: GET_PRODUCTS,
