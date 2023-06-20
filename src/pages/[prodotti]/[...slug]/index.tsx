@@ -419,7 +419,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                         <Box
 
                             mt={0}
-                            mb={10}
+                            mb={[6, 10]}
                         >
                             <Box
                                 justifyContent={'space-between'}
