@@ -29,7 +29,7 @@ const SelectOption: FC<{ defaultValue: number | string | undefined | null, value
     return (
         <Listbox value={selected} onChange={handleEvent}
             disabled={!values}>
-            <div className={`z-1 relative  ${selected ? 'bg-black text-white' : 'bg-white text-[#3A3A3A]'} border border-gray  rounded-lg h-12`}>
+            <div className={`z-1 relative  ${selected ? 'bg-black text-white' : 'bg-white text-[#3A3A3A]'} border border-gray  rounded-lg h-12 w-fit`}>
                 <Listbox.Button className="md:min-w-[70px] min-h-[40px] cursor-pointer  w-fit border-none py-3.5 rounded-lg pl-3 pr-9 leading-5  focus:ring-0 text-md font-semibold">
                     {typeof selected !== 'number' && <span className="block truncate text-start">{toUpperCaseFirstLetter(selected?.name || selected)} </span>}
                     {typeof selected === 'number' && <span className="block truncate text-start">{(selected)} </span>}

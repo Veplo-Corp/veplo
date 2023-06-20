@@ -28,7 +28,7 @@ const SelectMaxMinPrice: FC<{ defaultValue: { minPrice: number | undefined | nul
 
     return (
         <Listbox>
-            <div className={`z-1 relative border border-gray rounded-lg h-12`}>
+            <div className={`z-1 relative border border-gray rounded-lg h-12 w-fit`}>
                 <Listbox.Button
                     onFocus={handleEvent}
                     className={`${(price?.maxPrice || price?.minPrice) ? 'bg-black text-white' : 'bg-white text-[#3A3A3A]'} cursor-pointer  min-w-[100px] md:min-w-[70px] h-full  w-full border-none rounded-lg pl-3 pr-9 leading-5 bg-white   font-md font-semibold focus:ring-0`}>

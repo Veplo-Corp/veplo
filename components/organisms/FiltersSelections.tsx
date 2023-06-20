@@ -14,173 +14,29 @@ import { SIZES_TYPES } from '../mook/productParameters/sizes';
 import { Filter, NavArrowRight } from 'iconoir-react';
 import DrawerFilter from './DrawerFilter';
 import SelectMaxMinPrice from '../atoms/SelectMaxMinPrice';
-
-interface FilterParameters {
-    name: 'macroCategory' | 'microCategory' | 'minPrice' | 'maxPrice' | 'colors' | 'fit' | 'traits' | 'length' | 'materials' | 'sizes',
-    parameters: undefined | number[] | string[] | Color[],
-    value: string | number | undefined | null
-}
+import { FilterParameters, findParsedFilter } from '../utils/findParsedFilter';
 
 
-const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (value: string, filterParameter: string) => void, typeProducts: 'abbigliamento' | 'accessori', changePriceEventRouter: (parameters: { name: string, value: any }[]) => void }> = ({ filters, handleConfirmChange, typeProducts, changePriceEventRouter }) => {
+
+
+const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (value: ProductsFilter) => void, handleConfirmChange: (value: string, filterParameter: string) => void, typeProducts: 'abbigliamento' | 'accessori', changePriceEventRouter: (parameters: { name: string, value: any }[]) => void }> = ({ filters, handleConfirmChange, typeProducts, changePriceEventRouter, filterDrawerConfirm }) => {
 
     const isSmallView = useBreakpointValue({ base: true, md: false });
-
-
-
     //TODO creare interface
     const [filterParameters, setFilterParameters] = useState<FilterParameters[]>()
     const [drawerFilterOpen, setDrawerFilterOpen] = useState(false)
     const [filterCount, setFilterCount] = useState(0)
-
-    filterCount
     const router = useRouter()
+
+
     useEffect(() => {
         if (!router.isReady) return
 
-        console.log(filters.gender);
-        const gender = filters.gender === 'm' ? 'uomo' : 'donna';
-        //TODO inserire logica per accessori
-        if (typeProducts === 'accessori') return
-
-        const categories = CATEGORIES[gender][typeProducts];
-        let parsedFilter: FilterParameters[] = [
-            {
-                name: "minPrice",
-                parameters: undefined,
-                value: filters.minPrice
-            },
-            {
-                name: "maxPrice",
-                parameters: undefined,
-                value: filters.maxPrice
-            },
-
-        ];
-
-        //ricerca categoryObject della categoria selezionata
-        const categoryObject = categories.find(category => category.name.toLowerCase() === filters.macroCategory?.toLowerCase())
-
-        //gestione caso non ci sia macroCategory selezionata
-        if (!categoryObject) {
-            const types: Color[] | undefined = COLORS_TYPES.find(colorsType => colorsType.name.toLowerCase() === 'clothes_colors')?.type
-            if (types) {
-                parsedFilter.push({
-                    name: 'colors',
-                    parameters: types.map(type => {
-                        return type.name
-                    }),
-                    value: filters.colors?.[0] ? filters.colors?.[0] : undefined
-                })
-            }
-
-            parsedFilter.push({
-                name: 'macroCategory',
-                parameters: categories.map(category => {
-                    return category.name
-                }),
-                value: undefined
-            })
-
-            return setFilterParameters(parsedFilter)
-        }
-
-        //inserire i campi per ogni filtro applicabile
-        if (categoryObject.types) {
-            parsedFilter.push({
-                name: 'microCategory',
-                parameters: categoryObject.types,
-                value: filters.microCategory
-            })
-        }
-        if (typeof categoryObject.fit === 'string') {
-            const categoryObjectFit: string = categoryObject.fit
-            const types: string[] | undefined = FIT_TYPES.find(fitType => fitType.name.toLowerCase() === categoryObjectFit.toLowerCase())?.type
-            if (types) {
-                //TODO inserire anche fit
-                parsedFilter.push({
-                    name: 'fit',
-                    parameters: types,
-                    value: null
-                })
-            }
-        }
-        if (typeof categoryObject.length === 'string') {
-            const categoryObjectLength: string = categoryObject.length
-
-            const types: string[] | undefined = LENGTH_TYPES.find(lengthType => lengthType.name.toLowerCase() === categoryObjectLength.toLowerCase())?.type
-            if (types) {
-                //TODO inserire anche length
-                parsedFilter.push({
-                    name: 'length',
-                    parameters: types,
-                    value: null
-                })
-            }
-        }
-        if (typeof categoryObject.materials === 'string') {
-            const categoryObjectMaterials: string = categoryObject.materials
-
-            const types: string[] | undefined = MATERIALS_TYPES.find(materialsType => materialsType.name.toLowerCase() === categoryObjectMaterials.toLowerCase())?.type
-            if (types) {
-                //TODO inserire anche materials
-                parsedFilter.push({
-                    name: 'materials',
-                    parameters: types,
-                    value: null
-                })
-            }
-        }
-        if (typeof categoryObject.traits === 'string') {
-            const categoryObjectTraits: string = categoryObject.traits
-            const types: string[] | undefined = TRAITS_TYPES.find(materialsType => materialsType.name.toLowerCase() === categoryObjectTraits.toLowerCase())?.type
-            if (types) {
-                //TODO inserire anche traits
-                parsedFilter.push({
-                    name: 'traits',
-                    parameters: types,
-                    value: null
-                })
-            }
-        }
-
-        if (typeof categoryObject.colors === 'string') {
-            const categoryObjectColors: string = categoryObject.colors
-            const types: Color[] | undefined = COLORS_TYPES.find(colorsType => colorsType.name.toLowerCase() === categoryObjectColors.toLowerCase())?.type
-            if (types) {
-                parsedFilter.push({
-                    name: 'colors',
-                    parameters: types.map(type => {
-                        return type.name
-                    }),
-                    value: filters.colors?.[0] ? filters.colors?.[0] : undefined
-                })
-            }
-        }
-
-        if (typeof categoryObject.sizes === 'string') {
-            const categoryObjectSizes: string = categoryObject.sizes
-
-            let types: string[] | undefined = SIZES_TYPES.find(sizeType => sizeType.name.toLowerCase() === categoryObjectSizes.toLowerCase())?.type
-
-            if (types) {
-                types = types.map(type => {
-                    return type.toLocaleUpperCase()
-                })
-                let defaultSize;
-                const size0 = filters.sizes?.[0]
-                if (size0) {
-                    defaultSize = types.find(type => type.startsWith(size0.toLocaleUpperCase()))
-                }
-                parsedFilter.push({
-                    name: 'sizes',
-                    parameters: types,
-                    value: defaultSize ? defaultSize : undefined
-                })
-            }
-        }
+        //crea l'oggetto filtri applicati
+        const parsedFilter = findParsedFilter(filters, typeProducts)
+        if (!parsedFilter) return
         console.log(parsedFilter);
-        setFilterParameters(parsedFilter)
+        return setFilterParameters(parsedFilter)
 
     }, [filters])
 
@@ -206,6 +62,12 @@ const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (val
 
         if (parameters.length <= 0) return
         changePriceEventRouter(parameters)
+
+    }
+
+    const handleConfirmModalFilter = (filters: ProductsFilter) => {
+        filterDrawerConfirm(filters)
+        return setDrawerFilterOpen(false)
 
     }
 
@@ -358,6 +220,9 @@ const FiltersSelections: FC<{ filters: ProductsFilter, handleConfirmChange: (val
                 closeDrawer={() => {
                     setDrawerFilterOpen(false)
                 }}
+                handleConfirm={handleConfirmModalFilter}
+                filtersProps={filters}
+                typeProducts={typeProducts}
             />
         </Box >
 

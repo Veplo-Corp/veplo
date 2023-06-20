@@ -3,11 +3,11 @@ import { Cancel } from 'iconoir-react'
 import React, { FC } from 'react'
 
 
-const TagFilter: FC<{ value: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting', text: any, handleEvent: (value: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting') => void }> = ({ value, text, handleEvent }) => {
+const TagFilter: FC<{ value: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting' | 'microCategory', text: string, handleEvent: (value: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting' | 'microCategory') => void }> = ({ value, text, handleEvent }) => {
     return (
         <Tag
             cursor={'pointer'}
-            key={value} paddingY={3} paddingX={4} borderRadius={'full'}
+            key={value} paddingY={[2, 3]} paddingX={[3, 4]} borderRadius={'full'}
             color={'primary.bg'}
             bg={'white'}
             borderWidth={1}
@@ -18,14 +18,14 @@ const TagFilter: FC<{ value: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sor
         >
             <TagLabel
                 minW={5}
-                fontSize={'md'}
+                fontSize={['sm', 'md']}
                 fontWeight={'normal'}
             >
                 {text}
 
             </TagLabel>
             <Cancel
-                className='h-5 w-5 m-auto ml-1'
+                className='h-5 w-5 m-auto ml-1.5 md:ml-1'
             />
         </Tag>
     )

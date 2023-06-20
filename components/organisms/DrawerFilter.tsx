@@ -13,11 +13,76 @@ import { SIZES } from '../mook/sizes'
 import SelectMaxMinPrice from '../atoms/SelectMaxMinPrice'
 import ButtonClose from '../atoms/ButtonClose'
 import Autocomplete from '../atoms/Autocomplete_Headless'
+import { ProductsFilter } from '../../src/pages/[prodotti]/[...slug]'
+import { FilterParameters, findParsedFilter } from '../utils/findParsedFilter'
+import SelectOption from '../atoms/SelectOption'
 
-const DrawerFilter: FC<{ isOpenDrawer: boolean, closeDrawer: () => void }> = ({ isOpenDrawer, closeDrawer }) => {
+const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, typeProducts: 'abbigliamento' | 'accessori', closeDrawer: () => void, handleConfirm: (filters: ProductsFilter) => void }> = ({ isOpenDrawer, closeDrawer, filtersProps, typeProducts, handleConfirm }) => {
 
     const isSmallView = useBreakpointValue({ base: true, lg: false });
+    const router = useRouter();
+    const [filterParameters, setFilterParameters] = useState<FilterParameters[]>()
+    const [filters, setFilters] = useState<ProductsFilter>()
 
+    useEffect(() => {
+        if (!router.isReady) return
+
+        //crea l'oggetto filtri applicati
+        const parsedFilter = findParsedFilter(filtersProps, typeProducts)
+        setFilters(filtersProps)
+        if (!parsedFilter) return
+        console.log(parsedFilter);
+        return setFilterParameters(parsedFilter)
+
+    }, [filtersProps])
+
+    const handleChange = (value: string, filterParameter: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting' | 'microCategory' | 'macroCategory') => {
+        if (!value) return
+
+        //gestione array di stringhe
+        if (filterParameter === 'colors' || filterParameter === 'sizes') {
+            setFilters((prevState: any) => {
+                return {
+                    ...prevState,
+                    [filterParameter]: [value]
+                }
+            })
+        } else {
+            setFilters((prevState: any) => {
+                return {
+                    ...prevState,
+                    [filterParameter]: value.toLocaleLowerCase()
+                }
+            })
+        }
+
+    }
+
+    console.log(filterParameters);
+
+
+
+
+
+
+    const changePriceEvent = (minPrice: number | undefined | null | string, maxPrice: number | undefined | null | string) => {
+        console.log(minPrice, maxPrice);
+        let parameters: any = {};
+        if (minPrice) {
+            parameters['minPrice'] = minPrice
+        }
+        if (maxPrice) {
+            parameters['maxPrice'] = maxPrice
+        }
+
+        if (parameters.length <= 0) return
+        setFilters((prevState: any) => {
+            return {
+                ...prevState,
+                ...parameters
+            }
+        })
+    }
 
     return (
         <>
@@ -48,15 +113,61 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, closeDrawer: () => void }> = ({ 
                         <ButtonClose
                             handleEvent={() => closeDrawer()}
                         />
-
-
-
                     </DrawerHeader>
                     <DrawerBody
                         minH={'45vh'}
                     >
+                        <Box
+                            className="flex flex-wrap mr-20"
+                            gap={2}
+                        >
 
+                            {
+                                filterParameters?.find(parameter => parameter.name === 'macroCategory') &&
+                                <SelectOption
+                                    values={filterParameters?.find(parameter => parameter.name === 'macroCategory')?.parameters}
+                                    defaultValue={filters?.macroCategory}
+                                    placeholder={'categoria'}
+                                    handleClick={(value) => handleChange(value, 'macroCategory')}
+                                />
+                            }
+                            {
+                                filterParameters?.find(parameter => parameter.name === 'microCategory') &&
+                                <SelectOption
+                                    values={filterParameters?.find(parameter => parameter.name === 'microCategory')?.parameters}
+                                    defaultValue={filters?.microCategory}
+                                    placeholder={'micro categoria'}
+                                    handleClick={(value) => handleChange(value, 'microCategory')}
+                                />
+                            }
+                            {
+                                filterParameters?.find(parameter => parameter.name === 'sizes') &&
+                                <SelectOption
+                                    values={filterParameters?.find(parameter => parameter.name === 'sizes')?.parameters}
+                                    defaultValue={filters?.sizes?.[0].toUpperCase()}
+                                    placeholder={'taglie'}
+                                    handleClick={(value) => handleChange(value, 'sizes')}
+                                />
+                            }
+                            {
+                                filterParameters?.find(parameter => parameter.name === 'colors') &&
+                                <SelectOption
+                                    values={filterParameters?.find(parameter => parameter.name === 'colors')?.parameters}
+                                    defaultValue={filters?.colors?.[0]}
+                                    placeholder={'colore'}
+                                    handleClick={(value) => handleChange(value, 'colors')}
+                                />
+                            }
+                            <SelectMaxMinPrice handleChange={changePriceEvent}
+                                defaultValue={{
+                                    minPrice: filters?.minPrice,
+                                    maxPrice: filters?.maxPrice
+                                }}
+                            />
+
+                        </Box>
                         <ButtonGroup
+                            mt={10}
                             width={'full'}
                         >
                             <Button
@@ -65,7 +176,7 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, closeDrawer: () => void }> = ({ 
                                 py={5}
                                 fontSize={'sm'}
                                 onClick={() => {
-
+                                    setFilters(undefined)
                                 }}
                             >
                                 Resetta filtri
@@ -76,7 +187,9 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, closeDrawer: () => void }> = ({ 
                                 py={5}
                                 fontSize={'sm'}
                                 onClick={() => {
-
+                                    if (!filters) return
+                                    handleConfirm(filters)
+                                    return
                                 }}
                             >
                                 Conferma

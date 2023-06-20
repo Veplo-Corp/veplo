@@ -114,6 +114,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [drawerFilterOpen, setDrawerFilterOpen] = useState(false)
     const [typeProducts, setTypeProducts] = useState<'abbigliamento' | 'accessori'>('abbigliamento')
     const [resetProducts, setResetProducts] = useState(false)
+    const isSmallView = useBreakpointValue({ base: true, md: false });
 
     const dispatch = useDispatch();
 
@@ -262,7 +263,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         const filtersParams = getParamsFiltersFromObject(filters)
         if (filterParameter === 'macroCategory') {
-            router.replace({
+            router.push({
                 //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
                 pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${createUrlSchema([value])}/tutto/rilevanza`,
                 query: {
@@ -271,7 +272,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             })
         }
         if (filterParameter === 'microCategory') {
-            router.replace({
+            router.push({
                 //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
                 pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${createUrlSchema([value])}/rilevanza`,
                 query: {
@@ -284,7 +285,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             filterParameter === 'colors'
             //filterParameter === 'fit' || filterParameter === 'length' || filterParameter === 'materials' || filterParameter === 'traits'
         ) {
-            router.replace({
+            router.push({
                 pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
                 query: {
                     ...filtersParams,
@@ -296,7 +297,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         else if (filterParameter === 'sizes') {
             //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
             const size = value?.split(' ')[0].toLocaleLowerCase()
-            router.replace({
+            router.push({
                 pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
                 query: {
                     ...filtersParams,
@@ -308,16 +309,44 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
     }
 
-    const deleteFilterParams = (paramters: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting') => {
+    const deleteFilterParams = (paramters: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting' | 'microCategory') => {
+        if (paramters === 'microCategory') {
+            let filtersParams = getParamsFiltersFromObject(filters)
+            //TODO inserire sorting
+            return router.push({
+                pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/'tutto'/rilevanza'}`,
+                query: {
+                    ...filtersParams
+                }
+            })
+        }
         let filtersParams = getParamsFiltersFromObject(filters)
         delete filtersParams[paramters]
         //TODO inserire sorting
-        router.replace({
-            pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza'}`,
+        return router.push({
+            pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
             query: {
                 ...filtersParams
             }
         })
+    }
+
+    const routerConfirmDrawerFilter = (value: ProductsFilter) => {
+        if (typeof value.sizes?.[0] === 'string') {
+            let size = value.sizes?.[0]
+            value.sizes[0] = size.split(' ')[0].toLowerCase()
+        }
+
+        let filtersParams = getParamsFiltersFromObject(value)
+        console.log(filtersParams);
+        //TODO inserire sorting
+        return router.push({
+            pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof value.macroCategory === 'string' && value.macroCategory !== '' ? value.macroCategory.toLowerCase() : 'abbigliamento'}/${value.microCategory ? createUrlSchema([value.microCategory]) : 'tutto'}/rilevanza`,
+            query: {
+                ...filtersParams
+            }
+        })
+
     }
 
 
@@ -392,7 +421,10 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             >
                                 <FiltersSelections
                                     typeProducts={typeProducts}
-                                    filters={filters} handleConfirmChange={changeRouter}
+                                    filters={filters}
+                                    handleConfirmChange={changeRouter}
+                                    filterDrawerConfirm={routerConfirmDrawerFilter}
+
                                     changePriceEventRouter={(parameters) => {
                                         console.log(parameters);
                                         let filtersParams: any = getParamsFiltersFromObject(filters)
@@ -408,8 +440,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
 
                                         console.log(newParams);
-
-
                                         //TODO gestire sorting appena possibile
                                         router.replace({
                                             pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
@@ -449,26 +479,43 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     })}
                                 </Select>
                             </Box>
-                            <HStack spacing={2} mt={2}>
-                                {Object.keys(filters).map((value) => (
-                                    <>
-                                        {value === 'microCategory'}
-                                        {(value === 'sizes' || value === 'maxPrice' || value === 'minPrice') && filters.sizes &&
-                                            <TagFilter
-                                                value={value}
-                                                text={
-                                                    { value === 'sizes' && <>Taglia {filters.sizes[0].toUpperCase()}</>}
-                                                {value === 'minPrice' && <>Prezzo minimo {filters.minPrice}€</>}
-                                                {value === 'maxPrice' && <>Prezzo massimo {filters.maxPrice}€</>}
-                                                }
-                                        handleEvent={deleteFilterParams}
-                                            
-                                            />
-                                        }
 
-                                    </>
+                            <HStack mt={[3, 2]} spacing={2}
+                                className='flex flex-wrap'
+                            >
+                                {Object.keys(filters).filter(key => !['macroCategory', 'gender',].includes(key)).map((value) => {
+                                    console.log(value);
+                                    console.log('micro', filters.microCategory);
 
-                                ))}
+                                    let text: string = '';
+                                    if (value === 'sizes' && filters.sizes?.[0]) text = `Taglia ${filters.sizes[0].toUpperCase()}`
+                                    if (value === 'minPrice') text = `Min ${filters.minPrice}€`
+                                    if (value === 'maxPrice') text = `Max ${filters.maxPrice}€`
+                                    if (value === 'colors' && filters.colors?.[0]) text = `${toUpperCaseFirstLetter(filters.colors[0])}`
+
+                                    return (
+
+                                        <div key={value} className={`${value === 'microCategory' && !filters.microCategory && 'hidden'}`}>
+                                            {value === 'microCategory' && filters.microCategory &&
+                                                <TagFilter
+                                                    value={value}
+                                                    text={'' + toUpperCaseFirstLetter(filters.microCategory)}
+                                                    handleEvent={deleteFilterParams}
+                                                />
+                                            }
+                                            {(value === 'sizes' || value === 'maxPrice' || value === 'minPrice' || value === 'colors') &&
+                                                <TagFilter
+                                                    value={value}
+                                                    text={text}
+                                                    handleEvent={deleteFilterParams}
+
+                                                />
+                                            }
+
+                                        </div>
+                                    )
+                                })
+                                }
                             </HStack>
 
                         </Box>
