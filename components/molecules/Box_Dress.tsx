@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useLayoutEffect, useState } from 'react'
-import { Avatar, Box, Fade, Image, ScaleFade, Text, VStack } from '@chakra-ui/react'
+import { Avatar, Box, Fade, Image, ScaleFade, Text, VStack, useBreakpointValue } from '@chakra-ui/react'
 import Circle_Color from '../atoms/Circle_Color'
 import { Variation } from '../../src/interfaces/product.interface'
 import { COLORS } from '../mook/colors'
@@ -39,6 +39,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
     const [listOfSizesAvailable, setListOfSizesAvailable] = useState<string[]>([])
     const [showSize, setShowSize] = useState(false)
     const router = useRouter()
+    const isSmallView = useBreakpointValue({ base: true, md: false });
 
     useEffect(() => {
         if (!product.variations) return
@@ -104,8 +105,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
         <>
             {
                 product?.variations?.[0].photos?.[0] &&
-                <Box
-                >
+                <Box >
 
                     {showStoreHeader && <Link
                         prefetch={false}
@@ -213,30 +213,46 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
 
                             }
 
-                            <Swiper
-                                spaceBetween={1}
-                                slidesPerView={1}
-                                loop
-                                pagination={{
-                                    clickable: true
-                                }}
-                                modules={[Pagination]}
-                            >
-                                {product.variations?.[indexPhoto].photos?.map(photoUrl => {
-                                    return (
-                                        <SwiperSlide>
-                                            <LazyLoadImage
-                                                onMouseEnter={() => {
-                                                    setShowSize(true)
-                                                }}
-                                                src={isMobile && photoUrl ? imageKitUrl(photoUrl) : imageKitUrl(photoUrl ? photoUrl : '', 447, 660)}
-                                                alt={product.name ? product.name : ''}
-                                                className="w-fit min-h-[240px] md:min-h-0 aspect-[4.2/5] object-cover "
-                                            />
-                                        </SwiperSlide>
-                                    )
-                                })}
-                            </Swiper>
+                            {isSmallView ?
+                                (
+                                    <Swiper
+                                        spaceBetween={1}
+                                        slidesPerView={1}
+                                        loop
+                                        pagination={{
+                                            clickable: true
+                                        }}
+                                        modules={[Pagination]}
+                                    >
+                                        {product.variations?.[indexPhoto].photos?.map((photoUrl, index) => {
+                                            return (
+                                                <SwiperSlide key={index}>
+                                                    <LazyLoadImage
+                                                        onMouseEnter={() => {
+                                                            setShowSize(true)
+                                                        }}
+                                                        src={isMobile && photoUrl ? imageKitUrl(photoUrl) : imageKitUrl(photoUrl ? photoUrl : '', 447, 660)}
+                                                        alt={product.name ? product.name : ''}
+                                                        className="w-fit min-h-[240px] md:min-h-0 aspect-[4.2/5] object-cover "
+                                                    />
+                                                </SwiperSlide>
+                                            )
+                                        })}
+                                    </Swiper>)
+                                :
+                                (
+                                    <LazyLoadImage
+                                        onMouseEnter={() => {
+                                            setShowSize(true)
+                                        }}
+                                        src={isMobile && urlProduct ? imageKitUrl(urlProduct) : imageKitUrl(urlProduct ? urlProduct : '', 447, 660)}
+                                        alt={product.name ? product.name : ''}
+                                        className="w-fit min-h-[240px] md:min-h-0 aspect-[4.2/5] object-cover "
+                                    />
+                                )
+
+                            }
+
 
                             <Text
                                 fontSize={'md'}

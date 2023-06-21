@@ -118,7 +118,7 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, ty
                         minH={'45vh'}
                     >
                         <Box
-                            className="flex flex-wrap mr-20"
+                            className="flex flex-wrap mr-16"
                             gap={2}
                         >
 
