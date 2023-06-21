@@ -61,6 +61,14 @@ export const findParsedFilter = (filters: ProductsFilter, typeProducts: 'abbigli
         return parsedFilter
     }
 
+    parsedFilter.push({
+        name: 'macroCategory',
+        parameters: categories.map(category => {
+            return category.name
+        }),
+        value: filters.macroCategory
+    })
+
     //inserire i campi per ogni filtro applicabile
     if (categoryObject.types) {
         parsedFilter.push({

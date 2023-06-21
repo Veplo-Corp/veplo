@@ -19,7 +19,7 @@ import { FilterParameters, findParsedFilter } from '../utils/findParsedFilter';
 
 
 
-const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (value: ProductsFilter | undefined) => void, handleConfirmChange: (value: string, filterParameter: string) => void, typeProducts: 'abbigliamento' | 'accessori', changePriceEventRouter: (parameters: { name: string, value: any }[]) => void }> = ({ filters, handleConfirmChange, typeProducts, changePriceEventRouter, filterDrawerConfirm }) => {
+const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (value: ProductsFilter | undefined) => void, handleConfirmChange: (value: string, filterParameter: string) => void, typeProducts: 'abbigliamento' | 'accessori', changePriceEventRouter: (parameters: { name: string, value: any }[]) => void, handleChangeMacroCategory: (value: string) => void }> = ({ filters, handleConfirmChange, typeProducts, changePriceEventRouter, filterDrawerConfirm, handleChangeMacroCategory }) => {
 
     const isSmallView = useBreakpointValue({ base: true, md: false });
     //TODO creare interface
@@ -68,7 +68,6 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
     const handleConfirmModalFilter = (filters: ProductsFilter | undefined) => {
         filterDrawerConfirm(filters)
         return setDrawerFilterOpen(false)
-
     }
 
 
@@ -96,7 +95,12 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
                     filterParameters?.find(parameter => parameter.name === 'microCategory') &&
                     <SelectOption
                         values={filterParameters?.find(parameter => parameter.name === 'microCategory')?.parameters}
-                        defaultValue={filterParameters?.find(parameter => parameter.name === 'microCategory')?.value}
+                        defaultValue={
+                            filterParameters?.find(parameter => parameter.name === 'microCategory')?.value ?
+                                filterParameters?.find(parameter => parameter.name === 'microCategory')?.value :
+                                undefined
+
+                        }
                         placeholder={'micro categoria'}
                         handleClick={(value) => handleChange(value, 'microCategory')}
                     />
@@ -223,6 +227,7 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
                 handleConfirm={handleConfirmModalFilter}
                 filtersProps={filters}
                 typeProducts={typeProducts}
+                changeMacroCategory={handleChangeMacroCategory}
             />
         </Box >
 
