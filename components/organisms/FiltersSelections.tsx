@@ -2,19 +2,13 @@ import React, { FC, useEffect, useState } from 'react'
 import { ProductsFilter } from '../../src/pages/[prodotti]/[...slug]'
 import { Box, Button, Text, useBreakpointValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { CATEGORIES } from '../mook/categories';
-import { FIT_TYPES } from '../mook/productParameters/fit';
-import { LENGTH_TYPES } from '../mook/productParameters/length';
-import { MATERIALS_TYPES } from '../mook/productParameters/materials';
-import { TRAITS_TYPES } from '../mook/productParameters/traits';
-import { COLORS_TYPES } from '../mook/productParameters/colors';
-import { Color } from '../mook/colors';
+
 import SelectOption from '../atoms/SelectOption';
-import { SIZES_TYPES } from '../mook/productParameters/sizes';
 import { Filter, NavArrowRight } from 'iconoir-react';
 import DrawerFilter from './DrawerFilter';
 import SelectMaxMinPrice from '../atoms/SelectMaxMinPrice';
 import { FilterParameters, findParsedFilter } from '../utils/findParsedFilter';
+import BrandsFilter from '../atoms/BrandsFilter';
 
 
 
@@ -26,7 +20,7 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
     const [filterParameters, setFilterParameters] = useState<FilterParameters[]>()
     const [drawerFilterOpen, setDrawerFilterOpen] = useState(false)
     const [filterCount, setFilterCount] = useState(0)
-    const router = useRouter()
+    const router = useRouter();
 
 
     useEffect(() => {
@@ -35,7 +29,6 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
         //crea l'oggetto filtri applicati
         const parsedFilter = findParsedFilter(filters, typeProducts)
         if (!parsedFilter) return
-        console.log(parsedFilter);
         return setFilterParameters(parsedFilter)
 
     }, [filters])
@@ -47,7 +40,6 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
 
 
     const changePriceEvent = (minPrice: number | undefined | null | string, maxPrice: number | undefined | null | string) => {
-        console.log(minPrice, maxPrice);
         let parameters: { name: string, value: number | undefined | null | string }[] = [];
 
         parameters.push({
@@ -91,6 +83,13 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
                         handleClick={(value) => handleChange(value, 'macroCategory')}
                     />
                 }
+                <BrandsFilter
+                    handleChangeValues={(value: string) => {
+                        handleChange(value, 'brand')
+                    }}
+                    selectedValue={filters.brand}
+                    placeholder='brand'
+                />
                 {
                     filterParameters?.find(parameter => parameter.name === 'microCategory') &&
                     <SelectOption

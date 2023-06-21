@@ -6,6 +6,7 @@ export const parseSlugUrlFilter = (slug: string | undefined) => {
     const colors = params.get('colors');
     const minPrice = params.get('minPrice');
     const maxPrice = params.get('maxPrice');
+    const brand = params.get('brand');
 
     const parsedParams: any = {};
     if (sizes) {
@@ -19,6 +20,9 @@ export const parseSlugUrlFilter = (slug: string | undefined) => {
     }
     if (maxPrice) {
         parsedParams['maxPrice'] = parseInt(maxPrice, 10);
+    }
+    if (brand) {
+        parsedParams['brand'] = brand;
     }
     //TODO inserire anche traits, materials, length, fit
     return Object.keys(parsedParams).length ? parsedParams : undefined;

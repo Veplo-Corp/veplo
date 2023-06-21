@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from 'react'
 import { Box, Button, ButtonGroup, Center, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Text, useBreakpointValue, useDisclosure, VStack } from '@chakra-ui/react'
 import { Cancel } from 'iconoir-react'
 import ModalReausable from './ModalReausable'
-import { PropsFilter, PropsOpenModal } from '../../src/pages/abbigliamento-old/[...slug]'
 import { useRouter } from 'next/router'
 import Circle_Color from '../atoms/Circle_Color'
 import { COLORS } from '../mook/colors'
@@ -16,6 +15,8 @@ import Autocomplete from '../atoms/Autocomplete_Headless'
 import { ProductsFilter } from '../../src/pages/[prodotti]/[...slug]'
 import { FilterParameters, findParsedFilter } from '../utils/findParsedFilter'
 import SelectOption from '../atoms/SelectOption'
+import { FilterAccepted } from '../atoms/TagFilter'
+import BrandsFilter from '../atoms/BrandsFilter'
 
 const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, typeProducts: 'abbigliamento' | 'accessori', closeDrawer: () => void, handleConfirm: (filters: ProductsFilter | undefined) => void, changeMacroCategory: (value: string) => void }> = ({ isOpenDrawer, closeDrawer, filtersProps, typeProducts, handleConfirm, changeMacroCategory }) => {
 
@@ -31,12 +32,11 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, ty
         const parsedFilter = findParsedFilter(filtersProps, typeProducts)
         setFilters(filtersProps)
         if (!parsedFilter) return
-        console.log(parsedFilter);
         return setFilterParameters(parsedFilter)
 
     }, [filtersProps])
 
-    const handleChange = (value: string, filterParameter: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting' | 'microCategory' | 'macroCategory') => {
+    const handleChange = (value: string, filterParameter: FilterAccepted) => {
         if (!value) return
         if (filterParameter === 'macroCategory') {
             changeMacroCategory(value)
@@ -60,7 +60,6 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, ty
 
     }
 
-    console.log(filterParameters);
 
 
 
@@ -68,7 +67,6 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, ty
 
 
     const changePriceEvent = (minPrice: number | undefined | null | string, maxPrice: number | undefined | null | string) => {
-        console.log(minPrice, maxPrice);
         let parameters: any = {};
         if (minPrice) {
             parameters['minPrice'] = minPrice
@@ -158,6 +156,16 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, ty
                                     defaultValue={filters?.colors?.[0]}
                                     placeholder={'colore'}
                                     handleClick={(value) => handleChange(value, 'colors')}
+                                />
+                            }
+                            {
+                                filterParameters?.find(parameter => parameter.name === 'brand') &&
+                                <BrandsFilter
+                                    handleChangeValues={(value: string) => {
+                                        handleChange(value, 'brand')
+                                    }}
+                                    selectedValue={filters?.brand}
+                                    placeholder='brand'
                                 />
                             }
                             <SelectMaxMinPrice handleChange={changePriceEvent}
