@@ -3,7 +3,7 @@ import { storage } from '../../src/config/firebase'
 
 
 const uploadPhotoFirebase = async (blob: any, positionInStorage: string) => {
-    //const storageRef = ref(storage, `/${shopId}/abbigliamento/${productId}/${name}`);
+    //const storageRef = ref(storage, `/${shopId}/prodotti/${productId}/${name}`);
     const storageRef = ref(storage, positionInStorage);
 
 
