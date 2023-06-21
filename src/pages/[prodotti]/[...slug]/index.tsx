@@ -26,7 +26,7 @@ import { SORT_PRODUCT } from '../../../../components/mook/sort_products';
 import { Cancel, Filter } from 'iconoir-react';
 import { getParamsFiltersFromObject } from '../../../../components/utils/getParamsFiltersFromObject';
 import FiltersSelections from '../../../../components/organisms/FiltersSelections';
-import TagFilter from '../../../../components/atoms/TagFilter';
+import TagFilter, { FilterAccepted } from '../../../../components/atoms/TagFilter';
 
 
 const RANGE = process.env.NODE_ENV === 'production' ? 10 : 3
@@ -102,6 +102,7 @@ export interface ProductsFilter extends ParsedURL {
     colors?: string[],
     maxPrice?: number, //numero intero
     minPrice?: number, //numero intero
+    brand?: string
 }
 
 const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Product[], typeProductsProps: 'abbigliamento' | 'accessori' }> = ({ filtersProps, error, dataProducts, typeProductsProps }) => {
@@ -301,9 +302,11 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 }
             })
         }
+
         //TODO gestire anche  fit, length, materials, traits
         else if (
-            filterParameter === 'colors'
+            filterParameter === 'colors' ||
+            filterParameter === 'brand'
             //filterParameter === 'fit' || filterParameter === 'length' || filterParameter === 'materials' || filterParameter === 'traits'
         ) {
             router.push({
@@ -330,7 +333,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
     }
 
-    const deleteFilterParams = (paramters: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting' | 'microCategory' | 'macroCategory') => {
+    const deleteFilterParams = (paramters: FilterAccepted) => {
         if (paramters === 'macroCategory') {
             //TODO inserire sorting
             return router.push({
@@ -339,7 +342,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
 
         if (paramters === 'microCategory') {
-            let filtersParams = getParamsFiltersFromObject(filters)
+            let filtersParams: any = getParamsFiltersFromObject(filters)
             //TODO inserire sorting
             return router.push({
                 pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/tutto/rilevanza`,
@@ -348,7 +351,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 }
             })
         }
-        let filtersParams = getParamsFiltersFromObject(filters)
+        let filtersParams: any = getParamsFiltersFromObject(filters)
         delete filtersParams[paramters]
         //TODO inserire sorting
         return router.push({
@@ -514,13 +517,12 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 className='flex flex-wrap'
                             >
                                 {Object.keys(filters).filter(key => !['gender'].includes(key)).map((value) => {
-
-
                                     let text: string = '';
                                     if (value === 'sizes' && filters.sizes?.[0]) text = `Taglia ${filters.sizes[0].toUpperCase()}`
                                     if (value === 'minPrice') text = `Min ${filters.minPrice}€`
                                     if (value === 'maxPrice') text = `Max ${filters.maxPrice}€`
                                     if (value === 'colors' && filters.colors?.[0]) text = `${toUpperCaseFirstLetter(filters.colors[0])}`
+                                    if (value === 'brand' && filters.brand) text = `${toUpperCaseFirstLetter(filters.brand)}`
 
                                     return (
 
@@ -539,12 +541,11 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                     handleEvent={deleteFilterParams}
                                                 />
                                             }
-                                            {(value === 'sizes' || value === 'maxPrice' || value === 'minPrice' || value === 'colors') &&
+                                            {(value === 'sizes' || value === 'brand' || value === 'maxPrice' || value === 'minPrice' || value === 'colors') &&
                                                 <TagFilter
                                                     value={value}
                                                     text={text}
                                                     handleEvent={deleteFilterParams}
-
                                                 />
                                             }
 

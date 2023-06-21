@@ -1,4 +1,5 @@
 import { ProductsFilter } from "../../src/pages/[prodotti]/[...slug]";
+import { FilterAccepted } from "../atoms/TagFilter";
 import { CATEGORIES } from "../mook/categories";
 import { Color } from "../mook/colors";
 import { COLORS_TYPES } from "../mook/productParameters/colors";
@@ -9,7 +10,7 @@ import { SIZES_TYPES } from "../mook/productParameters/sizes";
 import { TRAITS_TYPES } from "../mook/productParameters/traits";
 
 export interface FilterParameters {
-    name: 'macroCategory' | 'microCategory' | 'minPrice' | 'maxPrice' | 'colors' | 'fit' | 'traits' | 'length' | 'materials' | 'sizes',
+    name: FilterAccepted,
     parameters: undefined | number[] | string[] | Color[],
     value: string | number | undefined | null
 }
@@ -32,6 +33,12 @@ export const findParsedFilter = (filters: ProductsFilter, typeProducts: 'abbigli
             parameters: undefined,
             value: filters.maxPrice
         },
+        {
+            name: "brand",
+            parameters: undefined,
+            value: filters.brand
+        },
+
     ]
 
     //ricerca categoryObject della categoria selezionata
@@ -141,6 +148,8 @@ export const findParsedFilter = (filters: ProductsFilter, typeProducts: 'abbigli
             })
         }
     }
+
+
 
     if (typeof categoryObject.sizes === 'string') {
         const categoryObjectSizes: string = categoryObject.sizes

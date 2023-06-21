@@ -3,9 +3,7 @@ import { Combobox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { useSelector } from 'react-redux'
 
-
 const Autocomplete: React.FC<{ handleChangeValues?: any, selectedValue?: string, placeholder?: string }> = ({ handleChangeValues, selectedValue, placeholder }) => {
-
     const [selected, setSelected] = useState(selectedValue || '')
     const [query, setQuery] = useState('')
     const [filteredValues, setFilteredValues] = useState<any>([])
@@ -18,15 +16,8 @@ const Autocomplete: React.FC<{ handleChangeValues?: any, selectedValue?: string,
         }
     }, [brandsRedux])
 
-
-
-
-
     useEffect(() => {
-
-
         if (query === '') return
-
         setFilteredValues((prevstate: any) => {
             if (!brands) return
             return query === '' || query.length < 3
@@ -44,7 +35,6 @@ const Autocomplete: React.FC<{ handleChangeValues?: any, selectedValue?: string,
         })
 
     }, [query])
-
 
 
     return (
