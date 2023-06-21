@@ -116,7 +116,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [drawerFilterOpen, setDrawerFilterOpen] = useState(false)
     const [typeProducts, setTypeProducts] = useState<'abbigliamento' | 'accessori'>('abbigliamento')
     const [resetProducts, setResetProducts] = useState(false)
-    const isSmallView = useBreakpointValue({ base: true, md: false });
     const dispatch = useDispatch();
 
     useEffect(() => {

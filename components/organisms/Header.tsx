@@ -265,9 +265,9 @@ const Header = () => {
                                             >
                                                 <Link
                                                     className='flex gap-2 p-2'
-                                                    href={router.asPath.includes('prodott') ? '/negozi' : (gender ? `/abbigliamento/${gender}-abbigliamento/tutto/rilevanza` : '/')}
+                                                    href={router.query?.prodotti === 'abbigliamento' ? '/negozi' : (gender ? `/abbigliamento/${gender}-abbigliamento/tutto/rilevanza` : '/')}
                                                 >
-                                                    {router.asPath.includes('prodott') ?
+                                                    {router.query?.prodotti === 'abbigliamento' ?
                                                         (<SmallShopAlt
                                                             strokeWidth={2}
                                                             className="w-6 h-6 my-auto"
@@ -309,7 +309,7 @@ const Header = () => {
 
 
                                                 <Link
-                                                    href={router.asPath.includes('prodott') ? '/negozi' : (gender ? `/abbigliamento/${gender}-abbigliamento/tutto/rilevanza` : '/')}
+                                                    href={router.asPath.includes('abbigliamento') ? '/negozi' : (gender ? `/abbigliamento/${gender}-abbigliamento/tutto/rilevanza` : '/')}
                                                     className='flex h-full w-full'
                                                 >
                                                     <Button
@@ -330,11 +330,11 @@ const Header = () => {
                                                             fontSize={'md'}
 
                                                         >
-                                                            {router.asPath.includes('prodott') ? 'Negozi' : 'Prodotti'}
-
+                                                            {router.query?.prodotti && 'Negozi'}
+                                                            {!router.query?.prodotti && 'Prodotti'}
                                                         </Text>
 
-                                                        {router.asPath.includes('prodott') ?
+                                                        {router.query?.prodotti === 'abbigliamento' ?
                                                             (<SmallShopAlt
                                                                 strokeWidth={2}
                                                                 className="w-6 h-6 my-auto"

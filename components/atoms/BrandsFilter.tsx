@@ -26,7 +26,7 @@ const BrandsFilter: React.FC<{ handleChangeValues: any, selectedValue?: string |
 
 
     useEffect(() => {
-        if (query === '') return
+        if (query === '') return setFilteredValues(brandsRedux)
         setFilteredValues((prevstate: any) => {
             if (!brands) return
             const results = query === '' || query.length < 3
@@ -60,7 +60,7 @@ const BrandsFilter: React.FC<{ handleChangeValues: any, selectedValue?: string |
                     {brands && <Combobox.Input
                         autoComplete='off'
                         placeholder={placeholder ? placeholder : ''}
-                        className={`${selected ? 'bg-black text-white placeholder:white' : 'text-[#3A3A3A] placeholder:text-[#3A3A3A]'} text-[16px]  w-fit max-w-[150px] pr-7 border-none rounded-lg h-full pl-3 text-sm  focus:outline-none`}
+                        className={`${selected ? 'bg-black text-white placeholder:white' : 'text-[#3A3A3A] placeholder:text-[#3A3A3A]'} text-[16px]  w-fit max-w-[130px] md:max-w-[150px] pr-7 border-none rounded-lg h-full pl-3 text-sm  focus:outline-none`}
                         //displayValue={(value) => value}
                         onChange={(event) => setQuery(event.target.value)}
                     />}
