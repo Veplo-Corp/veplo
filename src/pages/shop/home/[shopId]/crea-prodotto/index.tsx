@@ -347,7 +347,7 @@ const index = () => {
             console.log(isCreatedProduct);
             setIsLoading(false)
             addToast({ position: 'top', title: 'Prodotto creato con successo', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
-            return router.push('/shop/home/' + router.query.shopId + '/prodotti')
+            return router.push('/shop/home/' + router.query.shopId + '/abbigliamento')
         } catch (e: any) {
             console.log(e);
             setIsLoading(false)

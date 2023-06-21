@@ -456,7 +456,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
         const sortUrl = SORT_PRODUCT.find(element => element.url === e.target.value)?.url
         router.replace({
-            pathname: `/prodotti/${gender === 'm' ? 'uomo' : 'donna'}-${typeof category === 'string' && category !== '' ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortUrl ? sortUrl : 'rilevanza'}`,
+            pathname: `/abbigliamento/${gender === 'm' ? 'uomo' : 'donna'}-${typeof category === 'string' && category !== '' ? category.toLowerCase() : 'abbigliamento'}/${microCategory ? createUrlSchema([microCategory]) : 'tutto'}/${sortUrl ? sortUrl : 'rilevanza'}`,
             query: {
                 ...filter
             }
@@ -498,9 +498,9 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                                             prefetch={false}
                                             href={element.url === createUrlSchema([category])
                                                 ?
-                                                '/prodotti/' + (gender == 'f' ? 'donna' : 'uomo') + '-abbigliamento/tutto/rilevanza'
+                                                '/abbigliamento/' + (gender == 'f' ? 'donna' : 'uomo') + '-abbigliamento/tutto/rilevanza'
                                                 :
-                                                '/prodotti/' + (gender == 'f' ? 'donna' : 'uomo') + '-' + element.url + '/tutto/rilevanza'
+                                                '/abbigliamento/' + (gender == 'f' ? 'donna' : 'uomo') + '-' + element.url + '/tutto/rilevanza'
                                             }
                                         >
                                             <Text
@@ -945,8 +945,8 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                     >
                         {microcategoryTypes.map((element: string) => {
                             let url = router.asPath.split('?')[1] ?
-                                `/prodotti/${slug[0]}/${createUrlSchema([element])}/${slug[2]}?${router.asPath.split('?')[1]}`
-                                : `/prodotti/${slug[0]}/${createUrlSchema([element])}/${slug[2]}`
+                                `/abbigliamento/${slug[0]}/${createUrlSchema([element])}/${slug[2]}?${router.asPath.split('?')[1]}`
+                                : `/abbigliamento/${slug[0]}/${createUrlSchema([element])}/${slug[2]}`
                             if (element === microCategory) {
                                 url = url.replace(createUrlSchema([element]), 'tutto')
                             }

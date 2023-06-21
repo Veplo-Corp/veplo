@@ -51,7 +51,7 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: () => vo
                         onClick={closeCategory}
                         prefetch={false}
                         className='text-base font-medium mb-1 w-fit cursor-pointer hover:underline underline-offset-2'
-                        href={indexCategory === 1 ? `/prodotti/uomo-abbigliamento/tutto/rilevanza` : `/prodotti/donna-abbigliamento/tutto/rilevanza`}
+                        href={indexCategory === 1 ? `/abbigliamento/uomo-abbigliamento/tutto/rilevanza` : `/abbigliamento/donna-abbigliamento/tutto/rilevanza`}
                     >
                         Tutto l'abbigliamento
                     </Link>
@@ -67,7 +67,7 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: () => vo
                         return (
                             <Link
                                 prefetch={false}
-                                href={!categorySelectedUrl ? `/ prodotti / ${gender}-abbigliamento/tutto/rilevanza` : `/prodotti/${categorySelectedUrl}/tutto/rilevanza`}
+                                href={!categorySelectedUrl ? `/ prodotti / ${gender}-abbigliamento/tutto/rilevanza` : `/abbigliamento/${categorySelectedUrl}/tutto/rilevanza`}
                                 key={category.name} className='text-base font-medium mb-1 w-fit cursor-pointer hover:underline underline-offset-2'
                                 onClick={closeCategory}
                             >

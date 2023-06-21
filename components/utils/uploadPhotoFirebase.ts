@@ -2,22 +2,22 @@ import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from "firebase
 import { storage } from '../../src/config/firebase'
 
 
-const uploadPhotoFirebase = async(blob:any, positionInStorage:string) => {
-    //const storageRef = ref(storage, `/${shopId}/prodotti/${productId}/${name}`);
+const uploadPhotoFirebase = async (blob: any, positionInStorage: string) => {
+    //const storageRef = ref(storage, `/${shopId}/abbigliamento/${productId}/${name}`);
     const storageRef = ref(storage, positionInStorage);
 
 
-    try{
+    try {
         await uploadBytes(storageRef, blob)
         const url = await getDownloadURL(storageRef)
-        
+
         console.log(url);
         return url
-    } catch(e:any){
+    } catch (e: any) {
         throw new Error(e);
     }
 
-    
+
 
     // new Promise((resolve, reject) => {
     //     const storageRef = ref(storage, `/files/${productId}/${name}`);
@@ -29,7 +29,7 @@ const uploadPhotoFirebase = async(blob:any, positionInStorage:string) => {
     //     },
     //     (error) => {
     //         console.log(error);
-           
+
     //     },
 
 
@@ -44,9 +44,9 @@ const uploadPhotoFirebase = async(blob:any, positionInStorage:string) => {
     // )
     //   });
 
-    
 
-    
+
+
 }
 
 export default uploadPhotoFirebase;
