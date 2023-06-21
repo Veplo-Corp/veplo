@@ -78,7 +78,7 @@ const BrandsFilter: React.FC<{ handleChangeValues: any, selectedValue?: string |
                     leaveTo="opacity-0"
                     afterLeave={() => setQuery('')}
                 >
-                    <Combobox.Options className="z-10 mt-1 w-fit absolute max-h-60  min-w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    <Combobox.Options className="z-10 mt-1 w-fit absolute max-h-40 lg:max-h-60  min-w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                         {filteredValues.length === 0 && query !== '' ? (
                             <div className="relative cursor-default select-none py-2 px-4 text-[#3A3A3A]">
                                 Nessun brand trovato.
@@ -90,7 +90,7 @@ const BrandsFilter: React.FC<{ handleChangeValues: any, selectedValue?: string |
                                 <Combobox.Option
                                     key={valueId}
                                     className={({ active }) =>
-                                        `relative cursor-pointer select-none py-3 h-full px-4 ${active ? 'bg-[#F2F2F2] text-black' : 'text-gray-900'
+                                        `relative cursor-pointer select-none py-2 md:py-3 h-full px-4 ${active ? 'bg-[#F2F2F2] text-black' : 'text-gray-900'
                                         }`
                                     }
 
