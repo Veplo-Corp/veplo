@@ -16,6 +16,17 @@ import { isMobile } from 'react-device-detect'
 import { useRouter } from 'next/router'
 import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals'
 import { Product } from '../../src/lib/apollo/generated/graphql'
+// import Swiper core and required modules
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectFade } from 'swiper';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 
 const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean, productLink: string }> = ({ handleEventSelectedDress, product, color, showStoreHeader, productLink }) => {
@@ -89,10 +100,10 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
 
 
 
-
     return (
         <>
-            {product?.variations?.[0].photos?.[0] &&
+            {
+                product?.variations?.[0].photos?.[0] &&
                 <Box
                 >
 
@@ -101,9 +112,6 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
                         onClick={handleEventSelectedDress}
                         href={product?.shopInfo?.name && product?.shopInfo?.id ? `/negozio/${product?.shopInfo?.id}/${createUrlSchema([product.shopInfo.name])}` : ''}>
                         <Box
-                            _active={{
-                                transform: 'scale(0.99)',
-                            }}
                             display={'flex'}
                             mb={3}
                         >
@@ -160,8 +168,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
                                 <ScaleFade
                                     initialScale={0.7} in={showSize}
                                     delay={0.3}
-
-                                    className='z-10 top-0  absolute hidden lg:flex'
+                                    className='top-0  absolute hidden lg:flex z-20'
                                 >
                                     <VStack
                                         background={'#FFFFFF'}
@@ -205,27 +212,31 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
 
 
                             }
-                            <LazyLoadImage
-                                onMouseEnter={() => {
-                                    setShowSize(true)
+
+                            <Swiper
+                                spaceBetween={1}
+                                slidesPerView={1}
+                                loop
+                                pagination={{
+                                    clickable: true
                                 }}
-
-                                src={isMobile && urlProduct ? imageKitUrl(urlProduct) : imageKitUrl(urlProduct ? urlProduct : '', 447, 660)}
-
-                                // onMouseEnter={() => {
-                                //     if (!product?.variations[indexPhoto].photos[1]) return
-                                //     seturlProduct(product?.variations[indexPhoto].photos[1])
-                                // }}
-                                // onMouseLeave={() => {
-                                //     seturlProduct(product?.variations[indexPhoto].photos[0])
-                                // }}
-                                //placeholderSrc={imageKitUrl(urlProduct)}
-                                //effect="blur"
-                                alt={product.name ? product.name : 'immagine non trovata'}
-                                className="w-fit min-h-[240px] md:min-h-0 aspect-[4.2/5] object-cover "
-
-
-                            />
+                                modules={[Pagination]}
+                            >
+                                {product.variations?.[indexPhoto].photos?.map(photoUrl => {
+                                    return (
+                                        <SwiperSlide>
+                                            <LazyLoadImage
+                                                onMouseEnter={() => {
+                                                    setShowSize(true)
+                                                }}
+                                                src={isMobile && photoUrl ? imageKitUrl(photoUrl) : imageKitUrl(photoUrl ? photoUrl : '', 447, 660)}
+                                                alt={product.name ? product.name : ''}
+                                                className="w-fit min-h-[240px] md:min-h-0 aspect-[4.2/5] object-cover "
+                                            />
+                                        </SwiperSlide>
+                                    )
+                                })}
+                            </Swiper>
 
                             <Text
                                 fontSize={'md'}
@@ -239,6 +250,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
                                 borderRadius={'full'}
                                 noOfLines={1}
                                 mr={3}
+                                zIndex={10}
                             >
                                 {product?.name?.toLocaleUpperCase()}
                             </Text>
@@ -247,6 +259,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
                                 bottom={3}
                                 left={4}
                                 display={'flex'}
+                                zIndex={50}
                             >
                                 <Circle_Color colors={productcolorsCSS.slice(0, 3)} dimension={isMobile ? 7 : 6} space={2} />
                                 {productcolorsCSS.length > 3 &&
@@ -283,6 +296,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
                                 minW={20}
                                 paddingX={3}
                                 display={'flex'}
+                                zIndex={50}
 
                                 paddingY={product.price?.v2 ? '6px' : '12px'}
                                 background={'primary.bg'}

@@ -55,3 +55,8 @@ div {
   border: none !important;
   opacity: 1;
 }
+
+/* Stile personalizzato per la paginazione di Swiper */
+.swiper-pagination-bullet-active {
+  background-color: #ffffff !important;
+}
