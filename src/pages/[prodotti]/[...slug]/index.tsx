@@ -390,9 +390,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`${filters.macroCategory ? filters.macroCategory : 'Abbigliamento'} ${filters.gender === 'f' ? 'donna' : 'uomo'} | Veplo`}
-                subtitle={`Tutto l'abbigliamento da ${filters.gender === 'f' ? 'donna' : 'uomo'} - ${filters.macroCategory === 'abbigliamento' ? 'Vestiti' : filters.macroCategory} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
+                subtitle={`Tutto l'abbigliamento da ${filters.gender === 'f' ? 'donna' : 'uomo'}${filters.macroCategory ? ' - ' + filters.macroCategory : ''} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
                 image={''}
-                description={`Tutto l'abbigliamento da ${filters.gender === 'f' ? 'donna' : 'uomo'} - ${filters.macroCategory === 'abbigliamento' ? 'Vestiti' : filters.macroCategory} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
+                description={`Tutto l'abbigliamento da ${filters.gender === 'f' ? 'donna' : 'uomo'}${filters.macroCategory ? ' - ' + filters.macroCategory : ''} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
             />
             <div className='relative  min-h-[120vh]'>
                 <Shop_not_Allowed>
