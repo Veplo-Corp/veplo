@@ -17,7 +17,7 @@ import { ProductsFilter } from '../../src/pages/[prodotti]/[...slug]'
 import { FilterParameters, findParsedFilter } from '../utils/findParsedFilter'
 import SelectOption from '../atoms/SelectOption'
 
-const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, typeProducts: 'abbigliamento' | 'accessori', closeDrawer: () => void, handleConfirm: (filters: ProductsFilter | undefined) => void }> = ({ isOpenDrawer, closeDrawer, filtersProps, typeProducts, handleConfirm }) => {
+const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, typeProducts: 'abbigliamento' | 'accessori', closeDrawer: () => void, handleConfirm: (filters: ProductsFilter | undefined) => void, changeMacroCategory: (value: string) => void }> = ({ isOpenDrawer, closeDrawer, filtersProps, typeProducts, handleConfirm, changeMacroCategory }) => {
 
     const isSmallView = useBreakpointValue({ base: true, lg: false });
     const router = useRouter();
@@ -38,7 +38,9 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, ty
 
     const handleChange = (value: string, filterParameter: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting' | 'microCategory' | 'macroCategory') => {
         if (!value) return
-
+        if (filterParameter === 'macroCategory') {
+            changeMacroCategory(value)
+        }
         //gestione array di stringhe
         if (filterParameter === 'colors' || filterParameter === 'sizes') {
             setFilters((prevState: any) => {

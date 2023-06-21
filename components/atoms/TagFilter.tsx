@@ -3,7 +3,7 @@ import { Cancel } from 'iconoir-react'
 import React, { FC } from 'react'
 
 
-const TagFilter: FC<{ value: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting' | 'microCategory', text: string, handleEvent: (value: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting' | 'microCategory') => void }> = ({ value, text, handleEvent }) => {
+const TagFilter: FC<{ value: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting' | 'microCategory' | 'macroCategory', text: string, handleEvent: (value: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting' | 'microCategory' | 'macroCategory') => void }> = ({ value, text, handleEvent }) => {
     return (
         <Tag
             cursor={'pointer'}

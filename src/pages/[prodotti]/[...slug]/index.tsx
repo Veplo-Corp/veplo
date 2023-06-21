@@ -116,7 +116,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [typeProducts, setTypeProducts] = useState<'abbigliamento' | 'accessori'>('abbigliamento')
     const [resetProducts, setResetProducts] = useState(false)
     const isSmallView = useBreakpointValue({ base: true, md: false });
-
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -127,6 +126,32 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         //loading e hasmoredata resettati
         const fitlerSlug = router.asPath.split('?')[1]
         const filterParams: any = parseSlugUrlFilter(fitlerSlug)
+
+        //controlla se esiste già questa sessione nel local storage
+        //nel caso esiste, immette i prodotti nel local storage
+        if (window.history.state.key === sessionStorage.getItem("keyProductsSession")) {
+
+
+            const productsFounded = sessionStorage.getItem("productsInProductsPage");
+            if (productsFounded) {
+                setProducts(JSON.parse(productsFounded))
+                const scrollPosition = sessionStorage.getItem('scrollPositionProducts');
+                setIsLoading(false)
+                const newFilters = {
+                    ...filtersProps,
+                    ...filterParams,
+                }
+                setFilters(newFilters)
+                if (!scrollPosition) return
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: parseInt(scrollPosition),
+                        behavior: "smooth"
+                    });
+                }, 500);
+                return
+            }
+        }
 
         if (!filterParams) {
             setFilters(filtersProps)
@@ -248,7 +273,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const changeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
 
         const filtersParams = getParamsFiltersFromObject(filters)
-        console.log(filtersParams);
 
         const sortUrl = SORT_PRODUCT.find(element => element.url === e.target.value)?.url
         router.replace({
@@ -260,16 +284,12 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     }
 
     const changeRouter = (value: string, filterParameter: string) => {
-        console.log(value, filterParameter);
 
         const filtersParams = getParamsFiltersFromObject(filters)
         if (filterParameter === 'macroCategory') {
             router.push({
                 //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
                 pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${createUrlSchema([value])}/tutto/rilevanza`,
-                query: {
-                    ...filtersParams
-                }
             })
         }
         if (filterParameter === 'microCategory') {
@@ -310,12 +330,19 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
     }
 
-    const deleteFilterParams = (paramters: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting' | 'microCategory') => {
+    const deleteFilterParams = (paramters: 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting' | 'microCategory' | 'macroCategory') => {
+        if (paramters === 'macroCategory') {
+            //TODO inserire sorting
+            return router.push({
+                pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-abbigliamento/tutto/rilevanza`,
+            })
+        }
+
         if (paramters === 'microCategory') {
             let filtersParams = getParamsFiltersFromObject(filters)
             //TODO inserire sorting
             return router.push({
-                pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/tutto/rilevanza'}`,
+                pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/tutto/rilevanza`,
                 query: {
                     ...filtersParams
                 }
@@ -343,7 +370,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             filtersDrawerModal.sizes[0] = size.split(' ')[0].toLowerCase()
         }
         let filtersParams = getParamsFiltersFromObject(filtersDrawerModal)
-        console.log(filtersParams);
         //TODO inserire sorting
         return router.push({
             pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filtersDrawerModal.macroCategory === 'string' && filtersDrawerModal.macroCategory !== '' ? filtersDrawerModal.macroCategory.toLowerCase() : 'abbigliamento'}/${filtersDrawerModal.microCategory ? createUrlSchema([filtersDrawerModal.microCategory]) : 'tutto'}/rilevanza`,
@@ -410,9 +436,10 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             fontSize={'xl'}
                             fontWeight={'extrabold'}
                             mb={[3, 3]}
-                            mt={[4, 8]}
+                            mt={[4, 6]}
                         >
-                            {filters.macroCategory ? toUpperCaseFirstLetter(filters.macroCategory) : "Tutto l'abbigliamento"}
+                            {/* {filters.macroCategory ? toUpperCaseFirstLetter(filters.macroCategory) : "Tutto l'abbigliamento"} */}
+                            Abbigliamento
                         </Text>
                         <Box
 
@@ -429,9 +456,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     handleConfirmChange={changeRouter}
                                     filterDrawerConfirm={routerConfirmDrawerFilter}
                                     changePriceEventRouter={(parameters) => {
-                                        console.log(parameters);
                                         let filtersParams: any = getParamsFiltersFromObject(filters)
-
                                         let newParams: any = {};
                                         for (let i = 0; i < parameters.length; i++) {
                                             if (parameters[i].value > 0) {
@@ -440,9 +465,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                 delete filtersParams[parameters[i].name]
                                             }
                                         }
-
-
-                                        console.log(newParams);
                                         //TODO gestire sorting appena possibile
                                         router.replace({
                                             pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
@@ -450,6 +472,11 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                 ...filtersParams,
                                                 ...newParams
                                             }
+                                        })
+                                    }}
+                                    handleChangeMacroCategory={(value: string) => {
+                                        return router.push({
+                                            pathname: `/prodotti/${filters.gender === 'm' ? 'uomo' : 'donna'}-${value !== '' ? value.toLowerCase() : 'abbigliamento'}/tutto/rilevanza`,
                                         })
                                     }}
                                 />
@@ -486,9 +513,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             <HStack mt={[3, 2]} spacing={2}
                                 className='flex flex-wrap'
                             >
-                                {Object.keys(filters).filter(key => !['macroCategory', 'gender',].includes(key)).map((value) => {
-                                    console.log(value);
-                                    console.log('micro', filters.microCategory);
+                                {Object.keys(filters).filter(key => !['gender'].includes(key)).map((value) => {
+
 
                                     let text: string = '';
                                     if (value === 'sizes' && filters.sizes?.[0]) text = `Taglia ${filters.sizes[0].toUpperCase()}`
@@ -499,6 +525,13 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     return (
 
                                         <div key={value} className={`${value === 'microCategory' && !filters.microCategory && 'hidden'}`}>
+                                            {value === 'macroCategory' && filters.macroCategory &&
+                                                <TagFilter
+                                                    value={value}
+                                                    text={'' + toUpperCaseFirstLetter(filters.macroCategory)}
+                                                    handleEvent={deleteFilterParams}
+                                                />
+                                            }
                                             {value === 'microCategory' && filters.microCategory &&
                                                 <TagFilter
                                                     value={value}
@@ -559,7 +592,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                                 <Box_Dress
                                                                     handleEventSelectedDress={() => {
                                                                         sessionStorage.setItem("keyProductsSession", window.history.state.key)
-                                                                        sessionStorage.setItem("products", JSON.stringify(products))
+                                                                        sessionStorage.setItem("productsInProductsPage", JSON.stringify(products))
                                                                         sessionStorage.setItem('scrollPositionProducts', window.pageYOffset.toString());
                                                                     }}
                                                                     productLink={`/prodotto/${product.id}/${product?.info?.brand}-${product.name}${router.asPath.split('?')[1] ? '?' + router.asPath.split('?')[1] : ''}`}
