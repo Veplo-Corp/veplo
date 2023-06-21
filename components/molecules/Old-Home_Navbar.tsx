@@ -81,7 +81,7 @@ const navbar: React.FC<Props> = ({ showCategory, onShowCategory, openAddressModa
                             >
                                 {address_user ? (<Link
                                     prefetch={false}
-                                    href={`${address_user ? `/prodotti/${address_user.postcode.length === 5 ? createUrlSchema([address_user.city, address_user.postcode]) : createUrlSchema([address_user.city])}/${type.url}-abbigliamento` : '/'}`}
+                                    href={`${address_user ? `/abbigliamento/${address_user.postcode.length === 5 ? createUrlSchema([address_user.city, address_user.postcode]) : createUrlSchema([address_user.city])}/${type.url}-abbigliamento` : '/'}`}
                                 >
                                     {type.title}
                                 </Link>) :

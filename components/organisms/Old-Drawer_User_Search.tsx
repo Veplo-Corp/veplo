@@ -40,11 +40,11 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
             const slug = router.query.slug;
             if (typeof slug !== 'string') return
             const elementGenderMacrocategory: { gender: string | null, macrocategory: string | null } = getGenderandMacrocategory(slug);
-            if(elementGenderMacrocategory.gender !== null) {
+            if (elementGenderMacrocategory.gender !== null) {
                 //preselect the Gender if exist
                 setSelectedIndex(Object.keys(categories).indexOf(elementGenderMacrocategory.gender))
             }
-          
+
         }
 
 
@@ -62,10 +62,10 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
         console.log(catObject);
         const categoryForUrl = Object.values(categories)[indexArray].abbigliamento.find(category => category.name === catObject)?.url
         if (!categoryForUrl) {
-            router.push(`/prodotti/${address_user.city?.toLocaleLowerCase()}-${address_user.postcode}/${gender}-abbigliamento`)
+            router.push(`/abbigliamento/${address_user.city?.toLocaleLowerCase()}-${address_user.postcode}/${gender}-abbigliamento`)
         } else {
             const categorySelectedUrl = createUrlSchema([gender, categoryForUrl])
-            router.push(`/prodotti/${address_user.city?.toLocaleLowerCase()}-${address_user.postcode}/${categorySelectedUrl}`)
+            router.push(`/abbigliamento/${address_user.city?.toLocaleLowerCase()}-${address_user.postcode}/${categorySelectedUrl}`)
         }
         onClose()
     }

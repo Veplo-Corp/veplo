@@ -541,7 +541,7 @@ const index = () => {
                 id: isCreatedShop.data.createShop
             })
             setIsLoading(false)
-            return router.push('/shop/home/' + isCreatedShop.data.createShop + '/prodotti')
+            return router.push('/shop/home/' + isCreatedShop.data.createShop + '/abbigliamento')
         } catch (e) {
             setIsLoading(false)
             console.log(e);

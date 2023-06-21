@@ -25,7 +25,7 @@ const Drawer_Menu: React.FC<{ user: any, isOpen: boolean, closeDrawer: () => voi
         },
         {
             title: 'visualizza prodotti',
-            url: `/shop/home/${userDispatch?.favouriteShop?.id}/prodotti`
+            url: `/shop/home/${userDispatch?.favouriteShop?.id}/abbigliamento`
         },
         {
             title: 'aggiungi prodotto',

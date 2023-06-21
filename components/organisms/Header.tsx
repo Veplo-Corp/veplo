@@ -116,7 +116,7 @@ const Header = () => {
         }
         console.log(gender);
 
-        router.push(`/prodotti/${gender}-abbigliamento/tutto/rilevanza/${createUrlSchema([question])}`)
+        router.push(`/abbigliamento/${gender}-abbigliamento/tutto/rilevanza/${createUrlSchema([question])}`)
     }
 
     const [isHeaderVisible, setIsHeaderVisible] = useState(true);
@@ -217,7 +217,7 @@ const Header = () => {
                                                         return (
                                                             <Link
                                                                 key={element}
-                                                                href={`/prodotti/${element.toLocaleLowerCase()}-abbigliamento/tutto/rilevanza`}
+                                                                href={`/abbigliamento/${element.toLocaleLowerCase()}-abbigliamento/tutto/rilevanza`}
                                                             >
                                                                 <Popover.Button
                                                                     className='text-left font-bold text-lg py-1'
@@ -265,7 +265,7 @@ const Header = () => {
                                             >
                                                 <Link
                                                     className='flex gap-2 p-2'
-                                                    href={router.asPath.includes('prodott') ? '/negozi' : (gender ? `/prodotti/${gender}-abbigliamento/tutto/rilevanza` : '/')}
+                                                    href={router.asPath.includes('prodott') ? '/negozi' : (gender ? `/abbigliamento/${gender}-abbigliamento/tutto/rilevanza` : '/')}
                                                 >
                                                     {router.asPath.includes('prodott') ?
                                                         (<SmallShopAlt
@@ -309,7 +309,7 @@ const Header = () => {
 
 
                                                 <Link
-                                                    href={router.asPath.includes('prodott') ? '/negozi' : (gender ? `/prodotti/${gender}-abbigliamento/tutto/rilevanza` : '/')}
+                                                    href={router.asPath.includes('prodott') ? '/negozi' : (gender ? `/abbigliamento/${gender}-abbigliamento/tutto/rilevanza` : '/')}
                                                     className='flex h-full w-full'
                                                 >
                                                     <Button
