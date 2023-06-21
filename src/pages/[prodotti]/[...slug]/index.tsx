@@ -390,9 +390,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`${typeof filters.macroCategory === 'string' ? filters.macroCategory : 'Abbigliamento'} ${filters.gender === 'f' ? 'donna' : 'uomo'} | Veplo`}
-                subtitle={`${typeof filters.macroCategory === 'string' ? `Bermuda da ${filters.gender === 'f' ? 'donna' : 'uomo'}` : `Tutto l'abbigliamento da ${filters.gender === 'f' ? 'donna' : 'uomo'}`} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
+                subtitle={`${typeof filters.macroCategory === 'string' ? `${typeof filters.macroCategory} da ${filters.gender === 'f' ? 'donna' : 'uomo'}` : `Tutto l'abbigliamento da ${filters.gender === 'f' ? 'donna' : 'uomo'}`} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
                 image={''}
-                description={`${typeof filters.macroCategory === 'string' ? `Bermuda da ${filters.gender === 'f' ? 'donna' : 'uomo'}` : `Tutto l'abbigliamento da ${filters.gender === 'f' ? 'donna' : 'uomo'}`} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
+                description={`${typeof filters.macroCategory === 'string' ? `${typeof filters.macroCategory} da ${filters.gender === 'f' ? 'donna' : 'uomo'}` : `Tutto l'abbigliamento da ${filters.gender === 'f' ? 'donna' : 'uomo'}`} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
             />
             <div className='relative  min-h-[120vh]'>
                 <Shop_not_Allowed>
