@@ -376,6 +376,7 @@ const LoginAndRegistrationForm: FC<{
                             }}
                             height={14}
                             id="email"
+                            autoComplete="username"
                             {...register("email", {
                                 required: true,
                                 pattern: {
@@ -427,6 +428,8 @@ const LoginAndRegistrationForm: FC<{
                                     color: 'inputLoginColor.text',
                                     fontWeight: '500'
                                 }}
+                                autoComplete="current-password"
+
                                 height={14}
                                 id="password"
                                 {...register("password", {
