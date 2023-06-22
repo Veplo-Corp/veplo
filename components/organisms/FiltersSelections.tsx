@@ -10,11 +10,12 @@ import SelectMaxMinPrice from '../atoms/SelectMaxMinPrice';
 import { FilterParameters, findParsedFilter } from '../utils/findParsedFilter';
 import BrandsFilter from '../atoms/BrandsFilter';
 import ToogleComponent from '../atoms/ToogleComponent';
+import { FilterAccepted } from '../atoms/TagFilter';
 
 
 
 
-const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (value: ProductsFilter | undefined) => void, handleConfirmChange: (value: string, filterParameter: string) => void, typeProducts: 'abbigliamento' | 'accessori', changePriceEventRouter: (parameters: { name: string, value: any }[]) => void, handleChangeMacroCategory: (value: string) => void }> = ({ filters, handleConfirmChange, typeProducts, changePriceEventRouter, filterDrawerConfirm, handleChangeMacroCategory }) => {
+const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (value: ProductsFilter | undefined) => void, handleConfirmChange: (value: string, filterParameter: FilterAccepted) => void, typeProducts: 'abbigliamento' | 'accessori', changePriceEventRouter: (parameters: { name: string, value: any }[]) => void, handleChangeMacroCategory: (value: string) => void }> = ({ filters, handleConfirmChange, typeProducts, changePriceEventRouter, filterDrawerConfirm, handleChangeMacroCategory }) => {
 
     const isSmallView = useBreakpointValue({ base: true, md: false });
     //TODO creare interface
@@ -29,12 +30,13 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
 
         //crea l'oggetto filtri applicati
         const parsedFilter = findParsedFilter(filters, typeProducts)
+
         if (!parsedFilter) return
         return setFilterParameters(parsedFilter)
 
     }, [filters])
 
-    const handleChange = (value: string, filterParameter: string) => {
+    const handleChange = (value: string, filterParameter: FilterAccepted) => {
         if (!value) return
         handleConfirmChange(value, filterParameter)
     }
@@ -129,7 +131,16 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
                         maxPrice: filterParameters?.find(parameter => parameter.name === 'maxPrice')?.value
                     }}
                 />
-                <ToogleComponent />
+                <ToogleComponent
+                    modifyToogleInComponent={true}
+                    value={filterParameters?.find(parameter => parameter.name === 'sale')?.value === 'true' ?
+                        true :
+                        undefined
+                    }
+                    handleChangeToogle={(value) => {
+                        handleChange(value, 'sale')
+                    }}
+                />
 
 
 
@@ -198,7 +209,7 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
                     </Text>}
                 </>
             </Button>}
-            {!isSmallView && filters.macroCategory && <Button
+            {!isSmallView && <Button
                 height={12}
                 variant={['grayPrimary', 'whiteButton']}
                 gap={1}

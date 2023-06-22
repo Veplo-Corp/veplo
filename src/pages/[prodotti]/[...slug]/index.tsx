@@ -29,7 +29,7 @@ import FiltersSelections from '../../../../components/organisms/FiltersSelection
 import TagFilter, { FilterAccepted } from '../../../../components/atoms/TagFilter';
 
 
-const RANGE = process.env.NODE_ENV === 'production' ? 10 : 3
+const RANGE = process.env.NODE_ENV === 'production' ? 3 : 3
 
 
 export async function getStaticPaths() {
@@ -102,7 +102,8 @@ export interface ProductsFilter extends ParsedURL {
     colors?: string[],
     maxPrice?: number, //numero intero
     minPrice?: number, //numero intero
-    brand?: string
+    brand?: string,
+    sale?: string
 }
 
 const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Product[], typeProductsProps: 'abbigliamento' | 'accessori' }> = ({ filtersProps, error, dataProducts, typeProductsProps }) => {
@@ -117,6 +118,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [typeProducts, setTypeProducts] = useState<'abbigliamento' | 'accessori'>('abbigliamento')
     const [resetProducts, setResetProducts] = useState(false)
     const dispatch = useDispatch();
+    const isSmallView = useBreakpointValue({ base: true, lg: false });
+
 
     useEffect(() => {
         if (!router.isReady) return
@@ -126,6 +129,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         //loading e hasmoredata resettati
         const fitlerSlug = router.asPath.split('?')[1]
         const filterParams: any = parseSlugUrlFilter(fitlerSlug)
+        //TODO togliere logica non appena sale è attivo
+        //if (filterParams?.sale) delete filterParams['sale']
+
 
         //controlla se esiste già questa sessione nel local storage
         //nel caso esiste, immette i prodotti nel local storage
@@ -137,6 +143,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 setProducts(JSON.parse(productsFounded))
                 const scrollPosition = sessionStorage.getItem('scrollPositionProducts');
                 setIsLoading(false)
+
                 const newFilters = {
                     ...filtersProps,
                     ...filterParams,
@@ -197,6 +204,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
 
     }, [router.query])
+
+
 
     const fetchMoreData = async () => {
         if (products.length % RANGE !== 0) {
@@ -283,17 +292,17 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         })
     }
 
-    const changeRouter = (value: string, filterParameter: string) => {
+    const changeRouter = (value: string, filterParameter: FilterAccepted) => {
 
         const filtersParams = getParamsFiltersFromObject(filters)
         if (filterParameter === 'macroCategory') {
-            router.push({
+            return router.push({
                 //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
                 pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${createUrlSchema([value])}/tutto/rilevanza`,
             })
         }
         if (filterParameter === 'microCategory') {
-            router.push({
+            return router.push({
                 //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
                 pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${createUrlSchema([value])}/rilevanza`,
                 query: {
@@ -303,30 +312,50 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
 
         //TODO gestire anche  fit, length, materials, traits
-        else if (
+        if (
             filterParameter === 'colors' ||
             filterParameter === 'brand'
             //filterParameter === 'fit' || filterParameter === 'length' || filterParameter === 'materials' || filterParameter === 'traits'
         ) {
-            router.push({
+            return router.push({
                 pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
                 query: {
                     ...filtersParams,
                     [filterParameter]: value.toLocaleLowerCase()
                 }
             })
-            return
+
         }
-        else if (filterParameter === 'sizes') {
+        if (filterParameter === 'sizes') {
             //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
             const size = value?.split(' ')[0].toLocaleLowerCase()
-            router.push({
+            return router.push({
                 pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
                 query: {
                     ...filtersParams,
                     sizes: size ? [value.split(' ')[0].toLocaleLowerCase()] : null
                 }
             })
+        }
+        if (filterParameter === 'sale') {
+            //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
+            if (value === 'true') {
+                return router.push({
+                    pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                    query: {
+                        ...filtersParams,
+                        sale: value
+                    }
+                })
+            } else {
+                const { sale, ...newFilterParameters } = filtersParams
+                return router.push({
+                    pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                    query: {
+                        ...newFilterParameters,
+                    }
+                })
+            }
         }
 
 
@@ -371,7 +400,13 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             let size = filtersDrawerModal.sizes?.[0]
             filtersDrawerModal.sizes[0] = size.split(' ')[0].toLowerCase()
         }
+
+        if (filtersDrawerModal.sale !== 'true') {
+            delete filtersDrawerModal['sale']
+        }
+
         let filtersParams = getParamsFiltersFromObject(filtersDrawerModal)
+
         //TODO inserire sorting
         return router.push({
             pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filtersDrawerModal.macroCategory === 'string' && filtersDrawerModal.macroCategory !== '' ? filtersDrawerModal.macroCategory.toLowerCase() : 'abbigliamento'}/${filtersDrawerModal.microCategory ? createUrlSchema([filtersDrawerModal.microCategory]) : 'tutto'}/rilevanza`,
@@ -516,6 +551,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 className='flex flex-wrap'
                             >
                                 {Object.keys(filters).filter(key => !['gender'].includes(key)).map((value) => {
+                                    console.log(value);
+
                                     let text: string = '';
                                     if (value === 'sizes' && filters.sizes?.[0]) text = `Taglia ${filters.sizes[0].toUpperCase()}`
                                     if (value === 'minPrice') text = `Min ${filters.minPrice}€`
@@ -525,7 +562,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
                                     return (
 
-                                        <div key={value} className={`${value === 'microCategory' && !filters.microCategory && 'hidden'}`}>
+                                        <div key={value}
+                                            className={`${((value === 'microCategory' && !filters.microCategory) || (!filters.macroCategory && value === 'macroCategory')) && 'hidden'}`
+                                            }>
                                             {value === 'macroCategory' && filters.macroCategory &&
                                                 <TagFilter
                                                     value={value}
@@ -544,6 +583,13 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                 <TagFilter
                                                     value={value}
                                                     text={text}
+                                                    handleEvent={deleteFilterParams}
+                                                />
+                                            }
+                                            {value === 'sale' && isSmallView &&
+                                                <TagFilter
+                                                    value={value}
+                                                    text={'Promozioni'}
                                                     handleEvent={deleteFilterParams}
                                                 />
                                             }
@@ -677,7 +723,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                     </Box>
 
                 </Shop_not_Allowed>
-            </div>
+            </div >
         </>
     )
 }

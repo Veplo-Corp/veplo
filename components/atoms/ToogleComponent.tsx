@@ -1,20 +1,31 @@
 import { Box, Text } from '@chakra-ui/react'
 import { Switch } from '@headlessui/react'
-import React, { Fragment, useState } from 'react'
+import React, { FC, Fragment, useEffect, useState } from 'react'
 
-const ToogleComponent = () => {
+const ToogleComponent: FC<{ value: boolean | undefined, handleChangeToogle: (toogle: string) => void, modifyToogleInComponent: boolean }> = ({ value, handleChangeToogle, modifyToogleInComponent }) => {
     const [enabled, setEnabled] = useState(false)
+
+
+    useEffect(() => {
+        if (value === undefined) return setEnabled(false)
+        return setEnabled(value)
+    }, [value])
+
 
     return (
         <Box height={12}
             borderWidth={1}
             borderColor={'gray.200'}
-            rounded={'lg'}
+            rounded={'10px'}
             display={'flex'}
             textAlign={'center'}
             px={3}
             gap={3}
-            onClick={() => setEnabled(prevstate => { return !prevstate })}
+            onClick={() => {
+                if (modifyToogleInComponent) setEnabled(prevstate => { return !prevstate })
+                const state = !enabled === true ? 'true' : 'false'
+                handleChangeToogle(state)
+            }}
             cursor={'pointer'}
         >
             <Text
@@ -30,13 +41,13 @@ const ToogleComponent = () => {
                 {({ checked }) => (
                     /* Use the `checked` state to conditionally style the button. */
                     <button
-                        className={`${checked ? 'bg-black' : 'bg-[#EFEFEF]'
-                            } relative inline-flex h-[26px] w-[48px] items-center my-auto rounded-full`}
+                        className={`${checked ? 'bg-[#FF5A78]' : 'bg-[#EFEFEF]'
+                            } relative inline-flex h-[25px] w-[46px] items-center my-auto rounded-full`}
                     >
                         <span className="sr-only">promozioni</span>
                         <span
                             className={`${checked ? 'translate-x-6' : 'translate-x-1'
-                                } inline-block h-[21px] w-[21px] transform rounded-full bg-white transition`}
+                                } inline-block h-[18px] w-[18px] transform rounded-full bg-white transition`}
                         />
                     </button>
                 )}

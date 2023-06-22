@@ -12,7 +12,7 @@ import { TRAITS_TYPES } from "../mook/productParameters/traits";
 export interface FilterParameters {
     name: FilterAccepted,
     parameters: undefined | number[] | string[] | Color[],
-    value: string | number | undefined | null
+    value: string | number | undefined | null | boolean
 }
 
 export const findParsedFilter = (filters: ProductsFilter, typeProducts: 'abbigliamento' | 'accessori'): FilterParameters[] | undefined => {
@@ -37,6 +37,11 @@ export const findParsedFilter = (filters: ProductsFilter, typeProducts: 'abbigli
             name: "brand",
             parameters: undefined,
             value: filters.brand
+        },
+        {
+            name: "sale",
+            parameters: undefined,
+            value: filters.sale
         },
 
     ]
