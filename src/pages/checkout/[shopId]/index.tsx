@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { Box, Button, ButtonGroup, Divider, ListItem, Text, UnorderedList, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -33,15 +33,16 @@ const index = () => {
     const dispatch = useDispatch();
     const [editCart] = useMutation(EDIT_CART);
     const [isDisabled, setIsDisabled] = useState(false);
-    const [getShop, shopQuery] = useLazyQuery(GET_SHOP);
+    const shopQuery = useQuery(GET_SHOP, {
+        variables: {
+            id: router.query.shopId
+        }
+    });
     const [shop, setShop] = useState<Shop>();
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
     const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
     const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('login')
 
-
-    // Inizializza uno stato per il timeout
-    const [timeoutId, setTimeoutId] = useState<any>(null);
 
 
 
@@ -50,12 +51,6 @@ const index = () => {
     useEffect(() => {
         const { shopId } = router.query;
         if (!router.isReady || !shopId || user.statusAuthentication === 'not_yet_authenticated' || !cartsDispatch) return
-
-        getShop({
-            variables: {
-                id: shopId
-            }
-        })
         console.log(cartsDispatch);
         const cart = cartsDispatch.filter(cart => cart.shopInfo.id === shopId)[0]
         if (cart) {
@@ -67,9 +62,9 @@ const index = () => {
             //in futuro mettiamo carrello non trovato e non reindiriziamo a negozi
             setCart(undefined)
             if (shop) {
-                router.replace(`/negozio/${shop?.id}/${createUrlSchema([shop?.name])}`)
+                //router.replace(`/negozio/${shop?.id}/${createUrlSchema([shop?.name])}`)
             } else {
-                router.replace(`/negozi`)
+                //router.replace(`/negozi`)
             }
         }
     }, [user, cartsDispatch, router.query])
@@ -376,7 +371,11 @@ const index = () => {
                 </>
             ) :
                 (
-                    <Loading />
+                    <Box
+                        minWidth={'100vh'}
+                    >
+                        <Loading />
+                    </Box>
                 )
             }
             <ModalReausable

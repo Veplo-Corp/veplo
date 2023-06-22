@@ -593,7 +593,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                     handleEvent={deleteFilterParams}
                                                 />
                                             }
-
                                         </div>
                                     )
                                 })
