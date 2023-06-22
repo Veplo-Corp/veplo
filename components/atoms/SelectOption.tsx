@@ -55,7 +55,7 @@ const SelectOption: FC<{ defaultValue: number | string | undefined | null, value
                                     key={valueIdx}
                                     className={({ active }) =>
                                         `relative 
-                                        cursor-default select-none py-2 pl-3 pr-6 ${active ? 'bg-[#F2F2F2] cursor-pointer' : ''}`
+                                        cursor-pointer select-none py-2 pl-3 pr-6 ${active ? 'bg-[#F2F2F2] cursor-pointer' : ''}`
                                     }
                                     value={value}
                                 >

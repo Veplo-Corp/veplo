@@ -9,6 +9,7 @@ import DrawerFilter from './DrawerFilter';
 import SelectMaxMinPrice from '../atoms/SelectMaxMinPrice';
 import { FilterParameters, findParsedFilter } from '../utils/findParsedFilter';
 import BrandsFilter from '../atoms/BrandsFilter';
+import ToogleComponent from '../atoms/ToogleComponent';
 
 
 
@@ -83,27 +84,6 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
                         handleClick={(value) => handleChange(value, 'macroCategory')}
                     />
                 }
-                <BrandsFilter
-                    handleChangeValues={(value: string) => {
-                        handleChange(value, 'brand')
-                    }}
-                    selectedValue={filters.brand}
-                    placeholder='brand'
-                />
-                {
-                    filterParameters?.find(parameter => parameter.name === 'microCategory') &&
-                    <SelectOption
-                        values={filterParameters?.find(parameter => parameter.name === 'microCategory')?.parameters}
-                        defaultValue={
-                            filterParameters?.find(parameter => parameter.name === 'microCategory')?.value ?
-                                filterParameters?.find(parameter => parameter.name === 'microCategory')?.value :
-                                undefined
-
-                        }
-                        placeholder={'micro categoria'}
-                        handleClick={(value) => handleChange(value, 'microCategory')}
-                    />
-                }
                 {
                     filterParameters?.find(parameter => parameter.name === 'sizes') &&
                     <SelectOption
@@ -122,12 +102,37 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
                         handleClick={(value) => handleChange(value, 'colors')}
                     />
                 }
+                {/* {
+                    filterParameters?.find(parameter => parameter.name === 'microCategory') &&
+                    <SelectOption
+                        values={filterParameters?.find(parameter => parameter.name === 'microCategory')?.parameters}
+                        defaultValue={
+                            filterParameters?.find(parameter => parameter.name === 'microCategory')?.value ?
+                                filterParameters?.find(parameter => parameter.name === 'microCategory')?.value :
+                                undefined
+
+                        }
+                        placeholder={'micro categoria'}
+                        handleClick={(value) => handleChange(value, 'microCategory')}
+                    />
+                } */}
+                {/* <BrandsFilter
+                    handleChangeValues={(value: string) => {
+                        handleChange(value, 'brand')
+                    }}
+                    selectedValue={filters.brand}
+                    placeholder='brand'
+                /> */}
                 <SelectMaxMinPrice handleChange={changePriceEvent}
                     defaultValue={{
                         minPrice: filterParameters?.find(parameter => parameter.name === 'minPrice')?.value,
                         maxPrice: filterParameters?.find(parameter => parameter.name === 'maxPrice')?.value
                     }}
                 />
+                <ToogleComponent />
+
+
+
 
                 {/* {
                     filterParameters?.find(parameter => parameter.name === 'fit') &&
