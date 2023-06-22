@@ -29,7 +29,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 
-const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean, productLink: string }> = ({ handleEventSelectedDress, product, color, showStoreHeader, productLink }) => {
+const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean, productLink: string }> = ({ handleEventSelectedDress, product, color, showStoreHeader, productLink, overflowCards }) => {
 
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     const [width, height] = useWindowSize();
@@ -213,7 +213,7 @@ const Box_Dress: React.FC<{ handleEventSelectedDress?: () => void, product: Prod
 
                             }
 
-                            {isSmallView ?
+                            {(isSmallView && !overflowCards) ?
                                 (
                                     <Swiper
                                         spaceBetween={1}

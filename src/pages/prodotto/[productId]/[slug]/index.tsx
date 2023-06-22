@@ -855,6 +855,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                             >
 
                                                 <Box_Dress
+                                                    overflowCards={true}
                                                     productLink={`/prodotto/${product.id}/${product?.info?.brand}-${product.name}`}
                                                     showStoreHeader={false} product={product} color={typeof colors === 'string' ? colors : undefined} />
                                             </motion.div>
