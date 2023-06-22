@@ -17,6 +17,7 @@ import { FilterParameters, findParsedFilter } from '../utils/findParsedFilter'
 import SelectOption from '../atoms/SelectOption'
 import { FilterAccepted } from '../atoms/TagFilter'
 import BrandsFilter from '../atoms/BrandsFilter'
+import ToogleComponent from '../atoms/ToogleComponent'
 
 const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, typeProducts: 'abbigliamento' | 'accessori', closeDrawer: () => void, handleConfirm: (filters: ProductsFilter | undefined) => void, changeMacroCategory: (value: string) => void }> = ({ isOpenDrawer, closeDrawer, filtersProps, typeProducts, handleConfirm, changeMacroCategory }) => {
 
@@ -31,6 +32,7 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, ty
         //crea l'oggetto filtri applicati
         const parsedFilter = findParsedFilter(filtersProps, typeProducts)
         setFilters(filtersProps)
+
         if (!parsedFilter) return
         return setFilterParameters(parsedFilter)
 
@@ -58,8 +60,8 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, ty
             })
         }
 
-    }
 
+    }
 
 
 
@@ -172,6 +174,15 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, ty
                                 defaultValue={{
                                     minPrice: filters?.minPrice,
                                     maxPrice: filters?.maxPrice
+                                }}
+                            />
+                            <ToogleComponent
+                                modifyToogleInComponent={false}
+                                value={filters?.sale
+                                    === 'true' ? true : false}
+                                handleChangeToogle={(value) => {
+
+                                    handleChange(value, 'sale')
                                 }}
                             />
 

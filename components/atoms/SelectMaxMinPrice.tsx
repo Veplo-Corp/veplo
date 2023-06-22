@@ -3,8 +3,8 @@ import { Listbox, Transition } from '@headlessui/react'
 import { Euro, NavArrowDown } from 'iconoir-react'
 import React, { FC, Fragment, useEffect, useState } from 'react'
 
-const SelectMaxMinPrice: FC<{ defaultValue: { minPrice: number | undefined | null | string, maxPrice: number | undefined | null | string }, handleChange: (minPrice: number | undefined | null | string, maxPrice: number | undefined | null | string) => void }> = ({ defaultValue, handleChange }) => {
-    const [price, setPrice] = useState<{ minPrice: number | undefined | null | string, maxPrice: number | undefined | null | string }>()
+const SelectMaxMinPrice: FC<{ defaultValue: { minPrice: any, maxPrice: any }, handleChange: (minPrice: any, maxPrice: any) => void }> = ({ defaultValue, handleChange }) => {
+    const [price, setPrice] = useState<{ minPrice: any, maxPrice: any }>()
 
 
     useEffect(() => {
@@ -28,10 +28,10 @@ const SelectMaxMinPrice: FC<{ defaultValue: { minPrice: number | undefined | nul
 
     return (
         <Listbox>
-            <div className={`z-1 relative border border-gray rounded-lg h-12 w-fit`}>
+            <div className={`z-1 relative border border-gray  h-12 w-fit rounded-[10px]`}>
                 <Listbox.Button
                     onFocus={handleEvent}
-                    className={`${(price?.maxPrice || price?.minPrice) ? 'bg-black text-white' : 'bg-white text-[#3A3A3A]'} cursor-pointer  min-w-[100px] md:min-w-[70px] h-full  w-full border-none rounded-lg pl-3 pr-9 leading-5 bg-white   font-md font-semibold focus:ring-0`}>
+                    className={`${(price?.maxPrice || price?.minPrice) ? 'bg-black text-white' : 'bg-white text-[#3A3A3A]'} cursor-pointer  min-w-[100px] md:min-w-[70px] h-full  w-full border-none rounded-[10px] pl-3 pr-9 leading-5 bg-white   font-md font-semibold focus:ring-0`}>
                     {price?.minPrice || price?.maxPrice ? (
                         <>
                             da {price?.minPrice ? price?.minPrice + '€' : 0}{price?.maxPrice ? ` a ${price?.maxPrice}€` : ''}

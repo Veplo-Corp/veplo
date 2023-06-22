@@ -9,11 +9,13 @@ import DrawerFilter from './DrawerFilter';
 import SelectMaxMinPrice from '../atoms/SelectMaxMinPrice';
 import { FilterParameters, findParsedFilter } from '../utils/findParsedFilter';
 import BrandsFilter from '../atoms/BrandsFilter';
+import ToogleComponent from '../atoms/ToogleComponent';
+import { FilterAccepted } from '../atoms/TagFilter';
 
 
 
 
-const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (value: ProductsFilter | undefined) => void, handleConfirmChange: (value: string, filterParameter: string) => void, typeProducts: 'abbigliamento' | 'accessori', changePriceEventRouter: (parameters: { name: string, value: any }[]) => void, handleChangeMacroCategory: (value: string) => void }> = ({ filters, handleConfirmChange, typeProducts, changePriceEventRouter, filterDrawerConfirm, handleChangeMacroCategory }) => {
+const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (value: ProductsFilter | undefined) => void, handleConfirmChange: (value: string, filterParameter: FilterAccepted) => void, typeProducts: 'abbigliamento' | 'accessori', changePriceEventRouter: (parameters: { name: string, value: any }[]) => void, handleChangeMacroCategory: (value: string) => void }> = ({ filters, handleConfirmChange, typeProducts, changePriceEventRouter, filterDrawerConfirm, handleChangeMacroCategory }) => {
 
     const isSmallView = useBreakpointValue({ base: true, md: false });
     //TODO creare interface
@@ -28,12 +30,13 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
 
         //crea l'oggetto filtri applicati
         const parsedFilter = findParsedFilter(filters, typeProducts)
+
         if (!parsedFilter) return
         return setFilterParameters(parsedFilter)
 
     }, [filters])
 
-    const handleChange = (value: string, filterParameter: string) => {
+    const handleChange = (value: string, filterParameter: FilterAccepted) => {
         if (!value) return
         handleConfirmChange(value, filterParameter)
     }
@@ -83,27 +86,6 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
                         handleClick={(value) => handleChange(value, 'macroCategory')}
                     />
                 }
-                <BrandsFilter
-                    handleChangeValues={(value: string) => {
-                        handleChange(value, 'brand')
-                    }}
-                    selectedValue={filters.brand}
-                    placeholder='brand'
-                />
-                {
-                    filterParameters?.find(parameter => parameter.name === 'microCategory') &&
-                    <SelectOption
-                        values={filterParameters?.find(parameter => parameter.name === 'microCategory')?.parameters}
-                        defaultValue={
-                            filterParameters?.find(parameter => parameter.name === 'microCategory')?.value ?
-                                filterParameters?.find(parameter => parameter.name === 'microCategory')?.value :
-                                undefined
-
-                        }
-                        placeholder={'micro categoria'}
-                        handleClick={(value) => handleChange(value, 'microCategory')}
-                    />
-                }
                 {
                     filterParameters?.find(parameter => parameter.name === 'sizes') &&
                     <SelectOption
@@ -122,12 +104,46 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
                         handleClick={(value) => handleChange(value, 'colors')}
                     />
                 }
+                {/* {
+                    filterParameters?.find(parameter => parameter.name === 'microCategory') &&
+                    <SelectOption
+                        values={filterParameters?.find(parameter => parameter.name === 'microCategory')?.parameters}
+                        defaultValue={
+                            filterParameters?.find(parameter => parameter.name === 'microCategory')?.value ?
+                                filterParameters?.find(parameter => parameter.name === 'microCategory')?.value :
+                                undefined
+
+                        }
+                        placeholder={'micro categoria'}
+                        handleClick={(value) => handleChange(value, 'microCategory')}
+                    />
+                } */}
+                {/* <BrandsFilter
+                    handleChangeValues={(value: string) => {
+                        handleChange(value, 'brand')
+                    }}
+                    selectedValue={filters.brand}
+                    placeholder='brand'
+                /> */}
                 <SelectMaxMinPrice handleChange={changePriceEvent}
                     defaultValue={{
                         minPrice: filterParameters?.find(parameter => parameter.name === 'minPrice')?.value,
                         maxPrice: filterParameters?.find(parameter => parameter.name === 'maxPrice')?.value
                     }}
                 />
+                <ToogleComponent
+                    modifyToogleInComponent={true}
+                    value={filterParameters?.find(parameter => parameter.name === 'sale')?.value === 'true' ?
+                        true :
+                        undefined
+                    }
+                    handleChangeToogle={(value) => {
+                        handleChange(value, 'sale')
+                    }}
+                />
+
+
+
 
                 {/* {
                     filterParameters?.find(parameter => parameter.name === 'fit') &&
@@ -193,7 +209,7 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
                     </Text>}
                 </>
             </Button>}
-            {!isSmallView && filters.macroCategory && <Button
+            {!isSmallView && <Button
                 height={12}
                 variant={['grayPrimary', 'whiteButton']}
                 gap={1}
