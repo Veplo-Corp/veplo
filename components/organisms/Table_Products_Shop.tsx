@@ -127,7 +127,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
     }
 
     const handleButtonEditDiscount = async (productId: string) => {
-        router.push(`/shop/abbigliamento/modifica/${productId}?editDiscount=true`)
+        router.push(`/shop/prodotti/modifica/${productId}?editDiscount=true`)
     }
 
     const textSearchProducts = (inputSearch: string) => {

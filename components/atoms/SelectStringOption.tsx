@@ -4,7 +4,7 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 import { NavArrowDown } from 'iconoir-react'
 
-const SelectStringOption: FC<{ defaultValue?: number | string, values: string[] | number[], handleClick: (value: any) => void, placeholder?: string, fit?: 'fit' | 'full' }> = ({ defaultValue, values, handleClick, placeholder, fit }) => {
+const SelectStringOption: FC<{ defaultValue?: number | string, values: string[] | number[] | undefined, handleClick: (value: any) => void, placeholder?: string, fit?: 'fit' | 'full' }> = ({ defaultValue, values, handleClick, placeholder, fit }) => {
     const [selected, setSelected] = useState<any>('');
     useEffect(() => {
         if (defaultValue === undefined) return
@@ -35,8 +35,8 @@ const SelectStringOption: FC<{ defaultValue?: number | string, values: string[] 
 
     return (
         <Listbox value={selected} onChange={handleEvent}
-            disabled={values?.length < 0}>
-            <div className={`z-1 relative mt-1 border border-gray rounded-lg ${values?.length >= 0 ? 'bg-white' : 'bg-gray-100'} min-h-[50px]`}>
+            disabled={!values || values?.length < 0}>
+            <div className={`z-1 relative mt-1 border border-gray rounded-lg ${values && values?.length >= 0 ? 'bg-white' : 'bg-gray-100'} min-h-[50px]`}>
                 <Listbox.Button className="cursor-default min-w-[100px] md:min-w-[140px] min-h-[45px] w-full border-none py-3.5 rounded-lg pl-3 pr-10 leading-5 text-gray-900 focus:ring-0">
                     {typeof selected !== 'number' && <span className="block truncate text-start">{toUpperCaseFirstLetter(selected?.name || selected)} </span>}
                     {typeof selected === 'number' && <span className="block truncate text-start">{(selected)} </span>}

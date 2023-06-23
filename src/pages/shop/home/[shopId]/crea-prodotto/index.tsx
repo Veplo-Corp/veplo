@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { Box, Button, ButtonGroup, IconButton, Input, InputGroup, InputLeftAddon, Spinner, Text, Textarea, useToast } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, IconButton, Input, InputGroup, InputLeftAddon, Select, Spinner, Text, Textarea, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -9,7 +9,7 @@ import Div_input_creation from '../../../../../../components/atoms/Div_input_cre
 import SelectMacrocategory from '../../../../../../components/atoms/SelectMacrocategory'
 import SelectStringOption from '../../../../../../components/atoms/SelectStringOption'
 import ProductVariationCard from '../../../../../../components/molecules/ProductVariationCard'
-import { CATEGORIES } from '../../../../../../components/mook/categories'
+import { CATEGORIES, Category } from '../../../../../../components/mook/categories'
 import { Color, COLORS } from '../../../../../../components/mook/colors'
 import AddColorToProduct from '../../../../../../components/organisms/AddColorToProduct'
 import EditColorToProduct, { Size } from '../../../../../../components/organisms/EditColorToProdoct'
@@ -28,6 +28,7 @@ import { LENGTH } from '../../../../../../components/mook/productParameters/leng
 import { TRAITS } from '../../../../../../components/mook/productParameters/traits'
 
 export interface IFormInputProduct {
+    typeProduct: 'abbigliamento' | 'accessori'
     name: string;
     price: string;
     brand: string;
@@ -40,12 +41,8 @@ export interface IFormInputProduct {
     description?: string;
 }
 
-interface Macrocategory {
-    name: string,
-    sizes: string,
-    types: string[],
-    url: string,
-    gender: string
+interface Macrocategory extends Category {
+    gender: string,
 }
 
 
@@ -61,13 +58,17 @@ const index = () => {
     const { addToast } = ToastOpen();
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, getValues, setValue, control, formState } = useForm<IFormInputProduct>({
         mode: "all",
-        //defaultValues
+        defaultValues: {
+            typeProduct: 'abbigliamento'
+        }
     });
     const router = useRouter();
-    const [microcategoriesSelected, setMicrocategoriesSelected] = useState<string[]>([])
     const [genderSelected, setGenderSelected] = useState<string>('')
+    const [macrocategorySelectedSpec, setMacrocategorySelectedSpec] = useState<Macrocategory>()
+    console.log(macrocategorySelectedSpec?.gender);
 
-    const [sizeTypeSelected, setSizeTypeSelected] = useState('')
+
+    const [sizeTypeSelected, setSizeTypeSelected] = useState<string | undefined>('')
     const [newCard, setNewCard] = useState(true)
     const [productVariations, setProductVariations] = useState<VariationCard[]>([])
     const [colors, setColors] = useState<Color[]>(COLORS)
@@ -366,6 +367,42 @@ const index = () => {
                 <h1 className='text-lg md:text-2xl font-extrabold mt-6 mb-4'>
                     Aggiungi prodotto
                 </h1>
+                <Div_input_creation text='Tipologia prodotto'>
+                    <Select
+                        _active={{
+                            transform: 'scale(0.98)'
+                        }}
+                        icon={
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                            </svg>
+                        }
+                        width={['full', 'full']}
+                        size={'lg'}
+                        borderRadius={'10px'}
+                        bg={'#F2F2F2'}
+                        focusBorderColor="transparent"
+                        borderColor={'#F2F2F2'}
+                        color={'secondaryBlack.text'}
+                        fontWeight={'semibold'}
+                        fontSize={['18px', '16px']}
+                        height={12}
+                        onChange={(e) => {
+                            if (e.target.value === 'accessori' || e.target.value === 'abbigliamento') {
+                                setMacrocategorySelectedSpec(undefined)
+
+                                setValue('typeProduct', e.target.value)
+                            }
+                        }}
+                    >
+                        {['abbigliamento', 'accessori'].map((sortElement) => {
+                            return (
+                                <option key={sortElement} value={sortElement}>{sortElement}</option>
+                            )
+                        })}
+                    </Select>
+                </Div_input_creation>
+
                 <Div_input_creation text='Nome del prodotto'>
                     <InputGroup >
                         <Input
@@ -434,13 +471,14 @@ const index = () => {
                         rules={{ required: false }}
                         render={() => (
                             <SelectMacrocategory
-                                selectedValueBefore={''}
+                                typeProduct={watch('typeProduct')}
+                                selectedValueBefore={macrocategorySelectedSpec?.name}
                                 handleClick={(macrocategory: Macrocategory) => {
                                     setGenderSelected(macrocategory.gender)
                                     setSizeTypeSelected(macrocategory.sizes)
                                     setValue('macrocategory', macrocategory.name);
                                     setProductVariations([])
-                                    setMicrocategoriesSelected(macrocategory.types)
+                                    setMacrocategorySelectedSpec(macrocategory)
                                 }}
                             />
                         )}
@@ -453,7 +491,7 @@ const index = () => {
                         rules={{ required: false }}
                         render={() => (
                             <SelectStringOption
-                                values={microcategoriesSelected}
+                                values={macrocategorySelectedSpec?.types}
                                 defaultValue={undefined}
                                 handleClick={(microcategory: string) => {
                                     setValue('microcategory', microcategory);

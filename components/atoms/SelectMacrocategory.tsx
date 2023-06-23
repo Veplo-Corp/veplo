@@ -4,20 +4,29 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { CATEGORIES, Categories } from '../mook/categories'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 
-const SelectMacrocategory: FC<{ selectedValueBefore: string, handleClick: (value: any) => void }> = ({ selectedValueBefore, handleClick }) => {
-    const [selected, setSelected] = useState<any>(selectedValueBefore || null);
+const SelectMacrocategory: FC<{ typeProduct: 'abbigliamento' | 'accessori', selectedValueBefore: string | undefined, handleClick: (value: any) => void }> = ({ selectedValueBefore, handleClick, typeProduct }) => {
+    const [selected, setSelected] = useState<string>();
     const categories = useRef(CATEGORIES)
 
     const handleEvent = (value: any) => {
-        setSelected(value)
+        console.log(value);
         handleClick(value)
     }
+
+
+    useEffect(() => {
+        if (!selectedValueBefore) return setSelected(undefined)
+        setSelected(selectedValueBefore)
+
+    }, [selectedValueBefore])
+
+
     return (
         <Listbox value={selected} onChange={(value) => handleEvent(value)}>
             <div className={`z-1 relative mt-1 border border-gray rounded-lg ${true ? 'bg-white' : 'bg-gray-200'}`}>
                 <Listbox.Button className="cursor-default w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0">
 
-                    {selected ? <span className="block truncate text-start">{selected?.name || selected} </span> : <span className="block truncate text-start text-white">--</span>}
+                    {selected ? <span className="block truncate text-start">{selected} </span> : <span className="block truncate text-start text-white">--</span>}
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <ChevronUpDownIcon
                             className="h-5 w-5 text-gray-400"
@@ -42,7 +51,7 @@ const SelectMacrocategory: FC<{ selectedValueBefore: string, handleClick: (value
                                     >
                                         {toUpperCaseFirstLetter(gender)}
                                     </span>
-                                    {Object.values(categories.current)[indexObject].abbigliamento.map((value: any, valueIdx: number) => {
+                                    {Object.values(categories.current)[indexObject][typeProduct].map((value: any, valueIdx: number) => {
                                         return (
                                             <Listbox.Option
                                                 key={valueIdx}

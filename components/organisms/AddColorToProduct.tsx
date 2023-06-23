@@ -30,7 +30,7 @@ type Image = {
     file: any
 }
 
-const AddColorToProduct: FC<{ category: string, deleteCard: () => void, confirmCard: (variation: VariationCard) => void, colors: Color[], defaultCardValue?: VariationCard }> = ({ category, deleteCard, confirmCard, colors, defaultCardValue }) => {
+const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => void, confirmCard: (variation: VariationCard) => void, colors: Color[], defaultCardValue?: VariationCard }> = ({ category, deleteCard, confirmCard, colors, defaultCardValue }) => {
 
 
 
@@ -62,6 +62,7 @@ const AddColorToProduct: FC<{ category: string, deleteCard: () => void, confirmC
 
     useEffect(() => {
         const sizeTypes = Object.keys(sizes.current);
+        if (!category) return
         const sizeType = Object.keys(sizes.current).indexOf(category)
         const sizeTypologySelected = Object.values(sizes.current)[sizeType]
         setSizeTypologySelected(sizeTypologySelected);

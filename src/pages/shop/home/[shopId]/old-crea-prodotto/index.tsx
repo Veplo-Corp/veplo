@@ -190,7 +190,7 @@ const index = () => {
 
 
       if (isCreatedProduct.data.createProduct /* && areImagesAdded.data.editProduct */) {
-        router.push('/shop/abbigliamento')
+        router.push('/shop/home/' + user.shopId + '/prodotti')
         return addToast({ position: 'top', title: 'Prodotto creato con successo', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
       }
       else {

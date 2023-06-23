@@ -13,14 +13,15 @@ const Autocomplete: React.FC<{ handleChangeValues?: any, selectedValue?: string,
     useEffect(() => {
         if (brandsRedux && brandsRedux.length > 0) {
             setBrands(brandsRedux)
+            setFilteredValues(brandsRedux)
         }
     }, [brandsRedux])
 
     useEffect(() => {
-        if (query === '') return
+        if (query === '') return setFilteredValues(brandsRedux)
         setFilteredValues((prevstate: any) => {
             if (!brands) return
-            return query === '' || query.length < 3
+            const results = query === '' || query.length < 3
                 ? brands.filter((value) =>
                     value
                         .toLowerCase()
@@ -32,6 +33,8 @@ const Autocomplete: React.FC<{ handleChangeValues?: any, selectedValue?: string,
                         .replace(/\s+/g, '')
                         .includes(query.toLowerCase().replace(/\s+/g, ''))
                 )
+            if (results) return results
+            return brandsRedux
         })
 
     }, [query])
