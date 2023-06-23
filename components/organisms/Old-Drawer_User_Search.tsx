@@ -60,7 +60,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
             gender = 'uomo'
         }
         console.log(catObject);
-        const categoryForUrl = Object.values(categories)[indexArray].abbigliamento.find(category => category.name === catObject)?.url
+        const categoryForUrl = Object.values(categories)[indexArray].abbigliamento.find((category: any) => category.name === catObject)?.url
         if (!categoryForUrl) {
             router.push(`/abbigliamento/${address_user.city?.toLocaleLowerCase()}-${address_user.postcode}/${gender}-abbigliamento`)
         } else {
@@ -177,7 +177,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                                                 </p>
                                             </div>
                                             <ul>
-                                                {categories.abbigliamento.map((catObject, idx) => {
+                                                {categories.abbigliamento.map((catObject: any, idx: number) => {
                                                     return (
                                                         <Disclosure key={idx}>
                                                             {({ open }) => (
@@ -200,7 +200,7 @@ const Drawer_User_Search: React.FC<{ openDrawerMath: number, address_user: any, 
                                                                     </Disclosure.Button>
                                                                     <Disclosure.Panel>
 
-                                                                        {catObject.types.map((type: string, idx) => {
+                                                                        {catObject.types.map((type: string, idx: any) => {
                                                                             return (
                                                                                 <div
                                                                                     onClick={() => {
