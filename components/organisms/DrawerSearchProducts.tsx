@@ -37,13 +37,13 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
         return classes.filter(Boolean).join(' ')
     }
 
-    const handleCategoryClicked = (catObject: any, indexArray: any, microcategory?: string) => {
+    const handleCategoryClicked = (catObject: any, indexArray: number, microcategory?: string) => {
         let gender: string = 'donna'
         if (indexArray === 1) {
             gender = 'uomo'
         }
         console.log(catObject);
-        const categoryForUrl = Object.values(categories)[indexArray].abbigliamento.find(category => category.name === catObject)?.url
+        const categoryForUrl = Object.values(categories)[indexArray].abbigliamento.find((category: any) => category.name === catObject)?.url
 
         if (!categoryForUrl) {
             router.push(`/abbigliamento/${gender}-abbigliamento/tutto/rilevanza`)
@@ -137,7 +137,7 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
                                                 </p>
                                             </div>
                                             <ul>
-                                                {categories.abbigliamento.map((catObject, idx) => {
+                                                {categories.abbigliamento.map((catObject: any, idx: number) => {
                                                     return (
                                                         <Disclosure key={idx}>
                                                             {({ open }) => (
@@ -178,10 +178,9 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
                                                                                     Tutti i prodotti della categoria
                                                                                 </p>
                                                                             </div>
-                                                                            {catObject.types.map((type: string, idx) => {
+                                                                            {catObject.types.map((type: string, idx: number) => {
                                                                                 return (
                                                                                     <div
-
                                                                                         onClick={() => {
                                                                                             handleCategoryClicked(catObject.name, indexArray, type)
                                                                                         }}
