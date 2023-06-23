@@ -425,7 +425,7 @@ const Header = () => {
                                                     textColor={'white'}
                                                     size={'sm'}
                                                     mr={'2'}
-                                                    variant={'primary'}
+                                                    variant={'black'}
                                                     type='submit'
                                                 >
                                                     Vai alla Dashboard Pagamenti
