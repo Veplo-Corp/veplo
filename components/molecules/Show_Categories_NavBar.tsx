@@ -55,9 +55,9 @@ const Show_Categories_NavBar: React.FC<{ gender: string, closeCategory: () => vo
                     >
                         Tutto l'abbigliamento
                     </Link>
-                    {Object.values(categories)[indexCategory]?.abbigliamento.map((category) => {
+                    {Object.values(categories)[indexCategory]?.abbigliamento.map((category: any) => {
                         const gender = indexCategory === 1 ? 'uomo' : 'donna'
-                        const categoryForUrl = Object.values(categories)[indexCategory]?.abbigliamento.find(element => element.name === category.name)?.url
+                        const categoryForUrl = Object.values(categories)[indexCategory]?.abbigliamento.find((element: any) => element.name === category.name)?.url
                         let categorySelectedUrl;
 
                         if (categoryForUrl) {
