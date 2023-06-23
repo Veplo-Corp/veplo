@@ -311,7 +311,12 @@ const index = () => {
                 </Desktop_Layout>
             ) :
                 (
-                    <Loading />
+                    <Box
+                        minHeight={'100vh'}
+                    >
+                        <Loading />
+
+                    </Box>
                 )
             }
             <ModalReausable title='' closeModal={() => setIsOpenModalReturn(false)} isOpen={isOpenModalReturn}>
