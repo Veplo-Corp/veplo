@@ -15,7 +15,7 @@ export interface Categories {
     {
         abbigliamento: Category[],
         accessori: Category[]
-    }
+    },
     uomo:
     {
         abbigliamento: Category[],
