@@ -541,7 +541,7 @@ const index = () => {
                 id: isCreatedShop.data.createShop
             })
             setIsLoading(false)
-            return router.push('/shop/home/' + isCreatedShop.data.createShop + '/abbigliamento')
+            return router.push('/shop/home/' + isCreatedShop.data.createShop + '/prodotti')
         } catch (e) {
             setIsLoading(false)
             console.log(e);
@@ -719,7 +719,7 @@ const index = () => {
                             <input
                                 ref={hiddenFileInputProfileImage}
                                 type="file" id="file" multiple
-                                accept="image/jpeg, image/jpg, image/webp"
+                                accept="image/jpeg, image/jpg, image/webp image/png "
                                 className='hidden'
                                 onChange={(e) => {
                                     onSelectFileInput(e, typeCroppedImage === 'cover' ? 'cover' : 'profile');
