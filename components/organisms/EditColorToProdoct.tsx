@@ -17,7 +17,7 @@ export interface Size {
     quantity: number
 }
 
-const EditColorToProduct: FC<{ category: string, confirmCard: (variation: VariationCard) => void, colors: Color[], defaultCardValue: VariationCard }> = ({ category, confirmCard, colors, defaultCardValue }) => {
+const EditColorToProduct: FC<{ category: string | undefined, confirmCard: (variation: VariationCard) => void, colors: Color[], defaultCardValue: VariationCard }> = ({ category, confirmCard, colors, defaultCardValue }) => {
 
     console.log(defaultCardValue);
 
@@ -51,7 +51,9 @@ const EditColorToProduct: FC<{ category: string, confirmCard: (variation: Variat
 
     useEffect(() => {
         const sizeTypes = Object.keys(sizes.current);
+        if (!category) return
         const sizeType = Object.keys(sizes.current).indexOf(category)
+
         const sizeTypologySelected = Object.values(sizes.current)[sizeType]
         setSizeTypologySelected(sizeTypologySelected);
 

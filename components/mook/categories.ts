@@ -1,4 +1,4 @@
-export type Category = {
+export interface Category {
     name: string,
     url: string,
     types: string[],
@@ -10,14 +10,16 @@ export type Category = {
     colors: string | undefined
 }
 
-export type Categories = {
+export interface Categories {
     donna:
     {
-        abbigliamento: Category[]
+        abbigliamento: Category[],
+        accessori: Category[]
     }
     uomo:
     {
-        abbigliamento: Category[]
+        abbigliamento: Category[],
+        accessori: Category[]
     }
 }
 
@@ -339,6 +341,59 @@ export const CATEGORIES: Categories = {
                 colors: 'clothes_colors'
             },
         ],
+        accessori: [
+            // { name: "Tutto l'abbigliamento" },
+            {
+                name: "Vestiti",
+                url: "vestiti",
+                types: [
+                    "caftani",
+                    "camicia",
+                    "maglina",
+                    "tubini",
+                    "lunghi",
+                ],
+                sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
+            },
+            {
+                name: "T-Shirt",
+                url: "t-shirt",
+                types: [
+                    "maniche lunghe",
+                    "maniche corte",
+                    "mezze maniche",
+                    "senza maniche",
+                    "jeans",
+                ],
+                sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
+            },
+            {
+                name: "Top",
+                url: "top",
+                types: [
+                    "maniche lunghe",
+                    "maniche corte",
+                    "mezze maniche",
+                    "senza maniche",
+                ],
+                sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
+            },
+        ],
     },
     uomo: {
         abbigliamento: [
@@ -572,6 +627,59 @@ export const CATEGORIES: Categories = {
                 colors: 'clothes_colors'
             },
 
+        ],
+        accessori: [
+            // { name: "Tutto l'abbigliamento" },
+            {
+                name: "Vestiti",
+                url: "vestiti",
+                types: [
+                    "caftani",
+                    "camicia",
+                    "maglina",
+                    "tubini",
+                    "lunghi",
+                ],
+                sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
+            },
+            {
+                name: "T-Shirt",
+                url: "t-shirt",
+                types: [
+                    "maniche lunghe",
+                    "maniche corte",
+                    "mezze maniche",
+                    "senza maniche",
+                    "jeans",
+                ],
+                sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
+            },
+            {
+                name: "Top",
+                url: "top",
+                types: [
+                    "maniche lunghe",
+                    "maniche corte",
+                    "mezze maniche",
+                    "senza maniche",
+                ],
+                sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors'
+            },
         ],
     },
 };

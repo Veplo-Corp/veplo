@@ -438,7 +438,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             minWidth={'3xs'}
                             className='flex mt-2 lg:mt-4 gap-4 lg:gap-5 overflow-x-auto'
                         >
-                            {Object.values(CATEGORIES)[filters.gender === 'm' ? 1 : 0].abbigliamento.sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1).map(element => {
+                            {Object.values(CATEGORIES)[filters.gender === 'm' ? 1 : 0].abbigliamento.sort((a: any, b: any) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1).map((element: any) => {
                                 return (
                                     <Box
                                         key={element.name}
