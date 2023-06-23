@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../../../../components/atoms/Desktop_Layout';
 import EditProductInputForm from '../../../../../../../components/molecules/EditProductInputForm';
 import EditVariationCard from '../../../../../../../components/molecules/EditVariationCard';
-import { CATEGORIES } from '../../../../../../../components/mook/categories';
+import { CATEGORIES, Category } from '../../../../../../../components/mook/categories';
 import { SIZES } from '../../../../../../../components/mook/sizes';
 import { Size } from '../../../../../../../components/organisms/EditColorToProdoct';
 import NoIndexSeo from '../../../../../../../components/organisms/NoIndexSeo';
@@ -76,7 +76,7 @@ const index = () => {
     const [getProduct, productData] = useLazyQuery(GET_SINGLE_PRODUCT);
     const [first, setfirst] = useState(true)
     console.log();
-    const [sizeTypeSelected, setSizeTypeSelected] = useState<string[]>();
+    const [sizeTypeSelected, setSizeTypeSelected] = useState<any>();
     const [newCard, setNewCard] = useState(false)
     const [colors, setColors] = useState<Color[]>(COLORS)
     const [sizeCateggory, setSizeCateggory] = useState('')
@@ -251,19 +251,20 @@ const index = () => {
 
         //find sizeType
         if (product.info.gender === 'f') {
-            const sizeCateggory = Object.values(CATEGORIES)[0].abbigliamento.find(element => element.name.toLocaleLowerCase() === product.info.macroCategory)?.sizes
+            const sizeCateggory: string = Object.values(CATEGORIES)[0].abbigliamento.find((element: Category) => element.name.toLocaleLowerCase() === product.info.macroCategory)?.sizes
             if (sizeCateggory === 'woman_clothes_sizes' || sizeCateggory === "shoes_sizes" || sizeCateggory === "man_clothes_sizes") {
                 setSizeCateggory(sizeCateggory)
-
-                setSizeTypeSelected(SIZES[sizeCateggory])
+                const Sizes = SIZES[sizeCateggory]
+                setSizeTypeSelected(Sizes)
             }
         }
         if (product.info.gender === 'm') {
-            const sizeCateggory = Object.values(CATEGORIES)[1].abbigliamento.find(element => element.name.toLocaleLowerCase() === product.info.macroCategory)?.sizes
+            const sizeCateggory: string = Object.values(CATEGORIES)[1].abbigliamento.find((element: Category) => element.name.toLocaleLowerCase() === product.info.macroCategory)?.sizes
             if (sizeCateggory === 'woman_clothes_sizes' || sizeCateggory === "shoes_sizes" || sizeCateggory === "man_clothes_sizes") {
                 setSizeCateggory(sizeCateggory)
+                const Sizes = SIZES[sizeCateggory]
 
-                setSizeTypeSelected(SIZES[sizeCateggory])
+                setSizeTypeSelected(Sizes)
             }
         }
     }, [productData])

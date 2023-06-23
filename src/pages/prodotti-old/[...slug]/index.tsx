@@ -6,7 +6,7 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch } from 'react-redux';
 import Box_Dress from '../../../../components/molecules/Box_Dress';
-import { CATEGORIES } from '../../../../components/mook/categories';
+import { CATEGORIES, Category } from '../../../../components/mook/categories';
 import PostMeta from '../../../../components/organisms/PostMeta';
 import { findMacrocategoryName } from '../../../../components/utils/find_macrocategory_name';
 import getGenderandMacrocategory from '../../../../components/utils/get_Gender_and_Macrocategory';
@@ -292,7 +292,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
 
     useEffect(() => {
 
-        const microcategoryTypes: any = Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.find(element => element.name === category)
+        const microcategoryTypes: any = Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.find((element: Category) => element.name === category)
         if (!microcategoryTypes?.types) {
             setSizeProduct('')
             return setMicrocategoryTypes([])
@@ -486,7 +486,7 @@ const index: FC<{ products: Product[], category: string, microCategory: string, 
                             minWidth={'3xs'}
                             className='flex mt-2 lg:mt-4 gap-4 lg:gap-5 overflow-x-auto'
                         >
-                            {Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1).map(element => {
+                            {Object.values(CATEGORIES)[gender === 'm' ? 1 : 0].abbigliamento.sort((a: any, b: any) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1).map((element: any) => {
                                 return (
                                     <Box
                                         key={element.name}
