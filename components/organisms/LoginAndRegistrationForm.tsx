@@ -83,7 +83,7 @@ const LoginAndRegistrationForm: FC<{
             if (open === 'modal') {
                 setTimeout(() => {
                     router.reload()
-                }, 1000);
+                }, 200);
                 return
 
             }
@@ -92,7 +92,7 @@ const LoginAndRegistrationForm: FC<{
                 if (cartsDispatchProduct.length > 0) {
                     setTimeout(() => {
                         router.reload()
-                    }, 1000);
+                    }, 200);
                 }
                 return
             }
@@ -101,7 +101,7 @@ const LoginAndRegistrationForm: FC<{
                 if (cartsDispatchProduct.length > 0) {
                     setTimeout(() => {
                         router.reload()
-                    }, 1000);
+                    }, 200);
 
                 }
                 return
@@ -123,6 +123,8 @@ const LoginAndRegistrationForm: FC<{
                     setIsLoading(false)
 
                     redirectUser(isBusiness)
+                    setIsLoading(false)
+
                 } catch (error: any) {
                     setIsLoading(true)
                     const errorCode = error.code;

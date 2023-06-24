@@ -52,6 +52,8 @@ const index = () => {
         const { shopId } = router.query;
         if (!router.isReady || !shopId || user.statusAuthentication === 'not_yet_authenticated' || !cartsDispatch) return
         const cart = cartsDispatch.filter(cart => cart.shopInfo.id === shopId)[0]
+        console.log(cartsDispatch);
+        let timeoutId: any;
         if (cart) {
             console.log(cart);
             setCart(cart)
@@ -59,13 +61,19 @@ const index = () => {
         if (!cart) {
             console.log('CART', cart);
             //in futuro mettiamo carrello non trovato e non reindiriziamo a negozi
+            timeoutId = setTimeout(() => {
+                if (shop) {
+                    router.replace(`/negozio/${shop?.id}/${createUrlSchema([shop?.name])}`)
+                } else {
+                    router.replace(`/negozi`)
+                }
+            }, 4000); // Timeout di 4 secondi
             setCart(undefined)
-            if (shop) {
-                router.replace(`/negozio/${shop?.id}/${createUrlSchema([shop?.name])}`)
-            } else {
-                router.replace(`/negozi`)
-            }
+
         }
+        return () => {
+            clearTimeout(timeoutId);
+        };
     }, [user, cartsDispatch, /* router.query */])
 
 
