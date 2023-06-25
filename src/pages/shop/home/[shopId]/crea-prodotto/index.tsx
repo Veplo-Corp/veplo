@@ -22,10 +22,10 @@ import CREATE_PRODUCT from '../../../../../lib/apollo/mutations/createProduct'
 import UPLOAD_PHOTO from '../../../../../lib/apollo/mutations/uploadPhotos'
 import GET_PRODUCTS_FROM_SHOP from '../../../../../lib/apollo/queries/geetProductsShop'
 import SelectMultipleOptions from '../../../../../../components/atoms/SelectMultipleOptions'
-import { MATERIALS } from '../../../../../../components/mook/productParameters/materials'
-import { FIT } from '../../../../../../components/mook/productParameters/fit'
-import { LENGTH } from '../../../../../../components/mook/productParameters/length'
-import { TRAITS } from '../../../../../../components/mook/productParameters/traits'
+import { MATERIALS_TYPES } from '../../../../../../components/mook/productParameters/materials'
+import { FIT_TYPES } from '../../../../../../components/mook/productParameters/fit'
+import { LENGTH_TYPES } from '../../../../../../components/mook/productParameters/length'
+import { TRAITS_TYPES } from '../../../../../../components/mook/productParameters/traits'
 
 export interface IFormInputProduct {
     typeProduct: 'abbigliamento' | 'accessori'
@@ -34,11 +34,12 @@ export interface IFormInputProduct {
     brand: string;
     macrocategory: string;
     microcategory: string;
-    traits?: string[] | [];
-    materials: string[] | [];
+    traits?: string[];
+    materials: string[];
     fit?: string;
     length?: string;
     description?: string;
+    modelDescription?: string
 }
 
 interface Macrocategory extends Category {
@@ -56,7 +57,7 @@ const index = () => {
     console.log('EII');
 
     const { addToast } = ToastOpen();
-    const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, getValues, setValue, control, formState } = useForm<IFormInputProduct>({
+    const { register, handleSubmit, reset, watch, formState: { errors, isValid, isSubmitting, isDirty }, getValues, setValue, control, formState } = useForm<IFormInputProduct>({
         mode: "all",
         defaultValues: {
             typeProduct: 'abbigliamento'
@@ -205,6 +206,7 @@ const index = () => {
         })
         setNewCard(false)
     }
+
 
     const trasformInEditCard = (variation: any) => {
         setCardToEdit((prevstate: VariationCard[]) => {
@@ -390,7 +392,7 @@ const index = () => {
                         onChange={(e) => {
                             if (e.target.value === 'accessori' || e.target.value === 'abbigliamento') {
                                 setMacrocategorySelectedSpec(undefined)
-
+                                reset()
                                 setValue('typeProduct', e.target.value)
                             }
                         }}
@@ -479,6 +481,7 @@ const index = () => {
                                     setValue('macrocategory', macrocategory.name);
                                     setProductVariations([])
                                     setMacrocategorySelectedSpec(macrocategory)
+                                    reset()
                                 }}
                             />
                         )}
@@ -500,91 +503,123 @@ const index = () => {
                         )}
                     />
                 </Div_input_creation>
-                <Div_input_creation text='Descrizione (opzionale)'>
-                    <InputGroup >
-                        <Textarea
-                            maxLength={200}
-                            rounded={10}
-                            paddingY={6}
-                            paddingTop={2}
-                            autoComplete="descrition-text-shop"
-                            // value={shop_name}
-                            {...register("description", { required: false })}
-                            // onChange={(event) => changeInput(event, 'shop_name')}
-                            isInvalid={false}
+                <Div_input_creation text='Descrizione prodotto (opzionale)'>
+                    <InputGroup>
+                        <Controller
+                            control={control}
+                            name="description"
+                            defaultValue=""
+                            render={({ field }) => (
+                                <Textarea
+                                    maxLength={200}
+                                    rounded={10}
+                                    paddingY={6}
+                                    paddingTop={2}
+                                    autoComplete="descrition-text-shop"
+                                    {...field}
+                                />
+                            )}
                         />
                     </InputGroup>
                 </Div_input_creation>
-                <Div_input_creation text='Materiali (opzionale, massimo 2)'>
+                <Div_input_creation text='Descrizione modello (opzionale)'>
+                    <InputGroup>
+                        <Controller
+                            control={control}
+                            name="modelDescription"
+                            defaultValue=""
+                            render={({ field }) => (
+
+                                <Textarea
+                                    maxLength={100}
+                                    rounded={10}
+                                    paddingY={6}
+                                    paddingTop={2}
+                                    autoComplete="descrition-text-shop"
+                                    placeholder='es. La persona nella foto è alta 175 cm e veste una taglia M'
+                                    {...field}
+                                />
+                            )}
+                        />
+
+                    </InputGroup>
+                </Div_input_creation>
+                {macrocategorySelectedSpec?.materials
+                    && <Div_input_creation text='Materiali (opzionale, massimo 2)'>
+
+                        <Controller
+                            control={control}
+                            name="materials"
+                            rules={{ required: false }}
+                            shouldUnregister={!reset} // Disassocia il campo dal form solo quando non viene chiamato reset()
+                            render={({ field }) => (
+                                <SelectMultipleOptions
+                                    limitNumber={2}
+                                    handleValue={(value) => {
+                                        setValue('materials', value);
+                                    }}
+                                    defaultValue={field.value}
+                                    values={MATERIALS_TYPES.find(materialType => materialType.name === macrocategorySelectedSpec.materials)?.type}
+                                />
+                            )}
+                        />
+                    </Div_input_creation>}
+                {macrocategorySelectedSpec?.length && <Div_input_creation text='Lunghezza (opzionale)'>
+
                     <Controller
                         control={control}
-                        name="materials"
+                        name="length"
                         rules={{ required: false }}
-                        render={() => (
-                            <SelectMultipleOptions
-                                limitNumber={2}
-                                handleValue={(value) => {
-                                    setValue('materials', value);
+                        render={({ field }) => (
+                            <SelectStringOption
+                                values={LENGTH_TYPES.find(
+                                    (materialType) => materialType.name === macrocategorySelectedSpec.length
+                                )?.type}
+                                defaultValue={field.value}
+                                handleClick={(value: string) => {
+                                    setValue('length', value);
                                 }}
-                                values={MATERIALS.sort()}
                             />
                         )}
                     />
-                </Div_input_creation>
-                {
-                    watch('macrocategory') && watch('macrocategory').toLocaleLowerCase() !== 'scarpe' && <>
-                        <Div_input_creation text='Lunghezza (opzionale)'>
-                            <Controller
-                                control={control}
-                                name="length"
-                                rules={{ required: false }}
-                                render={() => (
-                                    <SelectStringOption
-                                        values={LENGTH}
-                                        defaultValue={''}
-                                        handleClick={(microcategory: string) => {
-                                            setValue('length', microcategory);
-                                        }}
-                                    />
-                                )}
-                            />
-                        </Div_input_creation>
-                        <Div_input_creation text='Vestibilità prodotto (opzionale)'>
-                            <Controller
-                                control={control}
-                                name="fit"
-                                rules={{ required: false }}
-                                render={() => (
-                                    <SelectStringOption
-                                        values={FIT}
-                                        defaultValue={''}
-                                        handleClick={(vestibilità: string) => {
-                                            setValue('fit', vestibilità);
-                                        }}
-                                    />
-                                )}
-                            />
-                        </Div_input_creation>
-                    </>
-                }
+                </Div_input_creation>}
+                {macrocategorySelectedSpec?.fit && <Div_input_creation text='Vestibilità prodotto (opzionale)'>
 
-                <Div_input_creation text='Tipologia (opzionale, massimo 2)'>
+                    <Controller
+                        control={control}
+                        name="fit"
+                        rules={{ required: false }}
+                        render={({ field }) => (
+                            <SelectStringOption
+                                values={FIT_TYPES.find(materialType => materialType.name === macrocategorySelectedSpec.fit)?.type}
+
+                                defaultValue={field.value}
+                                handleClick={(value: string) => {
+                                    setValue('fit', value);
+                                }}
+                            />
+                        )}
+                    />
+                </Div_input_creation>}
+                {macrocategorySelectedSpec?.traits && <Div_input_creation text='Tipologia (opzionale, massimo 2)'>
+
                     <Controller
                         control={control}
                         name="traits"
                         rules={{ required: false }}
-                        render={() => (
+
+                        render={({ field }) => (
                             <SelectMultipleOptions
                                 limitNumber={2}
                                 handleValue={(value) => {
                                     setValue('traits', value);
                                 }}
-                                values={TRAITS}
+                                defaultValue={field.value}
+                                values={TRAITS_TYPES.find(materialType => materialType.name === macrocategorySelectedSpec.traits)?.type}
                             />
                         )}
                     />
-                </Div_input_creation>
-
+                </Div_input_creation>}
 
             </div>
 
@@ -715,7 +750,7 @@ const index = () => {
             </div>
 
 
-        </Desktop_Layout>
+        </Desktop_Layout >
     )
 }
 

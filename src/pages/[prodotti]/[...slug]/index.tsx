@@ -186,7 +186,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 }
                             }
                         })
-                    }, 0);
+                    }, 800);
                 } catch {
                     console.log('errore caricamento');
                 }

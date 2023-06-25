@@ -23,7 +23,7 @@ const SelectMacrocategory: FC<{ typeProduct: 'abbigliamento' | 'accessori', sele
 
     return (
         <Listbox value={selected} onChange={(value) => handleEvent(value)}>
-            <div className={`z-1 relative mt-1 border border-gray rounded-lg ${true ? 'bg-white' : 'bg-gray-200'}`}>
+            <div className={`z-1 relative mt-1 border border-gray rounded-lg text-xs ${true ? 'bg-white' : 'bg-gray-200'}`}>
                 <Listbox.Button className="cursor-default w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0">
 
                     {selected ? <span className="block truncate text-start">{selected} </span> : <span className="block truncate text-start text-white">--</span>}
