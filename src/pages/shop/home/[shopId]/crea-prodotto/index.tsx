@@ -492,10 +492,10 @@ const index = () => {
                         control={control}
                         name="microcategory"
                         rules={{ required: false }}
-                        render={() => (
+                        render={({ field }) => (
                             <SelectStringOption
                                 values={macrocategorySelectedSpec?.types}
-                                defaultValue={undefined}
+                                defaultValue={field.value}
                                 handleClick={(microcategory: string) => {
                                     setValue('microcategory', microcategory);
                                 }}
