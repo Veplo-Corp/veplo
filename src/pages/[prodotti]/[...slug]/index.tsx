@@ -113,8 +113,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [filters, setFilters] = useState<ProductsFilter>(filtersProps)
     const [getProducts, { loading, refetch, data, subscribeToMore }] = useLazyQuery<ProductsQuery>(GET_PRODUCTS);
     const [hasMoreData, setHasMoreData] = useState(true);
-    const [filterCount, setfilterCount] = useState(0)
-    const [drawerFilterOpen, setDrawerFilterOpen] = useState(false)
     const [typeProducts, setTypeProducts] = useState<'abbigliamento' | 'accessori'>('abbigliamento')
     const [resetProducts, setResetProducts] = useState(false)
     const dispatch = useDispatch();
@@ -176,6 +174,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             setFilters(newFilters)
             const fetchData = async () => {
                 try {
+                    //controllare se crasha
                     setTimeout(async () => {
                         await getProducts({
                             variables: {
@@ -187,16 +186,16 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 }
                             }
                         })
-                    }, 500);
+                    }, 0);
                 } catch {
                     console.log('errore caricamento');
                 }
             };
             fetchData();
             //TODO togli setisloading qui quando gestirai il sorting
-            setTimeout(() => {
-                setIsLoading(false)
-            }, 800);
+            // setTimeout(() => {
+            //     setIsLoading(false)
+            // }, 800);
 
         }
         return () => {

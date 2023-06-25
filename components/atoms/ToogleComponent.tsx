@@ -1,6 +1,7 @@
 import { Box, Text } from '@chakra-ui/react'
 import { Switch } from '@headlessui/react'
 import React, { FC, Fragment, useEffect, useState } from 'react'
+import { motion } from 'framer-motion';
 
 const ToogleComponent: FC<{ value: boolean | undefined, handleChangeToogle: (toogle: string) => void, modifyToogleInComponent: boolean }> = ({ value, handleChangeToogle, modifyToogleInComponent }) => {
     const [enabled, setEnabled] = useState(false)
@@ -13,6 +14,7 @@ const ToogleComponent: FC<{ value: boolean | undefined, handleChangeToogle: (too
 
 
     return (
+
         <Box height={12}
             borderWidth={1}
             borderColor={'gray.200'}
