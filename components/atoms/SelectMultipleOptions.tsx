@@ -5,15 +5,13 @@ import { CheckIcon } from '@chakra-ui/icons'
 
 
 
-const SelectMultipleOptions: FC<{ limitNumber: number, handleValue: (selectedValue: (string[] | [])) => void, values: string[], defaultValue?: string[] }> = ({ limitNumber, handleValue, values, defaultValue }) => {
+const SelectMultipleOptions: FC<{ limitNumber: number, handleValue: (selectedValue: (string[] | [])) => void, values: string[] | undefined, defaultValue?: string[] | undefined }> = ({ limitNumber, handleValue, values, defaultValue }) => {
     const [selected, setSelected] = useState<string[]>([])
 
 
     const handleSelectedValue = (value: string[]) => {
-        if (value.length > limitNumber) return
-        setSelected(() => {
-            return value
-        })
+        if (value?.length > limitNumber) return
+
         handleValue(value)
     }
 
@@ -21,7 +19,15 @@ const SelectMultipleOptions: FC<{ limitNumber: number, handleValue: (selectedVal
         if (defaultValue) {
             setSelected(defaultValue)
         }
-    }, [])
+        else {
+            setSelected([])
+        }
+    }, [defaultValue])
+
+    useEffect(() => {
+        console.log(values);
+
+    }, [values])
 
 
 
@@ -44,7 +50,7 @@ const SelectMultipleOptions: FC<{ limitNumber: number, handleValue: (selectedVal
                     leaveTo="opacity-0"
                 >
                     <Listbox.Options className="z-10 bg-white absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-whitetext-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                        {values.map((value) => (
+                        {values && values.map((value) => (
                             <Listbox.Option key={value} value={value}
                                 className={({ active }) =>
                                     ` relative cursor-default select-none py-2 pl-10 pr-4  ${active ? 'bg-blue-700 text-white' : 'text-white-900'} `

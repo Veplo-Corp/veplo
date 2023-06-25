@@ -7,13 +7,12 @@ import { NavArrowDown } from 'iconoir-react'
 const SelectStringOption: FC<{ defaultValue?: number | string, values: string[] | number[] | undefined, handleClick: (value: any) => void, placeholder?: string, fit?: 'fit' | 'full' }> = ({ defaultValue, values, handleClick, placeholder, fit }) => {
     const [selected, setSelected] = useState<any>('');
     useEffect(() => {
-        if (defaultValue === undefined) return
+        if (defaultValue === undefined) return setSelected(undefined)
         setSelected(defaultValue)
     }, [defaultValue])
 
     const handleEvent = (value: any) => {
         if (value === undefined) return
-        setSelected(value)
         handleClick(value)
     }
 
@@ -36,12 +35,12 @@ const SelectStringOption: FC<{ defaultValue?: number | string, values: string[] 
     return (
         <Listbox value={selected} onChange={handleEvent}
             disabled={!values || values?.length < 0}>
-            <div className={`z-1 relative mt-1 border border-gray rounded-lg ${values && values?.length >= 0 ? 'bg-white' : 'bg-gray-100'} min-h-[50px]`}>
+            <div className={`z-1 relative mt-1 border border-gray rounded-lg text-sm ${values && values?.length >= 0 ? 'bg-white' : 'bg-gray-100'} min-h-[50px]`}>
                 <Listbox.Button className="cursor-default min-w-[100px] md:min-w-[140px] min-h-[45px] w-full border-none py-3.5 rounded-lg pl-3 pr-10 leading-5 text-gray-900 focus:ring-0">
                     {typeof selected !== 'number' && <span className="block truncate text-start">{toUpperCaseFirstLetter(selected?.name || selected)} </span>}
                     {typeof selected === 'number' && <span className="block truncate text-start">{(selected)} </span>}
 
-                    {placeholder && !selected && <span className="block truncate text-start text-">{placeholder}</span>}
+                    {placeholder && !selected && <span className="block truncate text-start">{placeholder}</span>}
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
 
                         <NavArrowDown
