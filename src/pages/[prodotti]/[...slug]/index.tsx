@@ -433,14 +433,10 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             noOfLines={1} skeletonHeight={'3'} />
                         <SkeletonText mt='2'
                             width={[36, 28]}
-
                             noOfLines={1} skeletonHeight={'2.5'} />
                     </Box>
                 </HStack>
                 <Skeleton
-                    startColor={'gray.100'}
-                    endColor={'gray.300'}
-
                     //height={['250px', '150', '500px']}
                     className={'h-[450px] md:h-[280px] lg:h-[350px] xl:h-[400px]'}
                     borderRadius={'3xl'}
@@ -636,7 +632,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
                         {!isLoading && products ?
                             (<InfiniteScroll
-                                scrollThreshold={0.95}
+                                scrollThreshold={0.90}
                                 dataLength={products?.length}
                                 next={fetchMoreData}
                                 hasMore={hasMoreData}
