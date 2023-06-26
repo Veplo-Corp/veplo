@@ -7,7 +7,7 @@ import { extendTheme } from "@chakra-ui/react"
 import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from '../store/store'
 import { useEffect, useState } from 'react'
-import { analytics, auth, onAuthStateChanged, signOut } from '../config/firebase'
+import { auth, onAuthStateChanged, signOut } from '../config/firebase'
 import user, { addFavouriteShopBusiness, login, logout } from '../store/reducers/user'
 import { setAddress } from '../store/reducers/address_user'
 import { useRouter } from 'next/router'
@@ -20,7 +20,6 @@ import modal_error from '../store/reducers/modal_error'
 import Router from "next/router";
 import { Firebase_User } from '../interfaces/firebase_user.interface'
 import Loading from '../../components/molecules/Loading'
-import { getAnalytics, logEvent, setUserId, setUserProperties } from "firebase/analytics";
 import Footer from '../../components/organisms/Footer'
 import PostMeta from '../../components/organisms/PostMeta'
 import Script from 'next/script'

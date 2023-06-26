@@ -1,7 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
-import { getAnalytics } from "firebase/analytics";
 
 
 import {
@@ -98,5 +97,4 @@ export {
   signInWithRedirect,
   provider,
   storage,
-  analytics
 }
