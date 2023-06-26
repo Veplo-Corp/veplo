@@ -29,7 +29,7 @@ import FiltersSelections from '../../../../components/organisms/FiltersSelection
 import TagFilter, { FilterAccepted } from '../../../../components/atoms/TagFilter';
 
 
-const RANGE = process.env.NODE_ENV === 'production' ? 3 : 3
+const RANGE = process.env.NODE_ENV === 'production' ? 3 : 12
 
 
 export async function getStaticPaths() {
@@ -416,6 +416,40 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
     }
 
+    const SkeletonComponent = () => {
+        return (
+            <>
+                <HStack
+                    mb={3}
+                    ml={2}
+                    padding='0' bg='white' display={'flex'} gap={1.5}>
+                    <SkeletonCircle size='14' />
+                    <Box
+                        margin={'auto'}
+                    >
+                        <SkeletonText
+                            width={[56, 64]}
+
+                            noOfLines={1} skeletonHeight={'3'} />
+                        <SkeletonText mt='2'
+                            width={[36, 28]}
+
+                            noOfLines={1} skeletonHeight={'2.5'} />
+                    </Box>
+                </HStack>
+                <Skeleton
+                    startColor={'gray.100'}
+                    endColor={'gray.300'}
+
+                    //height={['250px', '150', '500px']}
+                    className={'h-[450px] md:h-[280px] lg:h-[350px] xl:h-[400px]'}
+                    borderRadius={'3xl'}
+                />
+            </>
+
+        )
+    }
+
 
 
     return (
@@ -602,16 +636,28 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
                         {!isLoading && products ?
                             (<InfiniteScroll
+                                scrollThreshold={0.95}
                                 dataLength={products?.length}
                                 next={fetchMoreData}
                                 hasMore={hasMoreData}
                                 loader={
                                     <>
-                                        {products[3] && <Text textAlign={'center'}
-                                            fontWeight={'bold'}
-                                        >
-                                            caricamento
-                                        </Text>}
+                                        {products[3] &&
+
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 gap-y-5 w-full">
+                                                {[1, 2, 3].map((index) => {
+                                                    return (
+                                                        <Box
+                                                            key={index}
+                                                        >
+                                                            <SkeletonComponent />
+                                                        </Box>
+
+                                                    )
+                                                })}
+
+                                            </div>
+                                        }
                                     </>
                                 }
                                 endMessage={
@@ -661,32 +707,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                             <Box
                                                 key={index}
                                             >
-                                                <HStack
-                                                    mb={3}
-                                                    ml={2}
-                                                    padding='0' bg='white' display={'flex'} gap={1.5}>
-                                                    <SkeletonCircle size='14' />
-                                                    <Box
-                                                        margin={'auto'}
-                                                    >
-                                                        <SkeletonText
-                                                            width={[56, 64]}
-
-                                                            noOfLines={1} skeletonHeight={'3'} />
-                                                        <SkeletonText mt='2'
-                                                            width={[36, 28]}
-
-                                                            noOfLines={1} skeletonHeight={'2.5'} />
-                                                    </Box>
-                                                </HStack>
-                                                <Skeleton
-                                                    startColor={'gray.100'}
-                                                    endColor={'gray.300'}
-
-                                                    //height={['250px', '150', '500px']}
-                                                    className={'h-[450px] md:h-[280px] lg:h-[350px] xl:h-[400px]'}
-                                                    borderRadius={'3xl'}
-                                                />
+                                                <SkeletonComponent />
                                             </Box>
 
                                         )

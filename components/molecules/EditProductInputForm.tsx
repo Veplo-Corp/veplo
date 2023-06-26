@@ -68,7 +68,7 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                         type="text"
                         {...register("name", {
                             required: true,
-                            pattern: /^[A-Za-z0-9 ]+$/
+                            pattern: /^[A-Za-zÀ-ÿ0-9 -]+$/
                         })}
                         isInvalid={false}
                     />
