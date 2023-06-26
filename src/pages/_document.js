@@ -63,26 +63,7 @@ export default function Document() {
 
         </script>}
 
-        {/!* facebook  */}
-        {/* {process.env.NODE_ENV === 'production' &&
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-          !function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', ${process.env.FACEBOOK_ID});
-          fbq('track', 'PageView');
-        `,
-            }}
-          />
 
-        } */}
         {/* Inserisci il codice di Google Tag Manager qui */}
         {process.env.NODE_ENV === 'production' && <script dangerouslySetInnerHTML={{
           __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -94,25 +75,11 @@ export default function Document() {
       </Head>
 
       <body>
-        {/* <!-- Google Tag Manager (noscript) --> */}
-        {/* <noscript dangerouslySetInnerHTML={{
-          __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NC5XZVH"
-          height="0" width="0" style="display:none;visibility:hidden"></iframe>`}}></noscript> */}
-        {/* <!-- End Google Tag Manager (noscript) --> */}
-        {/* Inserisci il codice di Google Tag Manager qui, prima di Main */}
         <noscript dangerouslySetInnerHTML={{
           __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${process.env.GOOGLE_TAG_MANAGER}"
             height="0" width="0" style="display:none;visibility:hidden"></iframe>`
         }} />
-        {/!* facebook */}
-        {/* <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: 'none' }}
-            src={`https://www.facebook.com/tr?id=${process.env.FACEBOOK_ID}&ev=PageView&noscript=1`}
-          />
-        </noscript> */}
+
         <Main />
         <NextScript />
       </body>
