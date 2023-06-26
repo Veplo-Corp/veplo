@@ -1,5 +1,5 @@
 import { Button, Input, InputGroup, InputLeftAddon, InputRightAddon, Text, Textarea } from '@chakra-ui/react';
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form';
 import { Variation } from '../../src/interfaces/product.interface';
 import { IFormInputProductEdit } from '../../src/pages/shop/home/[shopId]/gestisci-prodotto/[productId]';
@@ -8,12 +8,12 @@ import Div_input_creation from '../atoms/Div_input_creation';
 import SelectMacrocategory from '../atoms/SelectMacrocategory';
 import SelectStringOption from '../atoms/SelectStringOption';
 import { onChangeNumberPrice } from '../utils/onChangePrice';
-import ProductVariationCard from './ProductVariationCard';
 import SelectMultipleOptions from '../atoms/SelectMultipleOptions';
-import { MATERIALS } from '../mook/productParameters/materials';
-import { FIT } from '../mook/productParameters/fit';
-import { TRAITS } from '../mook/productParameters/traits';
-import { LENGTH } from '../mook/productParameters/length';
+import { MATERIALS, MATERIALS_TYPES } from '../mook/productParameters/materials';
+import { FIT_TYPES } from '../mook/productParameters/fit';
+import { TRAITS_TYPES } from '../mook/productParameters/traits';
+import { LENGTH_TYPES } from '../mook/productParameters/length';
+import { CATEGORIES, Category } from '../mook/categories';
 
 
 
@@ -24,24 +24,34 @@ interface Macrocategory {
     url: string
 }
 
-const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleConfirm: (product: IFormInputProductEdit) => void }> = ({ defaultValues, handleConfirm }) => {
+const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleConfirm: (product: IFormInputProductEdit) => void, gender: 'f' | 'm' }> = ({ defaultValues, handleConfirm, gender }) => {
+    const [macrocategorySelectedSpec, setMacrocategorySelectedSpec] = useState<Category>()
 
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInputProductEdit>({
         mode: "all",
         defaultValues
     });
-    const vestibilità = [
-        'skinny',
-        'slim',
-        'regular',
-        'oversize',
-        'baggy'
-    ]
+
+
+    console.log(defaultValues);
+    console.log(gender);
 
 
     const onSubmit = (value: IFormInputProductEdit) => {
+        //TODO gestire campo ModelDescription
         handleConfirm(value)
     }
+
+    useEffect(() => {
+        if (!defaultValues || !gender) return
+        const genderSelected = gender === 'f' ? 'donna' : 'uomo'
+        //TODO gestire differenza tra Abbigliamento e Accessori
+        const categoryInformation: Category | undefined = CATEGORIES[genderSelected]['abbigliamento'].find(category => category.name.toLowerCase() === defaultValues.macrocategory.toLowerCase())
+        if (!categoryInformation) return
+        setMacrocategorySelectedSpec(categoryInformation)
+        console.log(categoryInformation);
+
+    }, [defaultValues])
 
 
 
@@ -72,7 +82,6 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                 role="alert">I caratteri speciali non sono accettati</Text>}
             <Div_input_creation text='Prezzo'>
                 <InputGroup
-
                 >
                     <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} />
                     <Input
@@ -93,7 +102,6 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                             let v1 = Number(onChangeNumberPrice(e).replace(',', '.'))
                             let v2 = watch('price.v2');
                             console.log(Number(watch('price.v2')))
-
                             if (typeof v2 === 'string') {
                                 v2 = Number(v2.replace(',', '.'))
                             }
@@ -103,9 +111,7 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                                     const discountPercentage = Number((100 - Number(v2) / v1 * 100).toFixed(2));
                                     setValue('price.discountPercentage', discountPercentage);
                                 }
-
                             } else {
-
                                 setValue('price.v2', v1);
                                 setValue('price.discountPercentage', 0);
                             }
@@ -121,7 +127,6 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                 >
                     <InputGroup>
                         <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} />
-
                         <Input
                             rounded={10}
                             paddingY={6}
@@ -136,7 +141,6 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                             isInvalid={false}
                             onChange={(e) => {
                                 const inputValue = onChangeNumberPrice(e)
-
                                 setValue('price.v2', inputValue);
                                 let v2 = Number(onChangeNumberPrice(e).replace(',', '.'))
                                 let v1 = watch('price.v1');
@@ -153,19 +157,15 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                             }}
                         /></InputGroup>
 
-                    <InputGroup
-
-                    >
+                    <InputGroup>
                         <Input
                             rounded={10}
                             paddingY={6}
                             autoComplete='off'
                             type="string"
-
                             {...register("price.discountPercentage", {
                                 required: false,
                             })}
-
                             placeholder={'percentuale sconto'}
                             textAlign={"end"}
                             isInvalid={false}
@@ -217,7 +217,7 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                 </InputGroup>
             </Div_input_creation>
             <Div_input_creation text='Microcategoria'>
-                <InputGroup >
+                <InputGroup>
                     <Input
                         autoComplete='off'
                         maxLength={30}
@@ -236,11 +236,13 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
             <Div_input_creation text='Descrizione (opzionale)'>
                 <InputGroup >
                     <Textarea
+                        fontSize={'sm'}
                         maxLength={200}
                         rounded={10}
                         paddingY={6}
+                        paddingX={2}
                         paddingTop={2}
-                        autoComplete="descrition-text-shop"
+                        autoComplete="descrition-text-product"
                         // value={shop_name}
                         {...register("description", { required: true })}
                         // onChange={(event) => changeInput(event, 'shop_name')}
@@ -248,78 +250,102 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                     />
                 </InputGroup>
             </Div_input_creation>
-            <Div_input_creation text='Materiali (opzionale, massimo 2)'>
+            <Div_input_creation text='Descrizione modello (opzionale)'>
+                <InputGroup>
+                    <Controller
+                        control={control}
+                        name="modelDescription"
+                        defaultValue=""
+                        render={({ field }) => (
+                            <Textarea
+                                maxLength={100}
+                                rounded={10}
+                                paddingY={6}
+                                paddingTop={2}
+                                autoComplete="descrition-text-shop"
+                                placeholder='es. La persona nella foto è alta 175 cm e veste una taglia M'
+                                {...field}
+                            />
+                        )}
+                    />
+
+                </InputGroup>
+            </Div_input_creation>
+            {macrocategorySelectedSpec?.materials
+                && <Div_input_creation text='Materiali (opzionale, massimo 2)'>
+
+                    <Controller
+                        control={control}
+                        name="materials"
+                        rules={{ required: false }}
+                        render={({ field }) => (
+                            <SelectMultipleOptions
+                                limitNumber={2}
+                                handleValue={(value) => {
+                                    setValue('materials', value);
+                                }}
+                                defaultValue={field.value}
+                                values={MATERIALS_TYPES.find(materialType => materialType.name === macrocategorySelectedSpec.materials)?.type}
+                            />
+                        )}
+                    />
+                </Div_input_creation>}
+
+            {macrocategorySelectedSpec?.length && <Div_input_creation text='Lunghezza (opzionale)'>
+
                 <Controller
                     control={control}
-                    name="materials"
+                    name="length"
                     rules={{ required: false }}
-                    render={() => (
-                        <SelectMultipleOptions
-                            defaultValue={watch('materials')}
-                            limitNumber={2}
-                            handleValue={(value) => {
-                                setValue('materials', value);
+                    render={({ field }) => (
+                        <SelectStringOption
+                            values={LENGTH_TYPES.find(
+                                (materialType) => materialType.name === macrocategorySelectedSpec.length
+                            )?.type}
+                            defaultValue={field.value}
+                            handleClick={(value: string) => {
+                                setValue('length', value);
                             }}
-                            values={MATERIALS.sort()}
                         />
                     )}
                 />
-            </Div_input_creation>
-            {
-                watch('macrocategory') && watch('macrocategory').toLocaleLowerCase() !== 'scarpe' && <>
-                    <Div_input_creation text='Lunghezza (opzionale)'>
-                        <Controller
-                            control={control}
-                            name="length"
-                            rules={{ required: false }}
-                            render={() => (
-                                <SelectStringOption
-                                    values={LENGTH}
-                                    defaultValue={watch('length')}
-                                    handleClick={(microcategory: string) => {
-                                        setValue('length', microcategory);
-                                    }}
-                                />
-                            )}
+            </Div_input_creation>}
+            {macrocategorySelectedSpec?.fit && <Div_input_creation text='Vestibilità prodotto (opzionale)'>
+
+                <Controller
+                    control={control}
+                    name="fit"
+                    rules={{ required: false }}
+                    render={({ field }) => (
+                        <SelectStringOption
+                            values={FIT_TYPES.find(materialType => materialType.name === macrocategorySelectedSpec.fit)?.type}
+
+                            defaultValue={field.value}
+                            handleClick={(value: string) => {
+                                setValue('fit', value);
+                            }}
                         />
-                    </Div_input_creation>
-                    <Div_input_creation text='Vestibilità prodotto'>
-                        <Controller
-                            control={control}
-                            name="fit"
-                            rules={{ required: false }}
-                            render={() => (
-                                <SelectStringOption
-                                    values={FIT}
-                                    defaultValue={defaultValues.fit}
-                                    handleClick={(vestibilità: string) => {
-                                        setValue('fit', vestibilità);
-                                    }}
-                                />
-                            )}
-                        />
-                    </Div_input_creation>
-                </>
-            }
-            <Div_input_creation text='Tipologia (opzionale, massimo 2)'>
+                    )}
+                />
+            </Div_input_creation>}
+            {macrocategorySelectedSpec?.traits && <Div_input_creation text='Tipologia (opzionale, massimo 2)'>
+
                 <Controller
                     control={control}
                     name="traits"
                     rules={{ required: false }}
-                    render={() => (
+                    render={({ field }) => (
                         <SelectMultipleOptions
-                            defaultValue={watch('traits')}
                             limitNumber={2}
                             handleValue={(value) => {
-
-
                                 setValue('traits', value);
                             }}
-                            values={TRAITS}
+                            defaultValue={field.value}
+                            values={TRAITS_TYPES.find(materialType => materialType.name === macrocategorySelectedSpec.traits)?.type}
                         />
                     )}
                 />
-            </Div_input_creation>
+            </Div_input_creation>}
 
             <Button
                 mt={5}

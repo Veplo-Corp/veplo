@@ -14,6 +14,7 @@ import ImageCrop from '../molecules/ImageCrop';
 import { PixelCrop } from 'react-image-crop'
 import { canvasPreview } from '../molecules/Canva_previews';
 import { resizeFile } from '../utils/resizeFile';
+import { SIZES_TYPES } from '../mook/productParameters/sizes';
 
 const quantity = Array.from({ length: 100 }, (_, i) => i + 1)
 
@@ -36,7 +37,6 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
 
 
     const [color, setColor] = useState('')
-    const sizes = useRef(SIZES)
     const [sizeTypologySelected, setSizeTypologySelected] = useState<string[]>([])
     const [canAddNewSize, setcanAddNewSize] = useState(false)
     const [openDrawNumber, setOpenDrawNumber] = useState<number>(1)
@@ -61,12 +61,10 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
     }, [defaultCardValue])
 
     useEffect(() => {
-        const sizeTypes = Object.keys(sizes.current);
-        if (!category) return
-        const sizeType = Object.keys(sizes.current).indexOf(category)
-        const sizeTypologySelected = Object.values(sizes.current)[sizeType]
-        setSizeTypologySelected(sizeTypologySelected);
-
+        if (!category) return setSizeTypologySelected([])
+        const sizeType = SIZES_TYPES.find(size => size.name === category)?.type
+        if (!sizeType) return setSizeTypologySelected([])
+        setSizeTypologySelected(sizeType);
     }, [category])
 
     const [productSizeSelected, setProductSizeSelected] = useState<Size[]>([
@@ -198,6 +196,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                         <SelectColor
                             placeholder='colore'
                             colors={colors}
+                            fit='fit'
                             defaultValue={color}
                             handleClick={(color) => {
                                 setColor(color)
