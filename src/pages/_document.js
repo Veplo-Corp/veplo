@@ -62,7 +62,9 @@ export default function Document() {
         >
 
         </script>}
-        {process.env.NODE_ENV === 'production' &&
+
+        {/!* facebook  */}
+        {/* {process.env.NODE_ENV === 'production' &&
           <script
             dangerouslySetInnerHTML={{
               __html: `
@@ -80,7 +82,7 @@ export default function Document() {
             }}
           />
 
-        }
+        } */}
         {/* Inserisci il codice di Google Tag Manager qui */}
         {process.env.NODE_ENV === 'production' && <script dangerouslySetInnerHTML={{
           __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -102,14 +104,15 @@ export default function Document() {
           __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${process.env.GOOGLE_TAG_MANAGER}"
             height="0" width="0" style="display:none;visibility:hidden"></iframe>`
         }} />
-        <noscript>
+        {/!* facebook */}
+        {/* <noscript>
           <img
             height="1"
             width="1"
             style={{ display: 'none' }}
             src={`https://www.facebook.com/tr?id=${process.env.FACEBOOK_ID}&ev=PageView&noscript=1`}
           />
-        </noscript>
+        </noscript> */}
         <Main />
         <NextScript />
       </body>
