@@ -79,9 +79,9 @@ const auth = getAuth();
 auth.languageCode = 'it';
 let analytics: any = () => { };
 // Initialize Analytics and get a reference to the service
-if (typeof window !== 'undefined') {
-  analytics = getAnalytics(app);
-}
+// if (typeof window !== 'undefined') {
+//   analytics = getAnalytics(app);
+// }
 
 
 export {
