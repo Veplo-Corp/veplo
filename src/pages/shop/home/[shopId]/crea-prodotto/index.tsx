@@ -42,7 +42,7 @@ export interface IFormInputProduct {
     modelDescription?: string
 }
 
-interface Macrocategory extends Category {
+export interface Macrocategory extends Category {
     gender: string,
 }
 
@@ -57,7 +57,7 @@ const index = () => {
     console.log('EII');
 
     const { addToast } = ToastOpen();
-    const { register, handleSubmit, reset, watch, formState: { errors, isValid, isSubmitting, isDirty }, getValues, setValue, control, formState } = useForm<IFormInputProduct>({
+    const { register, handleSubmit, reset, resetField, watch, formState: { errors, isValid, isSubmitting, isDirty }, getValues, setValue, control, formState } = useForm<IFormInputProduct>({
         mode: "all",
         defaultValues: {
             typeProduct: 'abbigliamento'
@@ -248,9 +248,10 @@ const index = () => {
 
 
     const createProductHandler = async () => {
-        setIsLoading(true)
+        //TODO gestire campo ModelDescription
         const values = getValues();
         console.log(values);
+        setIsLoading(true)
 
         let photos: any = [];
         for await (const variation of productVariations) {
@@ -258,6 +259,8 @@ const index = () => {
                 photos.push(photo.file)
             }
         }
+
+        if (photos.length <= 0) return setIsLoading(false)
 
 
         console.log(photos);
@@ -359,395 +362,415 @@ const index = () => {
 
 
 
+    const onSubmit = () => {
+        if (isLoading) return
+        createProductHandler()
+    }
+
+    const resetForm = () => {
+        resetField('microcategory')
+        resetField('description')
+        resetField('modelDescription')
+        resetField('materials')
+        resetField('length')
+        resetField('fit')
+        resetField('traits')
+
+    }
 
 
 
     return (
         <Desktop_Layout>
             <NoIndexSeo title='Crea prodotto | Veplo' />
-            <div className='w-full md:w-8/12 lg:w-1/2 xl:w-5/12  m-auto'>
-                <h1 className='text-lg md:text-2xl font-extrabold mt-6 mb-4'>
-                    Aggiungi prodotto
-                </h1>
-                <Div_input_creation text='Tipologia prodotto'>
-                    <Select
-                        _active={{
-                            transform: 'scale(0.98)'
-                        }}
-                        icon={
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                            </svg>
-                        }
-                        width={['full', 'full']}
-                        size={'lg'}
-                        borderRadius={'10px'}
-                        bg={'#F2F2F2'}
-                        focusBorderColor="transparent"
-                        borderColor={'#F2F2F2'}
-                        color={'secondaryBlack.text'}
-                        fontWeight={'semibold'}
-                        fontSize={['18px', '16px']}
-                        height={12}
-                        onChange={(e) => {
-                            if (e.target.value === 'accessori' || e.target.value === 'abbigliamento') {
-                                setMacrocategorySelectedSpec(undefined)
-                                reset()
-                                setValue('typeProduct', e.target.value)
-                            }
-                        }}
-                    >
-                        {['abbigliamento', 'accessori'].map((sortElement) => {
-                            return (
-                                <option key={sortElement} value={sortElement}>{sortElement}</option>
-                            )
-                        })}
-                    </Select>
-                </Div_input_creation>
-
-                <Div_input_creation text='Nome del prodotto'>
-                    <InputGroup >
-                        <Input
-                            autoComplete='off'
-                            maxLength={30}
-                            rounded={10}
-                            paddingY={6}
-                            type="text"
-                            {...register("name", {
-                                required: true,
-                                pattern: /^[A-Za-z0-9 ]+$/
-                            })}
-                            isInvalid={false}
-                        />
-                    </InputGroup>
-                </Div_input_creation>
-                {errors.name && <Text
-                    pl={2}
-                    mt={0}
-                    fontSize={'sm'}
-                    fontWeight={'medium'}
-                    role="alert">I caratteri speciali non sono accettati</Text>}
-                <Div_input_creation text='Prezzo'>
-                    <InputGroup
-
-                    >
-                        <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} />
-                        <Input
-                            rounded={10}
-                            paddingY={6}
-                            autoComplete='off'
-                            type="string"
-                            {...register("price", {
-                                required: true,
-                            })}
-                            onWheel={(e: any) => e.target.blur()}
-                            placeholder={'34,99'}
-                            textAlign={"end"}
-                            isInvalid={false}
-                            onChange={(e) => {
-                                const inputValue = onChangeNumberPrice(e)
-                                return setValue('price', inputValue);
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+            >
+                <div className='w-full md:w-8/12 lg:w-1/2 xl:w-5/12  m-auto'>
+                    <h1 className='text-lg md:text-2xl font-extrabold mt-6 mb-4'>
+                        Aggiungi prodotto
+                    </h1>
+                    <Div_input_creation text='Tipologia prodotto'>
+                        <Select
+                            _active={{
+                                transform: 'scale(0.98)'
                             }}
-                        />
-                    </InputGroup>
-                </Div_input_creation>
-                <Div_input_creation text='Brand'
-                >
-                    <Controller
-                        control={control}
-                        name="brand"
-                        rules={{ required: false }}
-                        render={({ field: { onChange, onBlur, value, ref } }) => (
-                            <Autocomplete
-                                selectedValue={watch('brand')}
-                                handleChangeValues={(brand: any) => {
-                                    setValue('brand', brand);
-                                }} />
-                        )}
-                    />
-                </Div_input_creation>
-                <Div_input_creation text='Categoria'>
-                    <Controller
-                        control={control}
-                        name="macrocategory"
-                        rules={{ required: false }}
-                        render={() => (
-                            <SelectMacrocategory
-                                typeProduct={watch('typeProduct')}
-                                selectedValueBefore={macrocategorySelectedSpec?.name}
-                                handleClick={(macrocategory: Macrocategory) => {
-                                    setGenderSelected(macrocategory.gender)
-                                    setSizeTypeSelected(macrocategory.sizes)
-                                    setValue('macrocategory', macrocategory.name);
-                                    setProductVariations([])
-                                    setMacrocategorySelectedSpec(macrocategory)
-                                    reset()
+                            icon={
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                </svg>
+                            }
+                            width={['full', 'full']}
+                            size={'lg'}
+                            borderRadius={'10px'}
+                            bg={'#F2F2F2'}
+                            focusBorderColor="transparent"
+                            borderColor={'#F2F2F2'}
+                            color={'secondaryBlack.text'}
+                            fontWeight={'semibold'}
+                            fontSize={['18px', '16px']}
+                            height={12}
+                            onChange={(e) => {
+                                if (e.target.value === 'accessori' || e.target.value === 'abbigliamento') {
+                                    setMacrocategorySelectedSpec(undefined)
+                                    resetForm()
+                                    setValue('typeProduct', e.target.value)
+                                }
+                            }}
+                        >
+                            {['abbigliamento', 'accessori'].map((sortElement) => {
+                                return (
+                                    <option key={sortElement} value={sortElement}>{sortElement}</option>
+                                )
+                            })}
+                        </Select>
+                    </Div_input_creation>
+
+                    <Div_input_creation text='Nome del prodotto'>
+                        <InputGroup >
+                            <Input
+                                autoComplete='off'
+                                maxLength={30}
+                                rounded={10}
+                                paddingY={6}
+                                type="text"
+                                {...register("name", {
+                                    required: true,
+                                    pattern: /^[A-Za-z0-9 ]+$/
+                                })}
+                                isInvalid={false}
+                            />
+                        </InputGroup>
+                    </Div_input_creation>
+                    {errors.name && <Text
+                        pl={2}
+                        mt={0}
+                        fontSize={'sm'}
+                        fontWeight={'medium'}
+                        role="alert">I caratteri speciali non sono accettati</Text>}
+                    <Div_input_creation text='Prezzo'>
+                        <InputGroup
+
+                        >
+                            <InputLeftAddon rounded={10} paddingY={6} children='€' paddingInline={6} />
+                            <Input
+                                rounded={10}
+                                paddingY={6}
+                                autoComplete='off'
+                                type="string"
+                                {...register("price", {
+                                    required: true,
+                                })}
+                                onWheel={(e: any) => e.target.blur()}
+                                placeholder={'34,99'}
+                                textAlign={"end"}
+                                isInvalid={false}
+                                onChange={(e) => {
+                                    const inputValue = onChangeNumberPrice(e)
+                                    return setValue('price', inputValue);
                                 }}
                             />
-                        )}
-                    />
-                </Div_input_creation>
-                <Div_input_creation text='Microcategoria'>
-                    <Controller
-                        control={control}
-                        name="microcategory"
-                        rules={{ required: false }}
-                        render={({ field }) => (
-                            <SelectStringOption
-                                values={macrocategorySelectedSpec?.types}
-                                defaultValue={field.value}
-                                handleClick={(microcategory: string) => {
-                                    setValue('microcategory', microcategory);
-                                }}
-                            />
-                        )}
-                    />
-                </Div_input_creation>
-                <Div_input_creation text='Descrizione prodotto (opzionale)'>
-                    <InputGroup>
+                        </InputGroup>
+                    </Div_input_creation>
+                    <Div_input_creation text='Brand'
+                    >
                         <Controller
                             control={control}
-                            name="description"
-                            defaultValue=""
-                            render={({ field }) => (
-                                <Textarea
-                                    maxLength={200}
-                                    rounded={10}
-                                    paddingY={6}
-                                    paddingTop={2}
-                                    autoComplete="descrition-text-shop"
-                                    {...field}
-                                />
-                            )}
-                        />
-                    </InputGroup>
-                </Div_input_creation>
-                <Div_input_creation text='Descrizione modello (opzionale)'>
-                    <InputGroup>
-                        <Controller
-                            control={control}
-                            name="modelDescription"
-                            defaultValue=""
-                            render={({ field }) => (
-
-                                <Textarea
-                                    maxLength={100}
-                                    rounded={10}
-                                    paddingY={6}
-                                    paddingTop={2}
-                                    autoComplete="descrition-text-shop"
-                                    placeholder='es. La persona nella foto è alta 175 cm e veste una taglia M'
-                                    {...field}
-                                />
-                            )}
-                        />
-
-                    </InputGroup>
-                </Div_input_creation>
-                {macrocategorySelectedSpec?.materials
-                    && <Div_input_creation text='Materiali (opzionale, massimo 2)'>
-
-                        <Controller
-                            control={control}
-                            name="materials"
+                            name="brand"
                             rules={{ required: false }}
-                            shouldUnregister={!reset} // Disassocia il campo dal form solo quando non viene chiamato reset()
-                            render={({ field }) => (
-                                <SelectMultipleOptions
-                                    limitNumber={2}
-                                    handleValue={(value) => {
-                                        setValue('materials', value);
+                            render={({ field: { onChange, onBlur, value, ref } }) => (
+                                <Autocomplete
+                                    selectedValue={watch('brand')}
+                                    handleChangeValues={(brand: any) => {
+                                        setValue('brand', brand);
+                                    }} />
+                            )}
+                        />
+                    </Div_input_creation>
+                    <Div_input_creation text='Categoria'>
+                        <Controller
+                            control={control}
+                            name="macrocategory"
+                            rules={{ required: false }}
+                            render={() => (
+                                <SelectMacrocategory
+                                    typeProduct={watch('typeProduct')}
+                                    selectedValueBefore={macrocategorySelectedSpec?.name}
+                                    handleClick={(macrocategory: Macrocategory) => {
+                                        setGenderSelected(macrocategory.gender)
+                                        setSizeTypeSelected(macrocategory.sizes)
+                                        setValue('macrocategory', macrocategory.name);
+
+                                        setProductVariations([])
+                                        setMacrocategorySelectedSpec(macrocategory)
+                                        resetForm()
                                     }}
+                                />
+                            )}
+                        />
+                    </Div_input_creation>
+                    <Div_input_creation text='Microcategoria'>
+                        <Controller
+                            control={control}
+                            name="microcategory"
+                            rules={{ required: false }}
+                            render={({ field }) => (
+                                <SelectStringOption
+                                    values={macrocategorySelectedSpec?.types}
                                     defaultValue={field.value}
-                                    values={MATERIALS_TYPES.find(materialType => materialType.name === macrocategorySelectedSpec.materials)?.type}
+                                    handleClick={(microcategory: string) => {
+                                        setValue('microcategory', microcategory);
+                                    }}
+                                />
+                            )}
+                        />
+                    </Div_input_creation>
+                    <Div_input_creation text='Descrizione prodotto (opzionale)'>
+                        <InputGroup>
+                            <Controller
+                                control={control}
+                                name="description"
+                                defaultValue=""
+                                render={({ field }) => (
+                                    <Textarea
+                                        fontSize={'sm'}
+                                        maxLength={200}
+                                        rounded={10}
+                                        paddingY={6}
+                                        paddingTop={2}
+                                        paddingX={2}
+                                        autoComplete="descrition-text-shop"
+                                        {...field}
+                                    />
+                                )}
+                            />
+                        </InputGroup>
+                    </Div_input_creation>
+                    <Div_input_creation text='Descrizione modello (opzionale)'>
+                        <InputGroup>
+                            <Controller
+                                control={control}
+                                name="modelDescription"
+                                defaultValue=""
+                                render={({ field }) => (
+
+                                    <Textarea
+                                        maxLength={100}
+                                        rounded={10}
+                                        paddingY={6}
+                                        paddingTop={2}
+                                        autoComplete="descrition-text-shop"
+                                        placeholder='es. La persona nella foto è alta 175 cm e veste una taglia M'
+                                        {...field}
+                                    />
+                                )}
+                            />
+
+                        </InputGroup>
+                    </Div_input_creation>
+                    {macrocategorySelectedSpec?.materials
+                        && <Div_input_creation text='Materiali (opzionale, massimo 2)'>
+
+                            <Controller
+                                control={control}
+                                name="materials"
+                                rules={{ required: false }}
+                                shouldUnregister={!reset} // Disassocia il campo dal form solo quando non viene chiamato reset()
+                                render={({ field }) => (
+                                    <SelectMultipleOptions
+                                        limitNumber={2}
+                                        handleValue={(value) => {
+                                            setValue('materials', value);
+                                        }}
+                                        defaultValue={field.value}
+                                        values={MATERIALS_TYPES.find(materialType => materialType.name === macrocategorySelectedSpec.materials)?.type}
+                                    />
+                                )}
+                            />
+                        </Div_input_creation>}
+                    {macrocategorySelectedSpec?.length && <Div_input_creation text='Lunghezza (opzionale)'>
+
+                        <Controller
+                            control={control}
+                            name="length"
+                            rules={{ required: false }}
+                            render={({ field }) => (
+                                <SelectStringOption
+                                    values={LENGTH_TYPES.find(
+                                        (materialType) => materialType.name === macrocategorySelectedSpec.length
+                                    )?.type}
+                                    defaultValue={field.value}
+                                    handleClick={(value: string) => {
+                                        setValue('length', value);
+                                    }}
                                 />
                             )}
                         />
                     </Div_input_creation>}
-                {macrocategorySelectedSpec?.length && <Div_input_creation text='Lunghezza (opzionale)'>
+                    {macrocategorySelectedSpec?.fit && <Div_input_creation text='Vestibilità prodotto (opzionale)'>
 
-                    <Controller
-                        control={control}
-                        name="length"
-                        rules={{ required: false }}
-                        render={({ field }) => (
-                            <SelectStringOption
-                                values={LENGTH_TYPES.find(
-                                    (materialType) => materialType.name === macrocategorySelectedSpec.length
-                                )?.type}
-                                defaultValue={field.value}
-                                handleClick={(value: string) => {
-                                    setValue('length', value);
-                                }}
-                            />
-                        )}
-                    />
-                </Div_input_creation>}
-                {macrocategorySelectedSpec?.fit && <Div_input_creation text='Vestibilità prodotto (opzionale)'>
+                        <Controller
+                            control={control}
+                            name="fit"
+                            rules={{ required: false }}
+                            render={({ field }) => (
+                                <SelectStringOption
+                                    values={FIT_TYPES.find(materialType => materialType.name === macrocategorySelectedSpec.fit)?.type}
 
-                    <Controller
-                        control={control}
-                        name="fit"
-                        rules={{ required: false }}
-                        render={({ field }) => (
-                            <SelectStringOption
-                                values={FIT_TYPES.find(materialType => materialType.name === macrocategorySelectedSpec.fit)?.type}
-
-                                defaultValue={field.value}
-                                handleClick={(value: string) => {
-                                    setValue('fit', value);
-                                }}
-                            />
-                        )}
-                    />
-                </Div_input_creation>}
-                {macrocategorySelectedSpec?.traits && <Div_input_creation text='Tipologia (opzionale, massimo 2)'>
-
-                    <Controller
-                        control={control}
-                        name="traits"
-                        rules={{ required: false }}
-
-                        render={({ field }) => (
-                            <SelectMultipleOptions
-                                limitNumber={2}
-                                handleValue={(value) => {
-                                    setValue('traits', value);
-                                }}
-                                defaultValue={field.value}
-                                values={TRAITS_TYPES.find(materialType => materialType.name === macrocategorySelectedSpec.traits)?.type}
-                            />
-                        )}
-                    />
-                </Div_input_creation>}
-
-            </div>
-
-
-
-            <div className='w-full md:w-9/12 lg:w-7/12 xl:w-6/12 m-auto'>
-                <h1 className='text-lg md:text-2xl font-extrabold mt-6 mb-4'>
-                    Varianti colore
-                </h1>
-                {productVariations.length > 0 && productVariations.map((variation: VariationCard, index) => {
-
-                    console.log(variation);
-                    return (
-                        <div key={index}>
-                            <ProductVariationCard
-                                index={index}
-                                variation={variation}
-                                editCard={trasformInEditCard}
-                                deleteCard={deleteVariationCard}
-                            />
-                        </div>
-
-                    )
-                })}
-
-                {cardToEdit.length > 0 && cardToEdit.map((variation: VariationCard) => {
-                    console.log(variation);
-                    return (
-                        <div key={variation.color}>
-                            <EditColorToProduct
-                                defaultCardValue={variation}
-                                colors={colors}
-                                category={sizeTypeSelected}
-                                confirmCard={(variation) => {
-                                    editCard(variation)
-                                }}
-                            />
-
-                        </div>
-                    )
-
-                })
-                }
-
-
-                {!newCard || watch('macrocategory') === undefined ? (
-                    <Button
-                        size={['sm', 'md']}
-                        colorScheme={'gray'}
-                        ml={[0, 8]}
-                        leftIcon={
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                            </svg>
-                        }
-                        variant='ghost'
-                        mb={3}
-                        mt={-1}
-                        onClick={() => {
-                            setNewCard(true)
-                        }}
-                    >
-                        aggiungi nuova variante
-                    </Button>)
-                    : (
-                        <div
-                            key={Math.random()}
-                            className='mb-4'
-                        >
-                            <AddColorToProduct
-                                colors={colors}
-                                category={sizeTypeSelected}
-                                confirmCard={(variation) => {
-                                    confirmCard(variation)
-                                }}
-                                deleteCard={() => {
-                                    if (productVariations.length < 1) return
-                                    setNewCard(false)
-                                }}
-                            />
-                        </div>
-                    )
-                }
-                <div
-                    className='text-center'
-                >
-                    <Button
-                        mt={4}
-                        mr={[0, 10]}
-                        bgColor={'gray.900'}
-                        color={'white'}
-                        _hover={{
-                            background: 'black'
-                        }}
-                        _active={{
-                            background: 'gray.800'
-                        }}
-                        onClick={() => {
-                            if (isLoading) return
-                            createProductHandler()
-                        }}
-                        isDisabled={isLoading || productVariations.length <= 0 || !watch('name') || !watch('brand') || !watch('macrocategory') || !watch('microcategory') || !watch('price') || !isValid}
-                        px={12}
-                        py={7}
-                        rounded={'lg'}
-                        width={'full'}
-                        fontSize={'xl'}
-                    >
-                        {!isLoading ? (
-                            <>Crea Prodotto</>
-                        ) :
-                            (
-                                <Spinner
-                                    thickness='4px'
-                                    speed='0.65s'
-                                    emptyColor='gray.200'
-                                    color='white'
-                                    size='lg'
+                                    defaultValue={field.value}
+                                    handleClick={(value: string) => {
+                                        setValue('fit', value);
+                                    }}
                                 />
-                            )
-                        }
+                            )}
+                        />
+                    </Div_input_creation>}
+                    {macrocategorySelectedSpec?.traits && <Div_input_creation text='Tipologia (opzionale, massimo 2)'>
 
+                        <Controller
+                            control={control}
+                            name="traits"
+                            rules={{ required: false }}
 
-                    </Button>
+                            render={({ field }) => (
+                                <SelectMultipleOptions
+                                    limitNumber={2}
+                                    handleValue={(value) => {
+                                        setValue('traits', value);
+                                    }}
+                                    defaultValue={field.value}
+                                    values={TRAITS_TYPES.find(materialType => materialType.name === macrocategorySelectedSpec.traits)?.type}
+                                />
+                            )}
+                        />
+                    </Div_input_creation>}
+
                 </div>
 
 
-            </div>
+
+                <div className='w-full md:w-9/12 lg:w-7/12 xl:w-6/12 m-auto'>
+                    <h1 className='text-lg md:text-2xl font-extrabold mt-6 mb-4'>
+                        Varianti colore
+                    </h1>
+                    {productVariations.length > 0 && productVariations.map((variation: VariationCard, index) => {
+
+                        console.log(variation);
+                        return (
+                            <div key={index}>
+                                <ProductVariationCard
+                                    index={index}
+                                    variation={variation}
+                                    editCard={trasformInEditCard}
+                                    deleteCard={deleteVariationCard}
+                                />
+                            </div>
+
+                        )
+                    })}
+
+                    {cardToEdit.length > 0 && cardToEdit.map((variation: VariationCard) => {
+                        console.log(variation);
+                        return (
+                            <div key={variation.color}>
+                                <EditColorToProduct
+                                    defaultCardValue={variation}
+                                    colors={colors}
+                                    category={sizeTypeSelected}
+                                    confirmCard={(variation) => {
+                                        editCard(variation)
+                                    }}
+                                />
+
+                            </div>
+                        )
+
+                    })
+                    }
+
+
+                    {!newCard || watch('macrocategory') === undefined ? (
+                        <Button
+                            size={['sm', 'md']}
+                            colorScheme={'gray'}
+                            ml={[0, 8]}
+                            leftIcon={
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                            }
+                            variant='ghost'
+                            mb={3}
+                            mt={-1}
+                            onClick={() => {
+                                setNewCard(true)
+                            }}
+                        >
+                            aggiungi nuova variante
+                        </Button>)
+                        : (
+                            <div
+                                key={Math.random()}
+                                className='mb-4'
+                            >
+                                <AddColorToProduct
+                                    colors={colors}
+                                    category={macrocategorySelectedSpec?.sizes}
+                                    confirmCard={(variation) => {
+                                        confirmCard(variation)
+                                    }}
+                                    deleteCard={() => {
+                                        if (productVariations.length < 1) return
+                                        setNewCard(false)
+                                    }}
+                                />
+                            </div>
+                        )
+                    }
+                    <div
+                        className='text-center'
+                    >
+                        <Button
+                            mt={4}
+                            mr={[0, 10]}
+                            bgColor={'gray.900'}
+                            color={'white'}
+                            _hover={{
+                                background: 'black'
+                            }}
+                            _active={{
+                                background: 'gray.800'
+                            }}
+                            type='submit'
+                            isDisabled={!isValid || !watch('macrocategory') || !watch('microcategory') || !watch('brand')}
+                            px={12}
+                            py={7}
+                            rounded={'lg'}
+                            width={'full'}
+                            fontSize={'xl'}
+                        >
+                            {!isLoading ? (
+                                <>Crea Prodotto</>
+                            ) :
+                                (
+                                    <Spinner
+                                        thickness='4px'
+                                        speed='0.65s'
+                                        emptyColor='gray.200'
+                                        color='white'
+                                        size='lg'
+                                    />
+                                )
+                            }
+
+
+                        </Button>
+                    </div>
+
+
+                </div>
+            </form>
+
 
 
         </Desktop_Layout >

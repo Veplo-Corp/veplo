@@ -2,6 +2,7 @@ import React, { FC, Fragment, useEffect, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { CheckIcon } from '@chakra-ui/icons'
+import { CATEGORIES } from '../mook/categories'
 
 
 
@@ -23,11 +24,6 @@ const SelectMultipleOptions: FC<{ limitNumber: number, handleValue: (selectedVal
             setSelected([])
         }
     }, [defaultValue])
-
-    useEffect(() => {
-        console.log(values);
-
-    }, [values])
 
 
 

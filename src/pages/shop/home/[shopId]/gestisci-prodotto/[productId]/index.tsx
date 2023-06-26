@@ -49,6 +49,7 @@ export interface IFormInputProductEdit {
     fit?: string;
     length?: string;
     description?: string;
+    modelDescription?: string
 }
 
 const index = () => {
@@ -88,57 +89,6 @@ const index = () => {
                 id: product?.id
             }
         }],
-        // update(cache, el, query) {
-        //     // console.log(el);
-        //     // console.log(query);
-
-
-        //     // // const normalizedId = cache.identify({ id: router.query.productId, __typename: 'Product' });
-        //     // // const newTypenameVar = makeVar({
-        //     // //     __typename: 'ProductVariation',
-        //     // //     id: "mi_devi_dare_l_id",
-        //     // //     colors: query.variables?.colors,
-        //     // //     lots: query.variables?.lots,
-        //     // //     photos: query.variables?.photos,
-        //     // //     status: "active",
-        //     // // })
-
-        //     // // console.log(newTypenameVar);
-        //     // cache.modify({
-        //     //     fields: {
-        //     //         // Aggiunta del nuovo oggetto alla lista di ProductVariation
-        //     //         productVariations(existingProductVariations = []) {
-        //     //             const newProductVariationRef = cache.writeFragment({
-        //     //                 id: 'mi_devi_dare_l_id',
-        //     //                 fragment: gql`
-        //     //                 fragment NewProductVariation on ProductVariation {
-        //     //                 id
-        //     //                 color
-        //     //                 lots
-        //     //                 photos
-        //     //                 status
-        //     //                 }
-        //     //                 `,
-        //     //                 data: {
-        //     //                     __typename: 'ProductVariation',
-        //     //                     id: "mi_devi_dare_l_id",
-        //     //                     color: query.variables?.color,
-        //     //                     lots: query.variables?.lots,
-        //     //                     photos: query.variables?.photos,
-        //     //                     status: "active",
-        //     //                 },
-
-        //     //             });
-        //     //             return [...existingProductVariations, newProductVariationRef];
-        //     //         }
-        //     //     }
-        //     // });
-
-        //     // console.log(cache);
-
-        // }
-
-
     })
 
 
@@ -564,7 +514,9 @@ const index = () => {
                         <div className='w-full md:w-8/12 lg:w-5/12 m-auto mb-10 mt-0'>
                             <EditProductInputForm
                                 handleConfirm={editProductHandler}
-                                defaultValues={defaultValue} />
+                                defaultValues={defaultValue}
+                                gender={product.info.gender}
+                            />
                         </div>
                         <div className='w-full md:w-8/12 lg:w-5/12  mx-auto'>
                             {sizeTypeSelected && product.variations.map((variation, index) => {
