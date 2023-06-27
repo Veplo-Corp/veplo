@@ -19,9 +19,9 @@ export default function Document() {
         <link rel="icon" type="image/x-icon" href="/android-chrome-192x192.png" sizes="192x192" />
         <link rel="icon" type="image/x-icon" href="/android-chrome-512x512.png" sizes="512x512" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        {process.env.NODE_ENV === 'production' && <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" async />}
+        {process.env.NODE_ENV !== 'production' && <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" async />}
         {/* charset="UTF-8" */}
-        {process.env.NODE_ENV === 'production' && <script type="text/javascript"
+        {process.env.NODE_ENV !== 'production' && <script type="text/javascript"
           dangerouslySetInnerHTML={{
 
             __html: `
@@ -65,7 +65,7 @@ export default function Document() {
 
 
         {/* Inserisci il codice di Google Tag Manager qui */}
-        {process.env.NODE_ENV === 'production' && <script dangerouslySetInnerHTML={{
+        {process.env.NODE_ENV !== 'production' && <script dangerouslySetInnerHTML={{
           __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -84,7 +84,6 @@ export default function Document() {
               window.dataLayer = window.dataLayer || [];
               function gtag(){window.dataLayer.push(arguments);}
               gtag('js', new Date());
-
               gtag('config', 'G-26QK67CY12');
             `,
           }}

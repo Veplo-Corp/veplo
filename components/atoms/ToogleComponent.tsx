@@ -2,6 +2,8 @@ import { Box, Text } from '@chakra-ui/react'
 import { Switch } from '@headlessui/react'
 import React, { FC, Fragment, useEffect, useState } from 'react'
 import { motion } from 'framer-motion';
+import { GTMEventType, VeploGTMEvent } from '../../src/lib/analytics/eventTypes';
+import { useAnalytics } from '../../src/lib/analytics/hooks/useAnalytics';
 
 const ToogleComponent: FC<{ value: boolean | undefined, handleChangeToogle: (toogle: string) => void, modifyToogleInComponent: boolean }> = ({ value, handleChangeToogle, modifyToogleInComponent }) => {
     const [enabled, setEnabled] = useState(false)
@@ -12,6 +14,13 @@ const ToogleComponent: FC<{ value: boolean | undefined, handleChangeToogle: (too
         return setEnabled(value)
     }, [value])
 
+    const payload: VeploGTMEvent = {
+        command: GTMEventType.saleToggle,
+        args: {
+            label: 'Click on sale toogle'
+        }
+    }
+    const { sendMessage } = useAnalytics(payload)
 
     return (
 
@@ -27,6 +36,8 @@ const ToogleComponent: FC<{ value: boolean | undefined, handleChangeToogle: (too
                 if (modifyToogleInComponent) setEnabled(prevstate => { return !prevstate })
                 const state = !enabled === true ? 'true' : 'false'
                 handleChangeToogle(state)
+                if (state === 'true') return sendMessage()
+
             }}
             cursor={'pointer'}
         >
