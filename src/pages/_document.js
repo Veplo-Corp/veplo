@@ -19,9 +19,9 @@ export default function Document() {
         <link rel="icon" type="image/x-icon" href="/android-chrome-192x192.png" sizes="192x192" />
         <link rel="icon" type="image/x-icon" href="/android-chrome-512x512.png" sizes="512x512" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        {process.env.NODE_ENV !== 'production' && <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" async />}
+        {process.env.NODE_ENV === 'production' && <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" async />}
         {/* charset="UTF-8" */}
-        {process.env.NODE_ENV !== 'production' && <script type="text/javascript"
+        {process.env.NODE_ENV === 'production' && <script type="text/javascript"
           dangerouslySetInnerHTML={{
 
             __html: `
@@ -65,7 +65,7 @@ export default function Document() {
 
 
         {/* Inserisci il codice di Google Tag Manager qui */}
-        {process.env.NODE_ENV !== 'production' && <script dangerouslySetInnerHTML={{
+        {process.env.NODE_ENV === 'production' && <script dangerouslySetInnerHTML={{
           __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -78,7 +78,7 @@ export default function Document() {
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-26QK67CY12"
         ></script>
-        <script
+        {process.env.NODE_ENV === 'production' && <script
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
@@ -87,15 +87,15 @@ export default function Document() {
               gtag('config', 'G-26QK67CY12');
             `,
           }}
-        />
+        />}
       </Head>
 
 
       <body>
-        <noscript dangerouslySetInnerHTML={{
+        {process.env.NODE_ENV === 'production' && <noscript dangerouslySetInnerHTML={{
           __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${process.env.GOOGLE_TAG_MANAGER}"
             height="0" width="0" style="display:none;visibility:hidden"></iframe>`
-        }} />
+        }} />}
 
         <Main />
         <NextScript />
