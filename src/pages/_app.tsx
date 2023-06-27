@@ -248,7 +248,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
   //* check at page load if a user is authenticated
   useEffect(() => {
-
     //* GET the user address from localstorage
     const address_user = getAddressFromLocalStorage();
 
