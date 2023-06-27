@@ -4,23 +4,19 @@ import React, { FC, Fragment, useEffect, useState } from 'react'
 import { motion } from 'framer-motion';
 import { GTMEventType, VeploGTMEvent } from '../../src/lib/analytics/eventTypes';
 import { useAnalytics } from '../../src/lib/analytics/hooks/useAnalytics';
+import { gtag } from '../../src/lib/analytics/gtag';
 
 const ToogleComponent: FC<{ value: boolean | undefined, handleChangeToogle: (toogle: string) => void, modifyToogleInComponent: boolean }> = ({ value, handleChangeToogle, modifyToogleInComponent }) => {
     const [enabled, setEnabled] = useState(false)
 
 
     useEffect(() => {
+
         if (value === undefined) return setEnabled(false)
         return setEnabled(value)
     }, [value])
 
-    const payload: VeploGTMEvent = {
-        command: GTMEventType.saleToggle,
-        args: {
-            label: 'Click on sale toggle'
-        }
-    }
-    const { sendMessage } = useAnalytics(payload)
+
 
     return (
 
@@ -33,10 +29,18 @@ const ToogleComponent: FC<{ value: boolean | undefined, handleChangeToogle: (too
             px={3}
             gap={3}
             onClick={() => {
+
                 if (modifyToogleInComponent) setEnabled(prevstate => { return !prevstate })
                 const state = !enabled === true ? 'true' : 'false'
                 handleChangeToogle(state)
-                if (state === 'true') return sendMessage()
+                if (state === 'true') {
+                    return gtag({
+                        command: GTMEventType.saleToggle,
+                        args: {
+                            label: 'Click on sale toggle'
+                        }
+                    })
+                }
 
             }}
             cursor={'pointer'}
