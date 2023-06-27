@@ -17,7 +17,7 @@ const ToogleComponent: FC<{ value: boolean | undefined, handleChangeToogle: (too
     const payload: VeploGTMEvent = {
         command: GTMEventType.saleToggle,
         args: {
-            label: 'Click on sale toogle'
+            label: 'Click on sale toggle'
         }
     }
     const { sendMessage } = useAnalytics(payload)
