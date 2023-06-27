@@ -34,7 +34,12 @@ export type VeploGTMEvent = {
         email?: string,
         device?: 'Web' | 'Mobile',
         event_category?: string,
-        label?: string
+        label?: string,
+        user?: 'Business' | 'Customer',
+        FirebaseId?: string,
+        mondoId?: string
+        firstName?: string;
+        lastName?: string;
     }
 }
 

@@ -58,7 +58,7 @@ export const getStaticProps = async () => {
 
 }
 
-import { gtag } from '../../lib/gtag'; // Assicurati di impostare il percorso corretto al file gtag.js
+import { gtag } from '../../lib/analytics/gtag'; // Assicurati di impostare il percorso corretto al file gtag.js
 import { GTMEventType, VeploGTMEvent } from '../../lib/analytics/eventTypes';
 import { useAnalytics } from '../../lib/analytics/hooks/useAnalytics';
 

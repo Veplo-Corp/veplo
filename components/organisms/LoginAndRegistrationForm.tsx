@@ -19,7 +19,8 @@ import { ToastOpen } from '../utils/Toast';
 import Link from 'next/link';
 import { Cart } from '../../src/lib/apollo/generated/graphql';
 import EDIT_CART from '../../src/lib/apollo/mutations/editCart';
-import { gtag } from '../../src/lib/gtag';
+import { gtag } from '../../src/lib/analytics/gtag';
+import { useAnalytics } from '../../src/lib/analytics/hooks/useAnalytics';
 
 export type InputFormLogin = {
     email: string,
@@ -47,7 +48,6 @@ const LoginAndRegistrationForm: FC<{
         const [showPassword, setShowPassword] = useState(false)
         const { addToast } = ToastOpen();
         const [editCart] = useMutation(EDIT_CART);
-
 
 
         const onSubmit: SubmitHandler<InputFormLogin> = (data, e) => {
@@ -143,7 +143,7 @@ const LoginAndRegistrationForm: FC<{
             }
             else if (type === 'registration') {
                 try {
-                    // Signedup
+                    // SignUp
                     if (person === 'user') {
                         const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
                         //! age ora è Int, ma verrà gestita come date o string con rilascio
@@ -156,6 +156,7 @@ const LoginAndRegistrationForm: FC<{
                                 }
                             }
                         })
+
                         console.log(response);
                         idToken = await userCredential.user.getIdToken(true);
                         setAuthTokenInSessionStorage(idToken)
@@ -239,42 +240,6 @@ const LoginAndRegistrationForm: FC<{
             let result: UserCredential | undefined;
             try {
                 result = await signInWithPopup(auth, provider)
-                //gtag sign_up
-                //gtag('event', 'sign_up', { 'method': 'Google', 'event_category': 'Registration' });
-                gtag("event", "purchase", {
-                    // This purchase event uses a different transaction ID
-                    // from the previous purchase event so Analytics
-                    // doesn't deduplicate the events.
-                    // Learn more: https://support.google.com/analytics/answer/12313109
-                    transaction_id: "T_12345_3",
-                    value: 25.42,
-                    tax: 4.90,
-                    shipping: 5.99,
-                    currency: "USD",
-                    coupon: "SUMMER_SALE",
-                    items: [
-                        {
-                            item_id: "SKU_12345",
-                            item_name: "Stan and Friends Tee",
-                            affiliation: "Google Merchandise Store",
-                            coupon: "SUMMER_FUN",
-                            discount: 2.22,
-                            index: 0,
-                            item_brand: "Google",
-                            item_category: "Apparel",
-                            item_category2: "Adult",
-                            item_category3: "Shirts",
-                            item_category4: "Crew",
-                            item_category5: "Short sleeve",
-                            item_list_id: "related_products",
-                            item_list_name: "Related Products",
-                            item_variant: "green",
-                            location_id: "ChIJIQBpAG2ahYAR_6128GcTUEo",
-                            price: 9.99,
-                            quantity: 1
-                        }]
-                });
-
                 setIsLoading(true)
             } catch (error: any) {
                 setIsLoading(false)
