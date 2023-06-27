@@ -344,13 +344,13 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
                 accountId: tokenResult.claims.mongoId,
                 expirationTime: tokenResult.expirationTime,
                 userInfo: {
-                  name: data?.data.user.name
+                  name: data?.data?.user?.name
                 }
               })
             );
 
-            const carts: Cart[] = data?.data?.user.carts.carts;
-            const orders: Order[] = data?.data?.user.orders;
+            const carts: Cart[] = data?.data?.user?.carts?.carts;
+            const orders: Order[] = data?.data?.user?.orders;
             const warnings: { variationId: string }[] = data?.data?.user?.carts?.warnings
 
 

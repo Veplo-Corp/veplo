@@ -5,9 +5,14 @@ import { motion } from 'framer-motion';
 import { GTMEventType, VeploGTMEvent } from '../../src/lib/analytics/eventTypes';
 import { useAnalytics } from '../../src/lib/analytics/hooks/useAnalytics';
 import { gtag } from '../../src/lib/analytics/gtag';
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import { Firebase_User } from '../../src/interfaces/firebase_user.interface';
 
 const ToogleComponent: FC<{ value: boolean | undefined, handleChangeToogle: (toogle: string) => void, modifyToogleInComponent: boolean }> = ({ value, handleChangeToogle, modifyToogleInComponent }) => {
     const [enabled, setEnabled] = useState(false)
+    const user: Firebase_User = useSelector((state: any) => state.user.user);
+    console.log(user);
 
 
     useEffect(() => {
@@ -29,7 +34,6 @@ const ToogleComponent: FC<{ value: boolean | undefined, handleChangeToogle: (too
             px={3}
             gap={3}
             onClick={() => {
-
                 if (modifyToogleInComponent) setEnabled(prevstate => { return !prevstate })
                 const state = !enabled === true ? 'true' : 'false'
                 handleChangeToogle(state)
@@ -37,11 +41,11 @@ const ToogleComponent: FC<{ value: boolean | undefined, handleChangeToogle: (too
                     return gtag({
                         command: GTMEventType.saleToggle,
                         args: {
-                            label: 'Click on sale toggle'
+                            label: 'Click on sale toggle',
+                            gender: user.genderSelected === 'm' ? 'male' : user.genderSelected === 'f' ? 'female' : 'not_speficied'
                         }
                     })
                 }
-
             }}
             cursor={'pointer'}
         >

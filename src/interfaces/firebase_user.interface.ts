@@ -23,6 +23,6 @@ export interface Firebase_User {
         }
         gender?: string
     }
-    genderSelected?: string,
+    genderSelected?: 'f' | 'm',
     expirationTime: string,
 }

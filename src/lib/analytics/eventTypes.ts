@@ -1,6 +1,7 @@
 export enum GTMEventType {
     empty = '',
     signUp = 'sign_up',
+    login = 'login',
     saleToggle = 'sale_toggle'
     // selectItem = 'select_item',
     // addShippingInfo = 'add_shipping_info',
@@ -29,17 +30,18 @@ export enum GTMEventType {
 
 export type VeploGTMEvent = {
     command: GTMEventType,
-    args?: {
+    args: {
         method?: 'Google' | 'Email',
         email?: string,
         device?: 'Web' | 'Mobile',
         event_category?: string,
         label?: string,
         user?: 'Business' | 'Customer',
-        FirebaseId?: string,
-        mondoId?: string
-        firstName?: string;
-        lastName?: string;
+        firebaseId?: string,
+        mongoId?: string,
+        firstName?: string,
+        lastName?: string,
+        gender?: 'male' | 'female' | 'not_speficied'
     }
 }
 
