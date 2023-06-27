@@ -11,6 +11,7 @@ import { FilterParameters, findParsedFilter } from '../utils/findParsedFilter';
 import BrandsFilter from '../atoms/BrandsFilter';
 import ToogleComponent from '../atoms/ToogleComponent';
 import { FilterAccepted } from '../atoms/TagFilter';
+import { VeploGTMEvent } from '../../src/lib/analytics/eventTypes';
 
 
 
@@ -23,6 +24,8 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
     const [drawerFilterOpen, setDrawerFilterOpen] = useState(false)
     const [filterCount, setFilterCount] = useState(0)
     const router = useRouter();
+
+
 
 
     useEffect(() => {

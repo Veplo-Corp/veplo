@@ -59,6 +59,8 @@ export const getStaticProps = async () => {
 }
 
 import { gtag } from '../../lib/gtag'; // Assicurati di impostare il percorso corretto al file gtag.js
+import { GTMEventType, VeploGTMEvent } from '../../lib/analytics/eventTypes';
+import { useAnalytics } from '../../lib/analytics/hooks/useAnalytics';
 
 
 const index: FC<{ shops: Shop[] }> = ({ shops }) => {
@@ -69,65 +71,71 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
     const [gender, setGender] = useState<string>()
     const [inputSearchShop, setInputSearchShop] = useState('')
 
+
+
     useEffect(() => {
         // gtag('event', 'login', {
         //     method: 'Google',
         //     event_category: 'Authentication'
         // });
+        //sendMessage()
 
-        gtag("event", "purchase",
-            {
-                event_category: 'Ecommerce',
-                transaction_id: "T_12345",
-                value: 25.42,
-                tax: 4.90,
-                shipping: 5.99,
-                currency: "USD",
-                coupon: "SUMMER_SALE",
-                items: [
-                    {
-                        item_id: "SKU_12345",
-                        item_name: "Stan and Friends Tee",
-                        affiliation: "Google Merchandise Store",
-                        coupon: "SUMMER_FUN",
-                        discount: 2.22,
-                        index: 0,
-                        item_brand: "Google",
-                        item_category: "Apparel",
-                        item_category2: "Adult",
-                        item_category3: "Shirts",
-                        item_category4: "Crew",
-                        item_category5: "Short sleeve",
-                        item_list_id: "related_products",
-                        item_list_name: "Related Products",
-                        item_variant: "green",
-                        location_id: "ChIJIQBpAG2ahYAR_6128GcTUEo",
-                        price: 9.99,
-                        quantity: 1
-                    },
-                    {
-                        item_id: "SKU_12346",
-                        item_name: "Google Grey Women's Tee",
-                        affiliation: "Google Merchandise Store",
-                        coupon: "SUMMER_FUN",
-                        discount: 3.33,
-                        index: 1,
-                        item_brand: "Google",
-                        item_category: "Apparel",
-                        item_category2: "Adult",
-                        item_category3: "Shirts",
-                        item_category4: "Crew",
-                        item_category5: "Short sleeve",
-                        item_list_id: "related_products",
-                        item_list_name: "Related Products",
-                        item_variant: "gray",
-                        location_id: "ChIJIQBpAG2ahYAR_6128GcTUEo",
-                        price: 20.99,
-                        promotion_id: "P_12345",
-                        promotion_name: "Summer Sale",
-                        quantity: 1
-                    }]
-            });
+
+        // gtag('purchase', {
+        //     event_category: 'Ecommerce',
+        //     transaction_id: "T_12345",
+        //     value: 25.42,
+        //     tax: 4.90,
+        //     shipping: 5.99,
+        //     currency: "USD",
+        //     coupon: "SUMMER_SALE",
+        //     items: [
+        //         {
+        //             item_id: "SKU_12345",
+        //             item_name: "Stan and Friends Tee",
+        //             affiliation: "Google Merchandise Store",
+        //             coupon: "SUMMER_FUN",
+        //             discount: 2.22,
+        //             index: 0,
+        //             item_brand: "Google",
+        //             item_category: "Apparel",
+        //             item_category2: "Adult",
+        //             item_category3: "Shirts",
+        //             item_category4: "Crew",
+        //             item_category5: "Short sleeve",
+        //             item_list_id: "related_products",
+        //             item_list_name: "Related Products",
+        //             item_variant: "green",
+        //             location_id: "ChIJIQBpAG2ahYAR_6128GcTUEo",
+        //             price: 9.99,
+        //             quantity: 1
+        //         },
+        //         {
+        //             item_id: "SKU_12346",
+        //             item_name: "Google Grey Women's Tee",
+        //             affiliation: "Google Merchandise Store",
+        //             coupon: "SUMMER_FUN",
+        //             discount: 3.33,
+        //             index: 1,
+        //             item_brand: "Google",
+        //             item_category: "Apparel",
+        //             item_category2: "Adult",
+        //             item_category3: "Shirts",
+        //             item_category4: "Crew",
+        //             item_category5: "Short sleeve",
+        //             item_list_id: "related_products",
+        //             item_list_name: "Related Products",
+        //             item_variant: "gray",
+        //             location_id: "ChIJIQBpAG2ahYAR_6128GcTUEo",
+        //             price: 20.99,
+        //             promotion_id: "P_12345",
+        //             promotion_name: "Summer Sale",
+        //             quantity: 1
+        //         }
+        //     ],
+        //     debug_mode: true
+        // });
+
         let gender = getFromLocalStorage('genderSelected')
         if (gender === 'f') {
             setGender('donna')
