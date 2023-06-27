@@ -21,6 +21,7 @@ import { Cart } from '../../src/lib/apollo/generated/graphql';
 import EDIT_CART from '../../src/lib/apollo/mutations/editCart';
 import { gtag } from '../../src/lib/analytics/gtag';
 import { useAnalytics } from '../../src/lib/analytics/hooks/useAnalytics';
+import { GTMEventType } from '../../src/lib/analytics/eventTypes';
 
 export type InputFormLogin = {
     email: string,
@@ -120,9 +121,18 @@ const LoginAndRegistrationForm: FC<{
                     const tokenResult = await userCredential.user.getIdTokenResult();
                     const isBusiness = tokenResult.claims.isBusiness ? true : false;
                     setAuthTokenInSessionStorage(tokenResult.token)
+
                     await handleCartInLocalStorage()
                     setIsLoading(false)
-
+                    gtag({
+                        command: GTMEventType.login,
+                        args: {
+                            email: data.email,
+                            firebaseId: userCredential.user.uid,
+                            method: 'Email',
+                            user: isBusiness ? 'Business' : 'Customer'
+                        }
+                    })
                     redirectUser(isBusiness)
                     setIsLoading(false)
 
@@ -160,6 +170,18 @@ const LoginAndRegistrationForm: FC<{
                         console.log(response);
                         idToken = await userCredential.user.getIdToken(true);
                         setAuthTokenInSessionStorage(idToken)
+                        gtag({
+                            command: GTMEventType.signUp,
+                            args: {
+                                email: data.email,
+                                firstName: data.firstName,
+                                lastName: data.lastName,
+                                firebaseId: userCredential.user.uid,
+                                mongoId: response?.data.createUser ? response?.data.createUser : 'userId_non_trovato',
+                                method: 'Email',
+                                user: 'Customer'
+                            }
+                        })
                         await handleCartInLocalStorage()
                         dispatch(
                             login({
@@ -182,10 +204,23 @@ const LoginAndRegistrationForm: FC<{
                             const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
                             // Signed in 
                             const idToken = await userCredential.user.getIdToken(true);
+
                             setAuthTokenInSessionStorage(idToken)
                             console.log(idToken);
                             await sendEmailVerificationHanlder()
                             const account = await setBusinessAccount()
+                            console.log(account);
+                            gtag({
+                                command: GTMEventType.signUp,
+                                args: {
+                                    email: data.email,
+                                    firebaseId: userCredential.user.uid,
+                                    method: 'Email',
+                                    user: 'Business',
+                                    mongoId: account?.data.createBusinessStep1
+                                }
+                            })
+
                             console.log(account);
                             await router.replace('/shop/crea-business-account')
                             router.reload()
