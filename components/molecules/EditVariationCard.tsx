@@ -21,7 +21,7 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], 
     useEffect(() => {
         const lots: Size[] = [];
         variation.lots.forEach(lot => {
-            const size = sizeTypeSelected?.find(element => element.split(' ')[0] === lot.size)
+            const size = sizeTypeSelected?.find(element => element.split(' (')[0] === lot.size)
             if (!size) return
             lots.push({
                 size,
@@ -91,7 +91,7 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], 
                                                 className='text-sm mb-1'
                                                 key={Math.random()}
                                             >
-                                                {sizeTypeSelected?.find(element => element.split(' ')[0] === size.size)} - {size.quantity ? size.quantity + ' quantità' : 'TERMINATO'}
+                                                {sizeTypeSelected?.find(element => element.split(' (')[0] === size.size)} - {size.quantity ? size.quantity + ' quantità' : 'TERMINATO'}
                                             </p>
                                         )
                                     })
@@ -263,7 +263,7 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], 
                                     seteditMode(false)
                                     const lots: Size[] = [];
                                     variation.lots.forEach(lot => {
-                                        const size = sizeTypeSelected?.find(element => element.split(' ')[0] === lot.size)
+                                        const size = sizeTypeSelected?.find(element => element.split(' (')[0] === lot.size)
                                         if (!size) return
                                         lots.push({
                                             size,
