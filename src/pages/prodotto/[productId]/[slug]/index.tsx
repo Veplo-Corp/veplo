@@ -42,6 +42,9 @@ import { formatNumberWithTwoDecimals } from '../../../../../components/utils/for
 import LoginAndRegistrationForm from '../../../../../components/organisms/LoginAndRegistrationForm';
 import GuideSize from '../../../../../components/organisms/GuideSize';
 import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter';
+import { CATEGORIES } from '../../../../../components/mook/categories';
+import { GUIDE_SIZES } from '../../../../../components/mook/sizeGuide';
+import { findMacrocategorySizeGuideFromMacrocategory } from '../../../../../components/utils/findMacrocategorySizeGuideFromMacrocategory';
 
 
 
@@ -144,6 +147,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     const [colorSelected, setColorSelected] = useState<string>()
     const [productsLikeThis, setproductsLikeThis] = useState<Product[]>()
     const [isOpenModalGuideSize, setIsOpenModalGuideSize] = useState(false)
+    const [macrocategorySizeGuide, setMacrocategorySizeGuide] = useState(false)
 
 
     if (!variationSelected) {
@@ -159,7 +163,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
     useEffect(() => {
         if (!productFounded) return
-        console.log('passa');
 
         setproduct(productFounded)
         setVariationSelected(productFounded.variations[0])
@@ -230,6 +233,16 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         setproductsLikeThis(undefined)
 
         setInLocalStorage('genderSelected', product.info.gender)
+        const genderSelected = product.info.gender === 'm' ? 'uomo' : product.info.gender === 'f' ? 'donna' : undefined;
+        if (!genderSelected) return
+        //TODO prendere anche parametro "Accessori" o "abbigliamento" da prodotto
+        console.log(product.info.macroCategory);
+        const macrocategorySizeGuideFromMacrocategory = findMacrocategorySizeGuideFromMacrocategory(product.info.macroCategory, genderSelected)
+        console.log(macrocategorySizeGuideFromMacrocategory);
+        if (macrocategorySizeGuideFromMacrocategory) {
+            setMacrocategorySizeGuide(macrocategorySizeGuideFromMacrocategory)
+        }
+
         // dispatch(
         //     changeGenderSelected(product.info.gender)
         // );
@@ -625,7 +638,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 <Text>
                                     Taglie disponibili
                                 </Text>
-                                {product.info.macroCategory.toLowerCase() !== 'scarpe' && <Box
+                                {macrocategorySizeGuide && <Box
                                     cursor={'pointer'}
                                     onClick={() => setIsOpenModalGuideSize(true)}
                                     display={'flex'}
@@ -898,8 +911,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 closeModal={() => setIsOpenModalGuideSize(false)}
             >
                 <GuideSize
-                    gender={product.info.gender}
-                    macrocategory={product.info.macroCategory}
+                    macrocategorySizeGuide={macrocategorySizeGuide}
                 />
 
             </ModalReausable>

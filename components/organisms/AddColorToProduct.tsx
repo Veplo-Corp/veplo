@@ -8,7 +8,6 @@ import SelectColor from '../atoms/SelectColor';
 import SelectSize from '../atoms/SelectSize';
 import SelectStringOption from '../atoms/SelectStringOption';
 import { Color, COLORS } from '../mook/colors';
-import { SIZES } from '../mook/sizes';
 import ModalReausable from './ModalReausable';
 import ImageCrop from '../molecules/ImageCrop';
 import { PixelCrop } from 'react-image-crop'
