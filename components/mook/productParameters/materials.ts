@@ -76,5 +76,33 @@ export const MATERIALS_TYPES = [
             "velluto a coste",
             "viscosa",
         ]
+    },
+    {
+        name: 'bag_materials',
+        type: [
+            "pelle",
+            "materiale riciclato",
+            "finta pelle",
+            "cotone",
+            "jeans",
+            "lino",
+            "raso",
+            "pelliccia finta",
+            "velluto/nicki",
+            "viscosa",
+            "lyocell",
+            "altro materiale"
+        ]
+    },
+    {
+        name: 'jewellery_materials',
+        type: [
+            "argento",
+            "acciaio inossidabile",
+            "pelle",
+            "oro",
+            "altro materiale"
+        ]
     }
+
 ]

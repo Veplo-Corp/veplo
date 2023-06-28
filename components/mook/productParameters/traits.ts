@@ -20,6 +20,7 @@ export const TRAITS_TYPES = [
             'riciclato',
             'cruelty-free',
             'fibre naturali',
+            'pezzo unico'
         ]
     }
 ]
