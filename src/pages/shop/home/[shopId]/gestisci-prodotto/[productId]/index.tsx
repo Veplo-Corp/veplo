@@ -387,7 +387,7 @@ const index = () => {
         let variationSize = variation.map(variation => {
             return {
                 quantity: variation.quantity,
-                size: variation.size.split(' ')[0]
+                size: variation.size.split(' (')[0]
             }
         }).sort(function (a, b) {
             return sizes.indexOf(a.size) - sizes.indexOf(b.size)
@@ -462,7 +462,7 @@ const index = () => {
             const variationLots = variation.lots.map(lot => {
                 return {
                     quantity: lot.quantity,
-                    size: lot.size.split(' ')[0]
+                    size: lot.size.split(' (')[0]
                 }
 
             });

@@ -327,12 +327,12 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
         if (filterParameter === 'sizes') {
             //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
-            const size = value?.split(' ')[0].toLocaleLowerCase()
+            const size = value?.split(' (')[0].toLocaleLowerCase()
             return router.push({
                 pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
                 query: {
                     ...filtersParams,
-                    sizes: size ? [value.split(' ')[0].toLocaleLowerCase()] : null
+                    sizes: size ? [value.split(' (')[0].toLocaleLowerCase()] : null
                 }
             })
         }
@@ -397,7 +397,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
         if (typeof filtersDrawerModal.sizes?.[0] === 'string') {
             let size = filtersDrawerModal.sizes?.[0]
-            filtersDrawerModal.sizes[0] = size.split(' ')[0].toLowerCase()
+            filtersDrawerModal.sizes[0] = size.split(' (')[0].toLowerCase()
         }
 
         if (filtersDrawerModal.sale !== 'true') {

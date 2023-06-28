@@ -288,7 +288,7 @@ const index = () => {
                 variation.lots.forEach(lot => {
                     lots.push({
                         quantity: lot.quantity,
-                        size: lot.size.split(' ')[0]
+                        size: lot.size.split(' (')[0]
                     })
                 });
 
