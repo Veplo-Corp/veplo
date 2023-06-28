@@ -3,7 +3,6 @@ import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import Circle_Color from './Circle_Color'
 import { Color, COLORS } from '../mook/colors'
-import { Macrocategory } from '../mook/macrocategories'
 import { Day } from '../mook/days'
 
 // const value = [
@@ -22,24 +21,24 @@ import { Day } from '../mook/days'
 // }
 
 
-const Select_multiple_options: React.FC<{ values: any, type: string, typeOperation?:string, handleChangeState?: any, selectedValueBefore?: any }> = ({ values, type, typeOperation, handleChangeState, selectedValueBefore }) => {
+const Select_multiple_options: React.FC<{ values: any, type: string, typeOperation?: string, handleChangeState?: any, selectedValueBefore?: any }> = ({ values, type, typeOperation, handleChangeState, selectedValueBefore }) => {
     const [selectedValue, setSelectedValue] = useState<any[]>([])
     const [isListboxDisabled, setIsListboxDisabled] = useState(false)
 
-    
+
 
 
 
     useEffect(() => {
         setSelectedValue([])
-        
+
         //console.log('type', type ,selectedValueBefore);
-        
+
         if (values === undefined) {
             setIsListboxDisabled(true)
         } else if (values) {
             setIsListboxDisabled(false)
-            
+
         }
 
 
@@ -50,7 +49,7 @@ const Select_multiple_options: React.FC<{ values: any, type: string, typeOperati
         //     setSelectedValue([])
         // }
 
-        if(typeOperation === 'edit'){       
+        if (typeOperation === 'edit') {
             if (type == 'color') {
                 let productColors = [];
                 for (let i = 0; i < selectedValueBefore.length; i++) {
@@ -58,13 +57,13 @@ const Select_multiple_options: React.FC<{ values: any, type: string, typeOperati
                     productColors.push(values[index])
                 }
                 setSelectedValue(productColors)
-            } 
-            if (type == 'size'){                
-                setSelectedValue(selectedValueBefore)                
+            }
+            if (type == 'size') {
+                setSelectedValue(selectedValueBefore)
             }
         }
 
-        
+
 
 
     }, [values])
@@ -77,7 +76,7 @@ const Select_multiple_options: React.FC<{ values: any, type: string, typeOperati
             handleChangeState(selectedValues, 'days_open')
         } if (type === 'color') {
             handleChangeState(e)
-        } if (type === 'size'){
+        } if (type === 'size') {
             let sizesWithOrder = [];
             for (let i = 0; i < e.length; i++) {
                 const position = values?.indexOf(e[i]);
@@ -86,11 +85,11 @@ const Select_multiple_options: React.FC<{ values: any, type: string, typeOperati
                     position: position
                 })
             }
-            sizesWithOrder = sizesWithOrder.sort((a, b) => a.position-b.position)
+            sizesWithOrder = sizesWithOrder.sort((a, b) => a.position - b.position)
             sizesWithOrder = sizesWithOrder.map(function (obj) {
                 return obj.size;
-              });
-            
+            });
+
             handleChangeState(sizesWithOrder)
             return setSelectedValue(sizesWithOrder)
         }
@@ -99,9 +98,9 @@ const Select_multiple_options: React.FC<{ values: any, type: string, typeOperati
 
     return (
         <Listbox
-        onChange={onChangeSelectedValue}
-        
-        value={selectedValue} disabled={isListboxDisabled}  multiple>
+            onChange={onChangeSelectedValue}
+
+            value={selectedValue} disabled={isListboxDisabled} multiple>
             <div className={`relative mt-1 border border-gray rounded-lg ${!isListboxDisabled ? 'bg-white' : 'bg-gray-200'}`}>
                 <Listbox.Button className="cursor-default w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0">
                     <span className="block truncate text-start">{selectedValue.map((value) => { return (value.name || value) }).join(', ')}</span>
@@ -120,9 +119,9 @@ const Select_multiple_options: React.FC<{ values: any, type: string, typeOperati
                     leaveTo="opacity-0"
                 >
                     <Listbox.Options
-                   
-                    className="z-10 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                        {values && values.map((value:any, valueIdx:any) =>
+
+                        className="z-10 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                        {values && values.map((value: any, valueIdx: any) =>
 
                         (
                             <Listbox.Option
