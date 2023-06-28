@@ -7,7 +7,8 @@ export interface Category {
     materials: string | undefined,
     fit: string | undefined,
     length: string | undefined,
-    colors: string | undefined
+    colors: string | undefined,
+    sizeGuideCode: string | undefined
 }
 
 export interface Categories {
@@ -44,7 +45,8 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_WOMAN_CLOTHES_SIZES'
             },
             {
                 name: "T-Shirt",
@@ -61,7 +63,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_WOMAN_CLOTHES_SIZES'
+
             },
             {
                 name: "Top",
@@ -77,7 +81,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_WOMAN_CLOTHES_SIZES'
+
             },
             {
                 name: "Camicie", //Camicie & Bluse
@@ -94,7 +100,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_WOMAN_CLOTHES_SIZES'
+
             },
             {
                 name: "Bluse", //Camicie & Bluse
@@ -109,7 +117,8 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_WOMAN_CLOTHES_SIZES'
             },
             {
                 name: "Pantaloni",
@@ -128,7 +137,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
+
             },
             {
                 name: "Jeans",
@@ -143,7 +154,8 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
             },
             {
                 name: "Felpe",
@@ -158,7 +170,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
+
             },
             {
                 name: "Giacche",
@@ -180,7 +194,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
+
             },
             {
                 name: "Blazer",
@@ -199,7 +215,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
+
             },
             {
                 name: "Cappotti",
@@ -216,7 +234,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
+
             },
             {
                 name: "Maglieria",
@@ -227,7 +247,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
+
             },
 
             //!aggiunto costumi: ["costumi"],
@@ -243,7 +265,8 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
             },
             {
                 name: "Gonne",
@@ -260,7 +283,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
+
             },
             {
                 name: "Shorts",
@@ -271,7 +296,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
+
             },
             {
                 name: "Bermuda",
@@ -282,7 +309,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
+
             },
 
             // {
@@ -338,61 +367,122 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: undefined,
                 length: undefined,
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: undefined
+
             },
         ],
         accessori: [
-            // { name: "Tutto l'abbigliamento" },
             {
-                name: "Vestiti",
-                url: "vestiti",
+                name: "Borse",
+                url: "borse",
                 types: [
-                    "caftani",
-                    "camicia",
-                    "maglina",
-                    "tubini",
-                    "lunghi",
+                    "a mano",
+                    "clutch",
+                    "shopping bags",
+                    "borse a spalla",
+                    "porta pc",
+                    "per lo sport",
+                    "marsupi",
+                    "astucci",
+                    "zaini",
+                    "bagagli e accessori",
                 ],
-                sizes: "woman_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors'
+                sizes: "bag_sizes",
+                traits: "clothes_traits",
+                materials: "bag_materials",
+                fit: undefined,
+                length: undefined,
+                colors: "clothes_colors",
+                sizeGuideCode: undefined
             },
             {
-                name: "T-Shirt",
-                url: "t-shirt",
+                name: "Gioielli",
+                url: "gioielli",
                 types: [
-                    "maniche lunghe",
-                    "maniche corte",
-                    "mezze maniche",
-                    "senza maniche",
-                    "jeans",
+                    "collane",
+                    "bracciali",
+                    "orecchini",
+                    "anelli",
+                    "ciondoli",
+                    "gioielli per capelli",
+                    "cavigliere"
                 ],
-                sizes: "woman_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors'
+                sizes: "jewellery_woman_sizes",
+                traits: "clothes_traits",
+                materials: "jewellery_materials",
+                fit: undefined,
+                length: undefined,
+                colors: "clothes_colors",
+                sizeGuideCode: 'JEWELLERY_WOMAN_SIZES'
             },
             {
-                name: "Top",
-                url: "top",
+                name: "Cappelli",
+                url: "cappelli",
                 types: [
-                    "maniche lunghe",
-                    "maniche corte",
-                    "mezze maniche",
-                    "senza maniche",
+                    "berretti",
+                    "cappelli con visiera",
+                    "cappelli panama",
+                    "paraorecchie",
+                    "foulards"
                 ],
-                sizes: "woman_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors'
+                sizes: "cap_woman_sizes",
+                traits: "clothes_traits",
+                materials: "clothes_materials",
+                fit: undefined,
+                length: undefined,
+                colors: "clothes_colors",
+                sizeGuideCode: 'CAP_WOMAN_SIZES'
             },
+            {
+                name: "Cinture",
+                url: "cinture",
+                types: [
+                    "cinture casual",
+                    "cinture a vita alta",
+                    "cinture intrecciate"
+                ],
+                sizes: "belt_woman_sizes",
+                traits: "clothes_traits",
+                materials: "clothes_materials",
+                fit: undefined,
+                length: undefined,
+                colors: "clothes_colors",
+                sizeGuideCode: 'BELT_WOMAN_SIZES'
+            },
+            {
+                name: "Sciarpe",
+                url: "sciarpe",
+                types: [
+                    "sciarpe",
+                    "sciarpe leggere",
+                    "scaldacollo"
+                ],
+                sizes: "one_size",
+                traits: "clothes_traits",
+                materials: "clothes_materials",
+                fit: undefined,
+                length: undefined,
+                colors: "clothes_colors",
+                sizeGuideCode: undefined
+            },
+            {
+                name: "Guanti",
+                url: "guanti",
+                types: [
+                    "con dita",
+                    "muffola",
+                    "senza dita"
+                ],
+                sizes: "gloves_woman_sizes",
+                traits: "clothes_traits",
+                materials: "clothes_materials",
+                fit: undefined,
+                length: undefined,
+                colors: "clothes_colors",
+                sizeGuideCode: 'GLOVES_WOMAN_SIZES'
+            },
+            //TODO portafoglio
         ],
     },
     uomo: {
@@ -412,7 +502,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
+
 
             },
             {
@@ -429,7 +521,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
+
             },
             {
                 name: "Camicie",
@@ -446,7 +540,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
+
             },
             {
                 name: "Felpe",
@@ -461,7 +557,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
+
             },
             {
                 name: "Maglieria",
@@ -475,7 +573,8 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
             },
             {
                 name: "Jeans",
@@ -488,7 +587,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_MAN_CLOTHES_SIZES'
+
             },
             {
                 name: "Pantaloni",
@@ -502,14 +603,14 @@ export const CATEGORIES: Categories = {
                     "tuta",
                     "palazzo",
                     "zampa d'elefante",
-
                 ],
                 sizes: "man_clothes_sizes",
                 traits: 'clothes_traits',
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_MAN_CLOTHES_SIZES'
             },
             {
                 name: "Bermuda",
@@ -522,7 +623,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_MAN_CLOTHES_SIZES'
+
             },
             // {
             //     name: "Abbigliamento sportivo",
@@ -560,7 +663,8 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
 
             },
             {
@@ -578,7 +682,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
+
             },
             {
                 name: "Scarpe",
@@ -609,7 +715,9 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: undefined,
                 length: undefined,
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: undefined
+
             },
             {
                 name: "Costumi",
@@ -624,62 +732,118 @@ export const CATEGORIES: Categories = {
                 materials: 'clothes_materials',
                 fit: 'clothes_fit',
                 length: 'clothes_length',
-                colors: 'clothes_colors'
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_MAN_CLOTHES_SIZES'
+
             },
 
         ],
         accessori: [
-            // { name: "Tutto l'abbigliamento" },
             {
-                name: "Vestiti",
-                url: "vestiti",
+                name: "Borse",
+                url: "borse",
                 types: [
-                    "caftani",
-                    "camicia",
-                    "maglina",
-                    "tubini",
-                    "lunghi",
+                    "borse a tracolla",
+                    "shopping bag",
+                    "borse business & laptop",
+                    "borse sportive",
+                    "zaini",
+                    "borsette",
+                    "borse da viaggio & valigie",
+                    "borsa fasciatoio"
                 ],
-                sizes: "woman_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors'
+                sizes: "bag_sizes",
+                traits: "clothes_traits",
+                materials: "bag_materials",
+                fit: undefined,
+                length: undefined,
+                colors: "clothes_colors",
+                sizeGuideCode: undefined
+
             },
             {
-                name: "T-Shirt",
-                url: "t-shirt",
+                name: "Gioielli",
+                url: "gioielli",
                 types: [
-                    "maniche lunghe",
-                    "maniche corte",
-                    "mezze maniche",
-                    "senza maniche",
-                    "jeans",
+                    "collane",
+                    "bracciali",
+                    "orecchini",
+                    "anelli",
+                    "ciondoli",
                 ],
-                sizes: "woman_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors'
+                sizes: "jewellery_man_sizes",
+                traits: "clothes_traits",
+                materials: "jewellery_materials",
+                fit: undefined,
+                length: undefined,
+                colors: "clothes_colors",
+                sizeGuideCode: 'JEWELLERY_MAN_SIZES'
             },
             {
-                name: "Top",
-                url: "top",
+                name: "Cappelli",
+                url: "cappelli",
                 types: [
-                    "maniche lunghe",
-                    "maniche corte",
-                    "mezze maniche",
-                    "senza maniche",
+                    "cappelli",
+                    "berretti",
+                    "berretti con visiera",
                 ],
-                sizes: "woman_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors'
+                sizes: "cap_man_sizes",
+                traits: "clothes_traits",
+                materials: "clothes_materials",
+                fit: undefined,
+                length: undefined,
+                colors: "clothes_colors",
+                sizeGuideCode: 'CAP_MAN_SIZES'
             },
+            {
+                name: "Cinture",
+                url: "cinture",
+                types: [
+                    "cinture casual",
+                    "cinture classiche",
+                    "cinture intrecciate"
+                ],
+                sizes: "belt_man_sizes",
+                traits: "clothes_traits",
+                materials: "clothes_materials",
+                fit: undefined,
+                length: undefined,
+                colors: "clothes_colors",
+                sizeGuideCode: 'BELT_MAN_SIZES'
+            },
+            {
+                name: "Sciarpe",
+                url: "sciarpe",
+                types: [
+                    "sciarpe",
+                    "sciarpe leggere",
+                    "scaldacollo"
+                ],
+                sizes: "one_size",
+                traits: "clothes_traits",
+                materials: "clothes_materials",
+                fit: undefined,
+                length: undefined,
+                colors: "clothes_colors",
+                sizeGuideCode: undefined
+            },
+            {
+                name: "Guanti",
+                url: "guanti",
+                types: [
+                    "con dita",
+                    "muffola",
+                    "senza dita"
+                ],
+                sizes: "gloves_man_sizes",
+                traits: "clothes_traits",
+                materials: "clothes_materials",
+                fit: undefined,
+                length: undefined,
+                colors: "clothes_colors",
+                sizeGuideCode: 'GLOVES_MAN_SIZES'
+            },
+            //TODO portafoglio
         ],
     },
 };
