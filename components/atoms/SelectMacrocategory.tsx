@@ -1,10 +1,10 @@
 import { FC, Fragment, useEffect, useRef, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import { CATEGORIES, Categories } from '../mook/categories'
+import { CATEGORIES, Categories, CategoryType } from '../mook/categories'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 
-const SelectMacrocategory: FC<{ typeProduct: 'abbigliamento' | 'accessori', selectedValueBefore: string | undefined, handleClick: (value: any) => void }> = ({ selectedValueBefore, handleClick, typeProduct }) => {
+const SelectMacrocategory: FC<{ typeProduct: CategoryType, selectedValueBefore: string | undefined, handleClick: (value: any) => void }> = ({ selectedValueBefore, handleClick, typeProduct }) => {
     const [selected, setSelected] = useState<string>();
     const categories = useRef(CATEGORIES)
 

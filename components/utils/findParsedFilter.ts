@@ -1,6 +1,6 @@
 import { ProductsFilter } from "../../src/pages/[prodotti]/[...slug]";
 import { FilterAccepted } from "../atoms/TagFilter";
-import { CATEGORIES } from "../mook/categories";
+import { CATEGORIES, CategoryType } from "../mook/categories";
 import { Color } from "../mook/colors";
 import { COLORS_TYPES } from "../mook/productParameters/colors";
 import { FIT_TYPES } from "../mook/productParameters/fit";
@@ -15,7 +15,7 @@ export interface FilterParameters {
     value: string | number | undefined | null | boolean
 }
 
-export const findParsedFilter = (filters: ProductsFilter, typeProducts: 'abbigliamento' | 'accessori'): FilterParameters[] | undefined => {
+export const findParsedFilter = (filters: ProductsFilter, typeProducts: CategoryType): FilterParameters[] | undefined => {
     const gender = filters.gender === 'm' ? 'uomo' : 'donna';
     if (typeProducts === 'accessori') return
 

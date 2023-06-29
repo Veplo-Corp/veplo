@@ -12,11 +12,12 @@ import BrandsFilter from '../atoms/BrandsFilter';
 import ToogleComponent from '../atoms/ToogleComponent';
 import { FilterAccepted } from '../atoms/TagFilter';
 import { VeploGTMEvent } from '../../src/lib/analytics/eventTypes';
+import { CategoryType } from '../mook/categories';
 
 
 
 
-const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (value: ProductsFilter | undefined) => void, handleConfirmChange: (value: string, filterParameter: FilterAccepted) => void, typeProducts: 'abbigliamento' | 'accessori', changePriceEventRouter: (parameters: { name: string, value: any }[]) => void, handleChangeMacroCategory: (value: string) => void }> = ({ filters, handleConfirmChange, typeProducts, changePriceEventRouter, filterDrawerConfirm, handleChangeMacroCategory }) => {
+const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (value: ProductsFilter | undefined) => void, handleConfirmChange: (value: string, filterParameter: FilterAccepted) => void, typeProducts: CategoryType | undefined, changePriceEventRouter: (parameters: { name: string, value: any }[]) => void, handleChangeMacroCategory: (value: string) => void }> = ({ filters, handleConfirmChange, typeProducts, changePriceEventRouter, filterDrawerConfirm, handleChangeMacroCategory }) => {
 
     const isSmallView = useBreakpointValue({ base: true, md: false });
     //TODO creare interface
@@ -25,6 +26,9 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
     const [filterCount, setFilterCount] = useState(0)
     const router = useRouter();
 
+    if (!typeProducts) return (
+        <></>
+    )
 
 
 

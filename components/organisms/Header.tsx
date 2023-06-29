@@ -3,12 +3,10 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface';
 import User_Popover from '../molecules/User_Popover';
-import Navbar from '../molecules/Old-Home_Navbar'
 import CategoryNavbar from '../molecules/CategoryNavbar';
 import { Box, Button, Select, Tag, Text, useBreakpointValue } from '@chakra-ui/react';
 import Drawer_Menu from './Drawer_Menu';
 import CartDrawer from './CartDrawer';
-import Drawer_User_Search from './Old-Drawer_User_Search';
 import DrawerSearchProducts from './DrawerSearchProducts';
 import { useLazyQuery } from '@apollo/client';
 import GET_BUSINESS from '../../src/lib/apollo/queries/business';
@@ -23,6 +21,7 @@ import { motion } from 'framer-motion';
 import { isMobile } from 'react-device-detect';
 import { Popover, Transition } from '@headlessui/react'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
+import { getCategoryType } from '../utils/getCategoryType';
 
 const Header = () => {
     const isButtonHidden = useBreakpointValue({ base: true, lg: false });
@@ -44,6 +43,7 @@ const Header = () => {
     const closeDrawerBusinessAccount = () => {
         setopenDrawerBusinessAccount(false)
     }
+
 
     useEffect(() => {
         if (user.statusAuthentication === 'logged_in' && user?.isBusiness && user?.accountId) {
@@ -116,7 +116,7 @@ const Header = () => {
         }
         console.log(gender);
 
-        router.push(`/abbigliamento/${gender}-abbigliamento/tutto/rilevanza/${createUrlSchema([question])}`)
+        router.push(`/${getCategoryType()}/${gender}-tutto/tutto/rilevanza/${createUrlSchema([question])}`)
     }
 
     const [isHeaderVisible, setIsHeaderVisible] = useState(true);
@@ -217,7 +217,7 @@ const Header = () => {
                                                         return (
                                                             <Link
                                                                 key={element}
-                                                                href={`/abbigliamento/${element.toLocaleLowerCase()}-abbigliamento/tutto/rilevanza`}
+                                                                href={`/${getCategoryType()}/${element.toLocaleLowerCase()}-tutto/tutto/rilevanza`}
                                                             >
                                                                 <Popover.Button
                                                                     className='text-left font-bold text-lg py-1'
@@ -265,9 +265,9 @@ const Header = () => {
                                             >
                                                 <Link
                                                     className='flex gap-2 p-2'
-                                                    href={router.query?.prodotti === 'abbigliamento' ? '/negozi' : (gender ? `/abbigliamento/${gender}-abbigliamento/tutto/rilevanza` : '/')}
+                                                    href={router.query?.prodotti ? '/negozi' : (gender ? `/${getCategoryType()}/${gender}-tutto/tutto/rilevanza` : '/')}
                                                 >
-                                                    {router.query?.prodotti === 'abbigliamento' ?
+                                                    {router.query?.prodotti ?
                                                         (<SmallShopAlt
                                                             strokeWidth={2}
                                                             className="w-6 h-6 my-auto"
@@ -309,7 +309,7 @@ const Header = () => {
 
 
                                                 <Link
-                                                    href={router.asPath.includes('abbigliamento') ? '/negozi' : (gender ? `/abbigliamento/${gender}-abbigliamento/tutto/rilevanza` : '/')}
+                                                    href={router.query.prodotti ? '/negozi' : (gender ? `/${getCategoryType()}/${gender}-tutto/tutto/rilevanza` : '/')}
                                                     className='flex h-full w-full'
                                                 >
                                                     <Button
@@ -334,7 +334,7 @@ const Header = () => {
                                                             {!router.query?.prodotti && 'Prodotti'}
                                                         </Text>
 
-                                                        {router.query?.prodotti === 'abbigliamento' ?
+                                                        {router.query?.prodotti ?
                                                             (<SmallShopAlt
                                                                 strokeWidth={2}
                                                                 className="w-6 h-6 my-auto"

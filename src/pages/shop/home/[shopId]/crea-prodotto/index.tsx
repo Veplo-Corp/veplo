@@ -9,7 +9,7 @@ import Div_input_creation from '../../../../../../components/atoms/Div_input_cre
 import SelectMacrocategory from '../../../../../../components/atoms/SelectMacrocategory'
 import SelectStringOption from '../../../../../../components/atoms/SelectStringOption'
 import ProductVariationCard from '../../../../../../components/molecules/ProductVariationCard'
-import { CATEGORIES, Category } from '../../../../../../components/mook/categories'
+import { CATEGORIES, Category, CategoryType } from '../../../../../../components/mook/categories'
 import { Color, COLORS } from '../../../../../../components/mook/colors'
 import AddColorToProduct from '../../../../../../components/organisms/AddColorToProduct'
 import EditColorToProduct, { Size } from '../../../../../../components/organisms/EditColorToProdoct'
@@ -28,7 +28,7 @@ import { LENGTH_TYPES } from '../../../../../../components/mook/productParameter
 import { TRAITS_TYPES } from '../../../../../../components/mook/productParameters/traits'
 
 export interface IFormInputProduct {
-    typeProduct: 'abbigliamento' | 'accessori'
+    typeProduct: CategoryType,
     name: string;
     price: string;
     brand: string;

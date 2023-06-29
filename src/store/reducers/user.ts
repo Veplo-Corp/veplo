@@ -21,6 +21,8 @@ export const userState = createSlice({
     login: (state, action) => {
       state.user = {
         genderSelected: state?.user?.genderSelected ? state?.user?.genderSelected : '',
+        gategoryTypeSelected: state?.user?.gategoryTypeSelected ? state?.user?.gategoryTypeSelected : '',
+
         ...action.payload,
 
       }
@@ -29,6 +31,7 @@ export const userState = createSlice({
 
       state.user = {
         genderSelected: state?.user?.genderSelected ? state?.user?.genderSelected : '',
+        gategoryTypeSelected: state?.user?.gategoryTypeSelected ? state?.user?.gategoryTypeSelected : '',
         statusAuthentication: 'logged_out'
       }
 
@@ -47,17 +50,25 @@ export const userState = createSlice({
         }
       }
     },
-
     changeGenderSelected: (state, action) => {
       state.user = {
         ...state.user,
         genderSelected: action.payload
+
+      }
+    },
+    changeCategoryType: (state, action) => {
+      if (action.payload === 'accessori' || action.payload === 'abbigliamento') {
+        state.user = {
+          ...state.user,
+          gategoryTypeSelected: action.payload
+        }
       }
     }
   },
 });
 
-export const { login, logout, addFavouriteShopBusiness, changeName, changeGenderSelected } = userState.actions;
+export const { login, logout, addFavouriteShopBusiness, changeName, changeGenderSelected, changeCategoryType } = userState.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUser = (state: RootState) => state.user.user;

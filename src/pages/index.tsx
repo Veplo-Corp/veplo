@@ -70,10 +70,10 @@ const Home: NextPage = () => {
 
     // if (genderSelected === 'f') {
 
-    //   router.push('/abbigliamento/donna-abbigliamento')
+    //   router.push('/abbigliamento/donna-tutto')
     // }
     // if (genderSelected === 'm') {
-    //   router.push('/abbigliamento/uomo-abbigliamento')
+    //   router.push('/abbigliamento/uomo-tutto')
     // }
   }, [])
 

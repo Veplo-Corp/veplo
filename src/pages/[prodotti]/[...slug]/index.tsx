@@ -15,7 +15,7 @@ import Box_Dress from '../../../../components/molecules/Box_Dress';
 import { LIST_ITEM_VARIANT } from '../../../../components/mook/transition';
 import { useLazyQuery } from '@apollo/client';
 import { setInLocalStorage } from '../../../../components/utils/setInLocalStorage';
-import { changeGenderSelected } from '../../../store/reducers/user';
+import { changeCategoryType, changeGenderSelected } from '../../../store/reducers/user';
 import { useDispatch } from 'react-redux';
 import { parseSlugUrlFilter } from '../../../../components/utils/parseUrlFilters';
 import { CATEGORIES } from '../../../../components/mook/categories';
@@ -27,6 +27,7 @@ import { Cancel, Filter } from 'iconoir-react';
 import { getParamsFiltersFromObject } from '../../../../components/utils/getParamsFiltersFromObject';
 import FiltersSelections from '../../../../components/organisms/FiltersSelections';
 import TagFilter, { FilterAccepted } from '../../../../components/atoms/TagFilter';
+import { getCategoryType } from '../../../../components/utils/getCategoryType';
 
 
 const RANGE = process.env.NODE_ENV === 'production' ? 12 : 12
@@ -53,7 +54,7 @@ export async function getStaticProps(ctx: any) {
             props: {
                 slug: {},
                 error: 'Errore',
-                typeProductsProps: prodotti === 'accessori' ? prodotti : 'abbigliamento'
+                typeProductsProps: prodotti === 'accessori' ? prodotti : 'tutto'
             },
             // notFound: true,
             revalidate: 1 //seconds
@@ -62,7 +63,7 @@ export async function getStaticProps(ctx: any) {
     const { sorting, ...newParseURL } = parsedURL
     try {
         //TODO eliminare newParseURL non appena tommaso gestisce il sorting
-
+        //TODO mettere anche ricerca per abbigliamento e accessori
         const { data, errors }: { data: ProductsQuery, errors: any } = await apolloClient.query({
             query: GET_PRODUCTS,
             variables: {
@@ -78,7 +79,7 @@ export async function getStaticProps(ctx: any) {
                 //TODO eliminare newParseURL non appena tommaso gestisce il sorting
                 filtersProps: newParseURL,
                 dataProducts: data?.products?.products,
-                typeProductsProps: prodotti === 'accessori' ? prodotti : 'abbigliamento'
+                typeProductsProps: prodotti === 'accessori' ? prodotti : 'tutto'
             },
             revalidate: 10 //seconds
         }
@@ -89,7 +90,7 @@ export async function getStaticProps(ctx: any) {
                 filtersProps: newParseURL,
                 products: [],
                 error: 'errore',
-                typeProductsProps: prodotti === 'accessori' ? prodotti : 'abbigliamento'
+                typeProductsProps: prodotti === 'accessori' ? prodotti : 'tutto'
             },
             // notFound: true,
             revalidate: 1 //seconds
@@ -106,14 +107,14 @@ export interface ProductsFilter extends ParsedURL {
     sale?: string
 }
 
-const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Product[], typeProductsProps: 'abbigliamento' | 'accessori' }> = ({ filtersProps, error, dataProducts, typeProductsProps }) => {
+const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Product[], typeProductsProps: 'tutto' | 'accessori' }> = ({ filtersProps, error, dataProducts, typeProductsProps }) => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(true);
     const [products, setProducts] = useState<Product[]>([])
     const [filters, setFilters] = useState<ProductsFilter>(filtersProps)
     const [getProducts, { loading, refetch, data, subscribeToMore }] = useLazyQuery<ProductsQuery>(GET_PRODUCTS);
     const [hasMoreData, setHasMoreData] = useState(true);
-    const [typeProducts, setTypeProducts] = useState<'abbigliamento' | 'accessori'>('abbigliamento')
+    const [typeProducts, setTypeProducts] = useState<'tutto' | 'accessori'>('tutto')
     const [resetProducts, setResetProducts] = useState(false)
     const dispatch = useDispatch();
     const isSmallView = useBreakpointValue({ base: true, lg: false });
@@ -121,9 +122,13 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
     useEffect(() => {
         if (!router.isReady) return
+        setInLocalStorage('setTypeProduct', typeProductsProps)
+        setTypeProducts(typeProductsProps)
+        dispatch(
+            changeCategoryType(typeProductsProps)
+        );
         setIsLoading(true)
         setHasMoreData(true)
-        setTypeProducts(typeProductsProps)
         //loading e hasmoredata resettati
         const fitlerSlug = router.asPath.split('?')[1]
         const filterParams: any = parseSlugUrlFilter(fitlerSlug)
@@ -236,12 +241,14 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
 
     useEffect(() => {
+        //inserimento gender
         if (filters.gender) {
             setInLocalStorage('genderSelected', filters.gender)
             dispatch(
                 changeGenderSelected(filters.gender)
             );
         }
+
     }, [filters.gender])
 
     useEffect(() => {
@@ -284,7 +291,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         const sortUrl = SORT_PRODUCT.find(element => element.url === e.target.value)?.url
         router.replace({
-            pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sortUrl ? sortUrl : 'rilevanza'}`,
+            pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sortUrl ? sortUrl : 'rilevanza'}`,
             query: {
                 ...filtersParams
             }
@@ -297,13 +304,13 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         if (filterParameter === 'macroCategory') {
             return router.push({
                 //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
-                pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${createUrlSchema([value])}/tutto/rilevanza`,
+                pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${createUrlSchema([value])}/tutto/rilevanza`,
             })
         }
         if (filterParameter === 'microCategory') {
             return router.push({
                 //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
-                pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${createUrlSchema([value])}/rilevanza`,
+                pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${createUrlSchema([value])}/rilevanza`,
                 query: {
                     ...filtersParams
                 }
@@ -317,7 +324,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             //filterParameter === 'fit' || filterParameter === 'length' || filterParameter === 'materials' || filterParameter === 'traits'
         ) {
             return router.push({
-                pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
                 query: {
                     ...filtersParams,
                     [filterParameter]: value.toLocaleLowerCase()
@@ -329,7 +336,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
             const size = value?.split(' (')[0].toLocaleLowerCase()
             return router.push({
-                pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
                 query: {
                     ...filtersParams,
                     sizes: size ? [value.split(' (')[0].toLocaleLowerCase()] : null
@@ -340,7 +347,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
             if (value === 'true') {
                 return router.push({
-                    pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                    pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
                     query: {
                         ...filtersParams,
                         sale: value
@@ -349,7 +356,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             } else {
                 const { sale, ...newFilterParameters } = filtersParams
                 return router.push({
-                    pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                    pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
                     query: {
                         ...newFilterParameters,
                     }
@@ -364,7 +371,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         if (paramters === 'macroCategory') {
             //TODO inserire sorting
             return router.push({
-                pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-abbigliamento/tutto/rilevanza`,
+                pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/rilevanza`,
             })
         }
 
@@ -372,7 +379,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             let filtersParams: any = getParamsFiltersFromObject(filters)
             //TODO inserire sorting
             return router.push({
-                pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/tutto/rilevanza`,
+                pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/tutto/rilevanza`,
                 query: {
                     ...filtersParams
                 }
@@ -382,7 +389,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         delete filtersParams[paramters]
         //TODO inserire sorting
         return router.push({
-            pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+            pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
             query: {
                 ...filtersParams
             }
@@ -392,7 +399,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const routerConfirmDrawerFilter = (filtersDrawerModal: ProductsFilter | undefined) => {
         if (!filtersDrawerModal) {
             return router.push({
-                pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/tutto/rilevanza`,
+                pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/tutto/rilevanza`,
             })
         }
         if (typeof filtersDrawerModal.sizes?.[0] === 'string') {
@@ -408,7 +415,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         //TODO inserire sorting
         return router.push({
-            pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filtersDrawerModal.macroCategory === 'string' && filtersDrawerModal.macroCategory !== '' ? filtersDrawerModal.macroCategory.toLowerCase() : 'abbigliamento'}/${filtersDrawerModal.microCategory ? createUrlSchema([filtersDrawerModal.microCategory]) : 'tutto'}/rilevanza`,
+            pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filtersDrawerModal.macroCategory === 'string' && filtersDrawerModal.macroCategory !== '' ? filtersDrawerModal.macroCategory.toLowerCase() : 'tutto'}/${filtersDrawerModal.microCategory ? createUrlSchema([filtersDrawerModal.microCategory]) : 'tutto'}/rilevanza`,
             query: {
                 ...filtersParams
             }
@@ -453,7 +460,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             <NoIndexSeo />
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
-                title={`${typeof filters.macroCategory === 'string' ? filters.macroCategory : 'Abbigliamento'} ${filters.gender === 'f' ? 'donna' : 'uomo'} | Veplo`}
+                title={`${typeof filters.macroCategory === 'string' ? filters.macroCategory : 'tutto'} ${filters.gender === 'f' ? 'donna' : 'uomo'} | Veplo`}
                 subtitle={`${typeof filters.macroCategory === 'string' ? `${typeof filters.macroCategory} da ${filters.gender === 'f' ? 'donna' : 'uomo'}` : `Tutto l'abbigliamento da ${filters.gender === 'f' ? 'donna' : 'uomo'}`} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
                 image={''}
                 description={`${typeof filters.macroCategory === 'string' ? `${typeof filters.macroCategory} da ${filters.gender === 'f' ? 'donna' : 'uomo'}` : `Tutto l'abbigliamento da ${filters.gender === 'f' ? 'donna' : 'uomo'}`} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
@@ -478,9 +485,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                             prefetch={false}
                                             href={element.url === createUrlSchema([filters?.macroCategory ? filters?.macroCategory : ''])
                                                 ?
-                                                '/abbigliamento/' + (filters.gender == 'f' ? 'donna' : 'uomo') + '-abbigliamento/tutto/rilevanza'
+                                                '/' + typeProductsProps + '/' + (filters.gender == 'm' ? 'uomo' : 'donna') + '-tutto/tutto/rilevanza'
                                                 :
-                                                '/abbigliamento/' + (filters.gender == 'f' ? 'donna' : 'uomo') + '-' + element.url + '/tutto/rilevanza'
+                                                '/' + typeProductsProps + '/' + (filters.gender == 'm' ? 'uomo' : 'uomo') + '-' + element.url + '/tutto/rilevanza'
                                             }
                                         >
                                             <Text
@@ -533,7 +540,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                         }
                                         //TODO gestire sorting appena possibile
                                         router.replace({
-                                            pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'abbigliamento'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                                            pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
                                             query: {
                                                 ...filtersParams,
                                                 ...newParams
@@ -542,7 +549,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     }}
                                     handleChangeMacroCategory={(value: string) => {
                                         return router.push({
-                                            pathname: `/abbigliamento/${filters.gender === 'm' ? 'uomo' : 'donna'}-${value !== '' ? value.toLowerCase() : 'abbigliamento'}/tutto/rilevanza`,
+                                            pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${value !== '' ? value.toLowerCase() : 'tutto'}/tutto/rilevanza`,
                                         })
                                     }}
                                 />

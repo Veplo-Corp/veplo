@@ -3,7 +3,6 @@ import Link from 'next/link'
 import React, { FC, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
-import Show_Categories_NavBar from './Show_Categories_NavBar'
 import { useRouter } from 'next/router'
 
 const typesCategory = [
@@ -82,7 +81,7 @@ const CategoryNavbar: FC<{ showMacrocategory: boolean }> = ({ showMacrocategory 
                                     <Link
                                         prefetch={false}
                                         onClick={() => { setcategoryCardOpen(false) }}
-                                        href={type.url !== 'negozi' ? `/abbigliamento/${type.url}-abbigliamento/tutto/rilevanza` : '/negozi'}
+                                        href={type.url !== 'negozi' ? `/${user.gategoryTypeSelected ? user.gategoryTypeSelected : 'abbigliamento'}/${type.url}-tutto/tutto/rilevanza` : '/negozi'}
                                     >
                                         {type.title}
                                     </Link>
