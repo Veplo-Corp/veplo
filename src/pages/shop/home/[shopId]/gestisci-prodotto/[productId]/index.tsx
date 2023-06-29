@@ -54,18 +54,7 @@ export interface IFormInputProductEdit {
 
 const index = () => {
 
-    const sizes = [
-        "xxs",
-        "xs",
-        "s",
-        "m",
-        "l",
-        "xl",
-        "xxl",
-        "3xl",
-        "4xl",
-        "5xl",
-    ]
+
 
     const { addToast } = ToastOpen();
 
@@ -90,6 +79,9 @@ const index = () => {
             }
         }],
     })
+
+    console.log(sizeTypeSelected);
+
 
 
 
@@ -192,7 +184,6 @@ const index = () => {
         setColors((prevState: Color[]) => {
             const newColors = prevState.filter(str => !colors.includes(str.name))
             console.log(newColors);
-
             return [
                 ...newColors
             ]
@@ -201,6 +192,7 @@ const index = () => {
 
         //find sizeType
         if (product.info.gender === 'f') {
+
             const sizeCateggory: string = Object.values(CATEGORIES)[0].abbigliamento.find((element: Category) => element.name.toLocaleLowerCase() === product.info.macroCategory)?.sizes
             if (sizeCateggory === 'woman_clothes_sizes' || sizeCateggory === "shoes_sizes" || sizeCateggory === "man_clothes_sizes") {
                 setSizeCateggory(sizeCateggory)
@@ -389,11 +381,8 @@ const index = () => {
                 quantity: variation.quantity,
                 size: variation.size.split(' (')[0]
             }
-        }).sort(function (a, b) {
-            return sizes.indexOf(a.size) - sizes.indexOf(b.size)
-        });
+        })
 
-        console.log(variationSize);
 
 
         await editVariation({

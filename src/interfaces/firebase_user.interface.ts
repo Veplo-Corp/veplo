@@ -1,3 +1,4 @@
+import { CategoryType } from './../../components/mook/categories';
 export interface Firebase_User {
     email: string,
     uid: string,
@@ -25,4 +26,5 @@ export interface Firebase_User {
     }
     genderSelected?: 'f' | 'm',
     expirationTime: string,
+    gategoryTypeSelected: string
 }

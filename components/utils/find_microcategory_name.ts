@@ -3,6 +3,7 @@ import { CATEGORIES, Category } from './../mook/categories';
 
 export const findMicrocategoryName = (macrocategory: string, gender: string, microcategory: string): string | null => {
     const index = gender === 'donna' ? 0 : 1
+    //TODO Gestire GategoryType!
     const arrayOfMicrocategory = Object.values(CATEGORIES)[index].abbigliamento.find((category: Category) => category.name === macrocategory)?.types
 
     console.log(arrayOfMicrocategory);

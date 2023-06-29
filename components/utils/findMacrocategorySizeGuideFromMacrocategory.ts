@@ -3,6 +3,7 @@ import { GUIDE_SIZES } from "../mook/sizeGuide";
 
 export const findMacrocategorySizeGuideFromMacrocategory = (macrocategory: string, gender: 'uomo' | 'donna') => {
 
+    //TODO Gestire GategoryType!
     const macroCategoryInfo = CATEGORIES[gender]['abbigliamento'].find(element => element.name.toLowerCase() === macrocategory.toLowerCase())
     console.log(macroCategoryInfo?.sizeGuideCode);
     console.log(CATEGORIES[gender]['abbigliamento']);

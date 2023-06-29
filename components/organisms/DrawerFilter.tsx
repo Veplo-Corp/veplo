@@ -11,8 +11,9 @@ import SelectOption from '../atoms/SelectOption'
 import { FilterAccepted } from '../atoms/TagFilter'
 import BrandsFilter from '../atoms/BrandsFilter'
 import ToogleComponent from '../atoms/ToogleComponent'
+import { CategoryType } from '../mook/categories'
 
-const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, typeProducts: 'abbigliamento' | 'accessori', closeDrawer: () => void, handleConfirm: (filters: ProductsFilter | undefined) => void, changeMacroCategory: (value: string) => void }> = ({ isOpenDrawer, closeDrawer, filtersProps, typeProducts, handleConfirm, changeMacroCategory }) => {
+const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, typeProducts: CategoryType, closeDrawer: () => void, handleConfirm: (filters: ProductsFilter | undefined) => void, changeMacroCategory: (value: string) => void }> = ({ isOpenDrawer, closeDrawer, filtersProps, typeProducts, handleConfirm, changeMacroCategory }) => {
 
     const isSmallView = useBreakpointValue({ base: true, lg: false });
     const router = useRouter();

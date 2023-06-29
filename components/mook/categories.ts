@@ -1,3 +1,5 @@
+export type CategoryType = 'abbigliamento' | 'accessori'
+
 export interface Category {
     name: string,
     url: string,

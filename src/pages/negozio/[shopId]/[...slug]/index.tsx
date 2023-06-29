@@ -194,9 +194,9 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`${shop.name ? toUpperCaseFirstLetter(shop.name) : 'Brand'} - Veplo.it`}
-                subtitle={`Visita il negozio di abbigliamento ${shop.name} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
+                subtitle={`Visita il negozio ${shop.name} | Abbigliamento · Scarpe · Vestiti · Accessori | scopri le offerte | vivi Veplo`}
                 image={shop?.profileCover ? shop?.profileCover : ''}
-                description={`Visita il negozio di abbigliamento ${shop.name} | Abbigliamento · Scarpe · Vestiti | scopri le offerte | vivi Veplo`}
+                description={`Visita il negozio ${shop.name} | Abbigliamento · Scarpe · Vestiti · Accessori | scopri le offerte | vivi Veplo`}
             />
 
             <Box
