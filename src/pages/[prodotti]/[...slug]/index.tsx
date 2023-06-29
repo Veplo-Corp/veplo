@@ -18,7 +18,7 @@ import { setInLocalStorage } from '../../../../components/utils/setInLocalStorag
 import { changeCategoryType, changeGenderSelected } from '../../../store/reducers/user';
 import { useDispatch } from 'react-redux';
 import { parseSlugUrlFilter } from '../../../../components/utils/parseUrlFilters';
-import { CATEGORIES } from '../../../../components/mook/categories';
+import { CATEGORIES, CategoryType } from '../../../../components/mook/categories';
 import createUrlSchema from '../../../../components/utils/create_url';
 import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First_Letter';
 import Link from 'next/link';
@@ -54,7 +54,7 @@ export async function getStaticProps(ctx: any) {
             props: {
                 slug: {},
                 error: 'Errore',
-                typeProductsProps: prodotti === 'accessori' ? prodotti : 'tutto'
+                typeProductsProps: prodotti === 'accessori' ? prodotti : 'abbigliamento'
             },
             // notFound: true,
             revalidate: 1 //seconds
@@ -79,7 +79,7 @@ export async function getStaticProps(ctx: any) {
                 //TODO eliminare newParseURL non appena tommaso gestisce il sorting
                 filtersProps: newParseURL,
                 dataProducts: data?.products?.products,
-                typeProductsProps: prodotti === 'accessori' ? prodotti : 'tutto'
+                typeProductsProps: prodotti === 'accessori' ? prodotti : 'abbigliamento'
             },
             revalidate: 10 //seconds
         }
@@ -107,14 +107,14 @@ export interface ProductsFilter extends ParsedURL {
     sale?: string
 }
 
-const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Product[], typeProductsProps: 'tutto' | 'accessori' }> = ({ filtersProps, error, dataProducts, typeProductsProps }) => {
+const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Product[], typeProductsProps: CategoryType }> = ({ filtersProps, error, dataProducts, typeProductsProps }) => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(true);
     const [products, setProducts] = useState<Product[]>([])
     const [filters, setFilters] = useState<ProductsFilter>(filtersProps)
     const [getProducts, { loading, refetch, data, subscribeToMore }] = useLazyQuery<ProductsQuery>(GET_PRODUCTS);
     const [hasMoreData, setHasMoreData] = useState(true);
-    const [typeProducts, setTypeProducts] = useState<'tutto' | 'accessori'>('tutto')
+    const [typeProducts, setTypeProducts] = useState<'abbigliamento' | 'accessori'>('abbigliamento')
     const [resetProducts, setResetProducts] = useState(false)
     const dispatch = useDispatch();
     const isSmallView = useBreakpointValue({ base: true, lg: false });
@@ -248,8 +248,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 changeGenderSelected(filters.gender)
             );
         }
-
-    }, [filters.gender])
+    }, [filters?.gender])
 
     useEffect(() => {
         if (!data) return
@@ -695,7 +694,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                                         sessionStorage.setItem("productsInProductsPage", JSON.stringify(products))
                                                                         sessionStorage.setItem('scrollPositionProducts', window.pageYOffset.toString());
                                                                     }}
-                                                                    productLink={`/ prodotto / ${product.id}/${product?.info?.brand}-${product.name}${router.asPath.split('?')[1] ? '?' + router.asPath.split('?')[1] : ''}`}
+                                                                    productLink={`/prodotto/${product.id}/${product?.info?.brand}-${product.name}${router.asPath.split('?')[1] ? '?' + router.asPath.split('?')[1] : ''}`}
                                                                     showStoreHeader={true} product={product} color={filters.colors?.[0] ? filters.colors[0] : undefined}></Box_Dress>
 
                                                             </motion.div>
