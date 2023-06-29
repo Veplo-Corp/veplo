@@ -29,7 +29,7 @@ import FiltersSelections from '../../../../components/organisms/FiltersSelection
 import TagFilter, { FilterAccepted } from '../../../../components/atoms/TagFilter';
 
 
-const RANGE = process.env.NODE_ENV === 'production' ? 3 : 12
+const RANGE = process.env.NODE_ENV === 'production' ? 12 : 12
 
 
 export async function getStaticPaths() {
@@ -632,7 +632,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
                         {!isLoading && products ?
                             (<InfiniteScroll
-                                scrollThreshold={0.90}
+                                scrollThreshold={products && products.length <= RANGE * 2 ? 0.80 : products && products.length < 50 ? 0.95 : 0.97}
                                 dataLength={products?.length}
                                 next={fetchMoreData}
                                 hasMore={hasMoreData}
@@ -688,7 +688,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                                         sessionStorage.setItem("productsInProductsPage", JSON.stringify(products))
                                                                         sessionStorage.setItem('scrollPositionProducts', window.pageYOffset.toString());
                                                                     }}
-                                                                    productLink={`/prodotto/${product.id}/${product?.info?.brand}-${product.name}${router.asPath.split('?')[1] ? '?' + router.asPath.split('?')[1] : ''}`}
+                                                                    productLink={`/ prodotto / ${product.id}/${product?.info?.brand}-${product.name}${router.asPath.split('?')[1] ? '?' + router.asPath.split('?')[1] : ''}`}
                                                                     showStoreHeader={true} product={product} color={filters.colors?.[0] ? filters.colors[0] : undefined}></Box_Dress>
 
                                                             </motion.div>
@@ -700,9 +700,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                 <></>
                                             )
                                         }
-                                    </div>
-                                </div>
-                            </InfiniteScroll>)
+                                    </div >
+                                </div >
+                            </InfiniteScroll >)
                             : (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 gap-y-5 w-full">
                                     {[1, 2, 3, 4].map((index) => {
@@ -740,11 +740,12 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                         Nessun prodotto trovato
                                     </Text>
                                 </Box>
-                            </Box>}
+                            </Box>
+                        }
 
-                    </Box>
+                    </Box >
 
-                </Shop_not_Allowed>
+                </Shop_not_Allowed >
             </div >
         </>
     )
