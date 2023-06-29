@@ -182,12 +182,11 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, ty
                         </Box>
                         <ButtonGroup
                             mt={10}
-                            width={'full'}
+                            width={['full']}
                         >
                             <Button
                                 variant={'grayPrimary'}
-                                px={20}
-                                py={5}
+                                width={'full'}
                                 fontSize={'sm'}
                                 onClick={() => {
                                     setFilters(undefined)
@@ -197,8 +196,8 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, ty
                             </Button>
                             <Button
                                 variant={'primary'}
-                                px={20}
-                                py={5}
+                                width={'full'}
+
                                 fontSize={'sm'}
                                 onClick={() => {
 
