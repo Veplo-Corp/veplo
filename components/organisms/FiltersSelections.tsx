@@ -37,6 +37,7 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
 
         //crea l'oggetto filtri applicati
         const parsedFilter = findParsedFilter(filters, typeProducts)
+        console.log(parsedFilter);
 
         if (!parsedFilter) return
         return setFilterParameters(parsedFilter)

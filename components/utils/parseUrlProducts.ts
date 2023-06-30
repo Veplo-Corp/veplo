@@ -1,3 +1,4 @@
+import { CategoryType } from "../mook/categories";
 import { findMacrocategoryName } from "./find_macrocategory_name";
 import { findMicrocategoryName } from "./find_microcategory_name";
 
@@ -10,7 +11,7 @@ export interface ParsedURL {
 
 
 
-export const parseURLProducts = (urlSegments: string[]): ParsedURL | Error => {
+export const parseURLProducts = (urlSegments: string[], productsType: CategoryType): ParsedURL | Error => {
     const numSegments: number = urlSegments.length;
 
     if (numSegments !== 3) {
@@ -25,11 +26,11 @@ export const parseURLProducts = (urlSegments: string[]): ParsedURL | Error => {
     }
 
     const gender: string = categories[0] === 'uomo' ? 'm' : 'f'; // Prendi la prima parte come categoria
-    const macroCategory: string | null = findMacrocategoryName(categories.slice(1).join('-'), categories[0]); // Prendi le parti rimanenti come sottocategoria
+    const macroCategory: string | null = findMacrocategoryName(categories.slice(1).join('-'), categories[0], productsType); // Prendi le parti rimanenti come sottocategoria
 
     console.log('macro', macroCategory);
 
-    const microCategory: string | null = findMicrocategoryName(macroCategory || '', gender, urlSegments[1]); // La microcategoria è il secondo elemento dell'array
+    const microCategory: string | null = findMicrocategoryName(macroCategory || '', gender, urlSegments[1], productsType); // La microcategoria è il secondo elemento dell'array
     const sorting: string = urlSegments[2]; // L'ordinamento è il terzo elemento dell'array
 
     return {

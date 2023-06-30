@@ -17,9 +17,7 @@ export interface FilterParameters {
 
 export const findParsedFilter = (filters: ProductsFilter, typeProducts: CategoryType): FilterParameters[] | undefined => {
     const gender = filters.gender === 'm' ? 'uomo' : 'donna';
-    if (typeProducts === 'accessori') return
-
-
+    if (!typeProducts) return
     const categories = CATEGORIES[gender][typeProducts];
 
     let parsedFilter: FilterParameters[] = [

@@ -12,7 +12,6 @@ import { Firebase_User } from '../../src/interfaces/firebase_user.interface';
 const ToogleComponent: FC<{ value: boolean | undefined, handleChangeToogle: (toogle: string) => void, modifyToogleInComponent: boolean }> = ({ value, handleChangeToogle, modifyToogleInComponent }) => {
     const [enabled, setEnabled] = useState(false)
     const user: Firebase_User = useSelector((state: any) => state.user.user);
-    console.log(user);
 
 
     useEffect(() => {

@@ -9,6 +9,6 @@ export const getCategoryType = () => {
             return 'abbigliamento'
         }
     }
-    return 'eo'
+    return 'abbigliamento'
 
 }

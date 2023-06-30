@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { initApollo } from '../../../lib/apollo';
 import { Product, ProductsQuery } from '../../../lib/apollo/generated/graphql';
 import GET_PRODUCTS from '../../../lib/apollo/queries/getProducts';
@@ -23,7 +23,7 @@ import createUrlSchema from '../../../../components/utils/create_url';
 import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First_Letter';
 import Link from 'next/link';
 import { SORT_PRODUCT } from '../../../../components/mook/sort_products';
-import { Cancel, Filter } from 'iconoir-react';
+import { Cancel, Filter, NavArrowDown } from 'iconoir-react';
 import { getParamsFiltersFromObject } from '../../../../components/utils/getParamsFiltersFromObject';
 import FiltersSelections from '../../../../components/organisms/FiltersSelections';
 import TagFilter, { FilterAccepted } from '../../../../components/atoms/TagFilter';
@@ -44,7 +44,8 @@ export async function getStaticPaths() {
 export async function getStaticProps(ctx: any) {
     const { slug, prodotti } = ctx.params;
     const apolloClient = initApollo()
-    const parsedURL: ParsedURL | Error = parseURLProducts(slug);
+    const productsType = prodotti === 'accessori' ? prodotti : 'abbigliamento'
+    const parsedURL: ParsedURL | Error = parseURLProducts(slug, productsType);
     console.log(parsedURL);
 
 
@@ -54,7 +55,7 @@ export async function getStaticProps(ctx: any) {
             props: {
                 slug: {},
                 error: 'Errore',
-                typeProductsProps: prodotti === 'accessori' ? prodotti : 'abbigliamento'
+                typeProductsProps: productsType
             },
             // notFound: true,
             revalidate: 1 //seconds
@@ -79,7 +80,7 @@ export async function getStaticProps(ctx: any) {
                 //TODO eliminare newParseURL non appena tommaso gestisce il sorting
                 filtersProps: newParseURL,
                 dataProducts: data?.products?.products,
-                typeProductsProps: prodotti === 'accessori' ? prodotti : 'abbigliamento'
+                typeProductsProps: productsType
             },
             revalidate: 10 //seconds
         }
@@ -90,7 +91,7 @@ export async function getStaticProps(ctx: any) {
                 filtersProps: newParseURL,
                 products: [],
                 error: 'errore',
-                typeProductsProps: prodotti === 'accessori' ? prodotti : 'tutto'
+                typeProductsProps: productsType
             },
             // notFound: true,
             revalidate: 1 //seconds
@@ -118,6 +119,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [resetProducts, setResetProducts] = useState(false)
     const dispatch = useDispatch();
     const isSmallView = useBreakpointValue({ base: true, lg: false });
+
+
+    console.log(filters);
 
 
     useEffect(() => {
@@ -171,7 +175,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         else {
             setResetProducts(true)
-
             const newFilters = {
                 ...filtersProps,
                 ...filterParams,
@@ -473,7 +476,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             minWidth={'3xs'}
                             className='flex mt-2 lg:mt-4 gap-4 lg:gap-5 overflow-x-auto'
                         >
-                            {Object.values(CATEGORIES)[filters.gender === 'm' ? 1 : 0].abbigliamento.sort((a: any, b: any) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1).map((element: any) => {
+                            {Object.values(CATEGORIES)[filters.gender === 'm' ? 1 : 0][typeProducts].sort((a: any, b: any) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1).map((element: any) => {
                                 return (
                                     <Box
                                         key={element.name}
@@ -503,16 +506,38 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 )
                             })}
                         </Box>
-                        <Text
+                        <Select
+                            width={typeProducts === 'abbigliamento' ? 'fit-content' : typeProducts.length * 14.2 + 'px'}
+                            value={typeProducts}
+                            onChange={(event) => {
+                                console.log(event.target.value);
+                                return router.push({
+                                    pathname: `/${event.target.value}/${filters.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/rilevanza`,
+                                })
+                            }}
                             color={'black'}
                             fontSize={'xl'}
                             fontWeight={'extrabold'}
+                            pl={0}
+                            ml={0}
+                            variant='unstyled'
+                            cursor={'pointer'}
                             mb={[3, 3]}
                             mt={[4, 6]}
+                            icon={<NavArrowDown
+                                strokeWidth={3}
+                            />}
+
                         >
-                            {/* {filters.macroCategory ? toUpperCaseFirstLetter(filters.macroCategory) : "Tutto l'abbigliamento"} */}
-                            Abbigliamento
-                        </Text>
+                            <option
+                                value='abbigliamento' className='font-xs'>Abbigliamento
+                            </option>
+                            <option value='accessori'>
+                                Accessori
+                            </option>
+                        </Select>
+
+
                         <Box
 
                             mt={0}
