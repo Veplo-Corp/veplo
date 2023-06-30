@@ -20,6 +20,8 @@ import { ToastOpen } from '../../../../components/utils/Toast';
 import { useMutation } from '@apollo/client';
 import RETURN_ORDER from '../../../lib/apollo/mutations/returnOrder';
 import { setOrders } from '../../../store/reducers/orders';
+import GrayBox from '../../../../components/atoms/GrayBox';
+import Modal_Help_Customer_Care from '../../../../components/organisms/Modal_Help_Customer_Care';
 
 
 
@@ -34,6 +36,7 @@ const index = () => {
     const [loading, setLoading] = useState(true)
     const [isOpenModalReturn, setIsOpenModalReturn] = useState(false)
     const { addToast } = ToastOpen();
+    const [isModalHelpOpen, setIsModalHelpOpen] = useState(false)
     const [returnOrder] = useMutation(RETURN_ORDER, {
         update(cache, el, query) {
             console.log(cache);
@@ -141,19 +144,61 @@ const index = () => {
                                 </Tag>
                             </Box>
                         }
-                        {/*  <div className='mt-4'>
-                            <GrayBox>
-                                <Text
-                                    fontSize={'2xl'}
-                                    fontWeight={'semibold'}
-                                    mb={2}
-                                >
-                                    Indirizzo reso
-                                </Text>
-                                
-                            </GrayBox>
-                        </div> */}
 
+
+                        {order.status === 'RET01' &&
+                            <div className='mt-4'>
+                                <GrayBox>
+                                    <Text
+                                        fontSize={'2xl'}
+                                        fontWeight={'semibold'}
+                                        mb={2}
+                                    >
+                                        Come inviare il reso?
+                                    </Text>
+                                    <Text
+                                        fontSize={'md'}
+                                        fontWeight={'normal'}
+                                        mb={0}
+                                    >
+                                        1. Compila la <Link
+                                            className='underline'
+                                            target="_blank" href="https://www.datocms-assets.com/102220/1686655555-modulo-reso.pdf"
+                                        >nota reso</Link>
+                                    </Text>
+                                    <Text
+                                        fontSize={'md'}
+                                        fontWeight={'normal'}
+                                        mb={0}
+                                    >
+                                        3. Inserisci l'indirizzo di spedizione: <strong>Aggiungi indirizzo negozio*</strong>
+                                    </Text>
+                                    <Text
+                                        fontSize={'md'}
+                                        fontWeight={'normal'}
+                                        mb={0}
+                                    >
+                                        2. Invia il reso a: <strong>{order.shop.name}</strong>
+                                    </Text>
+
+                                    <Text
+                                        fontSize={'sm'}
+                                        fontWeight={'normal'}
+                                        mt={4}
+                                    >
+                                        Per qualunque dubbio domanda consulta la <Link
+                                            href={'/policies/reso-e-rimborsi'}
+                                            className='underline cursor-pointer'
+                                        >politica di reso</Link> o <span
+                                            className='underline cursor-pointer'
+                                            onClick={() => setIsModalHelpOpen(true)}
+                                        >contattaci</span>
+                                    </Text>
+
+                                </GrayBox>
+                            </div>
+
+                        }
 
                         <Box
                             display={['', 'flex']}
@@ -308,7 +353,7 @@ const index = () => {
 
 
                     </div>}
-                </Desktop_Layout>
+                </Desktop_Layout >
             ) :
                 (
                     <Box
@@ -325,7 +370,10 @@ const index = () => {
 
                     email={order?.user.email} orderCode={order?.code} phone={order?.recipient.phone} />
             </ModalReausable>
-
+            <Modal_Help_Customer_Care
+                isOpen={isModalHelpOpen}
+                onClose={() => setIsModalHelpOpen(false)}
+            />
         </>
 
     )
