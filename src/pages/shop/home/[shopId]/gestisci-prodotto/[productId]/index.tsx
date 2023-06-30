@@ -192,7 +192,6 @@ const index = () => {
 
         //find sizeType
         if (product.info.gender === 'f') {
-
             const sizeCateggory: string = Object.values(CATEGORIES)[0].abbigliamento.find((element: Category) => element.name.toLocaleLowerCase() === product.info.macroCategory)?.sizes
             if (sizeCateggory === 'woman_clothes_sizes' || sizeCateggory === "shoes_sizes" || sizeCateggory === "man_clothes_sizes") {
                 setSizeCateggory(sizeCateggory)
