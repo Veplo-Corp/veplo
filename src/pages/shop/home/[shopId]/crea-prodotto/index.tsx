@@ -26,6 +26,9 @@ import { MATERIALS_TYPES } from '../../../../../../components/mook/productParame
 import { FIT_TYPES } from '../../../../../../components/mook/productParameters/fit'
 import { LENGTH_TYPES } from '../../../../../../components/mook/productParameters/length'
 import { TRAITS_TYPES } from '../../../../../../components/mook/productParameters/traits'
+import axios, { AxiosResponse } from 'axios'
+import { UploadImagesType } from '../../../../../interfaces/images.interface'
+import { uploadImage } from '../../../../../../components/utils/uploadImage'
 
 export interface IFormInputProduct {
     typeProduct: CategoryType,
@@ -80,8 +83,8 @@ const index = () => {
         update(cache, el, query) {
             const data = el.data
 
-            // console.log(data.createProduct.id);
-            // console.log(query?.variables?.options);
+            console.log(data.createProduct);
+            console.log(query?.variables?.options);
 
 
             const shop: any = cache.readQuery({
@@ -90,7 +93,10 @@ const index = () => {
                 // Variables of mismatched types will return `null`.
                 variables: {
                     id: router.query.shopId, //* mettere idShop,
-                    limit: 100, offset: 0
+                    limit: 100, offset: 0,
+                    filters: {
+
+                    }
                 },
             });
 
@@ -113,7 +119,7 @@ const index = () => {
 
             const newProduct = {
                 canBuy: true,
-                id: data.createProduct.id,
+                id: data.createProduct,
                 info: {
                     ...query.variables.options.info,
                     __typename: "ProductInfo"
@@ -149,7 +155,7 @@ const index = () => {
 
             cache.writeQuery({
                 query: GET_PRODUCTS_FROM_SHOP,
-                variables: { id: router.query.shopId, limit: 100, offset: 0 },
+                variables: { id: router.query.shopId, limit: 100, offset: 0, filters: {} },
                 data: {
                     shop: {
                         id: router.query.shopId,
@@ -208,6 +214,8 @@ const index = () => {
     }
 
 
+
+
     const trasformInEditCard = (variation: any) => {
         setCardToEdit((prevstate: VariationCard[]) => {
             return [
@@ -253,31 +261,41 @@ const index = () => {
         console.log(values);
         setIsLoading(true)
 
-        let photos: any = [];
+
+        let photosFileIDs: string[] = [];
         for await (const variation of productVariations) {
             for (const photo of variation.photos) {
-                photos.push(photo.file)
+                try {
+                    const result = await uploadImage(photo.file, 'product')
+                    if (!result) return setIsLoading(false)
+                    photosFileIDs.push(result.id)
+                }
+                catch {
+                    console.log('errore');
+                    return setIsLoading(false)
+                }
             }
         }
 
-        if (photos.length <= 0) return setIsLoading(false)
+        if (photosFileIDs.length <= 0) return setIsLoading(false)
 
 
-        console.log(photos);
+        console.log(photosFileIDs);
         try {
-            const photosUploaded = await uploadPhotos({
-                variables: {
-                    images: photos,
-                    proportion: "product"
-                }
-            })
-            console.log(photosUploaded);
+
+            // const photosUploaded = await uploadPhotos({
+            //     variables: {
+            //         images: photos,
+            //         proportion: "product"
+            //     }
+            // })
+            // console.log(photosUploaded);
 
 
 
 
-            const photosString = photosUploaded?.data.uploadImages
-            console.log(photosString)
+            // const photosString = photosUploaded?.data.uploadImages
+            // console.log(photosString)
 
             let i = 0;
 
@@ -293,7 +311,7 @@ const index = () => {
                 });
 
                 variation.photos.forEach(photo => {
-                    photos.push(photosString[i])
+                    photos.push(photosFileIDs[i])
                     i++
                 });
 
@@ -382,7 +400,14 @@ const index = () => {
 
     return (
         <Desktop_Layout>
+
             <NoIndexSeo title='Crea prodotto | Veplo' />
+            {/* <input type='file'
+                placeholder='eiii'
+                onChange={(e) => {
+                    uploadImage(e.target.files[0], 'product')
+                }}
+            /> */}
             <form
                 onSubmit={handleSubmit(onSubmit)}
             >

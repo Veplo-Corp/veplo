@@ -1,0 +1,1 @@
+export type UploadImagesType = 'product' | 'shopCover' | 'shopPhoto'

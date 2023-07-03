@@ -35,6 +35,7 @@ import ImageCrop from '../../../../../components/molecules/ImageCrop'
 import { onChangeNumberPrice } from '../../../../../components/utils/onChangePrice'
 import SelectMultipleOptions from '../../../../../components/atoms/SelectMultipleOptions'
 import { SHOP_CATEGORIES } from '../../../../../components/mook/shopCategories'
+import { uploadImage } from '../../../../../components/utils/uploadImage'
 
 
 
@@ -84,72 +85,80 @@ const index = () => {
     const [uploadPhotos] = useMutation(UPLOAD_PHOTO)
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     const [isLoading, setIsLoading] = useState(false)
-    const [createShop, createShopElement] = useMutation(CREATE_SHOP, {
-        update(cache, el, query) {
-            console.log(el.data);
-            console.log(query?.variables?.options);
-
-
-            const business = cache.readQuery<any>({
-                query: GET_BUSINESS,
-                variables: {
-                    //mongoId Shop
-                    id: user.accountId
-                }
-            });
-
-            console.log(business);
-            const newShop = {
-                __typename: 'Shop',
-                id: el.data.createShop,
-                businessId: user.accountId,
-                name: query?.variables?.options.name,
-                createdAt: "now",
-                status: "not_active",
-                photo: query?.variables?.options.photo,
-                isDigitalOnly: query?.variables?.options.isDigitalOnly,
-                info: {
-                    __typename: "ShopInformations",
-                    phone: query?.variables?.options.info.phone,
-                    description: query?.variables?.options.info.description,
-                    opening: {
-                        __typename: "Opening",
-                        days: query?.variables?.options.info.opening.days,
-                        hours: query?.variables?.options.info.opening.hours,
-                    }
-                },
-                address: {
-                    __typename: "AddressShop",
-                    postcode: "00000",
-                    city: query?.variables?.options.address.city,
-                    street: query?.variables?.options.address.street,
-                    location: {
-                        __typename: "Location",
-                        type: "Point",
-                        coordinates: query?.variables?.options.address.location.coordinates,
-                    }
-                }
+    const [createShop] = useMutation(CREATE_SHOP, {
+        awaitRefetchQueries: true,
+        refetchQueries: [{
+            query: GET_BUSINESS,
+            variables: {
+                //mongoId Shop
+                id: user.accountId
             }
-            console.log(newShop);
-            console.log(business.business.shops);
-            cache.writeQuery({
-                query: GET_BUSINESS,
-                variables: {
-                    //mongoId Shop
-                    id: user.accountId
-                },
-                data: {
-                    business: {
-                        ...business.business,
-                        shops: [
-                            ...business.business.shops,
-                            newShop
-                        ]
-                    }
-                }
-            })
+        }],
+        // update(cache, el, query) {
+        //     console.log(el.data);
+        //     console.log(query?.variables?.options);
 
-        }
+
+        //     const business = cache.readQuery<any>({
+        //         query: GET_BUSINESS,
+        //         variables: {
+        //             //mongoId Shop
+        //             id: user.accountId
+        //         }
+        //     });
+
+        //     console.log(business);
+        //     const newShop = {
+        //         __typename: 'Shop',
+        //         id: el.data.createShop,
+        //         businessId: user.accountId,
+        //         name: query?.variables?.options.name,
+        //         createdAt: "now",
+        //         status: "not_active",
+        //         photo: query?.variables?.options.photo,
+        //         isDigitalOnly: query?.variables?.options.isDigitalOnly,
+        //         info: {
+        //             __typename: "ShopInformations",
+        //             phone: query?.variables?.options.info.phone,
+        //             description: query?.variables?.options.info.description,
+        //             opening: {
+        //                 __typename: "Opening",
+        //                 days: query?.variables?.options.info.opening.days,
+        //                 hours: query?.variables?.options.info.opening.hours,
+        //             }
+        //         },
+        //         address: {
+        //             __typename: "AddressShop",
+        //             postcode: "00000",
+        //             city: query?.variables?.options.address.city,
+        //             street: query?.variables?.options.address.street,
+        //             location: {
+        //                 __typename: "Location",
+        //                 type: "Point",
+        //                 coordinates: query?.variables?.options.address.location.coordinates,
+        //             }
+        //         }
+        //     }
+        //     console.log(newShop);
+        //     console.log(business.business.shops);
+        //     cache.writeQuery({
+        //         query: GET_BUSINESS,
+        //         variables: {
+        //             //mongoId Shop
+        //             id: user.accountId
+        //         },
+        //         data: {
+        //             business: {
+        //                 ...business.business,
+        //                 shops: [
+        //                     ...business.business.shops,
+        //                     newShop
+        //                 ]
+        //             }
+        //         }
+        //     })
+
+        // }
     });
 
 
@@ -444,28 +453,17 @@ const index = () => {
 
         try {
             //uploadImage cover
-            const photoUploadedCover = await uploadPhotos({
-                variables: {
-                    images: [image?.file],
-                    proportion: "shopCover"
-                }
-            })
-
+            const photoUploadedCover = await uploadImage(image?.file, 'shopCover')
             //uploadImage profile
-            const photoUploadedProfile = await uploadPhotos({
-                variables: {
-                    images: [imageProfile?.file],
-                    proportion: "shopPhoto"
-                }
-            })
 
+            const photoUploadedProfile = await uploadImage(image?.file, 'shopPhoto')
 
 
 
             let Shop: IFormInput = {
                 name: e.name,
-                profileCover: photoUploadedCover.data?.uploadImages[0],
-                profilePhoto: photoUploadedProfile.data?.uploadImages[0],
+                profileCover: photoUploadedCover.id,
+                profilePhoto: photoUploadedProfile.id,
                 info: {
                     phone: watch('info.phone'),
                     description: watch('info.description'),
@@ -575,12 +573,12 @@ const index = () => {
                         console.log('PASSA QUI');
 
                         const file = new File([blob], "photo1", {
-                            type: 'image/webp'
+                            type: 'image/jpeg'
                         });
 
 
                         const newImage: Image = {
-                            type: 'image/webp',
+                            type: 'image/jpeg',
                             blob: blob,
                             url: url,
                             file: file
@@ -592,7 +590,7 @@ const index = () => {
                             setImage(newImage)
                         }
 
-                    }, 'image/webp', quality);
+                    }, 'image/jpeg', quality);
 
                 })
         }
@@ -713,13 +711,11 @@ const index = () => {
 
                                     )
                                 }
-
-
                             </Box>
                             <input
                                 ref={hiddenFileInputProfileImage}
                                 type="file" id="file" multiple
-                                accept="image/jpeg, image/jpg, image/webp image/png "
+                                accept="image/*"
                                 className='hidden'
                                 onChange={(e) => {
                                     onSelectFileInput(e, typeCroppedImage === 'cover' ? 'cover' : 'profile');
@@ -764,11 +760,14 @@ const index = () => {
                                     <SelectMultipleOptions
                                         limitNumber={2}
                                         handleValue={(value) => {
+                                            console.log(value);
                                             setValue('categories', value.map(value => {
                                                 return value.toLowerCase()
                                             }));
                                         }}
-                                        values={SHOP_CATEGORIES.sort()}
+                                        defaultValue={watch('categories')}
+
+                                        values={SHOP_CATEGORIES}
                                     />
                                 )}
                             />
@@ -824,7 +823,6 @@ const index = () => {
                                     autoComplete='off'
                                     type="number"
                                     {...register("minimumAmountForFreeShipping", {
-                                        required: true,
                                     })}
                                     onWheel={(e: any) => e.target.blur()}
                                     placeholder={'numero intero'}

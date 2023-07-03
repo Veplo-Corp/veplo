@@ -8,10 +8,7 @@ const CREATE_PRODUCT = gql`
         createProduct(
             shopId: $shopId
             options: $options
-        ){
-            id,
-            photos
-          }
+        )
     }
 `
 

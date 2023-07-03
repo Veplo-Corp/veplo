@@ -244,7 +244,7 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                         paddingTop={2}
                         autoComplete="descrition-text-product"
                         // value={shop_name}
-                        {...register("description", { required: true })}
+                        {...register("description", { required: false })}
                         // onChange={(event) => changeInput(event, 'shop_name')}
                         isInvalid={false}
                     />
