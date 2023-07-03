@@ -27,7 +27,6 @@ import uploadPhotoFirebase from '../../../../../components/utils/uploadPhotoFire
 import PostMeta from '../../../../../components/organisms/PostMeta'
 import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo'
 import isShopOpen from '../../../../../components/utils/isShopOpen'
-import UPLOAD_PHOTO from '../../../../lib/apollo/mutations/uploadPhotos'
 import GET_BUSINESS from '../../../../lib/apollo/queries/business'
 import { addShopFavouriteToLocalStorage } from '../../../../../components/utils/shop_localStorage'
 import ModalReausable from '../../../../../components/organisms/ModalReausable'
@@ -57,6 +56,7 @@ interface IFormInput {
     address?: {
         city: string | undefined
         street: string
+        postcode?: string,
         location: {
             type: string,
             coordinates: number[]
@@ -82,7 +82,6 @@ const typeShop = [
 ]
 
 const index = () => {
-    const [uploadPhotos] = useMutation(UPLOAD_PHOTO)
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     const [isLoading, setIsLoading] = useState(false)
     const [createShop] = useMutation(CREATE_SHOP, {
@@ -205,15 +204,7 @@ const index = () => {
     const [imgSrc, setImgSrc] = useState<any>('');
 
     const previewCanvasRef = useRef<HTMLCanvasElement>(null)
-    // const [crop, setCrop] = useState<Crop | any>(
-    //     {
-    //         unit: '%', // Can be 'px' or '%'
-    //         x: 17.53,
-    //         y: 11.00,
-    //         width: 65.99,  //762 diviso 5
-    //         height: 76.209,//1100 diviso 5
-    //     }
-    // )
+
     const [image, setImage] = useState<Image>()
     const [imageProfile, setImageProfile] = useState<Image>()
 
@@ -318,30 +309,19 @@ const index = () => {
 
 
     useDebounceEffect(async () => {
-
         if (address_searched === undefined || address_searched.length < 3) {
             return
         } else {
-            //get IP
-            // const res = await axios.get('https://geolocation-db.com/json/')
-            // console.log(res.data);
-            // console.log(res.data.IPv4)
-            // const ip = res.data.IPv4
-            // Send the data to the server in JSON format.
-            // API endpoint where we send form data.
-            //const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}&type=user&user_ip=${ip}`
 
 
-            const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}&type=user&lng_lat=0,0`
+            const endpoint = `/api/mapbox/autocomplete-address?search_text=${address_searched}&type=shop&lng_lat=0,0`
 
             // Send the form data to our forms API on Vercel and get a response.
             const response = await fetch(endpoint)
-
             // Get the response data from server as JSON.
             // If server returns the name submitted, that means the form works.
             const result = await response.json()
             //console.log(result.data);
-
             return setAddresses(result.data)
         }
 
@@ -350,6 +330,8 @@ const index = () => {
         600,
         [address_searched],
     )
+
+
 
     const handleEventSetAddress = async (element: Mapbox_Result) => {
         const result = await setUserAddress(element, 'shop');
@@ -471,12 +453,11 @@ const index = () => {
                 address: {
                     city: address.city,
                     street: address.address + ' ' + address.streetNumber,
-                    //postcode: address.postcode,
+                    postcode: address.postcode,
                     location: address.location
                 },
                 categories: e.categories
             }
-
 
 
             const minimumAmountForFreeShipping = watch('minimumAmountForFreeShipping')
@@ -484,7 +465,7 @@ const index = () => {
             if (typeof minimumAmountForFreeShipping === 'string' && Number(minimumAmountForFreeShipping.replace(',', '.')) > 0) {
                 Shop = {
                     ...Shop,
-                    minimumAmountForFreeShipping: parseInt(minimumAmountForFreeShipping.replace(',', '.'))
+                    minimumAmountForFreeShipping: parseInt(minimumAmountForFreeShipping.replace(',', '.')) * 100
                 }
             }
 

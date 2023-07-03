@@ -488,7 +488,6 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
 
   return (
     <Provider store={store}>
-
       <ApolloProvider client={apolloClient} > {/* client={clientApollo} */}
         <ChakraProvider theme={theme}>
           <Auth>
@@ -503,7 +502,6 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
               </div>
             ) : (
               <main className={`${sans.variable} font-sans`}>
-
                 <Component {...pageProps} />
                 {router.asPath !== '/' && !router.pathname.includes("/login") && !router.pathname.includes("/settings/email-actions") && !router.query?.fbclid && <Footer />}
               </main>
