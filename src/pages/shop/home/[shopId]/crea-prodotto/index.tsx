@@ -19,7 +19,6 @@ import { ToastOpen } from '../../../../../../components/utils/Toast'
 import { Variation } from '../../../../../interfaces/product.interface'
 import { VariationCard } from '../../../../../interfaces/variationCard.interface'
 import CREATE_PRODUCT from '../../../../../lib/apollo/mutations/createProduct'
-import UPLOAD_PHOTO from '../../../../../lib/apollo/mutations/uploadPhotos'
 import GET_PRODUCTS_FROM_SHOP from '../../../../../lib/apollo/queries/geetProductsShop'
 import SelectMultipleOptions from '../../../../../../components/atoms/SelectMultipleOptions'
 import { MATERIALS_TYPES } from '../../../../../../components/mook/productParameters/materials'
@@ -77,7 +76,6 @@ const index = () => {
     const [productVariations, setProductVariations] = useState<VariationCard[]>([])
     const [colors, setColors] = useState<Color[]>(COLORS)
     const [cardToEdit, setCardToEdit] = useState<any>([])
-    const [uploadPhotos] = useMutation(UPLOAD_PHOTO)
     const [isLoading, setIsLoading] = useState(false)
     const [createProduct] = useMutation(CREATE_PRODUCT, {
         update(cache, el, query) {
@@ -282,6 +280,7 @@ const index = () => {
 
         console.log(photosFileIDs);
         try {
+
 
             // const photosUploaded = await uploadPhotos({
             //     variables: {
