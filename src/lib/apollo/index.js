@@ -23,7 +23,7 @@ function createApolloClient() {
 
 
     const BACKEND_LINK = createUploadLink({
-        uri: process.env.NEXT_PUBLIC_APOLLO_URI,
+        uri: process.env.NEXT_PUBLIC_APOLLO_URI + '/query',
         //credentials: 'same-origin',
         // fetchOptions: {
         //     mode: 'no-cors',

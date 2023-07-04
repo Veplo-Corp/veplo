@@ -2,7 +2,6 @@
 
 export interface ProductVariation {
     id: string,
-    variationId: string,
     photo: string,
     name: string,
     brand: string,

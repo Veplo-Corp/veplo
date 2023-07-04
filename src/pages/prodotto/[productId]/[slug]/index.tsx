@@ -328,20 +328,29 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             if (Cart) {
                 console.log(Cart.productVariations);
 
-                const quantity = Cart.productVariations.find(variation => variation.size === sizeSelected && variation.variationId === variationSelected.id)?.quantity
+
+                const quantity = Cart.productVariations.find(variation => variation.size === sizeSelected && variation.id === variationSelected.id)?.quantity
 
                 //caso in cui la Variation è già presente in cart
                 if (quantity) {
-                    productVariationQuantity = quantity
+
+
                     const index = Cart.productVariations.findIndex(variation => variation.size === sizeSelected)
+                    const lots = product.variations.find(variation => variation.id === Cart.productVariations[index].id)?.lots
+                    let quantityMax;
+                    if (lots) {
+                        quantityMax = lots.find(lot => lot.size === Cart.productVariations[index].size)?.quantity
+                        console.log(quantityMax);
+
+                    }
                     const newProductVariation = {
                         ...Cart.productVariations[index],
-                        quantity: quantity + 1
+                        quantity: quantityMax && quantity >= quantityMax ? quantityMax : quantity + 1
                     }
 
                     const productVariations = [
                         newProductVariation,
-                        ...Cart.productVariations.filter(variation => variation.size !== sizeSelected || variation.variationId !== variationSelected.id),
+                        ...Cart.productVariations.filter(variation => variation.size !== sizeSelected || variation.id !== variationSelected.id),
                     ]
 
 
@@ -364,7 +373,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 if (!quantity) {
                     const newProductVariation: ProductVariation = {
                         id: variationSelected.id,
-                        variationId: variationSelected.id,
                         photo: variationSelected.photos[0],
                         name: product.name,
                         brand: product.info.brand,
@@ -405,7 +413,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 console.log('passa');
                 const newProductVariation: ProductVariation = {
                     id: variationSelected.id,
-                    variationId: variationSelected.id,
                     photo: variationSelected.photos[0],
                     name: product.name,
                     brand: product.info.brand,
