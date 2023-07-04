@@ -1,15 +1,15 @@
-import { gql } from '@apollo/client';
+// import { gql } from '@apollo/client';
 
-const UPLOAD_PHOTO = gql`
-    mutation uploadImages(
-        $images: [Upload!]!
-        $proportion: imageProportionsEnum!
-    ) {
-        uploadImages(
-            images: $images
-            proportion: $proportion
-        )
-    }
-`
+// const UPLOAD_PHOTO = gql`
+//     mutation uploadImages(
+//         $images: [Upload!]!
+//         $proportion: imageProportionsEnum!
+//     ) {
+//         uploadImages(
+//             images: $images
+//             proportion: $proportion
+//         )
+//     }
+// `
 
-export default UPLOAD_PHOTO;
+// export default UPLOAD_PHOTO;

@@ -40,6 +40,7 @@ export async function getStaticProps(ctx: any) {
     const gender = slug[1];
 
     try {
+
         const { data }: { data: GetShopQuery } = await apolloClient.query({
             query: GET_SHOP_AND_PRODUCTS,
             variables: {
@@ -63,9 +64,12 @@ export async function getStaticProps(ctx: any) {
             },
             revalidate: 60, // In seconds
         }
-    } catch {
+    } catch (e) {
+        console.log(e);
+
         return {
             props: {
+
                 shop: null,
                 gender: gender ? (gender === 'uomo' ? 'm' : 'f') : null
             },
@@ -81,6 +85,9 @@ export async function getStaticProps(ctx: any) {
 
 
 const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ shop, gender }) => {
+    console.log(shop);
+
+
 
     if (!shop) return (
         /* gestire errore in caso shop non viene trovato */

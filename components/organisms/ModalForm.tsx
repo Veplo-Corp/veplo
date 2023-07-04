@@ -42,7 +42,7 @@ const ModalForm: React.FC<ErrorModal> = ({ closeModal, children, isOpen, positio
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className={`w-full ${positionTopModal ? 'w-full md:w-fit' : 'max-w-md'}  transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all`}>
+                            <Dialog.Panel className={`w-full ${positionTopModal ? 'w-full md:w-fit' : 'max-w-md'}  transform overflow-hidden rounded-[30px] bg-white p-6 text-left align-middle shadow-xl transition-all`}>
 
                                 {children}
                             </Dialog.Panel>

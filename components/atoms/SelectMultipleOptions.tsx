@@ -8,10 +8,12 @@ import { CATEGORIES } from '../mook/categories'
 
 const SelectMultipleOptions: FC<{ limitNumber: number, handleValue: (selectedValue: (string[] | [])) => void, values: string[] | undefined, defaultValue?: string[] | undefined }> = ({ limitNumber, handleValue, values, defaultValue }) => {
     const [selected, setSelected] = useState<string[]>([])
+    console.log(selected);
 
 
     const handleSelectedValue = (value: string[]) => {
         if (value?.length > limitNumber) return
+        console.log(value);
 
         handleValue(value)
     }

@@ -126,26 +126,24 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                     const kb = Math.ceil(((yourBase64String.length * 6) / 8) / 1000); //es. 426 kb
                     console.log(kb);
                     //set quality based on dimension photo
-                    const quality = kb > 3000 ? 0.3 : 0.8;
+                    const quality = kb > 3000 ? 0.6 : 0.9;
                     canvas.toBlob(function (blob) {
                         if (!blob) { return }
                         const url = URL.createObjectURL(blob);
                         console.log('PASSA QUI');
 
                         const file = new File([blob], "photo1", {
-                            type: 'image/webp'
+                            type: 'image/jpeg'
                         });
 
 
-
                         const newImage: Image = {
-                            type: 'image/webp',
+                            type: 'image/jpeg',
                             blob: blob,
                             url: url,
                             file: file,
                             position: images.length
                         }
-
                         console.log(newImage);
 
 
@@ -156,7 +154,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                             ]
                         })
 
-                    }, 'image/webp', quality);
+                    }, 'image/jpeg', quality);
 
                 })
         }
@@ -388,7 +386,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
 
                             <input
                                 ref={hiddenFileInputImage}
-                                type="file" id="file" multiple accept="image/jpeg, image/jpg, image/webp image/png"
+                                type="file" id="file" multiple accept="image/*"
                                 className='hidden'
                                 onChange={(e) => {
                                     onSelectFileInput(e);

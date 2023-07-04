@@ -6,7 +6,7 @@ const GET_PRODUCTS_FROM_SHOP = gql`
         $id: ID!
         $limit: Int!
         $offset: Int!
-        $filters: ProductFilters
+        $filters: ProductFilters!
         ) {
         shop(
             id: $id

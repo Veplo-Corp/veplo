@@ -52,7 +52,6 @@ const LoginAndRegistrationForm: FC<{
 
 
         const onSubmit: SubmitHandler<InputFormLogin> = (data, e) => {
-            console.log(data);
             handleEvent(data)
         }
 
@@ -167,7 +166,6 @@ const LoginAndRegistrationForm: FC<{
                             }
                         })
 
-                        console.log(response);
                         idToken = await userCredential.user.getIdToken(true);
                         setAuthTokenInSessionStorage(idToken)
                         gtag({
@@ -206,10 +204,8 @@ const LoginAndRegistrationForm: FC<{
                             const idToken = await userCredential.user.getIdToken(true);
 
                             setAuthTokenInSessionStorage(idToken)
-                            console.log(idToken);
                             await sendEmailVerificationHanlder()
                             const account = await setBusinessAccount()
-                            console.log(account);
                             gtag({
                                 command: GTMEventType.signUp,
                                 args: {
@@ -221,7 +217,6 @@ const LoginAndRegistrationForm: FC<{
                                 }
                             })
 
-                            console.log(account);
                             await router.replace('/shop/crea-business-account')
                             router.reload()
                             // setemail('')
@@ -230,7 +225,6 @@ const LoginAndRegistrationForm: FC<{
                             const errorCode = error.code;
                             const errorMessage = error.message;
                             //console.log(errorCode);
-                            console.log(errorCode);
                             const errorForModal = handleErrorFirebase(error.code)
                             dispatch(setModalTitleAndDescription({
                                 title: errorForModal?.title,

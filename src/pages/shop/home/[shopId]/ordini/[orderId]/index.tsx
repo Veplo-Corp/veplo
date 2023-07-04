@@ -603,7 +603,7 @@ const index = () => {
                                             lineHeight={'short'}
                                             mb={5}
 
-                                        >come funziona la procedura di reso con Veplo? <Link href=""
+                                        >come funziona la procedura di reso con Veplo? <Link href="/policies/reso-e-rimborsi"
                                             className='underline'
                                         >politica di reso</Link>
                                         </Text>
