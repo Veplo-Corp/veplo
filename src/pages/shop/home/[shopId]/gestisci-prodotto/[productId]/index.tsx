@@ -25,7 +25,6 @@ import { Button } from '@chakra-ui/react';
 import AddColorToProduct from '../../../../../../../components/organisms/AddColorToProduct';
 import { COLORS, Color } from '../../../../../../../components/mook/colors';
 import { VariationCard } from '../../../../../../interfaces/variationCard.interface';
-import UPLOAD_PHOTO from '../../../../../../lib/apollo/mutations/uploadPhotos';
 
 interface Props {
     shop: {
@@ -70,7 +69,6 @@ const index = () => {
     const [newCard, setNewCard] = useState(false)
     const [colors, setColors] = useState<Color[]>(COLORS)
     const [sizeCateggory, setSizeCateggory] = useState('')
-    const [uploadPhotos] = useMutation(UPLOAD_PHOTO)
     const [createVariation] = useMutation(CREATE_VARIATION, {
         awaitRefetchQueries: true,
         refetchQueries: [{
