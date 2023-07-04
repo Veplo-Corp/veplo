@@ -1,7 +1,7 @@
 export const formatNumberWithTwoDecimals = (number: number): string => {
     if (Number.isInteger(number)) {
-        return number.toString(); // Restituisce il numero senza decimali
+        return (number / 100).toFixed(2).replace(".", ","); // Restituisce il numero senza decimali
     } else {
-        return number.toFixed(2).replace(".", ","); // Sostituisce il punto con la virgola
+        return (number / 100).toFixed(2).replace(".", ","); // Sostituisce il punto con la virgola
     }
 };

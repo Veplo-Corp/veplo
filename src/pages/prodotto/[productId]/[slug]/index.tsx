@@ -450,7 +450,13 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
             //aggiungi al carrello
 
-
+            dispatch(
+                editVariationFromCart({
+                    //add new Carts
+                    carts: NewCarts
+                })
+            );
+            setOpenDrawerCart(true)
 
             try {
                 if (user.uid) {
@@ -466,13 +472,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 }
 
                 // if (!edited.data?.editCart) return //mettere un errore qui
-                dispatch(
-                    editVariationFromCart({
-                        //add new Carts
-                        carts: NewCarts
-                    })
-                );
-                setOpenDrawerCart(true)
+
             } catch (e: any) {
                 console.log(e.message);
 

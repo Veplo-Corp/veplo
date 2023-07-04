@@ -19,6 +19,7 @@ const GET_SINGLE_PRODUCT = gql`
                 length
                 materials
                 description
+                modelDescription
             }
             variations{
             id

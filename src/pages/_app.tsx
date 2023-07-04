@@ -239,13 +239,17 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         method: 'GET',
         mode: 'cors', // Puoi scegliere tra 'no-cors', 'cors', o 'same-origin' a seconda delle tue esigenze
       });
-      console.log(await response.json());
 
 
-      const result = await response.json();
-      if (!result) return;
+      if (response.ok) {
+        const result = await response.json();
 
-      dispatch(setBrands(result));
+        if (!result) return;
+
+        dispatch(setBrands(result));
+      } else {
+        console.log('La chiamata API non è andata a buon fine. Stato:', response.status);
+      }
     } catch (error) {
       console.log('Si è verificato un errore durante la chiamata API:', error);
     }

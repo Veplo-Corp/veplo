@@ -457,6 +457,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
 
 
+
+
     return (
         <>
             <NoIndexSeo />
@@ -489,7 +491,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                 ?
                                                 '/' + typeProductsProps + '/' + (filters.gender == 'm' ? 'uomo' : 'donna') + '-tutto/tutto/rilevanza'
                                                 :
-                                                '/' + typeProductsProps + '/' + (filters.gender == 'm' ? 'uomo' : 'uomo') + '-' + element.url + '/tutto/rilevanza'
+                                                '/' + typeProductsProps + '/' + (filters.gender == 'm' ? 'uomo' : 'donna') + '-' + element.url + '/tutto/rilevanza'
                                             }
                                         >
                                             <Text

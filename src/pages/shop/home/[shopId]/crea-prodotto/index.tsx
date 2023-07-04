@@ -41,7 +41,8 @@ export interface IFormInputProduct {
     fit?: string;
     length?: string;
     description?: string;
-    modelDescription?: string
+    modelDescription?: string;
+
 }
 
 export interface Macrocategory extends Category {
@@ -324,7 +325,7 @@ const index = () => {
 
             console.log(productVariations);
 
-            const v1 = Number(watch('price').replace(',', '.'))
+            const v1 = Math.floor(Number(watch('price').replace(',', '.')) * 100)
 
             if (!v1 || v1 <= 0) return
 
@@ -332,7 +333,8 @@ const index = () => {
                 fit?: string,
                 length?: string,
                 materials?: string[],
-                description?: string
+                description?: string,
+                modelDescription?: string
             } = {}
             if (watch('fit')) {
                 moreInfo['fit'] = watch('fit')?.toLocaleLowerCase()
@@ -344,7 +346,10 @@ const index = () => {
                 moreInfo['materials'] = watch('materials')
             }
             if (watch('description')) {
-                moreInfo['description'] = watch('description')?.toLocaleLowerCase()
+                moreInfo['description'] = watch('description')
+            }
+            if (watch('modelDescription')) {
+                moreInfo['modelDescription'] = watch('modelDescription')
             }
 
 

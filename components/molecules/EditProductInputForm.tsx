@@ -55,6 +55,7 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
 
 
 
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -236,7 +237,7 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
             <Div_input_creation text='Descrizione (opzionale)'>
                 <InputGroup >
                     <Textarea
-                        fontSize={'sm'}
+                        height={32}
                         maxLength={200}
                         rounded={10}
                         paddingY={6}
@@ -250,12 +251,13 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                     />
                 </InputGroup>
             </Div_input_creation>
+
             <Div_input_creation text='Descrizione modello (opzionale)'>
                 <InputGroup>
                     <Controller
                         control={control}
                         name="modelDescription"
-                        defaultValue=""
+
                         render={({ field }) => (
                             <Textarea
                                 maxLength={100}
