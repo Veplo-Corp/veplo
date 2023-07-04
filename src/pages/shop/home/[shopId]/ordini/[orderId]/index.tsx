@@ -171,6 +171,7 @@ const index = () => {
 
     const deleteOrder = async () => {
         //TODO capire se esiste ancora sta roba
+        //TODO come gestisce tommaso il cart quando sono finiti i prodotti?
         // try {
         //     await deleteOrderByShop({
         //         variables: {
