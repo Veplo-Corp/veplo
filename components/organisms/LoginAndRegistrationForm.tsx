@@ -63,7 +63,7 @@ const LoginAndRegistrationForm: FC<{
                     try {
                         await editCart({
                             variables: {
-                                productVariationId: variation.variationId,
+                                productVariationId: variation.id,
                                 size: variation.size,
                                 quantity: variation.quantity
                             }
