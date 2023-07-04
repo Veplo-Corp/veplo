@@ -232,16 +232,24 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
 
   const fetchBrandsFromDB = async () => {
-    const endpoint = `/api/brands`
-    const response = await fetch(endpoint, {
-      method: "GET",
-      mode: "no-cors", // no-cors, *cors, same-origin
-    })
-    const result = await response.json()
-    if (!result) return
-    dispatch(
-      setBrands(result)
-    );
+
+    const endpoint = process.env.NEXT_PUBLIC_APOLLO_URI + `/brands`
+    try {
+      const response = await fetch(endpoint, {
+        method: 'GET',
+        mode: 'cors', // Puoi scegliere tra 'no-cors', 'cors', o 'same-origin' a seconda delle tue esigenze
+      });
+      console.log(await response.json());
+
+
+      const result = await response.json();
+      if (!result) return;
+
+      dispatch(setBrands(result));
+    } catch (error) {
+      console.log('Si è verificato un errore durante la chiamata API:', error);
+    }
+
   }
 
 
@@ -480,7 +488,6 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
   //const clientApollo  = client;
 
 
-  console.log(router);
 
 
 

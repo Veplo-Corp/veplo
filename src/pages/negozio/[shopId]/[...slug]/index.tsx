@@ -52,7 +52,6 @@ export async function getStaticProps(ctx: any) {
                 }
             },
         })
-        console.log(gender);
 
 
 
@@ -85,7 +84,6 @@ export async function getStaticProps(ctx: any) {
 
 
 const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ shop, gender }) => {
-    console.log(shop);
 
 
 
@@ -96,10 +94,8 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
         </div>
     )
 
-    console.log(gender);
 
     //TODO lazyload scroll products
-    console.log(shop);
     const router = useRouter();
     const [addressForMaps, setaddressForMaps] = useState('')
     const [productsFounded, setproductsFounded] = useState<ProductsQueryResponse["products"]>([])
@@ -119,7 +115,6 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
 
     const [getMoreProducts, { loading, error, data, fetchMore }] = useLazyQuery(GET_PRODUCTS_FROM_SHOP);
 
-    console.log(data);
 
 
     const createAddressForMAps = () => {

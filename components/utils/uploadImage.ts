@@ -8,7 +8,7 @@ export const uploadImage = async (image: File, proportion: UploadImagesType): Pr
     formData.append('proportion', proportion);
     console.log(image);
 
-    const URI = process.env.NEXT_PUBLIC_APOLLO_URI_UPLOAD_IMAGE ? process.env.NEXT_PUBLIC_APOLLO_URI_UPLOAD_IMAGE : ''
+    const URI = process.env.NEXT_PUBLIC_APOLLO_URI ? process.env.NEXT_PUBLIC_APOLLO_URI + '/uploadImage' : ''
 
     try {
         const response: AxiosResponse<any> = await axios.post(URI, formData);

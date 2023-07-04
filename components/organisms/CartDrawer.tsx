@@ -26,6 +26,8 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
     const router = useRouter()
     const dispatch = useDispatch();
 
+    console.log(cartsDispatch);
+
 
     // const CARTS_MOOK: Cart[] = [
     //     {
@@ -131,7 +133,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
             try {
                 await editCart({
                     variables: {
-                        productVariationId: variation.variationId,
+                        productVariationId: variation.id,
                         size: variation.size,
                         quantity: 0
                     }
@@ -148,7 +150,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
         for await (const cart of cartsDispatch) {
             for await (const element of cart.productVariations) {
                 if (element.productId === variation.productId) {
-                    const newVariations = cart.productVariations.filter(variationElement => variationElement.variationId !== variation.variationId || variationElement.size !== variation.size)
+                    const newVariations = cart.productVariations.filter(variationElement => variationElement.id !== variation.id || variationElement.size !== variation.size)
                     console.log(cart.productVariations, newVariations);
 
                     const newCart = {

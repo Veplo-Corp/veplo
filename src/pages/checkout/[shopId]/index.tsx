@@ -117,12 +117,13 @@ const index = () => {
             if (user.uid) {
                 await editCart({
                     variables: {
-                        productVariationId: variation.variationId,
+                        productVariationId: variation.id,
                         size: variation.size,
                         quantity: 0
                     }
                 })
             }
+
         } catch {
 
         }
@@ -134,7 +135,7 @@ const index = () => {
         for await (const cart of cartsDispatch) {
             for await (const element of cart.productVariations) {
                 if (element.productId === variation.productId) {
-                    const newVariations = cart.productVariations.filter(variationElement => variationElement.variationId !== variation.variationId || variationElement.size !== variation.size)
+                    const newVariations = cart.productVariations.filter(variationElement => variationElement.id !== variation.id || variationElement.size !== variation.size)
                     console.log(cart.productVariations, newVariations);
                     const newCart = {
                         ...cart,
@@ -150,6 +151,7 @@ const index = () => {
         if (!editedCart) return
 
 
+
         let NewCarts: Cart[] = [];
 
         if (editedCart.total > 0) {
@@ -163,6 +165,7 @@ const index = () => {
                     carts: NewCarts
                 })
             );
+
         } else {
             NewCarts = [
                 ...cartsDispatch.filter(cart => cart.shopInfo.id !== editedCart?.shopInfo.id)]
@@ -172,8 +175,11 @@ const index = () => {
                     carts: NewCarts
                 })
             );
-            return
         }
+        if (!user.uid) {
+            localStorage.setItem('carts', JSON.stringify(NewCarts))
+        }
+
 
 
 
@@ -200,12 +206,12 @@ const index = () => {
                 id = id.trim()
                 console.log(id);
                 if (!cart) return
-                const variations = cart.productVariations.filter(element => element.variationId === id)
+                const variations = cart.productVariations.filter(element => element.id === id)
                 console.log(variations);
                 for await (const variation of variations) {
                     await editCart({
                         variables: {
-                            productVariationId: variation.variationId,
+                            productVariationId: variation.id,
                             size: variation.size,
                             quantity: 0
                         }
@@ -254,7 +260,7 @@ const index = () => {
                                 {cart.productVariations.map(variation => {
                                     return (
                                         <div
-                                            key={variation.variationId + variation.size}
+                                            key={variation.id + variation.size}
                                             className='w-full'
                                         >
                                             <VariationBoxList
@@ -335,7 +341,7 @@ const index = () => {
                                     id = id.trim()
                                     console.log(id);
                                     console.log(cart.productVariations);
-                                    const variations = cart.productVariations.filter(element => element.variationId === id)
+                                    const variations = cart.productVariations.filter(element => element.id === id)
                                     console.log(variations);
                                     return (
                                         <div key={index}>
