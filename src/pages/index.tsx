@@ -133,9 +133,9 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
       <>
         {router.query.gatto === 'berry' ? (
           <ButtonGroup
-            gap={5}
+            gap={[5, 5, 5, 3]}
             mb={0}
-            mt={4}
+
             width={'full'}
           >
             <Link
@@ -220,22 +220,115 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
       <Shop_not_Allowed>
         <Box
           bgColor={'primary.bg'}
-          className='w-full rounded-b-[4vh] h-fit pb-1'
+          className='hidden lg:block p-10 pt-0 h-[100vh] rounded-b-[7vh]'
         >
-          <img loading='lazy'
-            className='m-auto pt-4 px-10 pb-3 h-[23vh] w-full'
-            src='https://www.datocms-assets.com/102220/1688372964-veplo_graffiti_mobile.png'
-          />
+          <Box
+            height={'12vh'}
+
+            display={'flex'}
+            justifyContent={'space-between'}
+          >
+            <Box
+              width={'42vh'}
+              my={'auto'}
+            >
+              <ButtonGroupGender />
+            </Box>
+            <Button
+              my={'auto'}
+              width={'30vh'}
+              variant={'whiteButton'}
+              borderWidth={0}
+              fontSize={'xl'}
+              borderRadius={'30px'}
+              padding={6}
+              paddingY={7}
+              style={{
+                boxShadow: '0px 0px 20px 0px rgba(173, 173, 173, 0.25)'
+              }}
+              onClick={() => { setModalForm(true) }}
+            >
+              Sono un Brand!
+            </Button>
+          </Box>
           <Box
             bgColor={'primary.text'}
-            margin={5}
             borderRadius={'30px'}
-            marginTop={0}
-            padding={6}
-            paddingY={8}
+            className='hidden lg:grid p-8 h-[82vh] rounded-b-[7vh]'
             style={{
               boxShadow: '0px 4px 20px 20px rgba(255, 255, 255, 0.25)'
             }}
+            display={'flex'}
+            gap={10}
+          >
+            <Box
+              className='ml-24 mt-10 '
+            >
+              <Box>
+                <img loading='lazy'
+                  className='lg:w-full h-[24vh]'
+                  src='https://www.datocms-assets.com/102220/1688458870-veplo_graffiti_web.png'
+                />
+              </Box>
+              <Text
+                fontSize={'8xl'}
+                fontWeight={'black'}
+                lineHeight={'12vh'}
+                color={'primaryBlack.text'}
+                mt={10}
+              >
+                Lo spazio dei <br />
+                <span
+                  className='text-[#FF5A78]'
+                >
+                  brand
+                </span> made in <br />Italy
+              </Text>
+            </Box>
+            <Box
+              margin={'auto'}
+              mb={20}
+              w={'45vh'}
+            >
+              <ButtonGroupGender />
+              <Button
+                marginTop={6}
+                width={'full'}
+                variant={'primary'}
+                padding={6}
+                paddingY={7}
+                fontSize={'xl'}
+                borderRadius={'30px'}
+                style={{
+                  boxShadow: '0px 4px 20px 0px rgba(255, 90, 120, 0.75)'
+                }}
+                onClick={() => { setModalForm(true) }}
+              >
+                Sono un brand!
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+        <Box
+          bgColor={'primary.bg'}
+          className='w-full rounded-b-[4vh] h-fit pb-1 lg:hidden'
+        >
+          <img loading='lazy'
+            className='m-auto pt-4 px-10 pb-3 h-[23vh] md:h-[30vh] w-full md:w-7/12 '
+            src='https://www.datocms-assets.com/102220/1688456383-veplo_graffiti_mobile.png'
+          />
+
+          <Box
+            bgColor={'primary.text'}
+            borderRadius={'30px'}
+            marginTop={0}
+            padding={[6, 6, 10]}
+            paddingY={[8, 8, 12]}
+            style={{
+              boxShadow: '0px 4px 20px 20px rgba(255, 255, 255, 0.25)'
+            }}
+            className='m-5 md:mx-auto md:w-7/12 md:mb-8 mt-0'
+
           >
             <Text
               fontSize={'5vh'}
@@ -256,6 +349,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
               fontWeight={'regular'}
               fontSize={'18px'}
               lineHeight={'22px'}
+              mb={7}
             >
               connettiamo i migliori brand di abbigliamento made in Italy in un unico negozio online
             </Text>
@@ -279,110 +373,117 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
           </Box>
         </Box>
         <Box
-          marginY={10}
-          marginX={7}
-        >
-          <Text
-            fontSize={'4.3vh'}
-            fontWeight={'black'}
-            textAlign={'center'}
-            color={'primaryBlack.text'}
-            mb={5}
-          >
-            {data?.allListComponentWithImages[1].title}
-          </Text>
-          <VStack gap={5}
-            mb={5}
-            align='stretch'
-            textAlign={'left'}
-          >
-            {data?.allListComponentWithImages[1].imageAndText.map((value, index) => (
-              <Box
-                key={index}
-                display={'flex'}
-                gap={5}
-              >
-                <img loading='lazy'
-                  className='w-6 h-6 my-auto'
-                  src={value.immagine.url}
-                />
-                <Text
-                  textAlign={'left'}
-                  fontSize={'18px'}
-                  fontWeight={'normal'}
-                  color={'#909090'}
-                >
-                  {value.titolo}
-                </Text>
-              </Box>
-            ))}
-          </VStack>
-          <ButtonGroupGender />
-
-        </Box>
-        <Box
-          marginY={10}
-          marginX={7}
-        >
-          <Text
-            fontSize={'4.3vh'}
-            fontWeight={'black'}
-            textAlign={'center'}
-            color={'primaryBlack.text'}
-            mb={5}
-          >
-            {data?.allListComponentWithImages[0].title}
-          </Text>
-          <VStack gap={5}
-            mb={5}
-            align='stretch'
-            textAlign={'left'}
-          >
-            {data?.allListComponentWithImages[0].imageAndText.map((value, index) => (
-              <Box
-                key={index}
-                display={'flex'}
-                gap={5}
-              >
-                <img loading='lazy'
-                  className='w-6 h-6 my-auto'
-                  src={value.immagine.url}
-                />
-                <Text
-                  textAlign={'left'}
-                  fontSize={'18px'}
-                  fontWeight={'normal'}
-                  color={'#909090'}
-                >
-                  {value.titolo}
-                </Text>
-              </Box>
-            ))}
-          </VStack>
-
-        </Box>
-        <Box
-          bgColor={'primary.bg'}
-          className='w-full rounded-t-[4vh] h-fit pt-6 pb-1'
+          className='lg:flex lg:w-3/4 mx-auto lg:my-7 gap-20 justify-between'
         >
           <Box
+            marginY={10}
+            marginX={7}
+          >
+            <Text
+              fontSize={'4.3vh'}
+              fontWeight={'black'}
+              textAlign={'center'}
+              color={'primaryBlack.text'}
+              mb={[5, 5, 5, 8]}
+            >
+              {data?.allListComponentWithImages[1].title}
+            </Text>
+            <VStack gap={[5, 5, 5, 8]}
+              mb={8}
+              align='stretch'
+              textAlign={'left'}
+            >
+              {data?.allListComponentWithImages[1].imageAndText.map((value, index) => (
+                <Box
+                  key={index}
+                  display={'flex'}
+                  gap={5}
+                >
+                  <img loading='lazy'
+                    className='w-6 h-6 my-auto'
+                    src={value.immagine.url}
+                  />
+                  <Text
+                    textAlign={'left'}
+                    fontSize={'18px'}
+                    fontWeight={'normal'}
+                    color={'#909090'}
+                  >
+                    {value.titolo}
+                  </Text>
+                </Box>
+              ))}
+            </VStack>
+            <ButtonGroupGender />
+
+          </Box>
+          <Box
+            marginY={10}
+            marginX={7}
+          >
+            <Text
+              fontSize={'4.3vh'}
+              fontWeight={'black'}
+              textAlign={'center'}
+              color={'primaryBlack.text'}
+              mb={[5, 5, 5, 8]}
+
+            >
+              {data?.allListComponentWithImages[0].title}
+            </Text>
+            <VStack
+              gap={[5, 5, 5, 8]}
+              mb={7}
+              align='stretch'
+              textAlign={'left'}
+            >
+              {data?.allListComponentWithImages[0].imageAndText.map((value, index) => (
+                <Box
+                  key={index}
+                  display={'flex'}
+                  gap={5}
+                >
+                  <img loading='lazy'
+                    className='w-6 h-6 my-auto'
+                    src={value.immagine.url}
+                  />
+                  <Text
+                    textAlign={'left'}
+                    fontSize={'18px'}
+                    fontWeight={'normal'}
+                    color={'#909090'}
+                  >
+                    {value.titolo}
+                  </Text>
+                </Box>
+              ))}
+            </VStack>
+
+          </Box>
+        </Box>
+
+        <Box
+          bgColor={'primary.bg'}
+          className='w-full rounded-t-[4vh] lg:rounded-none rou h-fit pt-6 pb-1'
+        >
+          <Box
+            className='m-5 md:mx-auto md:w-1/2 lg:w-4/12 md:mb-8 mt-0 md:mt-5 lg:mt-7'
             bgColor={'primary.text'}
-            margin={5}
             borderRadius={'30px'}
-            marginTop={0}
             marginBottom={0}
-            padding={8}
+            padding={[8, 8, 8, 10]}
             paddingBottom={10}
             style={{
               boxShadow: '0px 4px 20px 20px rgba(255, 255, 255, 0.25)'
             }}
           >
             <Text
-              fontSize={'3.8vh'}
+              fontSize={['3.8vh', '3.8vh', '4.5vh', '5.5vh']}
               fontWeight={'black'}
-              lineHeight={'48px'}
+              //lineHeight={'48px'}
+              className='lg:leading-[7.5vh] leading-10'
               color={'primaryBlack.text'}
-              mb={3}
+              mb={[3, 3, 3, 7]}
             >
               Allora, da dove<br />
               iniziamo <span
