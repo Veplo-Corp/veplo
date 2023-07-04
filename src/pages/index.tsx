@@ -314,7 +314,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
           className='w-full rounded-b-[4vh] h-fit pb-1 lg:hidden'
         >
           <img loading='lazy'
-            className='m-auto pt-4 px-10 pb-3 h-[23vh] md:h-[30vh] w-full md:w-7/12 '
+            className='m-auto pt-4 px-10 pb-3 h-[23vh] sm:h-[32vh]  md:h-[30vh] min-380:w-10/12 w-full sm:w-9/12  md:w-7/12 '
             src='https://www.datocms-assets.com/102220/1688456383-veplo_graffiti_mobile.png'
           />
 
@@ -327,13 +327,13 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
             style={{
               boxShadow: '0px 4px 20px 20px rgba(255, 255, 255, 0.25)'
             }}
-            className='m-5 md:mx-auto md:w-7/12 md:mb-8 mt-0'
+            className='m-5 md:mx-auto sm:w-10/12 sm:mx-auto md:w-7/12 sm:mb-10 md:mb-8 mt-0'
 
           >
             <Text
-              fontSize={'5vh'}
+              fontSize={['5vh', '7vh']}
               fontWeight={'black'}
-              lineHeight={'48px'}
+              lineHeight={['48px', '60px']}
               color={'primaryBlack.text'}
             >
               Lo spazio dei <br />
@@ -344,7 +344,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
               </span><br />made in Italy
             </Text>
             <Text
-              my={3}
+              my={[3, 6]}
               color={'#909090'}
               fontWeight={'regular'}
               fontSize={'18px'}
