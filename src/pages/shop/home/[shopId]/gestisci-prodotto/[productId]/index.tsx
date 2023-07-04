@@ -437,42 +437,42 @@ const index = () => {
 
         if (photos.length <= 0) return
 
-        try {
-            const photosUploaded = await uploadPhotos({
-                variables: {
-                    images: photos,
-                    proportion: "product"
-                }
-            })
+        // try {
+        //     const photosUploaded = await uploadPhotos({
+        //         variables: {
+        //             images: photos,
+        //             proportion: "product"
+        //         }
+        //     })
 
-            const variationLots = variation.lots.map(lot => {
-                return {
-                    quantity: lot.quantity,
-                    size: lot.size.split(' (')[0]
-                }
+        //     const variationLots = variation.lots.map(lot => {
+        //         return {
+        //             quantity: lot.quantity,
+        //             size: lot.size.split(' (')[0]
+        //         }
 
-            });
+        //     });
 
-            const photosString = photosUploaded?.data.uploadImages;
-            await createVariation({
-                variables: {
-                    productId: product?.id,
-                    options: {
-                        color: variation.color,
-                        lots: variationLots,
-                        status: "active",
-                        photos: photosString
-                    }
-                }
-            }
-            )
+        //     const photosString = photosUploaded?.data.uploadImages;
+        //     await createVariation({
+        //         variables: {
+        //             productId: product?.id,
+        //             options: {
+        //                 color: variation.color,
+        //                 lots: variationLots,
+        //                 status: "active",
+        //                 photos: photosString
+        //             }
+        //         }
+        //     }
+        //     )
 
-            //mettere alert per creazione avvenuta con successo
+        //     //mettere alert per creazione avvenuta con successo
 
-        } catch (e) {
-            console.log(e);
+        // } catch (e) {
+        //     console.log(e);
 
-        }
+        // }
 
 
         setNewCard(false)

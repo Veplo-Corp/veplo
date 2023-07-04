@@ -27,98 +27,98 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
     const dispatch = useDispatch();
 
 
-    const CARTS_MOOK: Cart[] = [
-        {
-            id: '6415736c8561882630645131',
-            userId: '6410ace3850a8aeb92bcbc9e',
-            shopInfo: {
-                id: '6415736c8561882630645131',
-                name: 'Negozio da Peppa',
-                city: 'Terni',
-                status: 'active',
-            },
-            total: 200,
-            productVariations: [
-                {
-                    id: '6415736c8561882630645132',
-                    variationId: '6413937b80a960b926c291c4',
-                    photo: '00722023-9a71-4ab8-a314-9413055fd92d',
-                    productId: 'dd',
-                    name: 'maglietta',
-                    brand: 'Lacoste',
-                    quantity: 1,
-                    color: 'Verde',
-                    size: 's',
-                    price: {
-                        v1: 100,
-                        v2: 0,
-                        discountPercentage: 0,
-                    },
-                },
-                {
-                    id: '6415736c8561882630645132',
-                    variationId: '6413937b80a960b926c291c4',
-                    photo: '032010c4-38de-4904-bbe2-be377bf9b398',
-                    name: 'Giubbotto',
-                    brand: 'Nike',
-                    quantity: 2,
-                    productId: 'dd',
-                    color: 'Multicolore',
-                    size: 'm',
-                    price: {
-                        v1: 200,
-                        v2: 160,
-                        discountPercentage: 20,
-                    },
-                }
-            ]
-        },
-        {
-            id: '6415736c8561882630645131',
-            userId: '6410ace3850a8aeb92bcbc9e',
-            shopInfo: {
-                id: '6415736c8561882630645131',
-                name: 'Negozio da Peppa',
-                city: 'Terni',
-                status: 'active',
-            },
-            total: 200,
-            productVariations: [
-                {
-                    id: '6415736c8561882630645132',
-                    variationId: '6413937b80a960b926c291c4',
-                    photo: '00722023-9a71-4ab8-a314-9413055fd92d',
-                    name: 'maglietta',
-                    brand: 'Lacoste',
-                    quantity: 1,
-                    color: 'Verde',
-                    productId: 'dd',
-                    size: 's',
-                    price: {
-                        v1: 100,
-                        v2: 0,
-                        discountPercentage: 0,
-                    },
-                },
-                {
-                    id: '6415736c8561882630645132',
-                    variationId: '6413937b80a960b926c291c4',
-                    photo: '032010c4-38de-4904-bbe2-be377bf9b398',
-                    name: 'Giubbotto',
-                    brand: 'Nike',
-                    quantity: 2,
-                    color: 'Multicolore',
-                    productId: 'dd',
-                    size: 'm',
-                    price: {
-                        v1: 200,
-                        v2: 160,
-                        discountPercentage: 20,
-                    },
-                }
-            ]
-        }
-    ]
+    // const CARTS_MOOK: Cart[] = [
+    //     {
+    //         id: '6415736c8561882630645131',
+    //         userId: '6410ace3850a8aeb92bcbc9e',
+    //         shopInfo: {
+    //             id: '6415736c8561882630645131',
+    //             name: 'Negozio da Peppa',
+    //             city: 'Terni',
+    //             status: 'active',
+    //         },
+    //         total: 200,
+    //         productVariations: [
+    //             {
+    //                 id: '6415736c8561882630645132',
+    //                 variationId: '6413937b80a960b926c291c4',
+    //                 photo: '00722023-9a71-4ab8-a314-9413055fd92d',
+    //                 productId: 'dd',
+    //                 name: 'maglietta',
+    //                 brand: 'Lacoste',
+    //                 quantity: 1,
+    //                 color: 'Verde',
+    //                 size: 's',
+    //                 price: {
+    //                     v1: 100,
+    //                     v2: 0,
+    //                     discountPercentage: 0,
+    //                 },
+    //             },
+    //             {
+    //                 id: '6415736c8561882630645132',
+    //                 variationId: '6413937b80a960b926c291c4',
+    //                 photo: '032010c4-38de-4904-bbe2-be377bf9b398',
+    //                 name: 'Giubbotto',
+    //                 brand: 'Nike',
+    //                 quantity: 2,
+    //                 productId: 'dd',
+    //                 color: 'Multicolore',
+    //                 size: 'm',
+    //                 price: {
+    //                     v1: 200,
+    //                     v2: 160,
+    //                     discountPercentage: 20,
+    //                 },
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         id: '6415736c8561882630645131',
+    //         userId: '6410ace3850a8aeb92bcbc9e',
+    //         shopInfo: {
+    //             id: '6415736c8561882630645131',
+    //             name: 'Negozio da Peppa',
+    //             city: 'Terni',
+    //             status: 'active',
+    //         },
+    //         total: 200,
+    //         productVariations: [
+    //             {
+    //                 id: '6415736c8561882630645132',
+    //                 variationId: '6413937b80a960b926c291c4',
+    //                 photo: '00722023-9a71-4ab8-a314-9413055fd92d',
+    //                 name: 'maglietta',
+    //                 brand: 'Lacoste',
+    //                 quantity: 1,
+    //                 color: 'Verde',
+    //                 productId: 'dd',
+    //                 size: 's',
+    //                 price: {
+    //                     v1: 100,
+    //                     v2: 0,
+    //                     discountPercentage: 0,
+    //                 },
+    //             },
+    //             {
+    //                 id: '6415736c8561882630645132',
+    //                 variationId: '6413937b80a960b926c291c4',
+    //                 photo: '032010c4-38de-4904-bbe2-be377bf9b398',
+    //                 name: 'Giubbotto',
+    //                 brand: 'Nike',
+    //                 quantity: 2,
+    //                 color: 'Multicolore',
+    //                 productId: 'dd',
+    //                 size: 'm',
+    //                 price: {
+    //                     v1: 200,
+    //                     v2: 160,
+    //                     discountPercentage: 20,
+    //                 },
+    //             }
+    //         ]
+    //     }
+    // ]
 
 
 
