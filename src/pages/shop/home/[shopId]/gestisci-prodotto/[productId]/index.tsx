@@ -1,4 +1,4 @@
-import { gql, makeVar, useLazyQuery, useMutation } from '@apollo/client';
+import { gql, makeVar, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
@@ -62,7 +62,11 @@ const index = () => {
     const router = useRouter();
     const [product, setProduct] = useState<Product>();
     const [defaultValue, setdefaultValue] = useState<IFormInputProductEdit>();
-    const [getProduct, productData] = useLazyQuery(GET_SINGLE_PRODUCT);
+    const productData = useQuery(GET_SINGLE_PRODUCT, {
+        variables: {
+            id: router.query?.productId
+        }
+    })
     const [first, setfirst] = useState(true)
     console.log();
     const [sizeTypeSelected, setSizeTypeSelected] = useState<any>();
@@ -158,8 +162,8 @@ const index = () => {
         setdefaultValue({
             name: product.name,
             price: {
-                v1: product.price.v1,
-                v2: product.price?.v2 ? product.price?.v2 : '',
+                v1: product.price.v1 / 100,
+                v2: product.price?.v2 ? product.price?.v2 / 100 : '',
                 discountPercentage: product.price?.v2 ? Number((100 - Number(product.price.v2) / product.price.v1 * 100).toFixed(2)) : ''
             },
             brand: product.info.brand,
@@ -169,7 +173,8 @@ const index = () => {
             fit: product.info.fit,
             traits: product.info.traits ? product.info.traits : [],
             length: product.info.length,
-            description: product.info.description
+            description: product.info.description,
+            modelDescription: product.info.modelDescription
         })
 
         //remove colors used for new variations
@@ -211,20 +216,7 @@ const index = () => {
 
 
 
-    useEffect(() => {
-        const { shopId, productId } = router.query;
-        if (!productId || !first) return
-        if (!user?.isBusiness || !shopId || typeof shopId !== 'string' || !user?.accountId) return
 
-        getProduct({
-            variables: {
-                id: productId
-            }
-        })
-        setfirst(false)
-        return () => {
-        }
-    }, [user])
 
 
     const editProductHandler = async (productElement: IFormInputProductEdit) => {
@@ -241,6 +233,7 @@ const index = () => {
                 fit?: string;
                 length?: string;
                 description?: string;
+                modelDescription?: string
             }
             price?: {
                 v1?: number,
@@ -258,6 +251,7 @@ const index = () => {
         if (productElement?.traits.sort().join(',') !== traits.sort().join(',')) {
             info["traits"] = productElement.traits
         }
+
         if (productElement?.materials.sort().join(',') !== materials.sort().join(',')) {
             info["materials"] = productElement.materials
         }
@@ -270,6 +264,9 @@ const index = () => {
         if (productElement.description !== product?.info.description) {
             info["description"] = productElement.description
         }
+        if (productElement.modelDescription !== product?.info.modelDescription) {
+            info["modelDescription"] = productElement.modelDescription
+        }
 
 
 
@@ -278,38 +275,39 @@ const index = () => {
             options["info"] = info
         }
         let price: any = {}
-        if (productElement.price.v1 !== product?.price.v1) {
-            if (typeof productElement.price.v1 === 'string') {
-                const v1 = Number(productElement.price.v1.replace(',', '.'))
+        if (typeof productElement.price.v1 === 'string') {
+            const v1 = Math.floor(Number(productElement.price.v1.replace(',', '.')) * 100)
+            if (v1 !== product?.price.v1) {
                 if (v1 === 0) {
                     return console.log('errore');
                 }
                 price["v1"] = v1
             }
         }
-        if (productElement.price.v2 !== product?.price.v2) {
-            console.log(productElement.price.v2, product?.price.v1);
-            if (typeof productElement.price.v2 === 'string' && typeof productElement.price.v1 === 'string') {
 
-                const v1 = Number(productElement.price.v1.replace(',', '.'))
-                const v2 = Number(productElement.price.v2.replace(',', '.'))
-                console.log(v1, v2);
+        if (typeof productElement.price.v2 === 'string' && typeof productElement.price.v1 === 'string') {
 
-                if (v2 !== 0 && v2 < v1) {
-                    price["v2"] = v2
-                }
-            }
-            else if (typeof productElement.price.v2 === 'string' && product?.price.v1) {
-                const v2 = Number(productElement.price.v2.replace(',', '.'))
-                if (v2 !== 0 && v2 < product?.price.v1) {
-                    price["v1"] = product?.price.v1
-                    price["v2"] = v2
-                }
+            const v1 = Math.floor(Number(productElement.price.v1.replace(',', '.')) * 100)
+            const v2 = Math.floor(Number(productElement.price.v2.replace(',', '.')) * 100)
+            if (v2 !== 0 && v2 < v1) {
+                price["v2"] = v2
             }
         }
+        else if (typeof productElement.price.v2 === 'string' && product?.price.v1) {
+            const v2 = Math.floor(Number(productElement.price.v2.replace(',', '.')) * 100)
+            if (v2 !== 0 && v2 < product?.price.v1) {
+                price["v1"] = product?.price.v1
+                price["v2"] = v2
+            }
+        }
+
+
         if (Object.keys(price).length > 0) {
             options["price"] = price
         }
+
+        console.log(options);
+
 
         if (Object.keys(options).length < 1) return
         try {

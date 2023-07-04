@@ -32,7 +32,7 @@ const SelectMultipleOptions: FC<{ limitNumber: number, handleValue: (selectedVal
     return (
         <Listbox value={selected} onChange={(value) => { handleSelectedValue(value) }} multiple >
             <div className={`z-1 relative mt-1 border border-gray rounded-lg`}>
-                <Listbox.Button className="cursor-default min-w-[100px] md:min-w-[140px] w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0">
+                <Listbox.Button className="cursor-default min-w-[100px] md:min-w-[140px] w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-base  leading-5 text-gray-900 focus:ring-0">
                     {selected.length > 0 ? <span className="block truncate text-start">{selected.map((person) => person).join(', ')} </span> : <span className="block truncate text-start text-white">---</span>}
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <ChevronUpDownIcon

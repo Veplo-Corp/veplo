@@ -314,7 +314,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
           className='w-full rounded-b-[4vh] h-fit pb-1 lg:hidden'
         >
           <img loading='lazy'
-            className='m-auto pt-4 px-10 pb-3 h-[23vh] sm:h-[32vh]  md:h-[30vh] min-380:w-10/12 w-full sm:w-9/12  md:w-7/12 '
+            className='m-auto pt-4 px-10 pb-3 h-[23vh] sm:h-[32vh]  md:h-[30vh] w-full min-380:h-[28vh]  sm:w-9/12  md:w-7/12 '
             src='https://www.datocms-assets.com/102220/1688456383-veplo_graffiti_mobile.png'
           />
 

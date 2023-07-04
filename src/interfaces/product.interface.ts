@@ -31,7 +31,8 @@ export interface Product {
         traits: ('eco-friendly' | 'vegan' | 'handmade' | 'vintage')[],
         materials: string[],
         length?: string
-        description?: string
+        description?: string,
+        modelDescription?: string
     }
     price: {
         v1: number,
