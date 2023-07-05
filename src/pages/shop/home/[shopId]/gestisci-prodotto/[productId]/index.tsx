@@ -68,8 +68,7 @@ const index = () => {
         }
     })
     const [first, setfirst] = useState(true)
-    console.log();
-    const [sizeTypeSelected, setSizeTypeSelected] = useState<any>();
+    const [sizeTypeSelected, setSizeTypeSelected] = useState<string>('')
     const [newCard, setNewCard] = useState(false)
     const [colors, setColors] = useState<Color[]>(COLORS)
     const [sizeCateggory, setSizeCateggory] = useState('')
@@ -82,7 +81,6 @@ const index = () => {
         }],
     })
 
-    console.log(sizeTypeSelected);
 
 
 
@@ -90,8 +88,7 @@ const index = () => {
     const [editProduct] = useMutation(EDIT_PRODUCT, {
 
         update(cache, el, query) {
-            console.log(el);
-            console.log(query);
+
             const normalizedId = cache.identify({ id: router.query.productId, __typename: 'Product' });
 
 
@@ -156,7 +153,6 @@ const index = () => {
     useEffect(() => {
         const product: Product = productData?.data?.product
         if (!product) return
-        console.log(product);
         if (!product) return
         setProduct(product)
         setdefaultValue({
@@ -182,35 +178,25 @@ const index = () => {
         product.variations.map(variation => {
             colors.push(variation.color)
         })
-        console.log('colori', colors);
 
         setColors((prevState: Color[]) => {
             const newColors = prevState.filter(str => !colors.includes(str.name))
-            console.log(newColors);
             return [
                 ...newColors
             ]
         })
 
+        //find sizeType code
+        product.info.gender
+        const gender = product.info.gender === 'f' ? 'donna' : product.info.gender === 'm' ? 'uomo' : 'donna'
+        //TODO GESTIORE accessori anche! appena tommaso ha messo la tipologia prodotto
+        const sizeType = CATEGORIES[gender]['abbigliamento'].find(element => element.name.toLowerCase() === product.info.macroCategory.toLowerCase())
 
-        //find sizeType
-        if (product.info.gender === 'f') {
-            const sizeCateggory: string = Object.values(CATEGORIES)[0].abbigliamento.find((element: Category) => element.name.toLocaleLowerCase() === product.info.macroCategory)?.sizes
-            if (sizeCateggory === 'woman_clothes_sizes' || sizeCateggory === "shoes_sizes" || sizeCateggory === "man_clothes_sizes") {
-                setSizeCateggory(sizeCateggory)
-                const Sizes = SIZES[sizeCateggory]
-                setSizeTypeSelected(Sizes)
-            }
+        if (sizeType?.sizes) {
+            setSizeTypeSelected(sizeType.sizes)
         }
-        if (product.info.gender === 'm') {
-            const sizeCateggory: string = Object.values(CATEGORIES)[1].abbigliamento.find((element: Category) => element.name.toLocaleLowerCase() === product.info.macroCategory)?.sizes
-            if (sizeCateggory === 'woman_clothes_sizes' || sizeCateggory === "shoes_sizes" || sizeCateggory === "man_clothes_sizes") {
-                setSizeCateggory(sizeCateggory)
-                const Sizes = SIZES[sizeCateggory]
 
-                setSizeTypeSelected(Sizes)
-            }
-        }
+
     }, [productData])
 
 
@@ -306,7 +292,6 @@ const index = () => {
             options["price"] = price
         }
 
-        console.log(options);
 
 
         if (Object.keys(options).length < 1) return
@@ -391,7 +376,6 @@ const index = () => {
         })
 
         setProduct((prevstate) => {
-            console.log(prevstate);
             if (!prevstate?.variations) return prevstate
             let newStateVariations = prevstate.variations.map(variation => {
                 if (variation.id === variationId) {
@@ -484,6 +468,7 @@ const index = () => {
     }
 
 
+
     return (
         <>
             <Desktop_Layout>
@@ -493,7 +478,7 @@ const index = () => {
                         Modifica prodotto
                     </h1>
                 </div>
-                {defaultValue && product?.variations && sizeTypeSelected &&
+                {product?.variations && defaultValue &&
                     <div className='lg:flex w-full'>
                         <div className='w-full md:w-8/12 lg:w-5/12 m-auto mb-10 mt-0'>
                             <EditProductInputForm
@@ -508,7 +493,7 @@ const index = () => {
                                     <div key={index}>
                                         <EditVariationCard
                                             variation={variation}
-                                            sizeTypeSelected={sizeTypeSelected}
+                                            category={sizeTypeSelected}
                                             deleteVariation={handleDeleteVariation}
                                             editVariation={editVariationHandler}
                                         />
@@ -541,7 +526,7 @@ const index = () => {
                                     >
                                         <AddColorToProduct
                                             colors={colors}
-                                            category={sizeCateggory}
+                                            category={sizeTypeSelected}
                                             confirmCard={(variation) => {
                                                 confirmCard(variation)
                                             }}

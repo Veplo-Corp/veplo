@@ -33,8 +33,6 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
     });
 
 
-    console.log(defaultValues);
-    console.log(gender);
 
 
     const onSubmit = (value: IFormInputProductEdit) => {
@@ -49,7 +47,6 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
         const categoryInformation: Category | undefined = CATEGORIES[genderSelected]['abbigliamento'].find(category => category.name.toLowerCase() === defaultValues.macrocategory.toLowerCase())
         if (!categoryInformation) return
         setMacrocategorySelectedSpec(categoryInformation)
-        console.log(categoryInformation);
 
     }, [defaultValues])
 

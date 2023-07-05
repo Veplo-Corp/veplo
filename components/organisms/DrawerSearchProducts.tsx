@@ -17,7 +17,6 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
     useEffect(() => {
         const gender = getFromLocalStorage('genderSelected')
         setSelectedIndex(gender === 'm' ? 1 : 0)
-        console.log(gender);
 
         function onVariableChange(event: any) {
             if (event.key === 'genderSelected') {

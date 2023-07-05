@@ -32,6 +32,8 @@ type Image = {
 
 const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => void, confirmCard: (variation: VariationCard) => void, colors: Color[], defaultCardValue?: VariationCard }> = ({ category, deleteCard, confirmCard, colors, defaultCardValue }) => {
 
+    console.log(category);
+
 
 
 

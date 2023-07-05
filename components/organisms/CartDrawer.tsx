@@ -26,8 +26,6 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
     const router = useRouter()
     const dispatch = useDispatch();
 
-    console.log(cartsDispatch);
-
 
     // const CARTS_MOOK: Cart[] = [
     //     {

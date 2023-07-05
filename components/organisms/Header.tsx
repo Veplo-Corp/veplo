@@ -53,7 +53,6 @@ const Header = () => {
                 }
             }).then((value) => {
                 const business: Business = value.data?.business
-                console.log(business?.status);
                 switch (business?.status) {
                     case 'active':
                     case 'pending':
@@ -114,7 +113,6 @@ const Header = () => {
         if (question.toLocaleLowerCase().includes('donna')) {
             gender = 'donna'
         }
-        console.log(gender);
 
         router.push(`/${getCategoryType()}/${gender}-tutto/tutto/rilevanza/${createUrlSchema([question])}`)
     }

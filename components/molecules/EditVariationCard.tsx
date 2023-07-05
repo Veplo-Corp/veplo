@@ -6,22 +6,28 @@ import SelectStringOption from '../atoms/SelectStringOption'
 import { Size } from '../organisms/EditColorToProdoct'
 import ModalReausable from '../organisms/ModalReausable'
 import { imageKitUrl } from '../utils/imageKitUrl'
+import { SIZES_TYPES } from '../mook/productParameters/sizes'
 
 const quantity = Array.from({ length: 101 }, (_, i) => i + 0)
 
 
-const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], deleteVariation: (variationId: string, color: string) => void, editVariation: (variationId: string, variationTranslate: Size[], photos: string[]) => void }> = ({ variation, sizeTypeSelected, deleteVariation, editVariation }) => {
+const EditVariationCard: FC<{ variation: Variation, category: string, deleteVariation: (variationId: string, color: string) => void, editVariation: (variationId: string, variationTranslate: Size[], photos: string[]) => void }> = ({ variation, category, deleteVariation, editVariation }) => {
 
     const [editMode, seteditMode] = useState(false);
     const [variationTranslate, setvariationTranslate] = useState<Size[]>([])
     const [openModal, setOpenModal] = useState(false);
-
+    const [sizeTypologySelected, setSizeTypologySelected] = useState<string[]>([])
 
 
     useEffect(() => {
         const lots: Size[] = [];
+        if (!category) return
+
+        const sizeTypologySelected = SIZES_TYPES.find(element => element.name === category)?.type
+        if (!sizeTypologySelected) return
+        setSizeTypologySelected(sizeTypologySelected)
         variation.lots.forEach(lot => {
-            const size = sizeTypeSelected?.find(element => element.split(' (')[0] === lot.size)
+            const size = sizeTypologySelected?.find(element => element.split(' (')[0] === lot.size)
             if (!size) return
             lots.push({
                 size,
@@ -32,7 +38,6 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], 
         setvariationTranslate(lots)
     }, [variation])
 
-    console.log(variation);
 
 
 
@@ -91,7 +96,7 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], 
                                                 className='text-sm mb-1'
                                                 key={Math.random()}
                                             >
-                                                {sizeTypeSelected?.find(element => element.split(' (')[0] === size.size)} - {size.quantity ? size.quantity + ' quantità' : 'TERMINATO'}
+                                                {sizeTypologySelected?.find(element => element.split(' (')[0] === size.size)} - {size.quantity ? size.quantity + ' quantità' : 'TERMINATO'}
                                             </p>
                                         )
                                     })
@@ -165,10 +170,9 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], 
                                     <div className='flex justify-between h-full mb-2 gap-4'>
                                         <SelectSize
                                             disabledSizes={variationTranslate}
-                                            values={sizeTypeSelected}
+                                            values={sizeTypologySelected}
                                             defaultValue={element.size}
                                             handleClick={(size) => {
-                                                console.log('lotocco', size, index);
                                                 if (size === undefined) return
                                                 setvariationTranslate((prevState: Size[]) => {
                                                     let sizeArray = prevState;
@@ -176,7 +180,6 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], 
                                                         ...sizeArray[index],
                                                         size: size
                                                     }
-                                                    console.log(size);
 
                                                     return [
                                                         ...sizeArray
@@ -214,7 +217,6 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], 
                                         onClick={() => {
                                             if (variationTranslate.length <= 1) return
                                             const newproductSizeSelected = variationTranslate.filter(value => value.size !== element.size)
-                                            console.log(newproductSizeSelected);
                                             setvariationTranslate(newproductSizeSelected)
                                         }}
                                     />
@@ -263,7 +265,7 @@ const EditVariationCard: FC<{ variation: Variation, sizeTypeSelected: string[], 
                                     seteditMode(false)
                                     const lots: Size[] = [];
                                     variation.lots.forEach(lot => {
-                                        const size = sizeTypeSelected?.find(element => element.split(' (')[0] === lot.size)
+                                        const size = sizeTypologySelected?.find(element => element.split(' (')[0] === lot.size)
                                         if (!size) return
                                         lots.push({
                                             size,
