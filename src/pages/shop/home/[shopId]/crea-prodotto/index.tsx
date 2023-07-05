@@ -260,27 +260,48 @@ const index = () => {
         console.log(values);
         setIsLoading(true)
 
+        let photos = [];
+        const promises = [];
 
-        let photosFileIDs: string[] = [];
         for await (const variation of productVariations) {
             for (const photo of variation.photos) {
-                try {
-                    const result = await uploadImage(photo.file, 'product')
-                    if (!result) return setIsLoading(false)
-                    photosFileIDs.push(result.id)
-                }
-                catch {
-                    console.log('errore');
-                    return setIsLoading(false)
-                }
+                photos.push(photo)
             }
         }
 
-        if (photosFileIDs.length <= 0) return setIsLoading(false)
+        if (photos.length <= 0) return
 
+        for await (const photo of photos) {
+            promises.push(
+                new Promise<string>(async (resolve) => {
+                    try {
+                        const result = await uploadImage(photo.file, 'product');
+                        if (!result) {
+                            setIsLoading(false);
+                            throw new Error('Upload failed');
+                        }
+                        resolve(result.id);
+                    } catch (error) {
+                        console.log('errore');
+                        setIsLoading(false);
+                        throw error;
+                    }
 
-        console.log(photosFileIDs);
+                    // console.log(`foto numero ${i} risoluta: id ${id}`);
+                }))
+        }
+
         try {
+            const photosFileIDs: string[] = await Promise.all(promises);
+
+            // Tutte le promesse sono state risolte correttamente
+            // Puoi eseguire eventuali azioni aggiuntive qui
+            // ...
+
+            if (photosFileIDs.length <= 0) return setIsLoading(false)
+
+            console.log(photosFileIDs);
+
 
 
             // const photosUploaded = await uploadPhotos({
@@ -376,10 +397,18 @@ const index = () => {
             setIsLoading(false)
             addToast({ position: 'top', title: 'Prodotto creato con successo', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
             return router.push('/shop/home/' + router.query.shopId + '/prodotti')
-        } catch (e: any) {
-            console.log(e);
+
+        } catch (error) {
+            // Almeno una promessa è stata rigettata
+            // Gestisci l'errore qui
+            // ...
+            console.log(error);
             setIsLoading(false)
         }
+
+
+
+
     }
 
 

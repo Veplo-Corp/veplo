@@ -34,32 +34,34 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                         borderRadius={borderRadius}
                         fontSize={fontSize}
                         fontWeight={fontWeight}
-                        bg={sizeProductExist?.quantity > 0 ? `white` : 'gray.100'}
+                        bg={sizeProductExist?.quantity > 0 ? 'white' : 'gray.100'}
                         color={'black.900'}
                         noOfLines={3}
-                        className='text-center  md:w-24 lg:w-32 min-w-[100px]'
+                        className="text-center md:min-w-24 lg:w-32 min-w-[100px]"
                         h={'full'}
                         cursor={sizeProductExist?.quantity <= 0 || !sizeProductExist ? '' : 'pointer'}
                         px={[4, 2]}
                         onClick={() => {
-                            if (sizeProductExist?.quantity <= 0 || !sizeProductExist) return
-                            handleLot(size)
+                            if (sizeProductExist?.quantity <= 0 || !sizeProductExist) return;
+                            handleLot(size);
                         }}
-
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
                     >
-                        <Box
-                        >
-                            {size.toUpperCase()}
+                        <Box>
+                            <Box fontSize={size.length > 5 ? '15px' : fontSize}
+                                fontWeight={size.length > 5 ? 'medium' : fontWeight}
+                            >
+                                {size.toUpperCase()}
+                            </Box>
+                            <Box fontWeight={['normal', 'medium']} fontSize={['2xs', '2xs']} color={'gray.500'} mt={-1}>
+                                {sizeProductExist?.quantity > 0 ? `disponibilità: ${sizeProductExist?.quantity}` : 'non disponibile'}
+                            </Box>
                         </Box>
-                        <Box
-                            fontWeight={['normal', 'medium']}
-                            fontSize={['2xs', '2xs']}
-                            color={'gray.500'}
-                            mt={-1}
-                        >
-                            {sizeProductExist?.quantity > 0 ? `disponibilità: ${sizeProductExist?.quantity}` : 'non disponibile'}
-                        </Box>
-                    </Box>)
+
+                    </Box>
+                )
             })}
         </div>
     )
