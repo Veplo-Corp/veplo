@@ -9,6 +9,7 @@ import SelectSize from '../atoms/SelectSize';
 import SelectStringOption from '../atoms/SelectStringOption';
 import { Color, COLORS } from '../mook/colors';
 import { SIZES } from '../mook/sizes';
+import { SIZES_TYPES } from '../mook/productParameters/sizes';
 
 const quantity = Array.from({ length: 100 }, (_, i) => i + 1)
 
@@ -50,11 +51,10 @@ const EditColorToProduct: FC<{ category: string | undefined, confirmCard: (varia
     }, [defaultCardValue])
 
     useEffect(() => {
-        const sizeTypes = Object.keys(sizes.current);
         if (!category) return
-        const sizeType = Object.keys(sizes.current).indexOf(category)
-
-        const sizeTypologySelected = Object.values(sizes.current)[sizeType]
+        const sizeType = SIZES_TYPES.find(size => size.name === category)?.type
+        if (!sizeType) return setSizeTypologySelected([])
+        setSizeTypologySelected(sizeType);
         setSizeTypologySelected(sizeTypologySelected);
 
     }, [category])
@@ -112,7 +112,6 @@ const EditColorToProduct: FC<{ category: string | undefined, confirmCard: (varia
                     </div>
                 </div>
                 {productSizeSelected && productSizeSelected.map((element, index) => {
-
                     return (
                         <div className='w-full flex' key={index} >
                             <div className='flex justify-between h-full w-10/12 mb-2'>

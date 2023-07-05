@@ -33,8 +33,6 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
     });
 
 
-    console.log(defaultValues);
-    console.log(gender);
 
 
     const onSubmit = (value: IFormInputProductEdit) => {
@@ -49,7 +47,6 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
         const categoryInformation: Category | undefined = CATEGORIES[genderSelected]['abbigliamento'].find(category => category.name.toLowerCase() === defaultValues.macrocategory.toLowerCase())
         if (!categoryInformation) return
         setMacrocategorySelectedSpec(categoryInformation)
-        console.log(categoryInformation);
 
     }, [defaultValues])
 
@@ -253,23 +250,23 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
             </Div_input_creation>
 
             <Div_input_creation text='Descrizione modello (opzionale)'>
-                <InputGroup>
-                    <Controller
-                        control={control}
-                        name="modelDescription"
+                <InputGroup >
+                    <Textarea
+                        height={32}
+                        maxLength={100}
+                        rounded={10}
+                        paddingY={6}
+                        paddingX={2}
+                        paddingTop={2}
+                        placeholder='es. La persona nella foto è alta 175 cm e veste una taglia M'
 
-                        render={({ field }) => (
-                            <Textarea
-                                maxLength={100}
-                                rounded={10}
-                                paddingY={6}
-                                paddingTop={2}
-                                autoComplete="descrition-text-shop"
-                                placeholder='es. La persona nella foto è alta 175 cm e veste una taglia M'
-                                {...field}
-                            />
-                        )}
+                        autoComplete="descrition-text-product"
+                        // value={shop_name}
+                        {...register("modelDescription", { required: false })}
+                        // onChange={(event) => changeInput(event, 'shop_name')}
+                        isInvalid={false}
                     />
+
 
                 </InputGroup>
             </Div_input_creation>
