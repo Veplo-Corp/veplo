@@ -11,7 +11,6 @@ export const uploadImage = async (image: File, proportion: UploadImagesType): Pr
     const URI = process.env.NEXT_PUBLIC_APOLLO_URI ? process.env.NEXT_PUBLIC_APOLLO_URI + '/uploadImage' : ''
 
     try {
-
         const response: AxiosResponse<any> = await axios.post(URI, formData);
         const data: any = response.data;
         console.log('Output della funzione:', data);
