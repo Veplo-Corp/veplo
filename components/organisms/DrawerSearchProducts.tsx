@@ -51,7 +51,7 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
                         <Text
                             marginY={'auto'}
                         >
-
+                            Cerca
                         </Text>
                         <ButtonClose
                             handleEvent={() => closeDrawer()}
@@ -73,7 +73,7 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = (
                                 borderColor={'white'}
 
                                 onKeyDown={onConfirm}
-                                placeholder={'cerca...'}
+                                placeholder={'Tutto quello che ti interessa'}
                                 _placeholder={{
                                     color: '#A19F9F',
                                     opacity: 1,
