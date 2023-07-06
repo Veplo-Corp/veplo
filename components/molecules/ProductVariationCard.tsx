@@ -47,7 +47,7 @@ const ProductVariationCard: FC<{ index: number, variation: VariationCard, delete
                             return (
                                 <img
                                     key={image}
-                                    src={imageKitUrl(image, 171, 247)} alt="immagine non trovata"
+                                    src={imageKitUrl(image, 237, 247)} alt="immagine non trovata"
                                     className='w-10 md:w-16 h-fit rounded-lg'
                                 />
                             )

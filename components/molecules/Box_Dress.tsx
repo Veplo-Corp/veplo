@@ -119,16 +119,16 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 name={product?.shopInfo?.name ? product?.shopInfo?.name : ''}
                                 src={product?.shopInfo?.profilePhoto ? imageKitUrl(product.shopInfo.profilePhoto, 100, 100) : ''}
                                 bg='white'
-                                size={'md'}
-                                borderWidth={1}
-                                borderColor={'#F3F3F3'}
+                                height={['55px', '55px', '50px', '50px']}
+                                width={['55px', '55px', '50px', '50px']}
+
                             />
                             <Box
                                 ml={2}
                                 marginY={'auto'}
                             >
                                 <Text
-                                    fontWeight={'semibold'}
+                                    fontWeight={'bold'}
                                     fontSize={'md'}
                                 >
                                     {product?.shopInfo?.name}
@@ -149,11 +149,10 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                         _active={{
                             transform: 'scale(0.99)',
                         }}
-                        borderRadius='15px' h={'full'} overflow='hidden' className='cursor-pointer relative rounded-3xl aspect-[4.2/5]'
-                        borderWidth={1}
+                        borderRadius={'20px'}
+                        h={'full'} overflow='hidden' className='cursor-pointer relative h-full'
                         position={'relative'}
-                        borderColor={'#F3F3F3'}
-                        background={'#FBFBFB'}
+                    //background={'#FBFBFB'}
                     >
                         <Link
                             onClick={handleEventSelectedDress}
@@ -168,26 +167,28 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 <ScaleFade
                                     initialScale={0.7} in={showSize}
                                     delay={0.3}
-                                    className='top-0  absolute hidden lg:flex z-20'
+                                    className='top-3 left-2  absolute hidden lg:flex z-20'
                                 >
                                     <VStack
                                         background={'#FFFFFF'}
-                                        borderWidth={1}
-                                        borderColor={'#F3F3F3'}
+
                                         p={1.5}
-                                        borderRadius={'10px'}
+                                        borderRadius={'15px'}
                                         textAlign={'center'}
                                         minW={28}
-                                        fontSize={'lg'}
+
                                     >
 
                                         {listOfSizesAvailable.slice(0, 4).map(size => {
                                             return (
                                                 <Box key={size}
                                                     fontWeight={'bold'}
-                                                    paddingX={7}
-                                                    paddingY={2}
+                                                    paddingX={size.length > 6 ? 3 : 7}
+                                                    py={size.length > 6 ? 3 : 2}
+
+                                                    justifyContent={'center'}
                                                     width={'full'}
+                                                    fontSize={size.length > 6 ? 'sm' : 'lg'}
                                                     background={'#EEEEEE'}
                                                     borderRadius={'xl'}
                                                 >
@@ -231,9 +232,9 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                                         onMouseEnter={() => {
                                                             setShowSize(true)
                                                         }}
-                                                        src={isMobile && photoUrl ? imageKitUrl(photoUrl) : imageKitUrl(photoUrl ? photoUrl : '', 447, 660)}
+                                                        src={isMobile && photoUrl ? imageKitUrl(photoUrl) : imageKitUrl(photoUrl ? photoUrl : '', 630, 660)}
                                                         alt={product.name ? product.name : ''}
-                                                        className="w-full min-h-[240px] md:min-h-0 aspect-[4.2/5] object-cover "
+                                                        className="w-full min-h-[240px] md:min-h-0 aspect-[4.8/5] object-cover rounded-[20px] "
                                                     />
                                                 </SwiperSlide>
                                             )
@@ -245,16 +246,16 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                         onMouseEnter={() => {
                                             setShowSize(true)
                                         }}
-                                        src={isMobile && urlProduct ? imageKitUrl(urlProduct) : imageKitUrl(urlProduct ? urlProduct : '', 447, 660)}
+                                        src={isMobile && urlProduct ? imageKitUrl(urlProduct) : imageKitUrl(urlProduct ? urlProduct : '', 630, 660)}
                                         alt={product.name ? product.name : ''}
-                                        className="w-full min-h-[240px] md:min-h-0 aspect-[4.2/5] object-cover "
+                                        className="w-full min-h-[240px] md:min-h-0 aspect-[4.8/5] object-cover rounded-[20px]"
                                     />
                                 )
 
                             }
 
 
-                            <Text
+                            {/* <Text
                                 fontSize={'md'}
                                 fontWeight={'bold'}
                                 py={0}
@@ -269,10 +270,10 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 zIndex={10}
                             >
                                 {product?.name?.toLocaleUpperCase()}
-                            </Text>
+                            </Text> */}
                             <Box
                                 position={'absolute'}
-                                bottom={3}
+                                bottom={[4, 3.5]}
                                 left={4}
                                 display={'flex'}
                                 zIndex={50}
@@ -305,7 +306,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 }
                             </Box>
 
-                            <Box
+                            {/* <Box
                                 position={'absolute'}
                                 bottom={0}
                                 right={0}
@@ -341,11 +342,61 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                     </Text>}
                                 </Box>
 
-                            </Box>
+                            </Box> */}
 
 
                         </Link>
+
                     </Box>
+                    <Box
+                        display={'flex'}
+                        mt={2}
+                        justifyContent={'space-between'}
+                        mx={3}
+                    >
+                        <Text
+                            fontSize={'md'}
+                            fontWeight={'semibold'}
+                            py={0}
+                            top={3}
+                            left={3}
+                            borderRadius={'full'}
+                            noOfLines={1}
+                            zIndex={10}
+                        >
+                            {product?.name?.toLocaleUpperCase()}
+                        </Text>
+                        <Box
+                            display={'flex'}
+                            gap={1}
+                        >
+                            {product.price?.v2 && <Text
+                                fontSize={'md'}
+                                fontWeight={'semibold'}
+                                color={'#909090'}
+                                decoration={'line-through'}
+                            >
+                                {formatNumberWithTwoDecimals(Number(product.price?.v1))}€
+                            </Text>}
+                            <Text
+
+                                fontSize={'md'}
+                                fontWeight={'semibold'}
+                                color={'#909090'}
+                                decoration={'line-through'}
+                            >
+                                150,00
+                            </Text>
+                            <Text
+                                fontSize={'md'}
+                                fontWeight={'semibold'}
+                            >
+                                {product.price?.v2 ? formatNumberWithTwoDecimals(Number(product.price?.v2)) : formatNumberWithTwoDecimals(Number(product.price?.v1))}€
+                            </Text>
+
+                        </Box>
+                    </Box>
+
                 </Box >
             }
         </>
@@ -357,67 +408,3 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
 }
 
 export default Box_Dress
-
-// <Box pb='1' px={'0'}>
-//     <Box
-//         // mt='1'
-//         zIndex={50}
-//         fontWeight='semibold'
-//         as='h2'
-//         lineHeight='tight'
-//         noOfLines={1}
-//         fontSize={['xs', 'sm']}
-//     >
-//         {toUpperCaseFirstLetter(product.shopInfo.name)}
-//     </Box>
-//     <div className='flex justify-between'>
-//         <div>
-//             <Box
-
-//                 fontWeight='normal'
-//                 as='h1'
-//                 noOfLines={1}
-//                 lineHeight='tight'
-//                 fontSize={['2xs', 'xs']}
-//                 className='italic'
-//             >
-//                 {product.info.brand}
-//             </Box>
-//             <Box
-
-//                 fontWeight='semibold'
-//                 as='h1'
-//                 fontSize={['xs', 'sm']}
-//                 noOfLines={1}
-//                 mt={-1}
-//             >
-//                 {product.name.toUpperCase()} - {product.info.microCategory}
-//                 {/* {height} - {width} */}
-//             </Box>
-//         </div>
-
-//     </div>
-
-//     <div className='flex justify-between mr-1'>
-//         <Box
-
-//             fontWeight={'bold'}
-//             as='h4'
-//             fontSize={['md', 'sm']}
-//             color={'green.600'}
-//             lineHeight='none'
-//             noOfLines={1}
-//             mt={'1'}
-//         >
-//             <span
-//                 className={`${product.price?.v2 ? 'text-slate-500 font-normal line-through' : ''} mr-2`}
-//             >
-//                 {Number(product.price?.v1).toFixed(2).replace('.', ',')} €
-//             </span>
-//             {product.price?.v2 && <span className=' text-red-700 font-bold'>{product.price?.v2.toFixed(2).replace('.', ',')} €</span>}
-//         </Box>
-
-//     </div>
-
-
-// </Box>

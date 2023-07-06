@@ -110,7 +110,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                                 <Image
                                                     height={'100vh'}
                                                     //width={'full'}
-                                                    className='aspect-[4.2/5] object-cover'
+                                                    className='aspect-[4.8/5] object-cover'
                                                     /* onClick={onClickImageModal} */
                                                     src={imageKitUrl(fullImage)}
                                                     alt={variation.color + 'non trovato'}
@@ -156,7 +156,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                             //PlaceholderSrc={PlaceholderImage}
                             //effect="blur"
                             alt={variation.color + 'non trovato'}
-                            className='rounded-lg w-full aspect-[4.2/5] object-cover'
+                            className='rounded-lg w-full aspect-[4.8/5] object-cover'
                         />
                     </motion.div>
 
@@ -179,13 +179,13 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                 >
 
                                     <Image src={
-                                        imageKitUrl(image, 171, 247)
+                                        imageKitUrl(image, 237, 247)
                                     }
                                         alt={variation.color + 'non trovato'}
                                         width={'fit-content'}
                                         maxH={'52'}
                                         // height={'fit-content'}
-                                        className='aspect-[4.2/5] object-cover '
+                                        className='aspect-[4.8/5] object-cover '
                                         loading="lazy"
                                     />
 

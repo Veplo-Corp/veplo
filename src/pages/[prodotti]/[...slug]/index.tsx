@@ -215,7 +215,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
 
     const fetchMoreData = async () => {
-        if (products.length % RANGE !== 0) {
+
+
+        if (products.length % RANGE !== 0 || products.length <= RANGE) {
             setHasMoreData(false)
             return console.log('no more data');
         }
@@ -254,7 +256,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     }, [filters?.gender])
 
     useEffect(() => {
-        if (!data) return
+        if (!data) return setHasMoreData(false)
+        console.log('ECCOLOOOO', data);
+
         const newProducts = data.products.products ? data.products.products : [];
         if (newProducts.length % RANGE !== 0 || newProducts.length <= 0) {
             setHasMoreData(false)
@@ -665,6 +669,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
                         {!isLoading && products ?
                             (<InfiniteScroll
+                                className='mb-[100vh]'
                                 scrollThreshold={products && products.length <= RANGE * 2 ? 0.80 : products && products.length < 50 ? 0.95 : 0.97}
                                 dataLength={products?.length}
                                 next={fetchMoreData}
@@ -673,7 +678,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     <>
                                         {products[3] &&
 
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 gap-y-5 w-full">
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 gap-y-5 w-full">
                                                 {isSmallView ?
                                                     (
                                                         < SkeletonComponent />
@@ -700,8 +705,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     <></>
                                 }
                             >
-                                <div className={` flex items-center justify-center`}>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 md:gap-5 gap-y-5 w-full mb-10">
+                                <div className={` flex items-center justify-center `}>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 md:gap-5 md:gap-y-8 gap-y-5 w-full mb-10">
                                         {products.length > 0 ?
                                             (
                                                 <AnimatePresence>

@@ -26,8 +26,8 @@ import { FIT_TYPES } from '../../../../../../components/mook/productParameters/f
 import { LENGTH_TYPES } from '../../../../../../components/mook/productParameters/length'
 import { TRAITS_TYPES } from '../../../../../../components/mook/productParameters/traits'
 import axios, { AxiosResponse } from 'axios'
-import { UploadImagesType } from '../../../../../interfaces/images.interface'
-import { uploadImage } from '../../../../../../components/utils/uploadImage'
+import { uploadImage } from '../../../../../lib/upload/uploadImage'
+import { UploadEventType } from '../../../../../lib/upload/UploadEventTypes'
 
 export interface IFormInputProduct {
     typeProduct: CategoryType,
@@ -255,13 +255,15 @@ const index = () => {
 
 
     const createProductHandler = async () => {
-        //TODO gestire campo ModelDescription
+        const v1 = Math.floor(Number(watch('price').replace(',', '.')) * 100)
+
+        if (!v1 || v1 <= 0) return
         const values = getValues();
         console.log(values);
         setIsLoading(true)
 
-        let photos = [];
-        const promises = [];
+        let photos: any[] = [];
+        const promises: Promise<string>[] = [];
 
         for await (const variation of productVariations) {
             for (const photo of variation.photos) {
@@ -271,52 +273,32 @@ const index = () => {
 
         if (photos.length <= 0) return
 
+        //crea le promises per il Promise.all
         for await (const photo of photos) {
             promises.push(
                 new Promise<string>(async (resolve) => {
                     try {
-                        const result = await uploadImage(photo.file, 'product');
+                        const result = await uploadImage(photo.file, UploadEventType.product);
                         if (!result) {
                             setIsLoading(false);
                             throw new Error('Upload failed');
                         }
                         resolve(result.id);
                     } catch (error) {
-                        console.log('errore');
+                        console.log(error);
                         setIsLoading(false);
-                        throw error;
                     }
-
-                    // console.log(`foto numero ${i} risoluta: id ${id}`);
                 }))
         }
 
         try {
             const photosFileIDs: string[] = await Promise.all(promises);
 
-            // Tutte le promesse sono state risolte correttamente
-            // Puoi eseguire eventuali azioni aggiuntive qui
-            // ...
+
 
             if (photosFileIDs.length <= 0) return setIsLoading(false)
+            // Tutte le promesse sono state risolte correttamente
 
-            console.log(photosFileIDs);
-
-
-
-            // const photosUploaded = await uploadPhotos({
-            //     variables: {
-            //         images: photos,
-            //         proportion: "product"
-            //     }
-            // })
-            // console.log(photosUploaded);
-
-
-
-
-            // const photosString = photosUploaded?.data.uploadImages
-            // console.log(photosString)
 
             let i = 0;
 
@@ -344,11 +326,7 @@ const index = () => {
                 }
             })
 
-            console.log(productVariations);
 
-            const v1 = Math.floor(Number(watch('price').replace(',', '.')) * 100)
-
-            if (!v1 || v1 <= 0) return
 
             const moreInfo: {
                 fit?: string,
@@ -399,9 +377,6 @@ const index = () => {
             return router.push('/shop/home/' + router.query.shopId + '/prodotti')
 
         } catch (error) {
-            // Almeno una promessa è stata rigettata
-            // Gestisci l'errore qui
-            // ...
             console.log(error);
             setIsLoading(false)
         }
