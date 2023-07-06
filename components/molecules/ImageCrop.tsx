@@ -4,14 +4,15 @@ import ReactCrop, { Crop, PixelCrop } from 'react-image-crop'
 import BlackButton from '../atoms/BlackButton'
 import { useDebounceEffect } from '../utils/useDebounceEffect'
 import 'react-image-crop/dist/ReactCrop.css'
+import { UploadEventType } from '../../src/lib/upload/UploadEventTypes'
 
 interface Props {
     imageSrc: any,
     aspectRatio: number,
     circularCrop: boolean,
-    onHanldeConfirm: (completeCrop: PixelCrop, type: 'cover' | 'profile' | 'product' | undefined, imageRefCurrent: HTMLImageElement) => void,
+    onHanldeConfirm: (completeCrop: PixelCrop, type: UploadEventType | undefined, imageRefCurrent: HTMLImageElement) => void,
     handlerCancel: () => void,
-    type: 'cover' | 'profile' | 'product' | undefined
+    type: UploadEventType | undefined
 }
 
 const ImageCrop: FC<Props> = ({ ...props }) => {

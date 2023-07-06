@@ -5,7 +5,7 @@ export const newTotalHandler = (productVariations: ProductVariation[]) => {
     productVariations.forEach(element => {
         console.log(element);
 
-        if (element.price.v2) {
+        if (element?.price?.v2) {
             total += element.price.v2 * element.quantity
         }
         else {

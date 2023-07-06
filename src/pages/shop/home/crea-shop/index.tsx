@@ -34,7 +34,8 @@ import ImageCrop from '../../../../../components/molecules/ImageCrop'
 import { onChangeNumberPrice } from '../../../../../components/utils/onChangePrice'
 import SelectMultipleOptions from '../../../../../components/atoms/SelectMultipleOptions'
 import { SHOP_CATEGORIES } from '../../../../../components/mook/shopCategories'
-import { uploadImage } from '../../../../../components/utils/uploadImage'
+import { uploadImage } from '../../../../lib/upload/uploadImage'
+import { UploadEventType } from '../../../../lib/upload/UploadEventTypes'
 
 
 
@@ -199,7 +200,7 @@ const index = () => {
 
     //*handle image upload and crop
     const hiddenFileInputProfileImage = useRef<any>(null);
-    const [typeCroppedImage, setTypeCroppedImage] = useState<'cover' | 'profile'>()
+    const [typeCroppedImage, setTypeCroppedImage] = useState<UploadEventType>()
 
     const [imgSrc, setImgSrc] = useState<any>('');
 
@@ -210,7 +211,7 @@ const index = () => {
 
     // Programatically click the hidden file input element
     // when the Button component is clicked
-    const handleClick = (position: null | number, type: 'profile' | 'cover') => {
+    const handleClick = (position: null | number, type: UploadEventType) => {
 
         // if (type === 'cover') {
         //     hiddenFileInput.current.click();
@@ -228,7 +229,7 @@ const index = () => {
 
 
     //refactoring of onSelectFile
-    const onSelectFileInput = async (e: React.ChangeEvent<HTMLInputElement>, type: 'profile' | 'cover') => {
+    const onSelectFileInput = async (e: React.ChangeEvent<HTMLInputElement>, type: UploadEventType) => {
 
         hiddenFileInputProfileImage.current.click();
         if (e.target.files) {
@@ -435,12 +436,10 @@ const index = () => {
 
         try {
             //uploadImage cover
-            const photoUploadedCover = await uploadImage(image?.file, 'shopCover')
+            const photoUploadedCover = await uploadImage(image?.file, UploadEventType.shopCover)
             //uploadImage profile
 
-            const photoUploadedProfile = await uploadImage(image?.file, 'shopPhoto')
-
-
+            const photoUploadedProfile = await uploadImage(imageProfile?.file, UploadEventType.shopPhoto)
 
             let Shop: IFormInput = {
                 name: e.name,
@@ -528,7 +527,7 @@ const index = () => {
         }
     }
 
-    const handleImageConfirm = (image: PixelCrop, type: string, imgRefCurrent: HTMLImageElement) => {
+    const handleImageConfirm = (image: PixelCrop, type: UploadEventType, imgRefCurrent: HTMLImageElement) => {
 
         if (
             image?.width &&
@@ -564,10 +563,10 @@ const index = () => {
                             url: url,
                             file: file
                         }
-                        if (type === 'profile') {
+                        if (type === UploadEventType.shopPhoto) {
                             setImageProfile(newImage)
                         }
-                        if (type === 'cover') {
+                        if (type === UploadEventType.shopCover) {
                             setImage(newImage)
                         }
 
@@ -589,8 +588,8 @@ const index = () => {
                             {!image && <Center
 
                                 onClick={() => {
-                                    setTypeCroppedImage('cover')
-                                    handleClick(null, 'cover')
+                                    setTypeCroppedImage(UploadEventType.shopCover)
+                                    handleClick(null, UploadEventType.shopCover)
                                 }}
                                 marginBottom={1}
                                 width={'full'}
@@ -619,8 +618,8 @@ const index = () => {
                                 zIndex={0}
                                 objectFit='cover'
                                 onClick={() => {
-                                    setTypeCroppedImage('cover')
-                                    handleClick(null, 'cover')
+                                    setTypeCroppedImage(UploadEventType.shopCover)
+                                    handleClick(null, UploadEventType.shopCover)
                                 }}
                                 className='z-0'
                                 src={image.url} /* 'https://bit.ly/dan-abramov' */
@@ -628,8 +627,8 @@ const index = () => {
                             />}
                             <Box
                                 onClick={() => {
-                                    setTypeCroppedImage('profile')
-                                    handleClick(null, 'profile')
+                                    setTypeCroppedImage(UploadEventType.shopPhoto)
+                                    handleClick(null, UploadEventType.shopPhoto)
                                 }
                                 }
                                 marginBottom={1}
@@ -699,9 +698,8 @@ const index = () => {
                                 accept="image/*"
                                 className='hidden'
                                 onChange={(e) => {
-                                    onSelectFileInput(e, typeCroppedImage === 'cover' ? 'cover' : 'profile');
+                                    onSelectFileInput(e, typeCroppedImage === UploadEventType.shopPhoto ? UploadEventType.shopPhoto : UploadEventType.shopCover);
                                 }} />
-
                             {<canvas
                                 ref={previewCanvasRef}
                                 className='hidden'
@@ -1025,9 +1023,10 @@ const index = () => {
             </div>
             <ModalReausable
                 marginTop={0}
-                title={typeCroppedImage === 'profile' ? 'inserisci immagine di profilo (ritaglia la foto)' : 'inserisci immagine di copertina (ritaglia la foto)'}
+                title={typeCroppedImage === UploadEventType.shopPhoto ? 'inserisci immagine di profilo (ritaglia la foto)' : 'inserisci immagine di copertina (ritaglia la foto)'}
                 isOpen={isProfileImageModalOpen}
                 closeModal={() => {
+
                     hiddenFileInputProfileImage.current.value = null;
                     setisProfileImageModalOpen(false)
                 }
@@ -1035,10 +1034,12 @@ const index = () => {
                 positionTopModal={true}
             >
                 <ImageCrop
-                    imageSrc={imgSrc} type={typeCroppedImage} aspectRatio={typeCroppedImage === 'profile' ? 1 : (2.3 / 1)}
-                    circularCrop={typeCroppedImage === 'profile' ? true : false}
+                    imageSrc={imgSrc} type={typeCroppedImage} aspectRatio={typeCroppedImage === UploadEventType.shopPhoto ? 1 : (2.6 / 1)}
+                    circularCrop={typeCroppedImage === UploadEventType.shopPhoto ? true : false}
                     onHanldeConfirm={(image, type, imageRefCurrent) => {
-                        if (type === 'cover' || type === 'profile') {
+                        if (type === UploadEventType.shopCover || type === UploadEventType.shopPhoto) {
+
+
                             handleImageConfirm(image, type, imageRefCurrent)
                         }
                         hiddenFileInputProfileImage.current.value = null;

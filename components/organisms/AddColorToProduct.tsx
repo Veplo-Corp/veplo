@@ -14,6 +14,7 @@ import { PixelCrop } from 'react-image-crop'
 import { canvasPreview } from '../molecules/Canva_previews';
 import { resizeFile } from '../utils/resizeFile';
 import { SIZES_TYPES } from '../mook/productParameters/sizes';
+import { UploadEventType } from '../../src/lib/upload/UploadEventTypes';
 
 const quantity = Array.from({ length: 100 }, (_, i) => i + 1)
 
@@ -40,7 +41,6 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
     const [color, setColor] = useState('')
     const [sizeTypologySelected, setSizeTypologySelected] = useState<string[]>([])
     const [canAddNewSize, setcanAddNewSize] = useState(false)
-    const [openDrawNumber, setOpenDrawNumber] = useState<number>(1)
     const [isCardConfirmed, setIsCardConfirmed] = useState(false)
 
 
@@ -311,11 +311,11 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                             return (
                                 <Box
                                     key={index}
-                                    className='flex mr-2'
+                                    className='flex mr-2 '
 
 
                                     height={130}
-                                    width={100}
+                                    width={125}
 
                                     position={'relative'}
                                     borderRadius={'10px'}
@@ -323,7 +323,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
 
                                 >
                                     <img
-                                        className='object-cover rounded-[10px]'
+                                        className='aspect-[4.8/5] object-cover rounded-[10px]'
                                         src={image.url}
                                     ></img>
 
@@ -365,7 +365,8 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                             }}
 
                             height={130}
-                            width={100}
+                            width={125}
+
                             borderColor={'gray.300'}
                             borderWidth={1}
                             borderRadius={'10px'}
@@ -445,7 +446,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                 positionTopModal={true}
             >
                 <ImageCrop
-                    imageSrc={imgSrc} type={'product'} aspectRatio={4.2 / 5}
+                    imageSrc={imgSrc} type={UploadEventType.product} aspectRatio={4.8 / 5}
                     circularCrop={false}
                     onHanldeConfirm={(image, type, imageRefCurrent) => {
 

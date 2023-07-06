@@ -96,6 +96,7 @@ const Header = () => {
     }
 
     const handleSearchText = (question: string) => {
+        return
         let gender = getFromLocalStorage('genderSelected')
         if (gender === 'f') {
             gender = 'donna'
@@ -246,7 +247,7 @@ const Header = () => {
                                         <div className='hidden lg:flex'>
                                             <Input_Search_Item
                                                 handleChangeValue={(text) => handleAutoComplete(text)}
-                                                placeholder='Cerca i tuoi vestiti preferiti'
+                                                placeholder='Cerca tutto quello che ti interessa'
                                                 onConfirmText={(value) => {
                                                     handleSearchText(value)
                                                 }}

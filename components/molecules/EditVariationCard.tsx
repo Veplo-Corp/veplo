@@ -72,15 +72,23 @@ const EditVariationCard: FC<{ variation: Variation, category: string, deleteVari
                                             <img
                                                 key={image.url}
                                                 src={image.url} alt="immagine non trovata"
-                                                className='w-10 md:w-16 h-fit rounded-lg'
+                                                className='
+                                                h-[75px]
+                                                w-[62px]
+                                                object-cover
+                                                rounded-lg'
                                             />
                                         )
                                     } else {
                                         return (
                                             <img
                                                 key={image}
-                                                src={imageKitUrl(image, 171, 247)} alt="immagine non trovata"
-                                                className='w-10 md:w-16 h-fit rounded-lg'
+                                                src={imageKitUrl(image, 237, 247)} alt="immagine non trovata"
+                                                className='
+                                                h-[75px]
+                                                w-[62px]
+                                                object-cover
+                                                rounded-lg'
                                             />
                                         )
                                     }

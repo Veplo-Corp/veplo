@@ -279,7 +279,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     }
 
 
-    //console.log(imageKitUrl(product.photos[0], 171, 247));
+    //console.log(imageKitUrl(product.photos[0], 237, 247));
 
 
 
@@ -317,12 +317,13 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         }
         else {
             console.log(cartsDispatchProduct);
-            let productVariationQuantity = 0
             const Carts: Cart[] = cartsDispatchProduct
             const Cart = Carts.find(cart => cart.shopInfo.id === product.shopInfo.id);
 
             let NewCart: Cart;
             let NewCarts: Cart[] = [];
+            let quantityMax;
+            let productVariationQuantity = 0;
 
             //CART ESISTENTE
             if (Cart) {
@@ -337,15 +338,14 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
                     const index = Cart.productVariations.findIndex(variation => variation.size === sizeSelected)
                     const lots = product.variations.find(variation => variation.id === Cart.productVariations[index].id)?.lots
-                    let quantityMax;
                     if (lots) {
                         quantityMax = lots.find(lot => lot.size === Cart.productVariations[index].size)?.quantity
-                        console.log(quantityMax);
-
                     }
+                    productVariationQuantity = quantityMax && quantity >= quantityMax ? quantityMax : quantity + 1
+
                     const newProductVariation = {
                         ...Cart.productVariations[index],
-                        quantity: quantityMax && quantity >= quantityMax ? quantityMax : quantity + 1
+                        quantity: productVariationQuantity
                     }
 
                     const productVariations = [
@@ -460,11 +460,12 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
             try {
                 if (user.uid) {
-                    const edited = await editCart({
+
+                    await editCart({
                         variables: {
                             productVariationId: variationSelected.id,
                             size: sizeSelected,
-                            quantity: ++productVariationQuantity
+                            quantity: productVariationQuantity > 0 ? productVariationQuantity : 1
                         }
                     })
                 } else if (!user.uid) {
@@ -523,7 +524,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                         //riverdere length description 150 to 160
                         title={`${product.name.toUpperCase()} ${product.info.brand} - ${product.info.macroCategory} - ${product.shopInfo.city} - Veplo.it`}
                         subtitle={`${product.name.toUpperCase()} ${product.info.brand} - ${product.info.macroCategory} a ${product.price.v2 ? product.price.v2 : product.price.v1}€ | vivi Veplo`}
-                        image={imageKitUrl(variationSelected.photos[0], 171, 247)}
+                        image={imageKitUrl(variationSelected.photos[0], 237, 247)}
                         description={`${product.name.toUpperCase()} ${product.info.brand} - ${product.info.macroCategory} - Veplo.it`} />
                     <div className='md:flex justify-between w-full mb-5 lg:mb-0 gap-5'>
                         <Image_Product variation={variationSelected} />
@@ -728,6 +729,26 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                                 <Box
                                                     className='grid grid-cols-3 lg:grid-cols-4 w-fit gap-x-1 gap-y-4 lg:gap-4'
                                                 >
+                                                    {product.info.modelDescription && product.info.modelDescription?.length > 0 &&
+                                                        <>
+                                                            <Text
+                                                                fontSize={'md'}
+                                                                fontWeight={'semibold'}
+                                                                color={'black'}
+                                                            >
+                                                                Indossabilità
+                                                            </Text>
+                                                            <Text
+                                                                fontSize={'md'}
+                                                                fontWeight={'normal'}
+                                                                color={'#909090'}
+                                                                className='col-span-2 lg:col-span-3'
+                                                            >   {
+                                                                    product.info.modelDescription
+                                                                }
+                                                            </Text>
+                                                        </>
+                                                    }
                                                     <Text
                                                         fontSize={'md'}
                                                         fontWeight={'semibold'}

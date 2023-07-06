@@ -15,7 +15,7 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
             width={'full'}
         >
             <LazyLoadImage src={
-                imageKitUrl(variation.photo, 171, 247)
+                imageKitUrl(variation.photo, 237, 247)
             }
                 //PlaceholderSrc={PlaceholderImage}
                 alt={variation.name}
@@ -94,10 +94,10 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
                                 display={'flex'}
                             >
                                 <p
-                                    className={`${variation?.price.v2 && variation?.price?.v2 > 0 ? 'line-through  text-gray-400' : 'font-semibold'}`}
-                                > {formatNumberWithTwoDecimals(variation.price.v1)} €
+                                    className={`${variation?.price?.v2 && variation?.price?.v2 > 0 ? 'line-through  text-gray-400' : 'font-semibold'}`}
+                                > {formatNumberWithTwoDecimals(variation?.price?.v1)} €
                                 </p>
-                                {variation?.price.v2 && variation.price.v2 > 0 &&
+                                {variation?.price?.v2 && variation?.price?.v2 > 0 &&
                                     <p
                                         className='font-semibold ml-1'
                                     >{variation?.price.v2 && formatNumberWithTwoDecimals(variation.price.v2)} € </p>
@@ -107,7 +107,7 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
                                 display={'flex'}
                                 justifyContent={'end'}
                             >
-                                {variation?.price.discountPercentage && variation.price.discountPercentage > 0 &&
+                                {variation?.price?.discountPercentage && variation?.price?.discountPercentage > 0 &&
                                     <Tag
                                         size={['xs', 'sm']}
                                         px={2}
@@ -118,7 +118,7 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
                                         borderRadius={'full'}
                                         fontSize={'2xs'}
                                         height={'fit-content'}
-                                    >- {formatNumberWithTwoDecimals(variation.price.discountPercentage)} %
+                                    >- {formatNumberWithTwoDecimals(variation?.price?.discountPercentage)} %
                                     </Tag>}
                             </Box>
 

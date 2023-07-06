@@ -14,7 +14,7 @@ const ProductVariationInOrder: FC<{ variation: ProductVariationInOrder }> = ({ v
             width={'full'}
         >
             <LazyLoadImage src={
-                imageKitUrl(variation.photo, 171, 247)
+                imageKitUrl(variation.photo, 237, 247)
             }
                 //PlaceholderSrc={PlaceholderImage}
                 alt={variation.name}
@@ -59,7 +59,7 @@ const ProductVariationInOrder: FC<{ variation: ProductVariationInOrder }> = ({ v
                             display={'flex'}
                         >
                             <p
-                                className={`${variation?.price.v2 && variation?.price?.v2 > 0 ? 'line-through  text-gray-400' : 'font-semibold'}`}
+                                className={`${variation?.price?.v2 && variation?.price?.v2 > 0 ? 'line-through  text-gray-400' : 'font-semibold'}`}
                             > {formatNumberWithTwoDecimals(variation.price.v1)} €
                             </p>
                             {variation?.price.v2 && variation.price.v2 > 0 &&

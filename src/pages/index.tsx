@@ -220,11 +220,10 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
       <Shop_not_Allowed>
         <Box
           bgColor={'primary.bg'}
-          className='hidden lg:block p-10 pt-0 h-[100vh] rounded-b-[7vh]'
+          className='hidden lg:block p-10 pt-0 h-[100vh] lg:h-[98vh] rounded-b-[7vh]'
         >
           <Box
             height={'12vh'}
-
             display={'flex'}
             justifyContent={'space-between'}
           >
@@ -254,7 +253,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
           <Box
             bgColor={'primary.text'}
             borderRadius={'30px'}
-            className='hidden lg:grid p-8 h-[82vh] rounded-b-[7vh]'
+            className='hidden lg:grid p-8 h-[82vh] lg:h-[80vh] rounded-b-[7vh]'
             style={{
               boxShadow: '0px 4px 20px 20px rgba(255, 255, 255, 0.25)'
             }}
