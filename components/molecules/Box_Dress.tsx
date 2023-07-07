@@ -167,7 +167,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 <ScaleFade
                                     initialScale={0.7} in={showSize}
                                     delay={0.3}
-                                    className='top-3 left-2  absolute hidden lg:flex z-20'
+                                    className='top-2 left-2  absolute hidden lg:flex z-20'
                                 >
                                     <VStack
                                         background={'#FFFFFF'}
@@ -223,7 +223,8 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                         pagination={{
                                             clickable: true
                                         }}
-                                        modules={[Pagination]}
+
+                                        modules={[Pagination, Navigation]}
                                     >
                                         {product.variations?.[indexPhoto].photos?.map((photoUrl, index) => {
                                             return (
@@ -363,14 +364,18 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                             borderRadius={'full'}
                             noOfLines={1}
                             zIndex={10}
+                            maxW={product.price?.v2 ? '65%' : '73%'}
+
                         >
                             {product?.name?.toLocaleUpperCase()}
                         </Text>
                         <Box
                             display={'flex'}
                             gap={1}
+
                         >
                             {product.price?.v2 && <Text
+
                                 fontSize={'md'}
                                 fontWeight={'semibold'}
                                 color={'#909090'}
@@ -378,15 +383,15 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                             >
                                 {formatNumberWithTwoDecimals(Number(product.price?.v1))}€
                             </Text>}
-                            <Text
+                            {product.price?.v2 && <Text
 
                                 fontSize={'md'}
                                 fontWeight={'semibold'}
                                 color={'#909090'}
                                 decoration={'line-through'}
                             >
-                                150,00
-                            </Text>
+                                {formatNumberWithTwoDecimals(Number(product.price?.v1))}
+                            </Text>}
                             <Text
                                 fontSize={'md'}
                                 fontWeight={'semibold'}
