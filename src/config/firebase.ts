@@ -40,14 +40,16 @@ let firebaseConfig;
 
 
 if (process.env.NODE_ENV === 'production') {
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   firebaseConfig = {
-    apiKey: "AIzaSyD2Qy57T2kfvcmUXsgId8X2aUPJbnqvq34",
-    authDomain: "dintorni-prod.firebaseapp.com",
-    projectId: "dintorni-prod",
-    storageBucket: "dintorni-prod.appspot.com",
-    messagingSenderId: "890670080840",
-    appId: "1:890670080840:web:1c04dd1f4e6a29d4c5497d",
-    measurementId: "G-EETDDVBRRY"
+    apiKey: "AIzaSyA0UyXbwg7IctHllndT7t4iR4gMUi699Bc",
+    authDomain: "veplo-clothes.firebaseapp.com",
+    projectId: "veplo-clothes",
+    storageBucket: "veplo-clothes.appspot.com",
+    messagingSenderId: "133580758542",
+    appId: "1:133580758542:web:a47b0eb6292d5fc9af265f",
+    measurementId: "G-26QK67CY12"
   };
 } else {
   firebaseConfig = {
