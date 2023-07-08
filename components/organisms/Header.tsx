@@ -82,7 +82,7 @@ const Header = () => {
     useEffect(() => {
         let counter = 0
         cartsDispatch.map((cart) => {
-            cart.productVariations.map(variation => {
+            cart?.productVariations?.map(variation => {
                 counter += variation.quantity
             })
         })

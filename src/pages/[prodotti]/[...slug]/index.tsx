@@ -678,7 +678,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     <>
                                         {products[3] &&
 
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 gap-y-5 w-full">
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 gap-y-5 w-full">
                                                 {isSmallView ?
                                                     (
                                                         < SkeletonComponent />
@@ -706,7 +706,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 }
                             >
                                 <div className={` flex items-center justify-center `}>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 md:gap-5 md:gap-y-8 gap-y-5 w-full mb-10">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 md:gap-5 md:gap-y-8 gap-y-9 w-full mb-10">
                                         {products.length > 0 ?
                                             (
                                                 <AnimatePresence>

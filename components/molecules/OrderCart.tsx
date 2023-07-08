@@ -4,6 +4,7 @@ import React, { FC } from 'react'
 import { Order } from '../../src/interfaces/order.interface'
 import { STATUS } from '../mook/statusOrderUser';
 import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals';
+import { getDateFromMongoDBDate } from '../utils/getDateFromMongoDBDate';
 
 
 const OrderCart: FC<{ order: Order }> = ({ order }) => {
@@ -39,7 +40,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                             fontSize={'sm'}
                             fontWeight={'normal'}
                             mt={-1}
-                        >Ordine del {('0' + new Date(+order.createdAt).getDate()).slice(-2)}/{('0' + (new Date(+order.createdAt).getMonth() + 1)).slice(-2)}/{new Date(+order.createdAt).getFullYear()}</Text>
+                        >Ordine del {getDateFromMongoDBDate(order.createdAt)}</Text>
 
                     </Box>
                     <Box

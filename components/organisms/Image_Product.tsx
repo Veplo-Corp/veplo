@@ -57,12 +57,15 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                     width={'fit-content'}
                 >
 
-                    <ModalBody padding={0} >
+                    <ModalBody padding={0}
+                        cursor={'pointer'}
+                    >
                         <Box
                             position={'absolute'}
                             right={3}
                             top={3}
                             zIndex={50}
+
                         >
                             <ButtonClose handleEvent={() => setisOpen(false)} />
 
@@ -141,7 +144,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                 </ModalContent>
             </Modal >
 
-            <div className='flex space-x-3 lg:space-x-4 w-full min-h-[380px] md:min-h-0 md:w-7/12 lg:w-1/2'>
+            <div className='flex space-x-3 lg:space-x-4 w-full min-h-[335px] md:min-h-0 md:w-7/12 lg:w-1/2'>
 
                 <Box onClick={zoomImage} mb={[2, 5]} overflow='hidden' className='cursor-pointer w-full'>
 

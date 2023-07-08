@@ -736,7 +736,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                                                 fontWeight={'semibold'}
                                                                 color={'black'}
                                                             >
-                                                                Indossabilità
+                                                                Descrizione modello
                                                             </Text>
                                                             <Text
                                                                 fontSize={'md'}

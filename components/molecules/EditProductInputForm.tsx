@@ -235,7 +235,7 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                 <InputGroup >
                     <Textarea
                         height={32}
-                        maxLength={200}
+                        maxLength={350}
                         rounded={10}
                         paddingY={6}
                         paddingX={2}

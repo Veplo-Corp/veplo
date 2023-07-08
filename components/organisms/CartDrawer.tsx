@@ -266,7 +266,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                                         <VStack
                                             gap={1}
                                         >
-                                            {cart.productVariations.map((variation, index) => {
+                                            {cart?.productVariations?.map((variation, index) => {
                                                 return (
                                                     <div key={index}
                                                         className='w-full'

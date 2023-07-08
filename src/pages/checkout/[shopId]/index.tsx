@@ -257,7 +257,7 @@ const index = () => {
                             <VStack
                                 gap={1}
                             >
-                                {cart.productVariations.map(variation => {
+                                {cart?.productVariations?.map(variation => {
                                     return (
                                         <div
                                             key={variation.id + variation.size}

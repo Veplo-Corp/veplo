@@ -25,6 +25,8 @@ import { Button } from '@chakra-ui/react';
 import AddColorToProduct from '../../../../../../../components/organisms/AddColorToProduct';
 import { COLORS, Color } from '../../../../../../../components/mook/colors';
 import { VariationCard } from '../../../../../../interfaces/variationCard.interface';
+import { uploadImage } from '../../../../../../lib/upload/uploadImage';
+import { UploadEventType } from '../../../../../../lib/upload/UploadEventTypes';
 
 interface Props {
     shop: {
@@ -325,6 +327,7 @@ const index = () => {
                     id: variationId
                 }
             })
+            addToast({ position: 'top', title: `Variante di colore cancellata!`, status: 'success', duration: 3000, isClosable: true })
 
             //Edit Product.variations once you delete the variation
             setProduct((prevstate) => {
@@ -347,6 +350,7 @@ const index = () => {
                 ]
 
             })
+
 
         } catch (e: any) {
             console.log(e.message);
@@ -374,6 +378,8 @@ const index = () => {
                 }
             }
         })
+        addToast({ position: 'top', title: `Prodotto aggiornato!`, status: 'success', duration: 3000, isClosable: true })
+
 
         setProduct((prevstate) => {
             if (!prevstate?.variations) return prevstate
@@ -405,56 +411,66 @@ const index = () => {
 
 
     const confirmCard = async (variation: VariationCard) => {
-        // setProductVariations((prevstate: any[]) => {
-        //     return [
-        //         ...prevstate,
-        //         variation
-        //     ]
-        // })
+        console.log(variation);
+        const variationLots = variation.lots.map(lot => {
+            return {
+                quantity: lot.quantity,
+                size: lot.size.split(' (')[0]
+            }
+        })
 
-        let photos = [];
+
+        let photos: File[] = [];
         for (const photo of variation.photos) {
             photos.push(photo.file)
         }
 
+        const promises: Promise<string>[] = [];
+
         if (photos.length <= 0) return
 
-        // try {
-        //     const photosUploaded = await uploadPhotos({
-        //         variables: {
-        //             images: photos,
-        //             proportion: "product"
-        //         }
-        //     })
 
-        //     const variationLots = variation.lots.map(lot => {
-        //         return {
-        //             quantity: lot.quantity,
-        //             size: lot.size.split(' (')[0]
-        //         }
+        //crea le promises per il Promise.all
+        for await (const photo of photos) {
+            promises.push(
+                new Promise<string>(async (resolve) => {
+                    try {
+                        const result = await uploadImage(photo, UploadEventType.product);
+                        if (!result) {
+                            throw new Error('Upload failed');
+                        }
+                        resolve(result.id);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }))
+        }
 
-        //     });
+        try {
 
-        //     const photosString = photosUploaded?.data.uploadImages;
-        //     await createVariation({
-        //         variables: {
-        //             productId: product?.id,
-        //             options: {
-        //                 color: variation.color,
-        //                 lots: variationLots,
-        //                 status: "active",
-        //                 photos: photosString
-        //             }
-        //         }
-        //     }
-        //     )
+            const photosFileIDs: string[] = await Promise.all(promises);
 
-        //     //mettere alert per creazione avvenuta con successo
+            if (photosFileIDs.length <= 0) return
+            await createVariation({
+                variables: {
+                    productId: product?.id,
+                    options: {
+                        color: variation.color,
+                        lots: variationLots,
+                        status: "active",
+                        photos: photosFileIDs
+                    }
+                }
+            }
+            )
+            addToast({ position: 'top', title: `Variante ${variation.color} creata!`, status: 'success', duration: 3000, isClosable: true })
 
-        // } catch (e) {
-        //     console.log(e);
 
-        // }
+            //mettere alert per creazione avvenuta con successo
+
+        } catch (e) {
+            console.log(e);
+        }
 
 
         setNewCard(false)
