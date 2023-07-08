@@ -52,7 +52,7 @@ const GET_SHOP_ORDERS = gql`
                 }
                 productVariations{
                     productId
-                    variationId
+                    id
                     photo
                     name
                     price{

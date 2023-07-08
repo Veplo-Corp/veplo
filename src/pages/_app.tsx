@@ -499,7 +499,6 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
 
 
 
-  console.log(router);
 
 
 

@@ -141,7 +141,7 @@ const index = () => {
             }).then(response => {
                 if (response?.data) {
                     setOrder(response.data?.order)
-                    handleStatus(response.data?.order.status)
+                    handleStatus(response.data?.order?.status)
                 }
 
             })
