@@ -499,6 +499,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
 
 
 
+  console.log(router);
 
 
 
@@ -508,7 +509,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
       <ApolloProvider client={apolloClient} > {/* client={clientApollo} */}
         <ChakraProvider theme={theme}>
           <Auth>
-            {router.pathname !== '/' && !router.pathname.includes("/login") &&
+            {router.pathname !== '/' && !router.pathname.includes("/user/settings/email-actions") && !router.pathname.includes("/login") &&
               <Header />
             }
 
@@ -520,7 +521,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
             ) : (
               <main className={`${sans.variable} font-sans`}>
                 <Component {...pageProps} />
-                {router.pathname !== '/' && !router.pathname.includes("/login") && !router.pathname.includes("/settings/email-actions") && !router.query?.fbclid && <Footer />}
+                {router.pathname !== '/' && !router.pathname.includes("/login") && !router.pathname.includes("/user/settings/email-actions") && !router.query?.fbclid && <Footer />}
               </main>
             )}
 
