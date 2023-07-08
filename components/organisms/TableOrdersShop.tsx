@@ -24,6 +24,8 @@ import { Order } from '../../src/interfaces/order.interface'
 import { STATUS_ORDER_SHOP } from '../mook/statusOrderBusiness';
 import { useRouter } from 'next/router';
 import { isMobile } from 'react-device-detect';
+import { getDateFromMongoDBDate } from '../utils/getDateFromMongoDBDate';
+import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals';
 
 
 
@@ -164,7 +166,7 @@ const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders
                                     <Text
                                         fontWeight={'normal'}
                                     >
-                                        {order.totalDetails.total} €
+                                        {formatNumberWithTwoDecimals(order.totalDetails.total)} €
                                     </Text>
                                 </Td>
                                 {!isMobile && <Td
@@ -176,7 +178,7 @@ const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders
                                     <Text
                                         fontWeight={'normal'}
                                     >
-                                        {('0' + new Date(+order.createdAt).getDate()).slice(-2)}/{('0' + (new Date(+order.createdAt).getMonth() + 1)).slice(-2)}/{new Date(+order.createdAt).getFullYear()}
+                                        {getDateFromMongoDBDate(order.createdAt)}
                                     </Text>
                                 </Td>}
                                 <Td
