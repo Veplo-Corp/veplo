@@ -270,7 +270,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                             width={'fit-content'}
                             height={'fit-content'}
                         >
-                            spedizione gratuita da {shop.minimumAmountForFreeShipping.toLocaleString().replace('.', '.')}€
+                            spedizione gratuita da {parseInt((shop.minimumAmountForFreeShipping / 100).toString())}€
                         </Text>}
                     </Box>
                 </motion.div>
