@@ -195,10 +195,10 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
 
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
-                title={`${shop.name ? toUpperCaseFirstLetter(shop.name) : 'Brand'} - Veplo.it`}
-                subtitle={`Visita il negozio ${shop.name} | Abbigliamento · Scarpe · Vestiti · Accessori | scopri le offerte | vivi Veplo`}
-                image={shop?.profileCover ? shop?.profileCover : ''}
-                description={`Visita il negozio ${shop.name} | Abbigliamento · Scarpe · Vestiti · Accessori | scopri le offerte | vivi Veplo`}
+                title={`${shop.name ? toUpperCaseFirstLetter(shop.name) : 'Brand'} | Veplo`}
+                subtitle={`Scopri il brand ${shop.name} | Acquista dai migliori brand made in Italy senza intermediari su Veplo | Abbigliamento · Accessori · Scarpe · Vestiti`}
+                image={shop?.profilePhoto ? shop?.profilePhoto : ''}
+                description={`Scopri il brand ${shop.name} | Acquista dai migliori brand made in Italy senza intermediari su Veplo | Abbigliamento · Accessori · Scarpe · Vestiti`}
             />
 
             <Box

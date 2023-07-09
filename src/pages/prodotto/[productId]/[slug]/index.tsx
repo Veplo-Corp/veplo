@@ -522,10 +522,11 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     <PostMeta
                         canonicalUrl={'https://www.veplo.it' + router.asPath}
                         //riverdere length description 150 to 160
-                        title={`${product.name.toUpperCase()} ${product.info.brand} - ${product.info.macroCategory} - ${product.shopInfo.city} - Veplo.it`}
-                        subtitle={`${product.name.toUpperCase()} ${product.info.brand} - ${product.info.macroCategory} a ${product.price.v2 ? product.price.v2 : product.price.v1}€ | vivi Veplo`}
+                        title={`${toUpperCaseFirstLetter(product.info.macroCategory)} ${toUpperCaseFirstLetter(product.info.brand)} ${product.name.toUpperCase()} | Veplo`}
+                        subtitle={`${toUpperCaseFirstLetter(product.info.macroCategory)} ${toUpperCaseFirstLetter(product.info.brand)} ${product.name.toUpperCase()} a ${product.price.v2 ? product.price.v2 : product.price.v1}€ | Scopri i prodotti dei migliori brand made in Italy`}
                         image={imageKitUrl(variationSelected.photos[0], 237, 247)}
-                        description={`${product.name.toUpperCase()} ${product.info.brand} - ${product.info.macroCategory} - Veplo.it`} />
+                        description={`${toUpperCaseFirstLetter(product.info.macroCategory)} ${toUpperCaseFirstLetter(product.info.brand)} ${product.name.toUpperCase()} a ${product.price.v2 ? product.price.v2 : product.price.v1}€ | Scopri i prodotti dei migliori brand made in Italy`}
+                    />
                     <div className='md:flex justify-between w-full mb-5 lg:mb-0 gap-5'>
                         <Image_Product variation={variationSelected} />
                         <Box className='md:block lg:w-[45%]'>

@@ -468,11 +468,12 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             <NoIndexSeo />
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
-                title={`${typeof filters.macroCategory === 'string' ? filters.macroCategory : 'tutto'} ${filters.gender === 'f' ? 'donna' : 'uomo'} | Veplo`}
-                subtitle={`${typeof filters.macroCategory === 'string' ? `${typeof filters.macroCategory} da ${filters.gender === 'f' ? 'donna' : 'uomo'}` : `Tutto l'abbigliamento da ${filters.gender === 'f' ? 'donna' : 'uomo'}`} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
+                title={`${typeof filters.macroCategory === 'string' ? toUpperCaseFirstLetter(filters.macroCategory) : toUpperCaseFirstLetter(typeProducts)} ${filters.gender === 'f' ? 'donna' : 'uomo'} | Veplo`}
+                subtitle={`${typeof filters.macroCategory === 'string' ? `${typeof filters.macroCategory} da ${filters.gender === 'f' ? 'donna' : 'uomo'}` : `${toUpperCaseFirstLetter(typeProducts)} da ${filters.gender === 'f' ? 'donna' : 'uomo'}`} su Veplo | Acquista dai migliori brand made in Italy senza intermediari su Veplo | Abbigliamento · Accessori · Scarpe · Vestiti`}
                 image={''}
-                description={`${typeof filters.macroCategory === 'string' ? `${typeof filters.macroCategory} da ${filters.gender === 'f' ? 'donna' : 'uomo'}` : `Tutto l'abbigliamento da ${filters.gender === 'f' ? 'donna' : 'uomo'}`} | Abbigliamento · Scarpe · Vestiti | vivi Veplo`}
+                description={`${typeof filters.macroCategory === 'string' ? `${typeof filters.macroCategory} da ${filters.gender === 'f' ? 'donna' : 'uomo'}` : `${toUpperCaseFirstLetter(typeProducts)} da ${filters.gender === 'f' ? 'donna' : 'uomo'}`} su Veplo | Acquista dai migliori brand made in Italy senza intermediari su Veplo | Abbigliamento · Accessori · Scarpe · Vestiti`}
             />
+
             <div className='relative  min-h-[120vh]'>
                 <Shop_not_Allowed>
                     <Box

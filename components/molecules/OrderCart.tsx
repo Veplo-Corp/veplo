@@ -47,7 +47,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                         fontSize={'md'}
                         fontWeight={'bold'}
                     >
-                        {formatNumberWithTwoDecimals(Number(order.totalDetails.total))}€
+                        {formatNumberWithTwoDecimals(Number(order?.totalDetails?.total))}€
                     </Box>
                 </Box>
                 <Box

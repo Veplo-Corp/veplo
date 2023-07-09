@@ -152,14 +152,13 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
         <div
             className='mt-5 min-h-[100vh]'
         >
-            <NoIndexSeo />
-            {/* <PostMeta
+            <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
-                title={`Negozi di Abbigliamento | Veplo`}
-                subtitle={`Negozi di Abbigliamento | Cerca tra tutto l'abbigliamento per uomo e donna in vendita | Abbigliamento · Scarpe · Vestiti`}
-                image={''}
-                description={`Negozi di Abbigliamento | Cerca tra tutto l'abbigliamento per uomo e donna in vendita | Abbigliamento · Scarpe · Vestiti`}
-            /> */}
+                title={`Brand | Veplo`}
+                subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Veplo ti permette di comprare direttamente dai brand senza intermediari."}
+                image={""}
+                description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Veplo ti permette di comprare direttamente dai brand senza intermediari."}
+            />
             {/* <div className='md:flex justify-end'>
                 
                 <div className='my-auto mt-2'>

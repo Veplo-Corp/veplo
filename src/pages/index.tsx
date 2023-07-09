@@ -209,11 +209,10 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
     <>
       <PostMeta
         canonicalUrl='https://www.veplo.it'
-        title={'Veplo | Libera il tuo stile '}
-        subtitle={"Il Marketplace che seleziona i migliori marchi indipendenti e negozi in circolazione | Hai presente il fast fashion? Allontanati da questa idea più che puoi | Abbigliamento · Scarpe · Vestiti"}
-        image={''}
-        description={"Il Marketplace che seleziona i migliori marchi indipendenti e negozi in circolazione | Hai presente il fast fashion? Allontanati da questa idea più che puoi | Abbigliamento · Scarpe · Vestiti"}
-
+        title={"Veplo"}
+        subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Veplo ti permette di comprare direttamente dai brand senza intermediari."}
+        image={""}
+        description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Veplo ti permette di comprare direttamente dai brand senza intermediari."}
       />
 
 
