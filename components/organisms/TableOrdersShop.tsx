@@ -166,7 +166,7 @@ const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders
                                     <Text
                                         fontWeight={'normal'}
                                     >
-                                        {formatNumberWithTwoDecimals(order.totalDetails.total)} €
+                                        {formatNumberWithTwoDecimals(order?.totalDetails?.total)} €
                                     </Text>
                                 </Td>
                                 {!isMobile && <Td
