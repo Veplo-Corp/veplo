@@ -120,15 +120,18 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const dispatch = useDispatch();
     const isSmallView = useBreakpointValue({ base: true, lg: false });
     const { asPath } = useRouter();
+    const [history, setHistory] = useState<string>()
 
 
+
+    console.log(history);
 
 
     useEffect(() => {
-        if (typeof window === 'undefined') return
-        console.log(window.history);
 
         if (!router.isReady) return
+        if (router.asPath === history) return
+        setHistory(router.asPath)
         setInLocalStorage('univers', universProps)
         setUnivers(universProps)
         dispatch(
