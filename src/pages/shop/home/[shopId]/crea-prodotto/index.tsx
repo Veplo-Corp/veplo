@@ -9,7 +9,7 @@ import Div_input_creation from '../../../../../../components/atoms/Div_input_cre
 import SelectMacrocategory from '../../../../../../components/atoms/SelectMacrocategory'
 import SelectStringOption from '../../../../../../components/atoms/SelectStringOption'
 import ProductVariationCard from '../../../../../../components/molecules/ProductVariationCard'
-import { CATEGORIES, Category, CategoryType } from '../../../../../../components/mook/categories'
+import { CATEGORIES, Category, Univers } from '../../../../../../components/mook/categories'
 import { Color, COLORS } from '../../../../../../components/mook/colors'
 import AddColorToProduct from '../../../../../../components/organisms/AddColorToProduct'
 import EditColorToProduct, { Size } from '../../../../../../components/organisms/EditColorToProdoct'
@@ -30,7 +30,7 @@ import { uploadImage } from '../../../../../lib/upload/uploadImage'
 import { UploadEventType } from '../../../../../lib/upload/UploadEventTypes'
 
 export interface IFormInputProduct {
-    typeProduct: CategoryType,
+    univers: Univers,
     name: string;
     price: string;
     brand: string;
@@ -63,7 +63,7 @@ const index = () => {
     const { register, handleSubmit, reset, resetField, watch, formState: { errors, isValid, isSubmitting, isDirty }, getValues, setValue, control, formState } = useForm<IFormInputProduct>({
         mode: "all",
         defaultValues: {
-            typeProduct: 'abbigliamento'
+            univers: 'abbigliamento'
         }
     });
     const router = useRouter();
@@ -126,7 +126,7 @@ const index = () => {
                 name: query.variables.options.name,
                 price: {
                     v1: query.variables.options.price.v1,
-                    v2: null,
+                    v2: query.variables.options.price.v1,
                     discountPercentage: null,
                     __typename: "Price"
                 },
@@ -357,9 +357,11 @@ const index = () => {
                 status: 'active',
                 canBuy: true,
                 price: {
-                    v1
+                    v1,
+                    v2: v1
                 },
                 info: {
+                    univers: watch('univers').toLowerCase(),
                     brand: watch('brand').toLocaleLowerCase(),
                     gender: genderSelected === 'donna' ? 'f' : 'm',
                     macroCategory: watch('macrocategory').toLocaleLowerCase(),
@@ -447,7 +449,7 @@ const index = () => {
                                 if (e.target.value === 'accessori' || e.target.value === 'abbigliamento') {
                                     setMacrocategorySelectedSpec(undefined)
                                     resetForm()
-                                    setValue('typeProduct', e.target.value)
+                                    setValue('univers', e.target.value)
                                 }
                             }}
                         >
@@ -527,7 +529,7 @@ const index = () => {
                             rules={{ required: false }}
                             render={() => (
                                 <SelectMacrocategory
-                                    typeProduct={watch('typeProduct')}
+                                    univers={watch('univers')}
                                     selectedValueBefore={macrocategorySelectedSpec?.name}
                                     handleClick={(macrocategory: Macrocategory) => {
                                         setGenderSelected(macrocategory.gender)
@@ -567,7 +569,7 @@ const index = () => {
                                 render={({ field }) => (
                                     <Textarea
                                         fontSize={'sm'}
-                                        maxLength={350}
+                                        maxLength={450}
                                         rounded={10}
                                         paddingY={6}
                                         paddingTop={2}

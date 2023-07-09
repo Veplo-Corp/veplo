@@ -123,7 +123,7 @@ const index = () => {
             {order ? (
                 <Desktop_Layout>
                     {order && <div
-                        className='w-full md:w-8/12 lg:9/12 xl:w-1/2 m-auto md:mt4'
+                        className='w-full md:w-8/12 lg:9/12 xl:w-7/12 m-auto md:mt4'
                     >
                         {orderStatus &&
                             <Box
@@ -171,7 +171,7 @@ const index = () => {
                                         fontWeight={'normal'}
                                         mb={0}
                                     >
-                                        3. Inserisci l'indirizzo di spedizione: <strong>Aggiungi indirizzo negozio*</strong>
+                                        3. Inserisci l'indirizzo di spedizione: <strong>{order.shop.address?.postcode} {order.shop.address?.city}, {order.shop.address?.street}</strong>
                                     </Text>
                                     <Text
                                         fontSize={'md'}

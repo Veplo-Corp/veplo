@@ -10,6 +10,8 @@ import CartDrawer from './CartDrawer';
 import DrawerSearchProducts from './DrawerSearchProducts';
 import { useLazyQuery } from '@apollo/client';
 import GET_BUSINESS from '../../src/lib/apollo/queries/business';
+import BETTER_INPUT_GENERATOR from '../../src/lib/apollo/queries/betterInputGenerator';
+
 import { Business } from '../../src/interfaces/business.interface';
 import { Medal1St, NavArrowDown, Search, ShoppingBag, SmallShopAlt, TShirt, User } from 'iconoir-react';
 import Input_Search_Item from '../atoms/Input_Search_Item';
@@ -21,7 +23,8 @@ import { motion } from 'framer-motion';
 import { isMobile } from 'react-device-detect';
 import { Popover, Transition } from '@headlessui/react'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
-import { getCategoryType } from '../utils/getCategoryType';
+import { getUnivers } from '../utils/getUnivers';
+import { InputObjectBIG, processBIGObjectForUrl } from '../utils/bigParamsForPushUrl';
 
 const Header = () => {
     const isButtonHidden = useBreakpointValue({ base: true, lg: false });
@@ -38,11 +41,33 @@ const Header = () => {
     const [gender, setGender] = useState<string>()
 
     const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
+    const [getBetterInputGenerator, betterInputGeneratorResult] = useLazyQuery(BETTER_INPUT_GENERATOR);
 
 
     const closeDrawerBusinessAccount = () => {
         setopenDrawerBusinessAccount(false)
     }
+
+
+
+    useEffect(() => {
+        if (!betterInputGeneratorResult.data?.betterInputGenerator) return
+        const params = betterInputGeneratorResult.data?.betterInputGenerator
+        const result: InputObjectBIG | boolean = processBIGObjectForUrl(params)
+        console.log(result);
+
+        if (!result) return
+        console.log(result);
+        router.push({
+            pathname: `/${getUnivers()}/${gender}-${typeof result.macroCategory === 'string' ? result.macroCategory.toLowerCase() : 'tutto'}/${typeof result.microCategory === 'string' ? createUrlSchema([result.microCategory]) : 'tutto'}/rilevanza`,
+            query: {
+                ...result.filters
+            }
+        })
+        //router.push(`/${getUnivers()}/${gender}-tutto/tutto/rilevanza/${createUrlSchema([question])}`)
+
+    }, [betterInputGeneratorResult])
+
 
 
     useEffect(() => {
@@ -95,27 +120,13 @@ const Header = () => {
 
     }
 
-    const handleSearchText = (question: string) => {
-        return
-        let gender = getFromLocalStorage('genderSelected')
-        if (gender === 'f') {
-            gender = 'donna'
-        }
-        if (gender === 'm') {
-            gender = 'uomo'
-        }
-        //in futuro prendiamo la user.gender dell'utente
-        if (!gender) {
-            gender = 'donna'
-        }
-        if (question.toLocaleLowerCase().includes('uomo')) {
-            gender = 'uomo'
-        }
-        if (question.toLocaleLowerCase().includes('donna')) {
-            gender = 'donna'
-        }
+    const handleSearchText = (query: string) => {
 
-        router.push(`/${getCategoryType()}/${gender}-tutto/tutto/rilevanza/${createUrlSchema([question])}`)
+        getBetterInputGenerator({
+            variables: {
+                query
+            }
+        })
     }
 
     const [isHeaderVisible, setIsHeaderVisible] = useState(true);
@@ -216,7 +227,7 @@ const Header = () => {
                                                         return (
                                                             <Link
                                                                 key={element}
-                                                                href={`/${getCategoryType()}/${element.toLocaleLowerCase()}-tutto/tutto/rilevanza`}
+                                                                href={`/${getUnivers()}/${element.toLocaleLowerCase()}-tutto/tutto/rilevanza`}
                                                             >
                                                                 <Popover.Button
                                                                     className='text-left font-bold text-lg py-1'
@@ -264,7 +275,7 @@ const Header = () => {
                                             >
                                                 <Link
                                                     className='flex gap-2 p-2'
-                                                    href={router.query?.prodotti ? '/negozi' : (gender ? `/${getCategoryType()}/${gender}-tutto/tutto/rilevanza` : '/')}
+                                                    href={router.query?.prodotti ? '/negozi' : (gender ? `/${getUnivers()}/${gender}-tutto/tutto/rilevanza` : '/')}
                                                 >
                                                     {router.query?.prodotti ?
                                                         (<SmallShopAlt
@@ -308,7 +319,7 @@ const Header = () => {
 
 
                                                 <Link
-                                                    href={router.query.prodotti ? '/negozi' : (gender ? `/${getCategoryType()}/${gender}-tutto/tutto/rilevanza` : '/')}
+                                                    href={router.query.prodotti ? '/negozi' : (gender ? `/${getUnivers()}/${gender}-tutto/tutto/rilevanza` : '/')}
                                                     className='flex h-full w-full'
                                                 >
                                                     <Button
@@ -443,11 +454,7 @@ const Header = () => {
                                             </svg>
                                         </button>
                                     </>
-
-
                                 }
-
-
                             </div>
                         </nav>
                     </header>
@@ -455,7 +462,11 @@ const Header = () => {
             </motion.header>
             {user?.isBusiness && <Drawer_Menu isOpen={openDrawerBusinessAccount} user={user} closeDrawer={closeDrawerBusinessAccount} />}
             <CartDrawer isOpen={openDrawerCart} closeDrawer={() => setOpenDrawerCart(false)} />
-            <DrawerSearchProducts isOpen={isOpenUserDrawerSearch} closeDrawer={() => setisOpenUserDrawerSearch(false)} />
+            <DrawerSearchProducts isOpen={isOpenUserDrawerSearch} closeDrawer={() => setisOpenUserDrawerSearch(false)}
+                onConfirmText={(value) => {
+                    handleSearchText(value)
+                }}
+            />
         </>
 
     )

@@ -1,4 +1,4 @@
-export type CategoryType = 'abbigliamento' | 'accessori'
+export type Univers = 'abbigliamento' | 'accessori'
 
 export interface Category {
     name: string,

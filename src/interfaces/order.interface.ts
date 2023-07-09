@@ -1,3 +1,5 @@
+import { AddressShop } from "../lib/apollo/generated/graphql"
+
 export interface ProductVariationInOrder {
     productId: string,
     variationId: string,
@@ -45,6 +47,7 @@ export interface Order {
         name: string,
         businessId: string,
         stripeId: string,
+        address: AddressShop
     },
     user: {
         id: string,

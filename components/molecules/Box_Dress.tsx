@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useLayoutEffect, useState } from 'react'
-import { Avatar, Box, Fade, Image, ScaleFade, Text, VStack, useBreakpointValue } from '@chakra-ui/react'
+import { Avatar, Box, Fade, Image, ScaleFade, Tag, Text, VStack, useBreakpointValue } from '@chakra-ui/react'
 import Circle_Color from '../atoms/Circle_Color'
 import { Variation } from '../../src/interfaces/product.interface'
 import { COLORS } from '../mook/colors'
@@ -150,7 +150,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                             transform: 'scale(0.99)',
                         }}
                         borderRadius={'20px'}
-                        h={'full'} overflow='hidden' className='cursor-pointer relative h-full'
+                        h={'full'} overflow='hidden' className='cursor-pointer h-full'
                         position={'relative'}
                     //background={'#FBFBFB'}
                     >
@@ -167,7 +167,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 <ScaleFade
                                     initialScale={0.7} in={showSize}
                                     delay={0.3}
-                                    className='top-2 left-2  absolute hidden lg:flex z-20'
+                                    className='top-2 left-2 absolute hidden lg:flex z-20'
                                 >
                                     <VStack
                                         background={'#FFFFFF'}
@@ -210,8 +210,6 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                         }
                                     </VStack>
                                 </ScaleFade>
-
-
                             }
 
                             {(isSmallView && !overflowCards) ?
@@ -279,31 +277,31 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 display={'flex'}
                                 zIndex={50}
                             >
-                                <Circle_Color colors={productcolorsCSS.slice(0, 3)} dimension={isMobile ? 7 : 6} space={2} />
+
+                                <Circle_Color colors={productcolorsCSS.slice(0, 3)} dimension={isMobile ? '22px' : 6} space={2} />
                                 {productcolorsCSS.length > 3 &&
-                                    <>
-                                        <Box onClick={() => {
+                                    <Tag
+
+                                        onClick={() => {
 
                                         }}
-                                            h={[7, 6]}
-                                            marginLeft={1.5}
-                                            paddingX={2}
-                                            borderRadius={'10px'}
-                                            bg={'#D9D9D9'}
-                                            //borderWidth={1} borderColor={'gray.200'}
-                                            style={{
-                                                boxShadow: 'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
-                                            }}
-                                            borderWidth={'1px'}
-                                            borderColor={'white'}
-                                            fontWeight={'semibold'}
-                                            fontSize={['md', 'sm']}
-                                            textAlign={'center'}
-                                            pt={'1px'}
-                                        >
-                                            + {productcolorsCSS.length - 3}
-                                        </Box>
-                                    </>
+                                        h={['24px', 6]}
+                                        px={2}
+                                        ml={1.5}
+                                        borderRadius={'10px'}
+                                        bg={'#D8D8D8'}
+                                        //borderWidth={1} borderColor={'gray.200'}
+                                        style={{
+                                            boxShadow: 'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
+                                        }}
+                                        borderWidth={'1px'}
+                                        borderColor={'white'}
+                                        fontWeight={'semibold'}
+                                        fontSize={['md', 'sm']}
+                                        textAlign={'center'}
+                                    >
+                                        +{productcolorsCSS.length - 3}
+                                    </Tag>
                                 }
                             </Box>
 
@@ -348,7 +346,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
 
                         </Link>
 
-                    </Box>
+                    </Box >
                     <Box
                         display={'flex'}
                         mt={2}
@@ -374,24 +372,18 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                             gap={1}
 
                         >
-                            {product.price?.v2 && <Text
+                            {
+                                typeof product?.price?.v2 === 'number' &&
+                                typeof product?.price?.v1 === 'number' &&
+                                product?.price?.v2 < product?.price?.v1 && <Text
 
-                                fontSize={'md'}
-                                fontWeight={'semibold'}
-                                color={'#909090'}
-                                decoration={'line-through'}
-                            >
-                                {formatNumberWithTwoDecimals(Number(product.price?.v1))}€
-                            </Text>}
-                            {product.price?.v2 && <Text
-
-                                fontSize={'md'}
-                                fontWeight={'semibold'}
-                                color={'#909090'}
-                                decoration={'line-through'}
-                            >
-                                {formatNumberWithTwoDecimals(Number(product.price?.v1))}
-                            </Text>}
+                                    fontSize={'md'}
+                                    fontWeight={'semibold'}
+                                    color={'#909090'}
+                                    decoration={'line-through'}
+                                >
+                                    {formatNumberWithTwoDecimals(Number(product.price?.v1))}
+                                </Text>}
                             <Text
                                 fontSize={'md'}
                                 fontWeight={'semibold'}

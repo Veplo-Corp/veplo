@@ -10,15 +10,14 @@ import { getFromLocalStorage } from '../utils/getFromLocalStorage'
 import ButtonClose from '../atoms/ButtonClose'
 import { Cancel, NavArrowRight, Search } from 'iconoir-react'
 
-const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, closeDrawer }) => {
+const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void, onConfirmText: (text: string) => void }> = ({ isOpen, closeDrawer, onConfirmText }) => {
 
     const router = useRouter();
     const [textSearched, setTextSearched] = useState('')
     const onConfirm = (e: any) => {
         if (e.key === 'Enter' || e.key === undefined) {
             if (textSearched.length <= 0) return
-            console.log(textSearched);
-
+            onConfirmText(textSearched)
             setTextSearched('')
             closeDrawer()
         }

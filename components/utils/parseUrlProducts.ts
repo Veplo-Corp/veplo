@@ -1,4 +1,4 @@
-import { CategoryType } from "../mook/categories";
+import { Univers } from "../mook/categories";
 import { findMacrocategoryName } from "./find_macrocategory_name";
 import { findMicrocategoryName } from "./find_microcategory_name";
 
@@ -11,7 +11,7 @@ export interface ParsedURL {
 
 
 
-export const parseURLProducts = (urlSegments: string[], productsType: CategoryType): ParsedURL | Error => {
+export const parseURLProducts = (urlSegments: string[], productsType: Univers): ParsedURL | Error => {
     const numSegments: number = urlSegments.length;
 
     if (numSegments !== 3) {

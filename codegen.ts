@@ -1,7 +1,7 @@
 import { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
-    schema: 'https://railway.veplo.it/query' /* 'https://dev.veplo.it/graphql' */,
+    schema: 'https://dev.veplo.it/query' /* 'https://dev.veplo.it/graphql' */,
     documents: [
         './src/lib/apollo/mutations/**/*.js',
         './src/lib/apollo/queries/**/*.js',

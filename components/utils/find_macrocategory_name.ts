@@ -1,7 +1,7 @@
-import { CATEGORIES, Category, CategoryType } from './../mook/categories';
+import { CATEGORIES, Category, Univers } from './../mook/categories';
 
 
-export const findMacrocategoryName = (name: string, gender: string, productsType: CategoryType): string | null => {
+export const findMacrocategoryName = (name: string, gender: string, productsType: Univers): string | null => {
     console.log('Name', name);
     const index = gender === 'donna' ? 0 : 1
     //TODO Gestire GategoryType!

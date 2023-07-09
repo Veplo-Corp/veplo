@@ -15,10 +15,10 @@ import Box_Dress from '../../../../components/molecules/Box_Dress';
 import { LIST_ITEM_VARIANT } from '../../../../components/mook/transition';
 import { useLazyQuery } from '@apollo/client';
 import { setInLocalStorage } from '../../../../components/utils/setInLocalStorage';
-import { changeCategoryType, changeGenderSelected } from '../../../store/reducers/user';
+import { changeUnivers, changeGenderSelected } from '../../../store/reducers/user';
 import { useDispatch } from 'react-redux';
 import { parseSlugUrlFilter } from '../../../../components/utils/parseUrlFilters';
-import { CATEGORIES, CategoryType } from '../../../../components/mook/categories';
+import { CATEGORIES, Univers } from '../../../../components/mook/categories';
 import createUrlSchema from '../../../../components/utils/create_url';
 import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First_Letter';
 import Link from 'next/link';
@@ -27,10 +27,10 @@ import { Cancel, Filter, NavArrowDown } from 'iconoir-react';
 import { getParamsFiltersFromObject } from '../../../../components/utils/getParamsFiltersFromObject';
 import FiltersSelections from '../../../../components/organisms/FiltersSelections';
 import TagFilter, { FilterAccepted } from '../../../../components/atoms/TagFilter';
-import { getCategoryType } from '../../../../components/utils/getCategoryType';
+import { getUnivers } from '../../../../components/utils/getUnivers';
 
 
-const RANGE = process.env.NODE_ENV === 'production' ? 12 : 12
+const RANGE = process.env.NODE_ENV === 'production' ? 12 : 3
 
 
 export async function getStaticPaths() {
@@ -44,9 +44,8 @@ export async function getStaticPaths() {
 export async function getStaticProps(ctx: any) {
     const { slug, prodotti } = ctx.params;
     const apolloClient = initApollo()
-    const productsType = prodotti === 'accessori' ? prodotti : 'abbigliamento'
-    const parsedURL: ParsedURL | Error = parseURLProducts(slug, productsType);
-    console.log(parsedURL);
+    const univers = prodotti === 'accessori' ? prodotti : 'abbigliamento'
+    const parsedURL: ParsedURL | Error = parseURLProducts(slug, univers);
 
 
     if (parsedURL instanceof Error) {
@@ -55,7 +54,7 @@ export async function getStaticProps(ctx: any) {
             props: {
                 slug: {},
                 error: 'Errore',
-                typeProductsProps: productsType
+                universProps: univers
             },
             // notFound: true,
             revalidate: 1 //seconds
@@ -71,7 +70,8 @@ export async function getStaticProps(ctx: any) {
                 offset: 0,
                 limit: RANGE,
                 filters: {
-                    ...newParseURL
+                    ...newParseURL,
+                    univers
                 },
             }
         })
@@ -80,7 +80,7 @@ export async function getStaticProps(ctx: any) {
                 //TODO eliminare newParseURL non appena tommaso gestisce il sorting
                 filtersProps: newParseURL,
                 dataProducts: data?.products?.products,
-                typeProductsProps: productsType
+                universProps: univers
             },
             revalidate: 10 //seconds
         }
@@ -91,7 +91,7 @@ export async function getStaticProps(ctx: any) {
                 filtersProps: newParseURL,
                 products: [],
                 error: 'errore',
-                typeProductsProps: productsType
+                universProps: univers
             },
             // notFound: true,
             revalidate: 1 //seconds
@@ -108,28 +108,31 @@ export interface ProductsFilter extends ParsedURL {
     sale?: string
 }
 
-const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Product[], typeProductsProps: CategoryType }> = ({ filtersProps, error, dataProducts, typeProductsProps }) => {
+const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Product[], universProps: Univers }> = ({ filtersProps, error, dataProducts, universProps }) => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(true);
     const [products, setProducts] = useState<Product[]>([])
     const [filters, setFilters] = useState<ProductsFilter>(filtersProps)
     const [getProducts, { loading, refetch, data, subscribeToMore }] = useLazyQuery<ProductsQuery>(GET_PRODUCTS);
     const [hasMoreData, setHasMoreData] = useState(true);
-    const [typeProducts, setTypeProducts] = useState<'abbigliamento' | 'accessori'>('abbigliamento')
+    const [univers, setUnivers] = useState<'abbigliamento' | 'accessori'>('abbigliamento')
     const [resetProducts, setResetProducts] = useState(false)
     const dispatch = useDispatch();
     const isSmallView = useBreakpointValue({ base: true, lg: false });
+    const { asPath } = useRouter();
 
 
-    console.log(filters);
 
 
     useEffect(() => {
+        if (typeof window === 'undefined') return
+        console.log(window.history);
+
         if (!router.isReady) return
-        setInLocalStorage('setTypeProduct', typeProductsProps)
-        setTypeProducts(typeProductsProps)
+        setInLocalStorage('univers', universProps)
+        setUnivers(universProps)
         dispatch(
-            changeCategoryType(typeProductsProps)
+            changeUnivers(universProps)
         );
         setIsLoading(true)
         setHasMoreData(true)
@@ -190,7 +193,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 limit: RANGE,
                                 //inserire la microcategoria
                                 filters: {
-                                    ...newFilters
+                                    ...newFilters,
+                                    univers
                                 }
                             }
                         })
@@ -217,7 +221,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const fetchMoreData = async () => {
 
 
-        if (products.length % RANGE !== 0 || products.length <= RANGE) {
+        if (products.length % RANGE !== 0 || products.length < RANGE) {
             setHasMoreData(false)
             return console.log('no more data');
         }
@@ -230,7 +234,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                     limit: RANGE,
                     //inserire la microcategoria
                     filters: {
-                        ...filters
+                        ...filters,
+                        univers: univers
                     }
                 }
             })
@@ -256,8 +261,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     }, [filters?.gender])
 
     useEffect(() => {
-        if (!data) return setHasMoreData(false)
-        console.log('ECCOLOOOO', data);
+        if (!data) return /* setHasMoreData(false) */
 
         const newProducts = data.products.products ? data.products.products : [];
         if (newProducts.length % RANGE !== 0 || newProducts.length <= 0) {
@@ -297,7 +301,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         const sortUrl = SORT_PRODUCT.find(element => element.url === e.target.value)?.url
         router.replace({
-            pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sortUrl ? sortUrl : 'rilevanza'}`,
+            pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sortUrl ? sortUrl : 'rilevanza'}`,
             query: {
                 ...filtersParams
             }
@@ -310,13 +314,13 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         if (filterParameter === 'macroCategory') {
             return router.push({
                 //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
-                pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${createUrlSchema([value])}/tutto/rilevanza`,
+                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${createUrlSchema([value])}/tutto/rilevanza`,
             })
         }
         if (filterParameter === 'microCategory') {
             return router.push({
                 //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
-                pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${createUrlSchema([value])}/rilevanza`,
+                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${createUrlSchema([value])}/rilevanza`,
                 query: {
                     ...filtersParams
                 }
@@ -330,7 +334,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             //filterParameter === 'fit' || filterParameter === 'length' || filterParameter === 'materials' || filterParameter === 'traits'
         ) {
             return router.push({
-                pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
                 query: {
                     ...filtersParams,
                     [filterParameter]: value.toLocaleLowerCase()
@@ -342,7 +346,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
             const size = value?.split(' (')[0].toLocaleLowerCase()
             return router.push({
-                pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
                 query: {
                     ...filtersParams,
                     sizes: size ? [value.split(' (')[0].toLocaleLowerCase()] : null
@@ -353,7 +357,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
             if (value === 'true') {
                 return router.push({
-                    pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                    pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
                     query: {
                         ...filtersParams,
                         sale: value
@@ -362,7 +366,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             } else {
                 const { sale, ...newFilterParameters } = filtersParams
                 return router.push({
-                    pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                    pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
                     query: {
                         ...newFilterParameters,
                     }
@@ -377,7 +381,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         if (paramters === 'macroCategory') {
             //TODO inserire sorting
             return router.push({
-                pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/rilevanza`,
+                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/rilevanza`,
             })
         }
 
@@ -385,7 +389,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             let filtersParams: any = getParamsFiltersFromObject(filters)
             //TODO inserire sorting
             return router.push({
-                pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/tutto/rilevanza`,
+                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/tutto/rilevanza`,
                 query: {
                     ...filtersParams
                 }
@@ -395,7 +399,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         delete filtersParams[paramters]
         //TODO inserire sorting
         return router.push({
-            pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+            pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
             query: {
                 ...filtersParams
             }
@@ -405,7 +409,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const routerConfirmDrawerFilter = (filtersDrawerModal: ProductsFilter | undefined) => {
         if (!filtersDrawerModal) {
             return router.push({
-                pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/tutto/rilevanza`,
+                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/tutto/rilevanza`,
             })
         }
         if (typeof filtersDrawerModal.sizes?.[0] === 'string') {
@@ -419,9 +423,11 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         let filtersParams = getParamsFiltersFromObject(filtersDrawerModal)
 
+
+
         //TODO inserire sorting
         return router.push({
-            pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filtersDrawerModal.macroCategory === 'string' && filtersDrawerModal.macroCategory !== '' ? filtersDrawerModal.macroCategory.toLowerCase() : 'tutto'}/${filtersDrawerModal.microCategory ? createUrlSchema([filtersDrawerModal.microCategory]) : 'tutto'}/rilevanza`,
+            pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filtersDrawerModal.macroCategory === 'string' && filtersDrawerModal.macroCategory !== '' ? filtersDrawerModal.macroCategory.toLowerCase() : 'tutto'}/${filtersDrawerModal.microCategory ? createUrlSchema([filtersDrawerModal.microCategory]) : 'tutto'}/rilevanza`,
             query: {
                 ...filtersParams
             }
@@ -468,10 +474,10 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             <NoIndexSeo />
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
-                title={`${typeof filters.macroCategory === 'string' ? toUpperCaseFirstLetter(filters.macroCategory) : toUpperCaseFirstLetter(typeProducts)} ${filters.gender === 'f' ? 'donna' : 'uomo'} | Veplo`}
-                subtitle={`${typeof filters.macroCategory === 'string' ? `${typeof filters.macroCategory} da ${filters.gender === 'f' ? 'donna' : 'uomo'}` : `${toUpperCaseFirstLetter(typeProducts)} da ${filters.gender === 'f' ? 'donna' : 'uomo'}`} su Veplo | Acquista dai migliori brand made in Italy senza intermediari su Veplo | Abbigliamento · Accessori · Scarpe · Vestiti`}
+                title={`${typeof filters.macroCategory === 'string' ? toUpperCaseFirstLetter(filters.macroCategory) : toUpperCaseFirstLetter(univers)} ${filters.gender === 'f' ? 'donna' : 'uomo'} | Veplo`}
+                subtitle={`${typeof filters.macroCategory === 'string' ? `${typeof filters.macroCategory} da ${filters.gender === 'f' ? 'donna' : 'uomo'}` : `${toUpperCaseFirstLetter(univers)} da ${filters.gender === 'f' ? 'donna' : 'uomo'}`} su Veplo | Acquista dai migliori brand made in Italy senza intermediari su Veplo | Abbigliamento · Accessori · Scarpe · Vestiti`}
                 image={''}
-                description={`${typeof filters.macroCategory === 'string' ? `${typeof filters.macroCategory} da ${filters.gender === 'f' ? 'donna' : 'uomo'}` : `${toUpperCaseFirstLetter(typeProducts)} da ${filters.gender === 'f' ? 'donna' : 'uomo'}`} su Veplo | Acquista dai migliori brand made in Italy senza intermediari su Veplo | Abbigliamento · Accessori · Scarpe · Vestiti`}
+                description={`${typeof filters.macroCategory === 'string' ? `${typeof filters.macroCategory} da ${filters.gender === 'f' ? 'donna' : 'uomo'}` : `${toUpperCaseFirstLetter(univers)} da ${filters.gender === 'f' ? 'donna' : 'uomo'}`} su Veplo | Acquista dai migliori brand made in Italy senza intermediari su Veplo | Abbigliamento · Accessori · Scarpe · Vestiti`}
             />
 
             <div className='relative  min-h-[120vh]'>
@@ -483,7 +489,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             minWidth={'3xs'}
                             className='flex mt-2 lg:mt-4 gap-4 lg:gap-5 overflow-x-auto'
                         >
-                            {Object.values(CATEGORIES)[filters.gender === 'm' ? 1 : 0][typeProducts].sort((a: any, b: any) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1).map((element: any) => {
+                            {Object.values(CATEGORIES)[filters.gender === 'm' ? 1 : 0][univers].sort((a: any, b: any) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1).map((element: any) => {
                                 return (
                                     <Box
                                         key={element.name}
@@ -494,9 +500,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                             prefetch={false}
                                             href={element.url === createUrlSchema([filters?.macroCategory ? filters?.macroCategory : ''])
                                                 ?
-                                                '/' + typeProductsProps + '/' + (filters.gender == 'm' ? 'uomo' : 'donna') + '-tutto/tutto/rilevanza'
+                                                '/' + universProps + '/' + (filters.gender == 'm' ? 'uomo' : 'donna') + '-tutto/tutto/rilevanza'
                                                 :
-                                                '/' + typeProductsProps + '/' + (filters.gender == 'm' ? 'uomo' : 'donna') + '-' + element.url + '/tutto/rilevanza'
+                                                '/' + universProps + '/' + (filters.gender == 'm' ? 'uomo' : 'donna') + '-' + element.url + '/tutto/rilevanza'
                                             }
                                         >
                                             <Text
@@ -514,8 +520,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             })}
                         </Box>
                         <Select
-                            width={typeProducts === 'abbigliamento' ? 'fit-content' : typeProducts.length * 14.2 + 'px'}
-                            value={typeProducts}
+                            width={univers === 'abbigliamento' ? 'fit-content' : univers.length * 14.2 + 'px'}
+                            value={univers}
                             onChange={(event) => {
                                 console.log(event.target.value);
                                 return router.push({
@@ -555,7 +561,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 display={'flex'}
                             >
                                 <FiltersSelections
-                                    typeProducts={typeProducts}
+                                    univers={univers}
                                     filters={filters}
                                     handleConfirmChange={changeRouter}
                                     filterDrawerConfirm={routerConfirmDrawerFilter}
@@ -571,7 +577,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                         }
                                         //TODO gestire sorting appena possibile
                                         router.replace({
-                                            pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                                            pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
                                             query: {
                                                 ...filtersParams,
                                                 ...newParams
@@ -580,7 +586,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     }}
                                     handleChangeMacroCategory={(value: string) => {
                                         return router.push({
-                                            pathname: `/${typeProductsProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${value !== '' ? value.toLowerCase() : 'tutto'}/tutto/rilevanza`,
+                                            pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${value !== '' ? value.toLowerCase() : 'tutto'}/tutto/rilevanza`,
                                         })
                                     }}
                                 />
@@ -670,14 +676,14 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
                         {!isLoading && products ?
                             (<InfiniteScroll
-                                className='mb-[100vh]'
-                                scrollThreshold={products && products.length <= RANGE * 2 ? 0.80 : products && products.length < 50 ? 0.95 : 0.97}
+                                className={products.length > 10 ? 'mb-[100vh]' : 'mb-[20vh]'}
+                                scrollThreshold={products && products.length <= RANGE * 2 ? 0.70 : products && products.length < 50 ? 0.95 : 0.97}
                                 dataLength={products?.length}
                                 next={fetchMoreData}
                                 hasMore={hasMoreData}
                                 loader={
                                     <>
-                                        {products[3] &&
+                                        {products[2] &&
 
                                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 gap-y-5 w-full">
                                                 {isSmallView ?

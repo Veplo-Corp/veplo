@@ -1,4 +1,15 @@
 import { Product } from './product.interface';
+
+export interface AddressShop {
+    postcode: string,
+    city: string,
+    street: string,
+    location: {
+        type: String
+        coordinates: number[]
+    }
+}
+
 export interface Shop {
     id: string,
     businessId: string,
@@ -17,15 +28,7 @@ export interface Shop {
     }
     profileCover: string,
     profilePhoto: string,
-    address: {
-        postcode: string,
-        city: string,
-        street: string,
-        location: {
-            type: String
-            coordinates: number[]
-        }
-    },
+    address: AddressShop,
     minimumAmountForFreeShipping?: number
 }
 
