@@ -270,6 +270,7 @@ const index = () => {
                     return console.log('errore');
                 }
                 price["v1"] = v1
+
             }
         }
 
@@ -277,13 +278,13 @@ const index = () => {
 
             const v1 = Math.floor(Number(productElement.price.v1.replace(',', '.')) * 100)
             const v2 = Math.floor(Number(productElement.price.v2.replace(',', '.')) * 100)
-            if (v2 !== 0 && v2 < v1) {
+            if (v2 !== 0 && v2 <= v1) {
                 price["v2"] = v2
             }
         }
         else if (typeof productElement.price.v2 === 'string' && product?.price.v1) {
             const v2 = Math.floor(Number(productElement.price.v2.replace(',', '.')) * 100)
-            if (v2 !== 0 && v2 < product?.price.v1) {
+            if (v2 !== 0 && v2 <= product?.price.v1) {
                 price["v1"] = product?.price.v1
                 price["v2"] = v2
             }
@@ -293,6 +294,9 @@ const index = () => {
         if (Object.keys(price).length > 0) {
             options["price"] = price
         }
+
+        console.log(price);
+
 
 
 
