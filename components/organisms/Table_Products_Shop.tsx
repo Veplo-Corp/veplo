@@ -368,11 +368,11 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                                         paddingLeft={[2, 4]}
                                     >
                                         <span
-                                            className={`${product.price?.v2 ? 'line-through text-gray-500' : ''}`}
+                                            className={`${product.price?.v2 < product.price?.v1 ? 'line-through text-gray-500' : ''}`}
                                         >
                                             {formatNumberWithTwoDecimals(product.price.v1)}€
                                         </span>
-                                        {product.price?.v2 && <span
+                                        {product.price?.v2 < product.price?.v1 && <span
                                         > {formatNumberWithTwoDecimals(product.price.v2)}€
                                         </span>}
                                     </Td>
