@@ -65,6 +65,11 @@ const GET_USER = gql`
                     stripeId
                     id
                     name
+                    address{
+                        postcode
+                        city
+                        street
+                    }
                 }
                 shipping{
                     url

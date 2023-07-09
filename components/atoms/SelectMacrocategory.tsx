@@ -1,10 +1,10 @@
 import { FC, Fragment, useEffect, useRef, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import { CATEGORIES, Categories, CategoryType } from '../mook/categories'
+import { CATEGORIES, Categories, Univers } from '../mook/categories'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 
-const SelectMacrocategory: FC<{ typeProduct: CategoryType, selectedValueBefore: string | undefined, handleClick: (value: any) => void }> = ({ selectedValueBefore, handleClick, typeProduct }) => {
+const SelectMacrocategory: FC<{ univers: Univers, selectedValueBefore: string | undefined, handleClick: (value: any) => void }> = ({ selectedValueBefore, handleClick, univers }) => {
     const [selected, setSelected] = useState<string>();
     const categories = useRef(CATEGORIES)
 
@@ -23,8 +23,8 @@ const SelectMacrocategory: FC<{ typeProduct: CategoryType, selectedValueBefore: 
 
     return (
         <Listbox value={selected} onChange={(value) => handleEvent(value)}>
-            <div className={`z-1 relative mt-1 border border-gray rounded-lg text-xs ${true ? 'bg-white' : 'bg-gray-200'}`}>
-                <Listbox.Button className="cursor-default w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-sm  leading-5 text-gray-900 focus:ring-0">
+            <div className={`z-1 relative mt-1 border border-gray rounded-lg text-base ${true ? 'bg-white' : 'bg-gray-200'}`}>
+                <Listbox.Button className="cursor-default w-full border-none py-3.5 rounded-lg pl-3 pr-10 text-base  leading-5 text-gray-900 focus:ring-0">
 
                     {selected ? <span className="block truncate text-start">{selected} </span> : <span className="block truncate text-start text-white">--</span>}
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -41,7 +41,7 @@ const SelectMacrocategory: FC<{ typeProduct: CategoryType, selectedValueBefore: 
                     leaveTo="opacity-0"
                 >
 
-                    <Listbox.Options className="z-10 bg-white absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-whitetext-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    <Listbox.Options className="z-10 bg-white absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-whitetext-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-base">
                         {Object.keys(categories.current).map((gender: string, indexObject: number) => {
                             return (
                                 <div key={indexObject}>
@@ -51,7 +51,7 @@ const SelectMacrocategory: FC<{ typeProduct: CategoryType, selectedValueBefore: 
                                     >
                                         {toUpperCaseFirstLetter(gender)}
                                     </span>
-                                    {Object.values(categories.current)[indexObject][typeProduct].map((value: any, valueIdx: number) => {
+                                    {Object.values(categories.current)[indexObject][univers].map((value: any, valueIdx: number) => {
                                         return (
                                             <Listbox.Option
                                                 key={valueIdx}

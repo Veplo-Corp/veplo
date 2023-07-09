@@ -1,4 +1,4 @@
-import { CategoryType } from './../../components/mook/categories';
+import { Univers } from './../../components/mook/categories';
 export interface Firebase_User {
     email: string,
     uid: string,

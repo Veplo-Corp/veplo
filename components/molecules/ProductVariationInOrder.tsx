@@ -73,7 +73,7 @@ const ProductVariationInOrder: FC<{ variation: ProductVariationInOrder }> = ({ v
                             justifyContent={'end'}
                             textAlign={'end'}
                         >
-                            {variation?.price.discountPercentage && variation.price.discountPercentage > 0 &&
+                            {typeof variation?.price.discountPercentage === 'number' && variation.price.discountPercentage > 0 &&
                                 <Tag
                                     size={['xs', 'sm']}
                                     px={2}

@@ -6,7 +6,7 @@ import { Center, ChakraProvider, CircularProgress } from '@chakra-ui/react'
 import { extendTheme } from "@chakra-ui/react"
 import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from '../store/store'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { auth, onAuthStateChanged, signOut } from '../config/firebase'
 import user, { addFavouriteShopBusiness, login, logout } from '../store/reducers/user'
 import { setAddress } from '../store/reducers/address_user'
@@ -503,6 +503,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
 
 
 
+
   return (
     <Provider store={store}>
       <ApolloProvider client={apolloClient} > {/* client={clientApollo} */}
@@ -532,5 +533,6 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
 
   )
 }
+
 
 export default MyApp
