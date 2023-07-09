@@ -21,7 +21,7 @@ import ModalReausable from '../../../../components/organisms/ModalReausable';
 import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 import LoginAndRegistrationForm from '../../../../components/organisms/LoginAndRegistrationForm';
 
-const SHIPPING_COST = 4.99;
+const SHIPPING_COST = 499;
 
 const index = () => {
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);

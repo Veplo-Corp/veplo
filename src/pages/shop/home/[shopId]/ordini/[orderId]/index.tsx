@@ -14,7 +14,7 @@ import { ToastOpen } from '../../../../../../../components/utils/Toast'
 import { Firebase_User } from '../../../../../../interfaces/firebase_user.interface'
 import { Order } from '../../../../../../interfaces/order.interface'
 import ADD_CODE_AND_COURIER_TO_ORDER from '../../../../../../lib/apollo/mutations/addCodeAndCourierToOrder'
-//import ORDER_DELETED_BY_SHOP from '../../../../../../lib/apollo/mutations/orderDeletedByShop'
+import ORDER_DELETED_BY_SHOP from '../../../../../../lib/apollo/mutations/orderDeletedByShop'
 import RETURNED_ORDER_HAS_ARRIVED from '../../../../../../lib/apollo/mutations/returnedOrderHasArrived'
 import DENY_RETURN from '../../../../../../lib/apollo/mutations/denyReturn'
 
@@ -66,26 +66,26 @@ const index = () => {
         }
     })
 
-    // const [deleteOrderByShop] = useMutation(ORDER_DELETED_BY_SHOP, {
-    //     update(cache, el, query) {
-    //         console.log(cache);
-    //         console.log(el);
-    //         console.log(query);
-    //         const OrderCacheId = cache.identify({ id: query.variables?.orderId, __typename: 'Order' })
-    //         console.log(OrderCacheId);
-    //         cache.modify({
-    //             id: OrderCacheId, //productId
-    //             fields: {
-    //                 status(/* cachedvalue */) {
-    //                     return "CANC01"
-    //                 },
-    //             },
-    //             broadcast: false // Include this to prevent automatic query refresh
-    //         });
-    //         router.back()
-    //     }
+    const [deleteOrderByShop] = useMutation(ORDER_DELETED_BY_SHOP, {
+        update(cache, el, query) {
+            console.log(cache);
+            console.log(el);
+            console.log(query);
+            const OrderCacheId = cache.identify({ id: query.variables?.orderId, __typename: 'Order' })
+            console.log(OrderCacheId);
+            cache.modify({
+                id: OrderCacheId, //productId
+                fields: {
+                    status(/* cachedvalue */) {
+                        return "CANC01"
+                    },
+                },
+                broadcast: false // Include this to prevent automatic query refresh
+            });
+            router.back()
+        }
 
-    // })
+    })
 
     const [returnedOrderHasArrived] = useMutation(RETURNED_ORDER_HAS_ARRIVED, {
         update(cache, el, query) {
@@ -172,16 +172,16 @@ const index = () => {
     const deleteOrder = async () => {
         //TODO capire se esiste ancora sta roba
         //TODO come gestisce tommaso il cart quando sono finiti i prodotti?
-        // try {
-        //     await deleteOrderByShop({
-        //         variables: {
-        //             orderId: order?.id,
-        //         }
-        //     })
-        // } catch (error: any) {
-        //     console.log(error);
+        try {
+            await deleteOrderByShop({
+                variables: {
+                    orderId: order?.id,
+                }
+            })
+        } catch (error: any) {
+            console.log(error);
 
-        // }
+        }
     }
 
     const handleConfirmReturn = async () => {
