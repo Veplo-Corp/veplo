@@ -8,6 +8,7 @@ import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimal
 import { Cancel } from 'iconoir-react'
 import ButtonClose from '../atoms/ButtonClose'
 const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation: ProductVariation) => void, deleteVariation: (variation: ProductVariation) => void }> = ({ variation, toProduct, deleteVariation }) => {
+
     return (
         <Box
 
@@ -107,7 +108,7 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
                                 display={'flex'}
                                 justifyContent={'end'}
                             >
-                                {variation?.price?.discountPercentage && variation?.price?.discountPercentage > 0 &&
+                                {typeof variation?.price?.discountPercentage === 'number' && variation?.price?.discountPercentage > 0 &&
                                     <Tag
                                         size={['xs', 'sm']}
                                         px={2}

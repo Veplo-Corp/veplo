@@ -110,9 +110,10 @@ const User_Popover = () => {
                     {!user?.uid ?
                         (actionsNotLogged.map((action, id) => {
                             return (
-                                <Popover.Button key={id} className='text-left hover:scale-[0.98] px-4 py-[4px] pt-[8px]'>
+                                <Popover.Button key={id} className='text-left hover:scale-[0.98] '>
                                     <Box
-
+                                        paddingX={4}
+                                        paddingY={1.5}
                                         onClick={() => {
                                             router.push(action.href)
                                         }}
@@ -138,12 +139,13 @@ const User_Popover = () => {
                             )
                         })) : (actionsLogged.map((action, id) => {
                             return (
-                                <Popover.Button key={id} className='text-left hover:scale-[0.98] px-4 pt-[8px]'>
+                                <Popover.Button key={id} className='text-left hover:scale-[0.98]'>
                                     <Box
+                                        paddingX={4}
+                                        paddingY={1.5}
                                         onClick={async () => {
                                             if (action.name === 'Esci') {
                                                 console.log('eccolo');
-
                                                 await signOut(auth)
 
                                                 deleteAuthTokenInSessionStorage()
