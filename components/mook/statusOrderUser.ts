@@ -31,7 +31,7 @@ export const STATUS: {
         //*Codice ordine valido e inserimento url ordine
         {
             code: 'SHIP02',
-            text: 'Spedito',
+            text: 'In viaggio',
             color: 'grayTag.text',
             background: 'grayTag.bg'
         },
@@ -45,7 +45,7 @@ export const STATUS: {
         //*Business cancella ordine perchè non può inviare il prodotto ordinato
         {
             code: 'CANC01',
-            text: 'Ordine Cancellato dal Venditore',
+            text: 'Ordine Cancellato',
             color: 'cancelTag.text',
             background: 'cancelTag.bg'
         },
@@ -67,7 +67,7 @@ export const STATUS: {
         //*business riceve il reso e accetta reso
         {
             code: 'RET02',
-            text: 'Reso ricevuto e accettato',
+            text: 'Reso ricevuto',
             color: 'successTag.text',
             background: 'successTag.bg'
         },

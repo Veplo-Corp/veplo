@@ -1,13 +1,15 @@
-import { Box, Text } from '@chakra-ui/react'
+import { Avatar, Box, Center, Text, useBreakpointValue } from '@chakra-ui/react'
 import Link from 'next/link';
 import React, { FC } from 'react'
 import { Order } from '../../src/interfaces/order.interface'
 import { STATUS } from '../mook/statusOrderUser';
 import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals';
-import { getDateFromMongoDBDate } from '../utils/getDateFromMongoDBDate';
+import { DateFormat, getDateFromMongoDBDate } from '../utils/getDateFromMongoDBDate';
+import { imageKitUrl } from '../utils/imageKitUrl';
 
 
 const OrderCart: FC<{ order: Order }> = ({ order }) => {
+    const isSmallView = useBreakpointValue({ base: true, md: false });
 
 
 
@@ -17,60 +19,172 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
             prefetch={false}
             href={'/orders/' + order.id}
         >
-
             <Box
-                padding={10}
-                borderWidth={1}
-                borderColor={'gray.300'}
-                borderRadius={'2xl'}
-                _active={{
-                    transform: 'scale(0.99)',
-                }}
+                display={'flex'}
+                justifyContent={'space-between'}
+                mb={3}
             >
                 <Box
                     display={'flex'}
-                    justifyContent={'space-between'}
+                    gap={2}
                 >
-                    <Box>
+                    <Avatar
+                        name={order?.shop?.name ? order?.shop?.name : 'Errore'}
+                        src={order?.shop?.name ? imageKitUrl(order?.shop?.name, 100, 100) : ''}
+                        bg='white'
+                        height={['50px', '50px', '60px', '60px']}
+                        width={['50px', '50px', '60px', '60px']}
+                        borderWidth={'1px'}
+                        borderColor={'#F3F3F3'}
+                    />
+                    <Box
+                        my={'auto'}
+                    >
                         <Text
-                            fontSize={'lg'}
-                            fontWeight={'semibold'}
-                        >{order.shop.name}</Text>
+                            fontWeight={'black'}
+                            fontSize={['15px', '18px']}
+                            lineHeight={['16px', '19px']}
+                        >
+                            {order.shop.name}
+                        </Text>
                         <Text
-                            fontSize={'sm'}
-                            fontWeight={'normal'}
-                            mt={-1}
-                        >Ordine del {getDateFromMongoDBDate(order.createdAt)}</Text>
+                            fontWeight={'medium'}
+                            fontSize={['12px', '14px']}
 
+                            color={'#909090'}
+                        >
+                            #{order.code}
+                        </Text>
+                    </Box>
+
+                </Box>
+                <Text
+                    my={'auto'}
+                    fontWeight={['semibold', 'medium']}
+                    fontSize={['13px', '15px']}
+
+                    color={'#909090'}
+                >
+                    {getDateFromMongoDBDate(order.createdAt, DateFormat.onlyDate)}
+                </Text>
+            </Box>
+
+            <Box
+                borderWidth={1}
+                borderColor={'#F3F3F3'}
+                borderRadius={'15px'}
+                _active={{
+                    transform: 'scale(0.99)',
+                }}
+                display={'flex'}
+                width={'full'}
+                height={64}
+                alignItems={'center'}
+            >
+                <Box
+                    pl={5}
+                    width={isSmallView ? 'full' : '50%'}
+
+                >
+                    <Box
+                        display={'flex'}
+                    >
+                        <img loading='lazy'
+                            className='h-36 rounded-[10px] z-10'
+                            src={imageKitUrl(order.productVariations?.[0].photo)}
+                        />
+                        {order.productVariations?.[1]?.photo && <img loading='lazy'
+                            className='my-auto h-28 rounded-[10px] z-0 -ml-24'
+                            src={imageKitUrl(order.productVariations?.[1].photo)}
+                        />}
+
+                        {order?.productVariations?.length > 1 && <Text
+                            ml={5}
+                            my={'auto'}
+                            fontWeight={'bold'}
+                            fontSize={'18px'}
+
+                            color={'#909090'}
+                        >
+                            + altri {order.productVariations.length - 1} prodotti
+                        </Text>}
                     </Box>
                     <Box
-                        fontSize={'md'}
-                        fontWeight={'bold'}
+                        display={'flex'}
+                        justifyContent={'space-between'}
+                        height={'full'}
+                        mt={5}
                     >
-                        {formatNumberWithTwoDecimals(Number(order?.totalDetails?.total))}€
+                        <Box
+                            width={52}
+                            textAlign={'center'}
+
+                            paddingY={2}
+                            borderRadius={'10px'}
+                            bgColor={STATUS.find(status => status.code === order.status)?.background}
+                            fontSize={'17px'}
+                            color={STATUS.find(status => status.code === order.status)?.color}
+                            fontWeight={'semibold'}
+                        >
+                            {STATUS.find(status => status.code === order.status)?.text}
+                        </Box>
+                        <Text
+                            my="auto"
+                            fontWeight="semibold"
+                            fontSize="16px"
+                            color={"#2A2A2A"}
+                            mr={5}
+                        >
+                            {formatNumberWithTwoDecimals(order?.totalDetails?.total)}€
+                        </Text>
                     </Box>
+
+
                 </Box>
-                <Box
-                    mt={12}
-                    display={'flex'}
-                    justifyContent={'space-between'}
+                {!isSmallView &&
+                    <>
+                        <Box
+                            marginY={5}
+                            minH='48'
+                            className="w-[1px]
+                     bg-[#F3F3F3]"
+                        ></Box>
+                        <Box
+                            width={'50%'}
+                            pl={6}
+                            pr={8}
+                        >
+                            {order.history.slice(-3).map((singleOrder, index) => (
+                                <React.Fragment key={index}>
+                                    <Box
+                                        display="flex"
+                                        justifyContent="space-between"
+                                    >
+                                        <Text
+                                            fontWeight="bold"
+                                            fontSize="17px"
+                                        >
+                                            {STATUS.find(element => element.code === singleOrder.status)?.text}
+                                        </Text>
+                                        <Text
+                                            my="auto"
+                                            fontWeight="medium"
+                                            fontSize="11px"
+                                            color="#909090"
+                                        >
+                                            {getDateFromMongoDBDate(singleOrder.date, DateFormat.completeDate)}
+                                        </Text>
+                                    </Box>
+                                    {order.history.slice(-3).length > index + 1 && index !== 2 && ( // Aggiungi il divider solo se non è l'ultimo elemento
+                                        <div className="ml-2 h-4 border-l border-dashed border-gray-900 my-2" />
+                                    )}
+                                </React.Fragment>
+                            ))}
+                        </Box>
+                    </>
 
-                >
-                    <Text
-                        my={'auto'}
-                        alignItems={'start'}
-                        verticalAlign={'baseline'}
-                        fontSize={'lg'}
-                        fontWeight={'semibold'}
-                    >
-                        {STATUS.find(status => status.code === order.status) ? STATUS.find(status => status.code === order.status)?.text : ''}
-                    </Text>
+                }
 
-
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10 my-auto mb-0">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
-                </Box>
             </Box>
         </Link>
 

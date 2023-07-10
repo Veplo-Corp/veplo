@@ -15,27 +15,25 @@ const index = () => {
     return (
         <>
             {orders ? (
-                <Desktop_Layout>
-                    <div
-                        className='w-full sm:w-9/12 md:w-3/4 xl:w-1/2 m-auto mt-4 md:mt-8'
+                <Box
+                    className='min-h-[100vh] w-[95%] sm:w-11/12 md:w-11/12 lg:w-9/12 2xl:w-6/12 m-auto mt-4 md:mt-8'
+                >
+                    <VStack
+                        gap={8}
+                        width={'full'}
                     >
-                        <VStack
-                            gap={4}
-                            width={'full'}
-                        >
 
-                            {orders.map((order, index) => {
-                                return (
-                                    <div key={index} className='w-full'>
-                                        <OrderCart order={order} />
-                                    </div>
-                                )
-                            })}
-                        </VStack>
+                        {orders.map((order, index) => {
+                            return (
+                                <div key={index} className='w-full'>
+                                    <OrderCart order={order} />
+                                </div>
+                            )
+                        })}
+                    </VStack>
 
-                    </div>
+                </Box>
 
-                </Desktop_Layout>
             ) :
                 (
                     <Loading />

@@ -24,7 +24,7 @@ import { Order } from '../../src/interfaces/order.interface'
 import { STATUS_ORDER_SHOP } from '../mook/statusOrderBusiness';
 import { useRouter } from 'next/router';
 import { isMobile } from 'react-device-detect';
-import { getDateFromMongoDBDate } from '../utils/getDateFromMongoDBDate';
+import { DateFormat, getDateFromMongoDBDate } from '../utils/getDateFromMongoDBDate';
 import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals';
 
 
@@ -178,7 +178,7 @@ const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders
                                     <Text
                                         fontWeight={'normal'}
                                     >
-                                        {getDateFromMongoDBDate(order.createdAt)}
+                                        {getDateFromMongoDBDate(order.createdAt, DateFormat.onlyDate)}
                                     </Text>
                                 </Td>}
                                 <Td
