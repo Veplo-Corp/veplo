@@ -13,7 +13,7 @@ import createUrlSchema from '../../../../components/utils/create_url';
 import { imageKitUrl } from '../../../../components/utils/imageKitUrl';
 import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First_Letter';
 import { Order } from '../../../interfaces/order.interface';
-import { getDateFromMongoDBDate } from '../../../../components/utils/getDateFromMongoDBDate';
+import { DateFormat, getDateFromMongoDBDate } from '../../../../components/utils/getDateFromMongoDBDate';
 import ModalReausable from '../../../../components/organisms/ModalReausable';
 import FormReturn from '../../../../components/molecules/FormReturn';
 import { ToastOpen } from '../../../../components/utils/Toast';
@@ -255,9 +255,9 @@ const index = () => {
                                     mb={-1}
                                 >
                                     {order.status === 'SHIP03' ?
-                                        getDateFromMongoDBDate(order.history.find(status => status.status === 'SHIP03')?.date)
+                                        getDateFromMongoDBDate(order.history.find(status => status.status === 'SHIP03')?.date, DateFormat.onlyDate)
                                         :
-                                        getDateFromMongoDBDate(order.createdAt)
+                                        getDateFromMongoDBDate(order.createdAt, DateFormat.onlyDate)
                                     }
 
                                 </Text>
