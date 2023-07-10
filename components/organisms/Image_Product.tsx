@@ -28,12 +28,9 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
     const [fullImage, setfullImage] = useState<any>(undefined)
 
 
-    const zoomImage = (urlPhoto?: string) => {
-        if (urlPhoto) {
-            setfullImage(urlPhoto)
-        }
-        setisOpen(true)
-        return
+    const zoomImage = (photoUrl?: string) => {
+        if (photoUrl) setfullImage(photoUrl)
+        return setisOpen(true)
     }
 
 
@@ -222,6 +219,8 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                             pagination={{
                                 clickable: true
                             }}
+
+                            modules={[Pagination, Navigation]}
                         >
                             {variation.photos?.map((photoUrl, index) => {
                                 return (
