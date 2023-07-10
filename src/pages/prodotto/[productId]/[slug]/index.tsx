@@ -503,7 +503,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 if (element) {
                     setproductsLikeThis(element?.data?.product.productsLikeThis)
                 }
-            }, 200);
+            }, 500);
 
         }
     };
@@ -530,7 +530,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     />
                     <div className='md:flex justify-between w-full mb-5 lg:mb-0 gap-5'>
                         <Image_Product variation={variationSelected} />
-                        <Box className='md:block lg:w-[45%]'>
+                        <Box className='md:block lg:w-[45%] lg:mb-20'>
                             <Text
                                 fontWeight='medium'
                                 as='h2'
@@ -838,82 +838,82 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     >
                         {product.shopInfo.name}
                     </Box>
+                    <Link
+                        prefetch={false}
+                        href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
+                        <Box
+                            fontWeight='normal'
+                            as='h1'
+                            noOfLines={1}
+                            mb={5}
+                            className='text-xl md:text-2xl w-fit'
+                            lineHeight={'normal'}
+                        >
+                            Altri prodotti di <span className='underline '>{product.shopInfo.name}</span>
+                        </Box>
+                    </Link>
                     <InView as="div" onChange={(inView, entry) => { handleVisibilityChange(inView) }} >
-                        <Link
-                            prefetch={false}
-                            href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
-                            <Box
-                                fontWeight='normal'
-                                as='h1'
-                                noOfLines={1}
-                                mb={5}
-                                className='text-xl md:text-2xl w-fit'
-                                lineHeight={'normal'}
-                            >
-                                Altri prodotti di <span className='underline '>{product.shopInfo.name}</span>
-                            </Box>
-                        </Link>
-                    </InView>
-                    <div
-                        className="overflow-x-scroll flex gap-4 pb-4 min-h-[300px]"
-                    >
-                        <AnimatePresence>
+                        <div
+                            className="overflow-x-scroll flex gap-4 pb-4 min-h-[300px]"
+                        >
+                            <AnimatePresence>
 
-                            {productsLikeThis && productsLikeThis.map((product: Product, index: number) => {
-                                //motion
-                                const listItemVariants = {
-                                    visible: {
-                                        opacity: 1,
-                                        y: 0,
-                                        transition: {
-                                            delay: index * 0.1,
-                                            duration: 0.5,
-                                            ease: "easeOut",
+                                {productsLikeThis && productsLikeThis.map((product: Product, index: number) => {
+                                    //motion
+                                    const listItemVariants = {
+                                        visible: {
+                                            opacity: 1,
+                                            y: 0,
+                                            transition: {
+                                                delay: index * 0.1,
+                                                duration: 0.5,
+                                                ease: "easeOut",
+                                            },
                                         },
-                                    },
-                                    hidden: {
-                                        opacity: 0,
-                                        y: 0,
-                                        transition: {
-                                            duration: 0.5,
-                                            ease: "easeOut",
+                                        hidden: {
+                                            opacity: 0,
+                                            y: 0,
+                                            transition: {
+                                                duration: 0.5,
+                                                ease: "easeOut",
+                                            },
                                         },
-                                    },
-                                };
-                                return (
-                                    <div
-                                        key={product.id}
-                                        className={'flex gap-4 w-fit'} >
-                                        <Box
-                                            overflow='hidden'
-                                            mb={2}
-                                            className={`lg:w-96 w-72 `}/*  aspect-[8.5/12] */
-                                        >
-                                            <motion.div
-                                                key={product.id}
-                                                variants={listItemVariants}
-                                                initial="hidden"
-                                                animate="visible"
-                                                exit="hidden"
+                                    };
+                                    return (
+                                        <div
+                                            key={product.id}
+                                            className={'flex gap-4 w-fit'} >
+                                            <Box
+                                                overflow='hidden'
+                                                mb={2}
+                                                className={`lg:w-96 w-72 `}/*  aspect-[8.5/12] */
                                             >
+                                                <motion.div
+                                                    key={product.id}
+                                                    variants={listItemVariants}
+                                                    initial="hidden"
+                                                    animate="visible"
+                                                    exit="hidden"
+                                                >
 
-                                                <Box_Dress
-                                                    overflowCards={true}
-                                                    productLink={`/prodotto/${product.id}/${product?.info?.brand}-${product.name}`}
-                                                    showStoreHeader={false} product={product} color={typeof colors === 'string' ? colors : undefined} />
-                                            </motion.div>
+                                                    <Box_Dress
+                                                        overflowCards={true}
+                                                        productLink={`/prodotto/${product.id}/${product?.info?.brand}-${product.name}`}
+                                                        showStoreHeader={false} product={product} color={typeof colors === 'string' ? colors : undefined} />
+                                                </motion.div>
 
-                                        </Box>
-                                    </div>
-                                )
+                                            </Box>
+                                        </div>
+                                    )
 
-                            })
+                                })
 
-                            }
-                        </AnimatePresence>
+                                }
+                            </AnimatePresence>
 
 
-                    </div>
+                        </div>
+                    </InView>
 
                 </Box >
 

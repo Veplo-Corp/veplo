@@ -20,3 +20,5 @@ export const uploadImage = async (image: File, proportion: UploadEventType): Pro
         throw error;
     }
 }
+
+

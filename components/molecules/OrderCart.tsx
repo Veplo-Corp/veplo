@@ -152,7 +152,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                         <Box
                             width={'50%'}
                             pl={6}
-                            pr={8}
+                            pr={4}
                         >
                             {order.history.slice(-3).map((singleOrder, index) => (
                                 <React.Fragment key={index}>
@@ -169,7 +169,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                                         <Text
                                             my="auto"
                                             fontWeight="medium"
-                                            fontSize="11px"
+                                            fontSize="12px"
                                             color="#909090"
                                         >
                                             {getDateFromMongoDBDate(singleOrder.date, DateFormat.completeDate)}

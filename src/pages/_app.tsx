@@ -500,7 +500,11 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
 
 
 
-
+  useEffect(() => {
+    window.scrollTo({
+      top: 0
+    });
+  }, [])
 
 
 
