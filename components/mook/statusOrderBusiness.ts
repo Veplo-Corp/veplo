@@ -85,7 +85,7 @@ export const STATUS_ORDER_SHOP = [
         code: 'REF01',
         payment: {
             text: 'Rimborsato',
-            color: 'red'
+            color: 'green'
         },
         orderStatus: {
             text: 'Rimborsato',
@@ -138,7 +138,7 @@ export const STATUS_ORDER_SHOP = [
         code: 'REF02',
         payment: {
             text: 'Rimborsato',
-            color: 'red'
+            color: 'green'
         },
         orderStatus: {
             text: 'Ricevuto',
