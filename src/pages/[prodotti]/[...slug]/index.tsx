@@ -31,7 +31,7 @@ import { getUnivers } from '../../../../components/utils/getUnivers';
 import { getSortingFilter } from '../../../../components/utils/getSortingFilter';
 
 
-const RANGE = process.env.NODE_ENV === 'production' ? 12 : 3
+const RANGE = process.env.NODE_ENV === 'production' ? 12 : 12
 
 
 export async function getStaticPaths() {
