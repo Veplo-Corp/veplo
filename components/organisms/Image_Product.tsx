@@ -152,7 +152,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                 </ModalContent>
             </Modal >
 
-            <div className='flex space-x-3 lg:space-x-4 w-full min-h-[430px] md:min-h-0 md:w-7/12 lg:w-1/2'>
+            <div className='flex space-x-3 lg:space-x-4 w-full  md:min-h-0 md:w-7/12 lg:w-1/2'>
 
                 {!isSmallView ?
                     (
