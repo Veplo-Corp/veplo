@@ -224,13 +224,12 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                             {variation.photos?.map((photoUrl, index) => {
                                 return (
                                     <SwiperSlide key={index}
-
+                                        onClick={() => {
+                                            setfullImage(photoUrl)
+                                            zoomImage()
+                                        }}
                                     >
                                         <LazyLoadImage
-                                            onClick={() => {
-                                                setfullImage(photoUrl)
-                                                zoomImage()
-                                            }}
                                             src={imageKitUrl(photoUrl)}
                                             alt={''}
                                             className="w-full min-h-[240px] md:min-h-0 aspect-[4.8/5] object-cover"
