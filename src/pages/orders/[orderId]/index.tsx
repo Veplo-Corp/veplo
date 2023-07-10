@@ -319,7 +319,6 @@ const index = () => {
                                 margin={'auto'}
                                 width={'full'}
                                 mt={5}
-
                             >
                                 Traccia il mio pacco
                             </Button>
