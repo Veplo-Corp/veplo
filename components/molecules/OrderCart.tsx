@@ -98,7 +98,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                             src={imageKitUrl(order.productVariations?.[1].photo)}
                         />}
 
-                        {order?.productVariations?.length > 1 && <Text
+                        {order?.productVariations?.length > 2 && <Text
                             ml={5}
                             my={'auto'}
                             fontWeight={'bold'}
@@ -107,6 +107,16 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                             color={'#909090'}
                         >
                             + altri {order.productVariations.length - 1} prodotti
+                        </Text>}
+                        {order?.productVariations?.length === 2 && <Text
+                            ml={5}
+                            my={'auto'}
+                            fontWeight={'bold'}
+                            fontSize={'18px'}
+
+                            color={'#909090'}
+                        >
+                            + 1 prodotto
                         </Text>}
                     </Box>
                     <Box
