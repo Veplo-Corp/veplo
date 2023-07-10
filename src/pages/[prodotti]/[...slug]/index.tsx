@@ -176,6 +176,11 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         if (!filterParams) {
             setFilters(filtersProps)
             setProducts(dataProducts)
+            if (dataProducts.length % RANGE !== 0 || dataProducts.length < RANGE) {
+                setHasMoreData(false)
+                console.log('no more data');
+                return setIsLoading(false)
+            }
             return setIsLoading(false)
         }
 
