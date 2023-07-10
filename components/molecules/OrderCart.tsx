@@ -30,7 +30,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                 >
                     <Avatar
                         name={order?.shop?.name ? order?.shop?.name : 'Errore'}
-                        src={order?.shop?.name ? imageKitUrl(order?.shop?.name, 100, 100) : ''}
+                        src={order?.shop?.photo ? imageKitUrl(order?.shop?.photo, 100, 100) : ''}
                         bg='white'
                         height={['50px', '50px', '60px', '60px']}
                         width={['50px', '50px', '60px', '60px']}
@@ -98,7 +98,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                             src={imageKitUrl(order.productVariations?.[1].photo)}
                         />}
 
-                        {order?.productVariations?.length > 1 && <Text
+                        {order?.productVariations?.length > 2 && <Text
                             ml={5}
                             my={'auto'}
                             fontWeight={'bold'}
@@ -107,6 +107,16 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                             color={'#909090'}
                         >
                             + altri {order.productVariations.length - 1} prodotti
+                        </Text>}
+                        {order?.productVariations?.length === 2 && <Text
+                            ml={5}
+                            my={'auto'}
+                            fontWeight={'bold'}
+                            fontSize={'18px'}
+
+                            color={'#909090'}
+                        >
+                            + 1 prodotto
                         </Text>}
                     </Box>
                     <Box
@@ -176,7 +186,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                                         </Text>
                                     </Box>
                                     {order.history.slice(-3).length > index + 1 && index !== 2 && ( // Aggiungi il divider solo se non è l'ultimo elemento
-                                        <div className="ml-2 h-4 border-l border-dashed border-gray-900 my-2" />
+                                        <div className="ml-2 h-4 border-l border-dashed border-[#909090] my-2" />
                                     )}
                                 </React.Fragment>
                             ))}
