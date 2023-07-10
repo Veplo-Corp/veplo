@@ -28,8 +28,12 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
     const [fullImage, setfullImage] = useState<any>(undefined)
 
 
-    const zoomImage = () => {
+    const zoomImage = (urlPhoto?: string) => {
+        if (urlPhoto) {
+            setfullImage(urlPhoto)
+        }
         setisOpen(true)
+        return
     }
 
 
@@ -157,7 +161,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                 {!isSmallView ?
                     (
                         <>
-                            <Box onClick={zoomImage} mb={[2, 5]} overflow='hidden' className='cursor-pointer w-full'>
+                            <Box onClick={() => zoomImage()} mb={[2, 5]} overflow='hidden' className='cursor-pointer w-full'>
 
                                 <motion.div
                                     variants={LIST_ITEM_VARIANT}
@@ -218,14 +222,14 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                             pagination={{
                                 clickable: true
                             }}
-
-                            modules={[Pagination, Navigation]}
                         >
                             {variation.photos?.map((photoUrl, index) => {
                                 return (
-                                    <SwiperSlide key={index}>
-                                        <LazyLoadImage
+                                    <SwiperSlide key={index}
 
+                                    >
+                                        <LazyLoadImage
+                                            onClick={() => zoomImage(photoUrl)}
                                             src={imageKitUrl(photoUrl)}
                                             alt={''}
                                             className="w-full min-h-[240px] md:min-h-0 aspect-[4.8/5] object-cover"
