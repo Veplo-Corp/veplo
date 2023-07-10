@@ -1,12 +1,11 @@
 import { useRouter } from 'next/router'
-import React, { Fragment, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
-import { Box, Button, ButtonGroup, HStack, Image, Tag, Text, Tooltip } from '@chakra-ui/react';
+import { Box, Button, HStack, Image, Tag, Text, Tooltip } from '@chakra-ui/react';
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { Product, Variation } from '../../../../interfaces/product.interface';
 import { initApollo } from '../../../../lib/apollo';
-import Circle_Color from '../../../../../components/atoms/Circle_Color';
 import Size_Box from '../../../../../components/atoms/Size_Box';
 import Horizontal_Line from '../../../../../components/atoms/Horizontal_Line';
 import createUrlSchema from '../../../../../components/utils/create_url';
@@ -39,11 +38,9 @@ import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo';
 import { InView, useInView } from 'react-intersection-observer';
 import { AnimatePresence, motion } from 'framer-motion';
 import { formatNumberWithTwoDecimals } from '../../../../../components/utils/formatNumberWithTwoDecimals';
-import LoginAndRegistrationForm from '../../../../../components/organisms/LoginAndRegistrationForm';
 import GuideSize from '../../../../../components/organisms/GuideSize';
 import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter';
-import { CATEGORIES } from '../../../../../components/mook/categories';
-import { GUIDE_SIZES } from '../../../../../components/mook/sizeGuide';
+
 import { findMacrocategorySizeGuideFromMacrocategory } from '../../../../../components/utils/findMacrocategorySizeGuideFromMacrocategory';
 import { formatPercentage } from '../../../../../components/utils/formatPercentage';
 
@@ -514,7 +511,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         <>
             {product &&
                 <Box
-                    className='lg:w-10/12 2xl:w-9/12 mx-2 lg:mx-auto'
+                    className='lg:w-10/12 2xl:w-9/12 md:mx-2 lg:mx-auto'
                 >
 
 
@@ -530,12 +527,12 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     />
                     <div className='md:flex justify-between w-full mb-5 lg:mb-0 gap-5'>
                         <Image_Product variation={variationSelected} />
-                        <Box className='md:block lg:w-[45%] lg:mb-20'>
+                        <Box className='md:block lg:w-[45%] lg:mb-20 mx-2'>
                             <Text
                                 fontWeight='medium'
                                 as='h2'
                                 noOfLines={1}
-                                mt='0'
+                                mt={[2, 0, 0]}
                                 fontSize={'md'}
                                 color={'#909090'}
                             >
@@ -833,7 +830,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                         fontWeight='bold'
                         as='h1'
                         noOfLines={1}
-                        className='text-2xl md:text-5xl mt-5 lg:mt-0'
+                        className='text-2xl md:text-5xl mt-5 lg:mt-0 ml-2'
                         lineHeight={'normal'}
                     >
                         {product.shopInfo.name}
@@ -846,7 +843,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                             as='h1'
                             noOfLines={1}
                             mb={5}
-                            className='text-xl md:text-2xl w-fit'
+                            className='text-xl md:text-2xl w-fit ml-2'
                             lineHeight={'normal'}
                         >
                             Altri prodotti di <span className='underline '>{product.shopInfo.name}</span>
@@ -854,7 +851,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     </Link>
                     <InView as="div" onChange={(inView, entry) => { handleVisibilityChange(inView) }} >
                         <div
-                            className="overflow-x-scroll flex gap-4 pb-4 min-h-[300px]"
+                            className="overflow-x-scroll flex gap-4 pb-4 min-h-[300px] ml-2"
                         >
                             <AnimatePresence>
 
