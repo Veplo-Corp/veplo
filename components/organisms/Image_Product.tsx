@@ -28,8 +28,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
     const [fullImage, setfullImage] = useState<any>(undefined)
 
 
-    const zoomImage = (photoUrl?: string) => {
-        if (photoUrl) setfullImage(photoUrl)
+    const zoomImage = () => {
         return setisOpen(true)
     }
 
@@ -228,7 +227,10 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
 
                                     >
                                         <LazyLoadImage
-                                            onClick={() => zoomImage(photoUrl)}
+                                            onClick={() => {
+                                                setfullImage(photoUrl)
+                                                zoomImage()
+                                            }}
                                             src={imageKitUrl(photoUrl)}
                                             alt={''}
                                             className="w-full min-h-[240px] md:min-h-0 aspect-[4.8/5] object-cover"
