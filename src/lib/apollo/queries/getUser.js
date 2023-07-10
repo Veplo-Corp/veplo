@@ -65,6 +65,7 @@ const GET_USER = gql`
                     stripeId
                     id
                     name
+                    photo
                     address{
                         postcode
                         city

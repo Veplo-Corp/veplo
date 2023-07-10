@@ -48,6 +48,7 @@ export interface Order {
         businessId: string,
         stripeId: string,
         address: AddressShop
+        photo: string,
     },
     user: {
         id: string,
