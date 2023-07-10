@@ -22,12 +22,13 @@ import { CATEGORIES, Univers } from '../../../../components/mook/categories';
 import createUrlSchema from '../../../../components/utils/create_url';
 import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First_Letter';
 import Link from 'next/link';
-import { SORT_PRODUCT } from '../../../../components/mook/sort_products';
+import { SORT_PRODUCT, Sort } from '../../../../components/mook/sort_products';
 import { Cancel, Filter, NavArrowDown } from 'iconoir-react';
 import { getParamsFiltersFromObject } from '../../../../components/utils/getParamsFiltersFromObject';
 import FiltersSelections from '../../../../components/organisms/FiltersSelections';
 import TagFilter, { FilterAccepted } from '../../../../components/atoms/TagFilter';
 import { getUnivers } from '../../../../components/utils/getUnivers';
+import { getSortingFilter } from '../../../../components/utils/getSortingFilter';
 
 
 const RANGE = process.env.NODE_ENV === 'production' ? 12 : 3
@@ -61,9 +62,8 @@ export async function getStaticProps(ctx: any) {
         }
     }
     const { sorting, ...newParseURL } = parsedURL
+    const sortFilter = getSortingFilter(sorting)
     try {
-        //TODO eliminare newParseURL non appena tommaso gestisce il sorting
-        //TODO mettere anche ricerca per abbigliamento e accessori
         const { data, errors }: { data: ProductsQuery, errors: any } = await apolloClient.query({
             query: GET_PRODUCTS,
             variables: {
@@ -73,25 +73,26 @@ export async function getStaticProps(ctx: any) {
                     ...newParseURL,
                     univers
                 },
+                sort: sortFilter
             }
         })
         return {
             props: {
-                //TODO eliminare newParseURL non appena tommaso gestisce il sorting
                 filtersProps: newParseURL,
                 dataProducts: data?.products?.products,
-                universProps: univers
+                universProps: univers,
+                sortProps: sorting
             },
             revalidate: 10 //seconds
         }
     } catch (e: any) {
         return {
             props: {
-                //TODO eliminare newParseURL non appena tommaso gestisce il sorting
                 filtersProps: newParseURL,
                 products: [],
                 error: 'errore',
-                universProps: univers
+                universProps: univers,
+                sortProps: sorting
             },
             // notFound: true,
             revalidate: 1 //seconds
@@ -108,7 +109,7 @@ export interface ProductsFilter extends ParsedURL {
     sale?: string
 }
 
-const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Product[], universProps: Univers }> = ({ filtersProps, error, dataProducts, universProps }) => {
+const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Product[], universProps: Univers, sortProps: string }> = ({ filtersProps, error, dataProducts, universProps, sortProps }) => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(true);
     const [products, setProducts] = useState<Product[]>([])
@@ -121,14 +122,14 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const isSmallView = useBreakpointValue({ base: true, lg: false });
     const { asPath } = useRouter();
     const [history, setHistory] = useState<string>()
+    const [sort, setSort] = useState<Sort | string>('')
 
 
 
-    console.log(history);
+
 
 
     useEffect(() => {
-
         if (!router.isReady) return
         if (router.asPath === history) return
         setHistory(router.asPath)
@@ -139,11 +140,10 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         );
         setIsLoading(true)
         setHasMoreData(true)
+        setSort(sortProps)
         //loading e hasmoredata resettati
         const fitlerSlug = router.asPath.split('?')[1]
         const filterParams: any = parseSlugUrlFilter(fitlerSlug)
-        //TODO togliere logica non appena sale è attivo
-        //if (filterParams?.sale) delete filterParams['sale']
 
 
         //controlla se esiste già questa sessione nel local storage
@@ -222,12 +222,15 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
 
     const fetchMoreData = async () => {
+        console.log('ECCOLO  CHE PASSA');
 
 
         if (products.length % RANGE !== 0 || products.length < RANGE) {
             setHasMoreData(false)
             return console.log('no more data');
         }
+
+        const sortFilter = getSortingFilter(sort)
 
 
         try {
@@ -239,7 +242,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                     filters: {
                         ...filters,
                         univers: univers
-                    }
+                    },
+                    sort: sortFilter
                 }
             })
         }
@@ -316,14 +320,12 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         const filtersParams = getParamsFiltersFromObject(filters)
         if (filterParameter === 'macroCategory') {
             return router.push({
-                //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
-                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${createUrlSchema([value])}/tutto/rilevanza`,
+                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${createUrlSchema([value])}/tutto/${sort}`,
             })
         }
         if (filterParameter === 'microCategory') {
             return router.push({
-                //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
-                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${createUrlSchema([value])}/rilevanza`,
+                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${createUrlSchema([value])}/${sort}`,
                 query: {
                     ...filtersParams
                 }
@@ -346,10 +348,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         }
         if (filterParameter === 'sizes') {
-            //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
             const size = value?.split(' (')[0].toLocaleLowerCase()
             return router.push({
-                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                 query: {
                     ...filtersParams,
                     sizes: size ? [value.split(' (')[0].toLocaleLowerCase()] : null
@@ -357,10 +358,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             })
         }
         if (filterParameter === 'sale') {
-            //TODO quando mettiamo il sorting, inseriamo il sorting variabile alla fine
             if (value === 'true') {
                 return router.push({
-                    pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                    pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                     query: {
                         ...filtersParams,
                         sale: value
@@ -369,7 +369,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             } else {
                 const { sale, ...newFilterParameters } = filtersParams
                 return router.push({
-                    pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                    pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                     query: {
                         ...newFilterParameters,
                     }
@@ -382,17 +382,15 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
     const deleteFilterParams = (paramters: FilterAccepted) => {
         if (paramters === 'macroCategory') {
-            //TODO inserire sorting
             return router.push({
-                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/rilevanza`,
+                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/${sort}`,
             })
         }
 
         if (paramters === 'microCategory') {
             let filtersParams: any = getParamsFiltersFromObject(filters)
-            //TODO inserire sorting
             return router.push({
-                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/tutto/rilevanza`,
+                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/tutto/${sort}`,
                 query: {
                     ...filtersParams
                 }
@@ -400,9 +398,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
         let filtersParams: any = getParamsFiltersFromObject(filters)
         delete filtersParams[paramters]
-        //TODO inserire sorting
         return router.push({
-            pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+            pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
             query: {
                 ...filtersParams
             }
@@ -428,9 +425,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
 
 
-        //TODO inserire sorting
         return router.push({
-            pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filtersDrawerModal.macroCategory === 'string' && filtersDrawerModal.macroCategory !== '' ? filtersDrawerModal.macroCategory.toLowerCase() : 'tutto'}/${filtersDrawerModal.microCategory ? createUrlSchema([filtersDrawerModal.microCategory]) : 'tutto'}/rilevanza`,
+            pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filtersDrawerModal.macroCategory === 'string' && filtersDrawerModal.macroCategory !== '' ? filtersDrawerModal.macroCategory.toLowerCase() : 'tutto'}/${filtersDrawerModal.microCategory ? createUrlSchema([filtersDrawerModal.microCategory]) : 'tutto'}/${sort}`,
             query: {
                 ...filtersParams
             }
@@ -578,9 +574,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                 delete filtersParams[parameters[i].name]
                                             }
                                         }
-                                        //TODO gestire sorting appena possibile
                                         router.replace({
-                                            pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                                            pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                                             query: {
                                                 ...filtersParams,
                                                 ...newParams
@@ -614,6 +609,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     fontSize={['18px', '16px']}
                                     height={12}
                                     onChange={changeSort}
+                                    value={sort}
                                 >
                                     {SORT_PRODUCT.map((sortElement) => {
                                         return (
@@ -621,6 +617,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                         )
                                     })}
                                 </Select>
+
                             </Box>
 
                             <HStack mt={[3, 2]} spacing={2}

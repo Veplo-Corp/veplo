@@ -17,3 +17,5 @@ export const SORT_PRODUCT = [
     },
 
 ]
+
+export type Sort = 'rilevanza' | 'ultime-uscite' | 'prezzo-decrescente' | 'prezzo-crescente'

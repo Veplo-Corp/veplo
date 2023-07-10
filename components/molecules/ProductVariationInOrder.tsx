@@ -5,6 +5,7 @@ import { ProductVariationInOrder } from '../../src/interfaces/order.interface'
 import { imageKitUrl } from '../utils/imageKitUrl'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals'
+import { formatPercentage } from '../utils/formatPercentage'
 
 const ProductVariationInOrder: FC<{ variation: ProductVariationInOrder }> = ({ variation }) => {
     return (
@@ -84,7 +85,7 @@ const ProductVariationInOrder: FC<{ variation: ProductVariationInOrder }> = ({ v
                                     borderRadius={'full'}
                                     fontSize={'2xs'}
                                     height={'fit-content'}
-                                >- {formatNumberWithTwoDecimals(variation.price.discountPercentage)} %
+                                >- {formatPercentage(variation.price.discountPercentage)} %
                                 </Tag>}
                         </Box>
                     </Box>
