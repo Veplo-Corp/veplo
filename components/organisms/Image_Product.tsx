@@ -8,8 +8,16 @@ import { imageKitUrl } from '../utils/imageKitUrl'
 import ButtonClose from '../atoms/ButtonClose'
 import { LIST_ITEM_VARIANT } from '../mook/transition'
 import { AnimatePresence, motion } from 'framer-motion';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css';
+import 'swiper/css/pagination';
 const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variation }) => {
+
     if (!variation) {
         return (
             <></>
@@ -37,7 +45,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
 
     }, [variation])
 
-    const isSmallView = useBreakpointValue({ base: true, sm: false });
+    const isSmallView = useBreakpointValue({ base: true, md: false });
 
 
     return (
@@ -144,59 +152,92 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                 </ModalContent>
             </Modal >
 
-            <div className='flex space-x-3 lg:space-x-4 w-full min-h-[335px] md:min-h-0 md:w-7/12 lg:w-1/2'>
+            <div className='flex space-x-3 lg:space-x-4 w-full min-h-[430px] md:min-h-0 md:w-7/12 lg:w-1/2'>
 
-                <Box onClick={zoomImage} mb={[2, 5]} overflow='hidden' className='cursor-pointer w-full'>
+                {!isSmallView ?
+                    (
+                        <>
+                            <Box onClick={zoomImage} mb={[2, 5]} overflow='hidden' className='cursor-pointer w-full'>
 
-                    <motion.div
-                        variants={LIST_ITEM_VARIANT}
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                    >
-                        <LazyLoadImage src={imageKitUrl(fullImage)}
+                                <motion.div
+                                    variants={LIST_ITEM_VARIANT}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="hidden"
+                                >
+                                    <LazyLoadImage src={imageKitUrl(fullImage)}
 
-                            //PlaceholderSrc={PlaceholderImage}
-                            //effect="blur"
-                            alt={variation.color + 'non trovato'}
-                            className='rounded-lg w-full aspect-[4.8/5] object-cover'
-                        />
-                    </motion.div>
+                                        //PlaceholderSrc={PlaceholderImage}
+                                        //effect="blur"
+                                        alt={variation.color + 'non trovato'}
+                                        className='rounded-lg w-full aspect-[4.8/5] object-cover'
+                                    />
+                                </motion.div>
 
-                </Box>
-                <div>
-                    <motion.div
-                        variants={LIST_ITEM_VARIANT}
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                    >
-                        {variation?.photos && variation.photos.map((image) => {
-                            return (
-                                <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
-                                    borderWidth={1.5}
-                                    className={` ${image == fullImage ? "border-black border-8" : "border-white"}   cursor-pointer
+                            </Box>
+                            <div>
+                                <motion.div
+                                    variants={LIST_ITEM_VARIANT}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="hidden"
+                                >
+                                    {variation?.photos && variation.photos.map((image) => {
+                                        return (
+                                            <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
+                                                borderWidth={1.5}
+                                                className={` ${image == fullImage ? "border-black border-8" : "border-white"}   cursor-pointer
                                         w-14
                                         xl:w-20
                                     `}
-                                >
+                                            >
 
-                                    <Image src={
-                                        imageKitUrl(image, 237, 247)
-                                    }
-                                        alt={variation.color + 'non trovato'}
-                                        width={'fit-content'}
-                                        maxH={'52'}
-                                        // height={'fit-content'}
-                                        className='aspect-[4.8/5] object-cover '
-                                        loading="lazy"
-                                    />
+                                                <Image src={
+                                                    imageKitUrl(image, 237, 247)
+                                                }
+                                                    alt={variation.color + 'non trovato'}
+                                                    width={'fit-content'}
+                                                    maxH={'52'}
+                                                    // height={'fit-content'}
+                                                    className='aspect-[4.8/5] object-cover '
+                                                    loading="lazy"
+                                                />
 
-                                </Box>
-                            )
-                        })}
-                    </motion.div>
-                </div>
+                                            </Box>
+                                        )
+                                    })}
+                                </motion.div>
+                            </div>
+                        </>
+                    ) : (
+
+                        <Swiper
+                            spaceBetween={1}
+                            slidesPerView={1}
+                            loop
+                            pagination={{
+                                clickable: true
+                            }}
+
+                            modules={[Pagination, Navigation]}
+                        >
+                            {variation.photos?.map((photoUrl, index) => {
+                                return (
+                                    <SwiperSlide key={index}>
+                                        <LazyLoadImage
+
+                                            src={imageKitUrl(photoUrl)}
+                                            alt={''}
+                                            className="w-full min-h-[240px] md:min-h-0 aspect-[4.8/5] object-cover"
+                                        />
+                                    </SwiperSlide>
+                                )
+                            })}
+                        </Swiper>
+                    )
+
+                }
+
             </div>
 
         </>
