@@ -7,6 +7,7 @@ import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals'
 import { Cancel } from 'iconoir-react'
 import ButtonClose from '../atoms/ButtonClose'
+import { formatPercentage } from '../utils/formatPercentage'
 const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation: ProductVariation) => void, deleteVariation: (variation: ProductVariation) => void }> = ({ variation, toProduct, deleteVariation }) => {
 
     return (
@@ -119,7 +120,7 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
                                         borderRadius={'full'}
                                         fontSize={'2xs'}
                                         height={'fit-content'}
-                                    >- {formatNumberWithTwoDecimals(variation?.price?.discountPercentage)} %
+                                    >- {formatPercentage(variation?.price?.discountPercentage)} %
                                     </Tag>}
                             </Box>
 

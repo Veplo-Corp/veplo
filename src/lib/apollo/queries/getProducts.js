@@ -5,12 +5,14 @@ const GET_PRODUCTS = graphql(`
     query products(
         $limit: Int!
         $offset: Int!
-        $filters: ProductFilters!   
+        $filters: ProductFilters!  
+        $sort: ProductSort 
         ) {
         products(
             limit: $limit
             offset: $offset
-            filters: $filters    
+            filters: $filters  
+            sort:$sort  
         ){
             products{
                 id

@@ -45,6 +45,7 @@ import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_Fi
 import { CATEGORIES } from '../../../../../components/mook/categories';
 import { GUIDE_SIZES } from '../../../../../components/mook/sizeGuide';
 import { findMacrocategorySizeGuideFromMacrocategory } from '../../../../../components/utils/findMacrocategorySizeGuideFromMacrocategory';
+import { formatPercentage } from '../../../../../components/utils/formatPercentage';
 
 
 
@@ -564,15 +565,15 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                     lineHeight={['4']}
                                     my={'auto'}
                                 >
-                                    {product.price?.v2 && <span className=' text-red-700 font-bold'>{formatNumberWithTwoDecimals(product.price?.v2)} €<br /></span>}
+                                    {product?.price?.v2 < product.price?.v1 && <span className=' text-red-700 font-bold'>{formatNumberWithTwoDecimals(product.price?.v2)}€<br /> </span>}
 
                                     <span
-                                        className={`${product.price?.v2 ? 'text-slate-500 font-normal text-sm ' : ''} mr-2`}
+                                        className={`${product.price?.v2 < product.price.v1 ? 'text-slate-500 font-normal text-sm ' : ''} mr-2`}
                                     >
-                                        {product.price.v2 && <span>prima era: </span>}<span className={`${product.price?.v2 ? 'line-through' : ''}`}>{formatNumberWithTwoDecimals(product.price?.v1)} €</span>
+                                        {product.price.v2 < product.price.v1 && <span>prima era: </span>}<span className={`${product.price?.v2 ? 'line-through' : ''}`}>{formatNumberWithTwoDecimals(product.price?.v1)} €</span>
                                         {product.price.discountPercentage &&
                                             <span className='ml-2 text-red-500'>
-                                                -{formatNumberWithTwoDecimals(product.price.discountPercentage)}%
+                                                -{formatPercentage(product.price.discountPercentage)}%
                                             </span>}
                                     </span>
 

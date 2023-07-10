@@ -37,7 +37,7 @@ export interface Product {
     price: {
         v1: number,
         discountPercentage: number,
-        v2?: number
+        v2: number
     }
     location: {
         type: string,
