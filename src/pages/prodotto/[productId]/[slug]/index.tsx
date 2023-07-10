@@ -570,8 +570,8 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                     <span
                                         className={`${product.price?.v2 < product.price.v1 ? 'text-slate-500 font-normal text-sm ' : ''} mr-2`}
                                     >
-                                        {product.price.v2 < product.price.v1 && <span>prima era: </span>}<span className={`${product.price?.v2 ? 'line-through' : ''}`}>{formatNumberWithTwoDecimals(product.price?.v1)} €</span>
-                                        {product.price.discountPercentage &&
+                                        {product.price.v2 < product.price.v1 && <span>prima era: </span>}<span className='line-through'>{formatNumberWithTwoDecimals(product.price?.v1)} €</span>
+                                        {product?.price?.discountPercentage > 0 &&
                                             <span className='ml-2 text-red-500'>
                                                 -{formatPercentage(product.price.discountPercentage)}%
                                             </span>}
@@ -826,7 +826,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
 
                         </Box>
-                    </div>
+                    </div >
                     <Horizontal_Line />
                     <Box
 
@@ -915,7 +915,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
                     </div>
 
-                </Box>
+                </Box >
 
             }
             <ModalReausable
