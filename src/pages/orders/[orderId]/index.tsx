@@ -161,10 +161,18 @@ const index = () => {
                                         fontWeight={'normal'}
                                         mb={0}
                                     >
-                                        1. Compila la <Link
+                                        1. Inscatola i prodotti nelle condizioni originali e nello stesso imballaggio in cui è stato inviato.
+
+                                    </Text>
+                                    <Text
+                                        fontSize={'md'}
+                                        fontWeight={'normal'}
+                                        mb={0}
+                                    >
+                                        2. Compila la <Link
                                             className='underline'
                                             target="_blank" href="https://www.datocms-assets.com/102220/1686655555-modulo-reso.pdf"
-                                        >nota reso</Link>
+                                        >nota reso</Link> e inseriscial nel pacco
                                     </Text>
                                     <Text
                                         fontSize={'md'}
@@ -178,7 +186,7 @@ const index = () => {
                                         fontWeight={'normal'}
                                         mb={0}
                                     >
-                                        2. Invia il reso a: <strong>{order.shop.name}</strong>
+                                        4. Invia il reso a: <strong>{order.shop.name}</strong>
                                     </Text>
 
                                     <Text
