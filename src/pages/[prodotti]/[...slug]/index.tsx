@@ -155,6 +155,11 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             if (productsFounded) {
                 setProducts(JSON.parse(productsFounded))
                 const scrollPosition = sessionStorage.getItem('scrollPositionProducts');
+                sessionStorage.removeItem("productsInProductsPage")
+                sessionStorage.removeItem("scrollPositionProducts")
+                sessionStorage.removeItem("keyProductsSession")
+
+
                 setIsLoading(false)
 
                 const newFilters = {
