@@ -308,7 +308,7 @@ const index = () => {
                         </VStack>
                         <PriceAndShippingListingCost subTotal={order.totalDetails.subTotal} total={order.totalDetails.total} shippingCost={order.totalDetails.amountShipping} />
 
-                        {order.shipping?.url && <Link
+                        {order.shipping?.url && order.status.includes('SHIP') && <Link
                             prefetch={false}
                             href={order.shipping?.url.startsWith("https://") ? order.shipping?.url : "https://" + order.shipping?.url}
                             target="_blank"
@@ -319,7 +319,6 @@ const index = () => {
                                 margin={'auto'}
                                 width={'full'}
                                 mt={5}
-
                             >
                                 Traccia il mio pacco
                             </Button>
