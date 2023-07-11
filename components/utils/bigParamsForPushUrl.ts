@@ -24,8 +24,7 @@ export const processBIGObjectForUrl = (
         keywords,
         macroCategory,
         maxPrice,
-        //! non usare microcategory per adesso
-        //microCategory,
+        microCategory,
         minPrice,
         query,
         sizes,
@@ -80,6 +79,7 @@ export const processBIGObjectForUrl = (
     const output: InputObjectBIG = {
         macroCategory,
         //microCategory,
+        //! non usare microcategory per adesso
         microCategory: null,
         filters,
     };
