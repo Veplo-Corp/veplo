@@ -124,26 +124,15 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [sort, setSort] = useState<Sort | string>('')
 
     useEffect(() => {
-        console.log(history);
 
-        console.log(router.asPath);
-        console.log(router.asPath.split('?')[1]);
+        if (!router.isReady) return
+
+
         const fitlerSlug = router.asPath.split('?')[1]
         const filterParams: any = parseSlugUrlFilter(fitlerSlug)
 
-        if (!router.isReady) return
-        if (router.asPath === history) {
-            const newFilters = {
-                ...filtersProps,
-                ...filterParams,
-            }
-            setFilters(newFilters)
-
-            return
-        }
         if (router.asPath.split('?')[1]) {
             setHistory(router.asPath.toLowerCase())
-
         }
         setInLocalStorage('univers', universProps)
         setUnivers(universProps)
@@ -197,7 +186,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
 
         else {
-            console.log('QUI PASSA ANCORA');
 
             setResetProducts(true)
             const newFilters = {
@@ -207,6 +195,30 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             setFilters(newFilters)
             const sortFilter = getSortingFilter(sortProps)
             console.log(newFilters);
+
+            console.log(history);
+            console.log(router.asPath.toLowerCase());
+            console.log(router.asPath.toLowerCase() == history);
+
+            if (router.asPath.toLowerCase() === history) {
+                console.log('QUI PASSA ANCORA');
+
+                const newFilters = {
+                    ...filtersProps,
+                    ...filterParams,
+                }
+                setFilters(newFilters)
+                const newProducts = data?.products.products ? data?.products.products : [];
+                setProducts(prevState => {
+                    return [
+                        ...newProducts
+                    ]
+                })
+                setHasMoreData(true)
+                setIsLoading(false)
+
+                return
+            }
 
             const fetchData = async () => {
                 try {
