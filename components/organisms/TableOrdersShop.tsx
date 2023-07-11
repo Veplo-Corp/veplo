@@ -112,6 +112,10 @@ const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders
                         const status = STATUS_ORDER_SHOP.find(status => status.code === order.status)
                         return (
                             <Tr
+                                onClick={() => {
+                                    router.push(`/shop/home/${order.shop.id}/ordini/${order.id}`)
+                                }}
+                                cursor={'pointer'}
                                 key={order.id}
                                 fontSize={['xs', 'medium']}
                                 height={[14, 16]}
@@ -196,9 +200,7 @@ const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders
                                     paddingY={0}
                                     paddingLeft={[2, 4]}
                                     cursor={'pointer'}
-                                    onClick={() => {
-                                        router.push(`/shop/home/${order.shop.id}/ordini/${order.id}`)
-                                    }}
+
                                 >
 
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 my-auto">
