@@ -94,6 +94,8 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
             try {
                 const file = e.target.files[0];
                 const image = await resizeFile(file);
+                console.log(image);
+
                 setImgSrc(image)
                 setIsImageModalOpen(true)
 
