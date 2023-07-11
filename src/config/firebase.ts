@@ -44,7 +44,7 @@ if (process.env.NODE_ENV === 'production') {
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   firebaseConfig = {
     apiKey: "AIzaSyA0UyXbwg7IctHllndT7t4iR4gMUi699Bc",
-    authDomain: "veplo.it",
+    authDomain: "auth.veplo.it",
     projectId: "veplo-clothes",
     storageBucket: "veplo-clothes.appspot.com",
     messagingSenderId: "133580758542",
