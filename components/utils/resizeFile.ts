@@ -11,7 +11,7 @@ export const resizeFile = (file: any) =>
             (uri) => {
                 resolve(uri.toString());
             },
-            "JPEG",
+            "base64",
             1000,
             1100,
         );
