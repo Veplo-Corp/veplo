@@ -83,7 +83,7 @@ export const SIZES_TYPES: { name: string, type: string[] }[] = [
             "s",
             "m",
             "l",
-            "xs",
+            "xl",
             "48",
             "49",
             "50",

@@ -225,6 +225,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                                     defaultValue={productSizeSelected[index].size}
                                     handleClick={(size) => {
                                         setProductSizeSelected((prevstate: Size[]) => {
+
                                             let newState = prevstate;
                                             prevstate[index].size = size
                                             //console.log(newState);
@@ -243,14 +244,20 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                                     defaultValue={productSizeSelected[index].quantity}
                                     handleClick={(quantity) => {
                                         setProductSizeSelected((prevstate: Size[]) => {
-                                            let newState = prevstate;
-                                            prevstate[index].quantity = quantity
-                                            if (prevstate[index].quantity > 0 && prevstate[index].size !== '' && prevstate[index].size !== undefined) {
+                                            let sizeArray = prevstate;
+                                            sizeArray[index] = {
+                                                ...sizeArray[index],
+                                                quantity: quantity
+                                            }
+
+                                            if (sizeArray[index].quantity > 0 && sizeArray[index].size !== '' && sizeArray[index].size !== undefined) {
                                                 setcanAddNewSize(true)
                                             } else {
                                                 setcanAddNewSize(false)
                                             }
-                                            return newState
+                                            return [
+                                                ...sizeArray
+                                            ]
                                         })
                                     }}
                                 />
