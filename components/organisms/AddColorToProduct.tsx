@@ -93,7 +93,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                 const image = await resizeFile(file);
                 console.log(image);
 
-                setImgSrc(image)
+                setImgSrc(URL.createObjectURL(file))
                 setIsImageModalOpen(true)
 
             } catch (err) {
@@ -115,6 +115,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
             image?.height &&
             imgRefCurrent &&
             previewCanvasRef.current
+
         ) {
             // We use canvasPreview as it's much faster than imgPreview.
             canvasPreview(
