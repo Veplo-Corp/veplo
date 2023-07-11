@@ -209,14 +209,13 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 }
                 setFilters(newFilters)
                 const newProducts = data?.products.products ? data?.products.products : [];
-                setProducts(prevState => {
+                setProducts(() => {
                     return [
                         ...newProducts
                     ]
                 })
                 setHasMoreData(true)
                 setIsLoading(false)
-
                 return
             }
 

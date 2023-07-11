@@ -11,13 +11,19 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: (text: string)
     const router = useRouter()
     const onConfirm = (e: any) => {
         if (e.key === 'Enter' || e.key === undefined) {
-            if (e.target.value < 0) return
-            setTextSearched('')
-            setisSearchBoxVisible(false)
-            onConfirmText(e.target.value)
-            //setTextSearched('')
+            handleConfirm()
         }
     }
+
+
+    const handleConfirm = () => {
+        if (textSearched.length < 0) return
+        setTextSearched('')
+        setisSearchBoxVisible(false)
+        onConfirmText(textSearched)
+        //setTextSearched('')
+    }
+
 
     useDebounceEffect(async () => {
 
@@ -129,7 +135,7 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: (text: string)
                             }}
                             borderWidth={2}
                             borderColor='#F2F2F2'
-                            onClick={onConfirm}
+                            onClick={handleConfirm}
                         >
                             <Box>
                                 <Text
