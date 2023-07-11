@@ -53,16 +53,19 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
     const changePriceEvent = (minPrice: number | undefined | null | string, maxPrice: number | undefined | null | string) => {
         let parameters: { name: string, value: number | undefined | null | string }[] = [];
 
-        parameters.push({
-            name: 'minPrice',
-            value: minPrice
-        })
+        if (typeof minPrice === 'number') {
+            parameters.push({
+                name: 'minPrice',
+                value: minPrice * 100
+            })
+        }
 
-        parameters.push({
-            name: 'maxPrice',
-            value: maxPrice
-        })
-
+        if (typeof maxPrice === 'number') {
+            parameters.push({
+                name: 'maxPrice',
+                value: maxPrice * 100
+            })
+        }
         if (parameters.length <= 0) return
         changePriceEventRouter(parameters)
 

@@ -64,11 +64,11 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, un
 
     const changePriceEvent = (minPrice: number | undefined | null | string, maxPrice: number | undefined | null | string) => {
         let parameters: any = {};
-        if (minPrice) {
-            parameters['minPrice'] = minPrice
+        if (typeof minPrice === 'number') {
+            parameters['minPrice'] = minPrice * 100
         }
-        if (maxPrice) {
-            parameters['maxPrice'] = maxPrice
+        if (typeof maxPrice === 'number') {
+            parameters['maxPrice'] = maxPrice * 100
         }
 
         if (parameters.length <= 0) return
