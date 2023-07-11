@@ -23,9 +23,14 @@ export async function canvasPreview(
     // true to the images natural size.
     const pixelRatio = window.devicePixelRatio
     // const pixelRatio = 1
+    // Check if the image has an alpha channel (transparency)
+
+
 
     canvas.width = Math.floor(crop.width * scaleX * pixelRatio)
     canvas.height = Math.floor(crop.height * scaleY * pixelRatio)
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.scale(pixelRatio, pixelRatio)
     ctx.imageSmoothingQuality = 'high'
@@ -49,7 +54,7 @@ export async function canvasPreview(
     ctx.scale(scale, scale)
     // 1) Move the center of the image to the origin (0,0)
     ctx.translate(-centerX, -centerY)
-    
+
     ctx.drawImage(image, 0, 0, 300, 300);
 
     ctx.drawImage(
@@ -65,7 +70,7 @@ export async function canvasPreview(
     )
 
 
-    
+
 
     ctx.restore()
     return canvas

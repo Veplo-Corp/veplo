@@ -35,9 +35,6 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
 
     console.log(category);
 
-
-
-
     const [color, setColor] = useState('')
     const [sizeTypologySelected, setSizeTypologySelected] = useState<string[]>([])
     const [canAddNewSize, setcanAddNewSize] = useState(false)
@@ -96,7 +93,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                 const image = await resizeFile(file);
                 console.log(image);
 
-                setImgSrc(image)
+                setImgSrc(URL.createObjectURL(file))
                 setIsImageModalOpen(true)
 
             } catch (err) {
