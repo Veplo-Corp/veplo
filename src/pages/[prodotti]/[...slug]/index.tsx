@@ -195,7 +195,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 ...filterParams,
             }
             setFilters(newFilters)
-            const sortFilter = getSortingFilter(sort)
+            const sortFilter = getSortingFilter(sortProps)
+            console.log(sortFilter);
+
             const fetchData = async () => {
                 try {
                     //controllare se crasha
