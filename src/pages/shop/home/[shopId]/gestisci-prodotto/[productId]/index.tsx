@@ -270,9 +270,10 @@ const index = () => {
                     return console.log('errore');
                 }
                 price["v1"] = v1
-
             }
         }
+
+
 
         if (typeof productElement.price.v2 === 'string' && typeof productElement.price.v1 === 'string') {
 
@@ -286,13 +287,16 @@ const index = () => {
             const v2 = Math.floor(Number(productElement.price.v2.replace(',', '.')) * 100)
             if (v2 !== 0 && v2 <= product?.price.v1) {
                 price["v1"] = product?.price.v1
-                price["v2"] = v2
+                price["v2"] = Math.floor(Number(productElement.price.v2.replace(',', '.')) * 100)
             }
         }
 
 
         if (Object.keys(price).length > 0) {
             options["price"] = price
+            if (Object.keys(price).length === 1) {
+                price["v2"] = product?.price.v2
+            }
         }
 
         console.log(price);
