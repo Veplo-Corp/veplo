@@ -130,6 +130,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
 
     useEffect(() => {
+
         if (!router.isReady) return
         if (router.asPath === history) return
         setHistory(router.asPath)
@@ -149,8 +150,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         //controlla se esiste già questa sessione nel local storage
         //nel caso esiste, immette i prodotti nel local storage
         if (window.history.state.key === sessionStorage.getItem("keyProductsSession")) {
-
-
             const productsFounded = sessionStorage.getItem("productsInProductsPage");
             if (productsFounded) {
                 setProducts(JSON.parse(productsFounded))
@@ -158,8 +157,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 sessionStorage.removeItem("productsInProductsPage")
                 sessionStorage.removeItem("scrollPositionProducts")
                 sessionStorage.removeItem("keyProductsSession")
-
-
                 setIsLoading(false)
 
                 const newFilters = {
@@ -190,12 +187,15 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
 
         else {
+            console.log('QUI PASSA ANCORA');
+
             setResetProducts(true)
             const newFilters = {
                 ...filtersProps,
                 ...filterParams,
             }
             setFilters(newFilters)
+            const sortFilter = getSortingFilter(sort)
             const fetchData = async () => {
                 try {
                     //controllare se crasha
@@ -208,7 +208,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 filters: {
                                     ...newFilters,
                                     univers
-                                }
+                                },
+                                sort: sortFilter
                             }
                         })
                     }, 800);
@@ -232,7 +233,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
 
     const fetchMoreData = async () => {
-        console.log('ECCOLO  CHE PASSA');
 
 
         if (products.length % RANGE !== 0 || products.length < RANGE) {
@@ -278,7 +278,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     }, [filters?.gender])
 
     useEffect(() => {
+
         if (!data) return /* setHasMoreData(false) */
+
 
         const newProducts = data.products.products ? data.products.products : [];
         if (newProducts.length % RANGE !== 0 || newProducts.length <= 0) {
@@ -349,7 +351,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             //filterParameter === 'fit' || filterParameter === 'length' || filterParameter === 'materials' || filterParameter === 'traits'
         ) {
             return router.push({
-                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/rilevanza`,
+                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                 query: {
                     ...filtersParams,
                     [filterParameter]: value.toLocaleLowerCase()
@@ -634,7 +636,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 className='flex flex-wrap'
                             >
                                 {Object.keys(filters).filter(key => !['gender'].includes(key)).map((value) => {
-                                    console.log(value);
 
                                     let text: string = '';
                                     if (value === 'sizes' && filters.sizes?.[0]) text = `Taglia ${filters.sizes[0].toUpperCase()}`
