@@ -8,10 +8,12 @@ const SelectMaxMinPrice: FC<{ defaultValue: { minPrice: any, maxPrice: any }, ha
 
 
     useEffect(() => {
+
+
         if (defaultValue) {
             setPrice({
-                minPrice: defaultValue.minPrice,
-                maxPrice: defaultValue.maxPrice,
+                minPrice: defaultValue.minPrice ? defaultValue.minPrice / 100 : undefined,
+                maxPrice: defaultValue.maxPrice ? defaultValue.maxPrice / 100 : undefined,
             })
         }
     }, [defaultValue])

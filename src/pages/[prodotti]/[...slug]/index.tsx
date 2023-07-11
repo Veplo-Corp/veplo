@@ -639,8 +639,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
                                     let text: string = '';
                                     if (value === 'sizes' && filters.sizes?.[0]) text = `Taglia ${filters.sizes[0].toUpperCase()}`
-                                    if (value === 'minPrice') text = `Min ${filters.minPrice}€`
-                                    if (value === 'maxPrice') text = `Max ${filters.maxPrice}€`
+                                    if (value === 'minPrice') text = `Min ${(Number(filters.minPrice) / 100).toFixed(0)}€`
+                                    if (value === 'maxPrice') text = `Max ${(Number(filters.maxPrice) / 100).toFixed(0)}€`
                                     if (value === 'colors' && filters.colors?.[0]) text = `${toUpperCaseFirstLetter(filters.colors[0])}`
                                     if (value === 'brand' && filters.brand) text = `${toUpperCaseFirstLetter(filters.brand)}`
 
@@ -663,7 +663,14 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                     handleEvent={deleteFilterParams}
                                                 />
                                             }
-                                            {(value === 'sizes' || value === 'brand' || value === 'maxPrice' || value === 'minPrice' || value === 'colors') &&
+                                            {(value === 'sizes' || value === 'brand' || value === 'colors') &&
+                                                <TagFilter
+                                                    value={value}
+                                                    text={text}
+                                                    handleEvent={deleteFilterParams}
+                                                />
+                                            }
+                                            {((value === 'maxPrice' || value === 'minPrice') && typeof value === 'string') &&
                                                 <TagFilter
                                                     value={value}
                                                     text={text}
