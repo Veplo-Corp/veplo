@@ -120,20 +120,31 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [resetProducts, setResetProducts] = useState(false)
     const dispatch = useDispatch();
     const isSmallView = useBreakpointValue({ base: true, lg: false });
-    const { asPath } = useRouter();
     const [history, setHistory] = useState<string>()
     const [sort, setSort] = useState<Sort | string>('')
 
-
-
-
-
-
     useEffect(() => {
+        console.log(history);
+
+        console.log(router.asPath);
+        console.log(router.asPath.split('?')[1]);
+        const fitlerSlug = router.asPath.split('?')[1]
+        const filterParams: any = parseSlugUrlFilter(fitlerSlug)
 
         if (!router.isReady) return
-        if (router.asPath === history) return
-        setHistory(router.asPath)
+        if (router.asPath === history) {
+            const newFilters = {
+                ...filtersProps,
+                ...filterParams,
+            }
+            setFilters(newFilters)
+
+            return
+        }
+        if (router.asPath.split('?')[1]) {
+            setHistory(router.asPath.toLowerCase())
+
+        }
         setInLocalStorage('univers', universProps)
         setUnivers(universProps)
         dispatch(
@@ -143,8 +154,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         setHasMoreData(true)
         setSort(sortProps)
         //loading e hasmoredata resettati
-        const fitlerSlug = router.asPath.split('?')[1]
-        const filterParams: any = parseSlugUrlFilter(fitlerSlug)
+
 
 
         //controlla se esiste già questa sessione nel local storage
@@ -196,7 +206,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             }
             setFilters(newFilters)
             const sortFilter = getSortingFilter(sortProps)
-            console.log(sortFilter);
+            console.log(newFilters);
 
             const fetchData = async () => {
                 try {
@@ -261,7 +271,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
         catch (e) {
             console.log(e);
-
         }
 
     }
@@ -390,8 +399,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 })
             }
         }
-
-
     }
 
     const deleteFilterParams = (paramters: FilterAccepted) => {
