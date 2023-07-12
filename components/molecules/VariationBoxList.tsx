@@ -96,13 +96,13 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
                                 display={'flex'}
                             >
                                 <p
-                                    className={`${variation?.price?.v2 && variation?.price?.v2 > 0 ? 'line-through  text-gray-400' : 'font-semibold'}`}
+                                    className={`${variation?.price?.v2 && variation?.price?.v2 < variation?.price?.v1 ? 'line-through  text-gray-400' : 'font-semibold'}`}
                                 > {formatNumberWithTwoDecimals(variation?.price?.v1)} €
                                 </p>
-                                {variation?.price?.v2 && variation?.price?.v2 > 0 &&
+                                {variation?.price?.v2 && variation?.price?.v2 < variation?.price?.v1 &&
                                     <p
                                         className='font-semibold ml-1'
-                                    >{variation?.price.v2 && formatNumberWithTwoDecimals(variation.price.v2)} € </p>
+                                    >{variation?.price?.v2 && formatNumberWithTwoDecimals(variation.price.v2)} € </p>
                                 }
                             </Box>
                             <Box

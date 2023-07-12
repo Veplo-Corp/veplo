@@ -595,7 +595,7 @@ const index = () => {
                                         paddingY={6}
                                         paddingTop={2}
                                         autoComplete="descrition-text-shop"
-                                        placeholder='es. La persona nella foto è alta 175 cm e veste una taglia M'
+                                        placeholder='es. Il modell* nella foto è alt* 175 cm e veste una taglia M'
                                         {...field}
                                     />
                                 )}

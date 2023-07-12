@@ -258,7 +258,7 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
                         paddingY={6}
                         paddingX={2}
                         paddingTop={2}
-                        placeholder='es. La persona nella foto è alta 175 cm e veste una taglia M'
+                        placeholder='es. Il modell* nella foto è alt* 175 cm e veste una taglia M'
 
                         autoComplete="descrition-text-product"
                         // value={shop_name}
