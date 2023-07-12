@@ -19,6 +19,7 @@ export const findParsedFilter = (filters: ProductsFilter, univers: Univers): Fil
     const gender = filters.gender === 'm' ? 'uomo' : 'donna';
     if (!univers) return
     const categories = CATEGORIES[gender][univers];
+    console.log(CATEGORIES);
 
     let parsedFilter: FilterParameters[] = [
         {
