@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useLayoutEffect, useState } from 'react'
-import { Avatar, Box, Fade, Image, ScaleFade, Tag, Text, VStack, useBreakpointValue } from '@chakra-ui/react'
+import { Box, Fade, Image, ScaleFade, Tag, Text, VStack, useBreakpointValue } from '@chakra-ui/react'
 import Circle_Color from '../atoms/Circle_Color'
 import { Variation } from '../../src/interfaces/product.interface'
 import { COLORS } from '../mook/colors'
@@ -27,6 +27,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import ProfilePhoto from './ProfilePhoto'
 
 
 const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean, productLink: string }> = ({ handleEventSelectedDress, product, color, showStoreHeader, productLink, overflowCards }) => {
@@ -115,33 +116,14 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                             display={'flex'}
                             mb={3}
                         >
-                            <Avatar
-                                name={product?.shopInfo?.name ? product?.shopInfo?.name : ''}
-                                src={product?.shopInfo?.profilePhoto ? imageKitUrl(product.shopInfo.profilePhoto, 100, 100) : ''}
-                                bg='white'
-                                height={['55px', '55px', '50px', '50px']}
-                                width={['55px', '55px', '50px', '50px']}
-
+                            <ProfilePhoto
+                                imgName={product?.shopInfo?.name}
+                                scr={product?.shopInfo?.profilePhoto}
+                                primaryText={product?.shopInfo?.name}
+                                secondaryText={product?.info?.brand}
                             />
-                            <Box
-                                ml={2}
-                                marginY={'auto'}
-                            >
-                                <Text
-                                    fontWeight={'bold'}
-                                    fontSize={'md'}
-                                >
-                                    {product?.shopInfo?.name}
-                                </Text>
-                                <Text
-                                    fontWeight={'normal'}
-                                    fontSize={'15px'}
-                                    mt={-2}
-                                    color={'#909090'}
-                                >
-                                    {product?.info?.brand}
-                                </Text>
-                            </Box>
+
+
                         </Box>
                     </Link>}
 
