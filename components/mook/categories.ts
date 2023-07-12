@@ -32,32 +32,16 @@ export const CATEGORIES: Categories = {
     donna: {
         abbigliamento: [
             // { name: "Tutto l'abbigliamento" },
-            {
-                name: "Vestiti",
-                url: "vestiti",
-                types: [
-                    "caftani",
-                    "camicia",
-                    "maglina",
-                    "tubini",
-                    "lunghi",
-                ],
-                sizes: "woman_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors',
-                sizeGuideCode: 'DEFAULT_GUIDE_WOMAN_CLOTHES_SIZES'
-            },
+
             {
                 name: "T-Shirt",
                 url: "t-shirt",
                 types: [
-                    "maniche lunghe",
                     "maniche corte",
-                    "mezze maniche",
-                    "senza maniche",
+                    "canotte",
+                    "polo",
+                    "sportive",
+                    "maniche lunghe",
                     "jeans",
                 ],
                 sizes: "woman_clothes_sizes",
@@ -67,15 +51,49 @@ export const CATEGORIES: Categories = {
                 length: 'clothes_length',
                 colors: 'clothes_colors',
                 sizeGuideCode: 'DEFAULT_GUIDE_WOMAN_CLOTHES_SIZES'
+            },
+            {
+                name: "Maglieria",
+                url: "maglieria",
+                types: [
+                    "maglioni",
+                    "pullover",
+                    "cardigan",
+                    "liscio",
+                    "trecce",
+                    "coste",
+                ],
+                sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
 
+            },
+            {
+                name: "Felpe",
+                url: "felpe",
+                types: [
+                    "cappuccio",
+                    "zip",
+                    "senza cappuccio",
+                ],
+                sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
             },
             {
                 name: "Top",
                 url: "top",
                 types: [
-                    "maniche lunghe",
                     "maniche corte",
-                    "mezze maniche",
+                    "maniche lunghe",
                     "senza maniche",
                 ],
                 sizes: "woman_clothes_sizes",
@@ -85,17 +103,137 @@ export const CATEGORIES: Categories = {
                 length: 'clothes_length',
                 colors: 'clothes_colors',
                 sizeGuideCode: 'DEFAULT_GUIDE_WOMAN_CLOTHES_SIZES'
+            },
+            {
+                name: "Pantaloni",
+                url: "pantaloni",
+                types: [
+                    "casual",
+                    "palazzo",
+                    "zampa d'elefante",
+                    "salopette",
+                    "shorts",
+                    "cargo",
+                    "sportivi",
+                    "tuta",
+                    "leggins",
+                    "chino",
+                ],
+                sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
 
+            },
+            {
+                name: "Jeans",
+                url: "jeans",
+                types: [
+                    "casual",
+                    "palazzo",
+                    "zampa d'elefante",
+                    "affusolati",
+                    "strappati",
+                ],
+                sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
+            },
+            {
+                //!aggiunte scarpe donna
+                name: "Scarpe",
+                url: "scarpe",
+                types: [
+                    "sneakers",
+                    "sportive",
+                    "eleganti",
+                    "trekking",
+                    "polacchine",
+                    "stivali",
+                    "mocassini",
+                    "zoccoli",
+                    "aperte",
+                    "sandali",
+                    "piatte",
+                    "ciabatte",
+                    "tacco",
+                    "ballerine",
+                    "stivaletti",
+                    "basse",
+                    "décolletè",
+                    "stringate",
+                    "slip-on",
+                ],
+                sizes: "shoes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: undefined,
+                length: undefined,
+                colors: 'clothes_colors',
+                sizeGuideCode: undefined
+
+            },
+            {
+                name: "Gonne",
+                url: "gonne",
+                types: [
+                    "lunghe",
+                    "corte",
+                    "jeans",
+                    "tubino",
+                ],
+                sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
+
+            },
+            {
+                name: "Abiti",
+                url: "abiti",
+                types: [
+                    "sera",
+                    "mare",
+                    "jeans",
+                    "classico",
+                    "lunghi",
+                    "cocktail",
+                    "caftani",
+                    "camicia",
+                    "maglina",
+                    "tubini",
+                ],
+                sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_WOMAN_CLOTHES_SIZES'
             },
             {
                 name: "Camicie", //Camicie & Bluse
                 url: "camicie",
                 types: [
                     "casual",
-                    "hawaiana",
+                    "eleganti",
                     "jeans",
+                    "camiciette",
+                    "maniche corte",
                     "lino",
-                    "eleganti"
+                    "hawaiana",
+                    "senza maniche",
+                    "pizzo",
                 ],
                 sizes: "woman_clothes_sizes",
                 traits: 'clothes_traits',
@@ -122,74 +260,41 @@ export const CATEGORIES: Categories = {
                 colors: 'clothes_colors',
                 sizeGuideCode: 'DEFAULT_GUIDE_WOMAN_CLOTHES_SIZES'
             },
-            {
-                name: "Pantaloni",
-                url: "pantaloni",
-                types: [
-                    "basic",
-                    "leggins",
-                    "cargo",
-                    "salopette",
-                    "tuta",
-                    "palazzo",
-                    "zampa d'elefante",
-                ],
-                sizes: "woman_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors',
-                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
 
-            },
-            {
-                name: "Jeans",
-                url: "jeans",
-                types: [
-                    "basic",
-                    "palazzo",
-                    "zampa d'elefante"
-                ],
-                sizes: "woman_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors',
-                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
-            },
-            {
-                name: "Felpe",
-                url: "felpe",
-                types: [
-                    "cappuccio",
-                    "zip",
-                    "senza cappuccio"
-                ],
-                sizes: "woman_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors',
-                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
-
-            },
             {
                 name: "Giacche",
                 url: "giacche",
                 types: [
                     "leggere",
-                    "impermeabili",
-                    "smanicate",
-                    "vento",
-                    "sportive",
+                    "pelle",
                     "invernali",
                     "piumini",
                     "bomber",
                     "jeans",
+                    "sportive",
                     "gilet",
+                    "impermeabili",
+                    "smanicate",
+                ],
+                sizes: "woman_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
+
+            },
+
+            {
+                name: "Cappotti",
+                url: "cappotti",
+                types: [
+                    "classici",
+                    "trench",
+                    "invernali",
+                    "piumini",
+                    "parka",
                 ],
                 sizes: "woman_clothes_sizes",
                 traits: 'clothes_traits',
@@ -204,13 +309,9 @@ export const CATEGORIES: Categories = {
                 name: "Blazer",
                 url: "blazer",
                 types: [
-                    "leggeri",
-                    "impermeabili",
-                    "smanicati",
-                    "vento",
-                    "sportivi",
-                    "invernali",
-                    "jeans",
+                    "classici",
+                    "corti",
+                    "lunghi",
                 ],
                 sizes: "woman_clothes_sizes",
                 traits: 'clothes_traits',
@@ -221,46 +322,18 @@ export const CATEGORIES: Categories = {
                 sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
 
             },
-            {
-                name: "Cappotti",
-                url: "cappotti",
-                types: [
-                    "basic",
-                    "parka",
-                    "trench",
-                    "invernali",
-                    "piumini"
-                ],
-                sizes: "woman_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors',
-                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
 
-            },
-            {
-                name: "Maglieria",
-                url: "maglieria",
-                types: ["cardigan", "maglioni"],
-                sizes: "woman_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors',
-                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
-
-            },
 
             //!aggiunto costumi: ["costumi"],
             {
                 name: "Costumi",
                 url: "costumi",
                 types: [
-                    "costumi interi",
-                    "bikini"
+                    "slip",
+                    "bikini",
+                    "interi",
+                    "bermuda",
+                    "boxer",
                 ],
                 sizes: "woman_clothes_sizes",
                 traits: 'clothes_traits',
@@ -270,42 +343,17 @@ export const CATEGORIES: Categories = {
                 colors: 'clothes_colors',
                 sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
             },
-            {
-                name: "Gonne",
-                url: "gonne",
-                types: [
-                    "pieghe",
-                    "trapezio",
-                    "tubino",
-                    "portafoglio",
-                    "jeans",
-                ],
-                sizes: "woman_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors',
-                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
 
-            },
-            {
-                name: "Shorts",
-                url: "shorts",
-                types: ["basic", "sportivi"],
-                sizes: "woman_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors',
-                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
 
-            },
             {
                 name: "Bermuda",
                 url: "bermuda",
-                types: ["cargo", "jeans", "tuta", "basic"],
+                types: [
+                    "classici",
+                    "cargo",
+                    "jeans",
+                    "tuta",
+                ],
                 sizes: "woman_clothes_sizes",
                 traits: 'clothes_traits',
                 materials: 'clothes_materials',
@@ -336,58 +384,26 @@ export const CATEGORIES: Categories = {
             //     sizes: "woman_clothes_sizes",
 
             // },
-            {
-                //!aggiunte scarpe donna
-                name: "Scarpe",
-                url: "scarpe",
-                types: [
-                    "sneakers",
-                    "sandali",
-                    "piatte",
-                    "ciabatte",
-                    "tacco",
-                    "ballerine",
-                    "stivaletti",
-                    "stivali",
-                    "sportive",
-                    "sposa",
-                    "pantofole",
-                    "trekking",
-                    "mocassini",
-                    "polacchine",
-                    "basse",
-                    "décolletè",
-                    "zoccoli",
-                    "aperte",
-                    "mocassini",
-                    "stringate",
-                    "slip-on",
-                    "eleganti"
-                ],
-                sizes: "shoes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: undefined,
-                length: undefined,
-                colors: 'clothes_colors',
-                sizeGuideCode: undefined
 
-            },
         ],
         accessori: [
+
             {
                 name: "Borse",
                 url: "borse",
                 types: [
+                    "tracolla",
+                    "shopping",
+                    "business",
+                    "laptop",
+                    "sportive",
+                    "borsette",
+                    "viaggio",
                     "a mano",
                     "clutch",
-                    "shopping bags",
-                    "borse a spalla",
-                    "porta pc",
-                    "per lo sport",
+                    "spalla",
                     "marsupi",
                     "astucci",
-                    "bagagli e accessori",
                 ],
                 sizes: "bag_sizes",
                 traits: "clothes_traits",
@@ -401,8 +417,8 @@ export const CATEGORIES: Categories = {
                 name: "Zaini",
                 url: "zaini",
                 types: [
-                    "shopping",
-                    "viaggio",
+                    "classici",
+                    "tracolla",
                     "trekking",
                     "sportivi",
                 ],
@@ -420,11 +436,11 @@ export const CATEGORIES: Categories = {
                 types: [
                     "collane",
                     "bracciali",
-                    "orecchini",
                     "anelli",
+                    "orecchini",
                     "ciondoli",
-                    "gioielli per capelli",
-                    "cavigliere"
+                    "capelli",
+                    "cavigliere",
                 ],
                 sizes: "jewellery_woman_sizes",
                 traits: "clothes_traits",
@@ -438,11 +454,12 @@ export const CATEGORIES: Categories = {
                 name: "Cappelli",
                 url: "cappelli",
                 types: [
+                    "visiera",
                     "berretti",
-                    "cappelli con visiera",
-                    "cappelli panama",
+                    "pesca",
+                    "panama",
                     "paraorecchie",
-                    "foulards"
+                    "foulards",
                 ],
                 sizes: "cap_woman_sizes",
                 traits: "clothes_traits",
@@ -456,9 +473,10 @@ export const CATEGORIES: Categories = {
                 name: "Cinture",
                 url: "cinture",
                 types: [
-                    "cinture casual",
-                    "cinture a vita alta",
-                    "cinture intrecciate"
+                    "casual",
+                    "eleganti",
+                    "intrecciate",
+                    "vita alta",
                 ],
                 sizes: "belt_woman_sizes",
                 traits: "clothes_traits",
@@ -472,9 +490,9 @@ export const CATEGORIES: Categories = {
                 name: "Sciarpe",
                 url: "sciarpe",
                 types: [
-                    "sciarpe",
-                    "sciarpe leggere",
-                    "scaldacollo"
+                    "classiche",
+                    "leggere",
+                    "scaldacollo",
                 ],
                 sizes: "one_size",
                 traits: "clothes_traits",
@@ -488,9 +506,9 @@ export const CATEGORIES: Categories = {
                 name: "Guanti",
                 url: "guanti",
                 types: [
-                    "con dita",
+                    "classici",
                     "muffola",
-                    "senza dita"
+                    "senza dita",
                 ],
                 sizes: "gloves_woman_sizes",
                 traits: "clothes_traits",
@@ -509,10 +527,11 @@ export const CATEGORIES: Categories = {
                 name: "T-Shirt",
                 url: "t-shirt",
                 types: [
-                    "maniche lunghe",
                     "maniche corte",
-                    "mezze maniche",
-                    "senza maniche",
+                    "polo",
+                    "canotte",
+                    "maniche lunghe",
+                    "sportive",
                     "jeans",
                 ],
                 sizes: "man_clothes_sizes",
@@ -522,36 +541,20 @@ export const CATEGORIES: Categories = {
                 length: 'clothes_length',
                 colors: 'clothes_colors',
                 sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
-
-
-            },
-            {
-                name: "Top",
-                url: "top",
-                types: [
-                    "maniche lunghe",
-                    "maniche corte",
-                    "mezze maniche",
-                    "senza maniche",
-                ],
-                sizes: "man_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors',
-                sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
-
             },
             {
                 name: "Camicie",
                 url: "camicie",
                 types: [
-                    "hawaiana",
-                    "jeans",
-                    "lino",
                     "casual",
-                    "eleganti"
+                    "eleganti",
+                    "jeans",
+                    "maniche corte",
+                    "lino",
+                    "hawaiana",
+                    "senza maniche",
+                    "pizzo",
+                    "camiciette",
                 ],
                 sizes: "man_clothes_sizes",
                 traits: 'clothes_traits',
@@ -568,7 +571,7 @@ export const CATEGORIES: Categories = {
                 types: [
                     "cappuccio",
                     "zip",
-                    "senza cappuccio"
+                    "senza cappuccio",
                 ],
                 sizes: "man_clothes_sizes",
                 traits: 'clothes_traits',
@@ -583,8 +586,12 @@ export const CATEGORIES: Categories = {
                 name: "Maglieria",
                 url: "maglieria",
                 types: [
+                    "maglioni",
+                    "pullover",
                     "cardigan",
-                    "pullover"
+                    "liscio",
+                    "trecce",
+                    "coste",
                 ],
                 sizes: "man_clothes_sizes",
                 traits: 'clothes_traits',
@@ -593,34 +600,46 @@ export const CATEGORIES: Categories = {
                 length: 'clothes_length',
                 colors: 'clothes_colors',
                 sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
+            },
+
+
+
+
+
+
+
+            {
+                name: "Pantaloni",
+                url: "pantaloni",
+                types: [
+                    "casual",
+                    "cargo",
+                    "chino",
+                    "sportivi",
+                    "tuta",
+                    "palazzo",
+                    "zampa d'elefante",
+                    "salopette",
+                    "shorts",
+                    "leggins",
+                ],
+                sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_MAN_CLOTHES_SIZES'
             },
             {
                 name: "Jeans",
                 url: "jeans",
                 types: [
-                    "basic", "palazzo", "zampa d'elefante"
-                ],
-                sizes: "man_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors',
-                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_MAN_CLOTHES_SIZES'
-
-            },
-            {
-                name: "Pantaloni",
-                url: "pantaloni",
-                types: [
-                    "chino",
-                    "basic",
-                    "leggins",
-                    "cargo",
-                    "salopette",
-                    "tuta",
+                    "casual",
+                    "strappati",
                     "palazzo",
                     "zampa d'elefante",
+                    "affusolati",
                 ],
                 sizes: "man_clothes_sizes",
                 traits: 'clothes_traits',
@@ -629,79 +648,6 @@ export const CATEGORIES: Categories = {
                 length: 'clothes_length',
                 colors: 'clothes_colors',
                 sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_MAN_CLOTHES_SIZES'
-            },
-            {
-                name: "Bermuda",
-                url: "bermuda",
-                types: [
-                    "cargo", "jeans", "tuta", "basic"
-                ],
-                sizes: "man_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors',
-                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_MAN_CLOTHES_SIZES'
-
-            },
-            // {
-            //     name: "Abbigliamento sportivo",
-            //     url: "abbigliamento-sportivo",
-            //     types: [
-            //         "Magliette",
-            //         "Pantaloni sportivi",
-            //         "Giacche & Gilet",
-            //         "Completi da allenamento",
-            //         "Felpe",
-            //         "Merchandising ufficiale",
-            //         "Calze & calzini",
-            //         "Moda mare & surf",
-            //         "Intimo e strati base"
-            //     ],
-            //     sizes: "man_clothes_sizes",
-            // },
-            {
-                name: "Giacche",
-                url: "giacche",
-                types: [
-                    "leggere",
-                    "impermeabili",
-                    "smanicate",
-                    "vento",
-                    "sportive",
-                    "invernali",
-                    "piumini",
-                    "bomber",
-                    "jeans",
-                    "gilet",
-                ],
-                sizes: "man_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors',
-                sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
-
-            },
-            {
-                name: "Cappotti",
-                url: "cappotti",
-                types: [
-                    "piumini",
-                    "basic",
-                    "parka",
-                    "trench",
-                    "invernali"
-                ],
-                sizes: "man_clothes_sizes",
-                traits: 'clothes_traits',
-                materials: 'clothes_materials',
-                fit: 'clothes_fit',
-                length: 'clothes_length',
-                colors: 'clothes_colors',
-                sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
 
             },
             {
@@ -735,15 +681,58 @@ export const CATEGORIES: Categories = {
                 length: undefined,
                 colors: 'clothes_colors',
                 sizeGuideCode: undefined
+            },
+            {
+                name: "Giacche",
+                url: "giacche",
+                types: [
+                    "leggere",
+                    "pelle",
+                    "invernali",
+                    "piumini",
+                    "bomber",
+                    "jeans",
+                    "sportive",
+                    "gilet",
+                    "impermeabili",
+                    "smanicate",
+                ],
+                sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
 
             },
             {
-                name: "Costumi",
-                url: "costumi",
+                name: "Cappotti",
+                url: "cappotti",
                 types: [
-                    "bermuda",
-                    "boxer",
-                    "slip"
+                    "classici",
+                    "invernali",
+                    "piumini",
+                    "parka",
+                    "trench",
+                ],
+                sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
+
+            },
+            {
+                name: "Bermuda",
+                url: "bermuda",
+                types: [
+                    "classici",
+                    "cargo",
+                    "jeans",
+                    "tuta",
                 ],
                 sizes: "man_clothes_sizes",
                 traits: 'clothes_traits',
@@ -754,55 +743,94 @@ export const CATEGORIES: Categories = {
                 sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_MAN_CLOTHES_SIZES'
 
             },
+            {
+                name: "Costumi",
+                url: "costumi",
+                types: [
+                    "bermuda",
+                    "boxer",
+                    "slip",
+                    "bikini",
+                    "interi",
+                ],
+                sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors',
+                sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_MAN_CLOTHES_SIZES'
 
+            },
+            {
+                name: "Blazer",
+                url: "blazer",
+                types: [
+                    "classici",
+                    "corti",
+                    "lunghi",
+                ],
+                sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
+
+            },
+            {
+                name: "Top",
+                url: "top",
+                types: [
+                    "maniche lunghe",
+                    "maniche corte",
+                    "senza maniche",
+                ],
+                sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
+
+            },
+            {
+                name: "Abiti",
+                url: "abiti",
+                types: [
+                    "sera",
+                    "mare",
+                    "jeans",
+                    "classico",
+                    "lunghi",
+                    "cocktail",
+                    "caftani",
+                    "camicia",
+                    "maglina",
+                    "tubini",
+                ],
+                sizes: "man_clothes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: 'clothes_fit',
+                length: 'clothes_length',
+                colors: 'clothes_colors',
+                sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
+            },
         ],
         accessori: [
-            {
-                name: "Borse",
-                url: "borse",
-                types: [
-                    "tracolla",
-                    "shopping",
-                    "laptop",
-                    "business",
-                    "sportive",
-                    "borsette",
-                    "da viaggio",
-                ],
-                sizes: "bag_sizes",
-                traits: "clothes_traits",
-                materials: "bag_materials",
-                fit: undefined,
-                length: undefined,
-                colors: "clothes_colors",
-                sizeGuideCode: undefined
-
-            },
-            {
-                name: "Gioielli",
-                url: "gioielli",
-                types: [
-                    "collane",
-                    "bracciali",
-                    "orecchini",
-                    "anelli",
-                    "ciondoli",
-                ],
-                sizes: "jewellery_man_sizes",
-                traits: "clothes_traits",
-                materials: "jewellery_materials",
-                fit: undefined,
-                length: undefined,
-                colors: "clothes_colors",
-                sizeGuideCode: 'JEWELLERY_MAN_SIZES'
-            },
             {
                 name: "Cappelli",
                 url: "cappelli",
                 types: [
-                    "cappelli",
+                    "visiera",
                     "berretti",
-                    "berretti con visiera",
+                    "pesca",
+                    "panama",
+                    "paraorecchie",
+                    "foulards",
                 ],
                 sizes: "cap_man_sizes",
                 traits: "clothes_traits",
@@ -816,9 +844,10 @@ export const CATEGORIES: Categories = {
                 name: "Cinture",
                 url: "cinture",
                 types: [
-                    "cinture casual",
-                    "cinture classiche",
-                    "cinture intrecciate"
+                    "casual",
+                    "eleganti",
+                    "intrecciate",
+                    "vita alta",
                 ],
                 sizes: "belt_man_sizes",
                 traits: "clothes_traits",
@@ -829,12 +858,57 @@ export const CATEGORIES: Categories = {
                 sizeGuideCode: 'BELT_MAN_SIZES'
             },
             {
+                name: "Zaini",
+                url: "zaini",
+                types: [
+                    "classici",
+                    "tracolla",
+                    "trekking",
+                    "sportivi",
+                ],
+                sizes: "bag_sizes",
+                traits: "clothes_traits",
+                materials: "bag_materials",
+                fit: undefined,
+                length: undefined,
+                colors: "clothes_colors",
+                sizeGuideCode: undefined
+            },
+            {
+                name: "Borse",
+                url: "borse",
+                types: [
+                    "tracolla",
+                    "shopping",
+                    "business",
+                    "laptop",
+                    "sportive",
+                    "borsette",
+                    "viaggio",
+                    "a mano",
+                    "clutch",
+                    "spalla",
+                    "marsupi",
+                    "astucci",
+                ],
+                sizes: "bag_sizes",
+                traits: "clothes_traits",
+                materials: "bag_materials",
+                fit: undefined,
+                length: undefined,
+                colors: "clothes_colors",
+                sizeGuideCode: undefined
+
+            },
+
+
+            {
                 name: "Sciarpe",
                 url: "sciarpe",
                 types: [
-                    "sciarpe",
-                    "sciarpe leggere",
-                    "scaldacollo"
+                    "classiche",
+                    "leggere",
+                    "scaldacollo",
                 ],
                 sizes: "one_size",
                 traits: "clothes_traits",
@@ -848,9 +922,9 @@ export const CATEGORIES: Categories = {
                 name: "Guanti",
                 url: "guanti",
                 types: [
-                    "con dita",
+                    "classici",
                     "muffola",
-                    "senza dita"
+                    "senza dita",
                 ],
                 sizes: "gloves_man_sizes",
                 traits: "clothes_traits",
@@ -860,6 +934,27 @@ export const CATEGORIES: Categories = {
                 colors: "clothes_colors",
                 sizeGuideCode: 'GLOVES_MAN_SIZES'
             },
+            {
+                name: "Gioielli",
+                url: "gioielli",
+                types: [
+                    "collane",
+                    "bracciali",
+                    "anelli",
+                    "orecchini",
+                    "ciondoli",
+                    "capelli",
+                    "cavigliere",
+                ],
+                sizes: "jewellery_man_sizes",
+                traits: "clothes_traits",
+                materials: "jewellery_materials",
+                fit: undefined,
+                length: undefined,
+                colors: "clothes_colors",
+                sizeGuideCode: 'JEWELLERY_MAN_SIZES'
+            },
+
             //TODO portafoglio
         ],
     },
