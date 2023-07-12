@@ -6,6 +6,7 @@ import { STATUS } from '../mook/statusOrderUser';
 import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals';
 import { DateFormat, getDateFromMongoDBDate } from '../utils/getDateFromMongoDBDate';
 import { imageKitUrl } from '../utils/imageKitUrl';
+import ProfilePhoto from './ProfilePhoto';
 
 
 const OrderCart: FC<{ order: Order }> = ({ order }) => {
@@ -24,40 +25,13 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                 justifyContent={'space-between'}
                 mb={3}
             >
-                <Box
-                    display={'flex'}
-                    gap={2}
-                >
-                    <Avatar
-                        name={order?.shop?.name ? order?.shop?.name : 'Errore'}
-                        src={order?.shop?.photo ? imageKitUrl(order?.shop?.photo, 100, 100) : ''}
-                        bg='white'
-                        height={['50px', '50px', '60px', '60px']}
-                        width={['50px', '50px', '60px', '60px']}
-                        borderWidth={'1px'}
-                        borderColor={'#F3F3F3'}
-                    />
-                    <Box
-                        my={'auto'}
-                    >
-                        <Text
-                            fontWeight={'black'}
-                            fontSize={['15px', '18px']}
-                            lineHeight={['16px', '19px']}
-                        >
-                            {order.shop.name}
-                        </Text>
-                        <Text
-                            fontWeight={'medium'}
-                            fontSize={['12px', '14px']}
+                <ProfilePhoto
+                    imgName={order.shop.name}
+                    scr={order.shop.photo}
+                    primaryText={order.shop.name}
+                    secondaryText={order.code}
+                />
 
-                            color={'#909090'}
-                        >
-                            #{order.code}
-                        </Text>
-                    </Box>
-
-                </Box>
                 <Text
                     my={'auto'}
                     fontWeight={['semibold', 'medium']}
