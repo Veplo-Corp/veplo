@@ -29,7 +29,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                     imgName={order.shop.name}
                     scr={order.shop.photo}
                     primaryText={order.shop.name}
-                    secondaryText={order.code}
+                    secondaryText={'#' + order.code}
                 />
 
                 <Text
