@@ -211,9 +211,10 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
         canonicalUrl='https://www.veplo.it'
         title={"Veplo"}
         subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Su Veplo compri direttamente dai brand senza intermediari."}
-        image={""}
+        image={"android-chrome-512x512.png"}
         description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Su Veplo compri direttamente dai brand senza intermediari."}
       />
+
 
 
       <Shop_not_Allowed>
@@ -267,6 +268,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
                   className='lg:w-full h-[24vh]'
                   src='https://www.datocms-assets.com/102220/1688458870-veplo_graffiti_web.png'
                 />
+
               </Box>
               <Text
                 fontSize={'8xl'}
