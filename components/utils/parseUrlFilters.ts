@@ -8,7 +8,7 @@ export const parseSlugUrlFilter = (slug: string | undefined) => {
     const maxPrice = params.get('maxPrice');
     const brand = params.get('brand');
     const sale = params.get('sale');
-
+    const sostenibile = params.get('sostenibile');
     const parsedParams: any = {};
     if (sizes) {
         parsedParams['sizes'] = sizes.split(',');
@@ -27,6 +27,9 @@ export const parseSlugUrlFilter = (slug: string | undefined) => {
     }
     if (sale && sale === 'true') {
         parsedParams['sale'] = "true";
+    }
+    if (sostenibile && sostenibile === 'true') {
+        parsedParams['traits'] = ["sostenibile", "riciclato"];
     }
     //TODO inserire anche traits, materials, length, fit
     return Object.keys(parsedParams).length ? parsedParams : undefined;

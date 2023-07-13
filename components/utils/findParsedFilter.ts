@@ -42,6 +42,11 @@ export const findParsedFilter = (filters: ProductsFilter, univers: Univers): Fil
             parameters: undefined,
             value: filters.sale
         },
+        {
+            name: "sostenibile",
+            parameters: undefined,
+            value: filters.traits ? "true" : "false"
+        },
 
     ]
 

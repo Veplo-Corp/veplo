@@ -4,15 +4,16 @@ import { Box, Button, Text, useBreakpointValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 import SelectOption from '../atoms/SelectOption';
-import { Filter, NavArrowRight } from 'iconoir-react';
+import { Filter, Leaf, NavArrowRight } from 'iconoir-react';
 import DrawerFilter from './DrawerFilter';
 import SelectMaxMinPrice from '../atoms/SelectMaxMinPrice';
 import { FilterParameters, findParsedFilter } from '../utils/findParsedFilter';
 import BrandsFilter from '../atoms/BrandsFilter';
 import ToogleComponent from '../atoms/ToogleComponent';
 import { FilterAccepted } from '../atoms/TagFilter';
-import { VeploGTMEvent } from '../../src/lib/analytics/eventTypes';
+import { GTMEventType, VeploGTMEvent } from '../../src/lib/analytics/eventTypes';
 import { Univers } from '../mook/categories';
+import { gtag } from '../../src/lib/analytics/gtag';
 
 
 
@@ -144,14 +145,61 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
                 />
                 <ToogleComponent
                     modifyToogleInComponent={true}
+                    text={
+                        <Box display={'flex'} gap={'4px'}>
+                            <Leaf
+                                className='my-auto'
+                                height={'20px'}
+                                width={'20px'}
+                                strokeWidth={2.3}
+                            />
+                            <Text
+                                marginY={'auto'}
+                            >
+                                sostenibile
+                            </Text>
+                        </Box>
+                    }
+                    value={filterParameters?.find(parameter => parameter.name === 'sostenibile')?.value === 'true' ?
+                        true :
+                        undefined
+                    }
+                    toogleColor={'bg-[#37D1A9]'}
+                    handleChangeToogle={(value) => {
+                        handleChange(value, 'sostenibile')
+                        if (value === 'true') {
+                            return gtag({
+                                command: GTMEventType.saleToggle,
+                                args: {
+                                    label: 'Click on sale toggle',
+                                    //gender: user.genderSelected === 'm' ? 'male' : user.genderSelected === 'f' ? 'female' : 'not_speficied'
+                                }
+                            })
+                        }
+                    }}
+                />
+                <ToogleComponent
+                    modifyToogleInComponent={true}
+                    text={'promozioni'}
                     value={filterParameters?.find(parameter => parameter.name === 'sale')?.value === 'true' ?
                         true :
                         undefined
                     }
                     handleChangeToogle={(value) => {
                         handleChange(value, 'sale')
+                        if (value === 'true') {
+                            return gtag({
+                                command: GTMEventType.saleToggle,
+                                args: {
+                                    label: 'Click on sale toggle',
+                                    //gender: user.genderSelected === 'm' ? 'male' : user.genderSelected === 'f' ? 'female' : 'not_speficied'
+                                }
+                            })
+                        }
                     }}
                 />
+
+
 
 
 

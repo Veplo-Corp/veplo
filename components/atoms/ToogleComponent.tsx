@@ -1,21 +1,13 @@
 import { Box, Text } from '@chakra-ui/react'
 import { Switch } from '@headlessui/react'
-import React, { FC, Fragment, useEffect, useState } from 'react'
-import { motion } from 'framer-motion';
-import { GTMEventType, VeploGTMEvent } from '../../src/lib/analytics/eventTypes';
-import { useAnalytics } from '../../src/lib/analytics/hooks/useAnalytics';
-import { gtag } from '../../src/lib/analytics/gtag';
-import { useRouter } from 'next/router';
+import React, { FC, Fragment, ReactNode, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
-import { Firebase_User } from '../../src/interfaces/firebase_user.interface';
 
-const ToogleComponent: FC<{ value: boolean | undefined, handleChangeToogle: (toogle: string) => void, modifyToogleInComponent: boolean }> = ({ value, handleChangeToogle, modifyToogleInComponent }) => {
+const ToogleComponent: FC<{ text: ReactNode | string, toogleColor?: string, value: boolean | undefined, handleChangeToogle: (toogle: string) => void, modifyToogleInComponent: boolean }> = ({ text, toogleColor, value, handleChangeToogle, modifyToogleInComponent }) => {
     const [enabled, setEnabled] = useState(false)
-    const user: Firebase_User = useSelector((state: any) => state.user.user);
 
 
     useEffect(() => {
-
         if (value === undefined) return setEnabled(false)
         return setEnabled(value)
     }, [value])
@@ -36,35 +28,28 @@ const ToogleComponent: FC<{ value: boolean | undefined, handleChangeToogle: (too
                 if (modifyToogleInComponent) setEnabled(prevstate => { return !prevstate })
                 const state = !enabled === true ? 'true' : 'false'
                 handleChangeToogle(state)
-                if (state === 'true') {
-                    return gtag({
-                        command: GTMEventType.saleToggle,
-                        args: {
-                            label: 'Click on sale toggle',
-                            gender: user.genderSelected === 'm' ? 'male' : user.genderSelected === 'f' ? 'female' : 'not_speficied'
-                        }
-                    })
-                }
+
             }}
             cursor={'pointer'}
         >
-            <Text
-                my={'auto'}
+            <Box
                 fontSize={'md'}
                 fontWeight={'semibold'}
                 color={'#3A3A3A'}
+                my={'auto'}
             >
-                promozioni
-            </Text>
+                {text}
+            </Box>
+
             <Switch checked={enabled} as={Fragment}
             >
                 {({ checked }) => (
                     /* Use the `checked` state to conditionally style the button. */
                     <button
-                        className={`${checked ? 'bg-[#FF5A78]' : 'bg-[#EFEFEF]'
+                        className={`${checked ? toogleColor ? toogleColor : 'bg-[#FF5A78]' : 'bg-[#EFEFEF]'
                             } relative inline-flex h-[25px] w-[46px] items-center my-auto rounded-full`}
                     >
-                        <span className="sr-only">promozioni</span>
+                        <span className="sr-only">{text}</span>
                         <span
                             className={`${checked ? 'translate-x-6' : 'translate-x-1'
                                 } inline-block h-[18px] w-[18px] transform rounded-full bg-white transition`}

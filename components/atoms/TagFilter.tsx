@@ -2,7 +2,7 @@ import { Tag, TagLabel } from '@chakra-ui/react'
 import { Cancel } from 'iconoir-react'
 import React, { FC } from 'react'
 
-export type FilterAccepted = 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting' | 'microCategory' | 'macroCategory' | 'brand' | 'fit' | 'materials' | 'traits' | 'length' | 'sale'
+export type FilterAccepted = 'colors' | 'maxPrice' | 'minPrice' | 'sizes' | 'sorting' | 'microCategory' | 'macroCategory' | 'brand' | 'fit' | 'materials' | 'traits' | 'length' | 'sale' | 'sostenibile'
 
 const TagFilter: FC<{ value: FilterAccepted, text: string, handleEvent: (value: FilterAccepted) => void }> = ({ value, text, handleEvent }) => {
     return (
