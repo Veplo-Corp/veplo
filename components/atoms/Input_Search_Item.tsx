@@ -20,7 +20,7 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: (text: string)
         if (textSearched.length < 0) return
         setTextSearched('')
         setisSearchBoxVisible(false)
-        onConfirmText(textSearched)
+        onConfirmText(textSearched.trim())
         //setTextSearched('')
     }
 
@@ -59,8 +59,7 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: (text: string)
                 <Input
                     type='text'
                     value={textSearched}
-                    //borderWidth={0}
-
+                    maxLength={50}
                     borderWidth={1.5}
                     borderColor={'white'}
 
