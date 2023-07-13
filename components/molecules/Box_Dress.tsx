@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useLayoutEffect, useState } from 'react'
-import { Box, Fade, Image, ScaleFade, Tag, Text, VStack, useBreakpointValue } from '@chakra-ui/react'
+import { Box, Fade, Image, ScaleFade, Tag, Text, Tooltip, VStack, useBreakpointValue } from '@chakra-ui/react'
 import Circle_Color from '../atoms/Circle_Color'
 import { Variation } from '../../src/interfaces/product.interface'
 import { COLORS } from '../mook/colors'
@@ -28,6 +28,8 @@ import 'swiper/css/navigation';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import ProfilePhoto from './ProfilePhoto'
+import { SustainableTraits, arraySustainableTraits } from '../mook/productParameters/traits'
+import { Leaf } from 'iconoir-react'
 
 
 const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean, productLink: string }> = ({ handleEventSelectedDress, product, color, showStoreHeader, productLink, overflowCards }) => {
@@ -39,8 +41,16 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
     const [indexPhoto, setindexPhoto] = useState(0)
     const [listOfSizesAvailable, setListOfSizesAvailable] = useState<string[]>([])
     const [showSize, setShowSize] = useState(false)
+    const [isSustainable, setIsSustainable] = useState(false)
     const router = useRouter()
     const isSmallView = useBreakpointValue({ base: true, md: false });
+
+    const checkIfProductIsSustainable = (parole: string[] | null | undefined): boolean => {
+        if (!parole) return false
+        console.log(parole);
+
+        return parole.some(parola => arraySustainableTraits.includes(parola as SustainableTraits));
+    }
 
     useEffect(() => {
         if (!product.variations) return
@@ -48,6 +58,8 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
             return COLORS.find(color => color.name === variation.color)?.cssColor
         })
 
+        const isProductSustainable = checkIfProductIsSustainable(product.info?.traits)
+        setIsSustainable(isProductSustainable)
         setProductcolorsCSS(colors)
         seturlProduct(product.variations[indexPhoto].photos?.[0] ? product.variations[indexPhoto].photos?.[0] : '');
         if (color) {
@@ -327,7 +339,35 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
 
 
                         </Link>
-
+                        {isSustainable &&
+                            <Tooltip label='Prodotto sostenibile'
+                                bg='white'
+                                color='primaryBlack.text'
+                                borderRadius={'full'}
+                                boxShadow={'sm'}
+                                fontWeight={'medium'}
+                            >
+                                <Box
+                                    position={'absolute'}
+                                    top={3.5}
+                                    right={'15px'}
+                                    height={8}
+                                    width={8}
+                                    margin={'none'}
+                                    padding={'none'}
+                                    background={'white'}
+                                    borderRadius={'full'}
+                                    display={'flex'}
+                                >
+                                    <Leaf
+                                        className='m-auto'
+                                        height={'19px'}
+                                        width={'19px'}
+                                        strokeWidth={2.1}
+                                    />
+                                </Box>
+                            </Tooltip>
+                        }
                     </Box >
                     <Box
                         display={'flex'}

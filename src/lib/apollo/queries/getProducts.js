@@ -25,6 +25,7 @@ const GET_PRODUCTS = graphql(`
                     microCategory
                     brand
                     fit
+                    traits
                 }
                 variations{
                 id
