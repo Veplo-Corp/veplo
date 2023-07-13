@@ -98,7 +98,7 @@ const index = () => {
                     }
                 })}
             >
-                <h1 className="mt-2 font-black text-2xl md:text-3xl italic text-black-900 mb-4 max-w-xs md:max-w-md">Completa le informazioni</h1>
+                <h1 className="mt-2 font-black text-2xl md:text-3xl text-black-900 mb-4 max-w-xs md:max-w-md">Completa le informazioni</h1>
 
                 <VStack
                     spacing={[2, 3]}

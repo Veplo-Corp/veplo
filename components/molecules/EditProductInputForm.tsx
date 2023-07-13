@@ -42,7 +42,6 @@ const EditProductInputForm: FC<{ univers: string, defaultValues: IFormInputProdu
 
 
     const onSubmit = (value: IFormInputProductEdit) => {
-        //TODO gestire campo ModelDescription
         handleConfirm(value)
     }
 
@@ -50,7 +49,6 @@ const EditProductInputForm: FC<{ univers: string, defaultValues: IFormInputProdu
         if (!defaultValues || !gender) return
         const genderSelected = gender === 'f' ? 'donna' : 'uomo'
         const productUnivers = univers === 'accessori' ? 'accessori' : 'abbigliamento'
-        //TODO gestire differenza tra Abbigliamento e Accessori
         const categoryInformation: Category | undefined = CATEGORIES[genderSelected][productUnivers].find(category => category.name.toLowerCase() === defaultValues.macrocategory.toLowerCase())
         if (!categoryInformation) return
         setMacrocategorySelectedSpec(categoryInformation)

@@ -500,7 +500,7 @@ const index = () => {
             <Desktop_Layout>
                 <NoIndexSeo title='Modifica prodotto | Veplo' />
                 <div className='w-full lg:w-11/12  m-auto'>
-                    <h1 className='italic text-xl lg:text-3xl font-extrabold mb-6'>
+                    <h1 className='text-xl lg:text-3xl font-extrabold mb-6'>
                         Modifica prodotto
                     </h1>
                 </div>

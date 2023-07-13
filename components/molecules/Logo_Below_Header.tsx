@@ -11,7 +11,7 @@ const Logo_Below_Header: React.FC<Props> = ({ city, category, gender }) => {
     return (
         <div className='my-auto'>
             {city &&
-                <h1 className="flex lg:hidden font-black text-xl md:text-2xl italic text-black-900 leading-5">{city?.charAt(0).toUpperCase() + city?.slice(1)}</h1>
+                <h1 className="flex lg:hidden font-black text-xl md:text-2xl text-black-900 leading-5">{city?.charAt(0).toUpperCase() + city?.slice(1)}</h1>
             }
             {gender && category &&
                 <p className='flex leading-4 text-xs md:text-base md:font-medium my-auto mb-1 ' >{gender}
