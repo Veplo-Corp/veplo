@@ -481,6 +481,8 @@ const index = () => {
         }
 
 
+
+
         setNewCard(false)
         setColors((prevState: Color[]) => {
             const newColors = prevState.filter(color => color.name !== variation.color)
@@ -506,6 +508,7 @@ const index = () => {
                     <div className='lg:flex w-full'>
                         <div className='w-full md:w-8/12 lg:w-5/12 m-auto mb-10 mt-0'>
                             <EditProductInputForm
+                                univers={productData?.data?.product?.info?.univers}
                                 handleConfirm={editProductHandler}
                                 defaultValues={defaultValue}
                                 gender={product.info.gender}

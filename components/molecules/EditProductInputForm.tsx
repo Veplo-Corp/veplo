@@ -24,13 +24,19 @@ interface Macrocategory {
     url: string
 }
 
-const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleConfirm: (product: IFormInputProductEdit) => void, gender: 'f' | 'm' }> = ({ defaultValues, handleConfirm, gender }) => {
+const EditProductInputForm: FC<{ univers: string, defaultValues: IFormInputProductEdit, handleConfirm: (product: IFormInputProductEdit) => void, gender: 'f' | 'm' }> = ({ univers, defaultValues, handleConfirm, gender }) => {
     const [macrocategorySelectedSpec, setMacrocategorySelectedSpec] = useState<Category>()
 
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInputProductEdit>({
         mode: "all",
         defaultValues
     });
+
+
+
+    console.log(macrocategorySelectedSpec);
+
+    console.log(defaultValues);
 
 
 
@@ -43,8 +49,9 @@ const EditProductInputForm: FC<{ defaultValues: IFormInputProductEdit, handleCon
     useEffect(() => {
         if (!defaultValues || !gender) return
         const genderSelected = gender === 'f' ? 'donna' : 'uomo'
+        const productUnivers = univers === 'accessori' ? 'accessori' : 'abbigliamento'
         //TODO gestire differenza tra Abbigliamento e Accessori
-        const categoryInformation: Category | undefined = CATEGORIES[genderSelected]['abbigliamento'].find(category => category.name.toLowerCase() === defaultValues.macrocategory.toLowerCase())
+        const categoryInformation: Category | undefined = CATEGORIES[genderSelected][productUnivers].find(category => category.name.toLowerCase() === defaultValues.macrocategory.toLowerCase())
         if (!categoryInformation) return
         setMacrocategorySelectedSpec(categoryInformation)
 
