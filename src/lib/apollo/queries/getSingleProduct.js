@@ -20,6 +20,7 @@ const GET_SINGLE_PRODUCT = gql`
                 materials
                 description
                 modelDescription
+                univers
             }
             variations{
             id
