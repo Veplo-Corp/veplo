@@ -166,7 +166,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                     exit="hidden"
                                 >
                                     <LazyLoadImage src={imageKitUrl(fullImage)}
-
+                                        effect="blur"
                                         //PlaceholderSrc={PlaceholderImage}
                                         //effect="blur"
                                         alt={variation.color + 'non trovato'}
@@ -232,6 +232,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                         <LazyLoadImage
                                             src={imageKitUrl(photoUrl)}
                                             alt={''}
+                                            effect="blur"
                                             className="md:w-full md:min-h-0 min-h-[350px] aspect-[4.8/5] object-cover"
                                         />
                                     </SwiperSlide>
