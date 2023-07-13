@@ -268,7 +268,7 @@ const LoginAndRegistrationForm: FC<{
             if (person !== 'user') return
             let result: UserCredential | undefined;
             try {
-                result = await signInWithRedirect(auth, provider)
+                result = await signInWithPopup(auth, provider)
                 setIsLoading(true)
             } catch (error: any) {
                 setIsLoading(false)
