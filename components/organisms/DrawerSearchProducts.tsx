@@ -17,7 +17,7 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void, onCon
     const onConfirm = (e: any) => {
         if (e.key === 'Enter' || e.key === undefined) {
             if (textSearched.length <= 0) return
-            onConfirmText(textSearched)
+            onConfirmText(textSearched.trim())
             setTextSearched('')
             closeDrawer()
         }
@@ -66,8 +66,7 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void, onCon
                             <Input
                                 type='text'
                                 value={textSearched}
-                                //borderWidth={0}
-
+                                maxLength={50}
                                 borderWidth={1.5}
                                 borderColor={'white'}
 
