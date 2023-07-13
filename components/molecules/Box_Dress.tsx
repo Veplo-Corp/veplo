@@ -264,7 +264,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                                         }}
                                                         src={isMobile && photoUrl ? imageKitUrl(photoUrl) : imageKitUrl(photoUrl ? photoUrl : '', 630, 660)}
                                                         alt={product.name ? product.name : ''}
-                                                        className="lg:w-full min-h-[240px] md:min-h-0 aspect-[4.8/5] object-cover rounded-[20px] "
+                                                        className="lg:w-full min-h-[350px] sm:min-h-[300px] md:min-h-0 aspect-[4.8/5] object-cover rounded-[20px] "
                                                     />
                                                 </SwiperSlide>
                                             )
@@ -279,7 +279,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                         }}
                                         src={isMobile && urlProduct ? imageKitUrl(urlProduct) : imageKitUrl(urlProduct ? urlProduct : '', 630, 660)}
                                         alt={product.name ? product.name : ''}
-                                        className="w-full min-h-[240px] md:min-h-0 aspect-[4.8/5] object-cover rounded-[20px]"
+                                        className="w-full min-h-[350px] sm:min-h-[300px] aspect-[4.8/5] object-cover rounded-[20px]"
                                     />
                                 )
 
