@@ -1,26 +1,35 @@
 //TODO eliminare TRAITS
 export const TRAITS = [
-    'eco-friendly',
+    'sostenibile',
     'handmade',
-    'vintage',
-    'vegano',
     'riciclato',
-    'cruelty-free',
-    'fibre naturali',
+    //'cruelty-free',
+    'pezzo unico',
+    //'vegano',
+    'vintage',
 ]
 
 export const TRAITS_TYPES = [
     {
         name: 'clothes_traits',
         type: [
-            'eco-friendly',
+            'sostenibile',
             'handmade',
-            'vintage',
-            'vegano',
             'riciclato',
-            'cruelty-free',
-            'fibre naturali',
-            'pezzo unico'
+            //'cruelty-free',
+            'pezzo unico',
+            //'vegano',
+            'vintage',
         ]
     }
 ]
+
+export enum SustainableTraits {
+    sostenibile = 'sostenibile',
+    riciclato = 'riciclato',
+}
+
+export const arraySustainableTraits: SustainableTraits[] = [
+    SustainableTraits.riciclato,
+    SustainableTraits.sostenibile
+];
