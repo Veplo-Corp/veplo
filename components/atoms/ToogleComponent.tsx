@@ -3,7 +3,7 @@ import { Switch } from '@headlessui/react'
 import React, { FC, Fragment, ReactNode, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 
-const ToogleComponent: FC<{ text: ReactNode | string, toogleColor?: string, value: boolean | undefined, handleChangeToogle: (toogle: string) => void, modifyToogleInComponent: boolean }> = ({ text, toogleColor, value, handleChangeToogle, modifyToogleInComponent }) => {
+const ToogleComponent: FC<{ isLoading: boolean, text: ReactNode | string, toogleColor?: string, value: boolean | undefined, handleChangeToogle: (toogle: string) => void, modifyToogleInComponent: boolean }> = ({ isLoading, text, toogleColor, value, handleChangeToogle, modifyToogleInComponent }) => {
     const [enabled, setEnabled] = useState(false)
 
 
@@ -25,12 +25,14 @@ const ToogleComponent: FC<{ text: ReactNode | string, toogleColor?: string, valu
             px={3}
             gap={3}
             onClick={() => {
+                if (isLoading) return
                 if (modifyToogleInComponent) setEnabled(prevstate => { return !prevstate })
                 const state = !enabled === true ? 'true' : 'false'
                 handleChangeToogle(state)
 
             }}
             cursor={'pointer'}
+
         >
             <Box
                 fontSize={'md'}
@@ -57,7 +59,7 @@ const ToogleComponent: FC<{ text: ReactNode | string, toogleColor?: string, valu
                     </button>
                 )}
             </Switch>
-        </Box>
+        </Box >
     )
 }
 
