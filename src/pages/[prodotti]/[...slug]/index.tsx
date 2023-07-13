@@ -106,7 +106,9 @@ export interface ProductsFilter extends ParsedURL {
     maxPrice?: number, //numero intero
     minPrice?: number, //numero intero
     brand?: string,
-    sale?: string
+    sale?: string,
+    traits?: string,
+    sostenibile?: string
 }
 
 const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Product[], universProps: Univers, sortProps: string }> = ({ filtersProps, error, dataProducts, universProps, sortProps }) => {
@@ -130,6 +132,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         const fitlerSlug = router.asPath.split('?')[1]
         const filterParams: any = parseSlugUrlFilter(fitlerSlug)
+        console.log(filterParams);
 
         if (router.asPath.split('?')[1]) {
             setHistory(router.asPath.toLowerCase())
@@ -162,6 +165,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                     ...filtersProps,
                     ...filterParams,
                 }
+
                 setFilters(newFilters)
                 if (!scrollPosition) return
                 setTimeout(() => {
@@ -339,6 +343,13 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const changeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
 
         const filtersParams = getParamsFiltersFromObject(filters)
+        if (filtersParams["traits"]) {
+            delete filtersParams["traits"]
+            filtersParams["sostenibile"] = 'true'
+        }
+
+        console.log('filtersParams', filtersParams);
+
 
         const sortUrl = SORT_PRODUCT.find(element => element.url === e.target.value)?.url
         router.replace({
@@ -351,7 +362,15 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
     const changeRouter = (value: string, filterParameter: FilterAccepted) => {
 
+        console.log(filterParameter);
+
         const filtersParams = getParamsFiltersFromObject(filters)
+        if (filtersParams["traits"]) {
+            delete filtersParams["traits"]
+            filtersParams["sostenibile"] = 'true'
+        }
+
+        console.log('filtersParams', filtersParams);
         if (filterParameter === 'macroCategory') {
             return router.push({
                 pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${createUrlSchema([value])}/tutto/${sort}`,
@@ -391,17 +410,19 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 }
             })
         }
-        if (filterParameter === 'sale') {
+        if (filterParameter === 'sale' || filterParameter === 'sostenibile') {
+
+
             if (value === 'true') {
                 return router.push({
                     pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                     query: {
                         ...filtersParams,
-                        sale: value
+                        [filterParameter]: true
                     }
                 })
             } else {
-                const { sale, ...newFilterParameters } = filtersParams
+                const { [filterParameter]: removedFilterParameter, ...newFilterParameters } = filtersParams
                 return router.push({
                     pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                     query: {
@@ -418,9 +439,12 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/${sort}`,
             })
         }
-
+        let filtersParams: any = getParamsFiltersFromObject(filters)
+        if (filtersParams["traits"]) {
+            delete filtersParams["traits"]
+            filtersParams["sostenibile"] = 'true'
+        }
         if (paramters === 'microCategory') {
-            let filtersParams: any = getParamsFiltersFromObject(filters)
             return router.push({
                 pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/tutto/${sort}`,
                 query: {
@@ -428,7 +452,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 }
             })
         }
-        let filtersParams: any = getParamsFiltersFromObject(filters)
         delete filtersParams[paramters]
         return router.push({
             pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,

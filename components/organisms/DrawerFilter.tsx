@@ -171,6 +171,7 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, un
                                 }}
                             />
                             <ToogleComponent
+                                text={'promozioni'}
                                 modifyToogleInComponent={false}
                                 value={filters?.sale
                                     === 'true' ? true : false}
