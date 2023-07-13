@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
-import { Box, Button, HStack, Image, Tag, Text, Tooltip } from '@chakra-ui/react';
+import { Box, Button, HStack, Image, Tag, Text, Tooltip, useBreakpointValue } from '@chakra-ui/react';
 import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { Product, Variation } from '../../../../interfaces/product.interface';
@@ -146,6 +146,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     const [productsLikeThis, setproductsLikeThis] = useState<Product[]>()
     const [isOpenModalGuideSize, setIsOpenModalGuideSize] = useState(false)
     const [macrocategorySizeGuide, setMacrocategorySizeGuide] = useState(false)
+    const isSmallView = useBreakpointValue({ base: true, md: false });
 
 
     if (!variationSelected) {
@@ -527,7 +528,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     />
                     <div className='md:flex justify-between w-full mb-5 lg:mb-0 gap-5'>
                         <Image_Product variation={variationSelected} />
-                        <Box className='md:block lg:w-[45%] lg:mb-20 mx-2'>
+                        <Box className='md:block md:w-[55%] lg:w-[45%]  mx-2'>
                             <Text
                                 fontWeight='medium'
                                 as='h2'
@@ -641,6 +642,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 fontSize='md'
                                 display={'flex'}
                                 justifyContent={'space-between'}
+                                width={'full'}
                             >
                                 <Text>
                                     Taglie disponibili
@@ -683,7 +685,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 paddingInline={10}
                                 width={'full'}
                                 height={'fit-content'}
-
                                 variant={'black'}
 
                             >aggiungi al carrello{sizeSelected && <span className='ml-[5px]'>- {sizeSelected.toLocaleUpperCase()}</span>}
@@ -691,22 +692,31 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
                             <Box
                                 mt={5}
-                                borderWidth={1}
+
                                 borderRadius={10}
+                                bg={'white'}
+                                position={'relative'}
 
                             >
                                 <Disclosure
-
                                 >
                                     {({ open }) => (
                                         <Box
+                                            width={'full'}
                                             paddingY={[5, 5]}
                                             paddingX={[2, 5]}
+                                            position={open && !isSmallView ? 'absolute' : 'static'}
+                                            zIndex={999}
+                                            bg={'white'}
+                                            borderRadius={10}
+                                            borderWidth={1}
                                         >
                                             <Disclosure.Button className="flex text-center w-full h-full"
                                             >
                                                 <Box
                                                     className='m-auto flex'
+                                                    zIndex={999}
+                                                    bg={'white'}
                                                 >
                                                     <Text
                                                         fontSize={'lg'}
