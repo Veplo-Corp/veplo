@@ -169,7 +169,7 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
                         handleChange(value, 'sostenibile')
                         if (value === 'true') {
                             return gtag({
-                                command: GTMEventType.saleToggle,
+                                command: GTMEventType.sustainableToggle,
                                 args: {
                                     label: 'Click on sale toggle',
                                     //gender: user.genderSelected === 'm' ? 'male' : user.genderSelected === 'f' ? 'female' : 'not_speficied'
@@ -242,32 +242,40 @@ const FiltersSelections: FC<{ filters: ProductsFilter, filterDrawerConfirm: (val
                 } */}
 
             </Box>}
-            {isSmallView && <Button
-                height={12}
-                variant={['grayPrimary', 'whiteButton']}
-                gap={1}
-                paddingX={4}
-                borderRadius={'10px'}
-                onClick={() => {
-                    {
-                        console.log('eccolo');
-                        setDrawerFilterOpen(true)
-                    }
-                }}
-            >
-                <>
-                    <Filter
-                        className='w-6 h-6'
-                        strokeWidth={2.5}
-                    />
-                    {filterCount > 0 && <Text
-                        fontSize={'lg'}
-                        fontWeight={'semibold'}
+            {isSmallView &&
+                <Box
+                    display={'flex'}
+                    gap={2}
+                >
+                    <Button
+                        height={12}
+                        variant={['grayPrimary', 'whiteButton']}
+                        gap={1}
+                        paddingX={4}
+                        borderRadius={'10px'}
+                        onClick={() => {
+                            {
+                                console.log('eccolo');
+                                setDrawerFilterOpen(true)
+                            }
+                        }}
                     >
-                        {filterCount}
-                    </Text>}
-                </>
-            </Button>}
+                        <>
+                            <Filter
+                                className='w-6 h-6'
+                                strokeWidth={2.5}
+                            />
+                            {filterCount > 0 && <Text
+                                fontSize={'lg'}
+                                fontWeight={'semibold'}
+                            >
+                                {filterCount}
+                            </Text>}
+                        </>
+                    </Button>
+
+                </Box>
+            }
             {!isSmallView && <Button
                 height={12}
                 variant={['grayPrimary', 'whiteButton']}

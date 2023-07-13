@@ -434,16 +434,14 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     }
 
     const deleteFilterParams = (paramters: FilterAccepted) => {
+
         if (paramters === 'macroCategory') {
             return router.push({
                 pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/${sort}`,
             })
         }
         let filtersParams: any = getParamsFiltersFromObject(filters)
-        if (filtersParams["traits"]) {
-            delete filtersParams["traits"]
-            filtersParams["sostenibile"] = 'true'
-        }
+
         if (paramters === 'microCategory') {
             return router.push({
                 pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/tutto/${sort}`,
@@ -453,6 +451,10 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             })
         }
         delete filtersParams[paramters]
+        if (filtersParams["traits"]) {
+            delete filtersParams["traits"]
+            filtersParams["sostenibile"] = 'true'
+        }
         return router.push({
             pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
             query: {
@@ -474,6 +476,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         if (filtersDrawerModal.sale !== 'true') {
             delete filtersDrawerModal['sale']
+        }
+        if (filtersDrawerModal.sostenibile !== 'true') {
+            delete filtersDrawerModal['sostenibile']
         }
 
         let filtersParams = getParamsFiltersFromObject(filtersDrawerModal)
@@ -724,6 +729,13 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                 <TagFilter
                                                     value={value}
                                                     text={'Promozioni'}
+                                                    handleEvent={deleteFilterParams}
+                                                />
+                                            }
+                                            {value === 'traits' && isSmallView &&
+                                                <TagFilter
+                                                    value={value}
+                                                    text={'Sostenibile'}
                                                     handleEvent={deleteFilterParams}
                                                 />
                                             }

@@ -12,6 +12,9 @@ import { FilterAccepted } from '../atoms/TagFilter'
 import BrandsFilter from '../atoms/BrandsFilter'
 import ToogleComponent from '../atoms/ToogleComponent'
 import { Univers } from '../mook/categories'
+import { gtag } from '../../src/lib/analytics/gtag'
+import { GTMEventType } from '../../src/lib/analytics/eventTypes'
+import { Leaf } from 'iconoir-react'
 
 const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, univers: Univers, closeDrawer: () => void, handleConfirm: (filters: ProductsFilter | undefined) => void, changeMacroCategory: (value: string) => void }> = ({ isOpenDrawer, closeDrawer, filtersProps, univers, handleConfirm, changeMacroCategory }) => {
 
@@ -24,8 +27,16 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, un
         if (!router.isReady) return
 
         //crea l'oggetto filtri applicati
-        const parsedFilter = findParsedFilter(filtersProps, univers)
-        setFilters(filtersProps)
+        const newFilter = { ...filtersProps }
+        if (newFilter["traits"]) {
+            delete newFilter["traits"]
+            newFilter["sostenibile"] = 'true'
+        }
+        console.log(newFilter);
+
+        const parsedFilter = findParsedFilter(newFilter, univers)
+        setFilters(newFilter)
+        console.log(newFilter);
 
         if (!parsedFilter) return
         return setFilterParameters(parsedFilter)
@@ -33,6 +44,7 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, un
     }, [filtersProps])
 
     const handleChange = (value: string, filterParameter: FilterAccepted) => {
+
         if (!value) return
         if (filterParameter === 'macroCategory') {
             changeMacroCategory(value)
@@ -171,13 +183,54 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, un
                                 }}
                             />
                             <ToogleComponent
+                                modifyToogleInComponent={true}
+                                text={
+                                    <Box display={'flex'} gap={'4px'}>
+                                        <Leaf
+                                            className='my-auto'
+                                            height={'20px'}
+                                            width={'20px'}
+                                            strokeWidth={2.3}
+                                        />
+                                        <Text
+                                            marginY={'auto'}
+                                        >
+                                            sostenibile
+                                        </Text>
+                                    </Box>
+                                }
+                                value={filters?.sostenibile
+                                    === 'true' ? true : false}
+                                toogleColor={'bg-[#37D1A9]'}
+                                handleChangeToogle={(value) => {
+                                    handleChange(value, 'sostenibile')
+                                    if (value === 'true') {
+                                        return gtag({
+                                            command: GTMEventType.sustainableToggle,
+                                            args: {
+                                                label: 'Click on sustainable toggle',
+                                                //gender: user.genderSelected === 'm' ? 'male' : user.genderSelected === 'f' ? 'female' : 'not_speficied'
+                                            }
+                                        })
+                                    }
+                                }}
+                            />
+                            <ToogleComponent
+                                modifyToogleInComponent={true}
                                 text={'promozioni'}
-                                modifyToogleInComponent={false}
                                 value={filters?.sale
                                     === 'true' ? true : false}
                                 handleChangeToogle={(value) => {
-
                                     handleChange(value, 'sale')
+                                    if (value === 'true') {
+                                        return gtag({
+                                            command: GTMEventType.saleToggle,
+                                            args: {
+                                                label: 'Click on sale toggle',
+                                                //gender: user.genderSelected === 'm' ? 'male' : user.genderSelected === 'f' ? 'female' : 'not_speficied'
+                                            }
+                                        })
+                                    }
                                 }}
                             />
 
@@ -202,7 +255,6 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, un
 
                                 fontSize={'sm'}
                                 onClick={() => {
-
                                     handleConfirm(filters)
                                     return
                                 }}
