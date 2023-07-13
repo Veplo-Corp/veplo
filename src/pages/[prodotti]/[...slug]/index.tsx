@@ -124,12 +124,12 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const isSmallView = useBreakpointValue({ base: true, lg: false });
     const [history, setHistory] = useState<string>()
     const [sort, setSort] = useState<Sort | string>('')
+    const timeoutRef = useRef<any>(null);
 
     useEffect(() => {
+        clearTimeout(timeoutRef.current);
 
         if (!router.isReady) return
-
-
         const fitlerSlug = router.asPath.split('?')[1]
         const filterParams: any = parseSlugUrlFilter(fitlerSlug)
         console.log(filterParams);
@@ -252,8 +252,12 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         }
         return () => {
+            // Annulla la chiamata se il componente viene smontato o la rotta cambia
+            clearTimeout(timeoutRef.current);
+
             setIsLoading(false)
-        }
+        };
+
 
     }, [router.query])
 
@@ -361,8 +365,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     }
 
     const changeRouter = (value: string, filterParameter: FilterAccepted) => {
-
-        console.log(filterParameter);
+        //testare se non da problemi
+        setIsLoading(true)
 
         const filtersParams = getParamsFiltersFromObject(filters)
         if (filtersParams["traits"]) {
@@ -620,6 +624,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 display={'flex'}
                             >
                                 <FiltersSelections
+                                    isLoading={isLoading}
                                     univers={univers}
                                     filters={filters}
                                     handleConfirmChange={changeRouter}

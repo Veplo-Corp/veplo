@@ -183,6 +183,7 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, un
                                 }}
                             />
                             <ToogleComponent
+                                isLoading={false}
                                 modifyToogleInComponent={true}
                                 text={
                                     <Box display={'flex'} gap={'4px'}>
@@ -216,6 +217,7 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, un
                                 }}
                             />
                             <ToogleComponent
+                                isLoading={false}
                                 modifyToogleInComponent={true}
                                 text={'promozioni'}
                                 value={filters?.sale
