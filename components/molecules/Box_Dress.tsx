@@ -258,12 +258,13 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                             return (
                                                 <SwiperSlide key={index}>
                                                     <LazyLoadImage
+                                                        effect="blur"
                                                         onMouseEnter={() => {
                                                             setShowSize(true)
                                                         }}
                                                         src={isMobile && photoUrl ? imageKitUrl(photoUrl) : imageKitUrl(photoUrl ? photoUrl : '', 630, 660)}
                                                         alt={product.name ? product.name : ''}
-                                                        className="w-full min-h-[240px] md:min-h-0 aspect-[4.8/5] object-cover rounded-[20px] "
+                                                        className="lg:w-full min-h-[240px] md:min-h-0 aspect-[4.8/5] object-cover rounded-[20px] "
                                                     />
                                                 </SwiperSlide>
                                             )
@@ -272,6 +273,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 :
                                 (
                                     <LazyLoadImage
+                                        effect="blur"
                                         onMouseEnter={() => {
                                             setShowSize(true)
                                         }}
@@ -302,12 +304,11 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                             </Text> */}
                             <Box
                                 position={'absolute'}
-                                bottom={[4, 3.5]}
+                                bottom={[3, 3]}
                                 left={4}
                                 display={'flex'}
                                 zIndex={50}
                             >
-
                                 <Circle_Color colors={productcolorsCSS.slice(0, 3)} dimension={isMobile ? '22px' : 6} space={2} />
                                 {productcolorsCSS.length > 3 &&
                                     <Tag
