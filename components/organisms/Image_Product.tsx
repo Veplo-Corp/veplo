@@ -232,7 +232,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                         <LazyLoadImage
                                             src={imageKitUrl(photoUrl)}
                                             alt={''}
-                                            className="md:w-full md:min-h-0 aspect-[4.8/5] object-cover"
+                                            className="md:w-full md:min-h-0 min-h-[350px] aspect-[4.8/5] object-cover"
                                         />
                                     </SwiperSlide>
                                 )
