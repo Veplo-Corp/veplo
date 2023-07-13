@@ -178,9 +178,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                         position={'relative'}
                     //background={'#FBFBFB'}
                     >
-                        {isSustainable &&
-                            <ToolTipComponent />
-                        }
+
                         <Link
                             onClick={handleEventSelectedDress}
                             onMouseLeave={() => {
@@ -190,6 +188,9 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                             href={productLink}
                         //href={color ? `/prodotto/${product.id}/${product?.info?.brand && product.name ? createUrlScheme([product.info.brand, product.name]) : ''}?colore=${color}` : `/prodotto/${product.id}/${product?.info?.brand && product.name ? createUrlScheme([product.info.brand, product.name]) : ''}`}
                         >
+                            {isSustainable &&
+                                <ToolTipComponent />
+                            }
                             {showSize &&
                                 <ScaleFade
                                     initialScale={0.7} in={showSize}
