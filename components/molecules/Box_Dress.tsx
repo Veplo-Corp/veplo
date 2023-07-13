@@ -113,6 +113,36 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
 
 
 
+    const ToolTipComponent = () => {
+        return (<Tooltip label='Prodotto sostenibile'
+            bg='white'
+            color='primaryBlack.text'
+            borderRadius={'full'}
+            boxShadow={'sm'}
+            fontWeight={'medium'}
+        >
+            <Box
+                position={'absolute'}
+                zIndex={20}
+                top={3.5}
+                right={'15px'}
+                height={8}
+                width={8}
+                margin={'none'}
+                padding={'none'}
+                background={'white'}
+                borderRadius={'full'}
+                display={'flex'}
+            >
+                <Leaf
+                    className='m-auto'
+                    height={'19px'}
+                    width={'19px'}
+                    strokeWidth={2.1}
+                />
+            </Box>
+        </Tooltip>)
+    }
 
     return (
         <>
@@ -148,6 +178,9 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                         position={'relative'}
                     //background={'#FBFBFB'}
                     >
+                        {isSustainable &&
+                            <ToolTipComponent />
+                        }
                         <Link
                             onClick={handleEventSelectedDress}
                             onMouseLeave={() => {
@@ -205,7 +238,9 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                     </VStack>
                                 </ScaleFade>
                             }
-
+                            {isSmallView &&
+                                <Box></Box>
+                            }
                             {(isSmallView && !overflowCards) ?
                                 (
                                     <Swiper
@@ -339,35 +374,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
 
 
                         </Link>
-                        {isSustainable &&
-                            <Tooltip label='Prodotto sostenibile'
-                                bg='white'
-                                color='primaryBlack.text'
-                                borderRadius={'full'}
-                                boxShadow={'sm'}
-                                fontWeight={'medium'}
-                            >
-                                <Box
-                                    position={'absolute'}
-                                    top={3.5}
-                                    right={'15px'}
-                                    height={8}
-                                    width={8}
-                                    margin={'none'}
-                                    padding={'none'}
-                                    background={'white'}
-                                    borderRadius={'full'}
-                                    display={'flex'}
-                                >
-                                    <Leaf
-                                        className='m-auto'
-                                        height={'19px'}
-                                        width={'19px'}
-                                        strokeWidth={2.1}
-                                    />
-                                </Box>
-                            </Tooltip>
-                        }
+
                     </Box >
                     <Box
                         display={'flex'}
