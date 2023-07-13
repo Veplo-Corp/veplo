@@ -2,7 +2,8 @@ export enum GTMEventType {
     empty = '',
     signUp = 'sign_up',
     login = 'login',
-    saleToggle = 'sale_toggle'
+    saleToggle = 'sale_toggle',
+    sustainableToggle = 'sustainable_toggle'
     // selectItem = 'select_item',
     // addShippingInfo = 'add_shipping_info',
     // beginCheckout = 'begin_checkout',
