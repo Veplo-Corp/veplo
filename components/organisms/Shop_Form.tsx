@@ -23,7 +23,7 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
 
     return (
         <>
-            <h1 className='italic text-xl lg:text-2xl font-extrabold mb-3 md:mb-4'>la tua azienda</h1>
+            <h1 className='text-xl lg:text-2xl font-extrabold mb-3 md:mb-4'>la tua azienda</h1>
             <Div_input_creation text='Nome (visualizzato dagli utenti)'>
                 <InputGroup>
                     <Input
@@ -101,7 +101,7 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                     />
                 </InputGroup>
             </Div_input_creation>
-            <h1 className='italic text-xl lg:text-2xl font-extrabold mt-6 mb-2 md:mb-4'>Informazioni aggiuntive</h1>
+            <h1 className='text-xl lg:text-2xl font-extrabold mt-6 mb-2 md:mb-4'>Informazioni aggiuntive</h1>
             <Div_input_creation text='Immagine copertina'>
                 <img src={imageKitUrl(shop.profileCover)}
                     className='w-full aspect-[4.8/3] object-cover rounded-md mb-4'

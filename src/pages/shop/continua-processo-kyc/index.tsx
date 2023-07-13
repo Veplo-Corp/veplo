@@ -48,7 +48,7 @@ const index = () => {
                     className='m-auto w-11/12 md:w-7/12 lg:w-6/12 xl:w-1/3'
                     method="POST"
                 >
-                    <h1 className="mt-20 font-black text-2xl md:text-3xl italic text-black-900 mb-4 max-w-xs md:max-w-md">Processo interrotto</h1>
+                    <h1 className="mt-20 font-black text-2xl md:text-3xl text-black-900 mb-4 max-w-xs md:max-w-md">Processo interrotto</h1>
                     <BoxExplenationStripe textBold='Continua il processo' />
                     {/* <section>
                     <button type="submit" role="link">

@@ -98,7 +98,7 @@ const Login_or_Registration: React.FC<{ account: 'business' | 'user', handleSubm
 
     return (
         <form onSubmit={handleSubmitForm} >
-            <h1 className="font-black text-2xl md:text-2xl italic text-black-900 mb-4 max-w-xs md:max-w-md">{title}</h1>
+            <h1 className="font-black text-2xl md:text-2xl text-black-900 mb-4 max-w-xs md:max-w-md">{title}</h1>
             <div
                 className='mb-3'
 
