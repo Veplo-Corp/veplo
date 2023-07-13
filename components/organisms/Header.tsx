@@ -20,7 +20,6 @@ import { getFromLocalStorage } from '../utils/getFromLocalStorage';
 import { Cart } from '../../src/interfaces/carts.interface';
 import createUrlSchema from '../utils/create_url';
 import { motion } from 'framer-motion';
-import { isMobile } from 'react-device-detect';
 import { Popover, Transition } from '@headlessui/react'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
 import { getUnivers } from '../utils/getUnivers';
@@ -42,6 +41,7 @@ const Header = () => {
 
     const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
     const [getBetterInputGenerator, betterInputGeneratorResult] = useLazyQuery(BETTER_INPUT_GENERATOR);
+    const isSmallView = useBreakpointValue({ base: true, lg: false });
 
 
     const closeDrawerBusinessAccount = () => {
@@ -135,7 +135,7 @@ const Header = () => {
 
 
     const handleScroll = () => {
-        if (!isMobile) return
+        if (!isSmallView) return
         const currentScrollY = window.scrollY;
         if (currentScrollY > lastScrollY && isHeaderVisible && currentScrollY > 60) {
             setIsHeaderVisible(false);
@@ -164,7 +164,7 @@ const Header = () => {
                 <motion.div
                     initial={{ opacity: 1 }}
                     animate={{ opacity: isHeaderVisible ? 1 : 1 }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: typeof window !== "undefined" ? window.scrollY < 60 ? 0 : 0.5 : 0 }}
                 >
                     <header className="inset-x-0 top-0 z-50 sticky bg-white h-26"
                         onMouseLeave={() => {
@@ -459,8 +459,9 @@ const Header = () => {
                         </nav>
                     </header>
                 </motion.div>
-            </motion.header>
-            {user?.isBusiness && <Drawer_Menu isOpen={openDrawerBusinessAccount} user={user} closeDrawer={closeDrawerBusinessAccount} />}
+            </motion.header >
+            {user?.isBusiness && <Drawer_Menu isOpen={openDrawerBusinessAccount} user={user} closeDrawer={closeDrawerBusinessAccount} />
+            }
             <CartDrawer isOpen={openDrawerCart} closeDrawer={() => setOpenDrawerCart(false)} />
             <DrawerSearchProducts isOpen={isOpenUserDrawerSearch} closeDrawer={() => setisOpenUserDrawerSearch(false)}
                 onConfirmText={(value) => {
