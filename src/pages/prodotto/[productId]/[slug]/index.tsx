@@ -552,8 +552,13 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                         description={`${toUpperCaseFirstLetter(product.info.macroCategory)} ${toUpperCaseFirstLetter(product.info.brand)} ${product.name.toUpperCase()} a ${product.price.v2 ? product.price.v2 : product.price.v1}€ | Scopri i prodotti dei migliori brand made in Italy`}
                     />
                     <div className='md:flex justify-between w-full mb-5 lg:mb-0 gap-5'>
-                        <Image_Product variation={variationSelected} />
-                        <Box className='md:block md:w-[55%] lg:w-[45%]  mx-2'>
+                        <Box
+                            className='w-full sm:w-9/12 mx-auto md:w-full'
+                        >
+                            <Image_Product variation={variationSelected} />
+
+                        </Box>
+                        <Box className='md:block md:w-[90%] lg:w-[80%]  mx-2'>
                             <Text
                                 fontWeight='medium'
                                 as='h2'
