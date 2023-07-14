@@ -756,7 +756,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
                         {!isLoading && products ?
                             (<InfiniteScroll
-                                className={products.length > 10 ? 'mb-[20vh]' : 'mb-[20vh]'}
+                                className={'mb-20'}
                                 scrollThreshold={products && products.length <= RANGE * 2 ? 0.70 : products && products.length < 50 ? 0.95 : 0.97}
                                 dataLength={products?.length}
                                 next={fetchMoreData}
