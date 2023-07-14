@@ -52,7 +52,7 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: (text: string)
 
 
     return (
-        <div className='w-auto md:w-56 xl:w-[28rem]' >
+        <div className='w-auto lg:w-[24rem] xl:w-[28rem]' >
             <InputGroup
                 className='relative w-full'
             >
