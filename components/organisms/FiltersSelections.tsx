@@ -148,7 +148,7 @@ const FiltersSelections: FC<{
                         }}
                     />
                     <Box
-                        className='hidden xl:flex'
+                        className='hidden xl:flex gap-2'
                     >
                         <ToogleComponent
                             isLoading={isLoading}
