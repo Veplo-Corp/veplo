@@ -44,6 +44,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
     const [isSustainable, setIsSustainable] = useState(false)
     const router = useRouter()
     const isSmallView = useBreakpointValue({ base: true, md: false });
+    const [productLinkPage, setProductLinkPage] = useState(productLink)
 
     const checkIfProductIsSustainable = (parole: string[] | null | undefined): boolean => {
         if (!parole) return false
@@ -60,12 +61,43 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
             return seturlProduct(url)
 
         }
-        const variationIndex: any = product.variations?.findIndex(variation => variation.color === colorSelected)
+        const variationIndex: any = product.variations?.findIndex(variation => variation.color?.toLowerCase() === colorSelected.toLowerCase())
 
         if (variationIndex >= 0) {
             setindexPhoto(variationIndex)
-            //rimetti a 0
+            //cambio URI link per mandarlo al colore giusto cliccato
+            console.log(productLinkPage);
+            // const URI = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' + productLinkPage :
+            //     'https://www.veplo.it' + productLinkPage
+            // console.log(URI);
+            let updatedURL = productLinkPage;
+
+
+            const colorExists = updatedURL.includes('colors=');
+            const sizesExist = updatedURL.includes('sizes=');
+
+            if (colorExists) {
+                // Sostituisci il valore del parametro "color" con il colore fornito
+                updatedURL = updatedURL.replace(/colors=[^&]+/, `colors=${colorSelected.toLocaleLowerCase()}`);
+            } else {
+                if (sizesExist) {
+                    // Aggiungi il parametro "color" con il colore fornito
+                    updatedURL += `&colors=${colorSelected.toLocaleLowerCase()}`;
+                } else {
+                    // Aggiungi il parametro "color" con il colore fornito, gestendo il caso in cui ci siano già parametri o meno
+                    updatedURL += updatedURL.includes('?') ? `&colors=${colorSelected.toLocaleLowerCase()}` : `?colors=${colorSelected.toLocaleLowerCase()}`;
+                }
+            }
+
+            console.log(updatedURL);
+            setProductLinkPage(updatedURL.toString())
             seturlProduct(typeof product?.variations[variationIndex]?.photos?.[0] === 'string' ? product?.variations[variationIndex]?.photos?.[0] : '')
+
+
+
+
+
+            //rimetti a 0
         }
     }
 
@@ -191,7 +223,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 setShowSize(false)
                             }}
                             prefetch={false}
-                            href={productLink}
+                            href={productLinkPage}
                         //href={color ? `/prodotto/${product.id}/${product?.info?.brand && product.name ? createUrlScheme([product.info.brand, product.name]) : ''}?colore=${color}` : `/prodotto/${product.id}/${product?.info?.brand && product.name ? createUrlScheme([product.info.brand, product.name]) : ''}`}
                         >
                             {isSustainable &&
