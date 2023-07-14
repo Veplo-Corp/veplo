@@ -22,7 +22,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
         >
 
             <LazyLoadImage src={
-                imageKitUrl(shop.profileCover + 'p')
+                imageKitUrl(shop.profileCover)
             }
                 //PlaceholderSrc={PlaceholderImage}
                 alt={shop.name}
