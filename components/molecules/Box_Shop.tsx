@@ -22,11 +22,11 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
         >
 
             <LazyLoadImage src={
-                imageKitUrl(shop.profileCover)
+                imageKitUrl(shop.profileCover + 'p')
             }
                 //PlaceholderSrc={PlaceholderImage}
                 alt={shop.name}
-                className='object-cover aspect-[2.3/1] xl:min-h-[200px] rounded-[15px]'
+                className='object-cover aspect-[2.3/1] min-h-[100px] xl:min-h-[200px] rounded-[15px]'
             />
             <Box
                 display={'flex'}
