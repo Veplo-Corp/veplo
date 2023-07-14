@@ -105,11 +105,9 @@ export async function getServerSideProps(ctx: any) {
 
     } catch (e: any) {
         console.log(e);
-
-
         return {
             props: {
-                errorLog: e?.graphQLErrors[0].name || 'errore',
+                errorLog: e?.graphQLErrors?.[0]?.message || 'errore',
                 //?understand cache in GraphQL
                 initialApolloState: apolloClient.cache.extract(),
             },
@@ -141,21 +139,54 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     const cartsDispatchProduct: Cart[] = useSelector((state: any) => state.carts.carts);
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     const [product, setproduct] = useState<Product>(productFounded)
-    const [variationSelected, setVariationSelected] = useState<Variation>(productFounded.variations[0])
+    const [variationSelected, setVariationSelected] = useState<Variation>(productFounded?.variations?.[0])
     const [colorSelected, setColorSelected] = useState<string>()
     const [productsLikeThis, setproductsLikeThis] = useState<Product[]>()
     const [isOpenModalGuideSize, setIsOpenModalGuideSize] = useState(false)
     const [macrocategorySizeGuide, setMacrocategorySizeGuide] = useState(false)
     const isSmallView = useBreakpointValue({ base: true, md: false });
+    console.log(errorLog);
 
+
+    if (errorLog) {
+        return (
+            <Desktop_Layout>
+                <div className='text-center h-[screen] content-center'>
+                    <div className='absolute w-full top-32 md:top-48'>
+                        <Text className='font-extrabold md:8/12 lg:w-6/12 m-auto text-2xl lg:text-3xl text-[#2A2A2A] px-9 line-clamp-2'>
+                            <span>
+                                Prodotto non trovato
+                            </span>
+                        </Text>
+                        <Text className='font-medium md:8/12 lg:w-6/12 m-auto text-md md:text-lg text-[#2A2A2A] px-9 line-clamp-2'>
+                            <span>
+                                Probabilmente il prodotto è stato appena cancellato dal brand
+                            </span>
+                        </Text>
+                        <img
+                            className='m-auto h-72 mb-6 mt-10'
+                            src="https://www.datocms-assets.com/102220/1686599080-undraw_cancel_re_pkdm.png"
+                            alt="non trovata" />
+
+                        <Button
+                            colorScheme={'blackAlpha'}
+                            onClick={() => { router.push('/' + '?gatto=berry') }}
+                        >Torna alla Home</Button>
+                    </div>
+                </div>
+            </Desktop_Layout>
+        )
+    }
 
     if (!variationSelected) {
         return (
             <Desktop_Layout>
-                <></>
+
             </Desktop_Layout>
         )
     }
+
+
 
     const dispatch = useDispatch();
 
@@ -164,19 +195,13 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         if (!productFounded) return
 
         setproduct(productFounded)
-        setVariationSelected(productFounded.variations[0])
-        setColorSelected(productFounded.variations[0].color)
+        setVariationSelected(productFounded?.variations?.[0])
+        setColorSelected(productFounded?.variations?.[0]?.color)
     }, [productFounded])
 
 
     useEffect(() => {
-        console.log(elementEditCart.error?.graphQLErrors);
-        console.log(elementEditCart.error?.graphQLErrors[0].name);
-        // if (!elementEditCart.error?.graphQLErrors[0].name || !elementEditCart.error?.graphQLErrors[0].path || typeof elementEditCart.error?.graphQLErrors[0].path !== 'string') return
-        // const error = handleErrorGraphQL({
-        //     name: elementEditCart.error?.graphQLErrors[0].name,
-        //     path: elementEditCart.error?.graphQLErrors[0].path
-        // })
+
         if (elementEditCart.error?.graphQLErrors[0].name === "too much quantity for this product's variation") {
             setOpenDrawerCart(true)
         }
