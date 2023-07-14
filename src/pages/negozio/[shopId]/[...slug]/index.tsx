@@ -204,7 +204,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
             />
 
             <Box
-                className='lg:w-9/12 m-auto -p-10 mb-6 lg:mb-9'
+                className='xl:w-9/12 m-auto -p-10 mb-6 lg:mb-9'
 
             ><motion.div
                 key={shop.id}
@@ -441,7 +441,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                 }
             >
                 {productsFounded &&
-                    <div className="grid grid-cols-1 px-2 lg:px-0 md:grid-cols-3 gap-5 w-full lg:w-9/12 mx-auto mb-10">
+                    <div className="grid grid-cols-1 px-2 lg:px-0 md:grid-cols-3 gap-5 w-full xl:w-9/12 mx-auto mb-10">
 
                         {productsFounded.map((product, index) => {
                             return (
