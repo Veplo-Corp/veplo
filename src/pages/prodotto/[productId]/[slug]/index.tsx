@@ -537,7 +537,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         <>
             {product &&
                 <Box
-                    className='lg:w-10/12 2xl:w-9/12 md:mx-2 lg:mx-auto'
+                    className='lg:mx-6 xl:w-10/12 2xl:w-9/12 md:mx-2 xl:mx-auto'
                 >
 
 

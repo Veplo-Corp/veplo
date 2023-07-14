@@ -17,14 +17,16 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
             mb={'2'} className='cursor-pointer min-h-[100px]'
             _active={{
                 transform: `${scale}`,
-            }}>
+            }}
+            maxW={'full'}
+        >
 
             <LazyLoadImage src={
                 imageKitUrl(shop.profileCover)
             }
                 //PlaceholderSrc={PlaceholderImage}
                 alt={shop.name}
-                className='object-cover aspect-[2.3/1] w-full lg:min-h-[200px] rounded-[15px]'
+                className='object-cover aspect-[2.3/1] xl:min-h-[200px] rounded-[15px]'
             />
             <Box
                 display={'flex'}
