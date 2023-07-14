@@ -50,6 +50,7 @@ const GET_ORDER = gql`
                 email
                 name
                 surname
+                firebaseId
             }
             recipient{
                 name

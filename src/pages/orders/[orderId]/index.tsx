@@ -12,16 +12,18 @@ import PriceAndShippingListingCost from '../../../../components/organisms/PriceA
 import createUrlSchema from '../../../../components/utils/create_url';
 import { imageKitUrl } from '../../../../components/utils/imageKitUrl';
 import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First_Letter';
-import { Order } from '../../../interfaces/order.interface';
 import { DateFormat, getDateFromMongoDBDate } from '../../../../components/utils/getDateFromMongoDBDate';
 import ModalReausable from '../../../../components/organisms/ModalReausable';
 import FormReturn from '../../../../components/molecules/FormReturn';
 import { ToastOpen } from '../../../../components/utils/Toast';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import RETURN_ORDER from '../../../lib/apollo/mutations/returnOrder';
 import { setOrders } from '../../../store/reducers/orders';
 import GrayBox from '../../../../components/atoms/GrayBox';
 import Modal_Help_Customer_Care from '../../../../components/organisms/Modal_Help_Customer_Care';
+import GET_ORDER from '../../../lib/apollo/queries/getOrder';
+import { Order } from '../../../lib/apollo/generated/graphql';
+import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 
 
 
@@ -31,9 +33,16 @@ const index = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const orders: Order[] = useSelector((state: any) => state.orders.orders);
+    const { data } = useQuery<{ order: Order }>(GET_ORDER, {
+        variables: {
+            id: router.query.orderId
+        }
+    })
+
+    const user: Firebase_User = useSelector((state: any) => state.user.user);
+
     const [order, setOrder] = useState<Order>();
     const [orderStatus, setOrderStatus] = useState<{ text: string, color: string, background: string }>();
-    const [loading, setLoading] = useState(true)
     const [isOpenModalReturn, setIsOpenModalReturn] = useState(false)
     const { addToast } = ToastOpen();
     const [isModalHelpOpen, setIsModalHelpOpen] = useState(false)
@@ -58,15 +67,15 @@ const index = () => {
 
     useEffect(() => {
         const { orderId } = router.query
-        if (!orderId || orders.length <= 0) return
-        const order = orders.filter(order => order.id === orderId)[0]
-        setOrder(order)
-        handleStatus(order?.status)
-    }, [router?.query, orders])
+        if (!data) return
+        setOrder(data?.order)
+        handleStatus(data?.order?.status)
+    }, [data])
 
-    console.log(order);
 
-    const handleStatus = (orderStatus: string) => {
+
+    const handleStatus = (orderStatus: string | undefined | null) => {
+        if (!orderStatus) return
         const status = STATUS.find(status => status.code === orderStatus);
         if (!status) return
         setOrderStatus({
@@ -100,9 +109,10 @@ const index = () => {
                 }
             })
             handleStatus("RET01")
+            if (!user.uid) return
             //cambia l'order status in Redux
             const newOrders = orders.map(order => {
-                if (order.code === form.orderCode) {
+                if (order?.code === form.orderCode) {
                     return { ...order, ["status"]: "RET01" }
                 }
                 return order
@@ -146,7 +156,7 @@ const index = () => {
                         }
 
 
-                        {order.status === 'RET01' &&
+                        {order?.status === 'RET01' &&
                             <div className='mt-4'>
                                 <GrayBox>
                                     <Text
@@ -179,14 +189,14 @@ const index = () => {
                                         fontWeight={'normal'}
                                         mb={0}
                                     >
-                                        3. Inserisci l'indirizzo di spedizione: <strong>{order.shop.address?.postcode} {order.shop.address?.city}, {order.shop.address?.street}</strong>
+                                        3. Inserisci l'indirizzo di spedizione: <strong>{order?.shop?.address?.postcode} {order?.shop?.address?.city}, {order?.shop?.address?.street}</strong>
                                     </Text>
                                     <Text
                                         fontSize={'md'}
                                         fontWeight={'normal'}
                                         mb={0}
                                     >
-                                        4. Invia il reso a: <strong>{order.shop.name}</strong>
+                                        4. Invia il reso a: <strong>{order?.shop?.name}</strong>
                                     </Text>
 
                                     <Text
@@ -229,11 +239,11 @@ const index = () => {
                                     mt={0}
                                     mb={-1}
                                 >
-                                    {order?.shop.name}
+                                    {order?.shop?.name}
                                 </Text>
                                 <Link
                                     prefetch={false}
-                                    href={'/negozio/' + order?.shop.id + '/' + createUrlSchema([order?.shop.name])}
+                                    href={'/negozio/' + order?.shop?.id + '/' + createUrlSchema([order?.shop?.name ? order?.shop?.name : ''])}
                                     className='text-sm font-semibold underline'
                                 >
                                     vai al negozio
@@ -246,7 +256,7 @@ const index = () => {
                                     fontWeight={'bold'}
                                     fontSize={'md'}
                                 >
-                                    {order.status === 'SHIP03' ? 'Ordine consegnato' : 'Ordine effettuato'}
+                                    {order?.status === 'SHIP03' ? 'Ordine consegnato' : 'Ordine effettuato'}
                                 </Text>
                                 <Text
                                     fontWeight={'medium'}
@@ -254,10 +264,10 @@ const index = () => {
                                     mt={0}
                                     mb={-1}
                                 >
-                                    {order.status === 'SHIP03' ?
-                                        getDateFromMongoDBDate(order.history.find(status => status.status === 'SHIP03')?.date, DateFormat.onlyDate)
+                                    {order?.status === 'SHIP03' ?
+                                        getDateFromMongoDBDate(order?.history?.find(status => status.status === 'SHIP03')?.date, DateFormat.onlyDate)
                                         :
-                                        getDateFromMongoDBDate(order.createdAt, DateFormat.onlyDate)
+                                        getDateFromMongoDBDate(order?.createdAt, DateFormat.onlyDate)
                                     }
 
                                 </Text>
@@ -277,7 +287,7 @@ const index = () => {
                                     mt={0}
                                     mb={-1}
                                 >
-                                    {order.recipient.name}
+                                    {order?.recipient?.name}
                                 </Text>
                                 <Text
                                     fontWeight={'medium'}
@@ -285,7 +295,7 @@ const index = () => {
                                     mt={0}
                                     mb={-1}
                                 >
-                                    {order.recipient.address.city} ({order.recipient.address.postalCode}), {order.recipient.address.line1}
+                                    {order?.recipient?.address?.city} ({order?.recipient?.address?.postalCode}), {order?.recipient?.address?.line1}
                                 </Text>
                             </Box>
 
@@ -296,14 +306,14 @@ const index = () => {
                             fontWeight={'medium'}
                             display={'flex'}
                         >
-                            <Text fontWeight={'semibold'} mr={1}>ORDINE: </Text>{order.code}
+                            <Text fontWeight={'semibold'} mr={1}>ORDINE: </Text>{order?.code}
                         </Box>
                         <VStack
                             mt={[6, 4]}
                             width={'full'}
                             gap={4}
                         >
-                            {order.productVariations.map((variation, index) => {
+                            {order?.productVariations && order?.productVariations.map((variation, index) => {
                                 return (
                                     <div key={index} className='w-full'>
                                         <ProductVariationInOrder variation={variation} />
@@ -314,11 +324,14 @@ const index = () => {
                                 )
                             })}
                         </VStack>
-                        <PriceAndShippingListingCost subTotal={order.totalDetails.subTotal} total={order.totalDetails.total} shippingCost={order.totalDetails.amountShipping} />
+                        {order?.totalDetails?.subTotal &&
+                            order?.totalDetails?.total &&
+                            typeof order?.totalDetails?.amountShipping === 'number' &&
+                            <PriceAndShippingListingCost subTotal={order?.totalDetails.subTotal} total={order?.totalDetails.total} shippingCost={order?.totalDetails.amountShipping} />}
 
-                        {order.shipping?.url && order.status.includes('SHIP') && <Link
+                        {order?.shipping?.url && order?.status?.includes('SHIP') && <Link
                             prefetch={false}
-                            href={order.shipping?.url.startsWith("https://") ? order.shipping?.url : "https://" + order.shipping?.url}
+                            href={order?.shipping?.url.startsWith("https://") ? order?.shipping?.url : "https://" + order?.shipping?.url}
                             target="_blank"
                             className='text-lg font-bold h-fit flex'
 
@@ -332,7 +345,7 @@ const index = () => {
                             </Button>
                         </Link>}
                         {
-                            order.status === 'SHIP03' &&
+                            order?.status === 'SHIP03' && user.uid === order?.user?.firebaseId &&
                             <Box
                                 display={'flex'}
                                 gap={2}
@@ -372,12 +385,18 @@ const index = () => {
                     </Box>
                 )
             }
-            <ModalReausable title='' closeModal={() => setIsOpenModalReturn(false)} isOpen={isOpenModalReturn}>
-                <FormReturn
-                    handleSubmitButton={handleSubmitButton}
+            {user.uid === order?.user?.firebaseId &&
+                order?.code
+                &&
+                order?.user?.email &&
+                order?.recipient?.phone &&
+                <ModalReausable title='' closeModal={() => setIsOpenModalReturn(false)} isOpen={isOpenModalReturn}>
 
-                    email={order?.user.email} orderCode={order?.code} phone={order?.recipient.phone} />
-            </ModalReausable>
+                    < FormReturn
+                        handleSubmitButton={handleSubmitButton}
+
+                        email={order?.user?.email} orderCode={order?.code} phone={order?.recipient?.phone} />
+                </ModalReausable>}
             <Modal_Help_Customer_Care
                 isOpen={isModalHelpOpen}
                 onClose={() => setIsModalHelpOpen(false)}
