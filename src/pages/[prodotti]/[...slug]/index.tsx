@@ -31,7 +31,6 @@ import { getUnivers } from '../../../../components/utils/getUnivers';
 import { getSortingFilter } from '../../../../components/utils/getSortingFilter';
 
 
-const RANGE = process.env.NODE_ENV === 'production' ? 12 : 12
 
 
 export async function getStaticPaths() {
@@ -40,6 +39,8 @@ export async function getStaticPaths() {
         fallback: 'blocking', // can also be true
     }
 }
+
+const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) : 3
 
 
 export async function getStaticProps(ctx: any) {
@@ -125,6 +126,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [history, setHistory] = useState<string>()
     const [sort, setSort] = useState<Sort | string>('')
     const timeoutRef = useRef<any>(null);
+    console.log('RANGE', typeof process.env.NEXT_PUBLIC_RANGE);
 
     useEffect(() => {
         clearTimeout(timeoutRef.current);

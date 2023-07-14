@@ -24,7 +24,8 @@ import { GetShopQuery, ProductsQueryResponse } from '../../../../lib/apollo/gene
 import { LIST_ITEM_VARIANT } from '../../../../../components/mook/transition'
 import { AnimatePresence, motion } from 'framer-motion';
 
-const RANGE = process.env.NODE_ENV === 'production' ? 10 : 3
+const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) : 12
+
 
 export async function getStaticPaths() {
     return {
@@ -45,7 +46,7 @@ export async function getStaticProps(ctx: any) {
             query: GET_SHOP_AND_PRODUCTS,
             variables: {
                 id: shopId,
-                limit: RANGE,
+                limit: process.env.RANGE,
                 offset: 0,
                 filters: {
                     gender: gender ? (gender === 'uomo' ? 'm' : 'f') : null
@@ -93,6 +94,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
         <div className='min-h-[100vh]'>
         </div>
     )
+
 
 
     //TODO lazyload scroll products
