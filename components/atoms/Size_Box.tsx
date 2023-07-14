@@ -22,7 +22,7 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
 
 
     return (
-        <div className='grid grid-cols-3 xl:grid-cols-4 w-full  md:w-fit gap-3'>
+        <div className='grid grid-cols-3 xl:grid-cols-4 w-full md:w-fit xl:w-full gap-3'>
             {totalLotsProduct.map((size) => {
                 const sizeProductExist = lots.find(lot => lot.size === size)
                 return (
@@ -37,7 +37,7 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                         bg={sizeProductExist?.quantity > 0 ? 'white' : 'gray.100'}
                         color={'black.900'}
                         noOfLines={3}
-                        className="text-center md:min-w-24 lg:w-32 min-w-[100px]"
+                        className="text-center md:min-w-24 lg:w-32 xl:w-full min-w-[100px]"
                         h={'full'}
                         cursor={sizeProductExist?.quantity <= 0 || !sizeProductExist ? '' : 'pointer'}
                         px={[4, 2]}
