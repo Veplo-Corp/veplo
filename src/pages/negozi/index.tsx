@@ -191,8 +191,8 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
                 </Tag>
 
             }
-            <Box className="sm:grid md:pt-1 sm:grid-cols-1 lg:grid-cols-2 gap-10 w-full lg:w-10/12 2xl:w-9/12 m-auto justify-items-center mt-4"
-                px={[2, 2, 2, 0]}
+            <Box className="grid md:pt-1 sm:grid-cols-1 md:grid-cols-2 gap-5 sm:gap-10 md:gap-5 lg:gap-10 w-full xl:w-10/12 2xl:w-9/12 xl:m-auto justify-items-center mt-4"
+                px={[2, 2, 2, 6, 0]}
             >
                 {shops.length > 0 &&
                     shops.map((shop, index) => {

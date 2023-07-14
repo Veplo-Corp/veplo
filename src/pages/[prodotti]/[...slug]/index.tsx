@@ -548,7 +548,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             <div className='relative  min-h-[120vh]'>
                 <Shop_not_Allowed>
                     <Box
-                        className='lg:w-10/12 2xl:w-9/12  mx-2 lg:mx-auto'
+                        className='lg:mx-6 xl:w-10/12 2xl:w-9/12  mx-2 xl:mx-auto'
                     >
                         <Box
                             minWidth={'3xs'}

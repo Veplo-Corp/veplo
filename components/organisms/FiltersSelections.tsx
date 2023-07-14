@@ -20,7 +20,7 @@ import { gtag } from '../../src/lib/analytics/gtag';
 
 const FiltersSelections: FC<{
     isLoading: boolean, filters: ProductsFilter, filterDrawerConfirm: (value: ProductsFilter | undefined) => void, handleConfirmChange:
-        (value: string, filterParameter: FilterAccepted) => void, univers: Univers | undefined, changePriceEventRouter: (parameters: { name: string, value: any }[]) => void, handleChangeMacroCategory: (value: string) => void
+    (value: string, filterParameter: FilterAccepted) => void, univers: Univers | undefined, changePriceEventRouter: (parameters: { name: string, value: any }[]) => void, handleChangeMacroCategory: (value: string) => void
 }> =
     ({ isLoading, filters, handleConfirmChange, univers, changePriceEventRouter, filterDrawerConfirm, handleChangeMacroCategory }) => {
 
@@ -147,63 +147,68 @@ const FiltersSelections: FC<{
                             maxPrice: filterParameters?.find(parameter => parameter.name === 'maxPrice')?.value
                         }}
                     />
-                    <ToogleComponent
-                        isLoading={isLoading}
-                        modifyToogleInComponent={true}
-                        text={
-                            <Box display={'flex'} gap={'4px'}>
-                                <Leaf
-                                    className='my-auto'
-                                    height={'20px'}
-                                    width={'20px'}
-                                    strokeWidth={2.3}
-                                />
-                                <Text
-                                    marginY={'auto'}
-                                >
-                                    sostenibile
-                                </Text>
-                            </Box>
-                        }
-                        value={filterParameters?.find(parameter => parameter.name === 'sostenibile')?.value === 'true' ?
-                            true :
-                            undefined
-                        }
-                        toogleColor={'bg-[#37D1A9]'}
-                        handleChangeToogle={(value) => {
-                            handleChange(value, 'sostenibile')
-                            if (value === 'true') {
-                                return gtag({
-                                    command: GTMEventType.sustainableToggle,
-                                    args: {
-                                        label: 'Click on sale toggle',
-                                        //gender: user.genderSelected === 'm' ? 'male' : user.genderSelected === 'f' ? 'female' : 'not_speficied'
-                                    }
-                                })
+                    <Box
+                        className='hidden xl:flex'
+                    >
+                        <ToogleComponent
+                            isLoading={isLoading}
+                            modifyToogleInComponent={true}
+                            text={
+                                <Box display={'flex'} gap={'4px'}>
+                                    <Leaf
+                                        className='my-auto'
+                                        height={'20px'}
+                                        width={'20px'}
+                                        strokeWidth={2.3}
+                                    />
+                                    <Text
+                                        marginY={'auto'}
+                                    >
+                                        sostenibile
+                                    </Text>
+                                </Box>
                             }
-                        }}
-                    />
-                    <ToogleComponent
-                        isLoading={isLoading}
-                        modifyToogleInComponent={true}
-                        text={'promozioni'}
-                        value={filterParameters?.find(parameter => parameter.name === 'sale')?.value === 'true' ?
-                            true :
-                            undefined
-                        }
-                        handleChangeToogle={(value) => {
-                            handleChange(value, 'sale')
-                            if (value === 'true') {
-                                return gtag({
-                                    command: GTMEventType.saleToggle,
-                                    args: {
-                                        label: 'Click on sale toggle',
-                                        //gender: user.genderSelected === 'm' ? 'male' : user.genderSelected === 'f' ? 'female' : 'not_speficied'
-                                    }
-                                })
+                            value={filterParameters?.find(parameter => parameter.name === 'sostenibile')?.value === 'true' ?
+                                true :
+                                undefined
                             }
-                        }}
-                    />
+                            toogleColor={'bg-[#37D1A9]'}
+                            handleChangeToogle={(value) => {
+                                handleChange(value, 'sostenibile')
+                                if (value === 'true') {
+                                    return gtag({
+                                        command: GTMEventType.sustainableToggle,
+                                        args: {
+                                            label: 'Click on sale toggle',
+                                            //gender: user.genderSelected === 'm' ? 'male' : user.genderSelected === 'f' ? 'female' : 'not_speficied'
+                                        }
+                                    })
+                                }
+                            }}
+                        />
+                        <ToogleComponent
+                            isLoading={isLoading}
+                            modifyToogleInComponent={true}
+                            text={'promozioni'}
+                            value={filterParameters?.find(parameter => parameter.name === 'sale')?.value === 'true' ?
+                                true :
+                                undefined
+                            }
+                            handleChangeToogle={(value) => {
+                                handleChange(value, 'sale')
+                                if (value === 'true') {
+                                    return gtag({
+                                        command: GTMEventType.saleToggle,
+                                        args: {
+                                            label: 'Click on sale toggle',
+                                            //gender: user.genderSelected === 'm' ? 'male' : user.genderSelected === 'f' ? 'female' : 'not_speficied'
+                                        }
+                                    })
+                                }
+                            }}
+                        />
+                    </Box>
+
 
 
 

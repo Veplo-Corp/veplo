@@ -372,11 +372,12 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
           </Box>
         </Box>
         <Box
-          className='lg:flex lg:w-3/4 mx-auto lg:my-7 gap-20 justify-between'
+          className='lg:flex sm:w-10/12 md:w-9/12 lg:w-11/12 xl:w-3/4 mx-auto lg:my-7 lg:gap-12 xl:gap-20 justify-between'
         >
           <Box
             marginY={10}
             marginX={7}
+            width={['', '', '', '50%', '40%']}
           >
             <Text
               fontSize={'4.3vh'}
@@ -413,7 +414,12 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
                 </Box>
               ))}
             </VStack>
-            <ButtonGroupGender />
+            <Box
+              mx={'auto'}
+              className='xl:w-9/12'
+            >
+              <ButtonGroupGender />
+            </Box>
 
           </Box>
           <Box
@@ -428,15 +434,15 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
               mb={[5, 5, 5, 8]}
 
             >
-              {data?.allListComponentWithImages[0].title}
+              {data?.allListComponentWithImages?.[0]?.title}
             </Text>
             <VStack
               gap={[5, 5, 5, 8]}
-              mb={7}
+              mb={[7, 7, 12, 7]}
               align='stretch'
               textAlign={'left'}
             >
-              {data?.allListComponentWithImages[0].imageAndText.map((value, index) => (
+              {data?.allListComponentWithImages?.[0].imageAndText.map((value, index) => (
                 <Box
                   key={index}
                   display={'flex'}

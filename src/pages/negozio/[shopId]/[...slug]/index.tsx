@@ -46,7 +46,7 @@ export async function getStaticProps(ctx: any) {
             query: GET_SHOP_AND_PRODUCTS,
             variables: {
                 id: shopId,
-                limit: process.env.RANGE,
+                limit: RANGE,
                 offset: 0,
                 filters: {
                     gender: gender ? (gender === 'uomo' ? 'm' : 'f') : null

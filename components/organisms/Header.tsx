@@ -176,7 +176,7 @@ const Header = () => {
                         }
                         }
                     >
-                        <nav className={`flex items-center justify-between px-2 md:px-6 py-4 ${user.isBusiness ? '' : 'lg:px-0 lg:w-10/12 2xl:w-9/12'}  mx-auto`} aria-label="Global">
+                        <nav className={`flex items-center justify-between px-2 py-4 ${user.isBusiness ? '' : 'lg:px-0 lg:mx-6  xl:w-10/12 2xl:w-9/12'}  xl:mx-auto`} aria-label="Global">
                             {(user.statusAuthentication === 'logged_in' && user.isBusiness) && <div className="flex lg:flex-1">
                                 <Link
                                     prefetch={false}
