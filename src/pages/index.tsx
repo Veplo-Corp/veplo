@@ -261,7 +261,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
             gap={10}
           >
             <Box
-              className='ml-24 mt-10 '
+              className='lg:ml-2 xl:ml-24 mt-10 '
             >
               <Box>
                 <img loading='lazy'
@@ -271,11 +271,10 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
 
               </Box>
               <Text
-                fontSize={'8xl'}
+                className='lg:text-7xl xl:text-8xl mt-16 xl:mt-10'
                 fontWeight={'black'}
-                lineHeight={'12vh'}
+                lineHeight={['', '', '', '9vh', '12vh']}
                 color={'primaryBlack.text'}
-                mt={10}
               >
                 Lo spazio dei <br />
                 <span
@@ -288,7 +287,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
             <Box
               margin={'auto'}
               mb={20}
-              w={'45vh'}
+              w={['', '', '', '40vh', '45vh']}
             >
               <ButtonGroupGender />
               <Button
