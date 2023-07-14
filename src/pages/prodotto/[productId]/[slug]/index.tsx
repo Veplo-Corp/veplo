@@ -736,7 +736,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                             paddingY={[5, 5]}
                                             paddingX={[2, 5]}
                                             position={open && !isSmallView ? 'absolute' : 'static'}
-                                            zIndex={999}
                                             bg={'white'}
                                             borderRadius={10}
                                             borderWidth={1}
@@ -745,7 +744,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                             >
                                                 <Box
                                                     className='m-auto flex'
-                                                    zIndex={999}
+
                                                     bg={'white'}
                                                 >
                                                     <Text

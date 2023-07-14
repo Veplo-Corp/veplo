@@ -182,7 +182,7 @@ const index = () => {
                                         2. Compila la <Link
                                             className='underline'
                                             target="_blank" href="https://www.datocms-assets.com/102220/1686655555-modulo-reso.pdf"
-                                        >nota reso</Link> e inseriscial nel pacco
+                                        >nota reso</Link> e inseriscila nel pacco
                                     </Text>
                                     <Text
                                         fontSize={'md'}

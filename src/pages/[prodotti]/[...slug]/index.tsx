@@ -447,7 +447,11 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             })
         }
         let filtersParams: any = getParamsFiltersFromObject(filters)
-
+        delete filtersParams[paramters]
+        if (filtersParams["traits"]) {
+            delete filtersParams["traits"]
+            filtersParams["sostenibile"] = 'true'
+        }
         if (paramters === 'microCategory') {
             return router.push({
                 pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/tutto/${sort}`,
@@ -456,11 +460,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 }
             })
         }
-        delete filtersParams[paramters]
-        if (filtersParams["traits"]) {
-            delete filtersParams["traits"]
-            filtersParams["sostenibile"] = 'true'
-        }
+
         return router.push({
             pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
             query: {
