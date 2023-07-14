@@ -515,17 +515,20 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
               Sono un brand!
             </Button>
           </Box>
-          <Instagram
-            cursor={'pointer'}
-            onClick={() => {
-              router.push('https://www.instagram.com/veplo_it/')
-            }}
-            className='m-auto my-12'
-            strokeWidth={1.5}
-            color='white'
-            width={'40px'}
-            height={'40px'}
-          />
+          <Link
+            href={'https://www.instagram.com/veplo_it/'}
+            target='_blank'
+          >
+            <Instagram
+              cursor={'pointer'}
+              className='m-auto my-12'
+              strokeWidth={1.5}
+              color='white'
+              width={'40px'}
+              height={'40px'}
+            />
+          </Link>
+
         </Box>
 
 

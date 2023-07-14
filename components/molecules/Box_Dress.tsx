@@ -52,6 +52,23 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
         return parole.some(parola => arraySustainableTraits.includes(parola as SustainableTraits));
     }
 
+    const handleSetPhotoUrl = (colorSelected: string | undefined) => {
+        if (!product?.variations) return
+
+        if (!colorSelected) {
+            const url = product.variations[indexPhoto].photos?.[0] ? product.variations[indexPhoto].photos?.[0] : ''
+            return seturlProduct(url)
+
+        }
+        const variationIndex: any = product.variations?.findIndex(variation => variation.color === colorSelected)
+
+        if (variationIndex >= 0) {
+            setindexPhoto(variationIndex)
+            //rimetti a 0
+            seturlProduct(typeof product?.variations[variationIndex]?.photos?.[0] === 'string' ? product?.variations[variationIndex]?.photos?.[0] : '')
+        }
+    }
+
     useEffect(() => {
         if (!product.variations) return
         const colors = product.variations.map((variation: any) => {
@@ -61,18 +78,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
         const isProductSustainable = checkIfProductIsSustainable(product.info?.traits)
         setIsSustainable(isProductSustainable)
         setProductcolorsCSS(colors)
-        seturlProduct(product.variations[indexPhoto].photos?.[0] ? product.variations[indexPhoto].photos?.[0] : '');
-        if (color) {
-            product?.variations
-            const indexPhoto = product?.variations.findIndex((variation: any) => variation.color.toLowerCase() === color.toLowerCase())
-
-            if (indexPhoto >= 0) {
-
-                setindexPhoto(indexPhoto)
-                //rimetti a 0
-                seturlProduct(typeof product?.variations[indexPhoto]?.photos?.[0] === 'string' ? product?.variations[indexPhoto]?.photos?.[0] : '')
-            }
-        }
+        handleSetPhotoUrl(color)
 
         const sizes = [
             "xxs",
@@ -198,12 +204,11 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                     className='top-2 left-2 absolute hidden lg:flex z-20'
                                 >
                                     <VStack
-                                        background={'#FFFFFF'}
-
+                                        className='bg-opacity-80 bg-[#FFFFFF]'
                                         p={1.5}
                                         borderRadius={'15px'}
                                         textAlign={'center'}
-                                        minW={28}
+                                        minW={16}
 
                                     >
 
@@ -211,8 +216,8 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                             return (
                                                 <Box key={size}
                                                     fontWeight={'bold'}
-                                                    paddingX={size.length > 6 ? 3 : 7}
-                                                    py={size.length > 6 ? 3 : 2}
+                                                    paddingX={size.length > 3 ? 1 : 6}
+                                                    py={size.length > 6 ? 2 : 2}
 
                                                     justifyContent={'center'}
                                                     width={'full'}
@@ -239,9 +244,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                     </VStack>
                                 </ScaleFade>
                             }
-                            {isSmallView &&
-                                <Box></Box>
-                            }
+
                             {(isSmallView && !overflowCards) ?
                                 (
                                     <Swiper
@@ -309,8 +312,14 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 display={'flex'}
                                 zIndex={50}
                             >
-                                <Circle_Color colors={productcolorsCSS.slice(0, 3)} dimension={isMobile ? '22px' : 6} space={2} />
-                                {productcolorsCSS.length > 3 &&
+                                <Circle_Color colors={productcolorsCSS.slice(0, 5)} dimension={isMobile ? '22px' : 6} space={2}
+                                    handleColorFocused={(color: string) => {
+                                        if (isSmallView) return
+                                        handleSetPhotoUrl(color)
+
+                                    }}
+                                />
+                                {productcolorsCSS.length > 5 &&
                                     <Tag
 
                                         onClick={() => {
@@ -331,7 +340,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                         fontSize={['md', 'sm']}
                                         textAlign={'center'}
                                     >
-                                        +{productcolorsCSS.length - 3}
+                                        +{productcolorsCSS.length - 5}
                                     </Tag>
                                 }
                             </Box>
