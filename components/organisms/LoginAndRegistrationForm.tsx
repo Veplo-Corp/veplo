@@ -19,7 +19,7 @@ import { ToastOpen } from '../utils/Toast';
 import Link from 'next/link';
 import { Cart } from '../../src/lib/apollo/generated/graphql';
 import EDIT_CART from '../../src/lib/apollo/mutations/editCart';
-import { gtag } from '../../src/lib/analytics/gtag';
+import { CustomWindow, gtag } from '../../src/lib/analytics/gtag';
 import { useAnalytics } from '../../src/lib/analytics/hooks/useAnalytics';
 import { GTMEventType } from '../../src/lib/analytics/eventTypes';
 
@@ -111,6 +111,17 @@ const LoginAndRegistrationForm: FC<{
                 return router.replace('/shop/home')
             }
         }
+
+        let window: CustomWindow;
+
+        useEffect(() => {
+
+            if (typeof window !== 'undefined') {
+                console.log('passa');
+                window.fbq('Purchase', { currency: 'USD', value: 10 })
+            }
+        }, [])
+
 
         const handleEvent = async (data: InputFormLogin) => {
             setIsLoading(true)
