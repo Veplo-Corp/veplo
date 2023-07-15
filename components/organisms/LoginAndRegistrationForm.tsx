@@ -117,7 +117,7 @@ const LoginAndRegistrationForm: FC<{
         useEffect(() => {
             if (typeof window !== 'undefined') {
                 console.log('passa');
-                window.fbq('Purchase', { currency: 'USD', value: 10 })
+                window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
             }
         }, [])
 
