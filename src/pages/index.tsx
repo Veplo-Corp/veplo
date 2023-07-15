@@ -210,9 +210,9 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
       <PostMeta
         canonicalUrl='https://www.veplo.it'
         title={"Veplo"}
-        subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Su Veplo compri direttamente dai brand senza intermediari."}
+        subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
         image={"android-chrome-512x512.png"}
-        description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Su Veplo compri direttamente dai brand senza intermediari."}
+        description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
       />
 
 

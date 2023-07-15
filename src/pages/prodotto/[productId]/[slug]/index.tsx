@@ -547,9 +547,9 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                         canonicalUrl={'https://www.veplo.it' + router.asPath}
                         //riverdere length description 150 to 160
                         title={`${toUpperCaseFirstLetter(product.info.macroCategory)} ${toUpperCaseFirstLetter(product.info.brand)} ${product.name.toUpperCase()} | Veplo`}
-                        subtitle={`${toUpperCaseFirstLetter(product.info.macroCategory)} ${toUpperCaseFirstLetter(product.info.brand)} ${product.name.toUpperCase()} a ${product.price.v2 ? product.price.v2 : product.price.v1}€ | Scopri i prodotti dei migliori brand made in Italy`}
+                        subtitle={`${toUpperCaseFirstLetter(product.info.macroCategory)} ${toUpperCaseFirstLetter(product.info.brand)} ${product.name.toUpperCase()} a ${product.price.v2 ? product.price.v2 : product.price.v1}€. Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
                         image={imageKitUrl(variationSelected.photos[0], 237, 247)}
-                        description={`${toUpperCaseFirstLetter(product.info.macroCategory)} ${toUpperCaseFirstLetter(product.info.brand)} ${product.name.toUpperCase()} a ${product.price.v2 ? product.price.v2 : product.price.v1}€ | Scopri i prodotti dei migliori brand made in Italy`}
+                        description={`${toUpperCaseFirstLetter(product.info.macroCategory)} ${toUpperCaseFirstLetter(product.info.brand)} ${product.name.toUpperCase()} a ${product.price.v2 ? product.price.v2 : product.price.v1}€. Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
                     />
                     <div className='md:flex justify-between w-full mb-5 lg:mb-0 gap-5'>
                         <Box

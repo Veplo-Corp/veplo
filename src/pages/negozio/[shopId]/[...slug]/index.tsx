@@ -20,7 +20,7 @@ import { numberOfLineText } from '../../../../../components/utils/numberOfLineTe
 import { isMobile } from 'react-device-detect'
 import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo'
 import { CATEGORIES } from '../../../../../components/mook/categories'
-import { GetShopQuery, ProductsQueryResponse } from '../../../../lib/apollo/generated/graphql'
+import { GetShopQuery, Product, ProductsQueryResponse } from '../../../../lib/apollo/generated/graphql'
 import { LIST_ITEM_VARIANT } from '../../../../../components/mook/transition'
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -198,9 +198,9 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`${shop.name ? toUpperCaseFirstLetter(shop.name) : 'Brand'} | Veplo`}
-                subtitle={`Scopri il brand ${shop.name} | Acquista dai migliori brand made in Italy senza intermediari su Veplo | Abbigliamento · Accessori · Scarpe · Vestiti`}
+                subtitle={`${shop.name} è su Veplo | Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
                 image={shop?.profilePhoto ? shop?.profilePhoto : ''}
-                description={`Scopri il brand ${shop.name} | Acquista dai migliori brand made in Italy senza intermediari su Veplo | Abbigliamento · Accessori · Scarpe · Vestiti`}
+                description={`${shop.name} è su Veplo | Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
             />
 
             <Box
@@ -264,10 +264,9 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                             px={2}
                             bgColor={'#D9D9D9'}
                             top={3}
-                            left={3}
                             borderRadius={'full'}
                             noOfLines={1}
-                            mr={[1, 0]}
+                            mr={[1.5, 0]}
                             mt={4}
                             width={'fit-content'}
                             height={'fit-content'}
@@ -281,7 +280,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
 
                 <Box
                     mt={[4, 6]}
-                    className='px-5 lg:p-0'
+                    className='px-2 lg:p-0'
                 >
                     <Box
                         display={'flex'}
@@ -432,7 +431,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                             <Text textAlign={'center'}
                                 fontWeight={'bold'}
                             >
-                                caricamento
+                                {/* caricamento */}
                             </Text>}
                     </Box>
                 }
@@ -443,7 +442,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                 {productsFounded &&
                     <div className="grid grid-cols-1 px-2 lg:px-0 md:grid-cols-3 gap-5 w-full xl:w-9/12 mx-auto mb-10">
 
-                        {productsFounded.map((product, index) => {
+                        {productsFounded.map((product: Product, index) => {
                             return (
                                 <motion.div
                                     variants={LIST_ITEM_VARIANT}
