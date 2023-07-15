@@ -115,7 +115,6 @@ const LoginAndRegistrationForm: FC<{
         let window: CustomWindow;
 
         useEffect(() => {
-
             if (typeof window !== 'undefined') {
                 console.log('passa');
                 window.fbq('Purchase', { currency: 'USD', value: 10 })
