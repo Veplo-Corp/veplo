@@ -29,7 +29,6 @@ export type InputFormLogin = {
     firstName: string,
     lastName: string
 }
-declare let window: CustomWindow; // Assicurati di importare la definizione di tipo corretta
 
 const LoginAndRegistrationForm: FC<{
     type: 'login' | 'registration' | 'reset_password' | undefined, person: 'user' | 'business' | undefined,
@@ -379,10 +378,10 @@ const LoginAndRegistrationForm: FC<{
             >
                 <button
                     onClick={() => {
-                        if (typeof window !== 'undefined') {
+                        if (typeof window.gtag !== 'undefined') {
                             console.log('passa');
-                            window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
-                            window.gtag("event", "login", {
+                            //window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
+                            window.gtag("event", "sign_up", {
                                 method: "Google"
                             });
                         }
