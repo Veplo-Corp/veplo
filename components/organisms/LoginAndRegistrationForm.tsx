@@ -126,10 +126,10 @@ const LoginAndRegistrationForm: FC<{
                     gtag({
                         command: GTMEventType.login,
                         args: {
-                            email: data.email,
-                            firebaseId: userCredential.user.uid,
+                            // email: data.email,
+                            // firebaseId: userCredential.user.uid,
                             method: 'Email',
-                            user: isBusiness ? 'Business' : 'Customer'
+                            //user: isBusiness ? 'Business' : 'Customer'
                         }
                     })
                     redirectUser(isBusiness)
@@ -171,13 +171,13 @@ const LoginAndRegistrationForm: FC<{
                         gtag({
                             command: GTMEventType.signUp,
                             args: {
-                                email: data.email,
-                                firstName: data.firstName,
-                                lastName: data.lastName,
-                                firebaseId: userCredential.user.uid,
-                                mongoId: response?.data.createUser ? response?.data.createUser : 'userId_non_trovato',
+                                // email: data.email,
+                                // firstName: data.firstName,
+                                // lastName: data.lastName,
+                                // firebaseId: userCredential.user.uid,
+                                // mongoId: response?.data.createUser ? response?.data.createUser : 'userId_non_trovato',
                                 method: 'Email',
-                                user: 'Customer'
+                                // user: 'Customer'
                             }
                         })
                         await handleCartInLocalStorage()
@@ -209,11 +209,11 @@ const LoginAndRegistrationForm: FC<{
                             gtag({
                                 command: GTMEventType.signUp,
                                 args: {
-                                    email: data.email,
-                                    firebaseId: userCredential.user.uid,
+                                    // email: data.email,
+                                    // firebaseId: userCredential.user.uid,
                                     method: 'Email',
-                                    user: 'Business',
-                                    mongoId: account?.data.createBusinessStep1
+                                    // user: 'Business',
+                                    // mongoId: account?.data.createBusinessStep1
                                 }
                             })
 
