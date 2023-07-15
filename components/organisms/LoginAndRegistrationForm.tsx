@@ -114,12 +114,6 @@ const LoginAndRegistrationForm: FC<{
         }
 
 
-        useEffect(() => {
-            if (typeof window !== 'undefined') {
-                console.log('passa');
-                window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
-            }
-        }, [])
 
 
         const handleEvent = async (data: InputFormLogin) => {
@@ -383,6 +377,14 @@ const LoginAndRegistrationForm: FC<{
                 onSubmit={handleSubmit(onSubmit)}
                 className='m-auto'
             >
+                <button
+                    onClick={() => {
+                        if (typeof window !== 'undefined') {
+                            console.log('passa');
+                            window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
+                        }
+                    }}
+                >clicca</button>
                 <Box
                     marginX={'auto'}
                     marginY={'auto'}
