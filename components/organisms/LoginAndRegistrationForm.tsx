@@ -2,7 +2,7 @@ import { Box, Button, Input, InputGroup, InputLeftElement, InputRightElement, Sp
 import { UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect } from 'firebase/auth';
 import { EyeClose, EyeEmpty, Lock, Mail } from 'iconoir-react';
 import { useRouter } from 'next/router';
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { handleErrorFirebase } from '../utils/handleErrorFirebase';
 import { setModalTitleAndDescription } from '../../src/store/reducers/modal_error';
@@ -29,6 +29,8 @@ export type InputFormLogin = {
     firstName: string,
     lastName: string
 }
+declare let window: CustomWindow; // Assicurati di importare la definizione di tipo corretta
+
 
 const LoginAndRegistrationForm: FC<{
     type: 'login' | 'registration' | 'reset_password' | undefined, person: 'user' | 'business' | undefined,
@@ -362,12 +364,28 @@ const LoginAndRegistrationForm: FC<{
                 </Box>)
         }
 
+        useEffect(() => {
+
+            const checkFbqAndCall = () => {
+                if (typeof window?.fbq !== 'undefined') {
+                    console.log('Facebook Pixel è pronto!');
+                    window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
+                } else {
+                    console.log('Facebook Pixel non è pronto!');
+
+                    setTimeout(checkFbqAndCall, 1000);
+                }
+            };
+
+            checkFbqAndCall();
+        }, []);
 
         if (type === undefined || person === undefined) {
             return (
                 <></>
             )
         }
+
 
 
 
@@ -380,7 +398,7 @@ const LoginAndRegistrationForm: FC<{
                     onClick={() => {
                         if (typeof window.gtag !== 'undefined') {
                             console.log('passa');
-                            //window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
+                            window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
                             window.gtag("event", "sign_up", {
                                 method: "Google"
                             });
