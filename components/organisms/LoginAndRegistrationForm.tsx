@@ -382,6 +382,9 @@ const LoginAndRegistrationForm: FC<{
                         if (typeof window !== 'undefined') {
                             console.log('passa');
                             window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
+                            window.gtag("event", "login", {
+                                method: "Google"
+                            });
                         }
                     }}
                 >clicca</button>
