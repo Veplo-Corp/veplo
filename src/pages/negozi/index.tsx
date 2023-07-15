@@ -150,14 +150,14 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
 
     return (
         <div
-            className='mt-5 min-h-[100vh]'
+            className='mt-2 md:mt-5 min-h-[100vh]'
         >
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`Brand | Veplo`}
-                subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Su Veplo compri direttamente dai brand senza intermediari."}
+                subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
                 image={""}
-                description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Su Veplo compri direttamente dai brand senza intermediari."}
+                description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
             />
             {/* <div className='md:flex justify-end'>
                 
@@ -191,8 +191,8 @@ const index: FC<{ shops: Shop[] }> = ({ shops }) => {
                 </Tag>
 
             }
-            <Box className="grid md:pt-1 sm:grid-cols-1 md:grid-cols-2 gap-5 sm:gap-10 md:gap-5 lg:gap-10 w-full xl:w-10/12 2xl:w-9/12 xl:m-auto justify-items-center mt-4"
-                px={[2, 2, 2, 6, 0]}
+            <Box className="grid md:pt-1 sm:grid-cols-1 md:grid-cols-2 gap-5 sm:gap-10 md:gap-5 lg:gap-10 w-full xl:w-10/12 2xl:w-9/12 xl:m-auto justify-items-center md:mt-4"
+                px={[1, 2, 2, 6, 0]}
             >
                 {shops.length > 0 &&
                     shops.map((shop, index) => {
