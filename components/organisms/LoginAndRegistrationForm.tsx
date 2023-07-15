@@ -29,6 +29,7 @@ export type InputFormLogin = {
     firstName: string,
     lastName: string
 }
+declare let window: CustomWindow; // Assicurati di importare la definizione di tipo corretta
 
 const LoginAndRegistrationForm: FC<{
     type: 'login' | 'registration' | 'reset_password' | undefined, person: 'user' | 'business' | undefined,
@@ -112,7 +113,6 @@ const LoginAndRegistrationForm: FC<{
             }
         }
 
-        let window: CustomWindow;
 
         useEffect(() => {
             if (typeof window !== 'undefined') {
