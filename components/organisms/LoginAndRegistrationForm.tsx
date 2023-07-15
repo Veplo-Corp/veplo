@@ -369,7 +369,7 @@ const LoginAndRegistrationForm: FC<{
             const checkFbqAndCall = () => {
                 if (typeof window?.fbq !== 'undefined') {
                     console.log('Facebook Pixel è pronto!');
-                    window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
+                    //window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
                 } else {
                     console.log('Facebook Pixel non è pronto!');
 
@@ -394,7 +394,8 @@ const LoginAndRegistrationForm: FC<{
                 onSubmit={handleSubmit(onSubmit)}
                 className='m-auto'
             >
-                <button
+                {/* vedere eventi gtag e fbq*/}
+                {/* <button
                     onClick={() => {
                         if (typeof window.gtag !== 'undefined') {
                             console.log('passa');
@@ -404,7 +405,7 @@ const LoginAndRegistrationForm: FC<{
                             });
                         }
                     }}
-                >clicca</button>
+                >clicca</button> */}
                 <Box
                     marginX={'auto'}
                     marginY={'auto'}
