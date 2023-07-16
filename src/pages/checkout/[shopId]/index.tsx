@@ -59,7 +59,6 @@ const index = () => {
             setCart(cart)
         }
         if (!cart) {
-            console.log('CART', cart);
             //in futuro mettiamo carrello non trovato e non reindiriziamo a negozi
             timeoutId = setTimeout(() => {
                 if (shop) {
@@ -67,7 +66,7 @@ const index = () => {
                 } else {
                     router.replace(`/negozi`)
                 }
-            }, 4000); // Timeout di 4 secondi
+            }, 3000); // Timeout di 4 secondi
             setCart(undefined)
 
         }
@@ -229,7 +228,7 @@ const index = () => {
 
     return (
         <>
-            {cart ? (
+            {cart && shop ? (
                 <>
                     <NoIndexSeo title='Veplo'></NoIndexSeo>
                     <Desktop_Layout>
