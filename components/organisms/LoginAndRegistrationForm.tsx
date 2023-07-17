@@ -131,10 +131,10 @@ const LoginAndRegistrationForm: FC<{
                     gtag({
                         command: GTMEventType.login,
                         args: {
-                            // email: data.email,
+                            email: data.email,
                             // firebaseId: userCredential.user.uid,
                             method: 'Email',
-                            //user: isBusiness ? 'Business' : 'Customer'
+                            userType: isBusiness ? 'Business' : 'Customer'
                         }
                     })
                     redirectUser(isBusiness)
@@ -176,13 +176,13 @@ const LoginAndRegistrationForm: FC<{
                         gtag({
                             command: GTMEventType.signUp,
                             args: {
-                                // email: data.email,
+                                email: data.email,
                                 // firstName: data.firstName,
                                 // lastName: data.lastName,
                                 // firebaseId: userCredential.user.uid,
                                 // mongoId: response?.data.createUser ? response?.data.createUser : 'userId_non_trovato',
                                 method: 'Email',
-                                // user: 'Customer'
+                                userType: 'Customer'
                             }
                         })
                         await handleCartInLocalStorage()
@@ -214,10 +214,10 @@ const LoginAndRegistrationForm: FC<{
                             gtag({
                                 command: GTMEventType.signUp,
                                 args: {
-                                    // email: data.email,
+                                    email: data.email,
                                     // firebaseId: userCredential.user.uid,
                                     method: 'Email',
-                                    // user: 'Business',
+                                    userType: 'Business',
                                     // mongoId: account?.data.createBusinessStep1
                                 }
                             })
@@ -364,21 +364,23 @@ const LoginAndRegistrationForm: FC<{
                 </Box>)
         }
 
-        useEffect(() => {
 
-            const checkFbqAndCall = () => {
-                if (typeof window?.fbq !== 'undefined') {
-                    console.log('Facebook Pixel è pronto!');
-                    //window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
-                } else {
-                    console.log('Facebook Pixel non è pronto!');
+        //!utilizzo pixel in App
+        // useEffect(() => {
 
-                    setTimeout(checkFbqAndCall, 1000);
-                }
-            };
+        //     const checkFbqAndCall = () => {
+        //         if (typeof window?.fbq !== 'undefined') {
+        //             console.log('Facebook Pixel è pronto!');
+        //             //window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
+        //         } else {
+        //             //console.log('Facebook Pixel non è pronto!');
 
-            checkFbqAndCall();
-        }, []);
+        //             setTimeout(checkFbqAndCall, 1000);
+        //         }
+        //     };
+
+        //     checkFbqAndCall();
+        // }, []);
 
         if (type === undefined || person === undefined) {
             return (
@@ -396,13 +398,33 @@ const LoginAndRegistrationForm: FC<{
             >
                 {/* vedere eventi gtag e fbq*/}
                 {/* <button
+                    type='button'
                     onClick={() => {
-                        if (typeof window.gtag !== 'undefined') {
+                        if (typeof window !== 'undefined') {
                             console.log('passa');
-                            window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
-                            window.gtag("event", "sign_up", {
-                                method: "Google"
-                            });
+                            //window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
+                            gtag({
+                                command: GTMEventType.purchase,
+                                args: {
+                                    ecommerce: {
+                                        items: [
+                                            {
+                                                transaction_id: 'state.coreInformation.bpmId',
+                                                currency: 'EUR',
+                                                price: 1,
+                                                quantity: 1,
+                                                index: 1,
+                                                rif_item: 'state.coreInformation.product',
+                                                item_id: 'state.coreInformation.flowOnboardingCode',
+                                                item_name: 'findProduct(priority, state.coreInformation.product ??',
+                                                item_list_name: 'Lending'
+                                            }
+                                        ]
+                                    }
+
+                                }
+                            })
+
                         }
                     }}
                 >clicca</button> */}

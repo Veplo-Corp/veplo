@@ -177,10 +177,9 @@ const FiltersSelections: FC<{
                                 handleChange(value, 'sostenibile')
                                 if (value === 'true') {
                                     return gtag({
-                                        command: GTMEventType.sustainableToggle,
+                                        command: GTMEventType.sustainable_button_or_toggle,
                                         args: {
-                                            label: 'Click on sale toggle',
-                                            //gender: user.genderSelected === 'm' ? 'male' : user.genderSelected === 'f' ? 'female' : 'not_speficied'
+                                            page_section: 'pagina prodotti'
                                         }
                                     })
                                 }
@@ -198,10 +197,9 @@ const FiltersSelections: FC<{
                                 handleChange(value, 'sale')
                                 if (value === 'true') {
                                     return gtag({
-                                        command: GTMEventType.saleToggle,
+                                        command: GTMEventType.discount_button_or_toggle,
                                         args: {
-                                            label: 'Click on sale toggle',
-                                            //gender: user.genderSelected === 'm' ? 'male' : user.genderSelected === 'f' ? 'female' : 'not_speficied'
+                                            page_section: 'pagina prodotti'
                                         }
                                     })
                                 }

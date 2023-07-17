@@ -2,8 +2,9 @@ export enum GTMEventType {
     empty = '',
     signUp = 'sign_up',
     login = 'login',
-    saleToggle = 'sale_toggle',
-    sustainableToggle = 'sustainable_toggle'
+    discount_button_or_toggle = 'discount_button_or_toggle',
+    sustainable_button_or_toggle = 'sustainable_button_or_toggle',
+    purchase = 'purchase',
     // selectItem = 'select_item',
     // addShippingInfo = 'add_shipping_info',
     // beginCheckout = 'begin_checkout',
@@ -37,12 +38,14 @@ export type VeploGTMEvent = {
         device?: 'Web' | 'Mobile',
         event_category?: string,
         label?: string,
-        user?: 'Business' | 'Customer',
+        userType?: 'Business' | 'Customer',
         firebaseId?: string,
         mongoId?: string,
         firstName?: string,
         lastName?: string,
-        gender?: 'male' | 'female' | 'not_speficied'
+        gender?: 'male' | 'female' | 'not_speficied',
+        ecommerce?: any,
+        page_section?: string,
     }
 }
 
