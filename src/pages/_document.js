@@ -20,7 +20,7 @@ export default function Document() {
         <link rel="icon" type="image/x-icon" href="/android-chrome-512x512.png" sizes="512x512" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         {
-          process.env.NODE_ENV === 'production' &&
+          process.env.NODE_ENV === 'development' &&
 
           <>
             <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" async />
@@ -72,9 +72,10 @@ export default function Document() {
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer', '${process.env.GOOGLE_TAG_MANAGER}');`
             }} />
+
             {/* Inserisci qui il codice di Google Tag Manager */}
 
-            <script async src="https://www.googletagmanager.com/gtag/js?id=G-26QK67CY12"></script>
+            {/* <script async src="https://www.googletagmanager.com/gtag/js?id=G-26QK67CY12"></script>
             <script
               dangerouslySetInnerHTML={{
                 __html: `
@@ -84,7 +85,7 @@ export default function Document() {
                 gtag('config', 'G-26QK67CY12');
                 `,
               }}
-            />
+            /> */}
 
           </>
         }
@@ -93,14 +94,14 @@ export default function Document() {
 
 
       <body>
-        {process.env.NODE_ENV === 'production' && <noscript dangerouslySetInnerHTML={{
+        {/* {process.env.NODE_ENV === 'development' && <noscript dangerouslySetInnerHTML={{
           __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${process.env.GOOGLE_TAG_MANAGER}"
             height="0" width="0" style="display:none;visibility:hidden"></iframe>`
-        }} />}
+        }} />} */}
 
         <Main />
         <NextScript />
       </body>
-    </Html>
+    </Html >
   )
 }
