@@ -295,6 +295,64 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
           ISODate = new Date(userAuth.metadata.creationTime)
         }
         let date_for_redux = ('0' + ISODate.getDate()).slice(-2) + '/' + ('0' + Number(ISODate.getMonth() + 1)).slice(-2) + '/' + ISODate.getFullYear();
+
+        if (!isBusiness && tokenResult.claims.mongoId) {
+          dispatch(
+            login({
+              statusAuthentication: 'logged_in',
+              email: userAuth.email,
+              uid: userAuth.uid,
+              idToken: idToken,
+              emailVerified: userAuth.emailVerified,
+              createdAt: date_for_redux || new Date(),
+              accountId: tokenResult.claims.mongoId,
+              expirationTime: tokenResult.expirationTime,
+              userInfo: {
+                name: userAuth.displayName
+              }
+            })
+          );
+          getUser().then((data) => {
+
+            if (!data.data) return
+
+
+            console.log(data?.data?.user?.carts?.carts);
+
+
+
+            let carts: Cart[] = data?.data?.user?.carts?.carts ? data?.data?.user?.carts?.carts : [];
+            carts = carts.map(cart => {
+              if (!cart?.productVariations || cart?.productVariations?.length > 0) {
+                const sortedProductVariations = [...cart.productVariations].sort((a, b) => (a?.id > b?.id) ? 1 : -1);
+                return { ...cart, productVariations: sortedProductVariations };
+              }
+              return cart;
+            });
+
+            carts.sort((a, b) => (a.id > b.id) ? 1 : -1);
+            const orders: Order[] = data?.data?.user?.orders;
+            const warnings: { variationId: string }[] = data?.data?.user?.carts?.warnings
+
+
+
+            if (carts?.length > 0) {
+              dispatch(
+                setCarts(carts)
+              )
+            } else {
+              dispatch(
+                resetCarts()
+              )
+            }
+
+            if (orders?.length > 0) {
+              dispatch(
+                setOrders(orders)
+              )
+            }
+          })
+        }
         if (isBusiness) {
           dispatch(
             login({
@@ -343,62 +401,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             })
           return
         }
-        if (!isBusiness && tokenResult.claims.mongoId) {
-          getUser().then((data) => {
 
-            if (!data.data) return
-            dispatch(
-              login({
-                statusAuthentication: 'logged_in',
-                email: userAuth.email,
-                uid: userAuth.uid,
-                idToken: idToken,
-                emailVerified: userAuth.emailVerified,
-                createdAt: date_for_redux || new Date(),
-                accountId: tokenResult.claims.mongoId,
-                expirationTime: tokenResult.expirationTime,
-                userInfo: {
-                  name: data?.data?.user?.name
-                }
-              })
-            );
-
-            console.log(data?.data?.user?.carts?.carts);
-
-
-
-            let carts: Cart[] = data?.data?.user?.carts?.carts ? data?.data?.user?.carts?.carts : [];
-            carts = carts.map(cart => {
-              if (!cart?.productVariations || cart?.productVariations?.length > 0) {
-                const sortedProductVariations = [...cart.productVariations].sort((a, b) => (a?.id > b?.id) ? 1 : -1);
-                return { ...cart, productVariations: sortedProductVariations };
-              }
-              return cart;
-            });
-
-            carts.sort((a, b) => (a.id > b.id) ? 1 : -1);
-            const orders: Order[] = data?.data?.user?.orders;
-            const warnings: { variationId: string }[] = data?.data?.user?.carts?.warnings
-
-
-
-            if (carts?.length > 0) {
-              dispatch(
-                setCarts(carts)
-              )
-            } else {
-              dispatch(
-                resetCarts()
-              )
-            }
-
-            if (orders?.length > 0) {
-              dispatch(
-                setOrders(orders)
-              )
-            }
-          })
-        }
 
 
         return

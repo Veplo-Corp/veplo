@@ -1,6 +1,6 @@
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { Box, Button, ButtonGroup, Divider, IconButton, Input, InputGroup, Spinner, VStack } from '@chakra-ui/react';
-import { sendPasswordResetEmail } from 'firebase/auth';
+import { sendPasswordResetEmail, updateProfile } from 'firebase/auth';
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout'
@@ -113,6 +113,13 @@ const index = () => {
                     }
                 }
             })
+
+            if (auth?.currentUser) {
+                updateProfile(auth?.currentUser, {
+                    displayName: userName.name
+                })
+            }
+
             console.log(response);
             setIsLoading(false);
             setIsOpenNameModal(false)
