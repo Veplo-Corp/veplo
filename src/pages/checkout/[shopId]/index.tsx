@@ -373,7 +373,12 @@ const index = () => {
                                 style={{
                                     boxShadow: '0px 0px 20px rgba(255, 90, 120, 0.25)',
                                 }}
-                            >Procedi
+                            >Procedi {
+                                    (typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) ?
+                                        formatNumberWithTwoDecimals(cart.total + 499) :
+                                        formatNumberWithTwoDecimals(cart.total)
+                                }€
+
                             </Button>
                         </Box>
 
@@ -534,7 +539,7 @@ const index = () => {
                                             display={'flex'}
                                             width={'full'}
                                             justifyContent={'space-between'}
-
+                                            className='md:mb-5'
                                         >
                                             <Text
                                                 fontSize={'18px'}
