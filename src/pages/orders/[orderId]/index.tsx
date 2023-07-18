@@ -399,7 +399,7 @@ const index = () => {
                                         fontWeight={'medium'}
                                         color={'secondaryBlack.text'}
                                     >
-                                        {order?.recipient?.address?.city}, {order?.recipient?.address?.line1}
+                                        {order?.recipient?.address?.city} - {order?.recipient?.address?.line1}
                                     </Text>
                                 </Box>
                                 <Divider
