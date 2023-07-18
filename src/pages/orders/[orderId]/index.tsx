@@ -453,7 +453,6 @@ const index = () => {
                                     display={'flex'}
                                     width={'full'}
                                     justifyContent={'space-between'}
-                                    mb={5}
                                 >
                                     <Text
                                         fontSize={'16px'}

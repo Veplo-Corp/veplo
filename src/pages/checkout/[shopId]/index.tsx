@@ -447,7 +447,7 @@ const index = () => {
                                             color={'secondaryBlack.text'}
                                             fontWeight={'extrabold'}
                                         >
-                                            Consegna prevista tra
+                                            Consegna prevista
                                         </Text>
                                         <Text
                                             fontSize={'15px'}
@@ -534,7 +534,7 @@ const index = () => {
                                             display={'flex'}
                                             width={'full'}
                                             justifyContent={'space-between'}
-                                            mb={5}
+
                                         >
                                             <Text
                                                 fontSize={'18px'}
