@@ -497,12 +497,12 @@ const index = () => {
                                                     >
                                                         Spedizione
                                                     </Text>
-                                                    {(!cart.shopInfo.minimumAmountForFreeShipping || cart.shopInfo.minimumAmountForFreeShipping < cart.total) && <Text
+                                                    {(typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) && <Text
                                                         fontSize={'12px'}
                                                         fontWeight={'medium'}
                                                         color={'primary.bg'}
                                                     >
-                                                        * gratis dai {cart.shopInfo.minimumAmountForFreeShipping}€ euro di carrello
+                                                        * gratis dai {cart?.shopInfo?.minimumAmountForFreeShipping && cart?.shopInfo?.minimumAmountForFreeShipping / 100} euro di carrello
                                                     </Text>}
                                                 </Box>
 
@@ -511,7 +511,7 @@ const index = () => {
                                                     fontWeight={'medium'}
                                                     color={'secondaryBlack.text'}
                                                 >
-                                                    {cart.shopInfo.minimumAmountForFreeShipping && cart.shopInfo.minimumAmountForFreeShipping < cart.total ? '4,99€' : 'gratis'}
+                                                    {(typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) ? '4,99€' : 'gratis'}
                                                 </Text>
                                             </Box>
                                         </VStack>
@@ -539,7 +539,7 @@ const index = () => {
                                                 color={'secondaryBlack.text'}
                                             >
                                                 {
-                                                    (!cart.shopInfo.minimumAmountForFreeShipping || cart.shopInfo.minimumAmountForFreeShipping < cart.total) ?
+                                                    (typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) ?
                                                         formatNumberWithTwoDecimals(cart.total + 499) :
                                                         formatNumberWithTwoDecimals(cart.total)
                                                 }€
@@ -583,7 +583,7 @@ const index = () => {
                                             color={'#909090'}
                                             fontWeight={'normal'}
                                         >
-                                            Se hai un coupon iseriscilo nel passaggio successivo
+                                            Se hai un coupon inseriscilo nel passaggio successivo
                                         </Text>
                                     </Box>
                                 </Box>
