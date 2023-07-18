@@ -20,8 +20,7 @@ export default function Document() {
         <link rel="icon" type="image/x-icon" href="/android-chrome-512x512.png" sizes="512x512" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         {
-          process.env.NODE_ENV === 'development' &&
-
+          process.env.NODE_ENV === 'production' &&
           <>
             <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" async />
             <script type="text/javascript"
