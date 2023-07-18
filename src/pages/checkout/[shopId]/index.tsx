@@ -405,7 +405,7 @@ const index = () => {
                                 className='md:flex'
                                 width={'full'}
                                 mx={'auto'}
-                                mt={5}
+                                mt={3}
                             >
                                 <Box
                                     className='w-full lg:w-7/12 mr-5'
