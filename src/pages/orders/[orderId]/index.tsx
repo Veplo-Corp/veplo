@@ -207,7 +207,7 @@ const index = () => {
                             mb={3}
                         >
                             <Link
-                                href={'/negozio/' + order.shop?.id + '/' + createUrlSchema([order.shop.name])}
+                                href={'/negozio/' + order.shop?.id + '/' + createUrlSchema([order?.shop?.name ? order?.shop?.name : ''])}
                             >
                                 <ProfilePhoto
                                     imgName={order?.shop?.name}
