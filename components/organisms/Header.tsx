@@ -108,7 +108,8 @@ const Header = () => {
         let counter = 0
         cartsDispatch.map((cart) => {
             cart?.productVariations?.map(variation => {
-                counter += variation.quantity
+                if (variation.quantity) { counter += variation.quantity }
+
             })
         })
         setnumberOfProductsInCarts(counter)
