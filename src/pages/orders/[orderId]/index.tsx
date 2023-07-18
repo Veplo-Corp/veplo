@@ -206,12 +206,17 @@ const index = () => {
                             justifyContent={'space-between'}
                             mb={3}
                         >
-                            <ProfilePhoto
-                                imgName={order?.shop?.name}
-                                scr={order?.shop?.photo}
-                                primaryText={order?.shop?.name}
-                                secondaryText={'#' + order.code}
-                            />
+                            <Link
+                                href={'/negozio/' + order.shop?.id + '/' + createUrlSchema([order.shop.name])}
+                            >
+                                <ProfilePhoto
+                                    imgName={order?.shop?.name}
+                                    scr={order?.shop?.photo}
+                                    primaryText={order?.shop?.name}
+                                    secondaryText={'#' + order.code}
+                                />
+                            </Link>
+
 
                             <Text
                                 my={'auto'}
