@@ -340,27 +340,26 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             console.log(cartsDispatchProduct);
             const Carts: Cart[] = cartsDispatchProduct
             const Cart = Carts.find(cart => cart.shopInfo.id === product.shopInfo.id);
-
             let NewCart: Cart;
             let NewCarts: Cart[] = [];
             let quantityMax;
             let productVariationQuantity = 0;
+            const variation = product.variations.find(variation => variation.id === variationSelected.id)
+            const lots = variation?.lots
 
+            if (lots) {
+                quantityMax = lots.find(lot => lot.size === sizeSelected)?.quantity
+            }
             //CART ESISTENTE
             if (Cart) {
                 console.log(Cart.productVariations);
-
-
                 const quantity = Cart.productVariations.find(variation => variation.size === sizeSelected && variation.id === variationSelected.id)?.quantity
 
                 //caso in cui la Variation è già presente in cart
                 if (quantity) {
                     const index = Cart.productVariations.findIndex(variation => variation.size === sizeSelected)
-                    const variation = product.variations.find(variation => variation.id === Cart.productVariations[index].id)
-                    const lots = variation?.lots
-                    if (lots) {
-                        quantityMax = lots.find(lot => lot.size === Cart.productVariations[index].size)?.quantity
-                    }
+
+
                     productVariationQuantity = quantityMax && quantity >= quantityMax ? quantityMax : quantity + 1
 
                     const newProductVariation = {
@@ -384,10 +383,11 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                         productVariations: productVariations
 
                     }
-                    NewCarts = [
+
+                    NewCarts = sortShopsInCart([
                         ...Carts.filter(cart => cart.shopInfo.id !== product.shopInfo.id),
                         NewCart
-                    ]
+                    ])
                 }
                 //caso in cui la Variation non esiste nel cart
                 if (!quantity) {
@@ -461,6 +461,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     total: product?.price.v2 ? product?.price.v2 : product?.price.v1,
                     productVariations: [newProductVariation]
                 }
+
                 NewCarts = sortShopsInCart(
                     [
                         ...Carts.filter(cart => cart.shopInfo.id !== product.shopInfo.id),
