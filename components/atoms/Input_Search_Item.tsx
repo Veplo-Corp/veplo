@@ -20,7 +20,7 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: (text: string)
         if (textSearched.length < 0) return
         setTextSearched('')
         setisSearchBoxVisible(false)
-        onConfirmText(textSearched.trim())
+        onConfirmText(textSearched.toLowerCase().trim())
         //setTextSearched('')
     }
 
