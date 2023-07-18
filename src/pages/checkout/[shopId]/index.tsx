@@ -327,6 +327,8 @@ const index = () => {
 
     }
 
+
+
     return (
         <>
             {cart && shop ? (
@@ -495,12 +497,12 @@ const index = () => {
                                                     >
                                                         Spedizione
                                                     </Text>
-                                                    {cart.shopInfo.minimumAmountForFreeShipping && cart.shopInfo.minimumAmountForFreeShipping < cart.total && <Text
+                                                    {(!cart.shopInfo.minimumAmountForFreeShipping || cart.shopInfo.minimumAmountForFreeShipping < cart.total) && <Text
                                                         fontSize={'12px'}
                                                         fontWeight={'medium'}
                                                         color={'primary.bg'}
                                                     >
-                                                        * gratis dai 50 euro di carrello (manca)
+                                                        * gratis dai {cart.shopInfo.minimumAmountForFreeShipping}€ euro di carrello
                                                     </Text>}
                                                 </Box>
 
@@ -509,7 +511,7 @@ const index = () => {
                                                     fontWeight={'medium'}
                                                     color={'secondaryBlack.text'}
                                                 >
-                                                    4,99€
+                                                    {cart.shopInfo.minimumAmountForFreeShipping && cart.shopInfo.minimumAmountForFreeShipping < cart.total ? '4,99€' : 'gratis'}
                                                 </Text>
                                             </Box>
                                         </VStack>
@@ -536,7 +538,11 @@ const index = () => {
                                                 fontWeight={'medium'}
                                                 color={'secondaryBlack.text'}
                                             >
-                                                {formatNumberWithTwoDecimals(cart.total)}€ (manca)
+                                                {
+                                                    (!cart.shopInfo.minimumAmountForFreeShipping || cart.shopInfo.minimumAmountForFreeShipping < cart.total) ?
+                                                        formatNumberWithTwoDecimals(cart.total + 499) :
+                                                        formatNumberWithTwoDecimals(cart.total)
+                                                }€
                                             </Text>
                                         </Box>
                                         {!isSmallView && <Button
