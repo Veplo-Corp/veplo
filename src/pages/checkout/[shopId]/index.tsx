@@ -24,6 +24,7 @@ import ProfilePhoto from '../../../../components/molecules/ProfilePhoto';
 import CheckoutProduct from '../../../../components/molecules/CheckoutProduct';
 import { formatNumberWithTwoDecimals } from '../../../../components/utils/formatNumberWithTwoDecimals';
 import expirationTimeTokenControll from '../../../../components/utils/expirationTimeTokenControll';
+import { CartProductVariation } from '../../../lib/apollo/generated/graphql';
 
 const SHIPPING_COST = 499;
 
@@ -115,7 +116,7 @@ const index = () => {
         }
     }
 
-    const handleEditVariation = async (variationSelected: ProductVariation, quantity: number) => {
+    const handleEditVariation = async (variationSelected: CartProductVariation, quantity: number) => {
         const resolve = await expirationTimeTokenControll(user.expirationTime)
         if (!resolve || !cart) return
 
@@ -421,7 +422,7 @@ const index = () => {
                                                             variation={variation}
                                                             toProduct={() => pushToProduct(variation)}
                                                             deleteVariation={() => setIsOpenDeleteVariation(variation)}
-                                                            editVariation={(variation: ProductVariation, quantity: number) => handleEditVariation(variation, quantity)}
+                                                            editVariation={(variation: CartProductVariation, quantity: number) => handleEditVariation(variation, quantity)}
                                                         />
                                                     </div>
                                                 )
