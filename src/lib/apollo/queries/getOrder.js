@@ -23,6 +23,8 @@ const GET_ORDER = gql`
                 stripeId
                 id
                 name
+                photo
+                businessName
             }
             shipping{
                 url
