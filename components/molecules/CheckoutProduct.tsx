@@ -34,45 +34,47 @@ const CheckoutProduct: FC<{ variation: ProductVariation, toProduct: (variation: 
 
                 my={'auto'}
             >
-                <Link href={`/prodotto/${variation?.productId}/${variation?.brand}-${variation.name}`}>
-                    <UnorderedList
-                        color={'#909090'}
-                        fontSize={['12px', '12px', '15px']}
-                        fontWeight={'medium'}
-                        spacing={2}
+                <UnorderedList
+                    color={'#909090'}
+                    fontSize={['12px', '12px', '15px']}
+                    fontWeight={'medium'}
+                    spacing={2}
 
+                >
+                    <Link href={`/prodotto/${variation?.productId}/${variation?.brand}-${variation.name}`}>
+
+                        <ListItem>{toUpperCaseFirstLetter(variation.brand)}</ListItem>
+                    </Link>
+
+                    <ListItem>{variation.size.toUpperCase()} - {toUpperCaseFirstLetter(variation.color)}</ListItem>
+                    <ListItem
+                        gap={2}
                     >
-                        <ListItem>{toUpperCaseFirstLetter(variation.name)}</ListItem>
-                        <ListItem>{variation.size.toUpperCase()} - {toUpperCaseFirstLetter(variation.color)}</ListItem>
-                        <ListItem
+                        <Box
+                            display={'flex'}
                             gap={2}
                         >
-                            <Box
-                                display={'flex'}
-                                gap={2}
-                            >
-                                <Text>
-                                    {variation.price.v2 && variation.price.v2 < variation.price.v1 ? formatNumberWithTwoDecimals(variation.price.v2 * variation.quantity) + '€' : formatNumberWithTwoDecimals(variation.price.v1 * variation.quantity) + '€'}
-                                </Text>
+                            <Text>
+                                {variation.price.v2 && variation.price.v2 < variation.price.v1 ? formatNumberWithTwoDecimals(variation.price.v2 * variation.quantity) + '€' : formatNumberWithTwoDecimals(variation.price.v1 * variation.quantity) + '€'}
+                            </Text>
 
-                                {typeof variation?.price?.discountPercentage === 'number' && variation?.price?.discountPercentage > 0 &&
-                                    <Tag
-                                        size={['xs', 'sm']}
-                                        px={2}
-                                        py={1}
-                                        width={'fit-content'}
-                                        color={'secondary.text'}
-                                        bgColor={'secondary.bg'}
-                                        borderRadius={'full'}
-                                        fontSize={'2xs'}
-                                        height={'fit-content'}
-                                        my={'auto'}
-                                    >- {formatPercentage(variation?.price?.discountPercentage)} %
-                                    </Tag>}
-                            </Box>
-                        </ListItem>
-                    </UnorderedList>
-                </Link>
+                            {typeof variation?.price?.discountPercentage === 'number' && variation?.price?.discountPercentage > 0 &&
+                                <Tag
+                                    size={['xs', 'sm']}
+                                    px={2}
+                                    py={1}
+                                    width={'fit-content'}
+                                    color={'secondary.text'}
+                                    bgColor={'secondary.bg'}
+                                    borderRadius={'full'}
+                                    fontSize={'2xs'}
+                                    height={'fit-content'}
+                                    my={'auto'}
+                                >- {formatPercentage(variation?.price?.discountPercentage)} %
+                                </Tag>}
+                        </Box>
+                    </ListItem>
+                </UnorderedList>
                 <Box
                     display={'flex'}
                     mt={2}

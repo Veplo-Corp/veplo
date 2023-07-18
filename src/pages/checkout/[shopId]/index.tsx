@@ -367,7 +367,9 @@ const index = () => {
                                 }}
                                 fontSize={'xl'}
                                 isDisabled={isDisabled}
-
+                                style={{
+                                    boxShadow: '0px 0px 20px rgba(255, 90, 120, 0.25)',
+                                }}
                             >Procedi
                             </Button>
                         </Box>
@@ -376,16 +378,21 @@ const index = () => {
                     <Desktop_Layout>
 
                         <div className='w-full m-auto lg:w-8/12 mt-2'>
-                            <Link
-                                href={'/negozio/' + shop.id + '/' + createUrlSchema([shop.name])}
+                            <Box
+                                width={'fit-content'}
                             >
-                                <ProfilePhoto
-                                    imgName={shop.name}
-                                    scr={shop.profilePhoto}
-                                    primaryText={shop.name}
-                                    secondaryText={shop.name}
-                                />
-                            </Link>
+                                <Link
+                                    href={'/negozio/' + shop.id + '/' + createUrlSchema([shop.name])}
+                                >
+                                    <ProfilePhoto
+                                        imgName={shop.name}
+                                        scr={shop.profilePhoto}
+                                        primaryText={shop.name}
+                                        secondaryText={shop.name}
+                                    />
+                                </Link>
+                            </Box>
+
                             <Box
                                 className='md:flex'
                                 width={'full'}
@@ -563,7 +570,9 @@ const index = () => {
                                                 color: 'primary.text'
                                             }}
                                             isDisabled={isDisabled}
-
+                                            style={{
+                                                boxShadow: '0px 0px 20px rgba(255, 90, 120, 0.25)',
+                                            }}
                                         >Procedi
                                         </Button>}
                                     </Box>
