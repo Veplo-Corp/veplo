@@ -38,14 +38,14 @@ export const STATUS: {
         //*rimborsato cliente per rimborso causa mancato arrivo prodotto
         {
             code: 'SHIP03',
-            text: 'Ordine Consegnato',
+            text: 'Consegnato',
             color: 'successTag.text',
             background: 'successTag.bg'
         },
         //*Business cancella ordine perchè non può inviare il prodotto ordinato
         {
             code: 'CANC01',
-            text: 'Ordine Cancellato',
+            text: 'Cancellato',
             color: 'cancelTag.text',
             background: 'cancelTag.bg'
         },
@@ -53,7 +53,7 @@ export const STATUS: {
         //* business annulla l'ordine il cliente viene rimborsato
         {
             code: 'REF01',
-            text: 'Ordine rimborsato',
+            text: 'Rimborsato',
             color: 'successTag.text',
             background: 'successTag.bg'
         },
@@ -81,7 +81,7 @@ export const STATUS: {
         //*rimborsato cliente per reso
         {
             code: 'REF02',
-            text: 'Ordine rimborsato',
+            text: 'Rimborsato',
             color: 'successTag.text',
             background: 'successTag.bg'
         },
@@ -95,7 +95,7 @@ export const STATUS: {
         //*rimborsato cliente per rimborso causa mancato arrivo prodotto
         {
             code: 'REF03',
-            text: 'Ordine rimborsato',
+            text: 'Rimborsato',
             color: 'successTag.text',
             background: 'successTag.bg'
         }
