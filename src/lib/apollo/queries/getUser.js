@@ -30,6 +30,7 @@ const GET_USER = gql`
                         photo
                         name
                         quantity
+                        maxQuantity
                         color
                         size
                         brand

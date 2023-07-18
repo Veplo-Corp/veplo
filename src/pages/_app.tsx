@@ -40,6 +40,7 @@ import { setBrands } from '../store/reducers/brands'
 
 
 const theme = extendTheme({
+
   colors: {
     primary: {
       bg: '#FF5A78',
@@ -366,7 +367,16 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
 
 
-            const carts: Cart[] = data?.data?.user?.carts?.carts ? data?.data?.user?.carts?.carts : [];
+            let carts: Cart[] = data?.data?.user?.carts?.carts ? data?.data?.user?.carts?.carts : [];
+            carts = carts.map(cart => {
+              if (cart?.productVariations?.length > 0) {
+                const sortedProductVariations = [...cart.productVariations].sort((a, b) => (a.id > b.id) ? 1 : -1);
+                return { ...cart, productVariations: sortedProductVariations };
+              }
+              return cart;
+            });
+
+            carts.sort((a, b) => (a.id > b.id) ? 1 : -1);
             const orders: Order[] = data?.data?.user?.orders;
             const warnings: { variationId: string }[] = data?.data?.user?.carts?.warnings
 

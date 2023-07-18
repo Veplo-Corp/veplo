@@ -327,11 +327,8 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     }
 
     const addToCart = async (product: Product) => {
-
-
         const resolve = await expirationTimeTokenControll(user.expirationTime)
         if (!resolve) return
-
 
         if (!sizeSelected || !colorSelected) {
             setisOpenModalSize(true)
@@ -358,10 +355,9 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
                 //caso in cui la Variation è già presente in cart
                 if (quantity) {
-
-
                     const index = Cart.productVariations.findIndex(variation => variation.size === sizeSelected)
-                    const lots = product.variations.find(variation => variation.id === Cart.productVariations[index].id)?.lots
+                    const variation = product.variations.find(variation => variation.id === Cart.productVariations[index].id)
+                    const lots = variation?.lots
                     if (lots) {
                         quantityMax = lots.find(lot => lot.size === Cart.productVariations[index].size)?.quantity
                     }
@@ -401,6 +397,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                         name: product.name,
                         brand: product.info.brand,
                         quantity: 1,
+                        maxQuantity: quantityMax ? quantityMax : 1,
                         color: variationSelected.color,
                         size: sizeSelected,
                         productId: product.id,
@@ -441,6 +438,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     name: product.name,
                     brand: product.info.brand,
                     quantity: 1,
+                    maxQuantity: quantityMax ? quantityMax : 1,
                     color: variationSelected.color,
                     size: sizeSelected,
                     productId: product.id,

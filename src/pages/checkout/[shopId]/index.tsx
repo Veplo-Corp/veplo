@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { Box, Button, ButtonGroup, Divider, ListItem, Text, UnorderedList, VStack } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Divider, ListItem, Text, UnorderedList, VStack, useBreakpointValue } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
@@ -20,6 +20,10 @@ import { Shop } from '../../../interfaces/shop.interface';
 import ModalReausable from '../../../../components/organisms/ModalReausable';
 import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 import LoginAndRegistrationForm from '../../../../components/organisms/LoginAndRegistrationForm';
+import ProfilePhoto from '../../../../components/molecules/ProfilePhoto';
+import CheckoutProduct from '../../../../components/molecules/CheckoutProduct';
+import { formatNumberWithTwoDecimals } from '../../../../components/utils/formatNumberWithTwoDecimals';
+import expirationTimeTokenControll from '../../../../components/utils/expirationTimeTokenControll';
 
 const SHIPPING_COST = 499;
 
@@ -42,7 +46,8 @@ const index = () => {
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
     const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
     const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('login')
-
+    const [IsOpenDeleteVariation, setIsOpenDeleteVariation] = useState<ProductVariation>()
+    const isSmallView = useBreakpointValue({ base: true, md: false });
 
 
 
@@ -111,6 +116,88 @@ const index = () => {
         }
     }
 
+    const handleEditVariation = async (variationSelected: ProductVariation, quantity: number) => {
+        const resolve = await expirationTimeTokenControll(user.expirationTime)
+        if (!resolve || !cart) return
+
+
+        let NewCarts: Cart[] = [];
+        let quantityMax;
+
+
+        //caso in cui la Variation è già presente in cart
+
+        const index = cart.productVariations.findIndex(variation => variation.size === variationSelected.size)
+        console.log(variationSelected);
+        console.log(cart);
+        console.log(index);
+
+
+        const newProductVariation = {
+            ...cart.productVariations[index],
+            quantity: quantity
+        }
+
+        const productVariations = [
+            newProductVariation,
+            ...cart.productVariations.filter(variation => variation.size !== variationSelected.size || variation.id !== variationSelected.id),
+        ]
+
+
+        console.log(productVariations);
+
+        const newTotal = newTotalHandler(productVariations)
+
+        let NewCart: Cart = {
+            ...cart,
+            total: newTotal,
+            productVariations: productVariations
+        }
+
+        NewCart.productVariations.sort((a, b) => (a.id > b.id) ? 1 : -1);
+
+        NewCarts = [
+            ...cartsDispatch.filter(cart => cart.shopInfo.id !== router.query.shopId),
+            NewCart
+        ]
+
+
+
+
+        console.log(NewCarts);
+
+        //aggiungi al carrello
+
+        dispatch(
+            editVariationFromCart({
+                //add new Carts
+                carts: NewCarts
+            })
+        );
+
+        try {
+            if (user.uid) {
+
+                await editCart({
+                    variables: {
+                        productVariationId: variationSelected.id,
+                        size: variationSelected.size,
+                        quantity: quantity
+                    }
+                })
+            } else if (!user.uid) {
+                localStorage.setItem('carts', JSON.stringify(NewCarts))
+            }
+
+            // if (!edited.data?.editCart) return //mettere un errore qui
+
+        } catch (e: any) {
+            console.log(e.message);
+        }
+
+
+    }
+
     const deleteVariation = async (variation: ProductVariation) => {
         try {
             if (user.uid) {
@@ -124,7 +211,7 @@ const index = () => {
             }
 
         } catch {
-
+            //TODO gestire errore in edit card
         }
 
 
@@ -147,7 +234,9 @@ const index = () => {
             }
         }
 
-        if (!editedCart) return
+
+
+        if (!editedCart || editedCart?.productVariations?.length < 1) return router.back()
 
 
 
@@ -178,13 +267,24 @@ const index = () => {
         if (!user.uid) {
             localStorage.setItem('carts', JSON.stringify(NewCarts))
         }
+    }
 
+    function findShippingDate(): string {
+        const oggi: Date = new Date();
+        const cinqueGiorniDopo: Date = new Date();
+        cinqueGiorniDopo.setDate(oggi.getDate() + 5);
+        const setteGiorniDopo: Date = new Date();
+        setteGiorniDopo.setDate(oggi.getDate() + 7);
 
+        const opzioniData: Intl.DateTimeFormatOptions = {
+            day: 'numeric',
+            month: 'long',
+        };
 
+        const dataItalianoCinqueGiorniDopo: string = cinqueGiorniDopo.toLocaleDateString('it-IT', opzioniData);
+        const dataItalianoSetteGiorniDopo: string = setteGiorniDopo.toLocaleDateString('it-IT', opzioniData);
 
-
-
-
+        return `Tra il ${dataItalianoCinqueGiorniDopo} e il ${dataItalianoSetteGiorniDopo}`;
     }
 
     const pushToProduct = (variation: ProductVariation) => {
@@ -231,96 +331,259 @@ const index = () => {
             {cart && shop ? (
                 <>
                     <NoIndexSeo title='Veplo'></NoIndexSeo>
+                    {isSmallView && <Box
+                        position="fixed"
+                        bottom="0"
+                        left="0"
+                        right="0"
+                        zIndex={1}
+                    >
+                        <Box
+                            bg={'#FFFFFF'}
+                            width={'full'}
+                            height={'fit-content'}
+                            paddingX={3}
+                            paddingY={3}
+                        >
+                            <Button
+                                position={'sticky'}
+                                onClick={checkoutUrl}
+                                type={'button'}
+                                borderRadius={'10px'}
+                                fontWeight={'black'}
+                                padding={5}
+                                paddingInline={16}
+                                width={'full'}
+                                height={'fit-content'}
+                                variant={'primary'}
+                                _disabled={{
+                                    bg: '#FF5A78'
+                                }}
+                                _hover={{
+                                    color: 'primary.text'
+                                }}
+                                fontSize={'xl'}
+                                isDisabled={isDisabled}
+
+                            >Procedi
+                            </Button>
+                        </Box>
+
+                    </Box>}
                     <Desktop_Layout>
 
-
-                        <div className='w-full m-auto md:w-10/12 lg:w-1/2 mt-4'>
+                        <div className='w-full m-auto lg:w-8/12 mt-2'>
+                            <Link
+                                href={'/negozio/' + shop.id + '/' + createUrlSchema([shop.name])}
+                            >
+                                <ProfilePhoto
+                                    imgName={shop.name}
+                                    scr={shop.profilePhoto}
+                                    primaryText={shop.name}
+                                    secondaryText={shop.name}
+                                />
+                            </Link>
                             <Box
-                                width={'fit-content'}
-                                cursor={'pointer'}
-                                fontSize={['lg', '2xl']}
-                                fontWeight={'extrabold'}
-                                mb={[4]}
-                            >
-                                <Link
-                                    prefetch={false}
-                                    href={`/negozio/${cart.shopInfo.id}/${createUrlSchema([cart.shopInfo.name])}`}
-                                >
-
-                                    {cart?.shopInfo.name}
-
-                                </Link>
-                            </Box>
-
-
-                            <VStack
-                                gap={1}
-                            >
-                                {cart?.productVariations?.map(variation => {
-                                    return (
-                                        <div
-                                            key={variation.id + variation.size}
-                                            className='w-full'
-                                        >
-                                            <VariationBoxList
-                                                variation={variation}
-                                                toProduct={() => pushToProduct(variation)}
-                                                deleteVariation={() => deleteVariation(variation)}
-                                            />
-                                        </div>
-                                    )
-                                })}
-
-                            </VStack>
-                            <PriceAndShippingListingCost subTotal={cart.total} total={cart.total + (!shop?.minimumAmountForFreeShipping || shop?.minimumAmountForFreeShipping > cart.total ? SHIPPING_COST : 0)} shippingCost={!shop?.minimumAmountForFreeShipping || shop?.minimumAmountForFreeShipping > cart.total ? SHIPPING_COST : 0} />
-
-                            <Box
-                                display={'flex'}
-                                justifyContent={'end'}
-                            >
-                                <Button
-                                    mt={4}
-                                    mb={3}
-                                    onClick={checkoutUrl}
-                                    type={'button'}
-                                    borderRadius={'xl'}
-                                    size={'md'}
-                                    padding={4}
-                                    paddingInline={16}
-                                    width={'fit-content'}
-                                    height={'fit-content'}
-                                    variant={'black'}
-                                    _disabled={{
-                                        bg: '#000000'
-                                    }}
-                                    _hover={{
-                                        color: 'primary.text'
-                                    }}
-                                    isDisabled={isDisabled}
-
-                                >Procedi
-                                </Button>
-                            </Box>
-
-                            {!shop?.minimumAmountForFreeShipping || shop?.minimumAmountForFreeShipping > cart.total && <Box
-                                mt={5}
+                                className='md:flex'
                                 width={'full'}
-                                background={'gray.100'}
-                                padding={6}
+                                mx={'auto'}
+                                mt={5}
                             >
-                                <Text
-                                    fontSize={'2xl'}
-                                    fontWeight={'medium'}
-                                    mb={1}
+                                <Box
+                                    className='w-full lg:w-7/12 mr-5'
                                 >
-                                    Consegna prevista in 5 - 7 giorni
-                                </Text>
-                                <Text
-                                    fontSize={'sm'}
+                                    <Box
+                                        borderWidth={1}
+                                        borderColor={'#F3F3F3'}
+                                        padding={5}
+                                        borderRadius={'15px'}
+                                    >
+                                        <VStack
+                                            gap={5}
+                                        >
+                                            {cart?.productVariations?.map(variation => {
+                                                return (
+                                                    <div
+                                                        key={variation.id + variation.size}
+                                                        className='w-full'
+                                                    >
+                                                        <CheckoutProduct
+                                                            variation={variation}
+                                                            toProduct={() => pushToProduct(variation)}
+                                                            deleteVariation={() => setIsOpenDeleteVariation(variation)}
+                                                            editVariation={(variation: ProductVariation, quantity: number) => handleEditVariation(variation, quantity)}
+                                                        />
+                                                    </div>
+                                                )
+                                            })}
+
+                                        </VStack>
+                                    </Box>
+                                    <Box
+                                        mt={5}
+                                        borderWidth={1}
+                                        borderColor={'#F3F3F3'}
+                                        paddingX={[3, 5]}
+                                        paddingY={[5, 8]}
+                                        borderRadius={'15px'}
+                                        textAlign={'center'}
+                                        className='mb-5 lg:mb-0'
+                                    >
+                                        <Text
+                                            fontSize={'20px'}
+                                            color={'secondaryBlack.text'}
+                                            fontWeight={'extrabold'}
+                                        >
+                                            Consegna prevista tra
+                                        </Text>
+                                        <Text
+                                            fontSize={'15px'}
+                                            color={'#909090'}
+                                            fontWeight={'medium'}
+                                        >
+                                            {findShippingDate()}
+                                        </Text>
+                                    </Box>
+
+                                </Box>
+                                <Box
+                                    className='w-full lg:w-5/12'
                                 >
-                                    Costo fisso per la spedizione 4,99€
-                                </Text>
-                            </Box>}
+                                    <Box
+
+                                        borderWidth={1}
+                                        borderColor={'#F3F3F3'}
+                                        padding={5}
+                                        borderRadius={'15px'}
+                                    >
+                                        <VStack
+                                            gap={6}
+                                            width={'full'}
+                                        >
+                                            <Box
+                                                display={'flex'}
+                                                width={'full'}
+                                                justifyContent={'space-between'}
+                                            >
+                                                <Text
+                                                    fontSize={'18px'}
+                                                    fontWeight={'medium'}
+                                                    color={'#909090'}
+                                                >
+                                                    Subtotale
+                                                </Text>
+                                                <Text
+                                                    fontSize={'18px'}
+                                                    fontWeight={'medium'}
+                                                    color={'secondaryBlack.text'}
+                                                >
+                                                    {formatNumberWithTwoDecimals(cart.total)}€
+                                                </Text>
+                                            </Box>
+                                            <Box
+                                                display={'flex'}
+                                                width={'full'}
+                                                justifyContent={'space-between'}
+                                            >
+                                                <Box>
+                                                    <Text
+                                                        fontSize={'18px'}
+                                                        fontWeight={'medium'}
+                                                        color={'#909090'}
+                                                        lineHeight={'18px'}
+                                                    >
+                                                        Spedizione
+                                                    </Text>
+                                                    <Text
+                                                        fontSize={'12px'}
+                                                        fontWeight={'medium'}
+                                                        color={'primary.bg'}
+                                                    >
+                                                        * gratis dai 50 euro di carrello (manca)
+                                                    </Text>
+                                                </Box>
+
+                                                <Text
+                                                    fontSize={'18px'}
+                                                    fontWeight={'medium'}
+                                                    color={'secondaryBlack.text'}
+                                                >
+                                                    4,99€
+                                                </Text>
+                                            </Box>
+                                        </VStack>
+                                        <Divider
+                                            mt={4}
+                                            mb={5}
+                                            bg={'#F3F3F3'}
+                                        />
+                                        <Box
+                                            display={'flex'}
+                                            width={'full'}
+                                            justifyContent={'space-between'}
+                                            mb={5}
+                                        >
+                                            <Text
+                                                fontSize={'18px'}
+                                                fontWeight={'medium'}
+                                                color={'#909090'}
+                                            >
+                                                Totale
+                                            </Text>
+                                            <Text
+                                                fontSize={'18px'}
+                                                fontWeight={'medium'}
+                                                color={'secondaryBlack.text'}
+                                            >
+                                                {formatNumberWithTwoDecimals(cart.total)}€ (manca)
+                                            </Text>
+                                        </Box>
+                                        {!isSmallView && <Button
+                                            onClick={checkoutUrl}
+                                            type={'button'}
+                                            borderRadius={'10px'}
+                                            size={'20px'}
+                                            fontWeight={'black'}
+                                            padding={5}
+                                            paddingInline={16}
+                                            width={'full'}
+                                            height={'fit-content'}
+                                            variant={'primary'}
+                                            _disabled={{
+                                                bg: '#FF5A78'
+                                            }}
+                                            _hover={{
+                                                color: 'primary.text'
+                                            }}
+                                            isDisabled={isDisabled}
+
+                                        >Procedi
+                                        </Button>}
+                                    </Box>
+                                    <Box
+                                        mt={5}
+                                        borderWidth={1}
+                                        borderColor={'#F3F3F3'}
+                                        paddingX={5}
+                                        paddingY={8}
+
+                                        borderRadius={'15px'}
+                                        textAlign={'center'}
+                                    >
+
+                                        <Text
+                                            fontSize={'12px'}
+                                            color={'#909090'}
+                                            fontWeight={'normal'}
+                                        >
+                                            Se hai un coupon iseriscilo nel passaggio successivo
+                                        </Text>
+                                    </Box>
+                                </Box>
+
+
+                            </Box>
+
                         </div>
                         <ModalReausable title='Carrello ingombrante' isOpen={isErrorModalOpen} closeModal={() => setIsErrorModalOpen(false)} >
                             <Text mt={2}
@@ -404,11 +667,39 @@ const index = () => {
                         setTypeLogin(type)
                     }}
                 />
-
+            </ModalReausable>
+            <ModalReausable
+                marginTop={0}
+                title='Elimina prodotto' isOpen={IsOpenDeleteVariation ? true : false}
+                closeModal={() => setIsOpenDeleteVariation(undefined)}
+            >
+                <Text
+                    mr={5}
+                    mt={5}
+                    fontSize={'18px'}
+                    fontWeight={'normal'}
+                    color={'secondaryBlack.text'}
+                >
+                    Vuoi veramente rimuovere il prodotto dal carrello?
+                </Text>
+                <ButtonGroup
+                    float={'right'}
+                    mt={5}
+                >
+                    <Button
+                        variant={'grayPrimary'}
+                        borderRadius={'15px'}
+                        onClick={() => {
+                            if (!IsOpenDeleteVariation) return
+                            deleteVariation(IsOpenDeleteVariation)
+                            setIsOpenDeleteVariation(undefined)
+                        }}
+                    >
+                        rimuovi prodotto
+                    </Button>
+                </ButtonGroup>
             </ModalReausable>
         </>
-
-
 
     )
 }

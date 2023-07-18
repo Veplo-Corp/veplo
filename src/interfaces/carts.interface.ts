@@ -6,6 +6,7 @@ export interface ProductVariation {
     name: string,
     brand: string,
     quantity: number,
+    maxQuantity: number,
     color: string,
     size: string,
     productId: string,
