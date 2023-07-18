@@ -25,7 +25,7 @@ export interface Cart {
         name: string,
         city: string,
         status: string,
-        minimumAmountForFreeShipping: number
+        minimumAmountForFreeShipping?: number
     },
     total: number,
     productVariations: ProductVariation[]

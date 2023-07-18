@@ -495,13 +495,13 @@ const index = () => {
                                                     >
                                                         Spedizione
                                                     </Text>
-                                                    <Text
+                                                    {cart.shopInfo.minimumAmountForFreeShipping && cart.shopInfo.minimumAmountForFreeShipping < cart.total && <Text
                                                         fontSize={'12px'}
                                                         fontWeight={'medium'}
                                                         color={'primary.bg'}
                                                     >
                                                         * gratis dai 50 euro di carrello (manca)
-                                                    </Text>
+                                                    </Text>}
                                                 </Box>
 
                                                 <Text
