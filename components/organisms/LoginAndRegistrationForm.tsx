@@ -1,5 +1,5 @@
 import { Box, Button, Input, InputGroup, InputLeftElement, InputRightElement, Spinner, Text } from '@chakra-ui/react';
-import { UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect } from 'firebase/auth';
+import { UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, updateProfile } from 'firebase/auth';
 import { EyeClose, EyeEmpty, Lock, Mail } from 'iconoir-react';
 import { useRouter } from 'next/router';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
@@ -170,6 +170,9 @@ const LoginAndRegistrationForm: FC<{
                                 }
                             }
                         })
+                        updateProfile(userCredential.user, {
+                            displayName: data.firstName
+                        })
 
                         idToken = await userCredential.user.getIdToken(true);
                         setAuthTokenInSessionStorage(idToken)
@@ -311,7 +314,11 @@ const LoginAndRegistrationForm: FC<{
                 })
 
                 console.log(response);
+                //update display name con firstname
                 const idToken = await result.user.getIdToken(true);
+                updateProfile(result.user, {
+                    displayName: typeof fullName?.[0] === 'string' ? fullName[0] : ''
+                })
                 setAuthTokenInSessionStorage(idToken)
                 await handleCartInLocalStorage()
                 dispatch(

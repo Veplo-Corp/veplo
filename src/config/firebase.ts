@@ -15,7 +15,8 @@ import {
   applyActionCode,
   signInWithPopup,
   GoogleAuthProvider,
-  signInWithRedirect
+  signInWithRedirect,
+  updateProfile
 } from 'firebase/auth';
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -97,6 +98,7 @@ export {
   applyActionCode,
   signInWithPopup,
   signInWithRedirect,
+  updateProfile,
   provider,
   storage,
 }
