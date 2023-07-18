@@ -456,7 +456,8 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                         id: product.shopInfo.id,
                         name: product.shopInfo.name,
                         city: product.shopInfo.city,
-                        status: product.shopInfo.status
+                        status: product.shopInfo.status,
+                        minimumAmountForFreeShipping: product.shopInfo.minimumAmountForFreeShipping,
                     },
                     total: product?.price.v2 ? product?.price.v2 : product?.price.v1,
                     productVariations: [newProductVariation]
