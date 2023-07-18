@@ -43,6 +43,7 @@ const GET_SINGLE_PRODUCT = gql`
                 name 
                 city
                 status
+                minimumAmountForFreeShipping
             }
             
         } 

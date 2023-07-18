@@ -50,6 +50,7 @@ export interface Product {
         city: string,
         status: string,
         profilePhoto: string,
+        minimumAmountForFreeShipping: number
     }
     createdAt?: string,
     updatedAt?: string,

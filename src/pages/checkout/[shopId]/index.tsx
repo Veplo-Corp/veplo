@@ -51,7 +51,7 @@ const index = () => {
 
 
 
-    console.log(error?.graphQLErrors);
+    console.log(cart);
 
     useEffect(() => {
         const { shopId } = router.query;
@@ -79,7 +79,6 @@ const index = () => {
             clearTimeout(timeoutId);
         };
     }, [user, cartsDispatch, /* router.query */])
-
 
 
     useEffect(() => {
@@ -236,7 +235,7 @@ const index = () => {
 
 
 
-        if (!editedCart || editedCart?.productVariations?.length < 1) return router.back()
+        if (!editedCart) return router.back()
 
 
 
@@ -267,6 +266,8 @@ const index = () => {
         if (!user.uid) {
             localStorage.setItem('carts', JSON.stringify(NewCarts))
         }
+        if (editedCart?.productVariations?.length < 1) return router.back()
+
     }
 
     function findShippingDate(): string {

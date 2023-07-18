@@ -49,6 +49,7 @@ const GET_PRODUCTS = graphql(`
                     city
                     status
                     profilePhoto
+                    minimumAmountForFreeShipping
                 }
             }
         } 

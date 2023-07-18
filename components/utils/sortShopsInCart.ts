@@ -5,7 +5,7 @@ export const sortShopsInCart = (carts: Cart[]) => {
     // console.log(newCarts.sort());
 
     const newCarts = carts.slice().sort((a, b) =>
-        a.shopInfo.name.localeCompare(b.shopInfo.name)
+        a.shopInfo.id.localeCompare(b.shopInfo.id)
 
     );
 
