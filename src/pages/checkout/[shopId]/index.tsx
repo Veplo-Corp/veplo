@@ -100,6 +100,8 @@ const index = () => {
         if (!user.uid) {
             return setIsOpenLoginModal(true)
         }
+        const resolve = await expirationTimeTokenControll(user.expirationTime)
+        if (!resolve || !cart) return
         setIsDisabled(true)
         try {
             const create = await checkoutUrlMutation({
