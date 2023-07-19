@@ -277,6 +277,16 @@ const LoginAndRegistrationForm: FC<{
             let result: UserCredential | undefined;
             try {
                 result = await signInWithPopup(auth, provider)
+                gtag({
+                    command: GTMEventType.signUp,
+                    args: {
+                        email: result.user.email,
+                        // firebaseId: userCredential.user.uid,
+                        method: 'Google',
+                        userType: 'Customer',
+                        // mongoId: account?.data.createBusinessStep1
+                    }
+                })
                 setIsLoading(true)
             } catch (error: any) {
                 setIsLoading(false)
@@ -285,6 +295,19 @@ const LoginAndRegistrationForm: FC<{
                 //console.log(errorCode);
                 console.log(error);
                 const errorForModal = handleErrorFirebase(errorMessage)
+                if (result?.user) {
+                    const tokenResult = await result.user.getIdTokenResult();
+                    const isBusiness = tokenResult.claims.isBusiness ? true : false;
+                    gtag({
+                        command: GTMEventType.login,
+                        args: {
+                            email: result.user.email,
+                            // firebaseId: userCredential.user.uid,
+                            method: 'Google',
+                            userType: isBusiness ? 'Business' : 'Customer'
+                        }
+                    })
+                }
                 // dispatch(setModalTitleAndDescription({
                 //     title: errorForModal?.title,
                 //     description: errorForModal?.description

@@ -34,7 +34,7 @@ export type VeploGTMEvent = {
     command: GTMEventType,
     args: {
         method?: 'Google' | 'Email',
-        email?: string,
+        email?: string | undefined | null,
         device?: 'Web' | 'Mobile',
         event_category?: string,
         label?: string,
