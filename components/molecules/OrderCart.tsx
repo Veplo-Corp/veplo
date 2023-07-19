@@ -159,7 +159,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                                             {getDateFromMongoDBDate(singleOrder.date, DateFormat.completeDate)}
                                         </Text>
                                     </Box>
-                                    {order.history.slice(-3).length > index + 1 && index !== 2 && ( // Aggiungi il divider solo se non è l'ultimo elemento
+                                    {order.history.filter(order => order.status !== 'SHIP01').slice(-3).length > index + 1 && index !== 2 && ( // Aggiungi il divider solo se non è l'ultimo elemento
                                         <div className="ml-2 h-4 border-l border-dashed border-[#909090] my-2" />
                                     )}
                                 </React.Fragment>
