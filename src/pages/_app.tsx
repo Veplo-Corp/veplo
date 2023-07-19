@@ -290,12 +290,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
         // user is logged in, send the user's details to redux, store the current user in the state
         const isBusiness = tokenResult.claims.isBusiness ? true : false;
-        let ISODate: any = userAuth.metadata.creationTime
-        if (userAuth.metadata.creationTime) {
-          ISODate = new Date(userAuth.metadata.creationTime)
-        }
-        let date_for_redux = ('0' + ISODate.getDate()).slice(-2) + '/' + ('0' + Number(ISODate.getMonth() + 1)).slice(-2) + '/' + ISODate.getFullYear();
-
         if (!isBusiness && tokenResult.claims.mongoId) {
           dispatch(
             login({
@@ -304,7 +298,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               uid: userAuth.uid,
               idToken: idToken,
               emailVerified: userAuth.emailVerified,
-              createdAt: date_for_redux || new Date(),
               accountId: tokenResult.claims.mongoId,
               expirationTime: tokenResult.expirationTime,
               userInfo: {
@@ -330,7 +323,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               return cart;
             });
 
-            carts.sort((a, b) => (a.id > b.id) ? 1 : -1);
 
             const orders: Order[] = data?.data?.user?.orders;
             const warnings: { variationId: string }[] = data?.data?.user?.carts?.warnings
@@ -354,6 +346,12 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             }
           })
         }
+        let ISODate: any = userAuth.metadata.creationTime
+        if (userAuth.metadata.creationTime) {
+          ISODate = new Date(userAuth.metadata.creationTime)
+        }
+        let date_for_redux = ('0' + ISODate.getDate()).slice(-2) + '/' + ('0' + Number(ISODate.getMonth() + 1)).slice(-2) + '/' + ISODate.getFullYear();
+
         if (isBusiness) {
           dispatch(
             login({

@@ -138,7 +138,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                             pl={6}
                             pr={4}
                         >
-                            {order.history.slice(-3).map((singleOrder, index) => (
+                            {order.history.filter(order => order.status !== 'SHIP01').slice(-3).map((singleOrder, index) => (
                                 <React.Fragment key={index}>
                                     <Box
                                         display="flex"
