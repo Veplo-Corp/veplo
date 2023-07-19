@@ -124,12 +124,10 @@ const index = () => {
 
 
         let NewCarts: Cart[] = [];
-        let quantityMax;
 
 
         //caso in cui la Variation è già presente in cart
-
-        const index = cart.productVariations.findIndex(variation => variation.size === variationSelected.size)
+        const index = cart.productVariations.findIndex(variation => variation.size === variationSelected.size && variation.id === variationSelected.id)
         console.log(variationSelected);
         console.log(cart);
         console.log(index);
@@ -140,10 +138,16 @@ const index = () => {
             quantity: quantity
         }
 
-        const productVariations = [
-            newProductVariation,
-            ...cart.productVariations.filter(variation => variation.size !== variationSelected.size || variation.id !== variationSelected.id),
-        ]
+        const productVariations = cart.productVariations.map(variation => {
+            if (variation.size === variationSelected.size && variation.id === variationSelected.id) {
+                // Sostituisci l'oggetto corrente con il nuovo oggetto quando le condizioni sono soddisfatte
+                return newProductVariation;
+            } else {
+                // Mantieni l'oggetto corrente senza modifiche
+                return variation;
+            }
+        });
+
 
 
         console.log(productVariations);
@@ -156,7 +160,7 @@ const index = () => {
             productVariations: productVariations
         }
 
-        NewCart.productVariations.sort((a, b) => (a.id > b.id) ? 1 : -1);
+
 
         NewCarts = [
             ...cartsDispatch.filter(cart => cart.shopInfo.id !== router.query.shopId),
@@ -196,8 +200,6 @@ const index = () => {
         } catch (e: any) {
             console.log(e.message);
         }
-
-
     }
 
     const deleteVariation = async (variation: ProductVariation) => {
