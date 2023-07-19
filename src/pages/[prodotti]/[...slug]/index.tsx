@@ -126,7 +126,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [history, setHistory] = useState<string>()
     const [sort, setSort] = useState<Sort | string>('')
     const timeoutRef = useRef<any>(null);
-    console.log('RANGE', typeof process.env.NEXT_PUBLIC_RANGE);
 
     useEffect(() => {
         clearTimeout(timeoutRef.current);
@@ -354,7 +353,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             filtersParams["sostenibile"] = 'true'
         }
 
-        console.log('filtersParams', filtersParams);
 
 
         const sortUrl = SORT_PRODUCT.find(element => element.url === e.target.value)?.url
@@ -367,6 +365,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     }
 
     const changeRouter = (value: string, filterParameter: FilterAccepted) => {
+        console.log('PASSAAAAAA');
+
         //testare se non da problemi
         setIsLoading(true)
 
@@ -375,6 +375,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             delete filtersParams["traits"]
             filtersParams["sostenibile"] = 'true'
         }
+
 
         console.log('filtersParams', filtersParams);
         if (filterParameter === 'macroCategory') {
@@ -632,7 +633,11 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     handleConfirmChange={changeRouter}
                                     filterDrawerConfirm={routerConfirmDrawerFilter}
                                     changePriceEventRouter={(parameters) => {
-                                        let filtersParams: any = getParamsFiltersFromObject(filters)
+                                        const filtersParams: any = getParamsFiltersFromObject(filters)
+                                        if (filtersParams["traits"]) {
+                                            delete filtersParams["traits"]
+                                            filtersParams["sostenibile"] = 'true'
+                                        }
                                         let newParams: any = {};
                                         for (let i = 0; i < parameters.length; i++) {
                                             if (parameters[i].value > 0) {
