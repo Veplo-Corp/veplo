@@ -247,6 +247,7 @@ const index = () => {
 
                                     width={'full'}
                                     gap={4}
+                                    mb={16}
                                 >
                                     {order?.productVariations && order?.productVariations.map((variation, index) => {
                                         return (
@@ -278,6 +279,7 @@ const index = () => {
                                                 py={2}
                                                 borderRadius={'10px'}
                                                 size={'md'}
+                                                fontSize={['sm', 'md']}
                                                 color={orderStatus.color}
                                                 background={orderStatus.background}
                                             >
@@ -332,7 +334,7 @@ const index = () => {
 
 
                                 >
-                                    {order?.history && order.history.map((singleOrder, index) => (
+                                    {order?.history && order.history.filter(order => order.status !== 'SHIP01').map((singleOrder, index) => (
                                         <React.Fragment key={index}>
                                             <Box
                                                 display="flex"
