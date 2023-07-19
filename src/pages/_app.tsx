@@ -331,6 +331,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             });
 
             carts.sort((a, b) => (a.id > b.id) ? 1 : -1);
+
             const orders: Order[] = data?.data?.user?.orders;
             const warnings: { variationId: string }[] = data?.data?.user?.carts?.warnings
 
