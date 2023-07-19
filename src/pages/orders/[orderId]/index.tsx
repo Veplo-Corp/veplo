@@ -355,7 +355,7 @@ const index = () => {
                                                     {getDateFromMongoDBDate(singleOrder.date, DateFormat.completeDate)}
                                                 </Text>
                                             </Box>
-                                            {order?.history && index < order?.history?.length - 1 && ( // Aggiungi il divider solo se non è l'ultimo elemento
+                                            {order?.history?.filter(order => order.status !== 'SHIP01') && index < order?.history?.filter(order => order.status !== 'SHIP01').length - 1 && ( // Aggiungi il divider solo se non è l'ultimo elemento
                                                 <div className="ml-2 h-4 border-l border-dashed border-[#909090] my-2" />
                                             )}
 
