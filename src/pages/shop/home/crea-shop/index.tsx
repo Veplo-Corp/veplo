@@ -582,7 +582,7 @@ const index = () => {
             <div className='flex '>
                 <form className="p-3 px-0 lg:px-16 xl:px-24 w-full md:w-3/4 lg:w-7/12 m-auto" onSubmit={handleSubmit(submitData)}>
                     <div className='w-full'>
-                        <h1 className='text-xl lg:text-2xl font-extrabold mb-4'>Crea il tuo store</h1>
+                        <h1 className='text-xl lg:text-2xl font-extrabold mb-4'>Crea il tuo shop</h1>
 
                         <Div_input_creation text='Immagine di copertina e profilo'>
                             {!image && <Center
