@@ -46,7 +46,7 @@ const CheckoutProduct: FC<{ variation: CartProductVariation, toProduct?: (variat
                         <ListItem>{toUpperCaseFirstLetter(variation?.brand)}</ListItem>
                     </Link>
 
-                    <ListItem>{variation?.size?.toUpperCase()} - {toUpperCaseFirstLetter(variation?.color)}{typeof variation.quantity === 'number' && variation.quantity > 1 ? ' (Qt. ' + variation.quantity + ')' : ''} </ListItem>
+                    <ListItem>{variation?.size?.toUpperCase()} - {toUpperCaseFirstLetter(variation?.color)}{typeof variation.quantity === 'number' && variation.quantity > 1 ? ' (Q.ta ' + variation.quantity + ')' : ''} </ListItem>
                     {typeof variation?.price?.v1 === 'number' && <ListItem
                         gap={2}
                     >
