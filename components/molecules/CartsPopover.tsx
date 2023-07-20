@@ -92,8 +92,8 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                                 _active={{
                                                                     transform: 'scale(0.99)',
                                                                 }}
-                                                                p={[3, 4]}
-                                                                py={3}
+                                                                p={[2, 4]}
+                                                                py={[2, 3]}
                                                                 borderColor={'#F3F3F3'}
                                                                 borderRadius={'15px'}
                                                                 borderWidth={'1px'}
@@ -120,7 +120,7 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                                         fontSize={['13px', '14px']}
                                                                         fontWeight={'medium'}
                                                                     >
-                                                                        {totalQuantity} Prodott{totalQuantity === 1 ? 'o' : 'i'}
+                                                                        {isSmallView ? `q.ta ${totalQuantity}` : `${totalQuantity} Prodott${totalQuantity === 1 ? 'o' : 'i'}`}
                                                                     </Text>
                                                                     <Center height='20px' my={'auto'} mx={1}>
                                                                         <Divider orientation='vertical' />
@@ -133,16 +133,16 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                                     >
                                                                         {formatNumberWithTwoDecimalsInString(cart?.total ? cart?.total : 0)}€
                                                                     </Text>
-                                                                    {!isSmallView &&
-                                                                        <>
 
-                                                                            <NavArrowRight
+                                                                    <>
 
-                                                                                className='w-8 h-8 my-auto ml-2'
-                                                                                strokeWidth={1}
-                                                                            />
-                                                                        </>
-                                                                    }
+                                                                        <NavArrowRight
+
+                                                                            className='w-7 md:w-8 md:h-8 my-auto -mr-1 md:ml-2'
+                                                                            strokeWidth={1}
+                                                                        />
+                                                                    </>
+
                                                                 </Box>
                                                             </Box>
                                                         </Link>
