@@ -731,9 +731,9 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 {isAddedToCart ? (
                                     <motion.span
                                         key="addedToCart"
-                                        initial={{ opacity: 0, x: '100%' }}
+                                        initial={{ opacity: 0, x: '-100%' }}
                                         animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: '-100%' }}
+                                        exit={{ opacity: 0, x: '100%' }}
                                         transition={{ duration: 0.4 }}
                                     >
                                         Aggiunto al carrello {String.fromCodePoint(0x1F680)}
@@ -744,7 +744,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                         initial={{ opacity: 0, x: '-100%' }}
                                         animate={{ opacity: 1, x: 0 }}
                                         exit={{ opacity: 0, x: '100%' }}
-                                        transition={{ duration: 0.4 }}
                                     >
                                         Aggiungi al carrello
                                         {sizeSelected && <span className='ml-[5px]'> - {sizeSelected.toLocaleUpperCase()}</span>}
