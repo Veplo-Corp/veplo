@@ -83,7 +83,10 @@ const User_Popover = () => {
             >
 
                 <Popover.Panel
-                    className="absolute grid grid-cols-1 cursor-pointer z-10 w-52 mt-2 right-0.5 py-4 bg-white border border-gray-200 rounded-xl">
+                    style={{
+                        boxShadow: "0px 0px 20px 0px rgba(144, 144, 144, 0.25)",
+                    }}
+                    className="absolute grid grid-cols-1 cursor-pointer z-10 w-52 mt-2 right-0.5 py-4 bg-white border border-white rounded-[20px]">
                     {user?.userInfo?.name &&
                         <div className='mb-1'>
                             <Text
