@@ -772,7 +772,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                                 type={'button'}
                                                 borderRadius={'10px'}
                                                 size={'xl'}
-                                                fontWeight={'black'}
+                                                fontWeight={'bold'}
                                                 padding={5}
                                                 fontSize={['xl', 'lg']}
                                                 paddingInline={10}
