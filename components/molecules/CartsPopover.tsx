@@ -113,24 +113,25 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                             <Text
                                                                 my={'auto'}
                                                                 color={'#909090'}
-                                                                fontSize={['12px', '14px']}
+                                                                fontSize={['11px', '14px']}
                                                                 fontWeight={'medium'}
                                                             >
                                                                 {totalQuantity} Prodott{totalQuantity === 1 ? 'o' : 'i'}
                                                             </Text>
+                                                            <Center height='20px' my={'auto'} mx={1}>
+                                                                <Divider orientation='vertical' />
+                                                            </Center>
+                                                            <Text
+                                                                my={'auto'}
+                                                                color={'primaryBlack.text'}
+                                                                fontSize={['11px', '14px']}
+                                                                fontWeight={'medium'}
+                                                            >
+                                                                {formatNumberWithTwoDecimalsInString(cart?.total ? cart?.total : 0)}€
+                                                            </Text>
                                                             {!isSmallView &&
                                                                 <>
-                                                                    <Center height='20px' my={'auto'} mx={1}>
-                                                                        <Divider orientation='vertical' />
-                                                                    </Center>
-                                                                    <Text
-                                                                        my={'auto'}
-                                                                        color={'primaryBlack.text'}
-                                                                        fontSize={['12px', '14px']}
-                                                                        fontWeight={'medium'}
-                                                                    >
-                                                                        {formatNumberWithTwoDecimalsInString(cart?.total ? cart?.total : 0)}€
-                                                                    </Text>
+
                                                                     <NavArrowRight
 
                                                                         className='w-8 h-8 my-auto ml-2'

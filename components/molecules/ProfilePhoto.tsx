@@ -34,7 +34,7 @@ const ProfilePhoto = (props: Props,) => {
                     fontWeight={'black'}
                     fontSize={['15px', '18px']}
                     lineHeight={['16px', '19px']}
-                    maxW={props.maxWidth && isSmallView ? '150px' : ''}
+                    maxW={props.maxWidth && isSmallView ? '120px' : ''}
                     isTruncated
                 >
                     {props.primaryText}
@@ -42,7 +42,7 @@ const ProfilePhoto = (props: Props,) => {
                 <Text
                     fontWeight={'medium'}
                     fontSize={['12px', '14px']}
-                    maxW={props.maxWidth && isSmallView ? '150px' : ''}
+                    maxW={props.maxWidth && isSmallView ? '120px' : ''}
                     color={'#909090'}
                 >
                     {props.secondaryText}
