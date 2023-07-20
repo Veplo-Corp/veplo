@@ -656,7 +656,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 fontWeight='light'
                                 as='h1'
                                 noOfLines={1}
-                                mt='6'
+                                mt={['4', '6']}
                                 fontSize='md'
                             >
                                 {product.colors.length || 0}
@@ -670,7 +670,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                         product.colors
                                     }
                                     handleSelectColor={(color: string) => changeDressColor(color)}
-                                    dimension={'23px'} space={5} showTooltip={true}
+                                    dimension={'1.5rem'} space={5} showTooltip={true}
                                 />
                             </div>}
                             <Box
@@ -714,11 +714,12 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 sizeSelected={sizeSelected}
                             />}
 
-                            <Button
+
+                            {!isSmallView ? (<Button
                                 mt={5}
                                 onClick={() => addToCart(product)}
                                 type={'button'}
-                                borderRadius={'full'}
+                                borderRadius={'10px'}
                                 size={'xl'}
                                 padding={5}
                                 fontSize={['xl', 'lg']}
@@ -726,7 +727,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 width={'full'}
                                 height={'fit-content'}
                                 cursor={isAddedToCart ? 'default' : 'pointer'}
-                                variant={!isAddedToCart ? 'black' : 'primary'}
+                                variant={!isAddedToCart ? 'secondary' : 'primary'}
                             >
                                 {isAddedToCart ? (
                                     <motion.span
@@ -749,7 +750,64 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                         {sizeSelected && <span className='ml-[5px]'> - {sizeSelected.toLocaleUpperCase()}</span>}
                                     </motion.span>
                                 )}
-                            </Button>
+                            </Button>)
+                                : (
+                                    <Box
+                                        position="fixed"
+                                        bottom="0"
+                                        left="0"
+                                        right="0"
+                                        zIndex={1}
+                                    >
+                                        <Box
+                                            bg={'#FFFFFF'}
+                                            width={'full'}
+                                            height={'fit-content'}
+                                            paddingX={3}
+                                            paddingY={3}
+                                        >
+
+                                            <Button
+                                                onClick={() => addToCart(product)}
+                                                type={'button'}
+                                                borderRadius={'10px'}
+                                                size={'xl'}
+                                                fontWeight={'black'}
+                                                padding={5}
+                                                fontSize={['xl', 'lg']}
+                                                paddingInline={10}
+                                                width={'full'}
+                                                height={'fit-content'}
+                                                cursor={isAddedToCart ? 'default' : 'pointer'}
+                                                variant={!isAddedToCart ? 'secondary' : 'primary'}
+                                            >
+                                                {isAddedToCart ? (
+                                                    <motion.span
+                                                        key="addedToCart"
+                                                        initial={{ opacity: 0, x: '-100%' }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        exit={{ opacity: 0, x: '100%' }}
+                                                        transition={{ duration: 0.4 }}
+                                                    >
+                                                        Aggiunto al carrello {String.fromCodePoint(0x1F680)}
+                                                    </motion.span>
+                                                ) : (
+                                                    <motion.span
+                                                        key="addToCart"
+                                                        initial={{ opacity: 0, x: '-100%' }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        exit={{ opacity: 0, x: '100%' }}
+                                                    >
+                                                        Aggiungi al carrello
+                                                        {sizeSelected && <span className='ml-[5px]'> - {sizeSelected.toLocaleUpperCase()}</span>}
+                                                    </motion.span>
+                                                )}
+                                            </Button>
+                                        </Box>
+                                    </Box>
+
+                                )
+                            }
 
                             <Box
                                 mt={3}
