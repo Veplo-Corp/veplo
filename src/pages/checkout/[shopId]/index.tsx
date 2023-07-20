@@ -22,7 +22,7 @@ import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 import LoginAndRegistrationForm from '../../../../components/organisms/LoginAndRegistrationForm';
 import ProfilePhoto from '../../../../components/molecules/ProfilePhoto';
 import CheckoutProduct from '../../../../components/molecules/CheckoutProduct';
-import { formatNumberWithTwoDecimals } from '../../../../components/utils/formatNumberWithTwoDecimals';
+import { formatNumberWithTwoDecimalsInString } from '../../../../components/utils/formatNumberWithTwoDecimalsInString';
 import expirationTimeTokenControll from '../../../../components/utils/expirationTimeTokenControll';
 import { CartProductVariation } from '../../../lib/apollo/generated/graphql';
 
@@ -79,7 +79,7 @@ const index = () => {
         return () => {
             clearTimeout(timeoutId);
         };
-    }, [user, cartsDispatch, /* router.query */])
+    }, [user, cartsDispatch, router.query])
 
 
     useEffect(() => {
@@ -377,8 +377,8 @@ const index = () => {
                                 }}
                             >Procedi {
                                     (typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) ?
-                                        formatNumberWithTwoDecimals(cart.total + 499) :
-                                        formatNumberWithTwoDecimals(cart.total)
+                                        formatNumberWithTwoDecimalsInString(cart.total + 499) :
+                                        formatNumberWithTwoDecimalsInString(cart.total)
                                 }€
 
                             </Button>
@@ -494,10 +494,10 @@ const index = () => {
                                                 </Text>
                                                 <Text
                                                     fontSize={'18px'}
-                                                    fontWeight={'medium'}
+                                                    fontWeight={'semibold'}
                                                     color={'secondaryBlack.text'}
                                                 >
-                                                    {formatNumberWithTwoDecimals(cart.total)}€
+                                                    {formatNumberWithTwoDecimalsInString(cart.total)}€
                                                 </Text>
                                             </Box>
                                             <Box
@@ -525,7 +525,7 @@ const index = () => {
 
                                                 <Text
                                                     fontSize={'18px'}
-                                                    fontWeight={'medium'}
+                                                    fontWeight={'semibold'}
                                                     color={'secondaryBlack.text'}
                                                 >
                                                     {(typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) ? '4,99€' : 'gratis'}
@@ -552,13 +552,13 @@ const index = () => {
                                             </Text>
                                             <Text
                                                 fontSize={'18px'}
-                                                fontWeight={'medium'}
+                                                fontWeight={'semibold'}
                                                 color={'secondaryBlack.text'}
                                             >
                                                 {
                                                     (typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) ?
-                                                        formatNumberWithTwoDecimals(cart.total + 499) :
-                                                        formatNumberWithTwoDecimals(cart.total)
+                                                        formatNumberWithTwoDecimalsInString(cart.total + 499) :
+                                                        formatNumberWithTwoDecimalsInString(cart.total)
                                                 }€
                                             </Text>
                                         </Box>

@@ -30,7 +30,7 @@ import Input_Search_Item from '../atoms/Input_Search_Item'
 import Product_Status_Popover from '../molecules/Product_Status_Popover';
 import EDIT_STATUS_PRODUCT from '../../src/lib/apollo/mutations/editStatusProduct';
 import { ToastOpen } from '../utils/Toast';
-import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals';
+import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString';
 
 
 interface Props {
@@ -370,10 +370,10 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                                         <span
                                             className={`${product.price?.v2 < product.price?.v1 ? 'line-through text-gray-500' : ''}`}
                                         >
-                                            {formatNumberWithTwoDecimals(product.price.v1)}€
+                                            {formatNumberWithTwoDecimalsInString(product.price.v1)}€
                                         </span>
                                         {product.price?.v2 < product.price?.v1 && <span
-                                        > {formatNumberWithTwoDecimals(product.price.v2)}€
+                                        > {formatNumberWithTwoDecimalsInString(product.price.v2)}€
                                         </span>}
                                     </Td>
 

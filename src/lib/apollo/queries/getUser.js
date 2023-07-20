@@ -23,6 +23,7 @@ const GET_USER = gql`
                         city
                         status
                         minimumAmountForFreeShipping
+                        profilePhoto
                     }
                     total
                     productVariations{

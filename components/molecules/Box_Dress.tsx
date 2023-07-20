@@ -14,7 +14,7 @@ import { toProductPage } from '../utils/toProductPage'
 import createUrlSchema from '../utils/create_url'
 import { isMobile } from 'react-device-detect'
 import { useRouter } from 'next/router'
-import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals'
+import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString'
 import { Product } from '../../src/lib/apollo/generated/graphql'
 // import Swiper core and required modules
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
@@ -399,7 +399,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                         fontWeight={'bold'}
                                         color={'primary.text'}
                                     >
-                                        {product.price?.v2 ? formatNumberWithTwoDecimals(Number(product.price?.v2)) : formatNumberWithTwoDecimals(Number(product.price?.v1))}€
+                                        {product.price?.v2 ? formatNumberWithTwoDecimalsInString(Number(product.price?.v2)) : formatNumberWithTwoDecimalsInString(Number(product.price?.v1))}€
                                     </Text>
                                     {product.price?.v2 && <Text
                                         mt={-2}
@@ -408,7 +408,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                         color={'primary.secondaryText'}
                                         decoration={'line-through'}
                                     >
-                                        {formatNumberWithTwoDecimals(Number(product.price?.v1))}€
+                                        {formatNumberWithTwoDecimalsInString(Number(product.price?.v1))}€
 
                                     </Text>}
                                 </Box>
@@ -454,13 +454,13 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                     color={'#909090'}
                                     decoration={'line-through'}
                                 >
-                                    {formatNumberWithTwoDecimals(Number(product.price?.v1))}
+                                    {formatNumberWithTwoDecimalsInString(Number(product.price?.v1))}
                                 </Text>}
                             <Text
                                 fontSize={'md'}
                                 fontWeight={'semibold'}
                             >
-                                {product.price?.v2 ? formatNumberWithTwoDecimals(Number(product.price?.v2)) : formatNumberWithTwoDecimals(Number(product.price?.v1))}€
+                                {product.price?.v2 ? formatNumberWithTwoDecimalsInString(Number(product.price?.v2)) : formatNumberWithTwoDecimalsInString(Number(product.price?.v1))}€
                             </Text>
 
                         </Box>

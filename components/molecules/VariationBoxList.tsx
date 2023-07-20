@@ -4,7 +4,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Cart, ProductVariation } from '../../src/interfaces/carts.interface'
 import { imageKitUrl } from '../utils/imageKitUrl'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
-import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals'
+import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString'
 import { Cancel } from 'iconoir-react'
 import ButtonClose from '../atoms/ButtonClose'
 import { formatPercentage } from '../utils/formatPercentage'
@@ -97,12 +97,12 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
                             >
                                 <p
                                     className={`${variation?.price?.v2 && variation?.price?.v2 < variation?.price?.v1 ? 'line-through  text-gray-400' : 'font-semibold'}`}
-                                > {formatNumberWithTwoDecimals(variation?.price?.v1)} €
+                                > {formatNumberWithTwoDecimalsInString(variation?.price?.v1)} €
                                 </p>
                                 {variation?.price?.v2 && variation?.price?.v2 < variation?.price?.v1 &&
                                     <p
                                         className='font-semibold ml-1'
-                                    >{variation?.price?.v2 && formatNumberWithTwoDecimals(variation.price.v2)} € </p>
+                                    >{variation?.price?.v2 && formatNumberWithTwoDecimalsInString(variation.price.v2)} € </p>
                                 }
                             </Box>
                             <Box

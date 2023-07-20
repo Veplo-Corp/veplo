@@ -3,7 +3,7 @@ import Link from 'next/link';
 import React, { FC } from 'react'
 import { Order } from '../../src/interfaces/order.interface'
 import { STATUS } from '../mook/statusOrderUser';
-import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals';
+import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString';
 import { DateFormat, getDateFromMongoDBDate } from '../utils/getDateFromMongoDBDate';
 import { imageKitUrl } from '../utils/imageKitUrl';
 import ProfilePhoto from './ProfilePhoto';
@@ -119,7 +119,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                             color={"#2A2A2A"}
                             mr={5}
                         >
-                            {formatNumberWithTwoDecimals(order?.totalDetails?.total)}€
+                            {formatNumberWithTwoDecimalsInString(order?.totalDetails?.total)}€
                         </Text>
                     </Box>
 
