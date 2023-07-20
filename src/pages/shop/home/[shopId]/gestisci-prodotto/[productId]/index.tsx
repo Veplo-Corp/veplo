@@ -192,7 +192,7 @@ const index = () => {
         product.info.gender
         const gender = product.info.gender === 'f' ? 'donna' : product.info.gender === 'm' ? 'uomo' : 'donna'
         //TODO GESTIORE accessori anche! appena tommaso ha messo la tipologia prodotto
-        const sizeType = CATEGORIES[gender]['abbigliamento'].find(element => element.name.toLowerCase() === product.info.macroCategory.toLowerCase())
+        const sizeType = CATEGORIES[gender][product.info.univers ? product.info.univers : 'abbigliamento'].find(element => element.name.toLowerCase() === product.info.macroCategory.toLowerCase())
 
         if (sizeType?.sizes) {
             setSizeTypeSelected(sizeType.sizes)
