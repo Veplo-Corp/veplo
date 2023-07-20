@@ -120,7 +120,7 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                                         fontSize={['13px', '14px']}
                                                                         fontWeight={'medium'}
                                                                     >
-                                                                        {isSmallView ? `q.ta ${totalQuantity}` : `${totalQuantity} Prodott${totalQuantity === 1 ? 'o' : 'i'}`}
+                                                                        {isSmallView ? `Q.ta ${totalQuantity}` : `${totalQuantity} Prodott${totalQuantity === 1 ? 'o' : 'i'}`}
                                                                     </Text>
                                                                     <Center height='20px' my={'auto'} mx={1}>
                                                                         <Divider orientation='vertical' />
