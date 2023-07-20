@@ -32,7 +32,8 @@ export interface Product {
         materials: string[],
         length?: string
         description?: string,
-        modelDescription?: string
+        modelDescription?: string,
+        univers?: 'abbigliamento' | 'accessori'
     }
     price: {
         v1: number,
