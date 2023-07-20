@@ -13,7 +13,7 @@ import Link from 'next/link'
 const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProductsInCarts }) => {
     const router = useRouter()
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
-    const isSmallView = useBreakpointValue({ base: true, sm: false });
+    const isSmallView = useBreakpointValue({ base: true, md: false });
 
 
 
@@ -64,7 +64,7 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                     style={{
                         boxShadow: "0px 0px 20px 0px rgba(144, 144, 144, 0.25)",
                     }}
-                    className="absolute cursor-pointer z-10 w-[300px] sm:w-[400px] md:w-[550px] mt-2 right-0 sm:right-0.5 p-3 bg-white border border-gray-200 rounded-[20px]">
+                    className="absolute cursor-pointer z-10 w-[350px] sm:w-[500px] md:w-[550px] mt-2 right-[-40px] sm:right-0.5 p-3 bg-white border border-gray-200 rounded-[20px]">
                     {({ close }) => (
                         <>
                             {cartsDispatch.length > 0 ?
@@ -88,7 +88,7 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                         _active={{
                                                             transform: 'scale(0.99)',
                                                         }}
-                                                        p={4}
+                                                        p={[3, 4]}
                                                         py={3}
                                                         borderColor={'#F3F3F3'}
                                                         borderRadius={'15px'}
@@ -102,8 +102,9 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                         <ProfilePhoto
                                                             imgName={cart?.shopInfo?.name}
                                                             scr={cart.shopInfo?.profilePhoto}
-                                                            primaryText={cart.shopInfo?.name}
+                                                            primaryText={cart.shopInfo?.name + 'zio pera'}
                                                             secondaryText={cart.shopInfo?.name}
+                                                            maxWidth={true}
                                                         />
                                                         <Box
                                                             display={['flex']}
@@ -112,24 +113,25 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                             <Text
                                                                 my={'auto'}
                                                                 color={'#909090'}
-                                                                fontSize={['12px', '14px']}
+                                                                fontSize={['11px', '14px']}
                                                                 fontWeight={'medium'}
                                                             >
                                                                 {totalQuantity} Prodott{totalQuantity === 1 ? 'o' : 'i'}
                                                             </Text>
+                                                            <Center height='20px' my={'auto'} mx={1}>
+                                                                <Divider orientation='vertical' />
+                                                            </Center>
+                                                            <Text
+                                                                my={'auto'}
+                                                                color={'primaryBlack.text'}
+                                                                fontSize={['11px', '14px']}
+                                                                fontWeight={'medium'}
+                                                            >
+                                                                {formatNumberWithTwoDecimalsInString(cart?.total ? cart?.total : 0)}€
+                                                            </Text>
                                                             {!isSmallView &&
                                                                 <>
-                                                                    <Center height='20px' my={'auto'} mx={1}>
-                                                                        <Divider orientation='vertical' />
-                                                                    </Center>
-                                                                    <Text
-                                                                        my={'auto'}
-                                                                        color={'primaryBlack.text'}
-                                                                        fontSize={['12px', '14px']}
-                                                                        fontWeight={'medium'}
-                                                                    >
-                                                                        {formatNumberWithTwoDecimalsInString(cart?.total ? cart?.total : 0)}€
-                                                                    </Text>
+
                                                                     <NavArrowRight
 
                                                                         className='w-8 h-8 my-auto ml-2'
@@ -151,7 +153,7 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                         fontSize={'lg'}
                                         fontWeight={'semibold'}
                                         color={'#909090'}
-                                        p={5}
+                                        p={2}
                                         py={3}
                                     >
                                         carrello vuoto...
