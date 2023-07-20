@@ -660,7 +660,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                         product.colors
                                     }
                                     handleSelectColor={(color: string) => changeDressColor(color)}
-                                    dimension={7} space={5} showTooltip={true}
+                                    dimension={'23px'} space={5} showTooltip={true}
                                 />
                             </div>}
                             <Box
