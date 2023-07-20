@@ -26,10 +26,10 @@ import { Order } from '../../../../lib/apollo/generated/graphql';
 import { Firebase_User } from '../../../../interfaces/firebase_user.interface';
 import ProfilePhoto from '../../../../../components/molecules/ProfilePhoto';
 import CheckoutProduct from '../../../../../components/molecules/CheckoutProduct';
-import { formatNumberWithTwoDecimals } from '../../../../../components/utils/formatNumberWithTwoDecimals';
 import OrderComponent from '../../../../../components/molecules/OrderComponent';
 import { gtag } from '../../../../lib/analytics/gtag';
 import { GTMEventType } from '../../../../lib/analytics/eventTypes';
+import { formatNumberWithTwoDecimalsInNumber } from '../../../../../components/utils/formatNumberWithTwoDecimalsInNumber';
 
 
 
@@ -68,27 +68,33 @@ const index = () => {
         const items = order.productVariations?.map(variation => {
 
 
-            const price = variation.quantity && variation.price?.v1 && variation.price?.v2 && variation.price?.v2 < variation.price?.v1 ?
-                variation.price?.v2 * variation.quantity
+            const price = variation.price?.v1 && variation.price?.v2 && variation.price?.v2 < variation.price?.v1 ?
+                formatNumberWithTwoDecimalsInNumber(variation.price?.v2)
                 :
-                variation.quantity && variation.price?.v1 && variation.price?.v2 && variation.price?.v2 >= variation.price?.v1 ?
-                    variation.price?.v1 * variation.quantity
+                variation.price?.v1 && variation.price?.v2 && variation.price?.v2 >= variation.price?.v1 ?
+                    formatNumberWithTwoDecimalsInNumber(variation.price?.v1)
                     :
                     0
 
+            const discount = formatNumberWithTwoDecimalsInNumber(variation.price?.v1 && variation.price?.v2 ? variation.price?.v1 - variation.price?.v2 : 0)
+
+            console.log(discount);
+
+            console.log(price);
 
             return {
                 item_id: variation.id,
                 item_name: variation.name,
-                discount: formatNumberWithTwoDecimals(variation.price?.v1 && variation.price?.v2 ? variation.price?.v1 - variation.price?.v2 : 0),
+                discount: discount,
                 item_brand: variation.brand,
                 //TODO aggiungere a variation gender, univers, macrocategory, microcategory
                 item_variant: variation.color,
-                price: formatNumberWithTwoDecimals(price),
+                price: price,
                 quantity: variation.quantity
             }
         })
         if (!items) return
+        console.log(items)
 
         gtag({
             command: GTMEventType.purchase,
@@ -97,8 +103,8 @@ const index = () => {
                 ecommerce: {
                     transaction_id: order?.id,
                     currency: 'EUR',
-                    value: formatNumberWithTwoDecimals(typeof order?.totalDetails?.total === 'number' ? order?.totalDetails?.total : 0),
-                    shipping: formatNumberWithTwoDecimals(typeof order?.totalDetails?.amountShipping === 'number' ? order?.totalDetails?.amountShipping : 0),
+                    value: formatNumberWithTwoDecimalsInNumber(typeof order?.totalDetails?.total === 'number' ? order?.totalDetails?.total : 0),
+                    shipping: formatNumberWithTwoDecimalsInNumber(typeof order?.totalDetails?.amountShipping === 'number' ? order?.totalDetails?.amountShipping : 0),
                     //TODO coupon
                     //coupon: "SUMMER_SALE",
                     items: [

@@ -1,4 +1,4 @@
-export const formatNumberWithTwoDecimals = (number: number): string => {
+export const formatNumberWithTwoDecimalsInString = (number: number): string => {
     if (Number.isInteger(number)) {
         return (number / 100).toFixed(2).replace(".", ","); // Restituisce il numero senza decimali
     } else {

@@ -1,7 +1,7 @@
 import { Box, Center, Divider, Tag, Text, VStack, useBreakpointValue } from '@chakra-ui/react'
 import React, { FC } from 'react'
 import CheckoutProduct from './CheckoutProduct'
-import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals'
+import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString'
 import { Order } from '../../src/lib/apollo/generated/graphql'
 import { OrderStatus, STATUS } from '../mook/statusOrderUser'
 import Link from 'next/link'
@@ -215,7 +215,7 @@ const OrderComponent: FC<{ order: Order, orderStatus: OrderStatus | undefined }>
                         fontWeight={'medium'}
                         color={'secondaryBlack.text'}
                     >
-                        {formatNumberWithTwoDecimals(order?.totalDetails?.subTotal ? order?.totalDetails?.subTotal : 0)}€
+                        {formatNumberWithTwoDecimalsInString(order?.totalDetails?.subTotal ? order?.totalDetails?.subTotal : 0)}€
                     </Text>
                 </Box>
                 <Box
@@ -236,7 +236,7 @@ const OrderComponent: FC<{ order: Order, orderStatus: OrderStatus | undefined }>
                         fontWeight={'medium'}
                         color={'secondaryBlack.text'}
                     >
-                        {order.totalDetails?.amountShipping ? formatNumberWithTwoDecimals(order.totalDetails?.amountShipping) + '€' : 'gratis'}
+                        {order.totalDetails?.amountShipping ? formatNumberWithTwoDecimalsInString(order.totalDetails?.amountShipping) + '€' : 'gratis'}
                     </Text>
                 </Box>
                 <Box
@@ -256,7 +256,7 @@ const OrderComponent: FC<{ order: Order, orderStatus: OrderStatus | undefined }>
                         fontWeight={'medium'}
                         color={'secondaryBlack.text'}
                     >
-                        {typeof order.totalDetails?.total === 'number' ? formatNumberWithTwoDecimals(order.totalDetails?.total) + '€' : 'errore'}
+                        {typeof order.totalDetails?.total === 'number' ? formatNumberWithTwoDecimalsInString(order.totalDetails?.total) + '€' : 'errore'}
                     </Text>
                 </Box>
             </Box>

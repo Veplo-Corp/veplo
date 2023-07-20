@@ -4,7 +4,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Cart, ProductVariation } from '../../src/interfaces/carts.interface'
 import { imageKitUrl } from '../utils/imageKitUrl'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
-import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals'
+import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString'
 import { ArrowSeparateVertical, Cancel, Trash } from 'iconoir-react'
 import ButtonClose from '../atoms/ButtonClose'
 import { formatPercentage } from '../utils/formatPercentage'
@@ -54,8 +54,9 @@ const CheckoutProduct: FC<{ variation: CartProductVariation, toProduct?: (variat
                             display={'flex'}
                             gap={2}
                         >
-                            <Text>
-                                {variation?.price?.v2 && typeof variation?.quantity === 'number' && variation?.price?.v2 < variation?.price?.v1 ? formatNumberWithTwoDecimals(variation.price.v2 * variation?.quantity) + '€' : formatNumberWithTwoDecimals(variation?.price?.v1 * (variation?.quantity ? variation?.quantity : 0)) + '€'}
+                            <Text
+                            >
+                                {variation?.price?.v2 && typeof variation?.quantity === 'number' && variation?.price?.v2 < variation?.price?.v1 ? formatNumberWithTwoDecimalsInString(variation.price.v2 * variation?.quantity) + '€' : formatNumberWithTwoDecimalsInString(variation?.price?.v1 * (variation?.quantity ? variation?.quantity : 0)) + '€'}
                             </Text>
                             {typeof variation?.price?.discountPercentage === 'number' && variation?.price?.discountPercentage > 0 &&
                                 <Tag

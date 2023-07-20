@@ -25,7 +25,7 @@ import { STATUS_ORDER_SHOP } from '../mook/statusOrderBusiness';
 import { useRouter } from 'next/router';
 import { isMobile } from 'react-device-detect';
 import { DateFormat, getDateFromMongoDBDate } from '../utils/getDateFromMongoDBDate';
-import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals';
+import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString';
 
 
 
@@ -170,7 +170,7 @@ const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders
                                     <Text
                                         fontWeight={'normal'}
                                     >
-                                        {formatNumberWithTwoDecimals(order?.totalDetails?.total)} €
+                                        {formatNumberWithTwoDecimalsInString(order?.totalDetails?.total)} €
                                     </Text>
                                 </Td>
                                 {!isMobile && <Td

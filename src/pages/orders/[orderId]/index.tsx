@@ -26,7 +26,7 @@ import { Order } from '../../../lib/apollo/generated/graphql';
 import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 import ProfilePhoto from '../../../../components/molecules/ProfilePhoto';
 import CheckoutProduct from '../../../../components/molecules/CheckoutProduct';
-import { formatNumberWithTwoDecimals } from '../../../../components/utils/formatNumberWithTwoDecimals';
+import { formatNumberWithTwoDecimalsInString } from '../../../../components/utils/formatNumberWithTwoDecimalsInString';
 import OrderComponent from '../../../../components/molecules/OrderComponent';
 import { GTMEventType } from '../../../lib/analytics/eventTypes';
 import { gtag } from '../../../lib/analytics/gtag';

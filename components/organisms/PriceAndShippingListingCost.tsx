@@ -1,6 +1,6 @@
 import { Box, Divider } from '@chakra-ui/react'
 import React, { FC } from 'react'
-import { formatNumberWithTwoDecimals } from '../utils/formatNumberWithTwoDecimals'
+import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString'
 
 const PriceAndShippingListingCost: FC<{ subTotal: number, total: number, shippingCost: number }> = ({ subTotal, total, shippingCost }) => {
     return (
@@ -19,7 +19,7 @@ const PriceAndShippingListingCost: FC<{ subTotal: number, total: number, shippin
                     Subtotale
                 </Box>
                 <Box>
-                    {formatNumberWithTwoDecimals(subTotal)}€
+                    {formatNumberWithTwoDecimalsInString(subTotal)}€
                 </Box>
             </Box>
             <Box
@@ -30,7 +30,7 @@ const PriceAndShippingListingCost: FC<{ subTotal: number, total: number, shippin
                     Spedizione
                 </Box>
                 <Box>
-                    {shippingCost ? formatNumberWithTwoDecimals(shippingCost) + '€' : 'gratis'}
+                    {shippingCost ? formatNumberWithTwoDecimalsInString(shippingCost) + '€' : 'gratis'}
                 </Box>
             </Box>
             <Divider
@@ -46,7 +46,7 @@ const PriceAndShippingListingCost: FC<{ subTotal: number, total: number, shippin
                     Totale
                 </Box>
                 <Box>
-                    {formatNumberWithTwoDecimals(total)} €
+                    {formatNumberWithTwoDecimalsInString(total)} €
                 </Box>
             </Box>
         </Box>
