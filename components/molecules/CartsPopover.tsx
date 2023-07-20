@@ -102,7 +102,7 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                         <ProfilePhoto
                                                             imgName={cart?.shopInfo?.name}
                                                             scr={cart.shopInfo?.profilePhoto}
-                                                            primaryText={cart.shopInfo?.name + 'zio pera'}
+                                                            primaryText={cart.shopInfo?.name}
                                                             secondaryText={cart.shopInfo?.name}
                                                             maxWidth={true}
                                                         />
