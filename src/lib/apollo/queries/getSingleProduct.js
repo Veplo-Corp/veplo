@@ -44,6 +44,7 @@ const GET_SINGLE_PRODUCT = gql`
                 city
                 status
                 minimumAmountForFreeShipping
+                profilePhoto
             }
             
         } 

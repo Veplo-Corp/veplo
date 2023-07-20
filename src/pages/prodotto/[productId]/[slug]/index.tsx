@@ -146,6 +146,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     const [macrocategorySizeGuide, setMacrocategorySizeGuide] = useState(false)
     const isSmallView = useBreakpointValue({ base: true, md: false });
     console.log(errorLog);
+    const [isAddedToCart, setIsAddedToCart] = useState(false)
 
 
     if (errorLog) {
@@ -327,16 +328,24 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     }
 
     const addToCart = async (product: Product) => {
+
         const resolve = await expirationTimeTokenControll(user.expirationTime)
         if (!resolve) return
 
         if (!sizeSelected || !colorSelected) {
             setisOpenModalSize(true)
-            setTimeout(() => {
+            return setTimeout(() => {
                 setisOpenModalSize(false)
             }, 3000);
         }
+        if (isAddedToCart) return
         else {
+            setIsAddedToCart(true);
+
+            setTimeout(() => {
+                setIsAddedToCart(false);
+            }, 2000); // 2000ms (2 secondi) è il tempo in cui mostri "aggiunto al carrello" prima di tornare a "aggiungi al carrello"
+
             console.log(cartsDispatchProduct);
             const Carts: Cart[] = cartsDispatchProduct
             const Cart = Carts.find(cart => cart.shopInfo.id === product.shopInfo.id);
@@ -709,20 +718,42 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 mt={5}
                                 onClick={() => addToCart(product)}
                                 type={'button'}
-                                borderRadius={'md'}
+                                borderRadius={'full'}
                                 size={'xl'}
                                 padding={5}
                                 fontSize={['xl', 'lg']}
                                 paddingInline={10}
                                 width={'full'}
                                 height={'fit-content'}
-                                variant={'black'}
-
-                            >aggiungi al carrello{sizeSelected && <span className='ml-[5px]'>- {sizeSelected.toLocaleUpperCase()}</span>}
+                                cursor={isAddedToCart ? 'default' : 'pointer'}
+                                variant={!isAddedToCart ? 'black' : 'primary'}
+                            >
+                                {isAddedToCart ? (
+                                    <motion.span
+                                        key="addedToCart"
+                                        initial={{ opacity: 0, x: '100%' }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: '-100%' }}
+                                        transition={{ duration: 0.4 }}
+                                    >
+                                        Aggiunto al carrello {String.fromCodePoint(0x1F680)}
+                                    </motion.span>
+                                ) : (
+                                    <motion.span
+                                        key="addToCart"
+                                        initial={{ opacity: 0, x: '-100%' }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: '100%' }}
+                                        transition={{ duration: 0.4 }}
+                                    >
+                                        Aggiungi al carrello
+                                        {sizeSelected && <span className='ml-[5px]'> - {sizeSelected.toLocaleUpperCase()}</span>}
+                                    </motion.span>
+                                )}
                             </Button>
 
                             <Box
-                                mt={5}
+                                mt={3}
 
                                 borderRadius={10}
                                 bg={'white'}
