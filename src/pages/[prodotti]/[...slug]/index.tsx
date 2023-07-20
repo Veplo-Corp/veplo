@@ -300,10 +300,10 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
     useEffect(() => {
         //inserimento gender
-        if (filters.gender) {
-            setInLocalStorage('genderSelected', filters.gender)
+        if (filters?.gender) {
+            setInLocalStorage('genderSelected', filters?.gender)
             dispatch(
-                changeGenderSelected(filters.gender)
+                changeGenderSelected(filters?.gender)
             );
         }
     }, [filters?.gender])
@@ -357,7 +357,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         const sortUrl = SORT_PRODUCT.find(element => element.url === e.target.value)?.url
         router.replace({
-            pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sortUrl ? sortUrl : 'rilevanza'}`,
+            pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sortUrl ? sortUrl : 'rilevanza'}`,
             query: {
                 ...filtersParams
             }
@@ -380,12 +380,12 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         console.log('filtersParams', filtersParams);
         if (filterParameter === 'macroCategory') {
             return router.push({
-                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${createUrlSchema([value])}/tutto/${sort}`,
+                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${createUrlSchema([value])}/tutto/${sort}`,
             })
         }
         if (filterParameter === 'microCategory') {
             return router.push({
-                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${createUrlSchema([value])}/${sort}`,
+                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${createUrlSchema([value])}/${sort}`,
                 query: {
                     ...filtersParams
                 }
@@ -399,7 +399,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             //filterParameter === 'fit' || filterParameter === 'length' || filterParameter === 'materials' || filterParameter === 'traits'
         ) {
             return router.push({
-                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
+                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                 query: {
                     ...filtersParams,
                     [filterParameter]: value.toLocaleLowerCase()
@@ -410,7 +410,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         if (filterParameter === 'sizes') {
             const size = value?.split(' (')[0].toLocaleLowerCase()
             return router.push({
-                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
+                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                 query: {
                     ...filtersParams,
                     sizes: size ? [value.split(' (')[0].toLocaleLowerCase()] : null
@@ -422,7 +422,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
             if (value === 'true') {
                 return router.push({
-                    pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
+                    pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                     query: {
                         ...filtersParams,
                         [filterParameter]: true
@@ -431,7 +431,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             } else {
                 const { [filterParameter]: removedFilterParameter, ...newFilterParameters } = filtersParams
                 return router.push({
-                    pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
+                    pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                     query: {
                         ...newFilterParameters,
                     }
@@ -444,7 +444,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         if (paramters === 'macroCategory') {
             return router.push({
-                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/${sort}`,
+                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/${sort}`,
             })
         }
         let filtersParams: any = getParamsFiltersFromObject(filters)
@@ -455,7 +455,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
         if (paramters === 'microCategory') {
             return router.push({
-                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/tutto/${sort}`,
+                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/tutto/${sort}`,
                 query: {
                     ...filtersParams
                 }
@@ -463,7 +463,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
 
         return router.push({
-            pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
+            pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
             query: {
                 ...filtersParams
             }
@@ -473,7 +473,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const routerConfirmDrawerFilter = (filtersDrawerModal: ProductsFilter | undefined) => {
         if (!filtersDrawerModal) {
             return router.push({
-                pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/tutto/rilevanza`,
+                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/tutto/rilevanza`,
             })
         }
         if (typeof filtersDrawerModal.sizes?.[0] === 'string') {
@@ -493,7 +493,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
 
         return router.push({
-            pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filtersDrawerModal.macroCategory === 'string' && filtersDrawerModal.macroCategory !== '' ? filtersDrawerModal.macroCategory.toLowerCase() : 'tutto'}/${filtersDrawerModal.microCategory ? createUrlSchema([filtersDrawerModal.microCategory]) : 'tutto'}/${sort}`,
+            pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filtersDrawerModal.macroCategory === 'string' && filtersDrawerModal.macroCategory !== '' ? filtersDrawerModal.macroCategory.toLowerCase() : 'tutto'}/${filtersDrawerModal.microCategory ? createUrlSchema([filtersDrawerModal.microCategory]) : 'tutto'}/${sort}`,
             query: {
                 ...filtersParams
             }
@@ -540,10 +540,10 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             <NoIndexSeo />
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
-                title={`${typeof filters.macroCategory === 'string' ? toUpperCaseFirstLetter(filters.macroCategory) : toUpperCaseFirstLetter(univers)} ${filters.gender === 'f' ? 'donna' : 'uomo'} | Veplo`}
-                subtitle={`${typeof filters.macroCategory === 'string' ? `${typeof filters.macroCategory} da ${filters.gender === 'f' ? 'donna' : 'uomo'}` : `${toUpperCaseFirstLetter(univers)} da ${filters.gender === 'f' ? 'donna' : 'uomo'}`} su Veplo | Acquista dai migliori brand made in Italy senza intermediari su Veplo | Abbigliamento · Accessori · Scarpe · Vestiti`}
+                title={`${typeof filters?.macroCategory === 'string' ? toUpperCaseFirstLetter(filters?.macroCategory) : toUpperCaseFirstLetter(univers)} ${filters?.gender === 'f' ? 'donna' : 'uomo'} | Veplo`}
+                subtitle={`${typeof filters?.macroCategory === 'string' ? `${typeof filters?.macroCategory} da ${filters?.gender === 'f' ? 'donna' : 'uomo'}` : `${toUpperCaseFirstLetter(univers)} da ${filters?.gender === 'f' ? 'donna' : 'uomo'}`} su Veplo | Acquista dai migliori brand made in Italy senza intermediari su Veplo | Abbigliamento · Accessori · Scarpe · Vestiti`}
                 image={''}
-                description={`${typeof filters.macroCategory === 'string' ? `${typeof filters.macroCategory} da ${filters.gender === 'f' ? 'donna' : 'uomo'}` : `${toUpperCaseFirstLetter(univers)} da ${filters.gender === 'f' ? 'donna' : 'uomo'}`} su Veplo | Acquista dai migliori brand made in Italy senza intermediari su Veplo | Abbigliamento · Accessori · Scarpe · Vestiti`}
+                description={`${typeof filters?.macroCategory === 'string' ? `${typeof filters?.macroCategory} da ${filters?.gender === 'f' ? 'donna' : 'uomo'}` : `${toUpperCaseFirstLetter(univers)} da ${filters?.gender === 'f' ? 'donna' : 'uomo'}`} su Veplo | Acquista dai migliori brand made in Italy senza intermediari su Veplo | Abbigliamento · Accessori · Scarpe · Vestiti`}
             />
 
             <div className='relative  min-h-[120vh]'>
@@ -555,7 +555,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             minWidth={'3xs'}
                             className='flex mt-2 lg:mt-4 gap-4 lg:gap-5 overflow-x-auto'
                         >
-                            {Object.values(CATEGORIES)[filters.gender === 'm' ? 1 : 0][univers].map((element: any) => {
+                            {Object.values(CATEGORIES)[filters?.gender === 'm' ? 1 : 0][univers].map((element: any) => {
                                 return (
                                     <Box
                                         key={element.name}
@@ -566,9 +566,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                             prefetch={false}
                                             href={element.url === createUrlSchema([filters?.macroCategory ? filters?.macroCategory : ''])
                                                 ?
-                                                '/' + universProps + '/' + (filters.gender == 'm' ? 'uomo' : 'donna') + '-tutto/tutto/rilevanza'
+                                                '/' + universProps + '/' + (filters?.gender == 'm' ? 'uomo' : 'donna') + '-tutto/tutto/rilevanza'
                                                 :
-                                                '/' + universProps + '/' + (filters.gender == 'm' ? 'uomo' : 'donna') + '-' + element.url + '/tutto/rilevanza'
+                                                '/' + universProps + '/' + (filters?.gender == 'm' ? 'uomo' : 'donna') + '-' + element.url + '/tutto/rilevanza'
                                             }
                                         >
                                             <Text
@@ -576,7 +576,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                 cursor={'pointer'}
                                                 color={'secondaryBlack.text'}
                                                 fontSize={'14px'}
-                                                className={`hover:underline hover:underline-offset-2  ${element.name === filters.macroCategory ? 'underline underline-offset-2 font-extrabold' : 'font-medium'}`}
+                                                className={`hover:underline hover:underline-offset-2  ${element.name === filters?.macroCategory ? 'underline underline-offset-2 font-extrabold' : 'font-medium'}`}
                                             >
                                                 {element.name}
                                             </Text>
@@ -591,7 +591,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             onChange={(event) => {
                                 console.log(event.target.value);
                                 return router.push({
-                                    pathname: `/${event.target.value}/${filters.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/rilevanza`,
+                                    pathname: `/${event.target.value}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/rilevanza`,
                                 })
                             }}
                             color={'black'}
@@ -647,7 +647,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                             }
                                         }
                                         router.replace({
-                                            pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters.macroCategory === 'string' && filters.macroCategory !== '' ? filters.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
+                                            pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                                             query: {
                                                 ...filtersParams,
                                                 ...newParams
@@ -656,7 +656,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     }}
                                     handleChangeMacroCategory={(value: string) => {
                                         return router.push({
-                                            pathname: `/${universProps}/${filters.gender === 'm' ? 'uomo' : 'donna'}-${value !== '' ? value.toLowerCase() : 'tutto'}/tutto/rilevanza`,
+                                            pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${value !== '' ? value.toLowerCase() : 'tutto'}/tutto/rilevanza`,
                                         })
                                     }}
                                 />
@@ -695,7 +695,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             <HStack mt={[3, 2]} spacing={2}
                                 className='flex flex-wrap'
                             >
-                                {Object.keys(filters).filter(key => !['gender'].includes(key)).map((value) => {
+                                {Object?.keys(filters).filter(key => !['gender'].includes(key)).map((value) => {
 
                                     let text: string = '';
                                     if (value === 'sizes' && filters.sizes?.[0]) text = `Taglia ${filters.sizes[0].toUpperCase()}`
@@ -707,12 +707,12 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     return (
 
                                         <div key={value}
-                                            className={`${((value === 'microCategory' && !filters.microCategory) || (!filters.macroCategory && value === 'macroCategory')) && 'hidden'}`
+                                            className={`${((value === 'microCategory' && !filters.microCategory) || (!filters?.macroCategory && value === 'macroCategory')) && 'hidden'}`
                                             }>
-                                            {value === 'macroCategory' && filters.macroCategory &&
+                                            {value === 'macroCategory' && filters?.macroCategory &&
                                                 <TagFilter
                                                     value={value}
-                                                    text={'' + toUpperCaseFirstLetter(filters.macroCategory)}
+                                                    text={'' + toUpperCaseFirstLetter(filters?.macroCategory)}
                                                     handleEvent={deleteFilterParams}
                                                 />
                                             }

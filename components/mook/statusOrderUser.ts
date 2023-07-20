@@ -1,3 +1,5 @@
+export interface OrderStatus { text: string, color: string, background: string }
+
 export const STATUS: {
     code: string,
     text: string,

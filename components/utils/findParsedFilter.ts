@@ -16,7 +16,7 @@ export interface FilterParameters {
 }
 
 export const findParsedFilter = (filters: ProductsFilter, univers: Univers): FilterParameters[] | undefined => {
-    const gender = filters.gender === 'm' ? 'uomo' : 'donna';
+    const gender = filters?.gender === 'm' ? 'uomo' : 'donna';
     if (!univers) return
     const categories = CATEGORIES[gender][univers];
     console.log(CATEGORIES);
@@ -51,7 +51,7 @@ export const findParsedFilter = (filters: ProductsFilter, univers: Univers): Fil
     ]
 
     //ricerca categoryObject della categoria selezionata
-    const categoryObject = categories.find(category => category.name.toLowerCase() === filters.macroCategory?.toLowerCase())
+    const categoryObject = categories.find(category => category.name.toLowerCase() === filters?.macroCategory?.toLowerCase())
 
     //gestione caso non ci sia macroCategory selezionata
     if (!categoryObject) {
@@ -82,7 +82,7 @@ export const findParsedFilter = (filters: ProductsFilter, univers: Univers): Fil
         parameters: categories.map(category => {
             return category.name
         }),
-        value: filters.macroCategory
+        value: filters?.macroCategory
     })
 
     //inserire i campi per ogni filtro applicabile
