@@ -125,7 +125,7 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                                 my={'auto'}
                                                                 color={'primaryBlack.text'}
                                                                 fontSize={['11px', '14px']}
-                                                                fontWeight={'medium'}
+                                                                fontWeight={'semibold'}
                                                             >
                                                                 {formatNumberWithTwoDecimalsInString(cart?.total ? cart?.total : 0)}€
                                                             </Text>
