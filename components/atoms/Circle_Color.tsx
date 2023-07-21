@@ -6,7 +6,7 @@ import { COLORS_TYPES } from '../mook/productParameters/colors'
 const Circle_Color: React.FC<{ handleColorFocused?: (color: string) => void, colors: any, dimension: number | string, space: number, eventHanlder?: (color: string) => void, showTooltip?: boolean }> = ({ handleColorFocused, colors, dimension, space, eventHanlder, showTooltip }) => {
 
     return (
-        <div className={`flex space-x-${space}`}>
+        <div className={`flex space-x-${space ? space : '1'}`}>
             {colors.map((color: any) => {
                 return (
                     <Tooltip key={color} isDisabled={!showTooltip} label={''}>

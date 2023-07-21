@@ -110,7 +110,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                         <div
                                             onMouseEnter={((e) => {
                                                 setDoubleStep(2);
-                                                zoomIn(0.2)
+                                                zoomIn(0.1)
                                             })}
                                             onMouseLeave={() => {
                                                 resetTransform()

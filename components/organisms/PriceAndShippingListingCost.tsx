@@ -2,7 +2,7 @@ import { Box, Divider } from '@chakra-ui/react'
 import React, { FC } from 'react'
 import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString'
 
-const PriceAndShippingListingCost: FC<{ subTotal: number, total: number, shippingCost: number }> = ({ subTotal, total, shippingCost }) => {
+const PriceAndShippingListingCost: FC<{ subTotal: number, total: number, shippingCost: number, coupon: number }> = ({ subTotal, total, shippingCost, coupon }) => {
     return (
         <Box
             marginTop={[5, 4]}
@@ -33,6 +33,18 @@ const PriceAndShippingListingCost: FC<{ subTotal: number, total: number, shippin
                     {shippingCost ? formatNumberWithTwoDecimalsInString(shippingCost) + '€' : 'gratis'}
                 </Box>
             </Box>
+
+            {shippingCost > 0 && <Box
+                display={'flex'}
+                justifyContent={'space-between'}
+            >
+                <Box>
+                    Sconto coupon applicato
+                </Box>
+                <Box>
+                    {formatNumberWithTwoDecimalsInString(shippingCost)}€
+                </Box>
+            </Box>}
             <Divider
                 marginY={[1, 2]}
             />
