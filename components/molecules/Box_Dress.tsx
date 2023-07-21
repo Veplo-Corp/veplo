@@ -342,7 +342,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 bottom={[3, 3]}
                                 left={4}
                                 display={'flex'}
-                                zIndex={50}
+                                zIndex={10}
                             >
                                 <Circle_Color colors={productcolorsCSS.slice(0, 5)} dimension={isMobile ? '22px' : 6} space={2}
                                     handleColorFocused={(color: string) => {

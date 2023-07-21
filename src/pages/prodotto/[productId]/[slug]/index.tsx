@@ -43,6 +43,7 @@ import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_Fi
 
 import { findMacrocategorySizeGuideFromMacrocategory } from '../../../../../components/utils/findMacrocategorySizeGuideFromMacrocategory';
 import { formatPercentage } from '../../../../../components/utils/formatPercentage';
+import { numberOfLineText } from '../../../../../components/utils/numberOfLineText';
 
 
 
@@ -147,7 +148,9 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     const isSmallView = useBreakpointValue({ base: true, md: false });
     console.log(errorLog);
     const [isAddedToCart, setIsAddedToCart] = useState(false)
-
+    const [showAllDescriptionShop, setshowAllDescriptionShop] = useState(false)
+    const [descriptionRefTextLength, setDescriptionRefTextLength] = useState(0)
+    const descriptionRefText = useRef<any>(null);
 
     if (errorLog) {
         return (
@@ -245,6 +248,10 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
     useEffect(() => {
         if (!product) return
+        if (descriptionRefText.current) {
+            const numberOfLine = numberOfLineText(descriptionRefText.current);
+            setDescriptionRefTextLength(numberOfLine);
+        }
         //const category = createTextCategory(product.info.macroCategory, product.info.microCategory)
         //setTextCategory(category)
         // const url_slug_correct = createUrlSchema([product.info.brand, product.name])
@@ -757,7 +764,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                         bottom="0"
                                         left="0"
                                         right="0"
-                                        zIndex={1}
+                                        zIndex={9999}
                                     >
                                         <Box
                                             bg={'#FFFFFF'}
@@ -810,6 +817,108 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                             }
 
                             <Box
+                                className='grid grid-cols-3 lg:grid-cols-4 w-fit gap-x-1 gap-y-4 lg:gap-4 mt-4'
+                            >
+                                {product.info.modelDescription && product.info.modelDescription?.length > 0 &&
+                                    <>
+                                        <Text
+                                            fontSize={'md'}
+                                            fontWeight={'semibold'}
+                                            color={'black'}
+                                        >
+                                            Descrizione modello
+                                        </Text>
+                                        <Text
+                                            fontSize={'md'}
+                                            fontWeight={'normal'}
+                                            color={'#909090'}
+                                            className='col-span-2 lg:col-span-3'
+                                        >   {
+                                                product.info.modelDescription
+                                            }
+                                        </Text>
+                                    </>
+                                }
+                                <Text
+                                    fontSize={'md'}
+                                    fontWeight={'semibold'}
+                                    color={'black'}
+                                >
+                                    Materiale
+                                </Text>
+                                <Text
+                                    fontSize={'md'}
+                                    fontWeight={'normal'}
+                                    color={'#909090'}
+                                    className='col-span-2 lg:col-span-3'
+                                >
+                                    {product.info.materials?.length && product.info.materials?.length > 0 ? product.info.materials.join(', ') : 'non disponibile'}
+                                </Text>
+                                <Text
+                                    fontSize={'md'}
+                                    fontWeight={'semibold'}
+                                    color={'black'}
+                                >
+                                    Fit
+                                </Text>
+                                <Text
+                                    fontSize={'md'}
+                                    fontWeight={'normal'}
+                                    color={'#909090'}
+                                    className='col-span-2 lg:col-span-3'
+                                >
+                                    {product.info.fit ? product.info.fit : 'non disponibile'}
+                                </Text>
+                                <Text
+                                    fontSize={'md'}
+                                    fontWeight={'semibold'}
+                                    color={'black'}
+                                >
+                                    Lunghezza
+                                </Text>
+                                <Text
+                                    fontSize={'md'}
+                                    fontWeight={'normal'}
+                                    color={'#909090'}
+                                    className='col-span-2 lg:col-span-3'
+                                >
+                                    {product.info.length ? product.info.length : 'non disponibile'}
+                                </Text>
+                                {product.info.description && product.info.description?.length > 0 &&
+                                    <>
+                                        <Text
+                                            fontSize={'md'}
+                                            fontWeight={'semibold'}
+                                            color={'black'}
+                                        >
+                                            Descrizione
+                                        </Text>
+                                        <Box
+                                            className='col-span-2 lg:col-span-3'
+                                        >
+                                            <Text
+                                                noOfLines={!showAllDescriptionShop || descriptionRefTextLength <= 3 ? 3 : 100}
+                                                color={'#909090'}
+                                                className='font-medium text-sm mt-2 lg:text-md'
+                                                ref={descriptionRefText}
+                                            >
+                                                {product.info.description}
+                                            </Text>
+                                            {descriptionRefTextLength > 3 && <Text
+                                                onClick={() => setshowAllDescriptionShop(!showAllDescriptionShop)}
+                                                color={'#909090'}
+                                                cursor={'pointer'}
+                                                className='font-semibold underline text-sm lg:text-md'
+                                            >
+                                                {!showAllDescriptionShop ? 'mostra altro' : 'mostra meno'}
+                                            </Text>}
+                                        </Box>
+
+                                    </>
+                                }
+                            </Box>
+
+                            {false && <Box
                                 mt={3}
 
                                 borderRadius={10}
@@ -937,7 +1046,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                                                 className='col-span-2 lg:col-span-3'
                                                             >   {
                                                                     product.info.description
-                                                                }
+                                                                } lorem ipsum dolorem sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam
                                                             </Text>
                                                         </>
                                                     }
@@ -947,7 +1056,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                         </Box>
                                     )}
                                 </Disclosure>
-                            </Box>
+                            </Box>}
 
 
                         </Box>

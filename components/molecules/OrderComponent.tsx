@@ -259,7 +259,7 @@ const OrderComponent: FC<{ order: Order, orderStatus: OrderStatus | undefined }>
                             fontWeight={'medium'}
                             color={'secondaryBlack.text'}
                         >
-                            {formatNumberWithTwoDecimalsInString(order.totalDetails?.amountDiscount) + '€'}
+                            -{formatNumberWithTwoDecimalsInString(order.totalDetails?.amountDiscount) + '€'}
                         </Text>
                     </Box>}
 
