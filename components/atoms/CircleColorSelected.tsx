@@ -13,10 +13,11 @@ const CircleColorSelected: React.FC<{ colors: { name: string, cssColor: string }
                     <Tooltip key={index} isDisabled={!showTooltip} label={color.name}>
                         <Box
                             borderRadius={'100%'}
-                            borderColor={colorSelected === color.name && color.name !== 'bianco' ? color.cssColor : '#D9D9D9'}
+                            borderColor={colorSelected.toLowerCase() === color.name.toLowerCase() && color.name.toLowerCase() !== 'bianco' ? color.cssColor :
+                                colorSelected.toLowerCase() === color.name.toLowerCase() && color.name.toLowerCase() === 'bianco' ? '#D9D9D9' : 'white'}
                             borderWidth={3}
                             display={'flex'}
-                        //paddingTop={colorSelected === color.name ? 0 : 1}
+                        //paddingTop={colorSelected.toLowerCase() === color.name ? 0 : 1}
 
                         >
                             <Box
