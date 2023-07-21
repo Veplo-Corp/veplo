@@ -22,6 +22,7 @@ import CREATE_FORM_INFO_BUSINESS from '../lib/apollo/mutations/createFormInfoBus
 import { initApollo } from '../lib/apollo'
 import GET_COMPONENTS_HOME_LIST from '../lib/apollo/dato_CMS/queries/getComponentsHomeList'
 import { Instagram, SendMail } from 'iconoir-react'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 type InputForm = {
   email: string,
@@ -261,19 +262,19 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
             gap={10}
           >
             <Box
-              className='lg:ml-2 xl:ml-24 mt-10 '
+              className='lg:ml-8 xl:ml-24 mt-10 '
             >
               <Box>
                 <img loading='lazy'
-                  className='lg:w-full h-[24vh]'
+                  className='lg:w-[95%] h-[20vh]'
                   src='https://www.datocms-assets.com/102220/1688458870-veplo_graffiti_web.png'
                 />
 
               </Box>
               <Text
-                className='lg:text-7xl xl:text-8xl mt-16 xl:mt-10'
+                className='lg:text-[9.5vh] xl:text-[13vh] mt-16 xl:mt-5'
                 fontWeight={'black'}
-                lineHeight={['', '', '', '9vh', '12vh']}
+                lineHeight={['', '', '', '12vh', '14vh', '13vh']}
                 color={'primaryBlack.text'}
               >
                 Lo spazio dei <br />
@@ -284,28 +285,13 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
                 </span> made in <br />Italy
               </Text>
             </Box>
-            <Box
-              margin={'auto'}
-              mb={20}
-              w={['', '', '', '40vh', '45vh']}
-            >
-              <ButtonGroupGender />
-              <Button
-                marginTop={6}
-                width={'full'}
-                variant={'primary'}
-                padding={6}
-                paddingY={7}
-                fontSize={'xl'}
-                borderRadius={'30px'}
-                style={{
-                  boxShadow: '0px 4px 20px 0px rgba(255, 90, 120, 0.75)'
-                }}
-                onClick={() => { setModalForm(true) }}
-              >
-                Sono un brand!
-              </Button>
-            </Box>
+            {/* mook phone solo per web */}
+            <LazyLoadImage
+              src={'https://www.datocms-assets.com/102220/1689927311-mook_phone-edited.png'}
+              alt={''}
+              //effect="blur"
+              className="object-cover h-[100%] m-auto"
+            />
           </Box>
         </Box>
         <Box
@@ -354,7 +340,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
             </Text>
             <ButtonGroupGender />
             <Button
-              marginTop={6}
+              marginTop={[1, 6]}
               width={'full'}
               variant={'primary'}
               padding={6}
@@ -500,7 +486,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
 
             <ButtonGroupGender />
             <Button
-              marginTop={6}
+              marginTop={[3, 6]}
               width={'full'}
               variant={'primary'}
               padding={6}

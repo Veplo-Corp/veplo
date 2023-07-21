@@ -9,9 +9,8 @@ declare let window: CustomWindow; // Assicurati di importare la definizione di t
 
 
 export const gtag = (payload: VeploGTMEvent) => {
-    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
         window.dataLayer = window.dataLayer || [];
-
         window.dataLayer.push({ event: payload.command, ...payload.args });
 
     }
