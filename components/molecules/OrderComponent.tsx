@@ -239,6 +239,30 @@ const OrderComponent: FC<{ order: Order, orderStatus: OrderStatus | undefined }>
                         {order.totalDetails?.amountShipping ? formatNumberWithTwoDecimalsInString(order.totalDetails?.amountShipping) + '€' : 'gratis'}
                     </Text>
                 </Box>
+                {typeof order.totalDetails?.amountDiscount === 'number' &&
+                    order.totalDetails?.amountDiscount > 0
+                    && <Box
+                        display={'flex'}
+                        width={'full'}
+                        justifyContent={'space-between'}
+                        mb={5}
+                    >
+                        <Text
+                            fontSize={'16px'}
+                            fontWeight={'medium'}
+                            color={'#909090'}
+                        >
+                            Sconto coupon
+                        </Text>
+                        <Text
+                            fontSize={'16px'}
+                            fontWeight={'medium'}
+                            color={'secondaryBlack.text'}
+                        >
+                            {formatNumberWithTwoDecimalsInString(order.totalDetails?.amountDiscount) + '€'}
+                        </Text>
+                    </Box>}
+
                 <Box
                     display={'flex'}
                     width={'full'}

@@ -405,7 +405,9 @@ const index = () => {
                                             )
                                         })}
                                     </VStack>
-                                    <PriceAndShippingListingCost subTotal={order.totalDetails.subTotal} total={order.totalDetails.total} shippingCost={order.totalDetails.amountShipping} />
+                                    <PriceAndShippingListingCost subTotal={order.totalDetails.subTotal} total={order.totalDetails.total} shippingCost={order.totalDetails.amountShipping}
+                                        coupon={order.totalDetails?.amountDiscount}
+                                    />
                                 </Box>
                             }
                             <GrayBox>

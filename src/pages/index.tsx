@@ -118,7 +118,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
         variables: {
           options: {
             userName: value.userName,
-            businessName: value.businessName,
+            businessName: value?.businessName,
             email: value.email,
             phone: value.phone,
           }
@@ -362,7 +362,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
         >
           <Box
             marginY={10}
-            marginX={7}
+
             width={['', '', '', '50%', '40%']}
           >
             <Text
@@ -376,11 +376,13 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
             </Text>
             <VStack gap={[5, 5, 5, 8]}
               mb={8}
+
               align='stretch'
               textAlign={'left'}
             >
               {data?.allListComponentWithImages[1].imageAndText.map((value, index) => (
                 <Box
+                  marginX={7}
                   key={index}
                   display={'flex'}
                   gap={5}
@@ -399,6 +401,29 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
                   </Text>
                 </Box>
               ))}
+              <Link
+                href={'https://www.datocms-assets.com/102220/1689928317-veplo_per_i_brand.pdf'}
+                target='_blank'
+                className='flex'
+              >
+                <Button
+                  mx={'auto'}
+                  minW={'92%'}
+                  variant={'primary'}
+                  borderWidth={0}
+                  padding={4}
+                  paddingY={7}
+                  fontSize={'xl'}
+                  borderRadius={'30px'}
+                  style={{
+                    boxShadow: '0px 4px 20px 0px rgba(255, 90, 120, 0.75)'
+                  }}
+
+                >
+                  Scarica il PDF di presentazione
+                </Button>
+              </Link>
+
             </VStack>
             <Box
               mx={'auto'}
@@ -570,39 +595,6 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
             >
             </Input>
             <Input
-              placeholder='nome e cognome'
-              id='userName'
-              type='text'
-              py={5}
-              rounded={'10px'}
-              _placeholder={{
-                //color: 'gray.200',
-                fontWeight: '600'
-              }}
-              variant='filled'
-              {...register("userName", {
-                required: true,
-              })}
-            >
-            </Input>
-            <Input
-              placeholder='nome del tuo brand'
-              id='businessName'
-              type='text'
-              py={5}
-              rounded={'10px'}
-              _placeholder={{
-                //color: 'gray.200',
-                fontWeight: '600'
-              }}
-              variant='filled'
-              {...register("businessName", {
-                required: true,
-                minLength: 2
-              })}
-            >
-            </Input>
-            <Input
               placeholder='numero di telefono'
               id='phone'
               type='tel'
@@ -619,6 +611,40 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
 
             >
             </Input>
+            <Input
+              placeholder='nome e cognome'
+              id='userName'
+              type='text'
+              py={5}
+              rounded={'10px'}
+              _placeholder={{
+                //color: 'gray.200',
+                fontWeight: '600'
+              }}
+              variant='filled'
+              {...register("userName", {
+                required: false,
+              })}
+            >
+            </Input>
+            <Input
+              placeholder='nome del tuo brand (opzionale)'
+              id='businessName'
+              type='text'
+              py={5}
+              rounded={'10px'}
+              _placeholder={{
+                //color: 'gray.200',
+                fontWeight: '600'
+              }}
+              variant='filled'
+              {...register("businessName", {
+                required: false,
+                minLength: 2
+              })}
+            >
+            </Input>
+
 
 
           </VStack>
