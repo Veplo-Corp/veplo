@@ -34,7 +34,7 @@ const PriceAndShippingListingCost: FC<{ subTotal: number, total: number, shippin
                 </Box>
             </Box>
 
-            {shippingCost > 0 && <Box
+            {coupon > 0 && <Box
                 display={'flex'}
                 justifyContent={'space-between'}
             >
@@ -42,7 +42,7 @@ const PriceAndShippingListingCost: FC<{ subTotal: number, total: number, shippin
                     Sconto coupon applicato
                 </Box>
                 <Box>
-                    {formatNumberWithTwoDecimalsInString(shippingCost)}€
+                    -{formatNumberWithTwoDecimalsInString(coupon)}€
                 </Box>
             </Box>}
             <Divider
