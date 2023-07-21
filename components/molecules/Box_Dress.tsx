@@ -339,7 +339,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                             </Text> */}
                             <Box
                                 position={'absolute'}
-                                bottom={[3, 3]}
+                                bottom={[4, 4]}
                                 left={4}
                                 display={'flex'}
                                 zIndex={10}
