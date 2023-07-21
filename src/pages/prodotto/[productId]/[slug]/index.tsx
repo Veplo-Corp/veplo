@@ -817,7 +817,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                             }
 
                             <Box
-                                className='grid grid-cols-3 lg:grid-cols-4 w-fit gap-x-1 gap-y-4 lg:gap-4 mt-4'
+                                className='grid grid-cols-3 lg:grid-cols-4 w-fit gap-x-1 gap-y-4 lg:gap-4 mt-6'
                             >
                                 {product.info.modelDescription && product.info.modelDescription?.length > 0 &&
                                     <>
@@ -826,7 +826,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                             fontWeight={'semibold'}
                                             color={'black'}
                                         >
-                                            Descrizione modello
+                                            Aiuto alla taglia
                                         </Text>
                                         <Text
                                             fontSize={'md'}
@@ -898,8 +898,10 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                         >
                                             <Text
                                                 noOfLines={!showAllDescriptionShop || descriptionRefTextLength <= 3 ? 3 : 100}
+                                                fontSize={'md'}
+                                                fontWeight={'normal'}
                                                 color={'#909090'}
-                                                className='font-medium text-sm mt-2 lg:text-md'
+                                                className='col-span-2 lg:col-span-3'
                                                 ref={descriptionRefText}
                                             >
                                                 {product.info.description}
