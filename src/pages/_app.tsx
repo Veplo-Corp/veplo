@@ -317,7 +317,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             let carts: Cart[] = data?.data?.user?.carts?.carts ? data?.data?.user?.carts?.carts : [];
             carts = carts.map(cart => {
               if (!cart?.productVariations || cart?.productVariations?.length > 0) {
-                const sortedProductVariations = [...cart.productVariations].sort((a, b) => (a?.id > b?.id) ? 1 : -1);
+                const sortedProductVariations = [...cart.productVariations].sort((a: any, b: any) => (a?.id > b?.id) ? 1 : -1);
                 return { ...cart, productVariations: sortedProductVariations };
               }
               return cart;
