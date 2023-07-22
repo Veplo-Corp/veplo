@@ -17,6 +17,7 @@ import expirationTimeTokenControll from '../utils/expirationTimeTokenControll'
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface'
 import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString'
 import ButtonClose from '../atoms/ButtonClose'
+import { CartProductVariation } from '../../src/lib/apollo/generated/graphql'
 
 const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, closeDrawer }) => {
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
@@ -124,7 +125,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
 
 
 
-    const deleteVariation = async (variation: ProductVariation) => {
+    const deleteVariation = async (variation: CartProductVariation) => {
         const resolve = await expirationTimeTokenControll(user.expirationTime)
         if (!resolve) return
         if (user.uid) {
@@ -196,8 +197,8 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
         }
     }
 
-    const pushToProduct = (variation: ProductVariation) => {
-        router.push('/prodotto/' + variation.productId + '/' + createUrlSchema([variation.brand, variation.name]) + '?colors=' + variation.color.toLowerCase())
+    const pushToProduct = (variation: CartProductVariation) => {
+        router.push('/prodotto/' + variation.productId + '/' + createUrlSchema([variation.brand, variation.name]) + '?colors=' + variation?.color?.toLowerCase())
         closeDrawer()
     }
 
