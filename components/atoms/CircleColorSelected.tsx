@@ -29,7 +29,7 @@ const CircleColorSelected: React.FC<{ colors: { name: string, cssColor: string }
                                 w={dimension}
                                 borderRadius={'100%'}
                                 bg={color.cssColor}
-                                borderColor={colorSelected === color.name && color.name !== 'bianco' ? color.cssColor : '#D9D9D9'}
+                                borderColor={color.name.toLowerCase() === 'bianco' ? '#D9D9D9' : 'white'}
                                 borderWidth={1}
                                 // style={{
                                 //     boxShadow: 'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'

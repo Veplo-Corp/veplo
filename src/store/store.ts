@@ -1,7 +1,7 @@
 import userState from './reducers/user';
 import { configureStore } from '@reduxjs/toolkit';
 import addressState from './reducers/address_user';
-import modalState from './reducers/modal_error';
+import modalState from './reducers/globalModal';
 import cartsState from './reducers/carts';
 import ordersState from './reducers/orders';
 import brandsState from './reducers/brands';
