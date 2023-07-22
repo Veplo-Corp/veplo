@@ -8,7 +8,8 @@ import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTw
 import { Cancel } from 'iconoir-react'
 import ButtonClose from '../atoms/ButtonClose'
 import { formatPercentage } from '../utils/formatPercentage'
-const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation: ProductVariation) => void, deleteVariation: (variation: ProductVariation) => void }> = ({ variation, toProduct, deleteVariation }) => {
+import { CartProductVariation } from '../../src/lib/apollo/generated/graphql'
+const VariationBoxList: FC<{ variation: CartProductVariation, toProduct: (variation: CartProductVariation) => void, deleteVariation: (variation: CartProductVariation) => void }> = ({ variation, toProduct, deleteVariation }) => {
 
     return (
         <Box
@@ -17,10 +18,10 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
             width={'full'}
         >
             <LazyLoadImage src={
-                imageKitUrl(variation.photo, 237, 247)
+                imageKitUrl(variation?.photo ? variation?.photo : '', 237, 247)
             }
                 //PlaceholderSrc={PlaceholderImage}
-                alt={variation.name}
+                alt={variation?.name ? variation?.name : ''}
 
                 className='w-2/12 max-w-[70px] rounded-md object-cover'
             />
@@ -77,7 +78,7 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
                             fontSize={'xs'}
                             fontWeight={'normal'}
                         >
-                            {variation.size.toUpperCase()} / Quantità {variation.quantity}
+                            {variation?.size?.toUpperCase()} / Quantità {variation.quantity}
                         </Box>
                     </Box>
 
@@ -96,10 +97,10 @@ const VariationBoxList: FC<{ variation: ProductVariation, toProduct: (variation:
                                 display={'flex'}
                             >
                                 <p
-                                    className={`${variation?.price?.v2 && variation?.price?.v2 < variation?.price?.v1 ? 'line-through  text-gray-400' : 'font-semibold'}`}
+                                    className={`${variation?.price?.v2 && variation?.price?.v1 && variation?.price?.v2 < variation?.price?.v1 ? 'line-through  text-gray-400' : 'font-semibold'}`}
                                 > {formatNumberWithTwoDecimalsInString(variation?.price?.v1)} €
                                 </p>
-                                {variation?.price?.v2 && variation?.price?.v2 < variation?.price?.v1 &&
+                                {variation?.price?.v2 && variation?.price?.v1 && variation?.price?.v2 < variation?.price?.v1 &&
                                     <p
                                         className='font-semibold ml-1'
                                     >{variation?.price?.v2 && formatNumberWithTwoDecimalsInString(variation.price.v2)} € </p>
