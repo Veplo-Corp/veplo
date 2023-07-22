@@ -11,12 +11,13 @@ export enum GTMEventType {
 }
 
 export enum PixelEventType {
-    purchase = 'Purchase'
+    purchase = 'Purchase',
+    addToCart = 'AddToCart'
 }
 
 export type VeploPixelEvent = {
     command: PixelEventType,
-    args: {
+    args?: {
         value?: number,
         currency?: 'EUR'
     }

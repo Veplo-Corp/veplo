@@ -44,6 +44,8 @@ import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_Fi
 import { findMacrocategorySizeGuideFromMacrocategory } from '../../../../../components/utils/findMacrocategorySizeGuideFromMacrocategory';
 import { formatPercentage } from '../../../../../components/utils/formatPercentage';
 import { numberOfLineText } from '../../../../../components/utils/numberOfLineText';
+import { fbq } from '../../../../lib/analytics/gtag';
+import { PixelEventType } from '../../../../lib/analytics/eventTypes';
 
 
 
@@ -334,6 +336,16 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         });
     }
 
+    const addToCartEffect = () => {
+        setIsAddedToCart(true);
+        setTimeout(() => {
+            setIsAddedToCart(false);
+        }, 2000); // 2000ms (2 secondi) è il tempo in cui mostri "aggiunto al carrello" prima di tornare a "aggiungi al carrello"
+        fbq({
+            command: PixelEventType.addToCart
+        })
+    }
+
     const addToCart = async (product: Product) => {
 
         const resolve = await expirationTimeTokenControll(user.expirationTime)
@@ -347,11 +359,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         }
         if (isAddedToCart) return
         else {
-            setIsAddedToCart(true);
-
-            setTimeout(() => {
-                setIsAddedToCart(false);
-            }, 2000); // 2000ms (2 secondi) è il tempo in cui mostri "aggiunto al carrello" prima di tornare a "aggiungi al carrello"
 
             console.log(cartsDispatchProduct);
             const Carts: Cart[] = cartsDispatchProduct
@@ -375,7 +382,12 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 if (quantity) {
                     const index = Cart.productVariations.findIndex(variation => variation.size === sizeSelected)
 
-
+                    //aggiunge un prodotto dove ha già raggiunto la massima quantità disponibile
+                    if (quantityMax && quantity >= quantityMax) {
+                        //TODO gestire alert "quantità massima già inserita"
+                        return
+                    }
+                    addToCartEffect()
                     productVariationQuantity = quantityMax && quantity >= quantityMax ? quantityMax : quantity + 1
 
                     const newProductVariation = {
@@ -407,6 +419,8 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 }
                 //caso in cui la Variation non esiste nel cart
                 if (!quantity) {
+                    addToCartEffect()
+
                     const newProductVariation: ProductVariation = {
                         id: variationSelected.id,
                         photo: variationSelected.photos[0],
@@ -447,7 +461,8 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
             //CART INESISTENTE
             if (!Cart) {
-                console.log('passa');
+                addToCartEffect()
+
                 const newProductVariation: ProductVariation = {
                     id: variationSelected.id,
                     photo: variationSelected.photos[0],
