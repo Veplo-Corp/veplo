@@ -25,6 +25,10 @@ import CheckoutProduct from '../../../../components/molecules/CheckoutProduct';
 import { formatNumberWithTwoDecimalsInString } from '../../../../components/utils/formatNumberWithTwoDecimalsInString';
 import expirationTimeTokenControll from '../../../../components/utils/expirationTimeTokenControll';
 import { CartProductVariation } from '../../../lib/apollo/generated/graphql';
+import { fbq, gtag } from '../../../lib/analytics/gtag';
+import { GTMEventType, PixelEventType } from '../../../lib/analytics/eventTypes';
+import { GtagVariationsToItemsFor } from '../../../../components/utils/GtagVariationsToItemsFor';
+import { formatNumberWithTwoDecimalsInNumber } from '../../../../components/utils/formatNumberWithTwoDecimalsInNumber';
 
 const SHIPPING_COST = 499;
 
@@ -47,7 +51,7 @@ const index = () => {
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
     const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
     const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('login')
-    const [IsOpenDeleteVariation, setIsOpenDeleteVariation] = useState<ProductVariation>()
+    const [IsOpenDeleteVariation, setIsOpenDeleteVariation] = useState<CartProductVariation>()
     const isSmallView = useBreakpointValue({ base: true, md: false });
 
 
@@ -109,8 +113,25 @@ const index = () => {
                     shopId: cart?.shopInfo.id
                 }
             })
-            setIsDisabled(false)
+            fbq({
+                command: PixelEventType.initiateCheckout
+            })
+            const items = GtagVariationsToItemsFor(cart?.productVariations)
+            gtag({
+                command: GTMEventType.begin_checkout,
+                args: {
+                    email: user.email,
+                    ecommerce: {
+                        currency: 'EUR',
+                        value: formatNumberWithTwoDecimalsInNumber(typeof cart?.total === 'number' ? cart?.total : 0),
+                        items: [
+                            ...items
+                        ]
+                    }
+                }
+            })
             router.push(create.data.checkout)
+            setIsDisabled(false)
         }
         catch (e) {
             console.log(e);
@@ -202,7 +223,7 @@ const index = () => {
         }
     }
 
-    const deleteVariation = async (variation: ProductVariation) => {
+    const deleteVariation = async (variation: CartProductVariation) => {
         try {
             if (user.uid) {
                 await editCart({
@@ -293,7 +314,8 @@ const index = () => {
         return `Tra il ${dataItalianoCinqueGiorniDopo} e il ${dataItalianoSetteGiorniDopo}`;
     }
 
-    const pushToProduct = (variation: ProductVariation) => {
+    const pushToProduct = (variation: CartProductVariation) => {
+        if (!variation) return
         router.push('/prodotto/' + variation.productId + '/' + createUrlSchema([variation.brand, variation.name]) + '?colore=' + variation.color)
     }
 
@@ -424,13 +446,16 @@ const index = () => {
                                             {cart?.productVariations?.map(variation => {
                                                 return (
                                                     <div
-                                                        key={variation.id + variation.size}
+                                                        key={variation?.id && variation?.size ? variation?.id + variation?.size : Math.random()}
                                                         className='w-full'
                                                     >
                                                         <CheckoutProduct
                                                             variation={variation}
                                                             toProduct={() => pushToProduct(variation)}
-                                                            deleteVariation={() => setIsOpenDeleteVariation(variation)}
+                                                            deleteVariation={() => {
+                                                                if (!variation) return
+                                                                setIsOpenDeleteVariation(variation)
+                                                            }}
                                                             editVariation={(variation: CartProductVariation, quantity: number) => handleEditVariation(variation, quantity)}
                                                         />
                                                     </div>
