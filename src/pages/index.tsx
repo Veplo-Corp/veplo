@@ -338,9 +338,14 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
             >
               connettiamo i migliori brand di abbigliamento made in Italy in un unico negozio online
             </Text>
-            <ButtonGroupGender />
+            <Box
+              mb={3}
+            >
+              <ButtonGroupGender />
+
+            </Box>
             <Button
-              marginTop={[1, 6]}
+              marginTop={[1, 1, 3]}
               width={'full'}
               variant={'primary'}
               padding={6}
@@ -358,11 +363,10 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
           </Box>
         </Box>
         <Box
-          className='lg:flex sm:w-10/12 md:w-9/12 lg:w-11/12 xl:w-3/4 mx-auto lg:my-7 lg:gap-12 xl:gap-20 justify-between'
+          className='lg:flex sm:w-10/12 md:w-9/12 lg:w-11/12 xl:w-10/12 mx-auto lg:my-7 lg:gap-12 xl:gap-20 justify-between'
         >
           <Box
             marginY={10}
-
             width={['', '', '', '50%', '40%']}
           >
             <Text
@@ -401,6 +405,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
                   </Text>
                 </Box>
               ))}
+
               <Link
                 href={'https://www.datocms-assets.com/102220/1689928317-veplo_per_i_brand.pdf'}
                 target='_blank'
@@ -408,10 +413,10 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
               >
                 <Button
                   mx={'auto'}
-                  minW={'92%'}
                   variant={'primary'}
+                  className='w-[92%] sm:w-[70%] md:w-[70%] xl:w-[80%] mx-auto md:mt-2'
                   borderWidth={0}
-                  padding={4}
+                  padding={8}
                   paddingY={7}
                   fontSize={'xl'}
                   borderRadius={'30px'}
@@ -425,12 +430,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
               </Link>
 
             </VStack>
-            <Box
-              mx={'auto'}
-              className='xl:w-9/12'
-            >
-              <ButtonGroupGender />
-            </Box>
+
 
           </Box>
           <Box

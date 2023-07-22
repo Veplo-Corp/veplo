@@ -27,8 +27,8 @@ import { Firebase_User } from '../../../../interfaces/firebase_user.interface';
 import ProfilePhoto from '../../../../../components/molecules/ProfilePhoto';
 import CheckoutProduct from '../../../../../components/molecules/CheckoutProduct';
 import OrderComponent from '../../../../../components/molecules/OrderComponent';
-import { gtag } from '../../../../lib/analytics/gtag';
-import { GTMEventType } from '../../../../lib/analytics/eventTypes';
+import { fbq, gtag } from '../../../../lib/analytics/gtag';
+import { GTMEventType, PixelEventType } from '../../../../lib/analytics/eventTypes';
 import { formatNumberWithTwoDecimalsInNumber } from '../../../../../components/utils/formatNumberWithTwoDecimalsInNumber';
 
 
@@ -106,12 +106,19 @@ const index = () => {
                     value: formatNumberWithTwoDecimalsInNumber(typeof order?.totalDetails?.total === 'number' ? order?.totalDetails?.total : 0),
                     shipping: formatNumberWithTwoDecimalsInNumber(typeof order?.totalDetails?.amountShipping === 'number' ? order?.totalDetails?.amountShipping : 0),
                     //TODO coupon
-                    //coupon: "SUMMER_SALE",
+                    coupon: order.totalDetails?.amountDiscount ? 'COUPON' : undefined,
                     items: [
                         ...items
                     ]
                 }
 
+            }
+        })
+        fbq({
+            command: PixelEventType.purchase,
+            args: {
+                value: formatNumberWithTwoDecimalsInNumber(typeof order?.totalDetails?.total === 'number' ? order?.totalDetails?.total : 0),
+                currency: 'EUR'
             }
         })
     }
