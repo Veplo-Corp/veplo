@@ -14,7 +14,7 @@ import GET_SINGLE_PRODUCT from '../../../lib/apollo/queries/getSingleProduct'
 import { initApollo } from '../../../lib/apollo'
 import Modal_Error_Shop from '../../../../components/organisms/Modal_Error_Shop'
 import { handleErrorFirebase } from '../../../../components/utils/handleErrorFirebase'
-import { setModalTitleAndDescription, handleOpenModal } from '../../../store/reducers/globalModal'
+import { openModal } from '../../../store/reducers/globalModal'
 import { useRouter } from 'next/router'
 import { Firebase_User } from '../../../interfaces/firebase_user.interface'
 import Login_or_Registration, { UserInfo } from '../../../../components/organisms/Login_or_Registration'
@@ -94,7 +94,7 @@ const index = () => {
         //console.log(errorCode);
         console.log(errorCode);
         const errorForModal = handleErrorFirebase(error.code)
-        dispatch(setModalTitleAndDescription({
+        dispatch(openModal({
           title: errorForModal?.title,
           description: errorForModal?.description
         }))
@@ -108,7 +108,7 @@ const index = () => {
         const isBusiness = tokenResult.claims.isBusiness ? true : false
         if (!isBusiness) {
           // const errorForModal = handleErrorFirebase('auth/user-not-shop')
-          // dispatch(setModalTitleAndDescription({
+          // dispatch(openModal({
           //   title: errorForModal?.title,
           //   description: errorForModal?.description
           // }))
@@ -121,11 +121,11 @@ const index = () => {
         const errorMessage = error.message;
         console.log(errorMessage);
         const errorForModal = handleErrorFirebase(errorMessage)
-        dispatch(setModalTitleAndDescription({
+        dispatch(openModal({
           title: errorForModal?.title,
           description: errorForModal?.description
         }))
-        dispatch(handleOpenModal);
+
         setLoading(false)
       }
       setTimeout(() => {
