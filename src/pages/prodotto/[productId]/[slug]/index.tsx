@@ -46,6 +46,7 @@ import { formatPercentage } from '../../../../../components/utils/formatPercenta
 import { numberOfLineText } from '../../../../../components/utils/numberOfLineText';
 import { fbq } from '../../../../lib/analytics/gtag';
 import { PixelEventType } from '../../../../lib/analytics/eventTypes';
+import { openModal } from '../../../../store/reducers/globalModal';
 
 
 
@@ -135,7 +136,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     const router = useRouter();
     const { slug } = router.query;
     const [sizeSelected, setSizeSelected] = useState<string>('')
-    const [isOpenModalSize, setisOpenModalSize] = useState(false)
     const [getSimilarProductOnShop, shopProductsData] = useLazyQuery(GET_SIMILAR_PRODUCT_ON_SHOP);
     const [openDrawerCart, setOpenDrawerCart] = useState(false)
     const [editCart, elementEditCart] = useMutation(EDIT_CART);
@@ -352,10 +352,15 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         if (!resolve) return
 
         if (!sizeSelected || !colorSelected) {
-            setisOpenModalSize(true)
-            return setTimeout(() => {
-                setisOpenModalSize(false)
-            }, 3000);
+
+            dispatch(openModal({
+                title: 'Taglia mancante',
+                description: 'Inserisci la taglia prima di aggiungere il prodotto al carrello.'
+                // description: <Box>
+                //     test jsx in funzione
+                // </Box>
+            }))
+            return
         }
         if (isAddedToCart) return
         else {
@@ -385,6 +390,13 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     //aggiunge un prodotto dove ha già raggiunto la massima quantità disponibile
                     if (quantityMax && quantity >= quantityMax) {
                         //TODO gestire alert "quantità massima già inserita"
+                        dispatch(openModal({
+                            title: 'Quantità massima raggiunta',
+                            description: 'Hai già aggiunto il numero massimo di prodotti disponibili al carrello.'
+                            // description: <Box>
+                            //     test jsx in funzione
+                            // </Box>
+                        }))
                         return
                     }
                     addToCartEffect()
@@ -1169,22 +1181,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 </Box >
 
             }
-            <ModalReausable
 
-                marginTop={0}
-                title='Manca la taglia' isOpen={isOpenModalSize}
-                closeModal={() => setisOpenModalSize(false)}
-            >
-                <Box
-                    marginTop={3}
-                    fontSize={'md'}
-                    fontWeight={'normal'}
-                    color={'gray.500'}
-                >
-                    Inserisci la taglia prima di aggiungere il prodotto al carrello
-                </Box>
-
-            </ModalReausable>
             <ModalReausable
                 marginTop={10}
                 positionTopModal={true}

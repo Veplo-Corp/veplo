@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { handleErrorFirebase } from '../utils/handleErrorFirebase';
-import { setModalTitleAndDescription } from '../../src/store/reducers/modal_error';
+import { setModalTitleAndDescription } from '../../src/store/reducers/globalModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMutation } from '@apollo/client';
 import CREATE_USER from '../../src/lib/apollo/mutations/createUser';

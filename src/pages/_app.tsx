@@ -15,8 +15,7 @@ import { ApolloProvider, useLazyQuery } from '@apollo/client'
 import { initApollo, useApollo } from '../lib/apollo'
 import { getAddressFromLocalStorage } from '../../components/utils/getAddress_from_LocalStorage'
 import { setAuthTokenInSessionStorage } from '../../components/utils/setAuthTokenInSessionStorage'
-import Modal_Error_Shop, { ErrorModal } from '../../components/organisms/Modal_Error_Shop'
-import modal_error from '../store/reducers/modal_error'
+import modal_error from '../store/reducers/globalModal'
 import Router from "next/router";
 import { Firebase_User } from '../interfaces/firebase_user.interface'
 import Loading from '../../components/molecules/Loading'
@@ -37,6 +36,7 @@ import { resetCarts, setCarts } from '../store/reducers/carts'
 import { Order } from '../interfaces/order.interface'
 import { detroyOrders, setOrders } from '../store/reducers/orders'
 import { setBrands } from '../store/reducers/brands'
+import ModalWrapper from '../../components/organisms/ModalWrapper'
 
 
 const theme = extendTheme({
@@ -223,7 +223,6 @@ const sans = Work_Sans({
 const Auth: React.FC<{ children: any }> = ({ children }) => {
   const router = useRouter()
   // console.log(address_user);
-  const modal: ErrorModal = useSelector((state: any) => state.modal.modal);
   // const brands: string[] | undefined = useSelector((state: any) => state.brands.brands);
   // console.log(brands);
 
@@ -442,7 +441,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
   return (
     <>
       {children}
-      {modal && <Modal_Error_Shop openModalMath={modal.openModalMath} title={modal.title} description={modal.description} closeText={modal.closeText} handleEvent={modal.handleEvent} confirmText={modal.confirmText} />}
     </>
   )
 }
@@ -539,7 +537,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
                 {router.pathname !== '/' && !router.pathname.includes("/login") && !router.pathname.includes("/user/settings/email-actions") && !router.query?.fbclid && <Footer />}
               </main>
             )}
-
+            <ModalWrapper />
           </Auth>
         </ChakraProvider>
       </ApolloProvider>
