@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { handleErrorFirebase } from '../utils/handleErrorFirebase';
-import { setModalTitleAndDescription } from '../../src/store/reducers/globalModal';
+import { openModal } from '../../src/store/reducers/globalModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMutation } from '@apollo/client';
 import CREATE_USER from '../../src/lib/apollo/mutations/createUser';
@@ -147,7 +147,7 @@ const LoginAndRegistrationForm: FC<{
                     //console.log(errorCode);
                     console.log(error);
                     const errorForModal = handleErrorFirebase(errorMessage)
-                    dispatch(setModalTitleAndDescription({
+                    dispatch(openModal({
                         title: errorForModal?.title,
                         description: errorForModal?.description
                     }))
@@ -234,7 +234,7 @@ const LoginAndRegistrationForm: FC<{
                             const errorMessage = error.message;
                             //console.log(errorCode);
                             const errorForModal = handleErrorFirebase(error.code)
-                            dispatch(setModalTitleAndDescription({
+                            dispatch(openModal({
                                 title: errorForModal?.title,
                                 description: errorForModal?.description
                             }))
@@ -252,7 +252,7 @@ const LoginAndRegistrationForm: FC<{
                     //console.log(errorCode);
                     console.log(errorCode);
                     const errorForModal = handleErrorFirebase(error.code)
-                    dispatch(setModalTitleAndDescription({
+                    dispatch(openModal({
                         title: errorForModal?.title,
                         description: errorForModal?.description
                     }))
@@ -287,7 +287,7 @@ const LoginAndRegistrationForm: FC<{
                 console.log(error);
                 const errorForModal = handleErrorFirebase(errorMessage)
 
-                // dispatch(setModalTitleAndDescription({
+                // dispatch(openModal({
                 //     title: errorForModal?.title,
                 //     description: errorForModal?.description
                 // }))
