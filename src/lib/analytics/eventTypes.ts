@@ -5,6 +5,9 @@ export enum GTMEventType {
     discount_button_or_toggle = 'discount_button_or_toggle',
     sustainable_button_or_toggle = 'sustainable_button_or_toggle',
     purchase = 'purchase',
+    begin_checkout = 'begin_checkout',
+    add_to_cart = 'add_to_cart',
+    remove_from_cart = 'remove_from_cart'
     // selectItem = 'select_item',
     // addShippingInfo = 'add_shipping_info',
     // beginCheckout = 'begin_checkout',  
@@ -12,7 +15,8 @@ export enum GTMEventType {
 
 export enum PixelEventType {
     purchase = 'Purchase',
-    addToCart = 'AddToCart'
+    addToCart = 'AddToCart',
+    initiateCheckout = 'InitiateCheckout'
 }
 
 export type VeploPixelEvent = {

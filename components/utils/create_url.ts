@@ -1,5 +1,6 @@
 
-const createUrlSchema = (parameters: string[] | undefined | null) => {
+const createUrlSchema = (parameters: string[] | any | undefined | null) => {
+
     if (!parameters) return ''
     let url = ''
     for (const parameter of parameters) {

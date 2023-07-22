@@ -1,3 +1,4 @@
+import { CartProductVariation } from "../lib/apollo/generated/graphql"
 
 
 export interface ProductVariation {
@@ -29,5 +30,5 @@ export interface Cart {
         profilePhoto?: string
     },
     total: number,
-    productVariations: ProductVariation[]
+    productVariations: CartProductVariation[]
 }

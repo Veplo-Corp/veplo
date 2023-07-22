@@ -30,6 +30,7 @@ import OrderComponent from '../../../../../components/molecules/OrderComponent';
 import { fbq, gtag } from '../../../../lib/analytics/gtag';
 import { GTMEventType, PixelEventType } from '../../../../lib/analytics/eventTypes';
 import { formatNumberWithTwoDecimalsInNumber } from '../../../../../components/utils/formatNumberWithTwoDecimalsInNumber';
+import { GtagVariationsToItemsFor } from '../../../../../components/utils/GtagVariationsToItemsFor';
 
 
 
@@ -65,35 +66,8 @@ const index = () => {
 
     const purchase = (order: Order | undefined) => {
         if (!order) return
-        const items = order.productVariations?.map(variation => {
-
-
-            const price = variation.price?.v1 && variation.price?.v2 && variation.price?.v2 < variation.price?.v1 ?
-                formatNumberWithTwoDecimalsInNumber(variation.price?.v2)
-                :
-                variation.price?.v1 && variation.price?.v2 && variation.price?.v2 >= variation.price?.v1 ?
-                    formatNumberWithTwoDecimalsInNumber(variation.price?.v1)
-                    :
-                    0
-
-            const discount = formatNumberWithTwoDecimalsInNumber(variation.price?.v1 && variation.price?.v2 ? variation.price?.v1 - variation.price?.v2 : 0)
-
-            console.log(discount);
-
-            console.log(price);
-
-            return {
-                item_id: variation.id,
-                item_name: variation.name,
-                discount: discount,
-                item_brand: variation.brand,
-                //TODO aggiungere a variation gender, univers, macrocategory, microcategory
-                item_variant: variation.color,
-                price: price,
-                quantity: variation.quantity
-            }
-        })
-        if (!items) return
+        const items = GtagVariationsToItemsFor(order?.productVariations)
+        if (items.length <= 0) return
         console.log(items)
 
         gtag({

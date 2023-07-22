@@ -20,6 +20,12 @@ export const gtag = (payload: VeploGTMEvent) => {
 export const fbq = (payload: VeploPixelEvent) => {
     if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
         window.dataLayer = window.dataLayer || [];
-        window.fbq('track', payload.command, payload.args);
+        try {
+            //Drop FB Pixel
+            window.fbq('track', payload.command, payload.args);
+        }
+        catch (err) {
+            setTimeout(function () { fbq(payload); }, 2000);
+        }
     }
 };
