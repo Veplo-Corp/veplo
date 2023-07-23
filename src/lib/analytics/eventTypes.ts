@@ -7,7 +7,8 @@ export enum GTMEventType {
     purchase = 'purchase',
     begin_checkout = 'begin_checkout',
     add_to_cart = 'add_to_cart',
-    remove_from_cart = 'remove_from_cart'
+    remove_from_cart = 'remove_from_cart',
+    exception = 'exception',
     // selectItem = 'select_item',
     // addShippingInfo = 'add_shipping_info',
     // beginCheckout = 'begin_checkout',  
@@ -43,6 +44,7 @@ export type VeploGTMEvent = {
         gender?: 'male' | 'female' | 'not_speficied',
         ecommerce?: any,
         page_section?: string,
+        description?: string
     }
 }
 

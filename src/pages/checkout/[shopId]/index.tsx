@@ -108,6 +108,7 @@ const index = () => {
         if (!resolve || !cart) return
         setIsDisabled(true)
         try {
+            throw new Error('errore durante checkout')
             const create = await checkoutUrlMutation({
                 variables: {
                     shopId: cart?.shopInfo.id
@@ -135,6 +136,13 @@ const index = () => {
         }
         catch (e) {
             console.log(e);
+            gtag({
+                command: GTMEventType.exception,
+                args: {
+                    description: 'errore durante checkout',
+                    email: user.email
+                }
+            })
             setIsDisabled(false)
         }
     }
