@@ -719,6 +719,7 @@ const index = () => {
                     }}
                 />
             </ModalReausable>
+
             <ModalReausable
                 marginTop={0}
                 title='Elimina prodotto' isOpen={IsOpenDeleteVariation ? true : false}

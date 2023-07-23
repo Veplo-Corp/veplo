@@ -55,14 +55,15 @@ const Header = () => {
         if (!betterInputGeneratorResult.data?.betterInputGenerator) return
         const params = betterInputGeneratorResult.data?.betterInputGenerator
         const result: InputObjectBIG | boolean = processBIGObjectForUrl(params)
-        console.log(result);
+        console.log(betterInputGeneratorResult);
 
         if (!result) return
         console.log(result);
         router.push({
             pathname: `/${getUnivers()}/${gender}-${typeof result.macroCategory === 'string' ? result.macroCategory.toLowerCase() : 'tutto'}/${typeof result.microCategory === 'string' ? createUrlSchema([result.microCategory]) : 'tutto'}/rilevanza`,
             query: {
-                ...result.filters
+                ...result.filters,
+                query: betterInputGeneratorResult.variables?.query
             }
         })
         //router.push(`/${getUnivers()}/${gender}-tutto/tutto/rilevanza/${createUrlSchema([question])}`)
@@ -259,7 +260,10 @@ const Header = () => {
                                     <div className='flex gap-3'>
                                         <div className='hidden lg:flex'>
                                             <Input_Search_Item
-                                                handleChangeValue={(text) => handleAutoComplete(text)}
+                                                handleChangeValue={(text) => {
+                                                    handleAutoComplete(text)
+                                                }
+                                                }
                                                 placeholder='Cerca tutto quello che ti interessa'
                                                 onConfirmText={(value) => {
                                                     handleSearchText(value)
