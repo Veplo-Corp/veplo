@@ -57,7 +57,15 @@ const Header = () => {
         const result: InputObjectBIG | boolean = processBIGObjectForUrl(params)
         console.log(betterInputGeneratorResult);
 
-        if (!result) return
+        if (!result) {
+            router.push({
+                pathname: `/${getUnivers()}/${gender}-tutto/tutto/rilevanza`,
+                query: {
+                    query: betterInputGeneratorResult.variables?.query
+                }
+            })
+            return
+        }
         console.log(result);
         router.push({
             pathname: `/${getUnivers()}/${gender}-${typeof result.macroCategory === 'string' ? result.macroCategory.toLowerCase() : 'tutto'}/${typeof result.microCategory === 'string' ? createUrlSchema([result.microCategory]) : 'tutto'}/rilevanza`,
@@ -261,7 +269,9 @@ const Header = () => {
                                         <div className='hidden lg:flex'>
                                             <Input_Search_Item
                                                 handleChangeValue={(text) => {
-                                                    handleAutoComplete(text)
+                                                    const regex = /[^A-Za-zÀ-ÿ0-9 -]/g;
+                                                    const textfiltered = text.replace(regex, '');
+                                                    handleAutoComplete(textfiltered)
                                                 }
                                                 }
                                                 placeholder='Cerca tutto quello che ti interessa'
