@@ -56,7 +56,7 @@ const CheckoutProduct: FC<{ variation: CartProductVariation, toProduct?: (variat
                         >
                             <Text
                             >
-                                {variation?.price?.v2 && typeof variation?.quantity === 'number' && variation?.price?.v2 < variation?.price?.v1 ? formatNumberWithTwoDecimalsInString(variation.price.v2 * variation?.quantity) + '€' : formatNumberWithTwoDecimalsInString(variation?.price?.v1 * (variation?.quantity ? variation?.quantity : 0)) + '€'}
+                                {variation?.price?.v2 && typeof variation?.quantity === 'number' && variation?.price?.v2 < variation?.price?.v1 ? formatNumberWithTwoDecimalsInString(variation.price.v2) + '€' : formatNumberWithTwoDecimalsInString(variation?.price?.v1) + '€'}
                             </Text>
                             {typeof variation?.price?.discountPercentage === 'number' && variation?.price?.discountPercentage > 0 &&
                                 <Tag
