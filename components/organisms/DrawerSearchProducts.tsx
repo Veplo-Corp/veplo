@@ -16,7 +16,7 @@ const DrawerSearchProducts: FC<{ isOpen: boolean, closeDrawer: () => void, onCon
     const [textSearched, setTextSearched] = useState('')
     const onConfirm = (e: any) => {
         if (e.key === 'Enter' || e.key === undefined) {
-            if (textSearched.length <= 0) return
+            if (textSearched.trim().length <= 3) return
             onConfirmText(textSearched.toLowerCase().trim())
             setTextSearched('')
             closeDrawer()

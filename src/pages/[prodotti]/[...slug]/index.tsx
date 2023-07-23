@@ -714,7 +714,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             onChange={(event) => {
                                 console.log(event.target.value);
                                 return router.push({
-                                    pathname: `/ ${event.target.value} /${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto / rilevanza`,
+                                    pathname: `/${event.target.value}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/rilevanza`,
                                 })
                             }}
                             color={'black'}

@@ -17,7 +17,7 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: (text: string)
 
 
     const handleConfirm = () => {
-        if (textSearched.length < 0) return
+        if (textSearched.trim().length <= 3) return
         setTextSearched('')
         setisSearchBoxVisible(false)
         onConfirmText(textSearched.toLowerCase().trim())
