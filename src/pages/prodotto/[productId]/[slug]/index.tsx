@@ -85,8 +85,8 @@ export async function getServerSideProps(ctx: any) {
 
         const colors = data.product.variations.map((variation: Variation) => {
             return {
-                name: variation.color,
-                cssColor: COLORS.find(color => color.name === variation.color)?.cssColor
+                name: variation?.color,
+                cssColor: COLORS.find(color => color.name === variation?.color)?.cssColor
             }
         })
 
@@ -237,10 +237,10 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             setSizeSelected(sizes)
         }
         if (typeof colors === 'string' && product) {
-            const variation = product.variations.find(variation => variation.color.toLowerCase() == colors.toLowerCase())
+            const variation = product.variations.find(variation => variation?.color.toLowerCase() == colors.toLowerCase())
             if (!variation) return
             setVariationSelected(variation)
-            setColorSelected(variation.color)
+            setColorSelected(variation?.color)
             return
         }
 
@@ -319,10 +319,10 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
 
     const changeDressColor = (color: string) => {
-        const variation = product.variations.find(variation => variation.color.toLowerCase() == color.toLowerCase())
+        const variation = product.variations.find(variation => variation?.color.toLowerCase() == color.toLowerCase())
         if (!variation) return
         setVariationSelected(variation)
-        setColorSelected(variation.color)
+        setColorSelected(variation?.color)
         setSizeSelected('')
         router.replace({
             pathname: router.asPath.split('?')[0],
@@ -372,7 +372,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             let NewCarts: Cart[] = [];
             let quantityMax;
             let productVariationQuantity = 0;
-            const variation = product.variations.find(variation => variation.id === variationSelected.id)
+            const variation = product.variations.find(variation => variation?.id === variationSelected.id)
             const lots = variation?.lots
 
             if (lots) {
@@ -381,11 +381,11 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             //CART ESISTENTE
             if (Cart) {
                 console.log(Cart.productVariations);
-                const quantity = Cart.productVariations.find(variation => variation.size === sizeSelected && variation.id === variationSelected.id)?.quantity
+                const quantity = Cart.productVariations.find(variation => variation?.size === sizeSelected && variation?.id === variationSelected.id)?.quantity
 
                 //caso in cui la Variation è già presente in cart
                 if (quantity) {
-                    const index = Cart.productVariations.findIndex(variation => variation.size === sizeSelected)
+                    const index = Cart.productVariations.findIndex(variation => variation?.size === sizeSelected)
 
                     //aggiunge un prodotto dove ha già raggiunto la massima quantità disponibile
                     if (quantityMax && quantity >= quantityMax) {
@@ -409,7 +409,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
                     const productVariations = [
                         newProductVariation,
-                        ...Cart.productVariations.filter(variation => variation.size !== sizeSelected || variation.id !== variationSelected.id),
+                        ...Cart.productVariations.filter(variation => variation?.size !== sizeSelected || variation?.id !== variationSelected.id),
                     ]
 
 

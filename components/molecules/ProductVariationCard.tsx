@@ -25,7 +25,7 @@ const ProductVariationCard: FC<{ index: number, variation: VariationCard, delete
         >
             <div className='flex justify-between mb-1'>
                 <h5 className=' text-md lg:text-lg font-extrabold my-auto'>
-                    {variation.color}
+                    {variation?.color}
                 </h5>
                 <h5 className=' text-sm lg:text-md font-bold text-right my-auto'>
                     Taglie
@@ -33,7 +33,7 @@ const ProductVariationCard: FC<{ index: number, variation: VariationCard, delete
             </div>
             <div className='flex justify-between mt-2'>
                 <div className='flex gap-2'>
-                    {variation.photos.length > 0 && variation.photos.map((image: any) => {
+                    {variation?.photos.length > 0 && variation?.photos.map((image: any) => {
                         if (image?.url) {
 
                             return (
@@ -58,7 +58,7 @@ const ProductVariationCard: FC<{ index: number, variation: VariationCard, delete
 
                 <div className='gap-2 text-right'>
                     {
-                        variation.lots.length > 0 && variation.lots.map((size: any) => {
+                        variation?.lots.length > 0 && variation?.lots.map((size: any) => {
                             return (
                                 <p
                                     className='text-sm mb-1'

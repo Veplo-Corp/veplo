@@ -26,7 +26,7 @@ const EditVariationCard: FC<{ variation: Variation, category: string, deleteVari
         const sizeTypologySelected = SIZES_TYPES.find(element => element.name === category)?.type
         if (!sizeTypologySelected) return
         setSizeTypologySelected(sizeTypologySelected)
-        variation.lots.forEach(lot => {
+        variation?.lots.forEach(lot => {
             const size = sizeTypologySelected?.find(element => element.split(' (')[0] === lot.size)
             if (!size) return
             lots.push({
@@ -57,7 +57,7 @@ const EditVariationCard: FC<{ variation: Variation, category: string, deleteVari
 
                         <div className='flex justify-between mb-1'>
                             <h5 className=' text-md lg:text-lg font-extrabold my-auto'>
-                                {variation.color}
+                                {variation?.color}
                             </h5>
                             <h5 className=' text-sm lg:text-md font-bold text-right my-auto'>
                                 Taglie
@@ -66,7 +66,7 @@ const EditVariationCard: FC<{ variation: Variation, category: string, deleteVari
                         <div className='flex justify-between mt-2'>
 
                             <div className='flex gap-2'>
-                                {variation.photos.length > 0 && variation.photos.map((image: any) => {
+                                {variation?.photos.length > 0 && variation?.photos.map((image: any) => {
                                     if (image?.url) {
                                         return (
                                             <img
@@ -97,7 +97,7 @@ const EditVariationCard: FC<{ variation: Variation, category: string, deleteVari
 
                             <div className='gap-2 text-right'>
                                 {
-                                    variation.lots.length > 0 && variation.lots.map((size: any) => {
+                                    variation?.lots.length > 0 && variation?.lots.map((size: any) => {
                                         return (
 
                                             <p
@@ -158,7 +158,7 @@ const EditVariationCard: FC<{ variation: Variation, category: string, deleteVari
                     >
                         <div className='flex justify-between mb-3'>
                             <h5 className=' text-md lg:text-lg font-extrabold my-auto'>
-                                {variation.color}
+                                {variation?.color}
                             </h5>
 
                         </div>
@@ -272,7 +272,7 @@ const EditVariationCard: FC<{ variation: Variation, category: string, deleteVari
                                 onClick={() => {
                                     seteditMode(false)
                                     const lots: Size[] = [];
-                                    variation.lots.forEach(lot => {
+                                    variation?.lots.forEach(lot => {
                                         const size = sizeTypologySelected?.find(element => element.split(' (')[0] === lot.size)
                                         if (!size) return
                                         lots.push({
@@ -295,9 +295,9 @@ const EditVariationCard: FC<{ variation: Variation, category: string, deleteVari
                                 //isDisabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
                                 onClick={
                                     () => {
-                                        const variations = variationTranslate.filter(variation => variation.size !== '' && variation.quantity >= 0)
+                                        const variations = variationTranslate.filter(variation => variation?.size !== '' && variation?.quantity >= 0)
                                         //console.log(variations);
-                                        editVariation(variation.id, variations, variation.photos)
+                                        editVariation(variation?.id, variations, variation?.photos)
                                         seteditMode(false)
                                     }
                                 }
@@ -327,7 +327,7 @@ const EditVariationCard: FC<{ variation: Variation, category: string, deleteVari
                         colorScheme={'red'}
                         variant={'outline'}
                         onClick={() => {
-                            deleteVariation(variation.id, variation.color)
+                            deleteVariation(variation?.id, variation?.color)
                             setOpenModal(false)
 
                         }}

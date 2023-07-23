@@ -40,7 +40,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
 
     useEffect(() => {
         if (variation?.photos) {
-            setfullImage(variation.photos[0])
+            setfullImage(variation?.photos[0])
         }
 
     }, [variation])
@@ -124,7 +124,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                                     className='aspect-[4.8/5] object-cover'
                                                     /* onClick={onClickImageModal} */
                                                     src={imageKitUrl(fullImage)}
-                                                    alt={variation.color + 'non trovato'}
+                                                    alt={variation?.color + 'non trovato'}
                                                 />
                                             </TransformComponent>
                                         </div>
@@ -144,7 +144,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                     <Image
                                         /* onClick={onClickImageModal} */
 
-                                        src={imageKitUrl(fullImage)} alt={variation.color + 'non trovato'} />
+                                        src={imageKitUrl(fullImage)} alt={variation?.color + 'non trovato'} />
                                 </TransformComponent>
                             </TransformWrapper>
                         </div>
@@ -169,7 +169,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                         effect="blur"
                                         //PlaceholderSrc={PlaceholderImage}
                                         //effect="blur"
-                                        alt={variation.color + 'non trovato'}
+                                        alt={variation?.color + 'non trovato'}
                                         className='rounded-lg w-full aspect-[4.8/5] object-cover'
                                     />
                                 </motion.div>
@@ -182,7 +182,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                     animate="visible"
                                     exit="hidden"
                                 >
-                                    {variation?.photos && variation.photos.map((image) => {
+                                    {variation?.photos && variation?.photos.map((image) => {
                                         return (
                                             <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
                                                 borderWidth={1.5}
@@ -195,7 +195,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
                                                 <Image src={
                                                     imageKitUrl(image, 237, 247)
                                                 }
-                                                    alt={variation.color + 'non trovato'}
+                                                    alt={variation?.color + 'non trovato'}
                                                     width={'fit-content'}
                                                     maxH={'52'}
                                                     // height={'fit-content'}
@@ -221,7 +221,7 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
 
                             modules={[Pagination, Navigation]}
                         >
-                            {variation.photos?.map((photoUrl, index) => {
+                            {variation?.photos?.map((photoUrl, index) => {
                                 return (
                                     <SwiperSlide key={index}
                                         onClick={() => {

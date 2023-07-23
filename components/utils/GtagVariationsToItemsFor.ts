@@ -6,29 +6,29 @@ export const GtagVariationsToItemsFor = (variations: CartProductVariation[] | un
     const items = variations?.map(variation => {
 
 
-        const price = variation.price?.v1 && variation.price?.v2 && variation.price?.v2 < variation.price?.v1 ?
-            formatNumberWithTwoDecimalsInNumber(variation.price?.v2)
+        const price = variation?.price?.v1 && variation?.price?.v2 && variation?.price?.v2 < variation?.price?.v1 ?
+            formatNumberWithTwoDecimalsInNumber(variation?.price?.v2)
             :
-            variation.price?.v1 && variation.price?.v2 && variation.price?.v2 >= variation.price?.v1 ?
-                formatNumberWithTwoDecimalsInNumber(variation.price?.v1)
+            variation?.price?.v1 && variation?.price?.v2 && variation?.price?.v2 >= variation?.price?.v1 ?
+                formatNumberWithTwoDecimalsInNumber(variation?.price?.v1)
                 :
                 0
 
-        const discount = formatNumberWithTwoDecimalsInNumber(variation.price?.v1 && variation.price?.v2 ? variation.price?.v1 - variation.price?.v2 : 0)
+        const discount = formatNumberWithTwoDecimalsInNumber(variation?.price?.v1 && variation?.price?.v2 ? variation?.price?.v1 - variation?.price?.v2 : 0)
 
         console.log(discount);
 
         console.log(price);
 
         return {
-            item_id: variation.id,
-            item_name: variation.name,
+            item_id: variation?.id,
+            item_name: variation?.name,
             discount: discount,
-            item_brand: variation.brand,
+            item_brand: variation?.brand,
             //TODO aggiungere a variation gender, univers, macrocategory, microcategory
-            item_variant: variation.color,
+            item_variant: variation?.color,
             price: price,
-            quantity: variation.quantity
+            quantity: variation?.quantity
         }
     })
 

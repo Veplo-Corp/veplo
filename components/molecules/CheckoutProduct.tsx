@@ -18,7 +18,7 @@ const CheckoutProduct: FC<{ variation: CartProductVariation, toProduct?: (variat
             display={'flex'}
             width={'full'}
         >
-            <Link href={`/prodotto/${variation?.productId}/${variation?.brand}-${variation.name}`}>
+            <Link href={`/prodotto/${variation?.productId}/${variation?.brand}-${variation?.name}`}>
                 <LazyLoadImage src={
                     imageKitUrl(variation?.photo ? variation?.photo : '', 237, 247)
                 }
@@ -42,11 +42,11 @@ const CheckoutProduct: FC<{ variation: CartProductVariation, toProduct?: (variat
                     spacing={2}
 
                 >
-                    <Link href={`/prodotto/${variation?.productId}/${variation?.brand}-${variation.name}`}>
+                    <Link href={`/prodotto/${variation?.productId}/${variation?.brand}-${variation?.name}`}>
                         <ListItem>{toUpperCaseFirstLetter(variation?.brand)}</ListItem>
                     </Link>
 
-                    <ListItem>{variation?.size?.toUpperCase()} - {toUpperCaseFirstLetter(variation?.color)}{typeof variation.quantity === 'number' && variation.quantity > 1 ? ' (Q.ta ' + variation.quantity + ')' : ''} </ListItem>
+                    <ListItem>{variation?.size?.toUpperCase()} - {toUpperCaseFirstLetter(variation?.color)}{typeof variation?.quantity === 'number' && variation?.quantity > 1 ? ' (Q.ta ' + variation?.quantity + ')' : ''} </ListItem>
                     {typeof variation?.price?.v1 === 'number' && <ListItem
                         gap={2}
                     >
@@ -56,7 +56,7 @@ const CheckoutProduct: FC<{ variation: CartProductVariation, toProduct?: (variat
                         >
                             <Text
                             >
-                                {variation?.price?.v2 && typeof variation?.quantity === 'number' && variation?.price?.v2 < variation?.price?.v1 ? formatNumberWithTwoDecimalsInString(variation.price.v2) + '€' : formatNumberWithTwoDecimalsInString(variation?.price?.v1) + '€'}
+                                {variation?.price?.v2 && typeof variation?.quantity === 'number' && variation?.price?.v2 < variation?.price?.v1 ? formatNumberWithTwoDecimalsInString(variation?.price.v2) + '€' : formatNumberWithTwoDecimalsInString(variation?.price?.v1) + '€'}
                             </Text>
                             {typeof variation?.price?.discountPercentage === 'number' && variation?.price?.discountPercentage > 0 &&
                                 <Tag
@@ -81,7 +81,7 @@ const CheckoutProduct: FC<{ variation: CartProductVariation, toProduct?: (variat
                 >
                     <Select
                         mt={1}
-                        value={variation.quantity ? variation?.quantity : 0}
+                        value={variation?.quantity ? variation?.quantity : 0}
                         boxShadow={'none'}
                         onChange={(event) => {
                             editVariation(variation, Number(event.target.value))
@@ -102,7 +102,7 @@ const CheckoutProduct: FC<{ variation: CartProductVariation, toProduct?: (variat
                         bg={'#F2F2F2'}
                     >
 
-                        {Array.from({ length: typeof variation?.maxQuantity === 'number' && variation?.maxQuantity < 7 ? variation.maxQuantity : 7 }, (_, i) => i + 1)
+                        {Array.from({ length: typeof variation?.maxQuantity === 'number' && variation?.maxQuantity < 7 ? variation?.maxQuantity : 7 }, (_, i) => i + 1)
                             .map(item => {
                                 return (<option
                                     key={item}
