@@ -4,33 +4,33 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useDispatch, useSelector } from 'react-redux';
-import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
-import Loading from '../../../../../components/molecules/Loading';
-import ProductVariationInOrder from '../../../../../components/molecules/ProductVariationInOrder';
-import { OrderStatus, STATUS } from '../../../../../components/mook/statusOrderUser';
-import PriceAndShippingListingCost from '../../../../../components/organisms/PriceAndShippingListingCost';
-import createUrlSchema from '../../../../../components/utils/create_url';
-import { imageKitUrl } from '../../../../../components/utils/imageKitUrl';
-import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter';
-import { DateFormat, getDateFromMongoDBDate } from '../../../../../components/utils/getDateFromMongoDBDate';
-import ModalReausable from '../../../../../components/organisms/ModalReausable';
-import FormReturn from '../../../../../components/molecules/FormReturn';
-import { ToastOpen } from '../../../../../components/utils/Toast';
-import { useMutation, useQuery } from '@apollo/client';
-import RETURN_ORDER from '../../../../lib/apollo/mutations/returnOrder';
-import { setOrders } from '../../../../store/reducers/orders';
-import GrayBox from '../../../../../components/atoms/GrayBox';
-import Modal_Help_Customer_Care from '../../../../../components/organisms/Modal_Help_Customer_Care';
-import GET_ORDER from '../../../../lib/apollo/queries/getOrder';
-import { Order } from '../../../../lib/apollo/generated/graphql';
-import { Firebase_User } from '../../../../interfaces/firebase_user.interface';
-import ProfilePhoto from '../../../../../components/molecules/ProfilePhoto';
-import CheckoutProduct from '../../../../../components/molecules/CheckoutProduct';
-import OrderComponent from '../../../../../components/molecules/OrderComponent';
-import { fbq, gtag } from '../../../../lib/analytics/gtag';
-import { GTMEventType, PixelEventType } from '../../../../lib/analytics/eventTypes';
-import { formatNumberWithTwoDecimalsInNumber } from '../../../../../components/utils/formatNumberWithTwoDecimalsInNumber';
-import { GtagVariationsToItemsFor } from '../../../../../components/utils/GtagVariationsToItemsFor';
+import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout';
+import Loading from '../../../../../../components/molecules/Loading';
+import ProductVariationInOrder from '../../../../../../components/molecules/ProductVariationInOrder';
+import { OrderStatus, STATUS } from '../../../../../../components/mook/statusOrderUser';
+import PriceAndShippingListingCost from '../../../../../../components/organisms/PriceAndShippingListingCost';
+import createUrlSchema from '../../../../../../components/utils/create_url';
+import { imageKitUrl } from '../../../../../../components/utils/imageKitUrl';
+import toUpperCaseFirstLetter from '../../../../../../components/utils/uppercase_First_Letter';
+import { DateFormat, getDateFromMongoDBDate } from '../../../../../../components/utils/getDateFromMongoDBDate';
+import ModalReausable from '../../../../../../components/organisms/ModalReausable';
+import FormReturn from '../../../../../../components/molecules/FormReturn';
+import { ToastOpen } from '../../../../../../components/utils/Toast';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import RETURN_ORDER from '../../../../../lib/apollo/mutations/returnOrder';
+import { setOrders } from '../../../../../store/reducers/orders';
+import GrayBox from '../../../../../../components/atoms/GrayBox';
+import Modal_Help_Customer_Care from '../../../../../../components/organisms/Modal_Help_Customer_Care';
+import GET_ORDER from '../../../../../lib/apollo/queries/getOrder';
+import { Order } from '../../../../../lib/apollo/generated/graphql';
+import { Firebase_User } from '../../../../../interfaces/firebase_user.interface';
+import ProfilePhoto from '../../../../../../components/molecules/ProfilePhoto';
+import CheckoutProduct from '../../../../../../components/molecules/CheckoutProduct';
+import OrderComponent from '../../../../../../components/molecules/OrderComponent';
+import { fbq, gtag } from '../../../../../lib/analytics/gtag';
+import { GTMEventType, PixelEventType } from '../../../../../lib/analytics/eventTypes';
+import { formatNumberWithTwoDecimalsInNumber } from '../../../../../../components/utils/formatNumberWithTwoDecimalsInNumber';
+import { GtagVariationsToItemsFor } from '../../../../../../components/utils/GtagVariationsToItemsFor';
 
 
 
@@ -40,23 +40,36 @@ const index = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const orders: Order[] = useSelector((state: any) => state.orders.orders);
-    const { data } = useQuery<{ order: Order }>(GET_ORDER, {
-        variables: {
-            id: router.query.orderId
-        }
-    })
+    // const { data } = useQuery<{ order: Order }>(GET_ORDER, {
+    //     variables: {
+    //         id: router.query.orderId
+    //     }
+    // })
+    const [getOrder, { error, data }] = useLazyQuery(GET_ORDER);
 
-    const user: Firebase_User = useSelector((state: any) => state.user.user);
 
     const [order, setOrder] = useState<Order>();
     const [orderStatus, setOrderStatus] = useState<OrderStatus>();
-    const [isOpenModalReturn, setIsOpenModalReturn] = useState(false)
-    const { addToast } = ToastOpen();
+
+
+    useEffect(() => {
+        //64b8eb28cd7ef52c053c954a
+
+        if (!router.isReady) return
+        const { shopId, userId } = router.query;
+
+        console.log(shopId, userId);
+        getOrder({
+            variables: {
+                id: "64b8eb28cd7ef52c053c954a"
+            }
+        })
+
+    }, [router.query])
 
 
 
     useEffect(() => {
-        const { orderId } = router.query
         if (!data && !order) return
         setOrder(data?.order)
         purchase(data?.order)
