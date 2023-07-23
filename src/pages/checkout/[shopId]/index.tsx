@@ -108,7 +108,6 @@ const index = () => {
         if (!resolve || !cart) return
         setIsDisabled(true)
         try {
-            throw new Error('errore durante checkout')
             const create = await checkoutUrlMutation({
                 variables: {
                     shopId: cart?.shopInfo.id
