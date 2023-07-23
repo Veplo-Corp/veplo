@@ -364,8 +364,16 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         })
     }
 
+    const filterParamsOnChangeMacrocatecory = (filters: Omit<ProductsFilter, "macroCategory" | "gender" | "microCategory">): Omit<ProductsFilter, "macroCategory" | "gender" | "microCategory"> => {
+        const filterForMacrocategory = filters
+        if (filterForMacrocategory["sizes"]) {
+            delete filterForMacrocategory["sizes"]
+        }
+        return filterForMacrocategory
+    }
+
     const changeRouter = (value: string, filterParameter: FilterAccepted) => {
-        console.log('PASSAAAAAA');
+
 
         //testare se non da problemi
         setIsLoading(true)
@@ -379,8 +387,12 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         console.log('filtersParams', filtersParams);
         if (filterParameter === 'macroCategory') {
+            const query = filterParamsOnChangeMacrocatecory(filtersParams)
             return router.push({
                 pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${createUrlSchema([value])}/tutto/${sort}`,
+                query: {
+                    ...query
+                }
             })
         }
         if (filterParameter === 'microCategory') {
@@ -441,18 +453,24 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     }
 
     const deleteFilterParams = (paramters: FilterAccepted) => {
-
-        if (paramters === 'macroCategory') {
-            return router.push({
-                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/${sort}`,
-            })
-        }
         let filtersParams: any = getParamsFiltersFromObject(filters)
         delete filtersParams[paramters]
         if (filtersParams["traits"]) {
             delete filtersParams["traits"]
             filtersParams["sostenibile"] = 'true'
         }
+
+
+        if (paramters === 'macroCategory') {
+            const query = filterParamsOnChangeMacrocatecory(filtersParams)
+            return router.push({
+                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/${sort}`,
+                query: {
+                    ...query
+                }
+            })
+        }
+
         if (paramters === 'microCategory') {
             return router.push({
                 pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/tutto/${sort}`,
@@ -471,9 +489,11 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     }
 
     const routerConfirmDrawerFilter = (filtersDrawerModal: ProductsFilter | undefined) => {
+        console.log(filtersDrawerModal);
+
         if (!filtersDrawerModal) {
             return router.push({
-                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/tutto/rilevanza`,
+                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/tutto}/${sort ? sort : 'rilevanza'}`,
             })
         }
         if (typeof filtersDrawerModal.sizes?.[0] === 'string') {
@@ -532,6 +552,98 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     }
 
 
+    console.log(Object.keys(getParamsFiltersFromObject(filters)).length);
+    console.log(Object.keys(getParamsFiltersFromObject(filters)));
+
+
+
+    const ReturnTagFilter = () => {
+
+        return (
+            <HStack mt={[3, 2]} spacing={2}
+                className='flex flex-wrap'
+            >
+                {filters?.macroCategory &&
+                    <TagFilter
+                        value={'macroCategory'}
+                        text={'' + toUpperCaseFirstLetter(filters?.macroCategory)}
+                        handleEvent={deleteFilterParams}
+                    />
+                }
+                {filters.microCategory &&
+                    <TagFilter
+                        value={'macroCategory'}
+                        text={'' + toUpperCaseFirstLetter(filters.microCategory)}
+                        handleEvent={deleteFilterParams}
+                    />
+                }
+                {filters?.sizes &&
+                    <TagFilter
+                        value={'sizes'}
+                        text={`Taglia ${filters.sizes[0].toUpperCase()}`}
+                        handleEvent={deleteFilterParams}
+                    />
+                }
+                {filters?.brand &&
+                    <TagFilter
+                        value={'brand'}
+                        text={`${toUpperCaseFirstLetter(filters.brand)}`}
+                        handleEvent={deleteFilterParams}
+                    />
+                }
+                {filters?.colors &&
+                    <TagFilter
+                        value={'colors'}
+                        text={`${toUpperCaseFirstLetter(filters.colors[0])}`}
+                        handleEvent={deleteFilterParams}
+                    />
+                }
+                {filters.maxPrice &&
+                    <TagFilter
+                        value={'maxPrice'}
+                        text={`Max ${(Number(filters.maxPrice) / 100).toFixed(0)}€`}
+                        handleEvent={deleteFilterParams}
+                    />
+                }
+                {filters.minPrice &&
+                    <TagFilter
+                        value={'minPrice'}
+                        text={`Min ${(Number(filters.minPrice) / 100).toFixed(0)}€`}
+                        handleEvent={deleteFilterParams}
+                    />
+                }
+                {filters.sale /* && isSmallView */ &&
+                    <TagFilter
+                        value={'sale'}
+                        text={'Promozioni'}
+                        handleEvent={deleteFilterParams}
+                    />
+                }
+                {filters.traits /* && isSmallView */ &&
+                    <TagFilter
+                        value={'traits'}
+                        text={'Sostenibile'}
+                        handleEvent={deleteFilterParams}
+                    />
+                }
+                {Object.keys(getParamsFiltersFromObject(filters)).length > 0 &&
+                    <TagFilter
+                        value={'resetta'}
+                        clearTag={true}
+                        text={'Resetta Filtri'}
+                        handleEvent={() => {
+                            return router.push({
+                                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/${sort}`,
+                            })
+                        }}
+                    />
+                }
+
+            </HStack>
+
+        )
+    }
+
 
 
 
@@ -566,9 +678,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                             prefetch={false}
                                             href={element.url === createUrlSchema([filters?.macroCategory ? filters?.macroCategory : ''])
                                                 ?
-                                                '/' + universProps + '/' + (filters?.gender == 'm' ? 'uomo' : 'donna') + '-tutto/tutto/rilevanza'
+                                                '/' + universProps + '/' + (filters?.gender == 'm' ? 'uomo' : 'donna') + '-tutto/tutto/' + sort
                                                 :
-                                                '/' + universProps + '/' + (filters?.gender == 'm' ? 'uomo' : 'donna') + '-' + element.url + '/tutto/rilevanza'
+                                                '/' + universProps + '/' + (filters?.gender == 'm' ? 'uomo' : 'donna') + '-' + element.url + '/tutto/' + sort
                                             }
                                         >
                                             <Text
@@ -576,7 +688,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                 cursor={'pointer'}
                                                 color={'secondaryBlack.text'}
                                                 fontSize={'14px'}
-                                                className={`hover:underline hover:underline-offset-2  ${element.name === filters?.macroCategory ? 'underline underline-offset-2 font-extrabold' : 'font-medium'}`}
+                                                className={`hover:underline hover: underline - offset - 2  ${element.name === filters?.macroCategory ? 'underline underline-offset-2 font-extrabold' : 'font-medium'} `}
                                             >
                                                 {element.name}
                                             </Text>
@@ -591,7 +703,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             onChange={(event) => {
                                 console.log(event.target.value);
                                 return router.push({
-                                    pathname: `/${event.target.value}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/rilevanza`,
+                                    pathname: `/ ${event.target.value} /${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto / rilevanza`,
                                 })
                             }}
                             color={'black'}
@@ -634,9 +746,13 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     filterDrawerConfirm={routerConfirmDrawerFilter}
                                     changePriceEventRouter={(parameters) => {
                                         const filtersParams: any = getParamsFiltersFromObject(filters)
+
                                         if (filtersParams["traits"]) {
                                             delete filtersParams["traits"]
                                             filtersParams["sostenibile"] = 'true'
+                                        }
+                                        if (filters.sale !== 'true') {
+                                            delete filters['sale']
                                         }
                                         let newParams: any = {};
                                         for (let i = 0; i < parameters.length; i++) {
@@ -647,16 +763,38 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                             }
                                         }
                                         router.replace({
-                                            pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
+                                            pathname: `/ ${universProps} /${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'} /${sort}`,
                                             query: {
                                                 ...filtersParams,
                                                 ...newParams
                                             }
                                         })
                                     }}
-                                    handleChangeMacroCategory={(value: string) => {
+                                    handleChangeMacroCategory={(value: string, filtersParams: ProductsFilter | undefined) => {
+                                        console.log(filtersParams);
+                                        if (!filtersParams) {
+                                            return router.push({
+                                                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/tutto/${sort}`,
+                                            })
+                                        }
+
+
+                                        if (filtersParams.sale !== 'true') {
+                                            delete filtersParams['sale']
+                                        }
+                                        if (filtersParams.sostenibile !== 'true') {
+                                            delete filtersParams['sostenibile']
+                                        }
+
+                                        let OmitfiltersParams = getParamsFiltersFromObject(filtersParams)
+                                        const query = filterParamsOnChangeMacrocatecory(OmitfiltersParams)
+
+
                                         return router.push({
-                                            pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${value !== '' ? value.toLowerCase() : 'tutto'}/tutto/rilevanza`,
+                                            pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${value !== '' ? value.toLowerCase() : 'tutto'}/tutto/` + sort,
+                                            query: {
+                                                ...query
+                                            }
                                         })
                                     }}
                                 />
@@ -665,7 +803,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                         transform: 'scale(0.98)'
                                     }}
                                     icon={
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6" >
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                                         </svg>
                                     }
@@ -683,81 +821,22 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     onChange={changeSort}
                                     value={sort}
                                 >
-                                    {SORT_PRODUCT.map((sortElement) => {
-                                        return (
-                                            <option key={sortElement.text} value={sortElement.url}>{sortElement.text}</option>
-                                        )
-                                    })}
+                                    {
+                                        SORT_PRODUCT.map((sortElement) => {
+                                            return (
+                                                <option key={sortElement.text} value={sortElement.url}>{sortElement.text}</option>
+                                            )
+                                        })
+                                    }
                                 </Select>
 
-                            </Box>
+                            </Box >
 
-                            <HStack mt={[3, 2]} spacing={2}
-                                className='flex flex-wrap'
-                            >
-                                {Object?.keys(filters).filter(key => !['gender'].includes(key)).map((value) => {
 
-                                    let text: string = '';
-                                    if (value === 'sizes' && filters.sizes?.[0]) text = `Taglia ${filters.sizes[0].toUpperCase()}`
-                                    if (value === 'minPrice') text = `Min ${(Number(filters.minPrice) / 100).toFixed(0)}€`
-                                    if (value === 'maxPrice') text = `Max ${(Number(filters.maxPrice) / 100).toFixed(0)}€`
-                                    if (value === 'colors' && filters.colors?.[0]) text = `${toUpperCaseFirstLetter(filters.colors[0])}`
-                                    if (value === 'brand' && filters.brand) text = `${toUpperCaseFirstLetter(filters.brand)}`
+                            <ReturnTagFilter />
 
-                                    return (
 
-                                        <div key={value}
-                                            className={`${((value === 'microCategory' && !filters.microCategory) || (!filters?.macroCategory && value === 'macroCategory')) && 'hidden'}`
-                                            }>
-                                            {value === 'macroCategory' && filters?.macroCategory &&
-                                                <TagFilter
-                                                    value={value}
-                                                    text={'' + toUpperCaseFirstLetter(filters?.macroCategory)}
-                                                    handleEvent={deleteFilterParams}
-                                                />
-                                            }
-                                            {value === 'microCategory' && filters.microCategory &&
-                                                <TagFilter
-                                                    value={value}
-                                                    text={'' + toUpperCaseFirstLetter(filters.microCategory)}
-                                                    handleEvent={deleteFilterParams}
-                                                />
-                                            }
-                                            {(value === 'sizes' || value === 'brand' || value === 'colors') &&
-                                                <TagFilter
-                                                    value={value}
-                                                    text={text}
-                                                    handleEvent={deleteFilterParams}
-                                                />
-                                            }
-                                            {((value === 'maxPrice' || value === 'minPrice') && typeof value === 'string') &&
-                                                <TagFilter
-                                                    value={value}
-                                                    text={text}
-                                                    handleEvent={deleteFilterParams}
-                                                />
-                                            }
-                                            {value === 'sale' && isSmallView &&
-                                                <TagFilter
-                                                    value={value}
-                                                    text={'Promozioni'}
-                                                    handleEvent={deleteFilterParams}
-                                                />
-                                            }
-                                            {value === 'traits' && isSmallView &&
-                                                <TagFilter
-                                                    value={value}
-                                                    text={'Sostenibile'}
-                                                    handleEvent={deleteFilterParams}
-                                                />
-                                            }
-                                        </div>
-                                    )
-                                })
-                                }
-                            </HStack>
-
-                        </Box>
+                        </Box >
 
                         {!isLoading && products ?
                             (<InfiniteScroll

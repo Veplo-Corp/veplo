@@ -16,7 +16,7 @@ import { gtag } from '../../src/lib/analytics/gtag'
 import { GTMEventType } from '../../src/lib/analytics/eventTypes'
 import { Leaf } from 'iconoir-react'
 
-const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, univers: Univers, closeDrawer: () => void, handleConfirm: (filters: ProductsFilter | undefined) => void, changeMacroCategory: (value: string) => void }> = ({ isOpenDrawer, closeDrawer, filtersProps, univers, handleConfirm, changeMacroCategory }) => {
+const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, univers: Univers, closeDrawer: () => void, handleConfirm: (filters: ProductsFilter | undefined) => void, changeMacroCategory: (value: string, filters: ProductsFilter | undefined) => void }> = ({ isOpenDrawer, closeDrawer, filtersProps, univers, handleConfirm, changeMacroCategory }) => {
 
     const isSmallView = useBreakpointValue({ base: true, lg: false });
     const router = useRouter();
@@ -47,7 +47,7 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, un
 
         if (!value) return
         if (filterParameter === 'macroCategory') {
-            changeMacroCategory(value)
+            changeMacroCategory(value, filters)
         }
         //gestione array di stringhe
         if (filterParameter === 'colors' || filterParameter === 'sizes') {
