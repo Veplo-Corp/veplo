@@ -392,7 +392,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                         //TODO gestire alert "quantità massima già inserita"
                         dispatch(openModal({
                             title: 'Quantità massima raggiunta',
-                            description: 'Hai già aggiunto il numero massimo di prodotti disponibili per questo colore e taglia al carrello.'
+                            description: 'Hai già aggiunto al carrello il numero massimo di prodotti disponibili per questo colore e taglia.'
                             // description: <Box>
                             //     test jsx in funzione
                             // </Box>
@@ -791,7 +791,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                         bottom="0"
                                         left="0"
                                         right="0"
-                                        zIndex={9999}
+                                        zIndex={1}
                                     >
                                         <Box
                                             bg={'#FFFFFF'}

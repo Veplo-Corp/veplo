@@ -20,7 +20,7 @@ import { gtag } from '../../src/lib/analytics/gtag';
 
 const FiltersSelections: FC<{
     isLoading: boolean, filters: ProductsFilter, filterDrawerConfirm: (value: ProductsFilter | undefined) => void, handleConfirmChange:
-    (value: string, filterParameter: FilterAccepted) => void, univers: Univers | undefined, changePriceEventRouter: (parameters: { name: string, value: any }[]) => void, handleChangeMacroCategory: (value: string) => void
+    (value: string, filterParameter: FilterAccepted) => void, univers: Univers | undefined, changePriceEventRouter: (parameters: { name: string, value: any }[]) => void, handleChangeMacroCategory: (value: string, filters: ProductsFilter | undefined) => void
 }> =
     ({ isLoading, filters, handleConfirmChange, univers, changePriceEventRouter, filterDrawerConfirm, handleChangeMacroCategory }) => {
 
