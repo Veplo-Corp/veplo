@@ -9,9 +9,14 @@ export const parseSlugUrlFilter = (slug: string | undefined) => {
     const brand = params.get('brand');
     const sale = params.get('sale');
     const sostenibile = params.get('sostenibile');
+    const query = params.get('query');
+
     const parsedParams: any = {};
     if (sizes) {
         parsedParams['sizes'] = sizes.split(',');
+    }
+    if (query) {
+        parsedParams['query'] = query;
     }
     if (colors) {
         parsedParams['colors'] = colors.split(',');

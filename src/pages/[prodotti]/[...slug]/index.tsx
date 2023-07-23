@@ -109,7 +109,8 @@ export interface ProductsFilter extends ParsedURL {
     brand?: string,
     sale?: string,
     traits?: string,
-    sostenibile?: string
+    sostenibile?: string,
+    query?: string
 }
 
 const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Product[], universProps: Univers, sortProps: string }> = ({ filtersProps, error, dataProducts, universProps, sortProps }) => {
@@ -126,6 +127,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [history, setHistory] = useState<string>()
     const [sort, setSort] = useState<Sort | string>('')
     const timeoutRef = useRef<any>(null);
+
+    console.log(filters);
+
 
     useEffect(() => {
         clearTimeout(timeoutRef.current);
@@ -563,6 +567,13 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             <HStack mt={[3, 2]} spacing={2}
                 className='flex flex-wrap'
             >
+                {filters.query &&
+                    <TagFilter
+                        value={'query'}
+                        text={'ricerca: ' + toUpperCaseFirstLetter(filters?.query)}
+                        handleEvent={deleteFilterParams}
+                    />
+                }
                 {filters?.macroCategory &&
                     <TagFilter
                         value={'macroCategory'}
@@ -626,7 +637,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                         handleEvent={deleteFilterParams}
                     />
                 }
-                {Object.keys(getParamsFiltersFromObject(filters)).length > 0 &&
+                {Object.keys(getParamsFiltersFromObject(filters))/* .filter((elemento) => elemento !== "query") */.length > 0 &&
                     <TagFilter
                         value={'resetta'}
                         clearTag={true}
@@ -834,9 +845,34 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
 
                             <ReturnTagFilter />
+                            {filters?.query && isSmallView && false && <Box
+                                mt={5}
+                                color={'black'}
+                                fontSize={'xl'}
+                                fontWeight={'extrabold'}
+                                display={'flex'}
 
-
+                            >
+                                Ricerca per: {filters?.query}
+                                <Cancel
+                                    cursor={'pointer'}
+                                    className='w-6 h-6 my-auto mb-1 ml-1'
+                                    strokeWidth={2.5}
+                                    onClick={() => {
+                                        let filtersParams: any = getParamsFiltersFromObject(filters)
+                                        delete filtersParams["query"]
+                                        return router.push({
+                                            pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
+                                            query: {
+                                                ...filtersParams
+                                            }
+                                        })
+                                    }}
+                                />
+                            </Box>}
                         </Box >
+
+
 
                         {!isLoading && products ?
                             (<InfiniteScroll
