@@ -40,7 +40,7 @@ const VariationBoxList: FC<{ variation: CartProductVariation, toProduct: (variat
                         cursor={'pointer'}
                         onClick={() => toProduct(variation)}
                     >
-                        {toUpperCaseFirstLetter(variation.name)} ({variation.color})
+                        {toUpperCaseFirstLetter(variation?.name)} ({variation?.color})
                     </Box>
                     <Text
                         cursor={'pointer'}
@@ -72,13 +72,13 @@ const VariationBoxList: FC<{ variation: CartProductVariation, toProduct: (variat
                             color={'gray.500'}
                             mt={-1}
                         >
-                            {toUpperCaseFirstLetter(variation.brand)}
+                            {toUpperCaseFirstLetter(variation?.brand)}
                         </Box>
                         <Box
                             fontSize={'xs'}
                             fontWeight={'normal'}
                         >
-                            {variation?.size?.toUpperCase()} / Quantità {variation.quantity}
+                            {variation?.size?.toUpperCase()} / Quantità {variation?.quantity}
                         </Box>
                     </Box>
 
@@ -103,7 +103,7 @@ const VariationBoxList: FC<{ variation: CartProductVariation, toProduct: (variat
                                 {variation?.price?.v2 && variation?.price?.v1 && variation?.price?.v2 < variation?.price?.v1 &&
                                     <p
                                         className='font-semibold ml-1'
-                                    >{variation?.price?.v2 && formatNumberWithTwoDecimalsInString(variation.price.v2)} € </p>
+                                    >{variation?.price?.v2 && formatNumberWithTwoDecimalsInString(variation?.price.v2)} € </p>
                                 }
                             </Box>
                             <Box

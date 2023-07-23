@@ -77,16 +77,16 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                 width={'full'}
                                                 gap={[3]}
                                             >
-                                                {cartsDispatch.map((cart, id) => {
+                                                {cartsDispatch.map((cart, index) => {
                                                     const totalQuantity = cart?.productVariations && cart?.productVariations.reduce(
                                                         (acc, variation) => acc + (variation?.quantity || 0),
                                                         0)
-
                                                     return (
                                                         <Link
                                                             href={'/checkout/' + cart.shopInfo?.id}
                                                             className='w-full'
                                                             onClick={() => close()}
+                                                            key={index}
                                                         >
                                                             <Box
                                                                 _active={{
@@ -99,7 +99,6 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                                 borderWidth={'1px'}
 
                                                                 width={'full'}
-                                                                key={id}
                                                                 display={'flex'}
                                                                 justifyContent={'space-between'}
                                                             >

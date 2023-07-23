@@ -182,7 +182,7 @@ const index = () => {
             ]
         })
         setColors((prevState: Color[]) => {
-            const newColors = prevState.filter(color => color.name !== variation.color)
+            const newColors = prevState.filter(color => color.name !== variation?.color)
             return [
                 ...newColors
             ]
@@ -198,13 +198,13 @@ const index = () => {
             ]
         })
         setColors((prevState: Color[]) => {
-            const newColors = prevState.filter(color => color.name !== variation.color)
+            const newColors = prevState.filter(color => color.name !== variation?.color)
             return [
                 ...newColors
             ]
         })
         setCardToEdit((prevstate: VariationCard[]) => {
-            const newVariation = prevstate.filter(element => element.color !== variation.color)
+            const newVariation = prevstate.filter(element => element.color !== variation?.color)
             return [
                 ...newVariation
             ]
@@ -224,7 +224,7 @@ const index = () => {
         })
 
         setProductVariations((prevstate: VariationCard[]) => {
-            const newVariation = prevstate.filter(element => element.color !== variation.color)
+            const newVariation = prevstate.filter(element => element.color !== variation?.color)
             return [
                 ...newVariation
             ]
@@ -234,13 +234,13 @@ const index = () => {
 
     const deleteVariationCard = (variation: Variation) => {
         setProductVariations((prevstate: any) => {
-            const newState = prevstate.filter((state: Variation) => state.color !== variation.color)
+            const newState = prevstate.filter((state: Variation) => state.color !== variation?.color)
             return [
                 ...newState
             ]
         })
         setColors((prevState: any) => {
-            const newColor = COLORS.find(color => color.name === variation.color)
+            const newColor = COLORS.find(color => color.name === variation?.color)
             if (!newColor) return [...prevState]
             console.log(newColor);
             let newColors = [
@@ -266,7 +266,7 @@ const index = () => {
         const promises: Promise<string>[] = [];
 
         for await (const variation of productVariations) {
-            for (const photo of variation.photos) {
+            for (const photo of variation?.photos) {
                 photos.push(photo)
             }
         }
@@ -306,14 +306,14 @@ const index = () => {
             const variations = productVariations.map((variation) => {
                 let lots: Size[] = [];
                 let photos: string[] = [];
-                variation.lots.forEach(lot => {
+                variation?.lots.forEach(lot => {
                     lots.push({
                         quantity: lot.quantity,
                         size: lot.size.split(' (')[0]
                     })
                 });
 
-                variation.photos.forEach(photo => {
+                variation?.photos.forEach(photo => {
                     photos.push(photosFileIDs[i])
                     i++
                 });
@@ -707,7 +707,7 @@ const index = () => {
                     {cardToEdit.length > 0 && cardToEdit.map((variation: VariationCard) => {
                         console.log(variation);
                         return (
-                            <div key={variation.color}>
+                            <div key={variation?.color}>
                                 <EditColorToProduct
                                     defaultCardValue={variation}
                                     colors={colors}

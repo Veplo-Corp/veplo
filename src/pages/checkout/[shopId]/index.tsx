@@ -93,13 +93,13 @@ const index = () => {
 
     useEffect(() => {
         if (!error) return
-        setIsErrorModalOpen(true)
+        router.reload()
+        //setIsErrorModalOpen(true)
     }, [error])
 
 
     const checkoutUrl = async () => {
         if (user.isBusiness) return
-
 
         if (!user.uid) {
             return setIsOpenLoginModal(true)
@@ -155,7 +155,7 @@ const index = () => {
 
 
         //caso in cui la Variation è già presente in cart
-        const index = cart.productVariations.findIndex(variation => variation.size === variationSelected.size && variation.id === variationSelected.id)
+        const index = cart.productVariations.findIndex(variation => variation?.size === variationSelected.size && variation?.id === variationSelected.id)
         console.log(variationSelected);
         console.log(cart);
         console.log(index);
@@ -167,7 +167,7 @@ const index = () => {
         }
 
         const productVariations = cart.productVariations.map(variation => {
-            if (variation.size === variationSelected.size && variation.id === variationSelected.id) {
+            if (variation?.size === variationSelected.size && variation?.id === variationSelected.id) {
                 // Sostituisci l'oggetto corrente con il nuovo oggetto quando le condizioni sono soddisfatte
                 return newProductVariation;
             } else {
@@ -235,8 +235,8 @@ const index = () => {
             if (user.uid) {
                 await editCart({
                     variables: {
-                        productVariationId: variation.id,
-                        size: variation.size,
+                        productVariationId: variation?.id,
+                        size: variation?.size,
                         quantity: 0
                     }
                 })
@@ -252,8 +252,8 @@ const index = () => {
 
         for await (const cart of cartsDispatch) {
             for await (const element of cart.productVariations) {
-                if (element.productId === variation.productId) {
-                    const newVariations = cart.productVariations.filter(variationElement => variationElement.id !== variation.id || variationElement.size !== variation.size)
+                if (element.productId === variation?.productId) {
+                    const newVariations = cart.productVariations.filter(variationElement => variationElement.id !== variation?.id || variationElement.size !== variation?.size)
                     console.log(cart.productVariations, newVariations);
                     const newCart = {
                         ...cart,
@@ -323,7 +323,7 @@ const index = () => {
 
     const pushToProduct = (variation: CartProductVariation) => {
         if (!variation) return
-        router.push('/prodotto/' + variation.productId + '/' + createUrlSchema([variation.brand, variation.name]) + '?colore=' + variation.color)
+        router.push('/prodotto/' + variation?.productId + '/' + createUrlSchema([variation?.brand, variation?.name]) + '?colore=' + variation?.color)
     }
 
     const handleDeleteVariations = async () => {
@@ -335,8 +335,8 @@ const index = () => {
         }
         try {
             for await (const errorVariation of errorVariations) {
-                if (typeof errorVariation.path !== 'string') return
-                let id: string = errorVariation.path
+                if (typeof errorVariation?.path !== 'string') return
+                let id: string = errorVariation?.path
                 id = id.trim()
                 console.log(id);
                 if (!cart) return
@@ -345,8 +345,8 @@ const index = () => {
                 for await (const variation of variations) {
                     await editCart({
                         variables: {
-                            productVariationId: variation.id,
-                            size: variation.size,
+                            productVariationId: variation?.id,
+                            size: variation?.size,
                             quantity: 0
                         }
                     })
@@ -671,7 +671,7 @@ const index = () => {
                                                         <ListItem
                                                             key={index}
                                                         >
-                                                            {variation.name}
+                                                            {variation?.name}
                                                         </ListItem>)
                                                 })
                                             }

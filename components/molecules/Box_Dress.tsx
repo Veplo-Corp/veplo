@@ -61,7 +61,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
             return seturlProduct(url)
 
         }
-        const variationIndex: any = product.variations?.findIndex(variation => variation.color?.toLowerCase() === colorSelected.toLowerCase())
+        const variationIndex: any = product.variations?.findIndex(variation => variation?.color?.toLowerCase() === colorSelected.toLowerCase())
 
         if (variationIndex >= 0) {
             setindexPhoto(variationIndex)
@@ -104,7 +104,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
     useEffect(() => {
         if (!product.variations) return
         const colors = product.variations.map((variation: any) => {
-            return COLORS.find(color => color.name === variation.color)?.cssColor
+            return COLORS.find(color => color.name === variation?.color)?.cssColor
         })
 
         const isProductSustainable = checkIfProductIsSustainable(product.info?.traits)
@@ -126,7 +126,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
         ]
 
         const totalSize: string[] = product.variations.map((variation: any) => {
-            return variation.lots.map((lot: any) => {
+            return variation?.lots.map((lot: any) => {
                 return lot.size
             })
 

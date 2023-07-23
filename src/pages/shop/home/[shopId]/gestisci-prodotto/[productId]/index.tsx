@@ -178,7 +178,7 @@ const index = () => {
         //remove colors used for new variations
         let colors: string[] = [];
         product.variations.map(variation => {
-            colors.push(variation.color)
+            colors.push(variation?.color)
         })
 
         setColors((prevState: Color[]) => {
@@ -340,7 +340,7 @@ const index = () => {
             //Edit Product.variations once you delete the variation
             setProduct((prevstate) => {
                 if (!prevstate?.variations) return prevstate
-                const newVariations = prevstate?.variations.filter(variation => variation.id !== variationId)
+                const newVariations = prevstate?.variations.filter(variation => variation?.id !== variationId)
                 return {
                     ...prevstate,
                     variations: newVariations
@@ -368,10 +368,10 @@ const index = () => {
     const editVariationHandler = async (variationId: string, variation: Size[], photos: string[]) => {
         console.log(variationId);
 
-        let variationSize = variation.map(variation => {
+        let variationSize = variation?.map(variation => {
             return {
-                quantity: variation.quantity,
-                size: variation.size.split(' (')[0]
+                quantity: variation?.quantity,
+                size: variation?.size.split(' (')[0]
             }
         })
 
@@ -392,7 +392,7 @@ const index = () => {
         setProduct((prevstate) => {
             if (!prevstate?.variations) return prevstate
             let newStateVariations = prevstate.variations.map(variation => {
-                if (variation.id === variationId) {
+                if (variation?.id === variationId) {
                     const newVariation = {
                         ...variation,
                         lots: variationSize
@@ -420,7 +420,7 @@ const index = () => {
 
     const confirmCard = async (variation: VariationCard) => {
         console.log(variation);
-        const variationLots = variation.lots.map(lot => {
+        const variationLots = variation?.lots.map(lot => {
             return {
                 quantity: lot.quantity,
                 size: lot.size.split(' (')[0]
@@ -429,7 +429,7 @@ const index = () => {
 
 
         let photos: File[] = [];
-        for (const photo of variation.photos) {
+        for (const photo of variation?.photos) {
             photos.push(photo.file)
         }
 
@@ -463,7 +463,7 @@ const index = () => {
                 variables: {
                     productId: product?.id,
                     options: {
-                        color: variation.color,
+                        color: variation?.color,
                         lots: variationLots,
                         status: "active",
                         photos: photosFileIDs
@@ -471,7 +471,7 @@ const index = () => {
                 }
             }
             )
-            addToast({ position: 'top', title: `Variante ${variation.color} creata!`, status: 'success', duration: 3000, isClosable: true })
+            addToast({ position: 'top', title: `Variante ${variation?.color} creata!`, status: 'success', duration: 3000, isClosable: true })
 
 
             //mettere alert per creazione avvenuta con successo
@@ -485,7 +485,7 @@ const index = () => {
 
         setNewCard(false)
         setColors((prevState: Color[]) => {
-            const newColors = prevState.filter(color => color.name !== variation.color)
+            const newColors = prevState.filter(color => color.name !== variation?.color)
             return [
                 ...newColors
             ]

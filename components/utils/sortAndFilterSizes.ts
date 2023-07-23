@@ -15,7 +15,7 @@ const sizes = [
 
 export const sortAndFilterSizes = (variations: Variation[]) => {
     const totalSize = variations.map((variation: Variation) => {
-        return variation.lots.map((lot: any) => {
+        return variation?.lots.map((lot: any) => {
             return lot.size
         })
 

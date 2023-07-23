@@ -132,8 +132,8 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
             try {
                 await editCart({
                     variables: {
-                        productVariationId: variation.id,
-                        size: variation.size,
+                        productVariationId: variation?.id,
+                        size: variation?.size,
                         quantity: 0
                     }
                 })
@@ -148,8 +148,8 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
 
         for await (const cart of cartsDispatch) {
             for await (const element of cart.productVariations) {
-                if (element.productId === variation.productId) {
-                    const newVariations = cart.productVariations.filter(variationElement => variationElement.id !== variation.id || variationElement.size !== variation.size)
+                if (element.productId === variation?.productId) {
+                    const newVariations = cart.productVariations.filter(variationElement => variationElement.id !== variation?.id || variationElement.size !== variation?.size)
                     console.log(cart.productVariations, newVariations);
 
                     const newCart = {
@@ -198,7 +198,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
     }
 
     const pushToProduct = (variation: CartProductVariation) => {
-        router.push('/prodotto/' + variation.productId + '/' + createUrlSchema([variation.brand, variation.name]) + '?colors=' + variation?.color?.toLowerCase())
+        router.push('/prodotto/' + variation?.productId + '/' + createUrlSchema([variation?.brand, variation?.name]) + '?colors=' + variation?.color?.toLowerCase())
         closeDrawer()
     }
 
