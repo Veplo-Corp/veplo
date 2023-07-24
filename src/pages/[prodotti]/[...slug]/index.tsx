@@ -186,7 +186,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         if (!filterParams) {
             setFilters(filtersProps)
             setProducts(dataProducts)
-            if (dataProducts.length % RANGE !== 0 || dataProducts.length < RANGE) {
+            if (dataProducts && dataProducts?.length % RANGE !== 0 || dataProducts?.length < RANGE) {
                 setHasMoreData(false)
                 console.log('no more data');
                 return setIsLoading(false)
@@ -352,6 +352,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const changeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
 
         const filtersParams = getParamsFiltersFromObject(filters)
+        if (!filtersParams) return
         if (filtersParams["traits"]) {
             delete filtersParams["traits"]
             filtersParams["sostenibile"] = 'true'
@@ -383,6 +384,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         setIsLoading(true)
 
         const filtersParams = getParamsFiltersFromObject(filters)
+        if (!filtersParams) return
         if (filtersParams["traits"]) {
             delete filtersParams["traits"]
             filtersParams["sostenibile"] = 'true'
@@ -556,13 +558,16 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     }
 
 
-    console.log(Object.keys(getParamsFiltersFromObject(filters)).length);
-    console.log(Object.keys(getParamsFiltersFromObject(filters)));
 
 
 
     const ReturnTagFilter = () => {
 
+        if (!filters) {
+            return (
+                <></>
+            )
+        }
         return (
             <HStack mt={[3, 2]} spacing={2}
                 mb={[6, 10]}
@@ -638,7 +643,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                         handleEvent={deleteFilterParams}
                     />
                 }
-                {Object.keys(getParamsFiltersFromObject(filters))/* .filter((elemento) => elemento !== "query") */.length > 0 &&
+                {filters && getParamsFiltersFromObject(filters) !== undefined && Object.keys(getParamsFiltersFromObject(filters) || {}).length > 0 &&
                     <TagFilter
                         value={'resetta'}
                         clearTag={true}
@@ -799,6 +804,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                         }
 
                                         let OmitfiltersParams = getParamsFiltersFromObject(filtersParams)
+                                        if (!OmitfiltersParams) return
                                         const query = filterParamsOnChangeMacrocatecory(OmitfiltersParams)
 
 
