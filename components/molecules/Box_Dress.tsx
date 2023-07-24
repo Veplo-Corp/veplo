@@ -40,6 +40,8 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
     const [urlProduct, seturlProduct] = useState<string | undefined>()
     const [indexPhoto, setindexPhoto] = useState(0)
     const [listOfSizesAvailable, setListOfSizesAvailable] = useState<string[]>([])
+    const [listOfSizesAvailableForSpecificVariation, setListOfSizesAvailableForSpecificVariation] = useState<any>()
+
     const [showSize, setShowSize] = useState(false)
     const [isSustainable, setIsSustainable] = useState(false)
     const router = useRouter()
@@ -48,7 +50,6 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
 
     const checkIfProductIsSustainable = (parole: string[] | null | undefined): boolean => {
         if (!parole) return false
-        console.log(parole);
 
         return parole.some(parola => arraySustainableTraits.includes(parola as SustainableTraits));
     }
@@ -58,18 +59,33 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
 
         if (!colorSelected) {
             const url = product.variations[indexPhoto].photos?.[0] ? product.variations[indexPhoto].photos?.[0] : ''
+            const sizeAvailable = product.variations[indexPhoto].lots?.map(lot => {
+                if (typeof lot.quantity === 'number' && lot.quantity <= 0) return
+                return lot.size
+            })
+            if (sizeAvailable && sizeAvailable?.length > 0) {
+                setListOfSizesAvailableForSpecificVariation(sizeAvailable ? sizeAvailable : [])
+            } else {
+                setListOfSizesAvailableForSpecificVariation([])
+            }
             return seturlProduct(url)
 
         }
         const variationIndex: any = product.variations?.findIndex(variation => variation?.color?.toLowerCase() === colorSelected.toLowerCase())
 
         if (variationIndex >= 0) {
+            const sizeAvailable = product.variations[variationIndex].lots?.map(lot => {
+                if (typeof lot.quantity === 'number' && lot.quantity <= 0) return
+                return lot.size
+            })
+            if (sizeAvailable && sizeAvailable?.length > 0) {
+                setListOfSizesAvailableForSpecificVariation(sizeAvailable ? sizeAvailable : [])
+            } else {
+                setListOfSizesAvailableForSpecificVariation([])
+            }
             setindexPhoto(variationIndex)
             //cambio URI link per mandarlo al colore giusto cliccato
-            console.log(productLinkPage);
-            // const URI = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' + productLinkPage :
-            //     'https://www.veplo.it' + productLinkPage
-            // console.log(URI);
+
             let updatedURL = productLinkPage;
 
 
@@ -89,17 +105,12 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                 }
             }
 
-            console.log(updatedURL);
             setProductLinkPage(updatedURL.toString())
             seturlProduct(typeof product?.variations[variationIndex]?.photos?.[0] === 'string' ? product?.variations[variationIndex]?.photos?.[0] : '')
-
-
-
-
-
-            //rimetti a 0
         }
     }
+
+
 
     useEffect(() => {
         if (!product.variations) return
@@ -125,7 +136,12 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
             "5xl",
         ]
 
-        const totalSize: string[] = product.variations.map((variation: any) => {
+        const totalSize: string[] = product.variations.map((variation) => {
+
+            if (!variation.lots) return
+            if (variation.color === color) {
+
+            }
             return variation?.lots.map((lot: any) => {
                 return lot.size
             })
@@ -143,11 +159,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
 
     }, [product, color])
 
-    useEffect(() => {
-        //   if(width > 1000){
-        //     setDimensionUrl('&tr=w-447,h-660')
-        //   }
-    }, [width])
+
 
 
 
@@ -216,7 +228,6 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                         position={'relative'}
                     //background={'#FBFBFB'}
                     >
-
                         <Link
                             onClick={handleEventSelectedDress}
                             onMouseLeave={() => {
@@ -224,7 +235,6 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                             }}
                             prefetch={false}
                             href={productLinkPage}
-                        //href={color ? `/prodotto/${product.id}/${product?.info?.brand && product.name ? createUrlScheme([product.info.brand, product.name]) : ''}?colore=${color}` : `/prodotto/${product.id}/${product?.info?.brand && product.name ? createUrlScheme([product.info.brand, product.name]) : ''}`}
                         >
                             {isSustainable &&
                                 <ToolTipComponent />
@@ -240,15 +250,14 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                         p={1.5}
                                         borderRadius={'15px'}
                                         textAlign={'center'}
-                                        minW={16}
-
+                                        minW={24}
                                     >
-
                                         {listOfSizesAvailable.slice(0, 4).map(size => {
                                             return (
                                                 <Box key={size}
                                                     fontWeight={'bold'}
-                                                    paddingX={size.length > 3 ? 1 : 6}
+                                                    paddingX={2}
+
                                                     py={size.length > 6 ? 2 : 2}
 
                                                     justifyContent={'center'}
@@ -258,6 +267,16 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                                     borderRadius={'xl'}
                                                 >
                                                     {size.toLocaleUpperCase()}
+                                                    {!listOfSizesAvailableForSpecificVariation.includes(size) &&
+                                                        <Text
+                                                            fontSize={'2xs'}
+                                                            fontWeight={'medium'}
+                                                            color={'primaryBlack.text'}
+                                                            mt={-0.5}
+                                                            lineHeight={'1'}
+                                                        >
+                                                            altri colori
+                                                        </Text>}
                                                 </Box>
                                             )
                                         })}
@@ -348,7 +367,6 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                     handleColorFocused={(color: string) => {
                                         if (isSmallView) return
                                         handleSetPhotoUrl(color)
-
                                     }}
                                 />
                                 {productcolorsCSS.length > 5 &&
