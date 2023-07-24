@@ -47,6 +47,7 @@ import { numberOfLineText } from '../../../../../components/utils/numberOfLineTe
 import { fbq } from '../../../../lib/analytics/gtag';
 import { PixelEventType } from '../../../../lib/analytics/eventTypes';
 import { openModal } from '../../../../store/reducers/globalModal';
+import PageNotFound from '../../../../../components/molecules/PageNotFound';
 
 
 
@@ -156,31 +157,11 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
     if (errorLog) {
         return (
-            <Desktop_Layout>
-                <div className='text-center h-[screen] content-center'>
-                    <div className='absolute w-full top-32 md:top-48'>
-                        <Text className='font-extrabold md:8/12 lg:w-6/12 m-auto text-2xl lg:text-3xl text-[#2A2A2A] px-9 line-clamp-2'>
-                            <span>
-                                Prodotto non trovato
-                            </span>
-                        </Text>
-                        <Text className='font-medium md:8/12 lg:w-6/12 m-auto text-md md:text-lg text-[#2A2A2A] px-9 line-clamp-2'>
-                            <span>
-                                Probabilmente il prodotto è stato appena cancellato dal brand
-                            </span>
-                        </Text>
-                        <img
-                            className='m-auto h-72 mb-6 mt-10'
-                            src="https://www.datocms-assets.com/102220/1686599080-undraw_cancel_re_pkdm.png"
-                            alt="non trovata" />
-
-                        <Button
-                            colorScheme={'blackAlpha'}
-                            onClick={() => { router.push('/' + '?gatto=berry') }}
-                        >Torna alla Home</Button>
-                    </div>
-                </div>
-            </Desktop_Layout>
+            <PageNotFound
+                title='Prodotto non trovato'
+                description='Probabilmente il prodotto è stato appena cancellato dal brand'
+                imageSrc='https://www.datocms-assets.com/102220/1686599080-undraw_cancel_re_pkdm.png'
+            />
         )
     }
 

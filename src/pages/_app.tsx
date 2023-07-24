@@ -31,12 +31,11 @@ import GET_USER from '../lib/apollo/queries/getUser'
 import { Business } from '../interfaces/business.interface'
 import { getFavouriteShopFromLocalStorage } from '../../components/utils/getFavouriteShopFromLocalStroage'
 import Header from '../../components/organisms/Header'
-import { Cart } from '../interfaces/carts.interface'
 import { resetCarts, setCarts } from '../store/reducers/carts'
-import { Order } from '../interfaces/order.interface'
 import { detroyOrders, setOrders } from '../store/reducers/orders'
 import { setBrands } from '../store/reducers/brands'
 import ModalWrapper from '../../components/organisms/ModalWrapper'
+import { Cart, Order } from '../lib/apollo/generated/graphql'
 
 
 const theme = extendTheme({
@@ -308,23 +307,20 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
             if (!data.data) return
 
-
             console.log(data?.data?.user?.carts?.carts);
-
-
 
             let carts: Cart[] = data?.data?.user?.carts?.carts ? data?.data?.user?.carts?.carts : [];
             carts = carts.map(cart => {
               if (!cart?.productVariations || cart?.productVariations?.length > 0) {
-                const sortedProductVariations = [...cart.productVariations].filter((oggetto) => oggetto !== null).sort((a: any, b: any) => (a?.id > b?.id) ? 1 : -1);
+                const sortedProductVariations = cart.productVariations ? [...cart.productVariations].filter((oggetto) => oggetto !== null).sort((a: any, b: any) => (a?.id > b?.id) ? 1 : -1) : [];
                 return { ...cart, productVariations: sortedProductVariations };
               }
               return cart;
             });
 
 
-            const orders: Order[] = data?.data?.user?.orders;
-            const warnings: { variationId: string }[] = data?.data?.user?.carts?.warnings
+            const orders: Order[] = data?.data?.user?.orders ? data?.data?.user?.orders : [];
+            //const warnings: { variationId: string }[] = data?.data?.user?.carts?.warnings
 
 
 

@@ -10,7 +10,7 @@ import { signOut } from 'firebase/auth'
 import { auth } from '../../src/config/firebase'
 import { deleteAuthTokenInSessionStorage } from '../utils/deleteAuthTokenSessionStorage'
 import { Divider } from '@chakra-ui/react'
-import { User } from 'iconoir-react'
+import { NavArrowRight, User } from 'iconoir-react'
 
 
 
@@ -32,22 +32,22 @@ const User_Popover = () => {
             href: '/user/login?type=registration&person=user',
         },
         {
-            name: 'Sei un negozio?',
-            description: 'accedi o registra gratis il tuo account',
+            name: 'Sei un brand?',
+            //description: 'accedi o registra gratis il tuo account',
             href: '/user/login?type=login&person=business',
         },
     ]
 
     const actionsLogged = [
         {
-            name: 'Impostazioni',
-            description: 'gestisci le impostazioni',
-            href: '/user/settings',
-        },
-        {
             name: 'Monitora ordini',
             description: 'vedi i tuoi ordini',
             href: '/orders',
+        },
+        {
+            name: 'Impostazioni',
+            description: 'gestisci le impostazioni',
+            href: '/user/settings',
         },
         {
             name: 'Esci',
@@ -113,39 +113,53 @@ const User_Popover = () => {
                     {!user?.uid ?
                         (actionsNotLogged.map((action, id) => {
                             return (
-                                <Popover.Button key={id} className='text-left hover:scale-[0.98] '>
+                                <Popover.Button key={id} className='text-left focus:scale-[0.99] '>
                                     <Box
-                                        paddingX={4}
-                                        paddingY={1.5}
+                                        display={'flex'}
+                                        justifyContent={'space-between'}
                                         onClick={() => {
                                             router.push(action.href)
                                         }}
                                     >
                                         <Box
-                                            fontSize={'md'}
-                                            fontWeight={'medium'}
-                                            lineHeight={'none'}
-                                            mb={'0.5'}
+                                            width={'75%'}
+                                            paddingX={4}
+                                            paddingY={1.5}
+
                                         >
-                                            {action.name}
+                                            <Box
+                                                fontSize={'md'}
+                                                fontWeight={'medium'}
+                                                lineHeight={'none'}
+                                                mb={'0.5'}
+                                            >
+                                                {action.name}
+                                            </Box>
+                                            <Box
+                                                fontSize={'2xs'}
+                                                fontWeight={'base'}
+                                                lineHeight={'1.1'}
+                                                color={'gray.400'}
+                                            >
+                                                {action.description}
+                                            </Box>
                                         </Box>
-                                        <Box
-                                            fontSize={'2xs'}
-                                            fontWeight={'base'}
-                                            lineHeight={'1.1'}
-                                            color={'gray.400'}
-                                        >
-                                            {action.description}
-                                        </Box>
+                                        <NavArrowRight
+
+                                            className='w-7 my-auto mr-2'
+                                            strokeWidth={1.8}
+                                        />
                                     </Box>
+
                                 </Popover.Button>
                             )
                         })) : (actionsLogged.map((action, id) => {
                             return (
-                                <Popover.Button key={id} className='text-left hover:scale-[0.98]'>
+                                <Popover.Button key={id} className='text-left focus:scale-[0.99]'>
                                     <Box
-                                        paddingX={4}
-                                        paddingY={1.5}
+                                        display={'flex'}
+                                        justifyContent={'space-between'}
+
                                         onClick={async () => {
                                             if (action.name === 'Esci') {
                                                 console.log('eccolo');
@@ -161,22 +175,35 @@ const User_Popover = () => {
                                         }}
                                     >
                                         <Box
-                                            fontSize={'md'}
-                                            fontWeight={'medium'}
-                                            lineHeight={'none'}
-                                            mb={'0.5'}
+                                            width={'75%'}
+                                            paddingX={4}
+                                            paddingY={1.5}
+
                                         >
-                                            {action.name}
+                                            <Box
+                                                fontSize={'md'}
+                                                fontWeight={'medium'}
+                                                lineHeight={'none'}
+                                                mb={'0.5'}
+                                            >
+                                                {action.name}
+                                            </Box>
+                                            <Box
+                                                fontSize={'2xs'}
+                                                fontWeight={'base'}
+                                                lineHeight={'1.1'}
+                                                color={'gray.400'}
+                                            >
+                                                {action.description}
+                                            </Box>
                                         </Box>
-                                        <Box
-                                            fontSize={'2xs'}
-                                            fontWeight={'base'}
-                                            lineHeight={'1.1'}
-                                            color={'gray.400'}
-                                        >
-                                            {action.description}
-                                        </Box>
+                                        <NavArrowRight
+
+                                            className='w-7 my-auto mr-2'
+                                            strokeWidth={1.8}
+                                        />
                                     </Box>
+
                                 </Popover.Button>
                             )
                         }))}

@@ -204,10 +204,10 @@ export type HistoryOrder = {
 };
 
 export type InformationInput = {
-  businessName: Scalars['String']['input'];
-  email: Scalars['String']['input'];
-  phone: Scalars['String']['input'];
-  userName: Scalars['String']['input'];
+  businessName?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+  userName?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Location = {
@@ -282,6 +282,8 @@ export type Mutation = {
   editUser?: Maybe<Scalars['Boolean']['output']>;
   /** edit a single variation */
   editVariation?: Maybe<Scalars['Boolean']['output']>;
+  /** follow a shop */
+  follow?: Maybe<Scalars['Boolean']['output']>;
   /** refund an order */
   refund?: Maybe<Scalars['Boolean']['output']>;
   /** remove product form cart */
@@ -292,6 +294,8 @@ export type Mutation = {
   returnedOrderHasArrived?: Maybe<Scalars['Boolean']['output']>;
   /** change the isBusiness account field */
   setIsBusiness: Scalars['Boolean']['output'];
+  /** unfollow a shop */
+  unfollow?: Maybe<Scalars['Boolean']['output']>;
 };
 
 
@@ -447,6 +451,11 @@ export type MutationEditVariationArgs = {
 };
 
 
+export type MutationFollowArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationRefundArgs = {
   checkoutSessionId?: InputMaybe<Scalars['String']['input']>;
 };
@@ -472,6 +481,11 @@ export type MutationReturnedOrderHasArrivedArgs = {
 
 export type MutationSetIsBusinessArgs = {
   isBusiness: Scalars['Boolean']['input'];
+};
+
+
+export type MutationUnfollowArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export type Opening = {
@@ -790,6 +804,7 @@ export type Shop = {
   profilePhoto?: Maybe<Scalars['String']['output']>;
   score?: Maybe<Scalars['Float']['output']>;
   shopsLikeThis?: Maybe<Array<Shop>>;
+  stats?: Maybe<ShopStats>;
   status?: Maybe<Scalars['String']['output']>;
 };
 
@@ -872,6 +887,11 @@ export enum ShopProductsStatusesEnum {
   NotActive = 'not_active'
 }
 
+export type ShopStats = {
+  __typename?: 'ShopStats';
+  followers?: Maybe<Scalars['Int']['output']>;
+};
+
 export type Stripe = {
   __typename?: 'Stripe';
   id?: Maybe<Scalars['String']['output']>;
@@ -893,6 +913,7 @@ export type User = {
   createdAt?: Maybe<Scalars['Time']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   firebaseId?: Maybe<Scalars['String']['output']>;
+  following?: Maybe<Array<UserFollowing>>;
   gender?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['ID']['output']>;
   location?: Maybe<Location>;
@@ -914,6 +935,12 @@ export type UserCarts = {
   __typename?: 'UserCarts';
   carts?: Maybe<Array<Cart>>;
   warnings: Array<CartWarning>;
+};
+
+export type UserFollowing = {
+  __typename?: 'UserFollowing';
+  from?: Maybe<Scalars['Time']['output']>;
+  shopId?: Maybe<Scalars['ID']['output']>;
 };
 
 export type UserInput = {

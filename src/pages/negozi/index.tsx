@@ -18,6 +18,7 @@ import { getFromLocalStorage } from '../../../components/utils/getFromLocalStora
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { LIST_ITEM_VARIANT } from '../../../components/mook/transition';
+import { ShopsQuery } from '../../lib/apollo/generated/graphql';
 
 
 
@@ -26,7 +27,7 @@ import { LIST_ITEM_VARIANT } from '../../../components/mook/transition';
 export const getStaticProps = async () => {
     const apolloClient = initApollo();
     try {
-        const { data, error } = await apolloClient.query({
+        const { data }/* : { data: ShopsQuery } */ = await apolloClient.query({
             query: GET_SHOPS_BY_LOCATION,
             variables: {
                 limit: 10,
@@ -46,7 +47,6 @@ export const getStaticProps = async () => {
     catch (error) {
         console.log(error);
 
-
         return {
             props: {
                 shops: []
@@ -58,12 +58,9 @@ export const getStaticProps = async () => {
 
 }
 
-import { gtag } from '../../lib/analytics/gtag'; // Assicurati di impostare il percorso corretto al file gtag.js
-import { GTMEventType, VeploGTMEvent } from '../../lib/analytics/eventTypes';
-import { useAnalytics } from '../../lib/analytics/hooks/useAnalytics';
 
 
-const index: FC<{ shops: Shop[] }> = ({ shops }) => {
+const index: FC<{ shops: ShopsQuery["shops"] }> = ({ shops }) => {
 
 
 
