@@ -50,7 +50,7 @@ const GET_USER = graphql(`
                 }
             } 
             orders(
-                limit:1000,
+                limit:100,
                 offset:0
             )
             {
@@ -66,56 +66,18 @@ const GET_USER = graphql(`
                 }
                 status
                 shop{
-                    businessId
-                    stripeId
-                    id
                     name
                     photo
-                    address{
-                        postcode
-                        city
-                        street
-                    }
-                }
-                shipping{
-                    url
-                    courier
-                    code
                 }
                 productVariations{
                     productId
                     id
                     photo
                     name
-                    price{
-                        v1
-                        v2
-                        discountPercentage
-                    }
-                    brand
-                    quantity
-                    color
-                    size
+                    
                 }
-                user{
-                    stripeId
-                    id
-                    email
-                    name
-                    surname
-                }
-                recipient{
-                    name
-                    phone
-                    address{
-                        city
-                        country
-                        line1
-                        line2
-                        postalCode
-                        state
-                    }
-                }
+                
+               
                 history {
                     date
                     status
