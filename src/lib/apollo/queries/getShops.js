@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client'
+import { graphql } from '../generated/gql'
 
-const GET_SHOPS_BY_LOCATION = gql`
+const GET_SHOPS_BY_LOCATION = graphql(`
     query shops($limit: Int!, $offset: Int!, $filters: ShopFilters!) {
     shops(limit: $limit, offset: $offset, filters: $filters) {
       categories
@@ -33,6 +34,6 @@ const GET_SHOPS_BY_LOCATION = gql`
       minimumAmountForFreeShipping
     }
   }
-`
+`)
 
 export default GET_SHOPS_BY_LOCATION;

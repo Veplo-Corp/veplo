@@ -1,5 +1,8 @@
 
-export const imageKitUrl = (/* googleUrl */imageUid: string, width?: number, height?: number) => {
+export const imageKitUrl = (/* googleUrl */imageUid: string | undefined | null, width?: number, height?: number): string => {
+  if (!imageUid) {
+    return ''
+  }
   if (typeof width !== 'undefined' && typeof height !== 'undefined') {
     const imageKitUrlBase = 'https://ik.imagekit.io/veploimages/'
     return imageKitUrlBase + imageUid + `?tr=w-${width},h-${height}`

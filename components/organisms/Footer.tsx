@@ -65,6 +65,9 @@ const Footer = () => {
                                         className="hover:underline" >Politica di Reso</Link>
                                 </li>
                                 <li className="mb-4">
+                                    <Link href="/policies/termini-e-condizioni-vendita" className="hover:underline">Vendita</Link>
+                                </li>
+                                <li className="mb-4">
                                     <Box
                                         cursor={'pointer'}
                                         onClick={() => setIsModalHelpOpen(true)}

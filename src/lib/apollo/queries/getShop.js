@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client'
+import { graphql } from '../generated/gql'
 
-const GET_SHOP = gql`
+const GET_SHOP = graphql(`
     query getSingleShop(
         $id: ID!
         ) {
@@ -37,7 +38,7 @@ const GET_SHOP = gql`
             
         } 
     }
-`
+`)
 
 export default GET_SHOP;
 

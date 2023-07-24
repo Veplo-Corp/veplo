@@ -6,8 +6,9 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
 import isShopOpen from '../utils/isShopOpen';
 import { imageKitUrl } from '../utils/imageKitUrl';
+import { GetShopQuery, ShopsQuery } from '../../src/lib/apollo/generated/graphql';
 
-const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ shop, eventHandler, scale }) => {
+const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scale: string }> = ({ shop, eventHandler, scale }) => {
 
 
 
@@ -22,10 +23,10 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
         >
 
             <LazyLoadImage src={
-                imageKitUrl(shop.profileCover)
+                imageKitUrl(shop?.profileCover)
             }
                 //PlaceholderSrc={PlaceholderImage}
-                alt={shop.name}
+                alt={'' + shop?.name}
                 className='object-cover aspect-[2.3/1] min-h-[100px] xl:min-h-[200px] rounded-[15px]'
             />
             <Box
@@ -60,7 +61,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                             imageKitUrl(shop.profilePhoto)
                         }
                             //PlaceholderSrc={PlaceholderImage}
-                            alt={shop.name}
+                            alt={'' + shop.name}
                             className='m-auto h-full w-full p-[4px] lg:p-[5px] rounded-full'
                         />
                     </Box>
@@ -112,7 +113,7 @@ const Box_Shop: React.FC<{ shop: Shop, eventHandler: any, scale: string }> = ({ 
                     mb={0.5}
                     noOfLines={1}
                 >
-                    {shop.address.city}
+                    {shop?.address?.city}
                 </Box>
             </Box>
 

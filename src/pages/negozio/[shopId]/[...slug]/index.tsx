@@ -23,6 +23,7 @@ import { CATEGORIES } from '../../../../../components/mook/categories'
 import { GetShopQuery, Product, ProductsQueryResponse } from '../../../../lib/apollo/generated/graphql'
 import { LIST_ITEM_VARIANT } from '../../../../../components/mook/transition'
 import { AnimatePresence, motion } from 'framer-motion';
+import PageNotFound from '../../../../../components/molecules/PageNotFound'
 
 const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) : 12
 
@@ -41,7 +42,6 @@ export async function getStaticProps(ctx: any) {
     const gender = slug[1];
 
     try {
-
         const { data }: { data: GetShopQuery } = await apolloClient.query({
             query: GET_SHOP_AND_PRODUCTS,
             variables: {
@@ -92,6 +92,11 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
         /* gestire errore in caso shop non viene trovato */
 
         <div className='min-h-[100vh]'>
+            <PageNotFound
+                title='pagina non trovata'
+                description='non siamo riusciti a trovare la pagina che cercavi'
+                imageSrc="https://www.datocms-assets.com/102220/1686599080-undraw_cancel_re_pkdm.png"
+            />
         </div>
     )
 
@@ -347,7 +352,9 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                     </Box>
 
                     {shop.info && shop.info.description &&
-                        <>
+                        <Box
+                            className='lg:w-10/12'
+                        >
                             <Text
                                 noOfLines={!showAllDescriptionShop || descriptionRefTextLength <= 3 ? 3 : 100}
                                 color={'#909090'}
@@ -364,7 +371,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                             >
                                 {!showAllDescriptionShop ? 'mostra altro' : 'mostra meno'}
                             </Text>}
-                        </>
+                        </Box>
                     }
                     <ButtonGroup
                         gap={0}
