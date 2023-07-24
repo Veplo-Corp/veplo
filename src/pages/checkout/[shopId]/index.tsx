@@ -92,7 +92,10 @@ const index = () => {
 
     useEffect(() => {
         if (!error) return
-        router.reload()
+        //router.reload()
+        console.log(error);
+        //TODO gestire errore carrello
+
         //setIsErrorModalOpen(true)
     }, [error])
 
