@@ -199,7 +199,7 @@ const Header = () => {
                                     />
                                 </Link>
                             </div>}
-                            {(!user.isBusiness && isButtonHidden) &&
+                            {(!user.isBusiness && isButtonHidden && user.statusAuthentication !== 'not_yet_authenticated') &&
                                 <Popover className="relative flex gap-1">
                                     {({ open }) => (
                                         <>
@@ -258,7 +258,7 @@ const Header = () => {
                             }
 
                             <div>
-                                {!(user.statusAuthentication === 'logged_in' && user.isBusiness) &&
+                                {(user.statusAuthentication !== 'not_yet_authenticated' && !user.isBusiness) &&
                                     <CategoryNavbar showMacrocategory={showMacrocategory} />
                                 }
                             </div>

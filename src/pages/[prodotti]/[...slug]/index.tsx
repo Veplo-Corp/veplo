@@ -40,7 +40,7 @@ export async function getStaticPaths() {
     }
 }
 
-const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) : 3
+const RANGE = 9 /* typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) : 3 */
 
 
 export async function getStaticProps(ctx: any) {
