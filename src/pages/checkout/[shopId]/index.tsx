@@ -16,7 +16,6 @@ import CRATE_CHECKOUT_URL from '../../../lib/apollo/mutations/checkout';
 import EDIT_CART from '../../../lib/apollo/mutations/editCart';
 import { editVariationFromCart } from '../../../store/reducers/carts';
 import GET_SHOP from '../../../lib/apollo/queries/getShop';
-import { Shop } from '../../../interfaces/shop.interface';
 import ModalReausable from '../../../../components/organisms/ModalReausable';
 import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 import LoginAndRegistrationForm from '../../../../components/organisms/LoginAndRegistrationForm';
@@ -24,7 +23,7 @@ import ProfilePhoto from '../../../../components/molecules/ProfilePhoto';
 import CheckoutProduct from '../../../../components/molecules/CheckoutProduct';
 import { formatNumberWithTwoDecimalsInString } from '../../../../components/utils/formatNumberWithTwoDecimalsInString';
 import expirationTimeTokenControll from '../../../../components/utils/expirationTimeTokenControll';
-import { CartProductVariation } from '../../../lib/apollo/generated/graphql';
+import { CartProductVariation, GetSingleShopQuery, Shop } from '../../../lib/apollo/generated/graphql';
 import { fbq, gtag } from '../../../lib/analytics/gtag';
 import { GTMEventType, PixelEventType } from '../../../lib/analytics/eventTypes';
 import { GtagVariationsToItemsFor } from '../../../../components/utils/GtagVariationsToItemsFor';
@@ -44,10 +43,10 @@ const index = () => {
     const [isDisabled, setIsDisabled] = useState(false);
     const shopQuery = useQuery(GET_SHOP, {
         variables: {
-            id: router.query.shopId
+            id: typeof router?.query?.shopId === 'string' ? router?.query?.shopId : ''
         }
     });
-    const [shop, setShop] = useState<Shop>();
+    const [shop, setShop] = useState<GetSingleShopQuery["shop"]>();
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
     const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
     const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('login')
@@ -87,8 +86,8 @@ const index = () => {
 
 
     useEffect(() => {
-        if (!shopQuery.data) return
-        setShop(shopQuery.data.shop)
+        if (!shopQuery.data?.shop) return
+        setShop(shopQuery?.data?.shop)
     }, [shopQuery])
 
     useEffect(() => {
