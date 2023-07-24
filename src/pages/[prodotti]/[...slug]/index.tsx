@@ -532,22 +532,22 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                     mb={3}
                     ml={2}
                     padding='0' bg='white' display={'flex'} gap={1.5}>
-                    <SkeletonCircle size='14' />
+                    <SkeletonCircle size={['14', '14', '14', '14', '16']} />
                     <Box
                         margin={'auto'}
+                        ml={2}
                     >
                         <SkeletonText
-                            width={[56, 64]}
-
+                            width={[56, 40, 28, 40, 48]}
                             noOfLines={1} skeletonHeight={'3'} />
                         <SkeletonText mt='2'
-                            width={[36, 28]}
+                            width={[36, 28, 20, 32, 36]}
                             noOfLines={1} skeletonHeight={'2.5'} />
                     </Box>
                 </HStack>
                 <Skeleton
                     //height={['250px', '150', '500px']}
-                    className={'h-[450px] md:h-[280px] lg:h-[350px] xl:h-[400px]'}
+                    className={'h-[360px] md:h-[280px] lg:h-[350px] xl:h-[400px]'}
                     borderRadius={'3xl'}
                 />
             </>
@@ -565,6 +565,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         return (
             <HStack mt={[3, 2]} spacing={2}
+                mb={[6, 10]}
                 className='flex flex-wrap'
             >
                 {filters.query &&
@@ -743,7 +744,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                         <Box
 
                             mt={0}
-                            mb={[6, 10]}
+                            mb={[6, 6]}
                         >
                             <Box
                                 justifyContent={'space-between'}
