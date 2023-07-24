@@ -25,27 +25,27 @@ export const findParsedFilter = (filters: ProductsFilter, univers: Univers): Fil
         {
             name: "minPrice",
             parameters: undefined,
-            value: filters.minPrice
+            value: filters?.minPrice
         },
         {
             name: "maxPrice",
             parameters: undefined,
-            value: filters.maxPrice
+            value: filters?.maxPrice
         },
         {
             name: "brand",
             parameters: undefined,
-            value: filters.brand
+            value: filters?.brand
         },
         {
             name: "sale",
             parameters: undefined,
-            value: filters.sale
+            value: filters?.sale
         },
         {
             name: "sostenibile",
             parameters: undefined,
-            value: filters.traits ? "true" : "false"
+            value: filters?.traits ? "true" : "false"
         },
 
     ]
@@ -62,7 +62,7 @@ export const findParsedFilter = (filters: ProductsFilter, univers: Univers): Fil
                 parameters: types.map(type => {
                     return type.name
                 }),
-                value: filters.colors?.[0] ? filters.colors?.[0] : undefined
+                value: filters?.colors?.[0] ? filters?.colors?.[0] : undefined
             })
         }
 
@@ -90,7 +90,7 @@ export const findParsedFilter = (filters: ProductsFilter, univers: Univers): Fil
         parsedFilter.push({
             name: 'microCategory',
             parameters: categoryObject.types,
-            value: filters.microCategory
+            value: filters?.microCategory
         })
     }
     if (typeof categoryObject.fit === 'string') {
@@ -153,7 +153,7 @@ export const findParsedFilter = (filters: ProductsFilter, univers: Univers): Fil
                 parameters: types.map(type => {
                     return type.name
                 }),
-                value: filters.colors?.[0] ? filters.colors?.[0] : undefined
+                value: filters?.colors?.[0] ? filters?.colors?.[0] : undefined
             })
         }
     }
@@ -170,7 +170,7 @@ export const findParsedFilter = (filters: ProductsFilter, univers: Univers): Fil
                 return type.toLocaleUpperCase()
             })
             let defaultSize;
-            const size0 = filters.sizes?.[0]
+            const size0 = filters?.sizes?.[0]
             if (size0) {
                 defaultSize = types.find(type => type.startsWith(size0.toLocaleUpperCase()))
             }

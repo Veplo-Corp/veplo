@@ -136,13 +136,12 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
             "5xl",
         ]
 
+
         const totalSize: string[] = product.variations.map((variation) => {
 
             if (!variation.lots) return
-            if (variation.color === color) {
 
-            }
-            return variation?.lots.map((lot: any) => {
+            return variation?.lots.filter(lot => lot?.quantity && lot?.quantity > 0).map((lot: any) => {
                 return lot.size
             })
 
@@ -258,11 +257,11 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                                     fontWeight={'bold'}
                                                     paddingX={2}
 
-                                                    py={size.length > 6 ? 2 : 2}
+                                                    py={2}
 
                                                     justifyContent={'center'}
                                                     width={'full'}
-                                                    fontSize={size.length > 6 ? 'sm' : 'lg'}
+                                                    fontSize={size?.length > 6 ? 'sm' : 'lg'}
                                                     background={'#EEEEEE'}
                                                     borderRadius={'xl'}
                                                 >
