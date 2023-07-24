@@ -25,6 +25,11 @@ const GET_ORDER = gql`
                 name
                 photo
                 businessName
+                address{
+                    postcode
+                    city
+                    street
+                }
             }
             shipping{
                 url

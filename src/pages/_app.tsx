@@ -304,7 +304,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             })
           );
           getUser().then((data) => {
-
             if (!data.data) return
 
             console.log(data?.data?.user?.carts?.carts);

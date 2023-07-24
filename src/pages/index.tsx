@@ -248,7 +248,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
               }}
               onClick={() => { setModalForm(true) }}
             >
-              Sono un Brand!
+              Sono un Brand
             </Button>
           </Box>
           <Box
@@ -358,7 +358,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
               onClick={() => { setModalForm(true) }}
 
             >
-              Sono un brand!
+              Sono un brand
             </Button>
           </Box>
         </Box>
@@ -523,7 +523,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
               }}
               onClick={() => { setModalForm(true) }}
             >
-              Sono un brand!
+              Sono un brand
             </Button>
           </Box>
           <Link
