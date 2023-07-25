@@ -68,14 +68,14 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                             style={{
                                 boxShadow: "0px 0px 20px 0px rgba(144, 144, 144, 0.25)",
                             }}
-                            className="absolute cursor-pointer z-10 w-[350px] sm:w-[500px] md:w-[550px] mt-2 right-[-40px] sm:right-0.5 p-3 bg-white border border-white rounded-[20px]">
+                            className="absolute cursor-pointer z-10 w-[335px] sm:w-[500px] md:w-[550px] mt-2 right-[-50px] sm:right-0.5 p-2 sm:p-3 bg-white border border-white rounded-[20px]">
                             {({ close }) => (
                                 <>
                                     {cartsDispatch.length > 0 ?
                                         (
                                             <VStack
                                                 width={'full'}
-                                                gap={[3]}
+                                                gap={[2, 3]}
                                             >
                                                 {cartsDispatch.map((cart, index) => {
                                                     const totalQuantity = cart?.productVariations && cart?.productVariations.reduce(
