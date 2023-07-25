@@ -466,7 +466,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
 
                                             sessionStorage.setItem('scrollPositionShop', window.pageYOffset.toString());
                                         }}
-                                        productLink={`/prodotto/${product.id}/${product?.info?.brand}-${product.name}`}
+                                        productLink={`/prodotto/${product.id}/${createUrlSchema([product?.info?.brand, product.name])}`}
 
                                     ></Box_Dress>
                                 </motion.div>

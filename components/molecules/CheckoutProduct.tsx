@@ -10,6 +10,7 @@ import ButtonClose from '../atoms/ButtonClose'
 import { formatPercentage } from '../utils/formatPercentage'
 import Link from 'next/link'
 import { CartProductVariation } from '../../src/lib/apollo/generated/graphql'
+import createUrlSchema from '../utils/create_url'
 const CheckoutProduct: FC<{ variation: CartProductVariation, toProduct?: (variation: CartProductVariation) => void, deleteVariation?: (variation: CartProductVariation) => void, editVariation?: (variation: CartProductVariation, quantity: number) => void }> = ({ variation, deleteVariation, editVariation }) => {
 
     return (
@@ -18,7 +19,9 @@ const CheckoutProduct: FC<{ variation: CartProductVariation, toProduct?: (variat
             display={'flex'}
             width={'full'}
         >
-            <Link href={`/prodotto/${variation?.productId}/${variation?.brand}-${variation?.name}`}>
+            <Link
+                href={`/prodotto/${variation?.productId}/${createUrlSchema([variation?.brand, variation?.name])}`}
+            >
                 <LazyLoadImage src={
                     imageKitUrl(variation?.photo ? variation?.photo : '', 237, 247)
                 }
@@ -42,7 +45,7 @@ const CheckoutProduct: FC<{ variation: CartProductVariation, toProduct?: (variat
                     spacing={2}
 
                 >
-                    <Link href={`/prodotto/${variation?.productId}/${variation?.brand}-${variation?.name}`}>
+                    <Link href={`/prodotto/${variation?.productId}/${createUrlSchema([variation?.brand, variation?.name])}`}>
                         <ListItem>{toUpperCaseFirstLetter(variation?.brand)}</ListItem>
                     </Link>
 

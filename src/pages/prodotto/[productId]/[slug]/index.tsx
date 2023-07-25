@@ -227,10 +227,23 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             console.log(sizes);
             setSizeSelected(sizes)
         } else {
-            if (variation && variation.lots.length === 1) {
-                setSizeSelected(variation.lots[0].size)
-            } else if (product.variations[0].lots.length === 1) {
-                setSizeSelected(product.variations[0].lots[0].size)
+            //metti già la taglia se ne ha solo una
+            if (variation) {
+                const sizeWithQuantity = variation.lots
+                    .filter((lot) => lot.quantity > 0)
+                    .map((lot) => lot.size);
+                if (sizeWithQuantity.length === 1) {
+                    setSizeSelected(sizeWithQuantity[0])
+                }
+            }
+            else if (product.variations[0].lots.length === 1) {
+                const sizeWithQuantity = product.variations[0].lots
+                    .filter((lot) => lot.quantity > 0)
+                    .map((lot) => lot.size);
+                if (sizeWithQuantity.length === 1) {
+                    setSizeSelected(sizeWithQuantity[0])
+                }
+
             }
         }
 
@@ -309,8 +322,11 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         setSizeSelected('')
 
         //metti già la taglia se ne ha solo una
-        if (variation.lots.length === 1) {
-            setSizeSelected(variation.lots[0].size)
+        const sizeWithQuantity = variation.lots
+            .filter((lot) => lot.quantity > 0)
+            .map((lot) => lot.size);
+        if (sizeWithQuantity.length === 1) {
+            setSizeSelected(sizeWithQuantity[0])
         }
 
 
@@ -1151,7 +1167,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
                                                     <Box_Dress
                                                         overflowCards={true}
-                                                        productLink={`/prodotto/${product.id}/${product?.info?.brand}-${product.name}`}
+                                                        productLink={`/prodotto/${product.id}/${createUrlSchema([product?.info?.brand, product.name])}`}
                                                         showStoreHeader={false} product={product} color={typeof colors === 'string' ? colors : undefined} />
                                                 </motion.div>
 
