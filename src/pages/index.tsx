@@ -407,7 +407,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
               ))}
 
               <Link
-                href={'https://www.datocms-assets.com/102220/1689928317-veplo_per_i_brand.pdf'}
+                href={'https://www.datocms-assets.com/102220/1690279179-veplo_brand.pdf'}
                 target='_blank'
                 className='flex'
               >
