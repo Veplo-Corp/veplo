@@ -252,7 +252,7 @@ const OrderComponent: FC<{ order: Order, orderStatus: OrderStatus | undefined }>
                             fontWeight={'medium'}
                             color={'#909090'}
                         >
-                            Sconto coupon
+                            sconto aggiuntivo
                         </Text>
                         <Text
                             fontSize={'16px'}
