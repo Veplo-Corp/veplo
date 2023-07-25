@@ -187,8 +187,9 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
 
     useEffect(() => {
+        console.log(elementEditCart.error);
 
-        if (elementEditCart.error?.graphQLErrors[0].name === "too much quantity for this product's variation") {
+        if (elementEditCart.error?.graphQLErrors?.[0]?.name === "too much quantity for this product's variation") {
             //setOpenDrawerCart(true)
         }
     }, [elementEditCart.error])
@@ -224,8 +225,21 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             }
         }
         if (typeof sizes === 'string') {
+
             console.log(sizes);
-            setSizeSelected(sizes)
+            if (variation) {
+                const sizeWithQuantity = variation.lots
+                    .filter((lot) => lot.size === sizes)[0]
+                if (sizeWithQuantity && sizeWithQuantity?.quantity > 0) {
+                    setSizeSelected(sizeWithQuantity.size)
+                }
+            } else {
+                const sizeWithQuantity = product.variations[0].lots
+                    .filter((lot) => lot.size === sizes)[0]
+                if (sizeWithQuantity && sizeWithQuantity?.quantity > 0) {
+                    setSizeSelected(sizeWithQuantity.size)
+                }
+            }
         } else {
             //metti già la taglia se ne ha solo una
             if (variation) {

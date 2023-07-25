@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { Box, Button, ButtonGroup, Divider, ListItem, Text, UnorderedList, VStack, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Center, CircularProgress, Divider, ListItem, Text, UnorderedList, VStack, useBreakpointValue } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
@@ -390,10 +390,9 @@ const index = () => {
                                 type={'button'}
                                 borderRadius={'10px'}
                                 fontWeight={'black'}
-                                padding={5}
                                 paddingInline={16}
                                 width={'full'}
-                                height={'fit-content'}
+                                height={'60px'}
                                 variant={'primary'}
                                 _disabled={{
                                     bg: '#FF5A78'
@@ -406,11 +405,19 @@ const index = () => {
                                 style={{
                                     boxShadow: '0px 0px 20px rgba(255, 90, 120, 0.25)',
                                 }}
-                            >Procedi {
-                                    (typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) ?
+                            >
+                                {!isDisabled ?
+                                    `Procedi ${(typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) ?
                                         formatNumberWithTwoDecimalsInString(cart.total + 499) :
                                         formatNumberWithTwoDecimalsInString(cart.total)
-                                }€
+                                    }€` :
+                                    <Center>
+                                        <CircularProgress
+                                            size='30px'
+                                            thickness='15px'
+                                            isIndeterminate color='white' />
+                                    </Center>
+                                }
 
                             </Button>
                         </Box>
@@ -602,10 +609,10 @@ const index = () => {
                                             borderRadius={'10px'}
                                             size={'20px'}
                                             fontWeight={'black'}
-                                            padding={5}
+
                                             paddingInline={16}
                                             width={'full'}
-                                            height={'fit-content'}
+                                            height={'55px'}
                                             variant={'primary'}
                                             _disabled={{
                                                 bg: '#FF5A78'
@@ -617,7 +624,17 @@ const index = () => {
                                             style={{
                                                 boxShadow: '0px 0px 20px rgba(255, 90, 120, 0.25)',
                                             }}
-                                        >Procedi
+                                        > {!isDisabled ?
+
+                                            `Procedi` :
+                                            <Center>
+                                                <CircularProgress
+                                                    size='30px'
+                                                    thickness='13px'
+                                                    isIndeterminate color='white' />
+                                            </Center>
+                                            }
+
                                         </Button>}
                                     </Box>
                                     <Box

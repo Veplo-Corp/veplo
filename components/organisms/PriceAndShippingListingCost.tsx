@@ -39,7 +39,7 @@ const PriceAndShippingListingCost: FC<{ subTotal: number, total: number, shippin
                 justifyContent={'space-between'}
             >
                 <Box>
-                    Sconto coupon applicato
+                    sconto aggiuntivo applicato
                 </Box>
                 <Box>
                     -{formatNumberWithTwoDecimalsInString(coupon)}€
