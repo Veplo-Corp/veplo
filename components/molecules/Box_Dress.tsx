@@ -1,26 +1,22 @@
-import React, { Fragment, useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Fade, Image, ScaleFade, Tag, Text, Tooltip, VStack, useBreakpointValue } from '@chakra-ui/react'
 import Circle_Color from '../atoms/Circle_Color'
-import { Variation } from '../../src/interfaces/product.interface'
 import { COLORS } from '../mook/colors'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import useWindowSize from '../Hooks/useWindowSize'
 import { imageKitUrl } from '../utils/imageKitUrl'
-import createUrlScheme from "../utils/create_url"
 
 import Link from 'next/link'
-import { toProductPage } from '../utils/toProductPage'
 import createUrlSchema from '../utils/create_url'
 import { isMobile } from 'react-device-detect'
 import { useRouter } from 'next/router'
 import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString'
-import { Product } from '../../src/lib/apollo/generated/graphql'
+import { Product, ProductVariation } from '../../src/lib/apollo/generated/graphql'
 // import Swiper core and required modules
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectFade } from 'swiper';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -35,13 +31,11 @@ import { Leaf } from 'iconoir-react'
 const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean, productLink: string }> = ({ handleEventSelectedDress, product, color, showStoreHeader, productLink, overflowCards }) => {
 
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
-    const [width, height] = useWindowSize();
     //const [dimensionUrl, setDimensionUrl] = useState('&tr=w-571,h-825')
     const [urlProduct, seturlProduct] = useState<string | undefined>()
     const [indexPhoto, setindexPhoto] = useState(0)
     const [listOfSizesAvailable, setListOfSizesAvailable] = useState<string[]>([])
     const [listOfSizesAvailableForSpecificVariation, setListOfSizesAvailableForSpecificVariation] = useState<any>()
-
     const [showSize, setShowSize] = useState(false)
     const [isSustainable, setIsSustainable] = useState(false)
     const router = useRouter()
@@ -50,11 +44,51 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
 
     const checkIfProductIsSustainable = (parole: string[] | null | undefined): boolean => {
         if (!parole) return false
-
         return parole.some(parola => arraySustainableTraits.includes(parola as SustainableTraits));
     }
 
-    const handleSetPhotoUrl = (colorSelected: string | undefined) => {
+    const manipulateUrl = (colorSelected: string | undefined, sizeSelected: string | undefined) => {
+
+        let updatedURL = productLinkPage;
+        const colorExists = updatedURL.includes('colors=');
+        const sizesExist = updatedURL.includes('sizes=');
+
+        if (colorSelected) {
+            if (colorExists) {
+                // Sostituisci il valore del parametro "color" con il colore fornito
+                updatedURL = updatedURL.replace(/colors=[^&]+/, `colors=${colorSelected.toLocaleLowerCase()}`);
+            } else {
+                if (sizesExist) {
+                    // Aggiungi il parametro "color" con il colore fornito
+                    updatedURL += `&colors=${colorSelected.toLocaleLowerCase()}`;
+                } else {
+                    // Aggiungi il parametro "color" con il colore fornito, gestendo il caso in cui ci siano già parametri o meno
+                    updatedURL += updatedURL.includes('?') ? `&colors=${colorSelected.toLocaleLowerCase()}` : `?colors=${colorSelected.toLocaleLowerCase()}`;
+                }
+            }
+        }
+
+        if (sizeSelected) {
+            if (sizesExist) {
+                // Sostituisci il valore del parametro "sizes" con il valore di sizeSelected
+                updatedURL = updatedURL.replace(/sizes=[^&]+/, `sizes=${sizeSelected}`);
+            } else {
+                if (colorExists) {
+                    // Aggiungi il parametro "sizes" con il valore di sizeSelected
+                    updatedURL += `&sizes=${sizeSelected}`;
+                } else {
+                    // Aggiungi il parametro "sizes" con il valore di sizeSelected, gestendo il caso in cui ci siano già parametri o meno
+                    updatedURL += updatedURL.includes('?') ? `&sizes=${sizeSelected}` : `?sizes=${sizeSelected}`;
+                }
+            }
+        }
+
+        return updatedURL;
+    }
+
+
+
+    const handleSetPhotoUrl = (colorSelected: string | undefined, sizeSelected: string | undefined) => {
         if (!product?.variations) return
 
         if (!colorSelected) {
@@ -69,11 +103,13 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                 setListOfSizesAvailableForSpecificVariation([])
             }
             return seturlProduct(url)
-
         }
+
         const variationIndex: any = product.variations?.findIndex(variation => variation?.color?.toLowerCase() === colorSelected.toLowerCase())
 
+
         if (variationIndex >= 0) {
+            //checkSizeAvailable per colore selezionato
             const sizeAvailable = product.variations[variationIndex].lots?.map(lot => {
                 if (typeof lot.quantity === 'number' && lot.quantity <= 0) return
                 return lot.size
@@ -86,43 +122,14 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
             setindexPhoto(variationIndex)
             //cambio URI link per mandarlo al colore giusto cliccato
 
-            let updatedURL = productLinkPage;
-
-
-            const colorExists = updatedURL.includes('colors=');
-            const sizesExist = updatedURL.includes('sizes=');
-
-            if (colorExists) {
-                // Sostituisci il valore del parametro "color" con il colore fornito
-                updatedURL = updatedURL.replace(/colors=[^&]+/, `colors=${colorSelected.toLocaleLowerCase()}`);
-            } else {
-                if (sizesExist) {
-                    // Aggiungi il parametro "color" con il colore fornito
-                    updatedURL += `&colors=${colorSelected.toLocaleLowerCase()}`;
-                } else {
-                    // Aggiungi il parametro "color" con il colore fornito, gestendo il caso in cui ci siano già parametri o meno
-                    updatedURL += updatedURL.includes('?') ? `&colors=${colorSelected.toLocaleLowerCase()}` : `?colors=${colorSelected.toLocaleLowerCase()}`;
-                }
-            }
-
-            setProductLinkPage(updatedURL.toString())
+            const udpateUrl = manipulateUrl(colorSelected, undefined)
+            setProductLinkPage(udpateUrl.toString())
             seturlProduct(typeof product?.variations[variationIndex]?.photos?.[0] === 'string' ? product?.variations[variationIndex]?.photos?.[0] : '')
         }
     }
 
 
-
-    useEffect(() => {
-        if (!product.variations) return
-        const colors = product.variations.map((variation: any) => {
-            return COLORS.find(color => color.name === variation?.color)?.cssColor
-        })
-
-        const isProductSustainable = checkIfProductIsSustainable(product.info?.traits)
-        setIsSustainable(isProductSustainable)
-        setProductcolorsCSS(colors)
-        handleSetPhotoUrl(color)
-
+    const sizeAvailable = (variations: ProductVariation[]) => {
         const sizes = [
             "xxs",
             "xs",
@@ -135,12 +142,8 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
             "4xl",
             "5xl",
         ]
-
-
-        const totalSize: string[] = product.variations.map((variation) => {
-
+        const totalSize: string[] = variations.map((variation) => {
             if (!variation.lots) return
-
             return variation?.lots.filter(lot => lot?.quantity && lot?.quantity > 0).map((lot: any) => {
                 return lot.size
             })
@@ -150,10 +153,21 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
         }).sort().sort(function (a: string, b: string) {
             return sizes.indexOf(a) - sizes.indexOf(b)
         });
-
-
         setListOfSizesAvailable(totalSize)
+    }
 
+
+    useEffect(() => {
+        if (!product.variations) return
+        const colors = product.variations.map((variation: any) => {
+            return COLORS.find(color => color.name === variation?.color)?.cssColor
+        })
+
+        const isProductSustainable = checkIfProductIsSustainable(product.info?.traits)
+        setIsSustainable(isProductSustainable)
+        setProductcolorsCSS(colors)
+        handleSetPhotoUrl(color, undefined)
+        sizeAvailable(product.variations)
 
 
     }, [product, color])
@@ -197,8 +211,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
         <>
             {
                 product?.variations?.[0].photos?.[0] &&
-                <Box >
-
+                <Box>
                     {showStoreHeader && <Link
                         prefetch={false}
                         onClick={handleEventSelectedDress}
@@ -213,8 +226,6 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 primaryText={product?.shopInfo?.name}
                                 secondaryText={product?.info?.brand}
                             />
-
-
                         </Box>
                     </Link>}
 
@@ -256,14 +267,15 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                                 <Box key={size}
                                                     fontWeight={'bold'}
                                                     paddingX={2}
-
                                                     py={2}
-
                                                     justifyContent={'center'}
                                                     width={'full'}
                                                     fontSize={size?.length > 6 ? 'sm' : 'lg'}
                                                     background={'#EEEEEE'}
                                                     borderRadius={'xl'}
+                                                    onMouseEnter={() => {
+                                                        setProductLinkPage(manipulateUrl(undefined, size))
+                                                    }}
                                                 >
                                                     {size.toLocaleUpperCase()}
                                                     {!listOfSizesAvailableForSpecificVariation.includes(size) &&
@@ -304,7 +316,6 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                         pagination={{
                                             clickable: true
                                         }}
-
                                         modules={[Pagination, Navigation]}
                                     >
                                         {product.variations?.[indexPhoto].photos?.map((photoUrl, index) => {
@@ -335,26 +346,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                         className="w-full min-h-[350px] sm:min-h-[300px] aspect-[4.8/5] object-cover rounded-[20px]"
                                     />
                                 )
-
                             }
-
-
-                            {/* <Text
-                                fontSize={'md'}
-                                fontWeight={'bold'}
-                                py={0}
-                                px={2}
-                                bgColor={'#D9D9D9'}
-                                position={'absolute'}
-                                top={3}
-                                left={3}
-                                borderRadius={'full'}
-                                noOfLines={1}
-                                mr={3}
-                                zIndex={10}
-                            >
-                                {product?.name?.toLocaleUpperCase()}
-                            </Text> */}
                             <Box
                                 position={'absolute'}
                                 bottom={[4, 4]}
@@ -365,7 +357,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 <Circle_Color colors={productcolorsCSS.slice(0, 5)} dimension={isMobile ? '22px' : 6} space={2}
                                     handleColorFocused={(color: string) => {
                                         if (isSmallView) return
-                                        handleSetPhotoUrl(color)
+                                        handleSetPhotoUrl(color, undefined)
                                     }}
                                 />
                                 {productcolorsCSS.length > 5 &&
@@ -393,46 +385,6 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                     </Tag>
                                 }
                             </Box>
-
-                            {/* <Box
-                                position={'absolute'}
-                                bottom={0}
-                                right={0}
-                                minW={20}
-                                paddingX={3}
-                                display={'flex'}
-                                zIndex={50}
-
-                                paddingY={product.price?.v2 ? '6px' : '12px'}
-                                background={'primary.bg'}
-                                roundedTopLeft={'15px'}
-
-                            >
-                                <Box
-                                    mx={'auto'}
-                                >
-                                    <Text
-                                        fontSize={['22px', '18px']}
-                                        fontWeight={'bold'}
-                                        color={'primary.text'}
-                                    >
-                                        {product.price?.v2 ? formatNumberWithTwoDecimalsInString(Number(product.price?.v2)) : formatNumberWithTwoDecimalsInString(Number(product.price?.v1))}€
-                                    </Text>
-                                    {product.price?.v2 && <Text
-                                        mt={-2}
-                                        fontSize={['16px', '14px']}
-                                        fontWeight={'medium'}
-                                        color={'primary.secondaryText'}
-                                        decoration={'line-through'}
-                                    >
-                                        {formatNumberWithTwoDecimalsInString(Number(product.price?.v1))}€
-
-                                    </Text>}
-                                </Box>
-
-                            </Box> */}
-
-
                         </Link>
 
                     </Box >
@@ -479,10 +431,8 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                             >
                                 {product.price?.v2 ? formatNumberWithTwoDecimalsInString(Number(product.price?.v2)) : formatNumberWithTwoDecimalsInString(Number(product.price?.v1))}€
                             </Text>
-
                         </Box>
                     </Box>
-
                 </Box >
             }
         </>

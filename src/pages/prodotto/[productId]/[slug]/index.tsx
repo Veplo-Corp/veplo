@@ -180,7 +180,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
     useEffect(() => {
         if (!productFounded) return
-
         setproduct(productFounded)
         setVariationSelected(productFounded?.variations?.[0])
         setColorSelected(productFounded?.variations?.[0]?.color)
@@ -213,16 +212,26 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
     useEffect(() => {
         const { colors, sizes } = router.query;
+        let variation: Variation | undefined
+
+
+        if (typeof colors === 'string' && product) {
+            variation = product.variations.find(variation => variation?.color.toLowerCase() == colors.toLowerCase())
+            if (!variation) { }
+            else {
+                setVariationSelected(variation)
+                setColorSelected(variation?.color)
+            }
+        }
         if (typeof sizes === 'string') {
             console.log(sizes);
             setSizeSelected(sizes)
-        }
-        if (typeof colors === 'string' && product) {
-            const variation = product.variations.find(variation => variation?.color.toLowerCase() == colors.toLowerCase())
-            if (!variation) return
-            setVariationSelected(variation)
-            setColorSelected(variation?.color)
-            return
+        } else {
+            if (variation && variation.lots.length === 1) {
+                setSizeSelected(variation.lots[0].size)
+            } else if (product.variations[0].lots.length === 1) {
+                setSizeSelected(product.variations[0].lots[0].size)
+            }
         }
 
     }, [router.query])
@@ -235,22 +244,15 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             const numberOfLine = numberOfLineText(descriptionRefText.current);
             setDescriptionRefTextLength(numberOfLine);
         }
-        //const category = createTextCategory(product.info.macroCategory, product.info.microCategory)
-        //setTextCategory(category)
-        // const url_slug_correct = createUrlSchema([product.info.brand, product.name])
-        // if (url_slug_correct !== slug) {
-        //     router.replace({
-        //         pathname: `/prodotto/${router.query.productId}/${url_slug_correct}`,
-        //     },
-        //         undefined, { shallow: true }
-        //     )
-        // }
+
+
         setproductsLikeThis(undefined)
 
         setInLocalStorage('genderSelected', product.info.gender)
         const genderSelected = product.info.gender === 'm' ? 'uomo' : product.info.gender === 'f' ? 'donna' : undefined;
         if (!genderSelected) return
         //TODO prendere anche parametro "Accessori" o "abbigliamento" da prodotto
+
         console.log(product.info.macroCategory);
         const macrocategorySizeGuideFromMacrocategory = findMacrocategorySizeGuideFromMacrocategory(product.info.macroCategory, genderSelected)
         console.log(macrocategorySizeGuideFromMacrocategory);
@@ -305,6 +307,13 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         setVariationSelected(variation)
         setColorSelected(variation?.color)
         setSizeSelected('')
+
+        //metti già la taglia se ne ha solo una
+        if (variation.lots.length === 1) {
+            setSizeSelected(variation.lots[0].size)
+        }
+
+
         router.replace({
             pathname: router.asPath.split('?')[0],
             query: { colors: color.toLocaleLowerCase() }
