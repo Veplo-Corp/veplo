@@ -56,7 +56,7 @@ const AuthenticationLayout: FC<{ children: ReactNode }> = ({ children }) => {
 
 
                         <svg
-                            className='absolute bottom-0  max-h-[16vh] -left-32  min-380:max-h-[20vh] min-380:-left-32  '
+                            className='absolute bottom-0  max-h-[16vh] -left-32  min-380:max-h-[15vh] min-380:-left-32  '
                             width="394" height="236" viewBox="0 0 394 236" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <ellipse cx="314.644" cy="71.7073" rx="64.5082" ry="45.5567" transform="rotate(30 314.644 71.7073)" fill="#FF5A78" />
                             <path d="M0 59.3925V236H234.095C234.095 236 246.52 202.98 243.538 165.957C240.556 128.935 227.5 115.5 209.5 100.918C191.5 86.3355 153.578 111.424 119.781 100.918C85.9838 90.4114 92.942 53.8891 56.1628 47.3852C19.3836 40.8812 0 59.3925 0 59.3925Z" fill="#FF5A78" />
