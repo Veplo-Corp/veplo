@@ -486,7 +486,7 @@ const index = () => {
                                         borderWidth={1}
                                         borderColor={'#F3F3F3'}
                                         paddingX={[3, 5]}
-                                        paddingY={[5, 8]}
+                                        paddingY={[5, 6]}
                                         borderRadius={'15px'}
                                         textAlign={'center'}
                                         className='mb-5 lg:mb-0'
