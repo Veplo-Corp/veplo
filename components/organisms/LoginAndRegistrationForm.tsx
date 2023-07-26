@@ -1,5 +1,5 @@
 import { Box, Button, Input, InputGroup, InputLeftElement, InputRightElement, Spinner, Text } from '@chakra-ui/react';
-import { UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, updateProfile } from 'firebase/auth';
+import { UserCredential, createUserWithEmailAndPassword, deleteUser, getAuth, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, updateProfile } from 'firebase/auth';
 import { EyeClose, EyeEmpty, Lock, Mail } from 'iconoir-react';
 import { useRouter } from 'next/router';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
@@ -125,7 +125,6 @@ const LoginAndRegistrationForm: FC<{
                     const tokenResult = await userCredential.user.getIdTokenResult();
                     const isBusiness = tokenResult.claims.isBusiness ? true : false;
                     setAuthTokenInSessionStorage(tokenResult.token)
-
                     await handleCartInLocalStorage()
                     setIsLoading(false)
                     gtag({
@@ -241,7 +240,6 @@ const LoginAndRegistrationForm: FC<{
                             setIsLoading(false)
                         }
                         setIsLoading(false)
-
                     }
 
                 } catch (error: any) {
@@ -249,9 +247,24 @@ const LoginAndRegistrationForm: FC<{
                     setIsLoading(false)
                     const errorCode = error.code;
                     const errorMessage = error.message;
-                    //console.log(errorCode);
+                    console.log(errorMessage);
                     console.log(errorCode);
                     const errorForModal = handleErrorFirebase(error.code)
+                    if (
+                        //errorMessage === 'email already used by another user'
+                        //TODO inserire errori corretti
+                        typeof errorMessage === 'string' && !errorMessage.includes('Firebase')
+                    ) {
+                        const user = auth.currentUser;
+                        //elimina user se da questo errore
+                        console.log(user);
+                        if (user) {
+                            deleteUser(user).then(() => {
+                                console.log('User Elininato');
+                            })
+                        }
+
+                    }
                     dispatch(openModal({
                         title: errorForModal?.title,
                         description: errorForModal?.description
@@ -263,9 +276,7 @@ const LoginAndRegistrationForm: FC<{
                 try {
                     const result = await resetPassword(data.email)
                     setIsLoading(false)
-
                     return addToast({ position: 'top', title: 'controlla la casella mail', description: 'ti abbiamo inviato una mail per resettare la password', status: 'success', duration: 5000, isClosable: true })
-
                 } catch (e) {
                     setIsLoading(false)
                 }

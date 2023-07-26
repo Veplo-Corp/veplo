@@ -128,7 +128,7 @@ const Drawer_Menu: React.FC<{ user: any, isOpen: boolean, closeDrawer: () => voi
                                     {userDispatch.favouriteShop?.street}
                                 </Text>
                                 <VStack
-                                    spacing={[2, 3]}
+                                    spacing={[4, 3]}
                                     align='stretch'
                                 >
                                     {listShop.map(element => {
@@ -168,12 +168,11 @@ const Drawer_Menu: React.FC<{ user: any, isOpen: boolean, closeDrawer: () => voi
                                 fontSize={'lg'}
                                 fontWeight={'bold'}
                                 marginBottom={'2'}
-
                             >
                                 Dettagli account
                             </Text>
                             <VStack
-                                spacing={[2, 3]}
+                                spacing={[4, 3]}
                                 align='stretch'
                             >
                                 {list.map(element => {

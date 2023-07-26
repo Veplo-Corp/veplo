@@ -1,9 +1,9 @@
-export const handleErrorFirebase = (error:string) => {
+export const handleErrorFirebase = (error: string) => {
     switch (error) {
         case 'auth/email-already-in-use':
             return {
                 title: 'Email già esistente',
-                description: "impossibile registrare la mail perchè hai già effettuato l'accesso"
+                description: "impossibile registrare la mail perchè è già stata utilizzata una volta"
             }
         case 'auth/wrong-password':
         case 'Firebase: Error (auth/wrong-password).':

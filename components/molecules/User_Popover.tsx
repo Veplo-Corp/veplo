@@ -144,11 +144,11 @@ const User_Popover = () => {
                                                 {action.description}
                                             </Box>
                                         </Box>
-                                        <NavArrowRight
+                                        {/* <NavArrowRight
 
                                             className='w-7 my-auto mr-2'
                                             strokeWidth={1.8}
-                                        />
+                                        /> */}
                                     </Box>
 
                                 </Popover.Button>
@@ -197,11 +197,11 @@ const User_Popover = () => {
                                                 {action.description}
                                             </Box>
                                         </Box>
-                                        <NavArrowRight
+                                        {/* <NavArrowRight
 
                                             className='w-7 my-auto mr-2'
                                             strokeWidth={1.8}
-                                        />
+                                        /> */}
                                     </Box>
 
                                 </Popover.Button>

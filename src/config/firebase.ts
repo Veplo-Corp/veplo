@@ -16,7 +16,8 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   signInWithRedirect,
-  updateProfile
+  updateProfile,
+  deleteUser
 } from 'firebase/auth';
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -101,4 +102,5 @@ export {
   updateProfile,
   provider,
   storage,
+  deleteUser
 }

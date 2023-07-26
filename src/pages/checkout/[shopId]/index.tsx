@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { Box, Button, ButtonGroup, Center, CircularProgress, Divider, ListItem, Text, UnorderedList, VStack, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Center, CircularProgress, Divider, ListItem, Spinner, Text, UnorderedList, VStack, useBreakpointValue } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
@@ -411,12 +411,13 @@ const index = () => {
                                         formatNumberWithTwoDecimalsInString(cart.total + 499) :
                                         formatNumberWithTwoDecimalsInString(cart.total)
                                     }€` :
-                                    <Center>
-                                        <CircularProgress
-                                            size='30px'
-                                            thickness='15px'
-                                            isIndeterminate color='white' />
-                                    </Center>
+                                    <Spinner
+                                        thickness='4px'
+                                        speed='0.65s'
+                                        emptyColor='primary.bg'
+                                        color='white'
+                                        size='lg'
+                                    />
                                 }
 
                             </Button>
@@ -627,12 +628,13 @@ const index = () => {
                                         > {!isDisabled ?
 
                                             `Procedi` :
-                                            <Center>
-                                                <CircularProgress
-                                                    size='30px'
-                                                    thickness='13px'
-                                                    isIndeterminate color='white' />
-                                            </Center>
+                                            <Spinner
+                                                thickness='4px'
+                                                speed='0.65s'
+                                                emptyColor='primary.bg'
+                                                color='white'
+                                                size='lg'
+                                            />
                                             }
 
                                         </Button>}
