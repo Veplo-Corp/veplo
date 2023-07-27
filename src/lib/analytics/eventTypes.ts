@@ -26,8 +26,8 @@ export type VeploPixelEvent = {
         value?: number,
         currency?: 'EUR'
     },
-    eventId?: {
-        eventId?: string
+    eventID?: {
+        eventID?: string
     }
 }
 
