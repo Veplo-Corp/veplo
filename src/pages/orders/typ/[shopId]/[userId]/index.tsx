@@ -109,8 +109,8 @@ const index = () => {
                 value: formatNumberWithTwoDecimalsInNumber(typeof order?.totalDetails?.total === 'number' ? order?.totalDetails?.total : 0),
                 currency: 'EUR'
             },
-            eventId: {
-                eventId: order?.id ? order?.id : ''
+            eventID: {
+                eventID: order?.id ? order?.id : ''
             }
         })
     }
