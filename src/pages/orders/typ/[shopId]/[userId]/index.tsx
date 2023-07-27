@@ -73,7 +73,7 @@ const index = () => {
     useEffect(() => {
         console.log(data);
 
-        if (!data?.lastOrderFromShopByUser || !order) return
+        if (!data?.lastOrderFromShopByUser || order) return
         setOrder(data?.lastOrderFromShopByUser)
         purchase(data?.lastOrderFromShopByUser)
         handleStatus(data?.lastOrderFromShopByUser?.status)
