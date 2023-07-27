@@ -26,6 +26,7 @@ import 'swiper/css/pagination';
 import ProfilePhoto from './ProfilePhoto'
 import { SustainableTraits, arraySustainableTraits } from '../mook/productParameters/traits'
 import { Leaf } from 'iconoir-react'
+import { manipulateUrlForProductColorAndSize } from '../utils/manipulateUrlForProductColorAndSize';
 
 
 const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean, productLink: string }> = ({ handleEventSelectedDress, product, color, showStoreHeader, productLink, overflowCards }) => {
@@ -47,44 +48,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
         return parole.some(parola => arraySustainableTraits.includes(parola as SustainableTraits));
     }
 
-    const manipulateUrl = (colorSelected: string | undefined, sizeSelected: string | undefined) => {
 
-        let updatedURL = productLinkPage;
-        const colorExists = updatedURL.includes('colors=');
-        const sizesExist = updatedURL.includes('sizes=');
-
-        if (colorSelected) {
-            if (colorExists) {
-                // Sostituisci il valore del parametro "color" con il colore fornito
-                updatedURL = updatedURL.replace(/colors=[^&]+/, `colors=${colorSelected.toLocaleLowerCase()}`);
-            } else {
-                if (sizesExist) {
-                    // Aggiungi il parametro "color" con il colore fornito
-                    updatedURL += `&colors=${colorSelected.toLocaleLowerCase()}`;
-                } else {
-                    // Aggiungi il parametro "color" con il colore fornito, gestendo il caso in cui ci siano già parametri o meno
-                    updatedURL += updatedURL.includes('?') ? `&colors=${colorSelected.toLocaleLowerCase()}` : `?colors=${colorSelected.toLocaleLowerCase()}`;
-                }
-            }
-        }
-
-        if (sizeSelected) {
-            if (sizesExist) {
-                // Sostituisci il valore del parametro "sizes" con il valore di sizeSelected
-                updatedURL = updatedURL.replace(/sizes=[^&]+/, `sizes=${sizeSelected}`);
-            } else {
-                if (colorExists) {
-                    // Aggiungi il parametro "sizes" con il valore di sizeSelected
-                    updatedURL += `&sizes=${sizeSelected}`;
-                } else {
-                    // Aggiungi il parametro "sizes" con il valore di sizeSelected, gestendo il caso in cui ci siano già parametri o meno
-                    updatedURL += updatedURL.includes('?') ? `&sizes=${sizeSelected}` : `?sizes=${sizeSelected}`;
-                }
-            }
-        }
-
-        return updatedURL;
-    }
 
 
 
@@ -122,7 +86,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
             setindexPhoto(variationIndex)
             //cambio URI link per mandarlo al colore giusto cliccato
 
-            const udpateUrl = manipulateUrl(colorSelected, undefined)
+            const udpateUrl = manipulateUrlForProductColorAndSize(colorSelected, undefined, productLinkPage)
             setProductLinkPage(udpateUrl.toString())
             seturlProduct(typeof product?.variations[variationIndex]?.photos?.[0] === 'string' ? product?.variations[variationIndex]?.photos?.[0] : '')
         }
@@ -274,7 +238,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                                     background={'#EEEEEE'}
                                                     borderRadius={'xl'}
                                                     onMouseEnter={() => {
-                                                        setProductLinkPage(manipulateUrl(undefined, size))
+                                                        setProductLinkPage(manipulateUrlForProductColorAndSize(undefined, size, productLinkPage))
                                                     }}
                                                 >
                                                     {size.toLocaleUpperCase()}

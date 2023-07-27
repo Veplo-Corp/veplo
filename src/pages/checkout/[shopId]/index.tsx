@@ -234,6 +234,8 @@ const index = () => {
     }
 
     const deleteVariation = async (variation: CartProductVariation) => {
+        setIsDisabled(true)
+
         try {
             if (user.uid) {
                 await editCart({
@@ -244,9 +246,17 @@ const index = () => {
                     }
                 })
             }
+            setIsDisabled(false)
+
 
         } catch {
             //TODO gestire errore in edit card
+            setIsDisabled(false)
+
+            dispatch(openModal({
+                title: 'Errore imprevisto',
+                description: 'Ci, dispiace, ma non siamo riusciti ad aggiornare il carrello. Riprova tra poco.'
+            }))
         }
 
 
