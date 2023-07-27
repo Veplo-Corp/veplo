@@ -28,6 +28,7 @@ import { fbq, gtag } from '../../../lib/analytics/gtag';
 import { GTMEventType, PixelEventType } from '../../../lib/analytics/eventTypes';
 import { GtagVariationsToItemsFor } from '../../../../components/utils/GtagVariationsToItemsFor';
 import { formatNumberWithTwoDecimalsInNumber } from '../../../../components/utils/formatNumberWithTwoDecimalsInNumber';
+import { openModal } from '../../../store/reducers/globalModal';
 
 const SHIPPING_COST = 499;
 
@@ -151,18 +152,10 @@ const index = () => {
     const handleEditVariation = async (variationSelected: CartProductVariation, quantity: number) => {
         const resolve = await expirationTimeTokenControll(user.expirationTime)
         if (!resolve || !cart) return
-
-
         let NewCarts: Cart[] = [];
-
-
+        setIsDisabled(true)
         //caso in cui la Variation è già presente in cart
         const index = cart.productVariations.findIndex(variation => variation?.size === variationSelected.size && variation?.id === variationSelected.id)
-        console.log(variationSelected);
-        console.log(cart);
-        console.log(index);
-
-
         const newProductVariation = {
             ...cart.productVariations[index],
             quantity: quantity
@@ -213,7 +206,6 @@ const index = () => {
 
         try {
             if (user.uid) {
-
                 await editCart({
                     variables: {
                         productVariationId: variationSelected.id,
@@ -224,11 +216,20 @@ const index = () => {
             } else if (!user.uid) {
                 localStorage.setItem('carts', JSON.stringify(NewCarts))
             }
+            setIsDisabled(false)
+
 
             // if (!edited.data?.editCart) return //mettere un errore qui
 
         } catch (e: any) {
             console.log(e.message);
+            setIsDisabled(false)
+
+            dispatch(openModal({
+                title: 'Errore imprevisto',
+                description: 'Ci, dispiace, ma non siamo riusciti ad aggiornare il carrello. Riprova tra poco.'
+            }))
+
         }
     }
 
@@ -316,7 +317,6 @@ const index = () => {
             day: 'numeric',
             month: 'long',
         };
-
         const dataItalianoCinqueGiorniDopo: string = cinqueGiorniDopo.toLocaleDateString('it-IT', opzioniData);
         const dataItalianoSetteGiorniDopo: string = setteGiorniDopo.toLocaleDateString('it-IT', opzioniData);
 

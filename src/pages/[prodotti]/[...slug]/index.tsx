@@ -705,7 +705,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                 cursor={'pointer'}
                                                 color={'secondaryBlack.text'}
                                                 fontSize={'14px'}
-                                                className={`hover:underline hover: underline - offset - 2  ${element.name === filters?.macroCategory ? 'underline underline-offset-2 font-extrabold' : 'font-medium'} `}
+                                                className={`hover:underline hover:underline-offset-2  ${element.name === filters?.macroCategory ? 'underline underline-offset-2 font-extrabold' : 'font-medium'} `}
                                             >
                                                 {element.name}
                                             </Text>
