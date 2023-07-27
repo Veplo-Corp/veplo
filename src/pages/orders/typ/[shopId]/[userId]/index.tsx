@@ -21,7 +21,7 @@ import RETURN_ORDER from '../../../../../lib/apollo/mutations/returnOrder';
 import { setOrders } from '../../../../../store/reducers/orders';
 import GrayBox from '../../../../../../components/atoms/GrayBox';
 import Modal_Help_Customer_Care from '../../../../../../components/organisms/Modal_Help_Customer_Care';
-import GET_ORDER from '../../../../../lib/apollo/queries/getOrder';
+import GET_LAST_ORDER_USER_FROM_SHOP from '../../../../../lib/apollo/queries/getLastOrderUserFromShop';
 import { Order } from '../../../../../lib/apollo/generated/graphql';
 import { Firebase_User } from '../../../../../interfaces/firebase_user.interface';
 import ProfilePhoto from '../../../../../../components/molecules/ProfilePhoto';
@@ -45,7 +45,7 @@ const index = () => {
     //         id: router.query.orderId
     //     }
     // })
-    const [getOrder, { error, data }] = useLazyQuery(GET_ORDER);
+    const [getOrder, { error, data }] = useLazyQuery(GET_LAST_ORDER_USER_FROM_SHOP);
 
 
     const [order, setOrder] = useState<Order>();
@@ -57,11 +57,12 @@ const index = () => {
 
         if (!router.isReady) return
         const { shopId, userId } = router.query;
-
+        if (typeof shopId !== 'string' || typeof userId !== 'string') return
         console.log(shopId, userId);
         getOrder({
             variables: {
-                id: "64b8eb28cd7ef52c053c954a"
+                shopId: shopId,
+                userId: userId,
             }
         })
 
@@ -70,11 +71,12 @@ const index = () => {
 
 
     useEffect(() => {
-        if (!data && !order) return
-        setOrder(data?.order)
-        purchase(data?.order)
+        console.log(data);
 
-        handleStatus(data?.order?.status)
+        if (!data?.lastOrderFromShopByUser || !order) return
+        setOrder(data?.lastOrderFromShopByUser)
+        purchase(data?.lastOrderFromShopByUser)
+        handleStatus(data?.lastOrderFromShopByUser?.status)
     }, [data])
 
     const purchase = (order: Order | undefined) => {
