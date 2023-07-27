@@ -225,19 +225,22 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             }
         }
         if (typeof sizes === 'string') {
-
             console.log(sizes);
             if (variation) {
                 const sizeWithQuantity = variation.lots
                     .filter((lot) => lot.size === sizes)[0]
                 if (sizeWithQuantity && sizeWithQuantity?.quantity > 0) {
                     setSizeSelected(sizeWithQuantity.size)
+                } else {
+                    setSizeSelected('')
                 }
             } else {
                 const sizeWithQuantity = product.variations[0].lots
                     .filter((lot) => lot.size === sizes)[0]
                 if (sizeWithQuantity && sizeWithQuantity?.quantity > 0) {
                     setSizeSelected(sizeWithQuantity.size)
+                } else {
+                    setSizeSelected('')
                 }
             }
         } else {
@@ -248,6 +251,8 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     .map((lot) => lot.size);
                 if (sizeWithQuantity.length === 1) {
                     setSizeSelected(sizeWithQuantity[0])
+                } else {
+                    setSizeSelected('')
                 }
             }
             else if (product.variations[0].lots.length === 1) {
@@ -256,6 +261,8 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     .map((lot) => lot.size);
                 if (sizeWithQuantity.length === 1) {
                     setSizeSelected(sizeWithQuantity[0])
+                } else {
+                    setSizeSelected('')
                 }
 
             }
@@ -297,56 +304,28 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
 
 
-    //!handle error case
-
-    //const router = useRouter();
-    //const query = router.query;
-    //decodeURI
-    //console.log(decodeURIComponent(query.nome));
-
-
-    const chatWithStore = async () => {
-        const apolloClient = initApollo()
-        //! get Shop phone number
-        // try {
-        //     const { data, error } = await apolloClient.query({
-        //         query: GET_SINGLE_SHOP,
-        //         variables: { id: product.shopId },
-        //     })
-        //     if (error) return
-        //     window.open(
-        //         `https://wa.me/+39${data.shop.phone}?text=ciao, ero su Veplo.it e stavo visitando il tuo negozio ${product.shopOptions.name}. Avrei bisogno di una informazione sul prodotto *${product.name} - ${product.info.brand}*`
-        //         , '_blank')
-        // } catch (e) {
-        //     console.log(e);
-        // }
-    }
-
-
-    //console.log(imageKitUrl(product.photos[0], 237, 247));
 
 
 
+    const changeDressColorOrSize = (color: string | undefined, size: string | undefined) => {
+        if (!color && !size) return
+        const { colors, sizes } = router.query
 
-    const changeDressColor = (color: string) => {
-        const variation = product.variations.find(variation => variation?.color.toLowerCase() == color.toLowerCase())
-        if (!variation) return
-        setVariationSelected(variation)
-        setColorSelected(variation?.color)
-        setSizeSelected('')
+        console.log(colors, sizes);
 
-        //metti già la taglia se ne ha solo una
-        const sizeWithQuantity = variation.lots
-            .filter((lot) => lot.quantity > 0)
-            .map((lot) => lot.size);
-        if (sizeWithQuantity.length === 1) {
-            setSizeSelected(sizeWithQuantity[0])
+        let query: { colors?: any, sizes?: any } = {}
+        if (typeof color === 'string' || typeof colors === 'string') {
+            query["colors"] = color ? color.toLocaleLowerCase() : colors
         }
+        if (typeof size === 'string' || typeof sizes === 'string') {
+            query["sizes"] = size ? size.toLocaleLowerCase() : sizes
+        }
+
 
 
         router.replace({
             pathname: router.asPath.split('?')[0],
-            query: { colors: color.toLocaleLowerCase() }
+            query
         },
             undefined, { shallow: true }
         )
@@ -723,7 +702,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                     colors={
                                         product.colors
                                     }
-                                    handleSelectColor={(color: string) => changeDressColor(color)}
+                                    handleSelectColor={(color: string) => changeDressColorOrSize(color, undefined)}
                                     dimension={'1.5rem'} space={5} showTooltip={true}
                                 />
                             </div>}
@@ -764,7 +743,10 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 fontSize={'2xl'}
                                 fontWeight={'normal'}
                                 lots={variationSelected.lots}
-                                handleLot={(size: string) => setSizeSelected(size)}
+                                handleLot={(size: string) => {
+                                    changeDressColorOrSize(undefined, size)
+                                    //setSizeSelected(size)
+                                }}
                                 sizeSelected={sizeSelected}
                             />}
 
