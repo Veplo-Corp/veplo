@@ -322,17 +322,21 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         }
 
 
+        if (color) {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
 
-        router.replace({
+        return router.replace({
             pathname: router.asPath.split('?')[0],
             query
         },
             undefined, { shallow: true }
         )
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
+
+
     }
 
     const addToCartEffect = () => {
