@@ -21,7 +21,7 @@ export const fbq = (payload: VeploPixelEvent) => {
         window.dataLayer = window.dataLayer || [];
         try {
             //Drop FB Pixel
-            window.fbq('track', payload.command, payload.args);
+            window.fbq('track', payload.command, payload.args, payload.eventId);
         }
         catch (err) {
             setTimeout(function () { fbq(payload); }, 2000);

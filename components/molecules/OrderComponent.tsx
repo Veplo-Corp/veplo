@@ -21,7 +21,7 @@ const OrderComponent: FC<{ order: Order, orderStatus: OrderStatus | undefined }>
             className='md:flex'
         >
             <Box
-                width={['full', 'full', 'full', '80%']}
+                width={['full', 'full', 'full', '90%']}
                 min-height={'full'}
                 position='relative'
 
