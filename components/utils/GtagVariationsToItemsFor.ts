@@ -16,9 +16,7 @@ export const GtagVariationsToItemsFor = (variations: CartProductVariation[] | un
 
         const discount = formatNumberWithTwoDecimalsInNumber(variation?.price?.v1 && variation?.price?.v2 ? variation?.price?.v1 - variation?.price?.v2 : 0)
 
-        console.log(discount);
 
-        console.log(price);
 
         return {
             item_id: variation?.id,
