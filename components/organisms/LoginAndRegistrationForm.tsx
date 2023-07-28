@@ -60,8 +60,10 @@ const LoginAndRegistrationForm: FC<{
         const handleCartInLocalStorage = async () => {
             if (cartsDispatchProduct.length <= 0) return
             for await (const cart of cartsDispatchProduct) {
+                console.log(cart);
                 if (!cart?.productVariations) return
                 for await (const variation of cart?.productVariations) {
+                    console.log(variation);
                     try {
                         await editCart({
                             variables: {
@@ -75,9 +77,8 @@ const LoginAndRegistrationForm: FC<{
                         console.log('errore cart');
                     }
                 }
+                return
             }
-
-
         }
 
         const redirectUser = (isBusiness: boolean) => {
@@ -126,6 +127,7 @@ const LoginAndRegistrationForm: FC<{
                     const isBusiness = tokenResult.claims.isBusiness ? true : false;
                     setAuthTokenInSessionStorage(tokenResult.token)
                     await handleCartInLocalStorage()
+
                     setIsLoading(false)
                     gtag({
                         command: GTMEventType.login,
@@ -151,7 +153,6 @@ const LoginAndRegistrationForm: FC<{
                         description: errorForModal?.description
                     }))
                     setIsLoading(false)
-
                 }
             }
             else if (type === 'registration') {
@@ -160,7 +161,7 @@ const LoginAndRegistrationForm: FC<{
                     if (person === 'user') {
                         const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
                         //! age ora è Int, ma verrà gestita come date o string con rilascio
-                        let idToken = await userCredential.user.getIdToken(true);
+                        const idToken = await userCredential.user.getIdToken(true);
                         setAuthTokenInSessionStorage(idToken)
 
                         updateProfile(userCredential.user, {
@@ -174,6 +175,9 @@ const LoginAndRegistrationForm: FC<{
                                 }
                             }
                         })
+                        //token editato
+                        const newIdToken = await userCredential.user.getIdToken(true);
+                        setAuthTokenInSessionStorage(newIdToken)
 
                         gtag({
                             command: GTMEventType.signUp,
@@ -188,6 +192,7 @@ const LoginAndRegistrationForm: FC<{
                             }
                         })
                         await handleCartInLocalStorage()
+
                         dispatch(
                             login({
                                 email: userCredential.user.email,
@@ -287,11 +292,9 @@ const LoginAndRegistrationForm: FC<{
             let result: UserCredential | undefined;
             try {
                 result = await signInWithPopup(auth, provider)
-
                 setIsLoading(true)
             } catch (error: any) {
                 setIsLoading(false)
-
                 const errorMessage = error.message;
                 //console.log(errorCode);
                 console.log(error);
@@ -325,6 +328,8 @@ const LoginAndRegistrationForm: FC<{
                         }
                     }
                 })
+                const newIdToken = await result.user.getIdToken(true);
+                setAuthTokenInSessionStorage(newIdToken)
                 gtag({
                     command: GTMEventType.signUp,
                     args: {
@@ -335,7 +340,6 @@ const LoginAndRegistrationForm: FC<{
                         // mongoId: account?.data.createBusinessStep1
                     }
                 })
-
                 console.log(response);
                 //update display name con firstname
                 updateProfile(result.user, {
