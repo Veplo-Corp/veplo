@@ -483,7 +483,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
           className='w-full rounded-t-[4vh] lg:rounded-none rou h-fit pt-6 pb-1'
         >
           <Box
-            className='m-5 md:mx-auto md:w-1/2 lg:w-4/12 md:mb-8 mt-0 md:mt-5 lg:mt-7'
+            className='m-5 sm:mx-auto sm:w-3/4 md:w-1/2 lg:w-5/12 md:mb-8 mt-0 md:mt-5 lg:mt-7'
             bgColor={'primary.text'}
             borderRadius={'30px'}
             marginBottom={0}
@@ -494,10 +494,10 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
             }}
           >
             <Text
-              fontSize={['3.8vh', '3.8vh', '4.5vh', '5.5vh']}
+              fontSize={['4.4vh', '5vh', '5vh', '5.5vh']}
               fontWeight={'black'}
               //lineHeight={'48px'}
-              className='lg:leading-[7.5vh] leading-10'
+              className='lg:leading-[7.5vh] leading-[6vh] sm:leading-[7vh]'
               color={'primaryBlack.text'}
               mb={[3, 3, 3, 7]}
             >
