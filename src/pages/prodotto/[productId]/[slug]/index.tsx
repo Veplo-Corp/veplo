@@ -554,11 +554,9 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     }
 
     const handleVisibilityChange = async (inView: boolean) => {
-
         if (inView) {
             // Funzione da eseguire quando il componente diventa visibile
             //! lista di prodotti del negozio
-            console.log('AOOOOO passa qui');
             setTimeout(async () => {
                 const element = await getSimilarProductOnShop({
                     variables: {
@@ -1123,10 +1121,9 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     </Link>
                     <InView as="div" onChange={(inView, entry) => { handleVisibilityChange(inView) }} >
                         <div
-                            className="overflow-x-scroll flex gap-4 pb-4 min-h-[300px] ml-2"
+                            className="overflow-x-scroll flex gap-4 pb-4 min-h-[320px] ml-2 pr-10"
                         >
                             <AnimatePresence>
-
                                 {productsLikeThis && productsLikeThis.map((product: Product, index: number) => {
                                     //motion
                                     const listItemVariants = {
@@ -1155,7 +1152,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                             <Box
                                                 overflow='hidden'
                                                 mb={2}
-                                                className={`lg:w-96 w-72 `}/*  aspect-[8.5/12] */
+                                                className={`w-72 lg:w-[350px]`}/*  aspect-[8.5/12] */
                                             >
                                                 <motion.div
                                                     key={product.id}

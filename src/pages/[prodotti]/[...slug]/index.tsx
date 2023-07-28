@@ -466,6 +466,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             filtersParams["sostenibile"] = 'true'
         }
 
+        console.log(filters?.macroCategory);
+
+
 
         if (paramters === 'macroCategory') {
             const query = filterParamsOnChangeMacrocatecory(filtersParams)
@@ -589,7 +592,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                 }
                 {filters.microCategory &&
                     <TagFilter
-                        value={'macroCategory'}
+                        value={'microCategory'}
                         text={'' + toUpperCaseFirstLetter(filters.microCategory)}
                         handleEvent={deleteFilterParams}
                     />
