@@ -483,7 +483,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
           className='w-full rounded-t-[4vh] lg:rounded-none rou h-fit pt-6 pb-1'
         >
           <Box
-            className='m-5 sm:mx-auto sm:w-3/4 md:w-1/2 lg:w-5/12 md:mb-8 mt-0 md:mt-5 lg:mt-7'
+            className='m-5 sm:mx-auto sm:w-3/4 md:w-1/2 lg:w-5/12 xl:w-1/3 md:mb-8 mt-0 md:mt-5 lg:mt-7'
             bgColor={'primary.text'}
             borderRadius={'30px'}
             marginBottom={0}
