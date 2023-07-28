@@ -12,6 +12,7 @@ import Link from 'next/link'
 import { CartProductVariation } from '../../src/lib/apollo/generated/graphql'
 import createUrlSchema from '../utils/create_url'
 const CheckoutProduct: FC<{ variation: CartProductVariation, toProduct?: (variation: CartProductVariation) => void, deleteVariation?: (variation: CartProductVariation) => void, editVariation?: (variation: CartProductVariation, quantity: number) => void }> = ({ variation, deleteVariation, editVariation }) => {
+    const URI = `/prodotto/${variation?.productId}/${createUrlSchema([variation?.brand, variation?.name])}?colors=${variation?.color}`
 
     return (
         <Box
@@ -20,7 +21,7 @@ const CheckoutProduct: FC<{ variation: CartProductVariation, toProduct?: (variat
             width={'full'}
         >
             <Link
-                href={`/prodotto/${variation?.productId}/${createUrlSchema([variation?.brand, variation?.name])}`}
+                href={URI}
             >
                 <LazyLoadImage src={
                     imageKitUrl(variation?.photo ? variation?.photo : '', 237, 247)
@@ -45,7 +46,7 @@ const CheckoutProduct: FC<{ variation: CartProductVariation, toProduct?: (variat
                     spacing={2}
 
                 >
-                    <Link href={`/prodotto/${variation?.productId}/${createUrlSchema([variation?.brand, variation?.name])}`}>
+                    <Link href={URI}>
                         <ListItem>{toUpperCaseFirstLetter(variation?.brand)}</ListItem>
                     </Link>
 
