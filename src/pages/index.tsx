@@ -287,7 +287,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
             </Box>
             {/* mook phone solo per web */}
             <LazyLoadImage
-              src={'https://www.datocms-assets.com/102220/1689927311-mook_phone-edited.png'}
+              src={'https://www.datocms-assets.com/102220/1690476458-vectary-texture.png'}
               alt={''}
               //effect="blur"
               className="object-cover h-[100%] m-auto"
