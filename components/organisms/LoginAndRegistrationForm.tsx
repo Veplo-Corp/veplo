@@ -163,7 +163,6 @@ const LoginAndRegistrationForm: FC<{
                         let idToken = await userCredential.user.getIdToken(true);
                         setAuthTokenInSessionStorage(idToken)
 
-
                         updateProfile(userCredential.user, {
                             displayName: data.firstName
                         })
@@ -213,7 +212,7 @@ const LoginAndRegistrationForm: FC<{
 
                             setAuthTokenInSessionStorage(idToken)
                             await sendEmailVerificationHanlder()
-                            const account = await setBusinessAccount()
+                            await setBusinessAccount()
                             gtag({
                                 command: GTMEventType.signUp,
                                 args: {
@@ -317,6 +316,7 @@ const LoginAndRegistrationForm: FC<{
             console.log(surname);
 
             try {
+
                 const response = await createUser({
                     variables: {
                         options: {
@@ -338,11 +338,9 @@ const LoginAndRegistrationForm: FC<{
 
                 console.log(response);
                 //update display name con firstname
-                const idToken = await result.user.getIdToken(true);
                 updateProfile(result.user, {
                     displayName: typeof fullName?.[0] === 'string' ? fullName[0] : ''
                 })
-                setAuthTokenInSessionStorage(idToken)
                 await handleCartInLocalStorage()
                 dispatch(
                     login({
