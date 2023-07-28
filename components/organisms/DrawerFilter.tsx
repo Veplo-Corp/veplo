@@ -238,6 +238,7 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, un
                         <ButtonGroup
                             mt={10}
                             width={['full']}
+                            mb={5}
                         >
                             <Button
                                 variant={'grayPrimary'}
