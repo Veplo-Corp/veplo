@@ -1,4 +1,4 @@
-import { Box, Button, Input, InputGroup, InputLeftElement, InputRightElement, Spinner, Text } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Input, InputGroup, InputLeftElement, InputRightElement, Spinner, Text } from '@chakra-ui/react';
 import { UserCredential, createUserWithEmailAndPassword, deleteUser, getAuth, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, updateProfile } from 'firebase/auth';
 import { EyeClose, EyeEmpty, Lock, Mail } from 'iconoir-react';
 import { useRouter } from 'next/router';
@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useMutation } from '@apollo/client';
 import CREATE_USER from '../../src/lib/apollo/mutations/createUser';
 import CREATE_BUSINESS_ACCOUNT from '../../src/lib/apollo/mutations/createBusinessAccount';
-import { auth, provider } from '../../src/config/firebase';
+import { auth, facebookProvider, provider } from '../../src/config/firebase';
 import { setAuthTokenInSessionStorage } from '../utils/setAuthTokenInSessionStorage';
 import { sendEmailVerificationHanlder } from '../utils/emailVerification';
 import { login } from '../../src/store/reducers/user';
@@ -287,11 +287,11 @@ const LoginAndRegistrationForm: FC<{
             }
         }
 
-        const signInWithGoogle = async () => {
+        const signInWithGoogle = async (type: 'Google' | 'Facebook') => {
             if (person !== 'user') return
             let result: UserCredential | undefined;
             try {
-                result = await signInWithPopup(auth, provider)
+                result = await signInWithPopup(auth, type === 'Facebook' ? facebookProvider : provider)
                 setIsLoading(true)
             } catch (error: any) {
                 setIsLoading(false)
@@ -300,10 +300,7 @@ const LoginAndRegistrationForm: FC<{
                 console.log(error);
                 const errorForModal = handleErrorFirebase(errorMessage)
 
-                // dispatch(openModal({
-                //     title: errorForModal?.title,
-                //     description: errorForModal?.description
-                // }))
+
             }
 
 
@@ -727,36 +724,73 @@ const LoginAndRegistrationForm: FC<{
                         <>
                             <div className="relative flex py-0 items-center">
                                 <div className="flex-grow border-t border-[#F2F2F2]"></div>
-                                <span className="flex-shrink mx-4 text-[#A19F9F] font-medium">o accedi con</span>
+                                <span className="flex-shrink mx-4 text-[#A19F9F] font-medium">o {type === 'registration' ? 'registrati' : 'accedi'} con</span>
                                 <div className="flex-grow border-t border-[#F2F2F2]"></div>
                             </div>
-                            <Button
-                                fontFamily="Inter, sans-serif"
-                                mt={4}
-                                mb={4}
-                                type={"button"}
-                                borderRadius={'xl'}
-                                size={'md'}
-                                fontWeight={'semibold'}
-                                padding={5}
-                                paddingInline={10}
+                            <ButtonGroup
+                                mt={2}
+                                mb={2}
                                 width={'full'}
-                                height={'55px'}
-                                variant="whitePrimary"
-                                onClick={signInWithGoogle}
-                                isDisabled={isLoading}
-                                _disabled={{
-                                    bg: '#FFFFFF'
-                                }}
-                                _hover={{
-                                    color: '#A19F9F'
-                                }}
                             >
-                                <svg
-                                    className='w-6 h-6 mr-2'
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" /><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" /><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" /><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" /></svg>
-                                Google
-                            </Button>
+                                <Button
+                                    fontFamily="Inter, sans-serif"
+
+                                    type={"button"}
+                                    borderRadius={'xl'}
+                                    size={'md'}
+                                    fontWeight={'semibold'}
+                                    padding={5}
+                                    width={'full'}
+                                    height={'55px'}
+                                    variant="whitePrimary"
+                                    onClick={() => signInWithGoogle('Google')}
+                                    isDisabled={isLoading}
+                                    _disabled={{
+                                        bg: '#FFFFFF'
+                                    }}
+                                    _hover={{
+                                        color: '#A19F9F'
+                                    }}
+                                >
+                                    <svg
+                                        className='w-6 h-6 mr-2'
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" /><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" /><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" /><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" /></svg>
+                                    Google
+                                </Button>
+                                <Button
+                                    fontFamily="Inter, sans-serif"
+
+                                    type={"button"}
+                                    borderRadius={'xl'}
+                                    size={'md'}
+                                    fontWeight={'semibold'}
+                                    padding={5}
+
+                                    width={'full'}
+                                    height={'55px'}
+                                    variant="whitePrimary"
+                                    onClick={() => signInWithGoogle('Facebook')}
+                                    isDisabled={isLoading}
+                                    _disabled={{
+                                        bg: '#FFFFFF'
+                                    }}
+                                    _hover={{
+                                        color: '#A19F9F'
+                                    }}
+                                >
+                                    <svg className="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+                                        <linearGradient id="a" x1="-277.375" x2="-277.375" y1="406.6018" y2="407.5726" gradientTransform="matrix(40 0 0 -39.7778 11115.001 16212.334)" gradientUnits="userSpaceOnUse">
+                                            <stop offset="0" stopColor="#0062e0" />
+                                            <stop offset="1" stopColor="#19afff" />
+                                        </linearGradient>
+                                        <path fill="url(#a)" d="M16.7 39.8C7.2 38.1 0 29.9 0 20 0 9 9 0 20 0s20 9 20 20c0 9.9-7.2 18.1-16.7 19.8l-1.1-.9h-4.4l-1.1.9z" />
+                                        <path fill="#fff" d="m27.8 25.6.9-5.6h-5.3v-3.9c0-1.6.6-2.8 3-2.8H29V8.2c-1.4-.2-3-.4-4.4-.4-4.6 0-7.8 2.8-7.8 7.8V20h-5v5.6h5v14.1c1.1.2 2.2.3 3.3.3 1.1 0 2.2-.1 3.3-.3V25.6h4.4z" />
+                                    </svg>
+
+                                    Facebook
+                                </Button>
+                            </ButtonGroup>
+
                         </>
                     }
 
