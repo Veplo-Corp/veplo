@@ -229,13 +229,12 @@ const LoginAndRegistrationForm: FC<{
                             // setemail('')
                             // setpassword('')
                         } catch (error: any) {
-                            const errorCode = error.code;
-                            const errorMessage = error.message;
+
                             //console.log(errorCode);
                             const errorForModal = handleErrorFirebase(error.code)
                             dispatch(openModal({
                                 title: errorForModal?.title,
-                                description: errorForModal?.description
+                                description: "error.code = " + error.code + "error.message = " + error.message
                             }))
                             setIsLoading(false)
                         }
@@ -260,7 +259,7 @@ const LoginAndRegistrationForm: FC<{
                         console.log(user);
                         if (user) {
                             deleteUser(user).then(() => {
-                                console.log('User Elininato');
+                                console.log('User Eliminato');
                             })
                         }
 
