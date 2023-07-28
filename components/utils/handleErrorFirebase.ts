@@ -34,6 +34,5 @@ export const handleErrorFirebase = (error: string) => {
                 title: 'Si è verificato un errore!',
                 description: "per ora è impossibile procedere. riprova più tardi"
             }
-
     }
 }
