@@ -17,7 +17,8 @@ import {
   GoogleAuthProvider,
   signInWithRedirect,
   updateProfile,
-  deleteUser
+  deleteUser,
+  FacebookAuthProvider
 } from 'firebase/auth';
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -72,6 +73,7 @@ if (process.env.NODE_ENV === 'production') {
 // Initialize Firebase
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const provider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
 
 
 // Initialize Cloud Storage and get a reference to the service
@@ -101,6 +103,8 @@ export {
   signInWithRedirect,
   updateProfile,
   provider,
+  facebookProvider,
   storage,
-  deleteUser
+  deleteUser,
+
 }
