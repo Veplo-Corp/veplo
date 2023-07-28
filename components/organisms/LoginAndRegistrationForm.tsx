@@ -161,6 +161,12 @@ const LoginAndRegistrationForm: FC<{
                         const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
                         //! age ora è Int, ma verrà gestita come date o string con rilascio
                         let idToken = await userCredential.user.getIdToken(true);
+                        setAuthTokenInSessionStorage(idToken)
+
+
+                        updateProfile(userCredential.user, {
+                            displayName: data.firstName
+                        })
                         const response = await createUser({
                             variables: {
                                 options: {
@@ -169,12 +175,7 @@ const LoginAndRegistrationForm: FC<{
                                 }
                             }
                         })
-                        updateProfile(userCredential.user, {
-                            displayName: data.firstName
-                        })
 
-                        idToken = await userCredential.user.getIdToken(true);
-                        setAuthTokenInSessionStorage(idToken)
                         gtag({
                             command: GTMEventType.signUp,
                             args: {
