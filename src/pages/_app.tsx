@@ -36,6 +36,7 @@ import { detroyOrders, setOrders } from '../store/reducers/orders'
 import { setBrands } from '../store/reducers/brands'
 import ModalWrapper from '../../components/organisms/ModalWrapper'
 import { Cart, Order } from '../lib/apollo/generated/graphql'
+import { deleteAuthTokenInSessionStorage } from '../../components/utils/deleteAuthTokenSessionStorage'
 
 
 const theme = extendTheme({
@@ -401,6 +402,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
       } else if (!userAuth) {
 
         console.log('effettua il logout');
+        deleteAuthTokenInSessionStorage()
         apolloClient.clearStore()
         dispatch(
           resetCarts()
