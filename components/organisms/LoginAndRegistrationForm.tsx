@@ -252,12 +252,13 @@ const LoginAndRegistrationForm: FC<{
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     console.log(errorMessage);
-                    console.log(errorCode);
                     const errorForModal = handleErrorFirebase(error.code)
                     if (
-                        //errorMessage === 'email already used by another user'
+                        errorMessage === 'email already used by another user' ||
+                        errorMessage === 'ID token must be a non-empty string' ||
+                        errorMessage === 'idToken is not defined'
                         //TODO inserire errori corretti
-                        typeof errorMessage === 'string' && !errorMessage.includes('Firebase')
+                        //typeof errorMessage === 'string' && !errorMessage.includes('Firebase')
                     ) {
                         const user = auth.currentUser;
                         //elimina user se da questo errore
