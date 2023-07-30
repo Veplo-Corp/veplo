@@ -400,7 +400,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
         return
       } else if (!userAuth) {
-
         console.log('effettua il logout');
         deleteAuthTokenInSessionStorage()
         apolloClient.clearStore()
@@ -471,31 +470,8 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
     // };
   }, []);
 
-  // useEffect(() => {
-  //   if (process.env.NODE_ENV === 'production') {
-  //     const analytics = getAnalytics();
-  //     //console.log(process.env.NODE_ENV );
-
-  //     const EventLog = (url: string) => {
-  //       console.log(url);
-
-  //       logEvent(analytics, 'notification_received');
-  //       logEvent(analytics, 'screen_view', {
-  //         firebase_screen: url,
-  //         firebase_screen_class: url
-  //       });
-  //       logEvent(analytics, 'select_content', {
-  //         content_type: 'image',
-  //         content_id: 'P12453'
-  //       });
-  //     };
 
 
-  //     return () => {
-  //       router.events.off('routeChangeComplete', EventLog);
-  //     };
-  //   }
-  // }, []);
 
 
 
