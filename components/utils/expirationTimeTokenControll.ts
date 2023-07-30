@@ -14,6 +14,7 @@ const expirationTimeTokenControll: (expirationTime: string) => Promise<boolean> 
                 window.location.reload()
                 return resolve(true)
             }
+            window.location.reload()
             setAuthTokenInSessionStorage(idToken)
             resolve(true)
 

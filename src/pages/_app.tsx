@@ -400,7 +400,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
         return
       } else if (!userAuth) {
-
         console.log('effettua il logout');
         deleteAuthTokenInSessionStorage()
         apolloClient.clearStore()
