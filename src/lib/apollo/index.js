@@ -37,7 +37,6 @@ function createApolloClient() {
 
 
 
-
     const authLink = setContext((_, { headers }) => {
         // get the authentication token from local storage if it exists
         if (typeof window !== 'undefined') {
