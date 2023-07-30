@@ -8,13 +8,15 @@ const expirationTimeTokenControll: (expirationTime: string) => Promise<boolean> 
         const user = auth.currentUser;
 
         //check on the expiration date return false if the expiration time is passed
-        if (new Date(expirationTime) >= new Date()) {
+        if (new Date(expirationTime) <= new Date()) {
+            console.log('Passaaaa');
+
             const idToken = await user?.getIdToken(true)
             if (!idToken) {
                 window.location.reload()
                 return resolve(true)
             }
-            window.location.reload()
+            //window.location.reload()
             setAuthTokenInSessionStorage(idToken)
             resolve(true)
 
