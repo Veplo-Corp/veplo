@@ -8,6 +8,7 @@ import AuthenticationLayout from '../../../../components/atoms/AuthenticationLay
 
 import LoginAndRegistrationForm, { InputFormLogin } from '../../../../components/organisms/LoginAndRegistrationForm';
 import Head from 'next/head';
+import { getGender } from '../../../../components/utils/getGender';
 
 type InputForm = {
   email: string,
@@ -28,7 +29,12 @@ const index = () => {
       router.replace('/shop/home')
     }
     if (user.statusAuthentication === 'logged_in' && !user?.isBusiness) {
-      router.replace('/negozi')
+      const genderName = getGender()
+      if (!genderName) {
+        router.replace('/negozi')
+      } else {
+        router.replace(`/abbigliamento/${genderName}-tutto/tutto/rilevanza`)
+      }
     }
     return () => {
 

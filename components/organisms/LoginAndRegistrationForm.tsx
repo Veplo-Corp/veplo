@@ -22,6 +22,8 @@ import EDIT_CART from '../../src/lib/apollo/mutations/editCart';
 import { CustomWindow, gtag } from '../../src/lib/analytics/gtag';
 import { useAnalytics } from '../../src/lib/analytics/hooks/useAnalytics';
 import { GTMEventType } from '../../src/lib/analytics/eventTypes';
+import { Firebase_User } from '../../src/interfaces/firebase_user.interface';
+import { getGender } from '../utils/getGender';
 
 export type InputFormLogin = {
     email: string,
@@ -40,6 +42,7 @@ const LoginAndRegistrationForm: FC<{
     ({ type, person, handleChangeTypeOrPerson, open }) => {
         const [isLoading, setIsLoading] = useState(false)
         const cartsDispatchProduct: Cart[] = useSelector((state: any) => state.carts.carts);
+        const user: Firebase_User = useSelector((state: any) => state?.user.user);
 
         const router = useRouter();
         const { register, handleSubmit, reset, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<InputFormLogin>({
@@ -51,6 +54,7 @@ const LoginAndRegistrationForm: FC<{
         const [showPassword, setShowPassword] = useState(false)
         const { addToast } = ToastOpen();
         const [editCart] = useMutation(EDIT_CART);
+
 
 
         const onSubmit: SubmitHandler<InputFormLogin> = (data, e) => {
@@ -101,12 +105,16 @@ const LoginAndRegistrationForm: FC<{
                 return
             }
             else if (!isBusiness) {
-                router.replace('/negozi')
+                const genderName = getGender()
+                if (!genderName) {
+                    router.replace('/negozi')
+                } else {
+                    router.replace(`/abbigliamento/${genderName}-tutto/tutto/rilevanza`)
+                }
                 if (cartsDispatchProduct.length > 0) {
                     setTimeout(() => {
                         router.reload()
                     }, 200);
-
                 }
                 return
             }
