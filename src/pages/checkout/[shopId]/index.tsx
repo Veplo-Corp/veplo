@@ -42,6 +42,8 @@ const index = () => {
     const dispatch = useDispatch();
     const [editCart] = useMutation(EDIT_CART);
     const [isDisabled, setIsDisabled] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
     const shopQuery = useQuery(GET_SHOP, {
         variables: {
             id: typeof router?.query?.shopId === 'string' ? router?.query?.shopId : ''
@@ -154,6 +156,7 @@ const index = () => {
         if (!resolve || !cart) return
         let NewCarts: Cart[] = [];
         setIsDisabled(true)
+        setIsLoading(true)
         //caso in cui la Variation è già presente in cart
         const index = cart.productVariations.findIndex(variation => variation?.size === variationSelected.size && variation?.id === variationSelected.id)
         const newProductVariation = {
@@ -217,14 +220,14 @@ const index = () => {
                 localStorage.setItem('carts', JSON.stringify(NewCarts))
             }
             setIsDisabled(false)
-
+            setIsLoading(false)
 
             // if (!edited.data?.editCart) return //mettere un errore qui
 
         } catch (e: any) {
             console.log(e.message);
             setIsDisabled(false)
-
+            setIsLoading(false)
             dispatch(openModal({
                 title: 'Errore imprevisto',
                 description: 'Ci, dispiace, ma non siamo riusciti ad aggiornare il carrello. Riprova tra poco.'
@@ -235,7 +238,7 @@ const index = () => {
 
     const deleteVariation = async (variation: CartProductVariation) => {
         setIsDisabled(true)
-
+        setIsLoading(true)
         try {
             if (user.uid) {
                 await editCart({
@@ -247,12 +250,12 @@ const index = () => {
                 })
             }
             setIsDisabled(false)
-
+            setIsLoading(false)
 
         } catch {
             //TODO gestire errore in edit card
             setIsDisabled(false)
-
+            setIsLoading(false)
             dispatch(openModal({
                 title: 'Errore imprevisto',
                 description: 'Ci, dispiace, ma non siamo riusciti ad aggiornare il carrello. Riprova tra poco.'
@@ -544,7 +547,7 @@ const index = () => {
                                                 >
                                                     Subtotale
                                                 </Text>
-                                                {!isDisabled ? (
+                                                {!isLoading ? (
                                                     <Text
                                                         fontSize={'18px'}
                                                         fontWeight={'semibold'}
@@ -589,7 +592,7 @@ const index = () => {
                                                 </Box>
 
 
-                                                {!isDisabled ? (
+                                                {!isLoading ? (
                                                     <Text
                                                         fontSize={'18px'}
                                                         fontWeight={'semibold'}
@@ -627,7 +630,7 @@ const index = () => {
                                             >
                                                 Totale
                                             </Text>
-                                            {!isDisabled ? (
+                                            {!isLoading ? (
                                                 <Text
                                                     fontSize={'18px'}
                                                     fontWeight={'semibold'}
