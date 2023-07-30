@@ -19,6 +19,7 @@ import { getFromLocalStorage } from '../../../components/utils/getFromLocalStora
 import { AnimatePresence, motion } from 'framer-motion';
 import { LIST_ITEM_VARIANT } from '../../../components/mook/transition';
 import { ShopsQuery } from '../../lib/apollo/generated/graphql';
+import { getGender } from '../../../components/utils/getGender';
 
 
 
@@ -71,16 +72,10 @@ const index: FC<{ shops: ShopsQuery["shops"] }> = ({ shops }) => {
 
 
     useEffect(() => {
+        const genderName = getGender()
+        if (genderName) return setGender(genderName)
 
 
-
-        let gender = getFromLocalStorage('genderSelected')
-        if (gender === 'f') {
-            setGender('donna')
-        }
-        if (gender === 'm') {
-            setGender('uomo')
-        }
     }, [])
 
 

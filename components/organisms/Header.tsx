@@ -25,6 +25,7 @@ import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
 import { getUnivers } from '../utils/getUnivers';
 import { InputObjectBIG, processBIGObjectForUrl } from '../utils/bigParamsForPushUrl';
 import CartsPopover from '../molecules/CartsPopover';
+import { getGender } from '../utils/getGender';
 
 const Header = () => {
     const isButtonHidden = useBreakpointValue({ base: true, lg: false });
@@ -101,13 +102,9 @@ const Header = () => {
                 }
             })
         }
-        let gender = getFromLocalStorage('genderSelected')
-        if (gender === 'f') {
-            setGender('donna')
-        }
-        if (gender === 'm') {
-            setGender('uomo')
-        }
+        const genderName = getGender()
+        if (genderName) return setGender(genderName)
+
 
         return () => {
 
