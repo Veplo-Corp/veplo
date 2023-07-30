@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { Box, Button, ButtonGroup, Center, CircularProgress, Divider, ListItem, Spinner, Text, UnorderedList, VStack, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Center, CircularProgress, Divider, ListItem, Skeleton, Spinner, Stack, Text, UnorderedList, VStack, useBreakpointValue } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
@@ -544,13 +544,25 @@ const index = () => {
                                                 >
                                                     Subtotale
                                                 </Text>
-                                                <Text
-                                                    fontSize={'18px'}
-                                                    fontWeight={'semibold'}
-                                                    color={'secondaryBlack.text'}
-                                                >
-                                                    {formatNumberWithTwoDecimalsInString(cart.total)}€
-                                                </Text>
+                                                {!isDisabled ? (
+                                                    <Text
+                                                        fontSize={'18px'}
+                                                        fontWeight={'semibold'}
+                                                        color={'secondaryBlack.text'}
+                                                    >
+                                                        {formatNumberWithTwoDecimalsInString(cart.total)}€
+                                                    </Text>
+                                                ) : (
+                                                    <Stack
+                                                        marginY={'auto'}
+                                                    >
+                                                        <Skeleton
+
+                                                            height='20px' width={'60px'} />
+                                                    </Stack>
+                                                )
+                                                }
+
                                             </Box>
                                             <Box
                                                 display={'flex'}
@@ -566,6 +578,7 @@ const index = () => {
                                                     >
                                                         Spedizione
                                                     </Text>
+
                                                     {(typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) && <Text
                                                         fontSize={'12px'}
                                                         fontWeight={'medium'}
@@ -575,13 +588,25 @@ const index = () => {
                                                     </Text>}
                                                 </Box>
 
-                                                <Text
-                                                    fontSize={'18px'}
-                                                    fontWeight={'semibold'}
-                                                    color={'secondaryBlack.text'}
-                                                >
-                                                    {(typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) ? '4,99€' : 'gratis'}
-                                                </Text>
+
+                                                {!isDisabled ? (
+                                                    <Text
+                                                        fontSize={'18px'}
+                                                        fontWeight={'semibold'}
+                                                        color={'secondaryBlack.text'}
+                                                    >
+                                                        {(typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) ? '4,99€' : 'gratis'}
+                                                    </Text>
+                                                ) : (
+                                                    <Stack
+                                                        marginY={'auto'}
+                                                    >
+                                                        <Skeleton
+
+                                                            height='20px' width={'55px'} />
+                                                    </Stack>
+                                                )
+                                                }
                                             </Box>
                                         </VStack>
                                         <Divider
@@ -602,17 +627,29 @@ const index = () => {
                                             >
                                                 Totale
                                             </Text>
-                                            <Text
-                                                fontSize={'18px'}
-                                                fontWeight={'semibold'}
-                                                color={'secondaryBlack.text'}
-                                            >
-                                                {
-                                                    (typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) ?
-                                                        formatNumberWithTwoDecimalsInString(cart.total + 499) :
-                                                        formatNumberWithTwoDecimalsInString(cart.total)
-                                                }€
-                                            </Text>
+                                            {!isDisabled ? (
+                                                <Text
+                                                    fontSize={'18px'}
+                                                    fontWeight={'semibold'}
+                                                    color={'secondaryBlack.text'}
+                                                >
+                                                    {
+                                                        (typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) ?
+                                                            formatNumberWithTwoDecimalsInString(cart.total + 499) :
+                                                            formatNumberWithTwoDecimalsInString(cart.total)
+                                                    }€
+                                                </Text>
+                                            ) : (
+                                                <Stack
+                                                    marginY={'auto'}
+                                                >
+                                                    <Skeleton
+
+                                                        height='20px' width={'70px'} />
+                                                </Stack>
+                                            )
+                                            }
+
                                         </Box>
                                         {!isSmallView && <Button
                                             onClick={checkoutUrl}
