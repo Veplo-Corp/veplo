@@ -216,8 +216,8 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         let variation: Variation | undefined
 
 
-        if (typeof colors === 'string' && product) {
-            variation = product.variations.find(variation => variation?.color.toLowerCase() == colors.toLowerCase())
+        if (typeof colors === 'string' && productFounded) {
+            variation = productFounded.variations.find(variation => variation?.color.toLowerCase() == colors.toLowerCase())
             if (!variation) { }
             else {
                 setVariationSelected(variation)
@@ -255,15 +255,17 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     setSizeSelected('')
                 }
             }
-            else if (product.variations[0].lots.length === 1) {
-                const sizeWithQuantity = product.variations[0].lots
+            else if (productFounded.variations[0].lots.length === 1) {
+                const sizeWithQuantity = productFounded.variations[0].lots
                     .filter((lot) => lot.quantity > 0)
                     .map((lot) => lot.size);
                 if (sizeWithQuantity.length === 1) {
+                    console.log(sizeWithQuantity);
                     setSizeSelected(sizeWithQuantity[0])
                 } else {
                     setSizeSelected('')
                 }
+            } else {
 
             }
         }
