@@ -147,6 +147,7 @@ const index = () => {
                     email: user.email
                 }
             })
+            router.reload()
             setIsDisabled(false)
         }
     }
