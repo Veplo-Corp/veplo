@@ -16,7 +16,6 @@ const CheckoutProduct: FC<{ variation: CartProductVariation, toProduct?: (variat
 
     return (
         <Box
-
             display={'flex'}
             width={'full'}
         >

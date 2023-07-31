@@ -19,7 +19,9 @@ import { stat } from 'fs';
 export type GlobalModal = {
     show?: boolean,
     title?: string,
-    description?: string | JSX.Element
+    description?: string | JSX.Element,
+    descriptionComponent: 'Warnings',
+    props: any
 }
 
 
@@ -36,6 +38,8 @@ export const userState = createSlice({
         openModal: (state, action) => {
             state.modal = {
                 ...state.modal,
+                descriptionComponent: null,
+                props: null,
                 show: true,
                 description: 'abbiamo riscontrato un errore',
                 ...action.payload,

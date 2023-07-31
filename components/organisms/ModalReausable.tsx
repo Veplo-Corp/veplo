@@ -53,7 +53,7 @@ const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isO
                                 >
                                     <Text
                                         fontSize={'xl'}
-                                        fontWeight={`${positionTopModal ? 'bold' : 'medium'}`}
+                                        fontWeight={`${positionTopModal ? 'bold' : 'semibold'}`}
                                         marginY={'auto'}
                                     >
                                         {title}

@@ -2,11 +2,11 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 // 1. import `ChakraProvider` component
-import { Center, ChakraProvider, CircularProgress } from '@chakra-ui/react'
+import { Box, Center, ChakraProvider, CircularProgress, Text, VStack } from '@chakra-ui/react'
 import { extendTheme } from "@chakra-ui/react"
 import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from '../store/store'
-import { useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { auth, onAuthStateChanged, signOut } from '../config/firebase'
 import user, { addFavouriteShopBusiness, login, logout } from '../store/reducers/user'
 import { setAddress } from '../store/reducers/address_user'
@@ -15,7 +15,7 @@ import { ApolloProvider, useLazyQuery } from '@apollo/client'
 import { initApollo, useApollo } from '../lib/apollo'
 import { getAddressFromLocalStorage } from '../../components/utils/getAddress_from_LocalStorage'
 import { setAuthTokenInSessionStorage } from '../../components/utils/setAuthTokenInSessionStorage'
-import modal_error from '../store/reducers/globalModal'
+import modal_error, { openModal } from '../store/reducers/globalModal'
 import Router from "next/router";
 import { Firebase_User } from '../interfaces/firebase_user.interface'
 import Loading from '../../components/molecules/Loading'
@@ -35,8 +35,9 @@ import { resetCarts, setCarts } from '../store/reducers/carts'
 import { detroyOrders, setOrders } from '../store/reducers/orders'
 import { setBrands } from '../store/reducers/brands'
 import ModalWrapper from '../../components/organisms/ModalWrapper'
-import { Cart, Order } from '../lib/apollo/generated/graphql'
+import { Cart, CartWarning, Order } from '../lib/apollo/generated/graphql'
 import { deleteAuthTokenInSessionStorage } from '../../components/utils/deleteAuthTokenSessionStorage'
+import WarningCard from '../../components/molecules/WarningCard'
 
 
 const theme = extendTheme({
@@ -222,13 +223,10 @@ const sans = Work_Sans({
 
 const Auth: React.FC<{ children: any }> = ({ children }) => {
   const router = useRouter()
-  // console.log(address_user);
-  // const brands: string[] | undefined = useSelector((state: any) => state.brands.brands);
-  // console.log(brands);
-
   const dispatch = useDispatch();
   const [getBusiness, { error, data }] = useLazyQuery(GET_BUSINESS);
   const [getUser] = useLazyQuery(GET_USER);
+
 
 
   const fetchBrandsFromDB = async () => {
@@ -264,14 +262,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
     const address_user = getAddressFromLocalStorage();
 
 
-    // dispatch(
-    //   setAddress({
-    //     address: address_user
-    //   })
-    // );
-
     onAuthStateChanged(auth, async (userAuth) => {
-
       //signOut(auth)
       const apolloClient = initApollo()
       if (userAuth) {
@@ -320,7 +311,17 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
 
             const orders: Order[] = data?.data?.user?.orders ? data?.data?.user?.orders : [];
-            //const warnings: { variationId: string }[] = data?.data?.user?.carts?.warnings
+            //TODO Non gestiamo il caso in cui un prodotto venga eliminato
+            //TODO per questo abbiamo messo un filter su isSizeNonExisting
+            const warnings: CartWarning[] = data?.data?.user?.carts?.warnings ? data?.data?.user?.carts?.warnings.filter((warning) => warning?.isProductNonExisting === null) : [];
+            if (warnings.length > 0) {
+              dispatch(openModal({
+                description: null,
+                title: 'Aggiornamenti al carrello',
+                descriptionComponent: 'Warnings',
+                props: warnings
+              }))
+            }
 
 
 
@@ -442,15 +443,13 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 }
 
 
-//font
-
-//const sans = Open_Sans({ subsets: ['latin'] })
 
 
 
 function MyApp({ Component, pageProps }: any /* AppProps */) {
   const [loading, setLoading] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
+
   useEffect(() => {
     const start = () => {
       //console.log("start");

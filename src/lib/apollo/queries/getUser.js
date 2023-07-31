@@ -47,6 +47,14 @@ const GET_USER = graphql(`
                 }
                 warnings {
                     variationId
+                    color
+                    size
+                    isSizeNonExisting
+                    isQuantityTooMuch
+                    isProductNonExisting
+                    isVariationNonExisting
+                    name
+                    quantity
                 }
             } 
             orders(
