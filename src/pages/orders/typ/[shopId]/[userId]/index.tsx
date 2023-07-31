@@ -131,62 +131,59 @@ const index = () => {
 
 
     return (
-        <>
+        <Desktop_Layout>
             {order ? (
-                <Desktop_Layout>
-                    <div
-                        className='w-full md:w-11/12 lg:w-8/12 xl:w-7/12 m-auto md:mt4'
+                <div
+                    className='w-full md:w-11/12 lg:w-8/12 xl:w-7/12 m-auto md:mt4'
+                >
+
+                    <Box
+                        display={'flex'}
+                        justifyContent={'space-between'}
+                        mb={3}
                     >
-
-                        <Box
-                            display={'flex'}
-                            justifyContent={'space-between'}
-                            mb={3}
+                        <Link
+                            href={'/negozio/' + order.shop?.id + '/' + createUrlSchema([order?.shop?.name ? order?.shop?.name : ''])}
                         >
-                            <Link
-                                href={'/negozio/' + order.shop?.id + '/' + createUrlSchema([order?.shop?.name ? order?.shop?.name : ''])}
-                            >
-                                <ProfilePhoto
-                                    imgName={order?.shop?.name}
-                                    scr={order?.shop?.photo}
-                                    primaryText={order?.shop?.name}
-                                    secondaryText={'#' + order.code}
-                                />
-                            </Link>
+                            <ProfilePhoto
+                                imgName={order?.shop?.name}
+                                scr={order?.shop?.photo}
+                                primaryText={order?.shop?.name}
+                                secondaryText={'#' + order.code}
+                            />
+                        </Link>
 
 
-                            <Text
-                                my={'auto'}
-                                fontWeight={['semibold', 'medium']}
-                                fontSize={['13px', '15px']}
+                        <Text
+                            my={'auto'}
+                            fontWeight={['semibold', 'medium']}
+                            fontSize={['13px', '15px']}
 
-                                color={'#909090'}
-                            >
-                                {getDateFromMongoDBDate(order.createdAt, DateFormat.onlyDate)}
-                            </Text>
-                        </Box>
-                        <OrderComponent
-                            order={order}
-                            orderStatus={orderStatus}
-                        />
+                            color={'#909090'}
+                        >
+                            {getDateFromMongoDBDate(order.createdAt, DateFormat.onlyDate)}
+                        </Text>
+                    </Box>
+                    <OrderComponent
+                        order={order}
+                        orderStatus={orderStatus}
+                    />
 
 
 
 
-                    </div>
-                </Desktop_Layout >
+                </div>
             ) :
                 (
-                    <Box
-                        minHeight={'100vh'}
-                    >
+                    <Box h={['60vh', '90vh', '80vh']}
+                        display={'flex'}
+                        justifyContent={'center'}>
                         <Loading />
-
                     </Box>
                 )
             }
 
-        </>
+        </Desktop_Layout>
 
     )
 }

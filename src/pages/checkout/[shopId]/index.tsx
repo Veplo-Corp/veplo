@@ -776,9 +776,9 @@ const index = () => {
                 </>
             ) :
                 (
-                    <Box
-                        minHeight={'100vh'}
-                    >
+                    <Box h={['60vh', '90vh', '80vh']}
+                        display={'flex'}
+                        justifyContent={'center'}>
                         <Loading />
                     </Box>
                 )

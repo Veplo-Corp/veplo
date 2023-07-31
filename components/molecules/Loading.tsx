@@ -1,13 +1,15 @@
-import { Center, CircularProgress } from '@chakra-ui/react'
+import { Box, Center, CircularProgress } from '@chakra-ui/react'
 import React from 'react'
 
 const Loading = () => {
     return (
-        <Center className='mt-10 h-96 m-auto' color='white'>
+        <Center color='white'>
             <CircularProgress
                 size='50px'
                 isIndeterminate color='gray.300' />
         </Center>
+
+
     )
 }
 

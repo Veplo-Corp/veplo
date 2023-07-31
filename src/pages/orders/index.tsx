@@ -29,11 +29,18 @@ const index = () => {
 
 
     return (
-        <>
-            {orders.length > 0 &&
-                <Box
-                    className='min-h-[100vh] w-[95%] sm:w-11/12 md:w-11/12 lg:w-9/12 xl:w-7/12 2xl:w-6/12 m-auto mt-4 md:mt-8 mb-12'
-                >
+        <Desktop_Layout>
+            <Box
+                className='w-[95%] sm:w-11/12 md:w-11/12 lg:w-9/12 xl:w-7/12 2xl:w-6/12 m-auto mt-4 md:mt-8 mb-12'
+            >
+                {orders.length <= 0 && !noOrders &&
+                    <Box h={['60vh', '90vh', '80vh']}
+                        display={'flex'}
+                        justifyContent={'center'}>
+                        <Loading />
+                    </Box>
+                }
+                {orders.length > 0 &&
                     <VStack
                         gap={8}
                         width={'full'}
@@ -47,18 +54,11 @@ const index = () => {
                             )
                         })}
                     </VStack>
+                }
+            </Box>
 
-                </Box>
 
-            }
-            {orders.length <= 0 && !noOrders &&
-                <Box
-                    className='min-h-[80vh]'
-                >
-                    <Loading />
-                </Box>
 
-            }
 
             {orders.length <= 0 && noOrders &&
                 <PageNotFound
@@ -67,7 +67,7 @@ const index = () => {
                     imageSrc="https://www.datocms-assets.com/102220/1686599080-undraw_cancel_re_pkdm.png"
                 />
             }
-        </>
+        </Desktop_Layout>
 
     )
 }
