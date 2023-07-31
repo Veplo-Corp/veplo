@@ -137,151 +137,148 @@ const index = () => {
     }
 
     return (
-        <>
+        <Desktop_Layout>
             {order ? (
-                <Desktop_Layout>
-                    {order && <div
-                        className='w-full md:w-11/12 lg:w-8/12 xl:w-7/12 m-auto md:mt4'
+                <div
+                    className='w-full md:w-11/12 lg:w-8/12 xl:w-7/12 m-auto md:mt4'
+                >
+                    {order?.status === 'RET01' &&
+                        <div className='my-4'>
+                            <GrayBox>
+                                <Text
+                                    fontSize={'2xl'}
+                                    fontWeight={'semibold'}
+                                    mb={2}
+                                >
+                                    Come inviare il reso?
+                                </Text>
+                                <Text
+                                    fontSize={'md'}
+                                    fontWeight={'normal'}
+                                    mb={0}
+                                >
+                                    1. Inscatola i prodotti nelle condizioni originali e nello stesso imballaggio in cui è stato inviato.
+
+                                </Text>
+                                <Text
+                                    fontSize={'md'}
+                                    fontWeight={'normal'}
+                                    mb={0}
+                                >
+                                    2. Compila la <Link
+                                        className='underline'
+                                        target="_blank" href="https://www.datocms-assets.com/102220/1686655555-modulo-reso.pdf"
+                                    >nota reso</Link> e inseriscila nel pacco
+                                </Text>
+                                <Text
+                                    fontSize={'md'}
+                                    fontWeight={'normal'}
+                                    mb={0}
+                                >
+                                    3. Inserisci l'indirizzo di spedizione: <strong>{order?.shop?.address?.postcode} {order?.shop?.address?.city}, {order?.shop?.address?.street}</strong>
+                                </Text>
+                                <Text
+                                    fontSize={'md'}
+                                    fontWeight={'normal'}
+                                    mb={0}
+                                >
+                                    4. Invia il reso a: <strong>{order?.shop?.businessName}, {order?.shop?.name}</strong>
+                                </Text>
+
+                                <Text
+                                    fontSize={'sm'}
+                                    fontWeight={'normal'}
+                                    mt={4}
+                                >
+                                    Per qualunque dubbio domanda consulta la <Link
+                                        target="_blank"
+                                        href={'/policies/reso-e-rimborsi'}
+                                        className='underline cursor-pointer'
+                                    >politica di reso</Link> o <span
+                                        className='underline cursor-pointer'
+                                        onClick={() => setIsModalHelpOpen(true)}
+                                    >contattaci</span>
+                                </Text>
+
+                            </GrayBox>
+                        </div>
+                    }
+                    <Box
+                        display={'flex'}
+                        justifyContent={'space-between'}
+                        mb={3}
                     >
-                        {order?.status === 'RET01' &&
-                            <div className='my-4'>
-                                <GrayBox>
-                                    <Text
-                                        fontSize={'2xl'}
-                                        fontWeight={'semibold'}
-                                        mb={2}
-                                    >
-                                        Come inviare il reso?
-                                    </Text>
-                                    <Text
-                                        fontSize={'md'}
-                                        fontWeight={'normal'}
-                                        mb={0}
-                                    >
-                                        1. Inscatola i prodotti nelle condizioni originali e nello stesso imballaggio in cui è stato inviato.
+                        <Link
+                            href={'/negozio/' + order.shop?.id + '/' + createUrlSchema([order?.shop?.name ? order?.shop?.name : ''])}
+                        >
+                            <ProfilePhoto
+                                imgName={order?.shop?.name}
+                                scr={order?.shop?.photo}
+                                primaryText={order?.shop?.name}
+                                secondaryText={'#' + order.code}
+                            />
+                        </Link>
 
-                                    </Text>
-                                    <Text
-                                        fontSize={'md'}
-                                        fontWeight={'normal'}
-                                        mb={0}
-                                    >
-                                        2. Compila la <Link
-                                            className='underline'
-                                            target="_blank" href="https://www.datocms-assets.com/102220/1686655555-modulo-reso.pdf"
-                                        >nota reso</Link> e inseriscila nel pacco
-                                    </Text>
-                                    <Text
-                                        fontSize={'md'}
-                                        fontWeight={'normal'}
-                                        mb={0}
-                                    >
-                                        3. Inserisci l'indirizzo di spedizione: <strong>{order?.shop?.address?.postcode} {order?.shop?.address?.city}, {order?.shop?.address?.street}</strong>
-                                    </Text>
-                                    <Text
-                                        fontSize={'md'}
-                                        fontWeight={'normal'}
-                                        mb={0}
-                                    >
-                                        4. Invia il reso a: <strong>{order?.shop?.businessName}, {order?.shop?.name}</strong>
-                                    </Text>
 
-                                    <Text
-                                        fontSize={'sm'}
-                                        fontWeight={'normal'}
-                                        mt={4}
-                                    >
-                                        Per qualunque dubbio domanda consulta la <Link
-                                            target="_blank"
-                                            href={'/policies/reso-e-rimborsi'}
-                                            className='underline cursor-pointer'
-                                        >politica di reso</Link> o <span
-                                            className='underline cursor-pointer'
-                                            onClick={() => setIsModalHelpOpen(true)}
-                                        >contattaci</span>
-                                    </Text>
+                        <Text
+                            my={'auto'}
+                            fontWeight={['semibold', 'medium']}
+                            fontSize={['13px', '15px']}
 
-                                </GrayBox>
-                            </div>
-                        }
+                            color={'#909090'}
+                        >
+                            {getDateFromMongoDBDate(order.createdAt, DateFormat.onlyDate)}
+                        </Text>
+                    </Box>
+                    <OrderComponent
+                        order={order}
+                        orderStatus={orderStatus}
+                    />
+
+
+
+
+
+
+
+
+
+                    {
+                        order?.status === 'SHIP03' && user.uid === order?.user?.firebaseId &&
                         <Box
                             display={'flex'}
-                            justifyContent={'space-between'}
-                            mb={3}
+                            gap={2}
+                            mt={5}
                         >
-                            <Link
-                                href={'/negozio/' + order.shop?.id + '/' + createUrlSchema([order?.shop?.name ? order?.shop?.name : ''])}
-                            >
-                                <ProfilePhoto
-                                    imgName={order?.shop?.name}
-                                    scr={order?.shop?.photo}
-                                    primaryText={order?.shop?.name}
-                                    secondaryText={'#' + order.code}
-                                />
-                            </Link>
-
-
                             <Text
                                 my={'auto'}
-                                fontWeight={['semibold', 'medium']}
-                                fontSize={['13px', '15px']}
+                                fontSize={'md'}
+                                fontWeight={'medium'}
 
-                                color={'#909090'}
                             >
-                                {getDateFromMongoDBDate(order.createdAt, DateFormat.onlyDate)}
+                                Vuoi effettuare il reso?
                             </Text>
+                            <Button
+                                my={'auto'}
+                                onClick={() => { setIsOpenModalReturn(true) }}
+                                borderRadius={'md'}
+                                size={'md'}
+
+                                variant='link'
+                                type={'submit'}
+                                colorScheme='black'
+                            >Invia richiesta</Button>
                         </Box>
-                        <OrderComponent
-                            order={order}
-                            orderStatus={orderStatus}
-                        />
+                    }
 
 
-
-
-
-
-
-
-
-                        {
-                            order?.status === 'SHIP03' && user.uid === order?.user?.firebaseId &&
-                            <Box
-                                display={'flex'}
-                                gap={2}
-                                mt={5}
-                            >
-                                <Text
-                                    my={'auto'}
-                                    fontSize={'md'}
-                                    fontWeight={'medium'}
-
-                                >
-                                    Vuoi effettuare il reso?
-                                </Text>
-                                <Button
-                                    my={'auto'}
-                                    onClick={() => { setIsOpenModalReturn(true) }}
-                                    borderRadius={'md'}
-                                    size={'md'}
-
-                                    variant='link'
-                                    type={'submit'}
-                                    colorScheme='black'
-                                >Invia richiesta</Button>
-                            </Box>
-                        }
-
-
-                    </div>}
-                </Desktop_Layout >
+                </div>
             ) :
                 (
-                    <Box
-                        minHeight={'100vh'}
-                    >
+                    <Box h={['60vh', '90vh', '80vh']}
+                        display={'flex'}
+                        justifyContent={'center'}>
                         <Loading />
-
                     </Box>
                 )
             }
@@ -303,7 +300,7 @@ const index = () => {
                 isOpen={isModalHelpOpen}
                 onClose={() => setIsModalHelpOpen(false)}
             />
-        </>
+        </Desktop_Layout>
 
     )
 }
