@@ -287,7 +287,7 @@ const Header = () => {
                                             >
                                                 <Link
                                                     className='flex gap-2 p-2'
-                                                    href={router.query?.prodotti ? '/negozi' : (gender ? `/${getUnivers()}/${gender}-tutto/tutto/rilevanza` : '/')}
+                                                    href={router.query?.prodotti ? '/negozi/brand' : (gender ? `/${getUnivers()}/${gender}-tutto/tutto/rilevanza` : '/')}
                                                 >
                                                     {router.query?.prodotti ?
                                                         (<SmallShopAlt
@@ -331,7 +331,7 @@ const Header = () => {
 
 
                                                 <Link
-                                                    href={router.query.prodotti ? '/negozi' : (gender ? `/${getUnivers()}/${gender}-tutto/tutto/rilevanza` : '/')}
+                                                    href={router.query.prodotti ? '/negozi/brand' : (gender ? `/${getUnivers()}/${gender}-tutto/tutto/rilevanza` : '/')}
                                                     className='flex h-full w-full'
                                                 >
                                                     <Button

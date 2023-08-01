@@ -76,7 +76,7 @@ const index = () => {
                 if (shop) {
                     router.replace(`/negozio/${shop?.id}/${createUrlSchema([shop?.name])}`)
                 } else {
-                    router.replace(`/negozi`)
+                    router.replace(`/negozi/brand`)
                 }
             }, 3000); // Timeout di 4 secondi
             setCart(undefined)

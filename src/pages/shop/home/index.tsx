@@ -98,7 +98,7 @@ const index = () => {
                 addFavouriteShopBusiness(element)
             )
         }
-        return router.push(`/shop/home/${shop.id}/ordini?statusOrder=tutti`)
+        return router.push(`/shop/home/${shop.id}/ordini?statusOrder=tutti&page=1`)
     }
 
 

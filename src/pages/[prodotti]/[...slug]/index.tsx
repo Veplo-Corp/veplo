@@ -741,7 +741,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
                         >
                             <option
-                                value='abbigliamento' className='font-xs'>Abbigliamento
+                                value='abbigliamento'>Abbigliamento
                             </option>
                             <option value='accessori'>
                                 Accessori
