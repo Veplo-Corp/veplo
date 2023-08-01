@@ -81,7 +81,7 @@ const CategoryNavbar: FC<{ showMacrocategory: boolean }> = ({ showMacrocategory 
                                     <Link
                                         prefetch={false}
                                         onClick={() => { setcategoryCardOpen(false) }}
-                                        href={type.url !== 'negozi' ? `/${user.gategoryTypeSelected ? user.gategoryTypeSelected : 'abbigliamento'}/${type.url}-tutto/tutto/rilevanza` : '/negozi'}
+                                        href={type.url !== 'negozi' ? `/${user.gategoryTypeSelected ? user.gategoryTypeSelected : 'abbigliamento'}/${type.url}-tutto/tutto/rilevanza` : '/negozi/brand'}
                                     >
                                         {type.title}
                                     </Link>

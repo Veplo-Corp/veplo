@@ -17,6 +17,7 @@ const GET_SHOP_AND_PRODUCTS = graphql(`
             status
             profilePhoto
             profileCover
+            categories
             isDigitalOnly
             minimumAmountForFreeShipping
             info{

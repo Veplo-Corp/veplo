@@ -265,9 +265,11 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                         {shop.minimumAmountForFreeShipping && <Text
                             fontSize={['sm', 'md']}
                             fontWeight={'bold'}
-                            py={0}
-                            px={2}
-                            bgColor={'#D9D9D9'}
+                            py={['2px']}
+                            px={[3]}
+                            bgColor={'#F2F2F2'}
+                            color={'primaryBlack.text'}
+
                             top={3}
                             borderRadius={'full'}
                             noOfLines={1}
@@ -291,13 +293,21 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                         display={'flex'}
                         justifyContent={'space-between'}
                     >
-                        <Box>
+                        <Box
+                            my={'auto'}
+                        >
 
                             <Text
-                                className='font-bold text-2xl lg:text-4xl my-auto'
+                                className='font-extrabold text-2xl lg:text-4xl my-auto'
                             >
                                 {shop.name}
                             </Text>
+                            {shop.categories && <Text
+                                color={'primaryBlack.text'}
+                                className='font-medium md:font-semibold text-[16px] lg:text-[18px] my-auto -mt-1'
+                            >
+                                {shop?.categories.join(', ')}
+                            </Text>}
 
                         </Box>
 
@@ -358,7 +368,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                             <Text
                                 noOfLines={!showAllDescriptionShop || descriptionRefTextLength <= 3 ? 3 : 100}
                                 color={'#909090'}
-                                className='font-medium text-sm mt-2 lg:text-md'
+                                className='font-medium md:font-normal text-sm mt-2 lg:text-md'
                                 ref={descriptionRefText}
                             >
                                 {shop.info.description}
