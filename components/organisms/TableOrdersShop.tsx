@@ -29,32 +29,18 @@ import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTw
 
 
 
-const TableOrdersShop: FC<{ orders: Order[], moreData: boolean, handleMoreOrders: () => void }> = ({ orders, moreData, handleMoreOrders }) => {
+const TableOrdersShop: FC<{ orders: Order[] }> = ({ orders }) => {
     const router = useRouter()
     return (
         <TableContainer className='flex m-auto w-full '>
 
             <Table variant='simple'>
                 <TableCaption
-                    marginBottom={10}
+                    marginBottom={0}
                 >
-                    {moreData && orders.length > 0 ?
-                        (
-                            <Center>
-                                <Button
-                                    onClick={handleMoreOrders}
-                                >
-                                    Piu ordini
-                                </Button>
-                            </Center>
-                        ) : (
-                            <Text>
-                                i tuoi ordini in Veplo
-                            </Text>
-
-                        )
-
-                    }
+                    <Text>
+                        {/* i tuoi ordini in Veplo */}
+                    </Text>
 
 
                 </TableCaption>
