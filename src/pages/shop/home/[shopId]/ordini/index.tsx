@@ -9,13 +9,12 @@ import TableOrdersShop from '../../../../../../components/organisms/TableOrdersS
 import { Firebase_User } from '../../../../../interfaces/firebase_user.interface';
 import { Order } from '../../../../../interfaces/order.interface';
 import GET_SHOP_ORDERS from '../../../../../lib/apollo/queries/shopOrders';
-import { Shop } from '../../../../../interfaces/shop.interface';
-import { addShopFavouriteToLocalStorage } from '../../../../../../components/utils/shop_localStorage';
-import { addFavouriteShopBusiness } from '../../../../../store/reducers/user';
+
 import ShopInfoSection from '../../../../../../components/molecules/ShopInfoSection';
+import Pagination from '../../../../../../components/molecules/Pagination';
 
 
-const limit = 1000;
+const RANGE = 5;
 
 const typeStatus = [
     {
@@ -55,31 +54,24 @@ function index() {
     const [getOrders, { error, data }] = useLazyQuery(GET_SHOP_ORDERS);
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     const [orders, setOrders] = useState<Order[]>([]);
-    const [hasMoreData, setHasMoreData] = useState(false)
     useEffect(() => {
-        const { shopId, statusOrder } = router.query
-
-        if (user?.isBusiness && shopId && statusOrder) {
+        const { shopId, statusOrder, page } = router.query
+        if (user?.isBusiness && shopId && statusOrder && router.isReady) {
+            const tablePage = parseInt(page as string)
             const status = typeStatus.find(status => status.text === statusOrder)?.statuses
             console.log(status);
             //setOrders([])
-            setHasMoreData(true)
             getOrders({
                 variables: {
                     id: shopId,
                     statuses: status,
-                    limit: limit,
-                    offset: 0
+                    limit: RANGE * tablePage,
+                    offset: RANGE * (tablePage - 1)
                 }
             }).then((data: any) => {
                 console.log(data);
 
                 if (data?.data?.shop?.orders) {
-                    if (data?.data?.shop.orders.length % limit === 0) {
-                        setHasMoreData(true)
-                    } else {
-                        setHasMoreData(false)
-                    }
                     setOrders(data?.data?.shop.orders)
                 }
             })
@@ -88,37 +80,25 @@ function index() {
 
 
 
-    const handleMoreOrders = () => {
-        setHasMoreData(false)
-        const { shopId } = router.query
-        getOrders({
-            variables: {
-                id: shopId,
-                statuses: null,
-                limit: limit,
-                offset: orders.length
-            }
-        }).then((element: any) => {
-            if (!element?.data?.shop.orders) return
-            console.log(element?.data.shop.orders);
-            if (element.data.shop.orders.length % limit === 0) {
-                setHasMoreData(true)
-            }
-            setOrders(prevstate => {
-                return [
-                    ...prevstate,
-                    ...element.data.shop.orders
-                ]
-            })
-        })
-    }
+
 
     const handleStatusSelected = (status: React.ChangeEvent<HTMLInputElement>) => {
         console.log(status.target.value);
         router.push({
             pathname: router.asPath.split('?')[0],
             query: {
-                statusOrder: status.target.value
+                statusOrder: status.target.value,
+                page: 1
+            }
+        })
+    }
+    const handlePage = (page: number) => {
+        console.log(page);
+        router.push({
+            pathname: router.asPath.split('?')[0],
+            query: {
+                statusOrder: router.query.statusOrder,
+                page: page
             }
         })
     }
@@ -153,7 +133,13 @@ function index() {
             }
 
 
-            {orders && <TableOrdersShop orders={orders} moreData={hasMoreData} handleMoreOrders={handleMoreOrders} />}
+            {orders &&
+                <>
+                    <TableOrdersShop orders={orders} />
+                    {orders.length > 0 && <Pagination page={parseInt(typeof router.query.page === 'string' ? router.query.page : '1')} handlePage={handlePage} />}
+                </>
+            }
+
         </Desktop_Layout >
     )
 }

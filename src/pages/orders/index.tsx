@@ -29,7 +29,7 @@ const index = () => {
 
 
     return (
-        <Desktop_Layout>
+        <>
             <Box
                 className='w-[95%] sm:w-11/12 md:w-11/12 lg:w-9/12 xl:w-7/12 2xl:w-6/12 m-auto mt-4 md:mt-8 mb-12'
             >
@@ -67,7 +67,7 @@ const index = () => {
                     imageSrc="https://www.datocms-assets.com/102220/1686599080-undraw_cancel_re_pkdm.png"
                 />
             }
-        </Desktop_Layout>
+        </>
 
     )
 }

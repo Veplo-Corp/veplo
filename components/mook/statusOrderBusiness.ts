@@ -88,7 +88,7 @@ export const STATUS_ORDER_SHOP = [
             color: 'green'
         },
         orderStatus: {
-            text: 'Rimborsato',
+            text: 'Cancellato',
             color: 'blackAlpha',
         },
         description: "ordine rimborsato con successo",
