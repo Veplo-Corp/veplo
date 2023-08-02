@@ -896,6 +896,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
 
 
+
+
                         {!isLoading && products ?
                             (<InfiniteScroll
                                 className={'mb-20'}
@@ -909,7 +911,16 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                             <div className={`grid ${doubleGridDevice ? 'grid-cols-2' : 'grid-cols-1'}  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 gap-y-5 w-full`}>
                                                 {isSmallView ?
                                                     (
-                                                        < SkeletonComponent />
+                                                        [1, 2].map((index) => {
+                                                            return (
+                                                                <Box
+                                                                    key={index}
+                                                                >
+                                                                    <SkeletonComponent />
+                                                                </Box>
+
+                                                            )
+                                                        })
                                                     ) : (
                                                         [1, 2, 3].map((index) => {
                                                             return (
