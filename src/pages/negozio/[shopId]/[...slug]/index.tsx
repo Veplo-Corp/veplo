@@ -469,6 +469,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                                     key={product?.id ? product?.id : Math.random() + index}
                                 >
                                     <Box_Dress product={product}
+                                        doubleGridDevice={false}
                                         showStoreHeader={true/* isMobile */}
                                         handleEventSelectedDress={() => {
                                             sessionStorage.setItem("keyShopSession", window.history.state.key)
