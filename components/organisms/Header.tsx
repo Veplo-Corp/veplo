@@ -212,11 +212,11 @@ const Header = () => {
                                                 >
                                                     {gender ? toUpperCaseFirstLetter(gender) : 'Seleziona'}
                                                 </Text>
-                                                <NavArrowDown
+                                                {/* <NavArrowDown
                                                     className='my-auto mb-[-1px]'
                                                     strokeWidth={2.5}
                                                     fontSize={'lg'}
-                                                />
+                                                /> */}
                                             </Popover.Button>
                                             <Transition
                                                 as={Fragment}
