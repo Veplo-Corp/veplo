@@ -30,7 +30,6 @@ import { GtagVariationsToItemsFor } from '../../../../components/utils/GtagVaria
 import { formatNumberWithTwoDecimalsInNumber } from '../../../../components/utils/formatNumberWithTwoDecimalsInNumber';
 import { openModal } from '../../../store/reducers/globalModal';
 
-const SHIPPING_COST = 499;
 
 const index = () => {
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
@@ -63,8 +62,8 @@ const index = () => {
     useEffect(() => {
         const { shopId } = router.query;
         if (!router.isReady || !shopId || user.statusAuthentication === 'not_yet_authenticated' || !cartsDispatch) return
+        setShop(undefined)
         const cart = cartsDispatch.filter(cart => cart.shopInfo.id === shopId)[0]
-        console.log(cartsDispatch);
         let timeoutId: any;
         if (cart) {
             console.log(cart);
