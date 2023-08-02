@@ -26,7 +26,9 @@ const FiltersSelections: FC<{
 }> =
     ({ isLoading, filters, changeProductView, doubleGridDevice, handleConfirmChange, univers, changePriceEventRouter, filterDrawerConfirm, handleChangeMacroCategory }) => {
 
-        const isSmallView = useBreakpointValue({ base: true, md: false });
+        const isMediumView = useBreakpointValue({ base: true, md: false });
+        const isSmallView = useBreakpointValue({ base: true, sm: false });
+
         //TODO creare interface
         const [filterParameters, setFilterParameters] = useState<FilterParameters[]>()
         const [drawerFilterOpen, setDrawerFilterOpen] = useState(false)
@@ -88,7 +90,7 @@ const FiltersSelections: FC<{
             <Box
                 display={'flex'}
             >
-                {!isSmallView && <Box
+                {!isMediumView && <Box
                     display={'flex'}
                     gap={2}
                     mb={2}
@@ -252,14 +254,14 @@ const FiltersSelections: FC<{
                 } */}
 
                 </Box>}
-                {isSmallView &&
+                {isMediumView &&
                     <Box
                         display={'flex'}
                         gap={2}
                     >
                         <Button
                             height={12}
-                            variant={['grayPrimary', 'whiteButton']}
+                            variant={['grayPrimary', 'grayPrimary']}
                             gap={1}
                             paddingX={4}
                             borderRadius={'10px'}
@@ -277,14 +279,14 @@ const FiltersSelections: FC<{
                                 />
                             </>
                         </Button>
-                        <Button
+
+                        {isSmallView && <Button
                             height={12}
-                            variant={['grayPrimary', 'whiteButton']}
+                            variant={['grayPrimary', 'grayPrimary']}
                             gap={1}
                             paddingX={4}
                             borderRadius={'10px'}
                             onClick={changeProductView}
-
                         >
                             {!doubleGridDevice ? (
                                 <ViewGrid
@@ -296,13 +298,11 @@ const FiltersSelections: FC<{
                                     strokeWidth={2} />
                             )
                             }
+                        </Button>}
 
-
-
-                        </Button>
                     </Box>
                 }
-                {!isSmallView && <Button
+                {!isMediumView && <Button
                     height={12}
                     variant={['grayPrimary', 'whiteButton']}
                     gap={1}
