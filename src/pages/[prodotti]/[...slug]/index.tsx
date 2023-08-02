@@ -124,6 +124,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [resetProducts, setResetProducts] = useState(false)
     const dispatch = useDispatch();
     const isSmallView = useBreakpointValue({ base: true, lg: false });
+    const isExtraSmallView = useBreakpointValue({ base: true, sm: false });
+    const [doubleGridDevice, setDoubleGridDevice] = useState(false)
     const [history, setHistory] = useState<string>()
     const [sort, setSort] = useState<Sort | string>('')
     const timeoutRef = useRef<any>(null);
@@ -759,6 +761,10 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 display={'flex'}
                             >
                                 <FiltersSelections
+                                    changeProductView={() => {
+                                        setDoubleGridDevice(prevState => !prevState)
+                                    }}
+                                    doubleGridDevice={doubleGridDevice}
                                     isLoading={isLoading}
                                     univers={univers}
                                     filters={filters}
@@ -923,7 +929,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 }
                             >
                                 <div className={` flex items-center justify-center `}>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 md:gap-5 md:gap-y-8 gap-y-9 w-full mb-10">
+                                    <div className={`grid ${doubleGridDevice ? 'grid-cols-2 gap-2 gap-y-4' : 'grid-cols-1 gap-y-9'}  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 sm:gap-2 md:gap-5 md:gap-y-8 sm:gap-y-9 w-full mb-10`}>
                                         {products.length > 0 ?
                                             (
                                                 <AnimatePresence>
@@ -931,6 +937,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
                                                         return (
                                                             <motion.div
+
                                                                 key={product?.id ? product?.id : Math.random() + index}
                                                                 variants={LIST_ITEM_VARIANT}
                                                                 initial="hidden"
@@ -938,6 +945,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                                 exit="hidden"
                                                             >
                                                                 <Box_Dress
+                                                                    doubleGridDevice={isExtraSmallView && doubleGridDevice ? true : false}
                                                                     handleEventSelectedDress={() => {
                                                                         sessionStorage.setItem("keyProductsSession", window.history.state.key)
                                                                         sessionStorage.setItem("productsInProductsPage", JSON.stringify(products))

@@ -29,7 +29,7 @@ import { Leaf } from 'iconoir-react'
 import { manipulateUrlForProductColorAndSize } from '../utils/manipulateUrlForProductColorAndSize';
 
 
-const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean, productLink: string }> = ({ handleEventSelectedDress, product, color, showStoreHeader, productLink, overflowCards }) => {
+const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean, productLink: string, doubleGridDevice: boolean }> = ({ handleEventSelectedDress, product, color, showStoreHeader, productLink, overflowCards, doubleGridDevice }) => {
 
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     //const [dimensionUrl, setDimensionUrl] = useState('&tr=w-571,h-825')
@@ -118,6 +118,43 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
             return sizes.indexOf(a) - sizes.indexOf(b)
         });
         setListOfSizesAvailable(totalSize)
+    }
+
+    const CircleColorComponent = () => {
+        return (
+            <>
+                <Circle_Color colors={productcolorsCSS.slice(0, 5)} dimension={isMobile ? '22px' : 6} space={2}
+                    handleColorFocused={(color: string) => {
+                        if (isSmallView) return
+                        handleSetPhotoUrl(color, undefined)
+                    }}
+                />
+                {productcolorsCSS.length > 5 &&
+                    <Tag
+
+                        onClick={() => {
+
+                        }}
+                        h={['24px', 6]}
+                        px={2}
+                        ml={1.5}
+                        borderRadius={'10px'}
+                        bg={'#D8D8D8'}
+                        //borderWidth={1} borderColor={'gray.200'}
+                        style={{
+                            boxShadow: 'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
+                        }}
+                        borderWidth={'1px'}
+                        borderColor={'white'}
+                        fontWeight={'semibold'}
+                        fontSize={['md', 'sm']}
+                        textAlign={'center'}
+                    >
+                        +{productcolorsCSS.length - 5}
+                    </Tag>
+                }
+            </>
+        )
     }
 
 
@@ -292,7 +329,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                                         }}
                                                         src={isMobile && photoUrl ? imageKitUrl(photoUrl) : imageKitUrl(photoUrl ? photoUrl : '', 630, 660)}
                                                         alt={product.name ? product.name : ''}
-                                                        className="lg:w-full min-h-[350px] sm:min-h-[300px] md:min-h-0 aspect-[4.8/5] object-cover rounded-[20px] "
+                                                        className={`lg:w-full ${doubleGridDevice ? 'min-h-[180px]' : 'min-h-[350px] sm:min-h-[300px]'}  md:min-h-0 aspect-[4.8/5] object-cover rounded-[20px]`}
                                                     />
                                                 </SwiperSlide>
                                             )
@@ -307,56 +344,26 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                         }}
                                         src={isMobile && urlProduct ? imageKitUrl(urlProduct) : imageKitUrl(urlProduct ? urlProduct : '', 630, 660)}
                                         alt={product.name ? product.name : ''}
-                                        className="w-full min-h-[350px] sm:min-h-[300px] aspect-[4.8/5] object-cover rounded-[20px]"
+
+                                        className={`w-full min-h-[350px] sm:min-h-[300px] aspect-[4.8/5] object-cover rounded-[20px]`}
                                     />
                                 )
                             }
-                            <Box
-                                position={'absolute'}
-                                bottom={[4, 4]}
-                                left={4}
-                                display={'flex'}
-                                zIndex={10}
+                            {!doubleGridDevice && <Box
+
+                                className='absolute bottom-4 left-4 flex z-10'
                             >
-                                <Circle_Color colors={productcolorsCSS.slice(0, 5)} dimension={isMobile ? '22px' : 6} space={2}
-                                    handleColorFocused={(color: string) => {
-                                        if (isSmallView) return
-                                        handleSetPhotoUrl(color, undefined)
-                                    }}
-                                />
-                                {productcolorsCSS.length > 5 &&
-                                    <Tag
-
-                                        onClick={() => {
-
-                                        }}
-                                        h={['24px', 6]}
-                                        px={2}
-                                        ml={1.5}
-                                        borderRadius={'10px'}
-                                        bg={'#D8D8D8'}
-                                        //borderWidth={1} borderColor={'gray.200'}
-                                        style={{
-                                            boxShadow: 'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
-                                        }}
-                                        borderWidth={'1px'}
-                                        borderColor={'white'}
-                                        fontWeight={'semibold'}
-                                        fontSize={['md', 'sm']}
-                                        textAlign={'center'}
-                                    >
-                                        +{productcolorsCSS.length - 5}
-                                    </Tag>
-                                }
-                            </Box>
+                                <CircleColorComponent />
+                            </Box>}
                         </Link>
 
                     </Box >
                     <Box
-                        display={'flex'}
-                        mt={2}
-                        justifyContent={'space-between'}
-                        mx={3}
+                        display={doubleGridDevice ? 'grid' : 'flex'}
+                        mt={doubleGridDevice ? -1 : 2}
+                        justifyContent={doubleGridDevice ? '' : 'space-between'}
+                        ml={doubleGridDevice ? '1px' : 3}
+                        mr={doubleGridDevice ? 1 : 3}
                     >
                         <Text
                             fontSize={'md'}
@@ -367,7 +374,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                             borderRadius={'full'}
                             noOfLines={1}
                             zIndex={10}
-                            maxW={product.price?.v2 ? '65%' : '73%'}
+                            maxW={doubleGridDevice ? 'full' : product.price?.v2 ? '65%' : '73%'}
 
                         >
                             {product?.name?.toLocaleUpperCase()}
@@ -375,14 +382,14 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                         <Box
                             display={'flex'}
                             gap={1}
-
+                            fontSize={doubleGridDevice ? 'sm' : 'md'}
+                            mt={doubleGridDevice ? '-4px' : '0px'}
+                            mb={doubleGridDevice ? 1 : 0}
                         >
                             {
                                 typeof product?.price?.v2 === 'number' &&
                                 typeof product?.price?.v1 === 'number' &&
                                 product?.price?.v2 < product?.price?.v1 && <Text
-
-                                    fontSize={'md'}
                                     fontWeight={'semibold'}
                                     color={'#909090'}
                                     decoration={'line-through'}
@@ -390,12 +397,13 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                     {formatNumberWithTwoDecimalsInString(Number(product.price?.v1))}
                                 </Text>}
                             <Text
-                                fontSize={'md'}
+
                                 fontWeight={'semibold'}
                             >
                                 {product.price?.v2 ? formatNumberWithTwoDecimalsInString(Number(product.price?.v2)) : formatNumberWithTwoDecimalsInString(Number(product.price?.v1))}€
                             </Text>
                         </Box>
+                        {doubleGridDevice && <CircleColorComponent />}
                     </Box>
                 </Box >
             }

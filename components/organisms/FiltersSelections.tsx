@@ -4,7 +4,7 @@ import { Box, Button, Text, useBreakpointValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 import SelectOption from '../atoms/SelectOption';
-import { Filter, Leaf, NavArrowRight } from 'iconoir-react';
+import { Computer, Filter, Leaf, NavArrowRight, ReportColumns, ViewGrid } from 'iconoir-react';
 import DrawerFilter from './DrawerFilter';
 import SelectMaxMinPrice from '../atoms/SelectMaxMinPrice';
 import { FilterParameters, findParsedFilter } from '../utils/findParsedFilter';
@@ -19,16 +19,17 @@ import { gtag } from '../../src/lib/analytics/gtag';
 
 
 const FiltersSelections: FC<{
+    changeProductView: () => void,
+    doubleGridDevice: boolean,
     isLoading: boolean, filters: ProductsFilter, filterDrawerConfirm: (value: ProductsFilter | undefined) => void, handleConfirmChange:
     (value: string, filterParameter: FilterAccepted) => void, univers: Univers | undefined, changePriceEventRouter: (parameters: { name: string, value: any }[]) => void, handleChangeMacroCategory: (value: string, filters: ProductsFilter | undefined) => void
 }> =
-    ({ isLoading, filters, handleConfirmChange, univers, changePriceEventRouter, filterDrawerConfirm, handleChangeMacroCategory }) => {
+    ({ isLoading, filters, changeProductView, doubleGridDevice, handleConfirmChange, univers, changePriceEventRouter, filterDrawerConfirm, handleChangeMacroCategory }) => {
 
         const isSmallView = useBreakpointValue({ base: true, md: false });
         //TODO creare interface
         const [filterParameters, setFilterParameters] = useState<FilterParameters[]>()
         const [drawerFilterOpen, setDrawerFilterOpen] = useState(false)
-        const [filterCount, setFilterCount] = useState(0)
         const router = useRouter();
 
         if (!univers) return (
@@ -274,15 +275,31 @@ const FiltersSelections: FC<{
                                     className='w-6 h-6'
                                     strokeWidth={2.5}
                                 />
-                                {filterCount > 0 && <Text
-                                    fontSize={'lg'}
-                                    fontWeight={'semibold'}
-                                >
-                                    {filterCount}
-                                </Text>}
                             </>
                         </Button>
+                        <Button
+                            height={12}
+                            variant={['grayPrimary', 'whiteButton']}
+                            gap={1}
+                            paddingX={4}
+                            borderRadius={'10px'}
+                            onClick={changeProductView}
 
+                        >
+                            {!doubleGridDevice ? (
+                                <ViewGrid
+                                    className='w-6 h-6'
+                                    strokeWidth={2}
+                                />) : (
+                                <Computer
+                                    className='w-6 h-6'
+                                    strokeWidth={2} />
+                            )
+                            }
+
+
+
+                        </Button>
                     </Box>
                 }
                 {!isSmallView && <Button
