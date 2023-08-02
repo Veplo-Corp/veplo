@@ -123,7 +123,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
     const CircleColorComponent = () => {
         return (
             <>
-                <Circle_Color colors={productcolorsCSS.slice(0, 5)} dimension={isMobile ? '22px' : 6} space={2}
+                <Circle_Color colors={productcolorsCSS.slice(0, 5)} dimension={doubleGridDevice ? '20px' : isMobile ? '22px' : 6} space={2}
                     handleColorFocused={(color: string) => {
                         if (isSmallView) return
                         handleSetPhotoUrl(color, undefined)

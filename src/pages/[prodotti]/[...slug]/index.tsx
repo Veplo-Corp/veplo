@@ -137,6 +137,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         clearTimeout(timeoutRef.current);
 
         if (!router.isReady) return
+        setDoubleGridDevice(localStorage.getItem('doubleGridDevice') === 'true' ? true : false)
         const fitlerSlug = router.asPath.split('?')[1]
         const filterParams: any = parseSlugUrlFilter(fitlerSlug)
         console.log(filterParams);
@@ -539,22 +540,22 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                     mb={3}
                     ml={2}
                     padding='0' bg='white' display={'flex'} gap={1.5}>
-                    <SkeletonCircle size={['14', '14', '14', '14', '16']} />
+                    <SkeletonCircle size={[doubleGridDevice ? '12' : '14', '14', '14', '14', '16']} />
                     <Box
                         margin={'auto'}
                         ml={2}
                     >
                         <SkeletonText
-                            width={[56, 40, 28, 40, 48]}
+                            width={[doubleGridDevice ? 24 : 56, 40, 28, 40, 48]}
                             noOfLines={1} skeletonHeight={'3'} />
                         <SkeletonText mt='2'
-                            width={[36, 28, 20, 32, 36]}
+                            width={[doubleGridDevice ? 16 : 24, 28, 20, 32, 36]}
                             noOfLines={1} skeletonHeight={'2.5'} />
                     </Box>
                 </HStack>
                 <Skeleton
                     //height={['250px', '150', '500px']}
-                    className={'h-[360px] md:h-[280px] lg:h-[350px] xl:h-[400px]'}
+                    className={`${doubleGridDevice ? 'h-[190px]' : 'h-[360px]'} md:h-[280px] lg:h-[350px] xl:h-[400px]`}
                     borderRadius={'3xl'}
                 />
             </>
@@ -575,8 +576,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
         return (
             <HStack mt={[3, 2]} spacing={2}
-                mb={[6, 10]}
-                className='flex flex-wrap'
+                className={`flex flex-wrap ${doubleGridDevice ? 'mb-4' : 'mb-4'} sm:mb-8`}
             >
                 {filters.query &&
                     <TagFilter
@@ -754,7 +754,8 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                         <Box
 
                             mt={0}
-                            mb={[6, 6]}
+
+
                         >
                             <Box
                                 justifyContent={'space-between'}
@@ -762,7 +763,12 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             >
                                 <FiltersSelections
                                     changeProductView={() => {
-                                        setDoubleGridDevice(prevState => !prevState)
+                                        setDoubleGridDevice(prevState => {
+                                            if (prevState === false) {
+                                                localStorage.setItem('doubleGridDevice', 'true')
+                                            }
+                                            return !prevState
+                                        })
                                     }}
                                     doubleGridDevice={doubleGridDevice}
                                     isLoading={isLoading}
@@ -900,8 +906,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 loader={
                                     <>
                                         {products[2] &&
-
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 gap-y-5 w-full">
+                                            <div className={`grid ${doubleGridDevice ? 'grid-cols-2' : 'grid-cols-1'}  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 gap-y-5 w-full`}>
                                                 {isSmallView ?
                                                     (
                                                         < SkeletonComponent />
@@ -929,7 +934,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 }
                             >
                                 <div className={` flex items-center justify-center `}>
-                                    <div className={`grid ${doubleGridDevice ? 'grid-cols-2 gap-2 gap-y-4' : 'grid-cols-1 gap-y-9'}  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 sm:gap-2 md:gap-5 md:gap-y-8 sm:gap-y-9 w-full mb-10`}>
+                                    <div className={`grid ${doubleGridDevice ? 'grid-cols-2 gap-2 gap-y-5' : 'grid-cols-1 gap-y-9'}  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 sm:gap-2 md:gap-5 md:gap-y-8 sm:gap-y-9 w-full mb-10`}>
                                         {products.length > 0 ?
                                             (
                                                 <AnimatePresence>
@@ -967,7 +972,10 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 </div >
                             </InfiniteScroll >)
                             : (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 gap-y-5 w-full">
+                                <div
+                                    className={`grid ${doubleGridDevice ? 'grid-cols-2' : 'grid-cols-1'}  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 gap-y-5 w-full`}
+
+                                >
                                     {[1, 2, 3, 4].map((index) => {
                                         return (
                                             <Box
