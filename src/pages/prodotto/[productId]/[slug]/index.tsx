@@ -1165,6 +1165,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                                 >
 
                                                     <Box_Dress
+                                                        doubleGridDevice={false}
                                                         overflowCards={true}
                                                         productLink={`/prodotto/${product.id}/${createUrlSchema([product?.info?.brand, product.name])}`}
                                                         showStoreHeader={false} product={product} color={typeof colors === 'string' ? colors : undefined} />
