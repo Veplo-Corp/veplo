@@ -99,7 +99,7 @@ const index: FC<{ shops: ShopsQuery["shops"], listType: 'brand' | 'shop', listCa
 
     return (
         <Box
-            px={[1, 2, 2, 6, 0]}
+            px={[2, 2, 2, 6, 0]}
             className='mt-2 md:mt-5 min-h-[100vh]  w-full xl:w-10/12 2xl:w-9/12 xl:m-auto justify-items-center'
         >
             <PostMeta
