@@ -62,7 +62,6 @@ const index = () => {
     useEffect(() => {
         const { shopId } = router.query;
         if (!router.isReady || !shopId || user.statusAuthentication === 'not_yet_authenticated' || !cartsDispatch) return
-        setShop(undefined)
         const cart = cartsDispatch.filter(cart => cart.shopInfo.id === shopId)[0]
         let timeoutId: any;
         if (cart) {
@@ -85,6 +84,8 @@ const index = () => {
             clearTimeout(timeoutId);
         };
     }, [user, cartsDispatch, router.query])
+
+
 
 
     useEffect(() => {

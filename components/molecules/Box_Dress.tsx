@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Box, Fade, Image, ScaleFade, Tag, Text, Tooltip, VStack, useBreakpointValue } from '@chakra-ui/react'
 import Circle_Color from '../atoms/Circle_Color'
 import { COLORS } from '../mook/colors'
@@ -27,6 +27,7 @@ import ProfilePhoto from './ProfilePhoto'
 import { SustainableTraits, arraySustainableTraits } from '../mook/productParameters/traits'
 import { Leaf } from 'iconoir-react'
 import { manipulateUrlForProductColorAndSize } from '../utils/manipulateUrlForProductColorAndSize';
+import ToolTipComponent from '../atoms/ToolTipComponent';
 
 
 const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean, productLink: string, doubleGridDevice: boolean }> = ({ handleEventSelectedDress, product, color, showStoreHeader, productLink, overflowCards, doubleGridDevice }) => {
@@ -177,36 +178,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
 
 
 
-    const ToolTipComponent = () => {
-        return (<Tooltip label='Prodotto sostenibile'
-            bg='white'
-            color='primaryBlack.text'
-            borderRadius={'full'}
-            boxShadow={'sm'}
-            fontWeight={'medium'}
-        >
-            <Box
-                position={'absolute'}
-                zIndex={20}
-                top={3.5}
-                right={'15px'}
-                height={8}
-                width={8}
-                margin={'none'}
-                padding={'none'}
-                background={'white'}
-                borderRadius={'full'}
-                display={'flex'}
-            >
-                <Leaf
-                    className='m-auto'
-                    height={'19px'}
-                    width={'19px'}
-                    strokeWidth={2.1}
-                />
-            </Box>
-        </Tooltip>)
-    }
+
 
     return (
         <>
@@ -219,9 +191,10 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                         href={product?.shopInfo?.name && product?.shopInfo?.id ? `/negozio/${product?.shopInfo?.id}/${createUrlSchema([product.shopInfo.name])}` : ''}>
                         <Box
                             display={'flex'}
-                            mb={3}
+                            mb={doubleGridDevice ? 1 : 3}
                         >
                             <ProfilePhoto
+                                doubleGridDevice={doubleGridDevice}
                                 imgName={product?.shopInfo?.name}
                                 scr={product?.shopInfo?.profilePhoto}
                                 primaryText={product?.shopInfo?.name}
@@ -248,7 +221,16 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                             href={productLinkPage}
                         >
                             {isSustainable &&
-                                <ToolTipComponent />
+                                <ToolTipComponent
+                                    smallView={doubleGridDevice}
+                                    label={'Prodotto sostenibile'}
+                                    icon={<Leaf
+                                        className='m-auto'
+                                        height={doubleGridDevice ? '16px' : '19px'}
+                                        width={doubleGridDevice ? '16px' : '19px'}
+                                        strokeWidth={2.1}
+                                    />}
+                                />
                             }
                             {showSize &&
                                 <ScaleFade
