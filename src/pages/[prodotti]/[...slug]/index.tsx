@@ -764,9 +764,13 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 <FiltersSelections
                                     changeProductView={() => {
                                         setDoubleGridDevice(prevState => {
-                                            if (prevState === false) {
+
+                                            if (prevState === true) {
+                                                localStorage.setItem('doubleGridDevice', 'false')
+                                            } else {
                                                 localStorage.setItem('doubleGridDevice', 'true')
                                             }
+
                                             return !prevState
                                         })
                                     }}
