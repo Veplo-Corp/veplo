@@ -715,7 +715,7 @@ const index = () => {
 
 
 
-                        <Div_input_creation text='Nome del negozio (visualizzato dagli utenti)'>
+                        <Div_input_creation text='Nome (visualizzato dagli utenti)'>
                             <InputGroup >
                                 <Input
                                     maxLength={35}
@@ -730,7 +730,7 @@ const index = () => {
                                 />
                             </InputGroup>
                         </Div_input_creation>
-                        <Div_input_creation text='Categoria prodotti (massimo 2)'>
+                        <Div_input_creation text='Categoria (massimo 2)'>
                             <Controller
                                 control={control}
                                 name="categories"
