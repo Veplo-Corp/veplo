@@ -141,7 +141,7 @@ const index = () => {
         <Desktop_Layout>
             <NoIndexSeo title={`Prodotti | Veplo Shop`} />
             {shop &&
-                <ShopInfoSection shop={shop} />
+                <ShopInfoSection shop={shop} shopStreet={user?.favouriteShop?.street} />
             }
 
             {user && user.statusAuthentication === 'logged_in' && shopId !== '' &&

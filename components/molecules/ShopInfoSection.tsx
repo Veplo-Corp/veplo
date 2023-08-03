@@ -2,7 +2,7 @@ import { Box, Tag, Text } from '@chakra-ui/react'
 import React, { FC } from 'react'
 import { Shop } from '../../src/interfaces/shop.interface'
 
-const ShopInfoSection: FC<{ shop: Shop }> = ({ shop }) => {
+const ShopInfoSection: FC<{ shop: Shop, shopStreet: string | undefined }> = ({ shop, shopStreet }) => {
     return (
         <Box
         >
@@ -16,12 +16,12 @@ const ShopInfoSection: FC<{ shop: Shop }> = ({ shop }) => {
                 fontSize={['md', '2xl']}
                 fontWeight={'extrabold'}
             >{shop.name}</Text>
-            <Text
+            {shopStreet && <Text
                 mt={-1}
-                fontSize={['2xs', 'xs']}
-                fontWeight={'semibold'}
+                fontSize={['2xs', 'md']}
+                fontWeight={'medium'}
                 color={'gray.500'}
-            >{shop.address?.city}, {shop.address?.street}</Text>
+            >{shopStreet}</Text>}
         </Box>
     )
 }

@@ -6,6 +6,7 @@ import Div_input_creation from '../atoms/Div_input_creation'
 import { DAYS } from '../mook/days';
 import { imageKitUrl } from '../utils/imageKitUrl';
 import SelectMultipleOptions from '../atoms/SelectMultipleOptions';
+import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString';
 
 
 
@@ -140,14 +141,15 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                         maxLength={12}
                         rounded={10}
                         paddingY={6}
-                        type='tel'
+                        type='text'
                         isInvalid={false}
                         disabled={true}
                         _disabled={{
                             opacity: '1',
                             background: 'gray.50',
                         }}
-                        {...register("minimumAmountForFreeShipping", { required: true, minLength: 6, maxLength: 12 })}
+                        value={formatNumberWithTwoDecimalsInString(shop.minimumAmountForFreeShipping)}
+                        {...register("minimumAmountForFreeShipping", { required: true })}
                     />
                 </InputGroup>
 

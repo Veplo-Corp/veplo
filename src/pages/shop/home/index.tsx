@@ -120,7 +120,7 @@ const index = () => {
                     </Box>
                 }
                 {!user.emailVerified && user.statusAuthentication === 'logged_in' && <Verified_Email />}
-                <Text className='text-xl lg:text-2xl font-extrabold mb-4'>I tuoi negozi e brand</Text>
+                <Text className='text-xl lg:text-2xl font-extrabold mb-4'>I tuoi profili</Text>
                 <div className='grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-3 gap-x-2.5 gap-y-3.5 '>
                     <AddNewShopCard />
                     {data?.business?.shops && data.business.shops.map((shop) => {
