@@ -933,9 +933,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                             )
                                                         })
                                                     )}
-
-
-
                                             </div>
                                         }
                                     </>
@@ -945,7 +942,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                 }
                             >
                                 <div className={` flex items-center justify-center `}>
-                                    <div className={`grid ${doubleGridDevice ? 'grid-cols-2 gap-2 gap-y-5' : 'grid-cols-1 gap-y-9'}  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 sm:gap-2 md:gap-5 md:gap-y-8 sm:gap-y-9 w-full mb-10`}>
+                                    <div className={`grid ${doubleGridDevice ? 'grid-cols-2 gap-2 gap-y-5' : 'grid-cols-1 gap-y-9'}  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 sm:gap-2 md:gap-5 md:gap-y-8 sm:gap-y-9 w-full ${doubleGridDevice ? 'mb-6' : 'mb-10'} `}>
                                         {products.length > 0 ?
                                             (
                                                 <AnimatePresence>
