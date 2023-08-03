@@ -36,6 +36,7 @@ import SelectMultipleOptions from '../../../../../components/atoms/SelectMultipl
 import { SHOP_CATEGORIES } from '../../../../../components/mook/shopCategories'
 import { uploadImage } from '../../../../lib/upload/uploadImage'
 import { UploadEventType } from '../../../../lib/upload/UploadEventTypes'
+import SelectStringOption from '../../../../../components/atoms/SelectStringOption'
 
 
 
@@ -51,6 +52,7 @@ interface IFormInput {
     //! togliere description (obbligatoria), macrocategories e gendere in createProduct
     //!deve inserire tommaso
     profileCover: string,
+    profileType: 'brand' | 'shop',
     profilePhoto: string,
     isDigitalOnly?: boolean,
     categories: string[],
@@ -443,6 +445,7 @@ const index = () => {
 
             let Shop: IFormInput = {
                 name: e.name,
+                profileType: e.profileType,
                 profileCover: photoUploadedCover.id,
                 profilePhoto: photoUploadedProfile.id,
                 info: {
@@ -582,9 +585,9 @@ const index = () => {
             <div className='flex '>
                 <form className="p-3 px-0 lg:px-16 xl:px-24 w-full md:w-3/4 lg:w-7/12 m-auto" onSubmit={handleSubmit(submitData)}>
                     <div className='w-full'>
-                        <h1 className='text-xl lg:text-2xl font-extrabold mb-4'>Crea il tuo shop</h1>
+                        <h1 className='text-xl lg:text-2xl font-extrabold mb-4'>Crea un profilo</h1>
 
-                        <Div_input_creation text='Immagine di copertina e profilo'>
+                        <Div_input_creation text=''>
                             {!image && <Center
 
                                 onClick={() => {
@@ -714,8 +717,24 @@ const index = () => {
 
 
 
-
-                        <Div_input_creation text='Nome del negozio (visualizzato dagli utenti)'>
+                        <Div_input_creation text='Tipologia'>
+                            <Controller
+                                control={control}
+                                name="profileType"
+                                rules={{ required: false }}
+                                defaultValue='brand'
+                                render={({ field }) => (
+                                    <SelectStringOption
+                                        values={['brand', 'shop']}
+                                        defaultValue={field.value}
+                                        handleClick={(microcategory: 'brand' | 'shop') => {
+                                            setValue('profileType', microcategory);
+                                        }}
+                                    />
+                                )}
+                            />
+                        </Div_input_creation>
+                        <Div_input_creation text='Nome (visualizzato dagli utenti)'>
                             <InputGroup >
                                 <Input
                                     maxLength={35}
@@ -730,7 +749,7 @@ const index = () => {
                                 />
                             </InputGroup>
                         </Div_input_creation>
-                        <Div_input_creation text='Categoria prodotti (massimo 2)'>
+                        <Div_input_creation text='Categoria (massimo 2)'>
                             <Controller
                                 control={control}
                                 name="categories"

@@ -12,7 +12,6 @@ const GET_SHOP_ORDERS = gql`
             id: $id
         ){
             id
-            
             status
             name
             orders(

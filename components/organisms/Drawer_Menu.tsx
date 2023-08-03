@@ -40,7 +40,7 @@ const Drawer_Menu: React.FC<{ user: any, isOpen: boolean, closeDrawer: () => voi
 
     const list = [
         {
-            title: 'cambia negozio',
+            title: 'visualizza profili account',
             url: '/shop/home'
         },
         {

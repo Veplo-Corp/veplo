@@ -113,7 +113,7 @@ function index() {
                     mb={4}
                 >
 
-                    <ShopInfoSection shop={data?.shop} />
+                    <ShopInfoSection shop={data?.shop} shopStreet={user?.favouriteShop?.street} />
                     <Select
                         size={['sm', 'md']}
                         my={'auto'}
