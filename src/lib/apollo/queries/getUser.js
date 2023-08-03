@@ -67,9 +67,6 @@ const GET_USER = graphql(`
                 cartId
                 createdAt
                 totalDetails{
-                    amountDiscount
-                    amountShipping
-                    subTotal
                     total
                 }
                 status
@@ -78,14 +75,9 @@ const GET_USER = graphql(`
                     photo
                 }
                 productVariations{
-                    productId
                     id
-                    photo
-                    name
-                    
+                    photo                    
                 }
-                
-               
                 history {
                     date
                     status

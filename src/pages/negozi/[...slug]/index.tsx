@@ -36,7 +36,7 @@ export async function getStaticPaths() {
 export const getStaticProps = async (ctx: any) => {
     const { slug } = ctx.params
     const listType = slug[0].toLowerCase();
-    const listCategory = slug[1] ? [slug[1]] : null;
+    const listCategory = slug[1] ? [slug[1].toLowerCase()] : null;
     console.log(slug[1]);
 
     const apolloClient = initApollo();
@@ -154,7 +154,7 @@ const index: FC<{ shops: ShopsQuery["shops"], listType: 'brand' | 'shop', listCa
                         >
                             <Link
                                 prefetch={false}
-                                href={'/negozi/' + listType + '/' + element.toLowerCase()}
+                                href={element.toLowerCase() === listCategory ? '/negozi/' + listType : '/negozi/' + listType + '/' + element.toLowerCase()}
                             >
                                 <Text
                                     textAlign={'start'}
