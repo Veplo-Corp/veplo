@@ -134,8 +134,8 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
       <>
         {router.query.gatto === 'berry' ? (
           <ButtonGroup
-            gap={[5, 5, 5, 3]}
-            mb={0}
+            gap={[2, 5, 5, 3]}
+            mb={[1, 0]}
 
             width={'full'}
           >
@@ -499,7 +499,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
               //lineHeight={'48px'}
               className='lg:leading-[7.5vh] leading-[6vh] sm:leading-[7vh]'
               color={'primaryBlack.text'}
-              mb={[3, 3, 3, 7]}
+              mb={[5, 5, 5, 7]}
             >
               Allora, da dove<br />
               iniziamo <span
@@ -511,7 +511,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
 
             <ButtonGroupGender />
             <Button
-              marginTop={[3, 6]}
+              marginTop={[4, 6]}
               width={'full'}
               variant={'primary'}
               padding={6}
