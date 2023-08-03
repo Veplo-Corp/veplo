@@ -23,10 +23,11 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
         >
 
             <LazyLoadImage src={
-                imageKitUrl(shop?.profileCover)
+                imageKitUrl(shop?.profileCover ? shop?.profileCover : '', 870, 378)
             }
                 //PlaceholderSrc={PlaceholderImage}
                 alt={'' + shop?.name}
+                effect='blur'
                 className='object-cover aspect-[2.3/1] min-h-[100px] xl:min-h-[200px] rounded-[15px]'
             />
             <Box
