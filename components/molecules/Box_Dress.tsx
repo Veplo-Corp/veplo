@@ -124,8 +124,8 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
 
     const CircleColorComponent = () => {
         return (
-            <>
-                <Circle_Color colors={productcolorsCSS.slice(0, 5)} dimension={doubleGridDevice ? '20px' : isMobile ? '22px' : 6} space={2}
+            <Box display={'flex'}>
+                <Circle_Color colors={productcolorsCSS.slice(0, 4)} dimension={doubleGridDevice ? '20px' : isMobile ? '22px' : 6} space={2}
                     handleColorFocused={(color: string) => {
                         if (isSmallView) return
 
@@ -133,31 +133,25 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                     }}
 
                 />
-                {productcolorsCSS.length > 5 &&
-                    <Tag
+                {productcolorsCSS.length > 4 &&
+                    <Box
 
-                        onClick={() => {
-
-                        }}
-                        h={['24px', 6]}
                         px={2}
-                        ml={1.5}
+                        ml={doubleGridDevice ? 1 : 1.5}
                         borderRadius={'10px'}
-                        bg={'#D8D8D8'}
+                        bg={'#F2F2F2'}
                         //borderWidth={1} borderColor={'gray.200'}
-                        style={{
-                            boxShadow: 'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
-                        }}
+
                         borderWidth={'1px'}
                         borderColor={'white'}
                         fontWeight={'semibold'}
-                        fontSize={['md', 'sm']}
+                        fontSize={[doubleGridDevice ? 'xs' : 'md', 'sm']}
                         textAlign={'center'}
                     >
-                        +{productcolorsCSS.length - 5}
-                    </Tag>
+                        +{productcolorsCSS.length - 4}
+                    </Box>
                 }
-            </>
+            </Box>
         )
     }
 
@@ -336,7 +330,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 )
                             }
                             {!doubleGridDevice && <Box
-                                className='absolute bottom-4 left-4 flex'
+                                className='absolute bottom-4 left-4 flex z-10'
                             >
                                 <CircleColorComponent />
                             </Box>}
