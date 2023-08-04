@@ -74,6 +74,9 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
 
 
         if (variationIndex >= 0) {
+            const udpateUrl = manipulateUrlForProductColorAndSize(colorSelected, undefined, productLinkPage)
+            setProductLinkPage(udpateUrl)
+
             //checkSizeAvailable per colore selezionato
             const sizeAvailable = product.variations[variationIndex].lots?.map(lot => {
                 if (typeof lot.quantity === 'number' && lot.quantity <= 0) return
@@ -87,8 +90,6 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
             setindexPhoto(variationIndex)
             //cambio URI link per mandarlo al colore giusto cliccato
 
-            const udpateUrl = manipulateUrlForProductColorAndSize(colorSelected, undefined, productLinkPage)
-            setProductLinkPage(udpateUrl.toString())
             seturlProduct(typeof product?.variations[variationIndex]?.photos?.[0] === 'string' ? product?.variations[variationIndex]?.photos?.[0] : '')
         }
     }
@@ -127,8 +128,10 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                 <Circle_Color colors={productcolorsCSS.slice(0, 5)} dimension={doubleGridDevice ? '20px' : isMobile ? '22px' : 6} space={2}
                     handleColorFocused={(color: string) => {
                         if (isSmallView) return
+
                         handleSetPhotoUrl(color, undefined)
                     }}
+
                 />
                 {productcolorsCSS.length > 5 &&
                     <Tag
@@ -257,7 +260,8 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                                     background={'#EEEEEE'}
                                                     borderRadius={'xl'}
                                                     onMouseEnter={() => {
-                                                        setProductLinkPage(manipulateUrlForProductColorAndSize(undefined, size, productLinkPage))
+                                                        const udpateUrl = manipulateUrlForProductColorAndSize(undefined, size, productLinkPage)
+                                                        setProductLinkPage(udpateUrl)
                                                     }}
                                                 >
                                                     {size.toLocaleUpperCase()}
@@ -326,14 +330,13 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                         }}
                                         src={isMobile && urlProduct ? imageKitUrl(urlProduct) : imageKitUrl(urlProduct ? urlProduct : '', 630, 660)}
                                         alt={product.name ? product.name : ''}
-
                                         className={`w-full min-h-[300px] sm:min-h-[300px] aspect-[4.8/5] object-cover rounded-[20px]`}
                                     />
                                 )
                             }
                             {!doubleGridDevice && <Box
 
-                                className='absolute bottom-4 left-4 flex z-10'
+                                className='absolute bottom-4 left-4 flex'
                             >
                                 <CircleColorComponent />
                             </Box>}
