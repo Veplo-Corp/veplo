@@ -33,7 +33,7 @@ const Drawer_Menu: React.FC<{ user: any, isOpen: boolean, closeDrawer: () => voi
         },
 
         {
-            title: `info negozio`,
+            title: `info profilo`,
             url: `/shop/home/${userDispatch?.favouriteShop?.id}/info-generali`
         }
     ]

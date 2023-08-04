@@ -21,7 +21,7 @@ const Business_Form: FC<{ business: Business }> = ({ business }) => {
 
     return (
         <>
-            <h1 className='text-xl lg:text-2xl font-extrabold mb-3 md:mb-4'>la tua azienda</h1>
+            <h1 className='text-xl lg:text-2xl font-extrabold mb-3 md:mb-4'>il tuo profilo</h1>
             <Div_input_creation text='Email proprietaria account'>
                 <InputGroup>
                     <Input

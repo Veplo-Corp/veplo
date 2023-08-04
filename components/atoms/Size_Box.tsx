@@ -56,7 +56,7 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                                 {size.toUpperCase()}
                             </Box>
                             <Box fontWeight={['normal', 'medium']} fontSize={['2xs', '2xs']} color={'gray.500'} mt={-1}>
-                                {sizeProductExist?.quantity > 0 ? `disponibilità: ${sizeProductExist?.quantity}` : 'non disponibile'}
+                                {sizeProductExist?.quantity < 10 && sizeProductExist?.quantity > 0 ? `solo ${sizeProductExist?.quantity} disponibili` : sizeProductExist?.quantity > 0 ? `` : 'terminato'}
                             </Box>
                         </Box>
 

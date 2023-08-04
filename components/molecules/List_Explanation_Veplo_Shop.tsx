@@ -33,17 +33,17 @@ const Explain_Veplo: Explaination = {
 
 const List_Explanation_Veplo_Shop = () => {
     return (
-        <Box 
-            marginX={['2','-2']}
-            //paddingTop={'16'}
+        <Box
+            marginX={['2', '-2']}
+        //paddingTop={'16'}
         >
             <h1
-            className='font-bold text-3xl  leading-8'
+                className='font-bold text-3xl  leading-8'
             >
                 {Explain_Veplo.title}
             </h1>
             <h4
-            className='font-regular text-md mb-3'
+                className='font-regular text-md mb-3'
             >
                 {Explain_Veplo.description}
             </h4>
@@ -53,12 +53,12 @@ const List_Explanation_Veplo_Shop = () => {
                         key={key}
                         display={'flex'}
                         justifyContent={'space-between'}
-                        marginBottom={['1','3']}
+                        marginBottom={['1', '3']}
                     >
                         <div className='w-2/12'>
                             <Box
                                 margin={'auto'}
-                                marginStart={['0','2']}
+                                marginStart={['0', '2']}
                                 fontSize={'6xl'}
                                 fontWeight={'extrabold'}
                             >
@@ -72,7 +72,7 @@ const List_Explanation_Veplo_Shop = () => {
                             <Box
                                 fontSize={'xl'}
                                 fontWeight={'semibold'}
-                                mb={['0','0.5']}
+                                mb={['0', '0.5']}
                             >
                                 {item.title}
                             </Box>
