@@ -24,7 +24,8 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
 
     return (
         <>
-            <h1 className='text-xl lg:text-2xl font-extrabold mb-3 md:mb-4'>la tua azienda</h1>
+            <h1 className='text-xl lg:text-2xl font-extrabold mb-3 md:mb-4'>il tuo profilo</h1>
+
             <Div_input_creation text='Nome (visualizzato dagli utenti)'>
                 <InputGroup>
                     <Input

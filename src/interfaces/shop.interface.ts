@@ -13,6 +13,7 @@ export interface AddressShop {
 export interface Shop {
     id: string,
     businessId: string,
+    //TODO aggiungere tipologia negozio
     name: string,
     createdAt: string,
     categories?: string[],
