@@ -234,15 +234,6 @@ const index = () => {
                         order={order}
                         orderStatus={orderStatus}
                     />
-
-
-
-
-
-
-
-
-
                     {
                         order?.status === 'SHIP03' && user.uid === order?.user?.firebaseId &&
                         <Box
