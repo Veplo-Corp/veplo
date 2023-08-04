@@ -49,13 +49,19 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                         alignItems="center"
                         justifyContent="center"
                     >
-                        <Box>
+                        <Box
+                            paddingY={size.length > 5 ? 0 : 1}
+                        >
                             <Box fontSize={size.length > 5 ? '15px' : fontSize}
                                 fontWeight={size.length > 5 ? 'medium' : fontWeight}
+                                lineHeight={'20px'}
+                                mb={size.length > 5 ? 1.5 : 2}
+
                             >
                                 {size.toUpperCase()}
+
                             </Box>
-                            <Box fontWeight={['normal', 'medium']} fontSize={['2xs', '2xs']} color={'gray.500'} mt={-1}>
+                            <Box fontWeight={['normal', 'normal']} fontSize={['2xs', '2xs']} color={'gray.500'} mt={-1}>
                                 {sizeProductExist?.quantity < 10 && sizeProductExist?.quantity > 0 ? `solo ${sizeProductExist?.quantity} disponibili` : sizeProductExist?.quantity > 0 ? `` : 'terminato'}
                             </Box>
                         </Box>
