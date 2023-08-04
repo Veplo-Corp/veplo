@@ -745,7 +745,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 totalLotsProduct={product.totalSizeAvailable}
                                 borderRadius={'lg'}
                                 fontSize={'2xl'}
-                                fontWeight={'normal'}
+                                fontWeight={'base'}
                                 lots={variationSelected.lots}
                                 handleLot={(size: string) => {
                                     changeDressColorOrSize(undefined, size)
