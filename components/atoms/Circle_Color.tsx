@@ -14,7 +14,9 @@ const Circle_Color: React.FC<{ handleColorFocused?: (color: string) => void, col
                 return (
                     <Tooltip key={color} isDisabled={!showTooltip} label={''}>
                         <Box onClick={() => {
+
                             if (eventHanlder) {
+
                                 eventHanlder(color)
                             }
                         }} h={dimension} w={dimension} borderRadius={'100%'} bg={color}

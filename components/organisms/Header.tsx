@@ -197,7 +197,9 @@ const Header = () => {
                                 </Link>
                             </div>}
                             {(!user.isBusiness && isButtonHidden && user.statusAuthentication !== 'not_yet_authenticated') &&
-                                <Popover className="relative flex gap-1">
+                                <Popover
+
+                                    className="relative flex gap-1">
                                     {({ open }) => (
                                         <>
                                             <Popover.Button
@@ -228,8 +230,10 @@ const Header = () => {
                                                 leaveTo="opacity-0 translate-y-1"
                                             >
                                                 <Popover.Panel
-                                                    className="left-1 top-10 py-2 px-4 absolute grid grid-cols-1 cursor-pointer z-10 min-w-[15vh] bg-white border border-gray-200 rounded-xl">
-
+                                                    style={{
+                                                        boxShadow: "0px 0px 20px 0px rgba(144, 144, 144, 0.25)",
+                                                    }}
+                                                    className="left-1 top-10 py-2 px-4 absolute grid grid-cols-1 cursor-pointer z-10 min-w-[15vh] bg-white rounded-xl">
                                                     {['Donna', 'Uomo'].map((element) => {
                                                         return (
                                                             <Link
