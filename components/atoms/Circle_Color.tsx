@@ -12,28 +12,26 @@ const Circle_Color: React.FC<{ handleColorFocused?: (color: string) => void, col
         >
             {colors.map((color: any) => {
                 return (
-                    <Tooltip key={color} isDisabled={!showTooltip} label={''}>
-                        <Box onClick={() => {
+                    <Box
+                        key={color}
+                        onClick={() => {
 
                             if (eventHanlder) {
-
                                 eventHanlder(color)
                             }
                         }} h={dimension} w={dimension} borderRadius={'100%'} bg={color}
-                            //borderWidth={1} borderColor={'gray.200'}
-                            onMouseEnter={() => {
-                                if (handleColorFocused) {
-                                    const colorsName = COLORS_TYPES[0].type.find(colorElement => colorElement.cssColor === color)?.name
-
-                                    if (!colorsName) return
-                                    handleColorFocused(colorsName)
-                                }
-                            }}
-                            borderWidth={'1px'}
-                            borderColor={color !== '#FFFFFF' ? 'white' : '#D8D8D8'}
-                        >
-                        </Box>
-                    </Tooltip>
+                        //borderWidth={1} borderColor={'gray.200'}
+                        onMouseEnter={() => {
+                            if (handleColorFocused) {
+                                const colorsName = COLORS_TYPES[0].type.find(colorElement => colorElement.cssColor === color)?.name
+                                if (!colorsName) return
+                                handleColorFocused(colorsName)
+                            }
+                        }}
+                        borderWidth={'1px'}
+                        borderColor={color !== '#FFFFFF' ? 'white' : '#D8D8D8'}
+                    >
+                    </Box>
 
                 )
             })}

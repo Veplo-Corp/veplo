@@ -222,6 +222,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                             }}
                             prefetch={false}
                             href={productLinkPage}
+
                         >
                             {isSustainable &&
                                 <ToolTipComponent
@@ -335,7 +336,6 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 )
                             }
                             {!doubleGridDevice && <Box
-
                                 className='absolute bottom-4 left-4 flex'
                             >
                                 <CircleColorComponent />
