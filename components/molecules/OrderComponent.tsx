@@ -30,7 +30,7 @@ const OrderComponent: FC<{ order: Order, orderStatus: OrderStatus | undefined }>
 
                     width={'full'}
                     gap={4}
-                    mb={16}
+                    mb={[7, 16]}
                 >
                     {order?.productVariations && order?.productVariations.map((variation, index) => {
                         return (

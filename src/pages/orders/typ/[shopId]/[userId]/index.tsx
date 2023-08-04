@@ -40,16 +40,20 @@ const index = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const orders: Order[] = useSelector((state: any) => state.orders.orders);
-    // const { data } = useQuery<{ order: Order }>(GET_ORDER, {
-    //     variables: {
-    //         id: router.query.orderId
-    //     }
-    // })
-    const [getOrder, { error, data }] = useLazyQuery(GET_LAST_ORDER_USER_FROM_SHOP);
+
+    const { loading, data, error } = useQuery(GET_LAST_ORDER_USER_FROM_SHOP, {
+        variables: {
+            shopId: router.query.shopId + '',
+            userId: router.query.userId + '',
+        }
+
+    });
+
 
 
     const [order, setOrder] = useState<Order>();
     const [orderStatus, setOrderStatus] = useState<OrderStatus>();
+
 
 
     useEffect(() => {
@@ -57,23 +61,22 @@ const index = () => {
 
         if (!router.isReady) return
         const { shopId, userId } = router.query;
-        if (typeof shopId !== 'string' || typeof userId !== 'string') return
-        console.log(shopId, userId);
-        getOrder({
-            variables: {
-                shopId: shopId,
-                userId: userId,
-            }
-        })
+        if ((typeof shopId !== 'string' || typeof userId !== 'string')) return
+
+        // getOrder({
+        //     variables: {
+        //         shopId: shopId,
+        //         userId: userId,
+        //     }
+        // })
 
     }, [router.query])
 
 
 
     useEffect(() => {
-        console.log(data);
 
-        if (!data?.lastOrderFromShopByUser || order) return
+        if (!data || !data?.lastOrderFromShopByUser || order) return
         setOrder(data?.lastOrderFromShopByUser)
         purchase(data?.lastOrderFromShopByUser)
         handleStatus(data?.lastOrderFromShopByUser?.status)
