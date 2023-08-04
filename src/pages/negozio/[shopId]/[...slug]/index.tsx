@@ -14,8 +14,8 @@ import PostMeta from '../../../../../components/organisms/PostMeta'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useLazyQuery, useQuery } from '@apollo/client'
 import GET_SHOP_AND_PRODUCTS from '../../../../lib/apollo/queries/getSingleShop'
-import { MoreHoriz, Phone, PinAlt } from 'iconoir-react'
-import PopoverComponent from '../../../../../components/molecules/PopoverComponent'
+import { Facebook, Instagram, MoreHoriz, Phone, Pin, PinAlt, Position, SmallShopAlt, TikTok } from 'iconoir-react'
+import PopoverComponent, { ActionsPopover } from '../../../../../components/molecules/PopoverComponent'
 import { numberOfLineText } from '../../../../../components/utils/numberOfLineText'
 import { isMobile } from 'react-device-detect'
 import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo'
@@ -192,6 +192,86 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
         })
     }
 
+    const popoverList = (): ActionsPopover[] => {
+        const actionsPopoverElements: ActionsPopover[] = [];
+        //TODO inserire if per TikTok, Instagram e FB
+        actionsPopoverElements.push({
+            title: 'Instagram',
+            icon: <Instagram
+                className='w-7 h-7 my-auto'
+                strokeWidth={1.5}
+            />,
+            handleClick: () => {
+                if (typeof window !== 'undefined' && shop.address) {
+                    window.open(
+                        //TODO inserire link Instagram
+                        'https://www.instagram.com/veplo_it/',
+                        '_blank' // <- This is what makes it open in a new window.
+                    );
+                }
+
+            }
+        })
+
+        actionsPopoverElements.push({
+            title: 'TikTok',
+            icon: <TikTok
+                className='w-7 h-7 my-auto'
+                strokeWidth={1.5}
+            />,
+            handleClick: () => {
+                if (typeof window !== 'undefined' && shop.address) {
+                    window.open(
+                        //TODO inserire link Instagram
+                        'https://www.instagram.com/veplo_it/',
+                        '_blank' // <- This is what makes it open in a new window.
+                    );
+                }
+
+            }
+        })
+
+
+
+        if (shop.info?.phone) {
+            actionsPopoverElements.push({
+                title: 'Indicazioni',
+                icon: <SmallShopAlt
+                    className='w-7 h-7 my-auto'
+                    strokeWidth={1.5}
+                />,
+                handleClick: () => {
+                    if (typeof window !== 'undefined' && shop.address) {
+                        window.open(
+                            'https://www.google.it/maps/search/' + shop.address.city + ' ' + shop.address.postcode + ' ' + shop.address.street,
+                            '_blank' // <- This is what makes it open in a new window.
+                        );
+                    }
+
+                }
+            })
+        }
+        return actionsPopoverElements;
+        // return [
+        //     {
+        //         title: 'Contatta',
+        //         icon: <Phone
+        //             className='w-4 h-4 my-auto'
+        //             strokeWidth={2.5}
+        //         />,
+        //         handleClick: () => {
+        //             console.log('merlo');
+        //             if (typeof window !== 'undefined' && shop.info) {
+        //                 window.location.href = 'tel:+39' + shop.info.phone;
+
+        //             }
+        //         }
+        //     },
+
+
+        // ]
+    }
+
 
 
     return (
@@ -314,42 +394,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
 
 
                         <PopoverComponent
-                            actionsPopover={
-                                [
-                                    {
-                                        title: 'Contatta',
-                                        icon: <Phone
-                                            className='w-4 h-4 my-auto'
-                                            strokeWidth={2.5}
-                                        />,
-                                        handleClick: () => {
-                                            console.log('merlo');
-                                            if (typeof window !== 'undefined' && shop.info) {
-                                                window.location.href = 'tel:+39' + shop.info.phone;
-
-                                            }
-                                        }
-                                    },
-                                    {
-                                        title: 'Indicazioni',
-                                        icon: <PinAlt
-                                            className='w-4 h-4 my-auto'
-                                            strokeWidth={2.5}
-                                        />,
-                                        handleClick: () => {
-                                            console.log('merlo');
-                                            if (typeof window !== 'undefined' && shop.address) {
-                                                window.open(
-                                                    'https://www.google.it/maps/search/' + shop.address.city + ' ' + shop.address.postcode + ' ' + shop.address.street,
-                                                    '_blank' // <- This is what makes it open in a new window.
-                                                );
-                                            }
-
-                                        }
-                                    },
-
-                                ]
-                            }
+                            actionsPopover={popoverList()}
                             icon={
                                 <MoreHoriz
                                     className='m-auto'
