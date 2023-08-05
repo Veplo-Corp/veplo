@@ -29,17 +29,16 @@ import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTw
 
 
 
-const TableOrdersShop: FC<{ orders: Order[] }> = ({ orders }) => {
+const TableOrdersShop: FC<{ orders: Order[] | undefined }> = ({ orders }) => {
     const router = useRouter()
     return (
         <TableContainer className='flex m-auto w-full '>
-
             <Table variant='simple'>
                 <TableCaption
                     marginBottom={0}
                 >
                     <Text>
-                        {/* i tuoi ordini in Veplo */}
+                        {orders ? 'i tuoi ordini in Veplo' : 'nessun ordine trovato'}
                     </Text>
 
 
@@ -94,7 +93,7 @@ const TableOrdersShop: FC<{ orders: Order[] }> = ({ orders }) => {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {orders.map((order) => {
+                    {orders && orders.map((order) => {
                         const status = STATUS_ORDER_SHOP.find(status => status.code === order.status)
                         return (
                             <Tr

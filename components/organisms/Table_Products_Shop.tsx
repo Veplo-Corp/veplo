@@ -173,7 +173,12 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
 
 
     if (loading) return (
-        <Loading />)
+        <Box
+            mt={'30vh'}
+        >
+            <Loading />
+        </Box>
+    )
     if (error) return (
         <div>
             {`Error!${error.message}`}

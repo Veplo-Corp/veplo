@@ -4,7 +4,7 @@ import { Box, Button, Text, useBreakpointValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 import SelectOption from '../atoms/SelectOption';
-import { Computer, Filter, Leaf, NavArrowRight, ReportColumns, ViewGrid } from 'iconoir-react';
+import { Computer, Filter, Leaf, Maximize, NavArrowRight, ReportColumns, ViewGrid } from 'iconoir-react';
 import DrawerFilter from './DrawerFilter';
 import SelectMaxMinPrice from '../atoms/SelectMaxMinPrice';
 import { FilterParameters, findParsedFilter } from '../utils/findParsedFilter';
@@ -293,7 +293,7 @@ const FiltersSelections: FC<{
                                     className='w-6 h-6'
                                     strokeWidth={2}
                                 />) : (
-                                <Computer
+                                <Maximize
                                     className='w-6 h-6'
                                     strokeWidth={2} />
                             )

@@ -12,6 +12,7 @@ import GET_SHOP_ORDERS from '../../../../../lib/apollo/queries/shopOrders';
 
 import ShopInfoSection from '../../../../../../components/molecules/ShopInfoSection';
 import Pagination from '../../../../../../components/molecules/Pagination';
+import Loading from '../../../../../../components/molecules/Loading';
 
 
 const RANGE = 5;
@@ -53,10 +54,12 @@ function index() {
     const router = useRouter()
     const [getOrders, { error, data }] = useLazyQuery(GET_SHOP_ORDERS);
     const user: Firebase_User = useSelector((state: any) => state.user.user);
-    const [orders, setOrders] = useState<Order[]>([]);
+    const [orders, setOrders] = useState<Order[]>();
+    const [isLoading, setIsLoading] = useState(false)
     useEffect(() => {
         const { shopId, statusOrder, page } = router.query
         if (user?.isBusiness && shopId && statusOrder && router.isReady) {
+            setIsLoading(true)
             const tablePage = parseInt(page as string)
             const status = typeStatus.find(status => status.text === statusOrder)?.statuses
             console.log(status);
@@ -69,8 +72,7 @@ function index() {
                     offset: RANGE * (tablePage - 1)
                 }
             }).then((data: any) => {
-                console.log(data);
-
+                setIsLoading(false)
                 if (data?.data?.shop?.orders) {
                     setOrders(data?.data?.shop.orders)
                 }
@@ -84,23 +86,24 @@ function index() {
 
     const handleStatusSelected = (status: React.ChangeEvent<HTMLInputElement>) => {
         console.log(status.target.value);
+        setOrders([])
         router.push({
             pathname: router.asPath.split('?')[0],
             query: {
                 statusOrder: status.target.value,
                 page: 1
             }
-        })
+        }, undefined, { shallow: true })
     }
     const handlePage = (page: number) => {
-        console.log(page);
+        setOrders([])
         router.push({
             pathname: router.asPath.split('?')[0],
             query: {
                 statusOrder: router.query.statusOrder,
                 page: page
             }
-        })
+        }, undefined, { shallow: true })
     }
 
     return (
@@ -133,12 +136,20 @@ function index() {
             }
 
 
-            {orders &&
-                <>
+            {!isLoading ?
+                (<>
                     <TableOrdersShop orders={orders} />
-                    {orders.length > 0 && <Pagination page={parseInt(typeof router.query.page === 'string' ? router.query.page : '1')} handlePage={handlePage} />}
-                </>
+                    <Pagination page={parseInt(typeof router.query.page === 'string' ? router.query.page : '1')} handlePage={handlePage} />
+                </>) : (
+                    <Box
+                        mt={'30vh'}
+                    >
+                        <Loading />
+                    </Box>
+                )
             }
+
+
 
         </Desktop_Layout >
     )

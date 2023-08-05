@@ -300,7 +300,9 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
             console.log(data?.data?.user?.carts?.carts);
 
-            let carts: Cart[] = data?.data?.user?.carts?.carts ? data?.data?.user?.carts?.carts : [];
+            let carts: Cart[] = data?.data?.user?.carts?.carts ? data?.data?.user?.carts?.carts.filter(cart => cart.productVariations && cart.productVariations.includes(null)) : [];
+
+
             carts = carts.map(cart => {
               if (!cart?.productVariations || cart?.productVariations?.length > 0) {
                 const sortedProductVariations = cart.productVariations ? [...cart.productVariations].filter((oggetto) => oggetto !== null).sort((a: any, b: any) => (a?.id > b?.id) ? 1 : -1) : [];
