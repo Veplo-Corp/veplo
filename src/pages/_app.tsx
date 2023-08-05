@@ -300,7 +300,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
             console.log(data?.data?.user?.carts?.carts);
 
-            let carts: Cart[] = data?.data?.user?.carts?.carts ? data?.data?.user?.carts?.carts.filter(cart => cart.productVariations && cart.productVariations.includes(null)) : [];
+            let carts: Cart[] = data?.data?.user?.carts?.carts ? data?.data?.user?.carts?.carts : []
 
 
             carts = carts.map(cart => {

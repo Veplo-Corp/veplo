@@ -39,14 +39,13 @@ const WarningCard: FC<{ warning: CartWarning }> = ({ warning }) => {
         >
             <LazyLoadImage src={
                 /* inserire photo prodotto */
-                imageKitUrl('bc0479b2-62b7-4d72-9dee-a4d26110d271.webp' ? 'bc0479b2-62b7-4d72-9dee-a4d26110d271.webp' : '', 237, 247)
+                imageKitUrl(warning.photo ? warning.photo : '', 237, 247)
             }
                 //PlaceholderSrc={PlaceholderImage}
                 alt={''}
                 className='h-20 lg:h-20 aspect-[4.8/5] rounded-[10px] object-cover'
             />
             <Box
-
                 height={'full'}
                 ml={4}
                 width={'full'}
@@ -55,6 +54,7 @@ const WarningCard: FC<{ warning: CartWarning }> = ({ warning }) => {
                 justifyContent={'space-between'}
             >
                 <UnorderedList
+                    maxW={'55%'}
                     color={'#909090'}
                     fontSize={['12px', '12px', '15px']}
                     fontWeight={'medium'}
