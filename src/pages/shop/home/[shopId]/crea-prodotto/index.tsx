@@ -57,7 +57,6 @@ export interface Macrocategory extends Category {
 
 
 const index = () => {
-    console.log('EII');
 
     const { addToast } = ToastOpen();
     const { register, handleSubmit, reset, resetField, watch, formState: { errors, isValid, isSubmitting, isDirty }, getValues, setValue, control, formState } = useForm<IFormInputProduct>({
@@ -69,7 +68,7 @@ const index = () => {
     const router = useRouter();
     const [genderSelected, setGenderSelected] = useState<string>('')
     const [macrocategorySelectedSpec, setMacrocategorySelectedSpec] = useState<Macrocategory>()
-    console.log(macrocategorySelectedSpec?.gender);
+
 
 
     const [sizeTypeSelected, setSizeTypeSelected] = useState<string | undefined>('')
@@ -82,8 +81,8 @@ const index = () => {
         update(cache, el, query) {
             const data = el.data
 
-            console.log(data.createProduct);
-            console.log(query?.variables?.options);
+
+
 
 
             const shop: any = cache.readQuery({
@@ -100,11 +99,11 @@ const index = () => {
             });
 
 
-            console.log(shop?.shop.products?.products);
+
             if (!shop?.shop.products.products) return
-            console.log(query.variables?.options.info);
-            console.log(query.variables?.options.name);
-            console.log(query.variables?.options.variations);
+
+
+
             const variations = query.variables?.options.variations.map((element: any) => {
                 return {
                     ...element,
@@ -112,7 +111,7 @@ const index = () => {
                     __typename: "ProductVariation"
                 }
             })
-            console.log(variations);
+
 
             if (!query.variables?.options) return
 
@@ -149,7 +148,7 @@ const index = () => {
 
             }
 
-            console.log(newProduct);
+
 
 
             cache.writeQuery({
@@ -242,12 +241,12 @@ const index = () => {
         setColors((prevState: any) => {
             const newColor = COLORS.find(color => color.name === variation?.color)
             if (!newColor) return [...prevState]
-            console.log(newColor);
+
             let newColors = [
                 newColor,
                 ...prevState,
             ]
-            console.log(newColors);
+
             return [...newColors]
         })
     }
@@ -259,7 +258,7 @@ const index = () => {
 
         if (!v1 || v1 <= 0) return
         const values = getValues();
-        console.log(values);
+
         setIsLoading(true)
 
         let photos: any[] = [];
@@ -285,7 +284,7 @@ const index = () => {
                         }
                         resolve(result.id);
                     } catch (error) {
-                        console.log(error);
+
                         setIsLoading(false);
                     }
                 }))
@@ -371,15 +370,15 @@ const index = () => {
                 },
                 variations: variations
             }
-            console.log(product);
+
             const isCreatedProduct = await createProduct({ variables: { shopId: router.query.shopId, options: product } })
-            console.log(isCreatedProduct);
+
             setIsLoading(false)
             addToast({ position: 'top', title: 'Prodotto creato con successo', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
             return router.push('/shop/home/' + router.query.shopId + '/prodotti')
 
         } catch (error) {
-            console.log(error);
+
             setIsLoading(false)
         }
 
@@ -690,7 +689,7 @@ const index = () => {
                     </h1>
                     {productVariations.length > 0 && productVariations.map((variation: VariationCard, index) => {
 
-                        console.log(variation);
+
                         return (
                             <div key={index}>
                                 <ProductVariationCard
@@ -705,7 +704,7 @@ const index = () => {
                     })}
 
                     {cardToEdit.length > 0 && cardToEdit.map((variation: VariationCard) => {
-                        console.log(variation);
+
                         return (
                             <div key={variation?.color}>
                                 <EditColorToProduct

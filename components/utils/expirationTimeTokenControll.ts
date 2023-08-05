@@ -9,7 +9,6 @@ const expirationTimeTokenControll: (expirationTime: string) => Promise<boolean> 
 
         //check on the expiration date return false if the expiration time is passed
         if (new Date(expirationTime) <= new Date()) {
-            console.log('Passaaaa');
 
             const idToken = await user?.getIdToken(true)
             if (!idToken) {

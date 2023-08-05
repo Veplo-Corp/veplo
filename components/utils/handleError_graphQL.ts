@@ -5,7 +5,6 @@ type Error = {
 }
 
 export const handleErrorGraphQL = (error: Error) => {
-    console.log(error);
 
     switch (error.name) {
         case 'the size you specified is not included in the sizes of the product variation':

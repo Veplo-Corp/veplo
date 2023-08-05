@@ -86,7 +86,6 @@ const index = () => {
         if (!order) return
         const items = GtagVariationsToItemsFor(order?.productVariations)
         if (items.length <= 0) return
-        console.log(items)
 
         gtag({
             command: GTMEventType.purchase,

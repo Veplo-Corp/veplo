@@ -6,7 +6,6 @@ export const findMicrocategoryName = (macrocategory: string, gender: string, mic
     //TODO Gestire GategoryType!
     const arrayOfMicrocategory = Object.values(CATEGORIES)[index][productsType].find((category: Category) => category.name === macrocategory)?.types
 
-    console.log(arrayOfMicrocategory);
 
     const element = arrayOfMicrocategory?.filter((element: any) =>
         element.toLowerCase()

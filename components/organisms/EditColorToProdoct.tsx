@@ -20,7 +20,6 @@ export interface Size {
 
 const EditColorToProduct: FC<{ category: string | undefined, confirmCard: (variation: VariationCard) => void, colors: Color[], defaultCardValue: VariationCard }> = ({ category, confirmCard, colors, defaultCardValue }) => {
 
-    console.log(defaultCardValue);
 
 
 
@@ -37,7 +36,6 @@ const EditColorToProduct: FC<{ category: string | undefined, confirmCard: (varia
     useEffect(() => {
 
         if (!defaultCardValue) return
-        console.log(defaultCardValue.lots);
 
         setColor(defaultCardValue?.color)
         setImages(defaultCardValue?.photos)
@@ -67,11 +65,9 @@ const EditColorToProduct: FC<{ category: string | undefined, confirmCard: (varia
             lots: productSizeSelected,
             photos: images
         }
-        console.log(variation);
         confirmCard(variation);
     }
 
-    console.log(productSizeSelected);
 
 
 
@@ -121,19 +117,12 @@ const EditColorToProduct: FC<{ category: string | undefined, confirmCard: (varia
                                     defaultValue={element.size}
 
                                     handleClick={(size) => {
-                                        console.log('lotocco', size);
                                         if (size === undefined) return
 
                                         setProductSizeSelected((prevstate: Size[]) => {
                                             let newState = prevstate;
                                             element.size = size
-                                            //console.log(newState);
-                                            // if (element.quantity > 0 && element.size !== '') {
-                                            //     console.log(element.size !== '');
-                                            //     setcanAddNewSize(true)
-                                            // } else {
-                                            //     setcanAddNewSize(false)
-                                            // }
+
                                             return newState
                                         })
                                     }}
@@ -144,7 +133,6 @@ const EditColorToProduct: FC<{ category: string | undefined, confirmCard: (varia
                                     handleClick={(quantity) => {
                                         if (quantity === undefined) return
                                         setProductSizeSelected((prevstate: Size[]) => {
-                                            console.log('lo tocco');
                                             let newState = prevstate;
                                             element.quantity = quantity
                                             if (element.quantity > 0 && element.size !== '' && element.size !== undefined) {
@@ -167,10 +155,7 @@ const EditColorToProduct: FC<{ category: string | undefined, confirmCard: (varia
                                     </svg>
                                 }
                                 onClick={() => {
-                                    // console.log(productSizeSelected);
-                                    // const newproductSizeSelected = productSizeSelected.filter(value => value.size !== element.size)
-                                    // console.log(newproductSizeSelected);
-                                    // setProductSizeSelected(newproductSizeSelected)
+
                                 }}
                             />
                         </div>
@@ -189,10 +174,8 @@ const EditColorToProduct: FC<{ category: string | undefined, confirmCard: (varia
                     variant='ghost'
                     mb={3}
                     onClick={() => {
-                        console.log(productSizeSelected);
 
                         setProductSizeSelected((prevstate: Size[]) => {
-                            console.log(prevstate);
 
                             return [
                                 ...prevstate,
@@ -226,17 +209,10 @@ const EditColorToProduct: FC<{ category: string | undefined, confirmCard: (varia
                     >Conferma
                     </Button>
 
-                    {/* <Button
-                        onClick={() => console.log(productSizeSelected, defaultCardValue?.sizes)}
-                    >
-                        Clicca
-                    </Button> */}
+
                 </ButtonGroup>
             </Box>
-            {/* <Drawer_Add_Image openDraw={openDrawNumber} imagesUploadedBefore={defaultCardValue.photos} confirmPhotos={(images: string[]) => {
-                console.log(images);
-                setImages(images)
-            }} /> */}
+
         </>
 
 

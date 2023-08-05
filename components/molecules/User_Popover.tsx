@@ -162,7 +162,6 @@ const User_Popover = () => {
 
                                         onClick={async () => {
                                             if (action.name === 'Esci') {
-                                                console.log('eccolo');
                                                 await signOut(auth)
 
                                                 deleteAuthTokenInSessionStorage()

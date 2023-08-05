@@ -62,7 +62,6 @@ function index() {
             setIsLoading(true)
             const tablePage = parseInt(page as string)
             const status = typeStatus.find(status => status.text === statusOrder)?.statuses
-            console.log(status);
             //setOrders([])
             getOrders({
                 variables: {
@@ -85,7 +84,6 @@ function index() {
 
 
     const handleStatusSelected = (status: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(status.target.value);
         setOrders([])
         router.push({
             pathname: router.asPath.split('?')[0],

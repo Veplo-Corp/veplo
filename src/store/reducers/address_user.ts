@@ -4,7 +4,7 @@ import type { RootState } from '../store'
 import { useEffect } from 'react'
 
 type InitialState = {
-    address : {
+    address: {
         placeType: undefined | string,
         longitude: undefined | number,
         latitude: undefined | number,
@@ -12,12 +12,12 @@ type InitialState = {
         city: undefined | string,
         address: undefined | string
     }
-    
+
 }
 
 
 // Define the initial state using that type
-const initialState : InitialState = {
+const initialState: InitialState = {
     address: {
         placeType: undefined,
         longitude: undefined,
@@ -25,7 +25,7 @@ const initialState : InitialState = {
         postcode: undefined,
         city: undefined,
         address: undefined
-}
+    }
 
 }
 
@@ -40,7 +40,6 @@ export const userState = createSlice({
     reducers: {
         setAddress: (state, action) => {
             state.address = action.payload.address;
-            // console.log(state.address);
         },
     },
 });

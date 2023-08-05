@@ -6,8 +6,6 @@ export const onChangeNumberPrice = (e: any) => {
     }
     if (inputValue.split('.')[1]) {
         if (inputValue.split('.')[1].length > 2) {
-            console.log('passa');
-
             const value = inputValue.slice(0, -1)
             inputValue = value.replace('.', ',')
             return inputValue

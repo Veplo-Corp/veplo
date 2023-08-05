@@ -28,7 +28,6 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: (text: string)
     useDebounceEffect(async () => {
 
         if (textSearched.length <= 0) return
-        console.log(textSearched);
         setisSearchBoxVisible(true)
 
 
@@ -38,7 +37,6 @@ const Input_Search_Item: FC<{ placeholder: string, onConfirmText: (text: string)
     )
 
     const handleChangeValueInput = (e: any) => {
-        //console.log(e.target.value);
         const regex = /[^A-Za-zÀ-ÿ0-9 -]/g;
         const textfiltered = e.target.value.replace(regex, '');
         setTextSearched(textfiltered)

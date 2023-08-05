@@ -54,11 +54,8 @@ const index = () => {
     const [isModalHelpOpen, setIsModalHelpOpen] = useState(false)
     const [returnOrder] = useMutation(RETURN_ORDER, {
         update(cache, el, query) {
-            console.log(cache);
-            console.log(el);
-            console.log(query);
+
             const OrderCacheId = cache.identify({ id: query.variables?.returnOrderId, __typename: 'Order' })
-            console.log(OrderCacheId);
             cache.modify({
                 id: OrderCacheId, //productId
                 fields: {
@@ -107,7 +104,6 @@ const index = () => {
                     returnOrderId: order?.id
                 }
             })
-            console.log(form);
             setIsOpenModalReturn(false)
             setOrder(prevState => {
                 if (!prevState) return

@@ -38,7 +38,7 @@ const Drawer_Address: React.FC<{ openDrawerMath: number }> = ({ openDrawerMath }
 
 
     const gpsPositionAddress = () => {
-        
+
         //* handle current GPS position */
         const geolocationAPI = navigator.geolocation;
         setLoadingGPS(true)
@@ -76,8 +76,7 @@ const Drawer_Address: React.FC<{ openDrawerMath: number }> = ({ openDrawerMath }
         } else {
             //get IP
             // const res = await axios.get('https://geolocation-db.com/json/')
-            // console.log(res.data);
-            // console.log(res.data.IPv4)
+
             // const ip = res.data.IPv4
             // Send the data to the server in JSON format.
             // API endpoint where we send form data.
@@ -92,7 +91,6 @@ const Drawer_Address: React.FC<{ openDrawerMath: number }> = ({ openDrawerMath }
             // Get the response data from server as JSON.
             // If server returns the name submitted, that means the form works.
             const result = await response.json()
-            //console.log(result.data);
 
             setLoading(false)
             return setAddresses(result.data)
@@ -110,7 +108,6 @@ const Drawer_Address: React.FC<{ openDrawerMath: number }> = ({ openDrawerMath }
         if (typeof window !== "undefined") {
             localStorage.setItem('address', JSON.stringify(result))
         } else {
-            return console.log('impossibile creare elemento');
         }
         dispatch(
             setAddress({

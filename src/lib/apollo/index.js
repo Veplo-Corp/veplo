@@ -161,11 +161,9 @@ export function useApollo(initialState) {
 //     if (typeof window !== 'undefined') {
 //     // return the headers to the context so httpLink can read them
 //         token = localStorage.getItem('token');
-//         console.log(token);
 //     }
 
 //     const authorization = token ? `${token}` : ""
-//     console.log(authorization);
 
 //     return {
 //         headers: {

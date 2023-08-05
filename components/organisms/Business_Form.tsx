@@ -11,7 +11,6 @@ import { imageKitUrl } from '../utils/imageKitUrl';
 
 
 const Business_Form: FC<{ business: Business }> = ({ business }) => {
-    console.log(business);
 
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<Business>({
         mode: "all",

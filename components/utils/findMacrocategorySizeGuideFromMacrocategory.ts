@@ -1,12 +1,11 @@
-import { CATEGORIES } from "../mook/categories";
+import { CATEGORIES, Univers } from "../mook/categories";
 import { GUIDE_SIZES } from "../mook/sizeGuide";
 
-export const findMacrocategorySizeGuideFromMacrocategory = (macrocategory: string, gender: 'uomo' | 'donna') => {
+export const findMacrocategorySizeGuideFromMacrocategory = (macrocategory: string, gender: 'uomo' | 'donna', univers: Univers) => {
 
     //TODO Gestire GategoryType!
-    const macroCategoryInfo = CATEGORIES[gender]['abbigliamento'].find(element => element.name.toLowerCase() === macrocategory.toLowerCase())
-    console.log(macroCategoryInfo?.sizeGuideCode);
-    console.log(CATEGORIES[gender]['abbigliamento']);
+    const macroCategoryInfo = CATEGORIES[gender][univers].find(element => element.name.toLowerCase() === macrocategory.toLowerCase())
+
 
     if (!macroCategoryInfo?.sizeGuideCode) return undefined
     const guideSized = GUIDE_SIZES.find(element => element.name === macroCategoryInfo?.sizeGuideCode)?.sizes

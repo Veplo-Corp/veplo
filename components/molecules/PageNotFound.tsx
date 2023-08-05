@@ -9,12 +9,12 @@ const PageNotFound: FC<{ title: string, description?: string, imageSrc: string }
         <Desktop_Layout>
             <div className='text-center h-[screen] content-center'>
                 <div className='absolute w-full top-32 md:top-48'>
-                    <Text className='font-extrabold md:8/12 lg:w-6/12 m-auto text-2xl lg:text-3xl text-[#2A2A2A] px-9 line-clamp-2'>
+                    <Text className='font-extrabold md:8/12 lg:w-6/12 m-auto text-2xl lg:text-3xl text-[#222222] px-9 line-clamp-2'>
                         <span>
                             {title}
                         </span>
                     </Text>
-                    {description && <Text className='font-medium md:8/12 lg:w-6/12 m-auto text-md md:text-lg text-[#2A2A2A] px-9 line-clamp-2'>
+                    {description && <Text className='font-medium md:8/12 lg:w-6/12 m-auto text-md md:text-lg text-[#222222] px-9 line-clamp-2'>
                         <span>
                             {description}
                         </span>

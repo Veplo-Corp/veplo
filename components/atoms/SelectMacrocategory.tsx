@@ -9,7 +9,6 @@ const SelectMacrocategory: FC<{ univers: Univers, selectedValueBefore: string | 
     const categories = useRef(CATEGORIES)
 
     const handleEvent = (value: any) => {
-        console.log(value);
         handleClick(value)
     }
 

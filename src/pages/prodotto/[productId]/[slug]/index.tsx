@@ -74,7 +74,6 @@ export async function getServerSideProps(ctx: any) {
 
     //! old graphQL schema
     const apolloClient = initApollo()
-    //console.log(productId);
     try {
         const { data } = await apolloClient.query({
             query: GET_SINGLE_PRODUCT,
@@ -109,7 +108,6 @@ export async function getServerSideProps(ctx: any) {
         }
 
     } catch (e: any) {
-        console.log(e);
         return {
             props: {
                 errorLog: e?.graphQLErrors?.[0]?.message || 'errore',
@@ -149,7 +147,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     const [isOpenModalGuideSize, setIsOpenModalGuideSize] = useState(false)
     const [macrocategorySizeGuide, setMacrocategorySizeGuide] = useState(false)
     const isSmallView = useBreakpointValue({ base: true, md: false });
-    console.log(errorLog);
     const [isAddedToCart, setIsAddedToCart] = useState(false)
     const [showAllDescriptionShop, setshowAllDescriptionShop] = useState(false)
     const [descriptionRefTextLength, setDescriptionRefTextLength] = useState(0)
@@ -187,7 +184,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
 
     useEffect(() => {
-        console.log(elementEditCart.error);
 
         if (elementEditCart.error?.graphQLErrors?.[0]?.name === "too much quantity for this product's variation") {
             //setOpenDrawerCart(true)
@@ -203,7 +199,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     useEffect(() => {
 
         if (errorLog) {
-            console.log(errorLog);
             router.replace({
                 pathname: '/404',
                 query: { error: errorLog },
@@ -225,7 +220,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             }
         }
         if (typeof sizes === 'string') {
-            console.log(sizes);
             if (variation) {
                 const sizeWithQuantity = variation.lots
                     .filter((lot) => lot.size === sizes)[0]
@@ -260,7 +254,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     .filter((lot) => lot.quantity > 0)
                     .map((lot) => lot.size);
                 if (sizeWithQuantity.length === 1) {
-                    console.log(sizeWithQuantity);
                     setSizeSelected(sizeWithQuantity[0])
                 } else {
                     setSizeSelected('')
@@ -289,9 +282,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         if (!genderSelected) return
         //TODO prendere anche parametro "Accessori" o "abbigliamento" da prodotto
 
-        console.log(product.info.macroCategory);
-        const macrocategorySizeGuideFromMacrocategory = findMacrocategorySizeGuideFromMacrocategory(product.info.macroCategory, genderSelected)
-        console.log(macrocategorySizeGuideFromMacrocategory);
+        const macrocategorySizeGuideFromMacrocategory = findMacrocategorySizeGuideFromMacrocategory(product.info.macroCategory, genderSelected, product.info.univers ? product.info.univers : 'abbigliamento')
         if (macrocategorySizeGuideFromMacrocategory) {
             setMacrocategorySizeGuide(macrocategorySizeGuideFromMacrocategory)
         }
@@ -313,7 +304,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         if (!color && !size) return
         const { colors, sizes } = router.query
 
-        console.log(colors, sizes);
 
         let query: { colors?: any, sizes?: any } = {}
         if (typeof color === 'string' || typeof colors === 'string') {
@@ -370,7 +360,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         if (isAddedToCart) return
         else {
 
-            console.log(cartsDispatchProduct);
             const Carts: Cart[] = cartsDispatchProduct
             const Cart = Carts.find(cart => cart.shopInfo.id === product.shopInfo.id);
             let NewCart: Cart;
@@ -385,7 +374,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             }
             //CART ESISTENTE
             if (Cart) {
-                console.log(Cart.productVariations);
                 const quantity = Cart.productVariations.find(variation => variation?.size === sizeSelected && variation?.id === variationSelected.id)?.quantity
 
                 //caso in cui la Variation è già presente in cart
@@ -418,7 +406,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     ]
 
 
-                    console.log(productVariations);
 
                     const newTotal = newTotalHandler(productVariations)
 
@@ -519,7 +506,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     ])
             }
 
-            console.log(NewCarts);
 
             //aggiungi al carrello
 
@@ -548,7 +534,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 // if (!edited.data?.editCart) return //mettere un errore qui
 
             } catch (e: any) {
-                console.log(e.message);
 
             }
 

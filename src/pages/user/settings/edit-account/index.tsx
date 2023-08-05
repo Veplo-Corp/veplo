@@ -51,7 +51,7 @@ const index = () => {
 
 
             const normalizedId = cache.identify({ id: user.user.id, __typename: 'User' });
-            console.log(normalizedId);
+
             cache.modify({
                 id: normalizedId,
                 fields: {
@@ -95,14 +95,14 @@ const index = () => {
             await sendPasswordResetEmail(auth, user?.data.user.email)
             setIsOpenPasswordModal(true)
         } catch (e) {
-            console.log(e);
+
             return addToast({ position: 'top', title: "c'è stato un problema", description: 'non siamo riusciti ad inviare la mail al tuo indirizzo', status: 'error', duration: 5000, isClosable: true })
         }
     }
 
     const editNameOrSurname = async () => {
         if (user.data?.user.name === userName.name && user.data?.user.surname === userName.surname || isLoading) return
-        console.log('modifica ');
+
         setIsLoading(true)
         try {
             const response = await editUserInfo({
@@ -120,7 +120,7 @@ const index = () => {
                 })
             }
 
-            console.log(response);
+
             setIsLoading(false);
             setIsOpenNameModal(false)
         } catch {

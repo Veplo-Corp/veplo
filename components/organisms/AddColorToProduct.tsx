@@ -33,7 +33,6 @@ type Image = {
 
 const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => void, confirmCard: (variation: VariationCard) => void, colors: Color[], defaultCardValue?: VariationCard }> = ({ category, deleteCard, confirmCard, colors, defaultCardValue }) => {
 
-    console.log(category);
 
     const [color, setColor] = useState('')
     const [sizeTypologySelected, setSizeTypologySelected] = useState<string[]>([])
@@ -51,7 +50,6 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
     useEffect(() => {
 
         if (!defaultCardValue) return
-        console.log(defaultCardValue);
 
         setColor(defaultCardValue?.color)
         setProductSizeSelected(defaultCardValue?.lots)
@@ -79,7 +77,6 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
             lots: productSizeSelected,
             photos: images
         }
-        console.log(variation);
         confirmCard(variation);
     }
 
@@ -91,18 +88,16 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
             try {
                 const file = e.target.files[0];
                 const image = await resizeFile(file);
-                console.log(image);
 
                 setImgSrc(URL.createObjectURL(file))
                 setIsImageModalOpen(true)
 
             } catch (err) {
-                console.log(err);
+                //TODO gestisci errore
             }
 
         }
         else {
-            return console.log('non trovata immagine caricata');
         }
 
 
@@ -126,13 +121,11 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                 .then(canvas => {
                     const yourBase64String = imgSrc.substring(imgSrc.indexOf(',') + 1);
                     const kb = Math.ceil(((yourBase64String.length * 6) / 8) / 1000); //es. 426 kb
-                    console.log(kb);
                     //set quality based on dimension photo
                     const quality = kb > 3000 ? 0.6 : 0.9;
                     canvas.toBlob(function (blob) {
                         if (!blob) { return }
                         const url = URL.createObjectURL(blob);
-                        console.log('PASSA QUI');
 
                         const file = new File([blob], "photo1", {
                             type: 'image/jpeg'
@@ -146,7 +139,6 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                             file: file,
                             position: images.length
                         }
-                        console.log(newImage);
 
 
                         setImages(prevstate => {
@@ -228,9 +220,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
 
                                             let newState = prevstate;
                                             prevstate[index].size = size
-                                            //console.log(newState);
                                             if (prevstate[index].quantity > 0 && prevstate[index].size !== '') {
-                                                console.log(prevstate[index].size !== '');
                                                 setcanAddNewSize(true)
                                             } else {
                                                 setcanAddNewSize(false)
@@ -272,9 +262,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                                     </svg>
                                 }
                                 onClick={() => {
-                                    console.log(productSizeSelected);
                                     const newproductSizeSelected = productSizeSelected.filter(value => value.size !== element.size)
-                                    console.log(newproductSizeSelected);
                                     setProductSizeSelected(newproductSizeSelected)
                                 }}
                             />
@@ -348,7 +336,6 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
 
                                             setImages(prevstate => {
                                                 const element = prevstate.filter(element => element.url !== image.url)
-                                                console.log(element);
 
                                                 return element
                                             })

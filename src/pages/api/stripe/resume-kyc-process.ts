@@ -24,7 +24,6 @@ export default async function handler(
                 return_url: url,
                 type: 'account_onboarding',
             });
-            console.log(accountLink.url);
             res.redirect(303, accountLink.url);
         } catch (err: any) {
             res.status(err.statusCode || 500).json(err.message);

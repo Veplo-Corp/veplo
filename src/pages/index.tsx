@@ -57,7 +57,6 @@ export const getStaticProps: GetStaticProps<{}> = async () => {
       revalidate: 1
     }
   } catch (e) {
-    console.log(e);
 
     return {
       props: {},
@@ -86,7 +85,6 @@ interface AllListComponentWithImages {
 
 
 const Home: FC<{ data: ListComponents }> = ({ data }) => {
-  console.log(data);
 
   // const dispatch = useDispatch();
 
@@ -109,7 +107,6 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
 
 
   const onSubmitForm = async (value: InputForm) => {
-    console.log(value);
     setModalForm(false)
     setTimeout(async () => {
       setModalConfirmSubmit(true)

@@ -150,7 +150,6 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
             for await (const element of cart.productVariations) {
                 if (element.productId === variation?.productId) {
                     const newVariations = cart.productVariations.filter(variationElement => variationElement.id !== variation?.id || variationElement.size !== variation?.size)
-                    console.log(cart.productVariations, newVariations);
 
                     const newCart = {
                         ...cart,
@@ -164,7 +163,6 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
 
         if (!editedCart) return
 
-        console.log(editedCart);
 
         let NewCarts: Cart[] = [];
 

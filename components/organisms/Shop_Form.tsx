@@ -12,7 +12,6 @@ import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTw
 
 
 const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
-    console.log(shop);
 
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<Shop>({
         mode: "all",

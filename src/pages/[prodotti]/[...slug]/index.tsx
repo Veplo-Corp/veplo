@@ -130,7 +130,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [sort, setSort] = useState<Sort | string>('')
     const timeoutRef = useRef<any>(null);
 
-    console.log(filters);
 
 
     useEffect(() => {
@@ -140,7 +139,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         setDoubleGridDevice(localStorage.getItem('doubleGridDevice') === 'true' ? true : false)
         const fitlerSlug = router.asPath.split('?')[1]
         const filterParams: any = parseSlugUrlFilter(fitlerSlug)
-        console.log(filterParams);
 
         if (router.asPath.split('?')[1]) {
             setHistory(router.asPath.toLowerCase())
@@ -191,7 +189,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             setProducts(dataProducts)
             if (dataProducts && dataProducts?.length % RANGE !== 0 || dataProducts?.length < RANGE) {
                 setHasMoreData(false)
-                console.log('no more data');
                 return setIsLoading(false)
             }
             return setIsLoading(false)
@@ -206,14 +203,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             }
             setFilters(newFilters)
             const sortFilter = getSortingFilter(sortProps)
-            console.log(newFilters);
 
-            console.log(history);
-            console.log(router.asPath.toLowerCase());
-            console.log(router.asPath.toLowerCase() == history);
 
             if (router.asPath.toLowerCase() === history) {
-                console.log('QUI PASSA ANCORA');
 
                 const newFilters = {
                     ...filtersProps,
@@ -249,7 +241,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                         })
                     }, 800);
                 } catch {
-                    console.log('errore caricamento');
                 }
             };
             fetchData();
@@ -276,7 +267,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         if (products.length % RANGE !== 0 || products.length < RANGE) {
             setHasMoreData(false)
-            return console.log('no more data');
+            return
         }
 
         const sortFilter = getSortingFilter(sort)
@@ -297,7 +288,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             })
         }
         catch (e) {
-            console.log(e);
         }
 
     }
@@ -324,11 +314,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         if (newProducts.length % RANGE !== 0 || newProducts.length <= 0) {
             setHasMoreData(false)
             setIsLoading(false)
-            // if (resetProducts) {
-            //     setProducts([])
-            //     setResetProducts(false)
-            // }
-            // return console.log('no more data');
+
 
         }
 
@@ -394,7 +380,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
 
 
-        console.log('filtersParams', filtersParams);
         if (filterParameter === 'macroCategory') {
             const query = filterParamsOnChangeMacrocatecory(filtersParams)
             return router.push({
@@ -469,7 +454,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             filtersParams["sostenibile"] = 'true'
         }
 
-        console.log(filters?.macroCategory);
 
 
 
@@ -501,7 +485,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     }
 
     const routerConfirmDrawerFilter = (filtersDrawerModal: ProductsFilter | undefined) => {
-        console.log(filtersDrawerModal);
 
         if (!filtersDrawerModal) {
             return router.push({
@@ -723,7 +706,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             width={univers === 'abbigliamento' ? 'fit-content' : univers.length * 14.2 + 'px'}
                             value={univers}
                             onChange={(event) => {
-                                console.log(event.target.value);
                                 return router.push({
                                     pathname: `/${event.target.value}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/rilevanza`,
                                 })
@@ -807,7 +789,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                         })
                                     }}
                                     handleChangeMacroCategory={(value: string, filtersParams: ProductsFilter | undefined) => {
-                                        console.log(filtersParams);
                                         if (!filtersParams) {
                                             return router.push({
                                                 pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/tutto/${sort}`,

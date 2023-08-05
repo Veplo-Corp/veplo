@@ -7,7 +7,6 @@ export const sendEmailVerificationHanlder = async () => {
             return true
         }
     } catch (e: any) {
-        console.log(e.code);
         return e.code
     }
 }

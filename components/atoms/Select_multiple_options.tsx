@@ -32,7 +32,6 @@ const Select_multiple_options: React.FC<{ values: any, type: string, typeOperati
     useEffect(() => {
         setSelectedValue([])
 
-        //console.log('type', type ,selectedValueBefore);
 
         if (values === undefined) {
             setIsListboxDisabled(true)
@@ -45,7 +44,6 @@ const Select_multiple_options: React.FC<{ values: any, type: string, typeOperati
 
         //!in fase di test, se tutto ok, si può eliminare
         // if (type === 'size' && !selectedValueBefore) {
-        //     console.log('passa');
         //     setSelectedValue([])
         // }
 

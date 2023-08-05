@@ -7,13 +7,11 @@ const FIlter_Button: FC<{ gender: string, macrocategory: string }> = ({ gender, 
     const [bottomPadding, setbottomPadding] = useState([4, 8])
     const [openDrawer, setOpenDrawer] = useState(1)
     const router = useRouter();
-    console.log(gender, macrocategory);
 
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
             let type = new MobileDetect(window.navigator.userAgent)
-            //console.log(type);            
             if (type.os() === "AndroidOS" || type.os() === 'iOS') {
                 const newHeight = window.innerHeight;
                 const screenHeight = screen.availHeight;
@@ -21,11 +19,8 @@ const FIlter_Button: FC<{ gender: string, macrocategory: string }> = ({ gender, 
                 const updateWindowDimensions = () => {
                     const newHeight = window.innerHeight;
                     const screenHeight = screen.availHeight;
-                    console.log(newHeight);
-                    console.log(screenHeight);
-                    console.log(screenHeight - newHeight);
+
                     setbottomPadding([screenHeight - newHeight, 8])
-                    console.log("updating height");
                 };
                 window.addEventListener("resize", updateWindowDimensions);
                 return () => window.removeEventListener("resize", updateWindowDimensions)

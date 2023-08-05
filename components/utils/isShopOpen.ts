@@ -9,8 +9,7 @@ const isShopOpen = (openingDays: number[] | null, openingHours: string[] | null)
 
     const hourNow = dateNow.getHours() + (dateNow.getMinutes() / 100);
 
-    // console.log(day, hour);
-    // console.log(openingDays, openingHours);
+
     if (openingHours.length < 1) return
     const openingHour = Number(openingHours[0].split(':')[0]) + (Number(openingHours[0].split(':')[1]) / 100)
     const closingHour = Number(openingHours[1].split(':')[0]) + (Number(openingHours[1].split(':')[1]) / 100)
@@ -23,7 +22,6 @@ const isShopOpen = (openingDays: number[] | null, openingHours: string[] | null)
         return false
     }
 
-    // console.log(openingDays.find(openingDay => openingDay === day));
 
 
 }
