@@ -15,7 +15,7 @@ import Pagination from '../../../../../../components/molecules/Pagination';
 import Loading from '../../../../../../components/molecules/Loading';
 
 
-const RANGE = 5;
+const RANGE = 15;
 
 const typeStatus = [
     {
@@ -68,7 +68,7 @@ function index() {
                 variables: {
                     id: shopId,
                     statuses: status,
-                    limit: RANGE * tablePage,
+                    limit: RANGE,
                     offset: RANGE * (tablePage - 1)
                 }
             }).then((data: any) => {

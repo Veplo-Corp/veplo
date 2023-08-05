@@ -46,6 +46,7 @@ const GET_USER = graphql(`
                     }
                 }
                 warnings {
+                    photo
                     variationId
                     color
                     size
