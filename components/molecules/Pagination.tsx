@@ -13,7 +13,6 @@ const Pagination: FC<{ page: number, handlePage: (page: number) => void }> = ({ 
     const firstRange = gestFirstRange(page)
     const secondRange = [...Array(2)].map((_, index) => page + 5 + index);
 
-    console.log(firstRange);
 
 
 

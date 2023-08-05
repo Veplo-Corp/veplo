@@ -31,10 +31,10 @@ const index = () => {
     const verifyFirebaseCode = async (auth: Auth, oobCode: any) => {
         try {
             const codeIsVerified = await verifyPasswordResetCode(auth, oobCode)
-            console.log(codeIsVerified);
+
         }
         catch (e: any) {
-            console.log(e.code);
+
             if ('auth/invalid-action-code') {
                 addToast({ position: 'top', title: 'Link scaduto', description: 'richiedi un nuovo link per il reset della password', status: 'error', duration: 5000, isClosable: true })
                 router.push('/negozi/brand')
@@ -118,7 +118,7 @@ const index = () => {
                 // Display reset password handler and UI.
                 router.push(continueUrl)
             }).catch((error) => {
-                console.log(error);
+
                 addToast({ position: 'top', title: 'Errore durante modifica della password', description: "non siamo riusciti ad aggiornare la password. Riprova più tardi", status: 'error', duration: 5000, isClosable: true })
                 // Error occurred during confirmation. The code might have expired or the
                 // password is too weak.
@@ -126,7 +126,7 @@ const index = () => {
 
             });
         }).catch((error) => {
-            console.log(error);
+
             setIsLoading(false)
 
             addToast({ position: 'top', title: 'Link reset password scaduto', description: "richiedi un nuovo link per resettare la password", status: 'error', duration: 5000, isClosable: true })
@@ -139,7 +139,7 @@ const index = () => {
     const handleSubmitChangePassword = (event: any) => {
         const { oobCode, lang } = router.query
         event.preventDefault();
-        console.log(watch('reset_password'));
+
         if (!oobCode || !lang) return
 
         // Display reset password handler and UI.

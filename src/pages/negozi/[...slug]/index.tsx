@@ -37,7 +37,6 @@ export const getStaticProps = async (ctx: any) => {
     const { slug } = ctx.params
     const listType = slug[0].toLowerCase();
     const listCategory = slug[1] ? [slug[1].toLowerCase()] : null;
-    console.log(slug[1]);
 
     const apolloClient = initApollo();
     try {
@@ -61,7 +60,6 @@ export const getStaticProps = async (ctx: any) => {
         }
     }
     catch (error) {
-        console.log(error);
         return {
             props: {
                 shops: [],
@@ -81,7 +79,6 @@ const index: FC<{ shops: ShopsQuery["shops"], listType: 'brand' | 'shop', listCa
     const router = useRouter()
     const [gender, setGender] = useState<string>()
     const [inputSearchShop, setInputSearchShop] = useState('')
-    console.log(listCategory);
 
 
 
@@ -92,7 +89,6 @@ const index: FC<{ shops: ShopsQuery["shops"], listType: 'brand' | 'shop', listCa
 
     }, [])
 
-    console.log(listCategory);
 
 
 
@@ -177,7 +173,6 @@ const index: FC<{ shops: ShopsQuery["shops"], listType: 'brand' | 'shop', listCa
                 width={listType === 'shop' ? 'fit-content' : listType?.length * 18.5 + 'px'}
                 value={listType}
                 onChange={(event) => {
-                    console.log(event.target.value);
                     return router.push({
                         pathname: `/negozi/${event.target.value}`,
                     })

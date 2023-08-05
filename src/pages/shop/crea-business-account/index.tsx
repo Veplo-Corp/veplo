@@ -53,7 +53,6 @@ const index = () => {
                 setIsValid_businessPhoneNumber(true)
                 break;
             default:
-                console.log(`Sorry, we are out of ${type}.`);
         }
     }
 
@@ -65,7 +64,6 @@ const index = () => {
                     setIsLoading(true)
                     try {
 
-                        console.log(data);
                         const options: Props = {
                             businessName: data.businessName,
                             vatNumber: data.vatNumber,
@@ -78,7 +76,6 @@ const index = () => {
                                 phone: options.phoneNumber
                             }
                         })
-                        console.log(responseGraphQL.data.createStripeAccount);
                         const stripeId = responseGraphQL.data?.createStripeAccount
                         const endpoint = `/api/stripe/kyc-onboarding-link?stripeId=${stripeId}`
 
@@ -93,7 +90,6 @@ const index = () => {
                     } catch (e: any) {
                         setIsLoading(false)
 
-                        console.log(e);
 
                     }
                 })}

@@ -97,8 +97,8 @@ const index = () => {
             }
         }],
         // update(cache, el, query) {
-        //     console.log(el.data);
-        //     console.log(query?.variables?.options);
+
+
 
 
         //     const business = cache.readQuery<any>({
@@ -109,7 +109,7 @@ const index = () => {
         //         }
         //     });
 
-        //     console.log(business);
+
         //     const newShop = {
         //         __typename: 'Shop',
         //         id: el.data.createShop,
@@ -141,8 +141,8 @@ const index = () => {
         //             }
         //         }
         //     }
-        //     console.log(newShop);
-        //     console.log(business.business.shops);
+
+
         //     cache.writeQuery({
         //         query: GET_BUSINESS,
         //         variables: {
@@ -243,12 +243,12 @@ const index = () => {
                 setisProfileImageModalOpen(true)
 
             } catch (err) {
-                console.log(err);
+
             }
 
         }
         else {
-            return console.log('non trovata immagine caricata');
+
         }
 
 
@@ -304,7 +304,7 @@ const index = () => {
         //     // Get the response data from server as JSON.
         //     // If server returns the name submitted, that means the form works.
         //     const result = await response.json()
-        //     console.log(result);
+
 
         //     //return setAddresses(result.data)
         // }, 500)
@@ -324,7 +324,7 @@ const index = () => {
             // Get the response data from server as JSON.
             // If server returns the name submitted, that means the form works.
             const result = await response.json()
-            //console.log(result.data);
+
             return setAddresses(result.data)
         }
 
@@ -338,7 +338,7 @@ const index = () => {
 
     const handleEventSetAddress = async (element: Mapbox_Result) => {
         const result = await setUserAddress(element, 'shop');
-        console.log(result);
+
 
         if (result.streetNumber !== undefined) {
             //setStreetNumber(result.streetNumber)
@@ -351,12 +351,12 @@ const index = () => {
             result.streetNumber = ''
         }
         setisValid_shop_streetNumber(true)
-        console.log(result);
+
 
         setAddress(result);
         setAddress_Mapbox('');
         setShowAddress(true)
-        console.log(result);
+
         return setAddresses([])
     }
 
@@ -380,7 +380,7 @@ const index = () => {
 
             case 'days_open':
                 // setDays_open(e)
-                // console.log(value);                
+
                 let dayArray = []
                 for (let i = 0; i < e.length; i++) {
 
@@ -391,7 +391,7 @@ const index = () => {
                 setValue('info.opening.days', dayArray);
                 break;
             default:
-                console.log(`Sorry, we are out of ${type}.`);
+
         }
     }
 
@@ -422,18 +422,18 @@ const index = () => {
                 break;
                 break;
             default:
-                console.log(`Sorry, we are out of ${type}.`);
+
         }
     }
 
     const changeShopType = (event: any) => {
-        console.log(event.target.value);
+
         setShopIsDigital(event.target.value === 'Digitale' ? true : false)
     }
 
     const submitData = async (e: IFormInput) => {
         // const url = await uploadPhotoFirebase(image?.blob, `/${user.uid}/shop_image/immagine`)
-        // console.log(url);
+
         setIsLoading(true)
 
         try {
@@ -472,7 +472,7 @@ const index = () => {
             }
 
 
-            console.log(Shop);
+
 
 
 
@@ -505,11 +505,11 @@ const index = () => {
                 }
             }
 
-            console.log(Shop);
+
 
             //return the mongoID of the Shop
             const isCreatedShop = await createShop({ variables: { options: Shop } })
-            console.log(isCreatedShop.data.createShop)
+
             //?OLD addshopId deprecated 
             // dispatch(
             //     addShopId(isCreatedShop.data.createShop)
@@ -525,7 +525,7 @@ const index = () => {
             return router.push('/shop/home/' + isCreatedShop.data.createShop + '/prodotti')
         } catch (e) {
             setIsLoading(false)
-            console.log(e);
+
             addToast({ position: 'top', title: 'Errore durante la creazione dello Shop', description: "non siamo riusciti a creare il tuo shop. riprova più tardi o contattaci", status: 'error', duration: 5000, isClosable: false })
         }
     }
@@ -547,13 +547,13 @@ const index = () => {
                 .then(canvas => {
                     const yourBase64String = imgSrc.substring(imgSrc.indexOf(',') + 1);
                     const kb = Math.ceil(((yourBase64String.length * 6) / 8) / 1000); //es. 426 kb
-                    console.log(kb);
+
                     //set quality based on dimension photo
                     const quality = kb > 3000 ? 0.3 : 0.8;
                     canvas.toBlob(function (blob) {
                         if (!blob) { return }
                         const url = URL.createObjectURL(blob);
-                        console.log('PASSA QUI');
+
 
                         const file = new File([blob], "photo1", {
                             type: 'image/jpeg'
@@ -758,7 +758,7 @@ const index = () => {
                                     <SelectMultipleOptions
                                         limitNumber={2}
                                         handleValue={(value) => {
-                                            console.log(value);
+
                                             setValue('categories', value.map(value => {
                                                 return value.toLowerCase()
                                             }));

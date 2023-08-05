@@ -116,7 +116,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                             my="auto"
                             fontWeight="semibold"
                             fontSize="16px"
-                            color={"#2A2A2A"}
+                            color={"#222222"}
                             mr={5}
                         >
                             {formatNumberWithTwoDecimalsInString(order?.totalDetails?.total)}€

@@ -40,11 +40,11 @@ const index = () => {
 
     const [editCurrierInfo] = useMutation(ADD_CODE_AND_COURIER_TO_ORDER, {
         update(cache, el, query) {
-            console.log(cache);
-            console.log(el);
-            console.log(query);
+
+
+
             const OrderCacheId = cache.identify({ id: query.variables?.id, __typename: 'Order' })
-            console.log(OrderCacheId);
+
             cache.modify({
                 id: OrderCacheId, //productId
                 fields: {
@@ -68,11 +68,11 @@ const index = () => {
 
     const [deleteOrderByShop] = useMutation(ORDER_DELETED_BY_SHOP, {
         update(cache, el, query) {
-            console.log(cache);
-            console.log(el);
-            console.log(query);
+
+
+
             const OrderCacheId = cache.identify({ id: query.variables?.orderId, __typename: 'Order' })
-            console.log(OrderCacheId);
+
             cache.modify({
                 id: OrderCacheId, //productId
                 fields: {
@@ -89,11 +89,11 @@ const index = () => {
 
     const [returnedOrderHasArrived] = useMutation(RETURNED_ORDER_HAS_ARRIVED, {
         update(cache, el, query) {
-            console.log(cache);
-            console.log(el);
-            console.log(query);
+
+
+
             const OrderCacheId = cache.identify({ id: query.variables?.id, __typename: 'Order' })
-            console.log(OrderCacheId);
+
             cache.modify({
                 id: OrderCacheId, //productId
                 fields: {
@@ -109,11 +109,11 @@ const index = () => {
 
     const [denyReturn] = useMutation(DENY_RETURN, {
         update(cache, el, query) {
-            console.log(cache);
-            console.log(el);
-            console.log(query);
+
+
+
             const OrderCacheId = cache.identify({ id: query.variables?.orderId, __typename: 'Order' })
-            console.log(OrderCacheId);
+
             cache.modify({
                 id: OrderCacheId, //productId
                 fields: {
@@ -179,7 +179,7 @@ const index = () => {
                 }
             })
         } catch (error: any) {
-            console.log(error);
+
 
         }
     }
@@ -195,7 +195,7 @@ const index = () => {
             addToast({ position: 'top', title: 'Reso confermato', status: 'success', duration: 5000, isClosable: true })
             router.back()
         } catch (error: any) {
-            console.log(error);
+
 
         }
     }

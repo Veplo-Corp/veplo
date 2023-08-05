@@ -57,7 +57,6 @@ const index = () => {
 
 
 
-    console.log(cart);
 
     useEffect(() => {
         const { shopId } = router.query;
@@ -65,7 +64,6 @@ const index = () => {
         const cart = cartsDispatch.filter(cart => cart.shopInfo.id === shopId)[0]
         let timeoutId: any;
         if (cart) {
-            console.log(cart);
             setCart(cart)
         }
         if (!cart) {
@@ -96,7 +94,6 @@ const index = () => {
     useEffect(() => {
         if (!error) return
         //router.reload()
-        console.log(error);
         //TODO gestire errore carrello
 
         //setIsErrorModalOpen(true)
@@ -139,7 +136,6 @@ const index = () => {
             setIsDisabled(false)
         }
         catch (e) {
-            console.log(e);
             gtag({
                 command: GTMEventType.exception,
                 args: {
@@ -177,7 +173,6 @@ const index = () => {
 
 
 
-        console.log(productVariations);
 
         const newTotal = newTotalHandler(productVariations)
 
@@ -197,7 +192,6 @@ const index = () => {
 
 
 
-        console.log(NewCarts);
 
         //aggiungi al carrello
 
@@ -226,7 +220,6 @@ const index = () => {
             // if (!edited.data?.editCart) return //mettere un errore qui
 
         } catch (e: any) {
-            console.log(e.message);
             setIsDisabled(false)
             setIsLoading(false)
             dispatch(openModal({
@@ -271,7 +264,6 @@ const index = () => {
             for await (const element of cart.productVariations) {
                 if (element.productId === variation?.productId) {
                     const newVariations = cart.productVariations.filter(variationElement => variationElement.id !== variation?.id || variationElement.size !== variation?.size)
-                    console.log(cart.productVariations, newVariations);
                     const newCart = {
                         ...cart,
                         productVariations: newVariations,
@@ -345,7 +337,6 @@ const index = () => {
     const handleDeleteVariations = async () => {
         const errorVariations = error?.graphQLErrors;
         if (!errorVariations) return
-        console.log(errorVariations);
         if (!user.uid) {
             return
         }
@@ -354,10 +345,8 @@ const index = () => {
                 if (typeof errorVariation?.path !== 'string') return
                 let id: string = errorVariation?.path
                 id = id.trim()
-                console.log(id);
                 if (!cart) return
                 const variations = cart.productVariations.filter(element => element.id === id)
-                console.log(variations);
                 for await (const variation of variations) {
                     await editCart({
                         variables: {
@@ -731,10 +720,8 @@ const index = () => {
                                     if (typeof error.path !== 'string') return (<></>)
                                     let id: string = error.path
                                     id = id.trim()
-                                    console.log(id);
-                                    console.log(cart.productVariations);
+
                                     const variations = cart.productVariations.filter(element => element.id === id)
-                                    console.log(variations);
                                     return (
                                         <div key={index}>
                                             {

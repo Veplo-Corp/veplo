@@ -19,23 +19,22 @@ export default async function handler(
     let address = req.query.address
     const placeType = req.query.placeType
     const streetNumber = req.query.streetNumber
-    console.log(streetNumber);
-    
+
     address = streetNumber !== 'undefined' ? (address + ' ' + streetNumber) : address;
 
 
     // return res.status(200).json({ address_user: response})
 
-    if(placeType === 'address' || placeType === 'place'){
-        try{
-            const request = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?types=${types}&limit=1&country=IT&language=it&access_token=${uri_mapbox}`)   
+    if (placeType === 'address' || placeType === 'place') {
+        try {
+            const request = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?types=${types}&limit=1&country=IT&language=it&access_token=${uri_mapbox}`)
             const CAP_location = {
                 postcode: request.data.features[0].text_it,
                 location: request.data.features[0].geometry,
                 city: request.data.features[0].context.text_it
             }
-            return res.status(200).json({ CAP_location: CAP_location})
-        } catch (e){
+            return res.status(200).json({ CAP_location: CAP_location })
+        } catch (e) {
             return res.status(400).json({ data: e })
         }
     }
@@ -48,12 +47,12 @@ export default async function handler(
     //             location: request.data.features[0].geometry,
     //         }
     //         return res.status(200).json({ CAP_location: CAP_location})   
-    
+
     //         return res.status(200).json({ address_user: address_user})
     //     } catch (e){
     //         return res.status(400).json({ data: e })
     //     }
     // }
-    
+
 
 }

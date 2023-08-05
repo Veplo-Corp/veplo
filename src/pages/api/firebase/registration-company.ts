@@ -9,7 +9,7 @@ type Req = {
     }
 }
 
-export default function handler(req: Req, res:any) {
+export default function handler(req: Req, res: any) {
     // Get data submitted in request's body.
     const body = req.body
     // Optional logging to see the responses
@@ -22,27 +22,25 @@ export default function handler(req: Req, res:any) {
         return res.status(400).json({ data: 'email or password not found' })
     }
 
-    console.log(body.typeForm);
 
     if (body.typeForm === 'registration') {
-        
+
         createUserWithEmailAndPassword(auth, body.email, body.password)
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
                 sendEmailVerificationHanlder()
                 // Sends a HTTP success code
-                res.status(200).json({ data: user})
+                res.status(200).json({ data: user })
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.log(error);
-                res.status(400).json({ data: error.message})
-        });
+                res.status(400).json({ data: error.message })
+            });
     }
 
 
 
-    
+
 }

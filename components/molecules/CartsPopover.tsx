@@ -11,10 +11,7 @@ import Link from 'next/link'
 
 
 const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProductsInCarts }) => {
-    const router = useRouter()
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts).filter((cart: Cart) => cart?.total && cart?.total > 0);
-    console.log(cartsDispatch);
-
     const isSmallView = useBreakpointValue({ base: true, md: false });
 
 

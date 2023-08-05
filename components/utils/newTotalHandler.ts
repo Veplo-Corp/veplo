@@ -4,13 +4,11 @@ export const newTotalHandler = (productVariations: CartProductVariation[] | null
     if (!productVariations) { return 0 }
     let total = 0;
     productVariations.forEach(element => {
-        console.log(element);
         if (!element?.quantity) return 0
         if (element?.price?.v2) {
             total += element?.price?.v2 * element?.quantity
         }
         else {
-            console.log('passa qui');
             if (!element?.price?.v1) return 0
             total += element?.price?.v1 * element?.quantity
         }

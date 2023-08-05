@@ -64,10 +64,8 @@ const LoginAndRegistrationForm: FC<{
         const handleCartInLocalStorage = async () => {
             if (cartsDispatchProduct.length <= 0) return
             for await (const cart of cartsDispatchProduct) {
-                console.log(cart);
                 if (!cart?.productVariations) return
                 for await (const variation of cart?.productVariations) {
-                    console.log(variation);
                     try {
                         await editCart({
                             variables: {
@@ -78,7 +76,7 @@ const LoginAndRegistrationForm: FC<{
                         })
                     }
                     catch {
-                        console.log('errore cart');
+                        //TODO gestire errore
                     }
                 }
                 return
@@ -153,8 +151,7 @@ const LoginAndRegistrationForm: FC<{
                     setIsLoading(true)
                     const errorCode = error.code;
                     const errorMessage = error.message;
-                    //console.log(errorCode);
-                    console.log(error);
+
                     const errorForModal = handleErrorFirebase(errorMessage)
                     dispatch(openModal({
                         title: errorForModal?.title,
@@ -243,7 +240,6 @@ const LoginAndRegistrationForm: FC<{
                             // setpassword('')
                         } catch (error: any) {
 
-                            //console.log(errorCode);
                             const errorForModal = handleErrorFirebase(error.code)
                             dispatch(openModal({
                                 title: errorForModal?.title,
@@ -255,26 +251,22 @@ const LoginAndRegistrationForm: FC<{
                     }
 
                 } catch (error: any) {
-                    console.log(error);
                     setIsLoading(false)
                     const errorCode = error.code;
                     const errorMessage = error.message;
-                    console.log(errorMessage);
                     const errorForModal = handleErrorFirebase(error.code)
                     if (
                         errorMessage === 'email already used by another user' ||
                         errorMessage === 'ID token must be a non-empty string' ||
-                        errorMessage === 'idToken is not defined'
+                        errorMessage === 'idToken is not defined' ||
+                        errorMessage === "can't create user"
                         //TODO inserire errori corretti
                         //typeof errorMessage === 'string' && !errorMessage.includes('Firebase')
                     ) {
                         const user = auth.currentUser;
                         //elimina user se da questo errore
-                        console.log(user);
                         if (user) {
-                            deleteUser(user).then(() => {
-                                console.log('User Eliminato');
-                            })
+                            await deleteUser(user)
                         }
 
                     }
@@ -305,11 +297,7 @@ const LoginAndRegistrationForm: FC<{
             } catch (error: any) {
                 setIsLoading(false)
                 const errorMessage = error.message;
-                //console.log(errorCode);
-                console.log(error);
                 const errorForModal = handleErrorFirebase(errorMessage)
-
-
             }
 
 
@@ -321,8 +309,6 @@ const LoginAndRegistrationForm: FC<{
 
 
             const surname = fullName?.slice(1).join(" ")
-            console.log(result.user.displayName);
-            console.log(surname);
 
             try {
 
@@ -346,7 +332,6 @@ const LoginAndRegistrationForm: FC<{
                         // mongoId: account?.data.createBusinessStep1
                     }
                 })
-                console.log(response);
                 //update display name con firstname
                 updateProfile(result.user, {
                     displayName: typeof fullName?.[0] === 'string' ? fullName[0] : ''
@@ -367,25 +352,38 @@ const LoginAndRegistrationForm: FC<{
                 );
                 setIsLoading(false)
                 redirectUser(false)
-            } catch {
+            } catch (error: any) {
+                const errorMessage = error.message;
                 setIsLoading(false)
                 if (!result) return
-                const tokenResult = await result.user.getIdTokenResult();
-                console.log(tokenResult);
-                const isBusiness = tokenResult.claims.isBusiness ? true : false;
-                gtag({
-                    command: GTMEventType.login,
-                    args: {
-                        email: result.user.email,
-                        // firebaseId: userCredential.user.uid,
-                        method: 'Google',
-                        userType: isBusiness ? 'Business' : 'Customer'
-                    }
-                })
 
-                if (isBusiness) return router.replace('/shop/home/')
-                await handleCartInLocalStorage()
-                redirectUser(isBusiness)
+                if (
+                    errorMessage === "can't create user"
+                ) {
+                    const user = auth.currentUser;
+                    //elimina user se da questo errore
+                    if (user) {
+                        await deleteUser(user)
+                    }
+                    return
+                }
+                if (errorMessage === 'email already used by another user') {
+                    const tokenResult = await result.user.getIdTokenResult();
+                    const isBusiness = tokenResult.claims.isBusiness ? true : false;
+                    gtag({
+                        command: GTMEventType.login,
+                        args: {
+                            email: result.user.email,
+                            // firebaseId: userCredential.user.uid,
+                            method: 'Google',
+                            userType: isBusiness ? 'Business' : 'Customer'
+                        }
+                    })
+
+                    await handleCartInLocalStorage()
+                    redirectUser(isBusiness)
+                }
+
             }
         }
 
@@ -413,22 +411,6 @@ const LoginAndRegistrationForm: FC<{
         }
 
 
-        //!utilizzo pixel in App
-        // useEffect(() => {
-
-        //     const checkFbqAndCall = () => {
-        //         if (typeof window?.fbq !== 'undefined') {
-        //             console.log('Facebook Pixel è pronto!');
-        //             //window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
-        //         } else {
-        //             //console.log('Facebook Pixel non è pronto!');
-
-        //             setTimeout(checkFbqAndCall, 1000);
-        //         }
-        //     };
-
-        //     checkFbqAndCall();
-        // }, []);
 
         if (type === undefined || person === undefined) {
             return (
@@ -444,38 +426,7 @@ const LoginAndRegistrationForm: FC<{
                 onSubmit={handleSubmit(onSubmit)}
                 className='m-auto'
             >
-                {/* vedere eventi gtag e fbq*/}
-                {/* <button
-                    type='button'
-                    onClick={() => {
-                        if (typeof window !== 'undefined') {
-                            console.log('passa');
-                            //window.fbq('track', 'Purchase', { value: 0.00, currency: 'USD' });
-                            gtag({
-                                command: GTMEventType.purchase,
-                                args: {
-                                    ecommerce: {
-                                        items: [
-                                            {
-                                                transaction_id: 'state.coreInformation.bpmId',
-                                                currency: 'EUR',
-                                                price: 1,
-                                                quantity: 1,
-                                                index: 1,
-                                                rif_item: 'state.coreInformation.product',
-                                                item_id: 'state.coreInformation.flowOnboardingCode',
-                                                item_name: 'findProduct(priority, state.coreInformation.product ??',
-                                                item_list_name: 'Lending'
-                                            }
-                                        ]
-                                    }
 
-                                }
-                            })
-
-                        }
-                    }}
-                >clicca</button> */}
                 <Box
                     marginX={'auto'}
                     marginY={'auto'}

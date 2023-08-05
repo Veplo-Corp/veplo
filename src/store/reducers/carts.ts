@@ -24,7 +24,6 @@ export const userState = createSlice({
     initialState,
     reducers: {
         setCarts: (state, action) => {
-            //console.log(action.payload);
             state.carts = sortShopsInCart(action.payload);
         },
         editVariationFromCart: (state, action) => {

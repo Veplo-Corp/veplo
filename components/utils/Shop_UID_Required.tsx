@@ -11,7 +11,6 @@ const Shop_UID_Required: React.FC<{ children: any }> = ({ children }) => {
         const abortController = new AbortController();
         if ((user.statusAuthentication === 'logged_in' && !user.isBusiness) || (user.statusAuthentication === 'logged_out')) {
             router.push('/user/login?type=login&person=business')
-            //return console.log('redirect to login');
         }
 
         return () => {

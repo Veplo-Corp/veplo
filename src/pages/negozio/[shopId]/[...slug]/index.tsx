@@ -65,7 +65,6 @@ export async function getStaticProps(ctx: any) {
             revalidate: 60, // In seconds
         }
     } catch (e) {
-        console.log(e);
 
         return {
             props: {
@@ -137,10 +136,8 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
             if (!productsFounded || !shop?.products?.products) return setproductsFounded(shop.products.products)
             setproductsFounded(JSON.parse(productsFounded))
             const scrollPosition = sessionStorage.getItem('scrollPositionShop');
-            console.log('scrollPosition', scrollPosition);
 
             if (!scrollPosition) return
-            console.log(scrollPosition);
             setTimeout(() => {
                 //window.scrollTo(0, parseInt(scrollPosition));
                 window.scrollTo({
@@ -161,7 +158,6 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
 
 
     const fetchMoreData = async () => {
-        console.log(genderSelected);
 
         const data = await getMoreProducts({
             variables: {
@@ -179,7 +175,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
 
         if (shop.products.products.length % RANGE !== 0 || products.length <= 0) {
             setHasMoreData(false)
-            return console.log('no more data');
+            return
         }
 
 
@@ -252,24 +248,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
             })
         }
         return actionsPopoverElements;
-        // return [
-        //     {
-        //         title: 'Contatta',
-        //         icon: <Phone
-        //             className='w-4 h-4 my-auto'
-        //             strokeWidth={2.5}
-        //         />,
-        //         handleClick: () => {
-        //             console.log('merlo');
-        //             if (typeof window !== 'undefined' && shop.info) {
-        //                 window.location.href = 'tel:+39' + shop.info.phone;
 
-        //             }
-        //         }
-        //     },
-
-
-        // ]
     }
 
 

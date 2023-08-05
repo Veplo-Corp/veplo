@@ -41,7 +41,6 @@ export const getStaticProps: GetStaticProps<{}> = async () => {
 
 const index: FC<{ data: Policies }> = ({ data }) => {
 
-    console.log(data);
 
     return (
         <Desktop_Layout>

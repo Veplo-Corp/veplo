@@ -7,7 +7,6 @@ import { CATEGORIES } from '../mook/categories'
 const GuideSize: FC<{ macrocategorySizeGuide: any }> = ({ macrocategorySizeGuide }) => {
 
 
-    //console.log(Object.keys(parameters?.sizes[0]));
 
     if (!macrocategorySizeGuide) return (
         <></>

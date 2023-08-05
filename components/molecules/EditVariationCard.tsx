@@ -296,7 +296,6 @@ const EditVariationCard: FC<{ variation: Variation, category: string, deleteVari
                                 onClick={
                                     () => {
                                         const variations = variationTranslate.filter(variation => variation?.size !== '' && variation?.quantity >= 0)
-                                        //console.log(variations);
                                         editVariation(variation?.id, variations, variation?.photos)
                                         seteditMode(false)
                                     }

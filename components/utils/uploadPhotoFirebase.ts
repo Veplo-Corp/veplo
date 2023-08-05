@@ -10,8 +10,6 @@ const uploadPhotoFirebase = async (blob: any, positionInStorage: string) => {
     try {
         await uploadBytes(storageRef, blob)
         const url = await getDownloadURL(storageRef)
-
-        console.log(url);
         return url
     } catch (e: any) {
         throw new Error(e);
@@ -19,30 +17,6 @@ const uploadPhotoFirebase = async (blob: any, positionInStorage: string) => {
 
 
 
-    // new Promise((resolve, reject) => {
-    //     const storageRef = ref(storage, `/files/${productId}/${name}`);
-    // const uploadTask =  uploadBytesResumable(storageRef, blob)
-    // uploadTask.on(
-    //     "state_changed",
-    //     (snapshot) => {
-    //         console.log(snapshot.bytesTransferred)
-    //     },
-    //     (error) => {
-    //         console.log(error);
-
-    //     },
-
-
-    //     async() => {
-
-    //         const url = await getDownloadURL(uploadTask.snapshot.ref)
-    //         console.log(url);
-    //         resolve(url);
-
-    //         return url
-    //     }
-    // )
-    //   });
 
 
 

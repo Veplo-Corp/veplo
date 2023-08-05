@@ -43,13 +43,13 @@ const index = () => {
     const apolloClient = initApollo();
     const [shopId, setShopId] = useState('')
     const [getBusiness, { error, data }] = useLazyQuery<Props>(GET_BUSINESS);
-    console.log(data?.business.status);
+
     const [shop, setShop] = useState<Shop>()
 
 
     useEffect(() => {
         const { shopId } = router.query
-        console.log(user);
+
 
         if (!user?.isBusiness || !shopId || typeof shopId !== 'string') return
         setShopId(shopId)
@@ -85,8 +85,8 @@ const index = () => {
     const [deleteProduct] = useMutation(DELETE_PRODUCT, {
         update(cache, el) {
             const deleteId = el.data
-            console.log(deleteId.deleteProduct);
-            console.log(deleteId);
+
+
 
 
             //*delete old data, finding serialized number
@@ -104,7 +104,7 @@ const index = () => {
 
 
     const handleCache = () => {
-        console.log(apolloClient.cache.extract());
+
     }
 
 
@@ -128,7 +128,7 @@ const index = () => {
             return addToast({ position: 'top', title: 'Prodotto eliminato', description: `${productName} è stato eliminato con successo`, status: 'success', duration: 5000, isClosable: true })
         }
         catch (e) {
-            console.log(e);
+
         }
     }
 

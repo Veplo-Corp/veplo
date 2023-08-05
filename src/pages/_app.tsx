@@ -53,7 +53,7 @@ const theme = extendTheme({
       text: '#FFFFFF',
     },
     primaryBlack: {
-      text: '#2A2A2A'
+      text: '#222222'
     },
     secondaryBlack: {
       text: '#3A3A3A',
@@ -68,7 +68,7 @@ const theme = extendTheme({
       bg: "#37D1A9"
     },
     pendingTag: {
-      text: "#2A2A2A",
+      text: "#222222",
       bg: "#FFF7BC"
     },
     cancelTag: {
@@ -76,7 +76,7 @@ const theme = extendTheme({
       bg: "#C63F3F"
     },
     grayTag: {
-      text: "#2A2A2A",
+      text: "#222222",
       bg: "#F2F2F2"
     }
   },
@@ -246,10 +246,10 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
         dispatch(setBrands(result));
       } else {
-        console.log('La chiamata API non è andata a buon fine. Stato:', response.status);
+        //console.log('La chiamata API non è andata a buon fine. Stato:', response.status);
       }
     } catch (error) {
-      console.log('Si è verificato un errore durante la chiamata API:', error);
+      //console.log('Si è verificato un errore durante la chiamata API:', error);
     }
 
   }
@@ -274,9 +274,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         const tokenResult = await userAuth.getIdTokenResult()
         console.log(tokenResult);
 
-        //handle refresh token
-        // console.log(new Date > new Date(tokenResult.expirationTime));
-        // console.log(new Date(tokenResult.expirationTime));
 
         // user is logged in, send the user's details to redux, store the current user in the state
         const isBusiness = tokenResult.claims.isBusiness ? true : false;
@@ -298,7 +295,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
           getUser().then((data) => {
             if (!data.data) return
 
-            console.log(data?.data?.user?.carts?.carts);
 
             let carts: Cart[] = data?.data?.user?.carts?.carts ? data?.data?.user?.carts?.carts : []
 
@@ -403,7 +399,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
         return
       } else if (!userAuth) {
-        console.log('effettua il logout');
         deleteAuthTokenInSessionStorage()
         apolloClient.clearStore()
         dispatch(
@@ -452,24 +447,6 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const start = () => {
-      //console.log("start");
-      setLoading(true);
-    };
-    const end = () => {
-      //console.log("finished");
-      setLoading(false);
-    };
-    // Router.events.on("routeChangeStart", start);
-    // Router.events.on("routeChangeComplete", end);
-    // Router.events.on("routeChangeError", end);
-    // return () => {
-    //   Router.events.off("routeChangeStart", start);
-    //   Router.events.off("routeChangeComplete", end);
-    //   Router.events.off("routeChangeError", end);
-    // };
-  }, []);
 
 
 

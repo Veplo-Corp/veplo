@@ -6,11 +6,6 @@ import { imageKitUrl } from '../utils/imageKitUrl'
 
 const ProductVariationCard: FC<{ index: number, variation: VariationCard, deleteCard: (variation: any) => void, editCard: (variation: any) => void }> = ({ index, deleteCard, editCard, variation }) => {
 
-    // console.log(variation);
-
-    // return (
-    //     <></>
-    // )
 
     return (
         <Box

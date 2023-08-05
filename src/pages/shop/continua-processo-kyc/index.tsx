@@ -22,7 +22,6 @@ const index = () => {
 
 
     useEffect(() => {
-        console.log(user);
 
         const abortController = new AbortController();
         if (user && user.statusAuthentication === 'not_yet_authenticated') return

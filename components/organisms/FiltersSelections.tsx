@@ -45,7 +45,6 @@ const FiltersSelections: FC<{
 
             //crea l'oggetto filtri applicati
             const parsedFilter = findParsedFilter(filters, univers)
-            console.log(parsedFilter);
 
             if (!parsedFilter) return
             return setFilterParameters(parsedFilter)
@@ -267,7 +266,6 @@ const FiltersSelections: FC<{
                             borderRadius={'10px'}
                             onClick={() => {
                                 {
-                                    console.log('eccolo');
                                     setDrawerFilterOpen(true)
                                 }
                             }}
@@ -310,7 +308,6 @@ const FiltersSelections: FC<{
                     borderRadius={'10px'}
                     onClick={() => {
                         {
-                            console.log('eccolo');
                             setDrawerFilterOpen(true)
                         }
                     }}

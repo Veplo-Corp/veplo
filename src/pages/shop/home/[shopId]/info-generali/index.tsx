@@ -28,7 +28,6 @@ const index: FC<{}> = () => {
 
   useEffect(() => {
     const { shopId } = router.query
-    console.log(user);
 
     if (!user?.isBusiness || !shopId) return
 
@@ -39,7 +38,6 @@ const index: FC<{}> = () => {
     }).then((value) => {
       const business: Business = value.data?.business;
       const shop = business?.shops?.find(shop => shop.id === shopId);
-      console.log(shop);
       setShop(shop)
 
     })

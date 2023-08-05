@@ -122,8 +122,8 @@ const index = () => {
 
     const [deleteVariation] = useMutation(DELETE_VARIATON, {
         update(cache, el, query) {
-            // console.log(el);
-            // console.log(query);
+
+
             const normalizedIdVariation = cache.identify({ id: query?.variables?.id, __typename: 'ProductVariation' });
             cache.evict({ id: normalizedIdVariation })
         }
@@ -131,8 +131,8 @@ const index = () => {
 
     const [editVariation] = useMutation(EDIT_VARIATIONS, {
         update(cache, el, query) {
-            console.log(el);
-            console.log(query?.variables?.options?.lots);
+
+
 
             const normalizedIdVariation = cache.identify({ id: query?.variables?.id, __typename: 'ProductVariation' });
             cache.modify({
@@ -267,7 +267,7 @@ const index = () => {
             const v1 = Math.floor(Number(productElement.price.v1.replace(',', '.')) * 100)
             if (v1 !== product?.price.v1) {
                 if (v1 === 0) {
-                    return console.log('errore');
+
                 }
                 price["v1"] = v1
             }
@@ -299,7 +299,7 @@ const index = () => {
             }
         }
 
-        console.log(price);
+
 
 
 
@@ -361,12 +361,12 @@ const index = () => {
 
 
         } catch (e: any) {
-            console.log(e.message);
+
         }
     }
 
     const editVariationHandler = async (variationId: string, variation: Size[], photos: string[]) => {
-        console.log(variationId);
+
 
         let variationSize = variation?.map(variation => {
             return {
@@ -404,7 +404,7 @@ const index = () => {
 
 
 
-            console.log(newStateVariations);
+
             return {
                 ...prevstate,
                 variations: [
@@ -419,7 +419,7 @@ const index = () => {
 
 
     const confirmCard = async (variation: VariationCard) => {
-        console.log(variation);
+
         const variationLots = variation?.lots.map(lot => {
             return {
                 quantity: lot.quantity,
@@ -449,7 +449,7 @@ const index = () => {
                         }
                         resolve(result.id);
                     } catch (error) {
-                        console.log(error);
+
                     }
                 }))
         }
@@ -477,7 +477,7 @@ const index = () => {
             //mettere alert per creazione avvenuta con successo
 
         } catch (e) {
-            console.log(e);
+
         }
 
 

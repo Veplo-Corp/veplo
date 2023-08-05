@@ -42,7 +42,6 @@ const index = () => {
                 if (!value) return
                 //redirect to the right page based on status
                 const business = value.data?.business
-                console.log(business);
                 if (business?.status === 'stripe_id_requested') {
                     router.push('/shop/crea-business-account')
                 }
@@ -71,14 +70,12 @@ const index = () => {
     useEffect(() => {
         const apolloClient = initApollo()
 
-        console.log(apolloClient);
 
 
         // apolloClient.query({
         //     query: GET_SINGLE_PRODUCT,
         //     variables: { id: "641f2217ca22d34c3ca1ec35" }
         // }).then(a => {
-        //     console.log(a);
 
         // })
 

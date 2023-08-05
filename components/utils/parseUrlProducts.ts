@@ -28,7 +28,6 @@ export const parseURLProducts = (urlSegments: string[], productsType: Univers): 
     const gender: string = categories[0] === 'uomo' ? 'm' : 'f'; // Prendi la prima parte come categoria
     const macroCategory: string | null = findMacrocategoryName(categories.slice(1).join('-'), categories[0], productsType); // Prendi le parti rimanenti come sottocategoria
 
-    console.log('macro', macroCategory);
 
     const microCategory: string | null = findMicrocategoryName(macroCategory || '', gender, urlSegments[1], productsType); // La microcategoria è il secondo elemento dell'array
     const sorting: string = urlSegments[2]; // L'ordinamento è il terzo elemento dell'array

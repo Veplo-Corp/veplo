@@ -34,12 +34,6 @@ const EditProductInputForm: FC<{ univers: string, defaultValues: IFormInputProdu
 
 
 
-    console.log(macrocategorySelectedSpec);
-
-    console.log(defaultValues);
-
-
-
 
     const onSubmit = (value: IFormInputProductEdit) => {
         handleConfirm(value)
@@ -104,12 +98,10 @@ const EditProductInputForm: FC<{ univers: string, defaultValues: IFormInputProdu
                             setValue('price.v1', inputValue);
                             let v1 = Number(onChangeNumberPrice(e).replace(',', '.'))
                             let v2 = watch('price.v2');
-                            console.log(Number(watch('price.v2')))
                             if (typeof v2 === 'string') {
                                 v2 = Number(v2.replace(',', '.'))
                             }
                             if (v1 >= Number(watch('price.v2'))) {
-                                console.log(Number(v2));
                                 if (Number(watch('price.v2')) > 0) {
                                     const discountPercentage = Number((100 - Number(v2) / v1 * 100).toFixed(2));
                                     setValue('price.discountPercentage', discountPercentage);

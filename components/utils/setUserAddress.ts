@@ -3,29 +3,29 @@ import { setAddress } from '../../src/store/reducers/address_user';
 import { Mapbox_Result } from './../../src/interfaces/mapbox_result.interface';
 
 const setUserAddress = async (element: any, type: string) => {
-    
+
     let mapbox_result: Mapbox_Result = {
         placeType: element.place_type[0],
         // longitude: undefined,
         // latitude: undefined,
-        location : element.geometry,
+        location: element.geometry,
         postcode: undefined,
         city: undefined,
         address: undefined,
         streetNumber: undefined
     }
 
-    
+
 
     if (mapbox_result.placeType === 'address') {
-        
+
         mapbox_result.location = {
             coordinates: element.geometry.coordinates,
             type: element.geometry.type
         }
-        
+
         mapbox_result.postcode = element.context[0].text_it;
-        
+
         if (element.context[1].id.split('.')[0] === 'place') {
             mapbox_result.city = element.context[1].text_it;
         } else {
@@ -35,8 +35,7 @@ const setUserAddress = async (element: any, type: string) => {
         mapbox_result.streetNumber = element.address !== undefined ? (element.address) : undefined;
     }
     else if (mapbox_result.placeType === 'place') {
-        console.log('eccolo');
-        
+
         mapbox_result.location = {
             coordinates: element.geometry.coordinates,
             type: element.geometry.type
@@ -44,9 +43,7 @@ const setUserAddress = async (element: any, type: string) => {
         mapbox_result.city = element.text_it
     }
 
-    // console.log({
-    //   mapbox_result
-    // });
+
 
     if (type === 'shop') {
         return mapbox_result;
