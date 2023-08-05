@@ -32,11 +32,9 @@ const DrawerFilter: FC<{ isOpenDrawer: boolean, filtersProps: ProductsFilter, un
             delete newFilter["traits"]
             newFilter["sostenibile"] = 'true'
         }
-        console.log(newFilter);
 
         const parsedFilter = findParsedFilter(newFilter, univers)
         setFilters(newFilter)
-        console.log(newFilter);
 
         if (!parsedFilter) return
         return setFilterParameters(parsedFilter)

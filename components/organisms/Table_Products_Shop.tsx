@@ -60,7 +60,6 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
         update(cache, el, query) {
 
             const deleteId = el.data
-            console.log(deleteId.deleteProduct);
             const { shop } = cache.readQuery<any>({
                 query: GET_PRODUCTS_FROM_SHOP,
                 variables: {
@@ -69,9 +68,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                     //* mettere idShop,
                 },
             });
-            console.log(cache.identify({ id: query.variables?.id, __typename: 'Product' }));
             const ProductCacheId = cache.identify({ id: query.variables?.id, __typename: 'Product' })
-            console.log(shop);
             cache.modify({
                 id: ProductCacheId, //productId
                 fields: {
@@ -93,7 +90,6 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
         // notifyOnNetworkStatusChange: true,
     });
 
-    console.log(error);
 
 
 
@@ -134,7 +130,6 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
     }
 
     const textSearchProducts = (inputSearch: string) => {
-        console.log(inputSearch);
 
         const productsFiltered = data?.shop.products?.products
             .filter((product: Product) =>
@@ -148,7 +143,6 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                     .replace(/\s+/g, '').includes(inputSearch.toLowerCase()
                         .replace(/\s+/g, ''))
             )
-        console.log(productsFiltered);
 
         if (!productsFiltered) return
         setProductsOnTextSearched({
