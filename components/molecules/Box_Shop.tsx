@@ -40,7 +40,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                 fontWeight='extrabold'
                 as='h2'
                 noOfLines={1}
-                fontSize={['26px', '30px']}
+                fontSize={['24px', '30px']}
                 lineHeight={'normal'}
                 mb={0}
             >
@@ -103,7 +103,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
 
                         />
                     </Box>
-                    <Box display={'grid'} gap={'8px'} my={'auto'}>
+                    <Box display={'grid'} gap={'6px'} my={'auto'}>
                         <ShopName />
 
 
