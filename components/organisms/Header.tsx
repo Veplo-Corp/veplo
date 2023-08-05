@@ -56,7 +56,6 @@ const Header = () => {
         if (!betterInputGeneratorResult.data?.betterInputGenerator) return
         const params = betterInputGeneratorResult.data?.betterInputGenerator
         const result: InputObjectBIG | boolean = processBIGObjectForUrl(params)
-        console.log(betterInputGeneratorResult);
 
         if (!result) {
             router.push({
@@ -67,7 +66,6 @@ const Header = () => {
             })
             return
         }
-        console.log(result);
         router.push({
             pathname: `/${getUnivers()}/${gender}-${typeof result.macroCategory === 'string' ? result.macroCategory.toLowerCase() : 'tutto'}/${typeof result.microCategory === 'string' ? createUrlSchema([result.microCategory]) : 'tutto'}/rilevanza`,
             query: {
@@ -289,7 +287,7 @@ const Header = () => {
                                                 height={'full'}
                                                 cursor={'pointer'}
                                                 className='rounded-[10px]  relative lg:hidden'
-                                                background={'secondary.bg'}
+                                                background={'primary.bg'}
                                             >
                                                 <Link
                                                     className='flex gap-2 p-2'
@@ -341,18 +339,17 @@ const Header = () => {
                                                     className='flex h-full w-full'
                                                 >
                                                     <Button
-
-                                                        variant={'secondary'}
+                                                        variant={'primary'}
                                                         marginY={'auto'}
                                                         cursor={'pointer'}
                                                         rounded={'10px'}
                                                         className='hidden lg:flex gap-2'
-                                                        background={'secondary.bg'}
+                                                        background={'primary.bg'}
                                                         height={'full'}
                                                         px={6}
                                                     >
                                                         <Text
-                                                            color={'secondary.text'}
+                                                            color={'primary.text'}
                                                             fontWeight={'semibold'}
                                                             my={'auto'}
                                                             fontSize={'md'}

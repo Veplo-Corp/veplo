@@ -46,6 +46,7 @@ const theme = extendTheme({
     primary: {
       bg: '#FF5A78',
       text: '#FFFFFF',
+      opacityBg: '#FFE8EC',
       secondaryText: "#E0E0E0"
     },
     secondary: {

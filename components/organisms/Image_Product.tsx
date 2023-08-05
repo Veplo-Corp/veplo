@@ -94,7 +94,6 @@ const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variati
 
                                 initialScale={1}
                                 onPanningStop={(e) => {
-                                    console.log(e.state.scale);
                                     //1.65 is fot setDoubleStep = 3 onMouseEnter        
                                     if (e.state.scale !== 1 && e.state.scale !== 1.65) {
                                         setDoubleStep(-1);
