@@ -16,7 +16,7 @@ const Footer = () => {
                             <span className="self-center text-2xl font-semibold whitespace-nowrap">Veplo</span>
                         </a>
                     </div>
-                    <div className="grid grid-cols-4 gap-8 md:gap:12">
+                    <div className="grid  grid-cols-3 md:grid-cols-4 gap-8 md:gap:12">
                         {/* <div>
                         <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">Chi siamo</h2>
                         <ul className="text-gray-600 ">
@@ -30,9 +30,9 @@ const Footer = () => {
                     </div> */}
 
                         <div className='col-span-1'>
-                            <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">Seguici</h2>
-                            <ul className="text-gray-600 ">
-                                <li className="mb-4">
+                            <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">SEGUICI</h2>
+                            <ul className="text-gray-600 grid grid-cols-1 gap-y-3 gap-x-1 md:gap-4 text-sm md:text-lg">
+                                <li>
                                     <a href="https://www.instagram.com/veplo_it/" className="hover:underline ">Instagram</a>
                                 </li>
                                 {/* <li>
@@ -45,25 +45,25 @@ const Footer = () => {
                         </div>
                         <div className='col-span-3'>
                             <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">Informative</h2>
-                            <ul className="text-gray-600 grid grid-cols-2 gap-4">
-                                <li className="mb-4">
+                            <ul className="text-gray-600 grid grid-cols-2 gap-y-3 gap-x-1 md:gap-4 text-sm md:text-lg">
+                                <li >
                                     <a target="_blank" href="https://www.iubenda.com/privacy-policy/62612516" className="hover:underline">Privacy e Cookie</a>
                                     <script type="text/javascript" dangerouslySetInnerHTML={{ __html: `(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src="https://cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);` }}></script>
                                 </li>
 
-                                <li className="mb-4">
+                                <li >
                                     <Link href="/policies/termini-e-condizioni" className="hover:underline">Termini &amp; Condizioni</Link>
                                 </li>
 
-                                <li className="mb-4">
+                                <li >
                                     <Link href="/policies/reso-e-rimborsi" className="hover:underline" >Politica di Reso</Link>
                                 </li>
 
-                                <li className="mb-4">
+                                <li >
                                     <Link href="/policies/termini-e-condizioni-vendita" className="hover:underline">Vendere su Veplo</Link>
                                 </li>
 
-                                <li className="mb-4">
+                                <li >
                                     <Box cursor={'pointer'} onClick={() => setIsModalHelpOpen(true)} className="hover:underline">Hai bisogno di aiuto?</Box>
                                 </li>
                             </ul>

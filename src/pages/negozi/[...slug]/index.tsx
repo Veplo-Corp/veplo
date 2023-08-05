@@ -198,7 +198,7 @@ const index: FC<{ shops: ShopsQuery["shops"], listType: 'brand' | 'shop', listCa
                     Negozi
                 </option>
             </Select>
-            <Box className="grid md:pt-1 sm:grid-cols-1 md:grid-cols-2 sm:gap-10 md:gap-5 lg:gap-20 md:mt-4"
+            <Box className="grid md:pt-1 sm:grid-cols-1 md:grid-cols-2 sm:gap-10 md:gap-5 lg:gap-20 md:mt-4 mb-32"
 
             >
 
