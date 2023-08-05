@@ -25,7 +25,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                 >
                     22 prodotti
                 </Box>
-                <div className="w-[4px] h-[4px] sm:w-[6px] sm:h-[6px] rounded-full bg-[#909090] my-auto mb-3 "></div>
+                <div className="w-[4px] h-[4px] sm:w-[5px] sm:h-[5px] rounded-full bg-[#909090] my-auto mb-3 "></div>
                 <img
                     className='h-5 w-5 sm:h-6 sm:w-6 my-auto mb-1'
                     src={'https://www.datocms-assets.com/102220/1691248108-money-with-wings_1f4b8-1.png'} />
@@ -40,7 +40,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                 fontWeight='extrabold'
                 as='h2'
                 noOfLines={1}
-                fontSize={['24px', '30px']}
+                fontSize={['22px', '30px']}
                 lineHeight={'normal'}
                 mb={0}
             >
@@ -184,7 +184,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
 
                 <Box pb={1} pl={8} display={'flex'} gap={'10px'}>
                     <ShopName />
-                    <div className="w-[6px] h-[6px] rounded-full bg-[#909090] my-auto mb-3 "></div>
+                    <div className="w-[5px] h-[5px] rounded-full bg-[#909090] my-auto mb-3 "></div>
                     <ShopInfo />
                 </Box>
 
