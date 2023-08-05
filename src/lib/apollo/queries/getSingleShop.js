@@ -15,6 +15,11 @@ const GET_SHOP_AND_PRODUCTS = graphql(`
             name
             createdAt
             status
+            stats{
+                followers
+                averagePrice
+                productsQuantity
+            }
             profilePhoto
             profileCover
             categories

@@ -14,6 +14,11 @@ const GET_SHOPS_BY_LOCATION = graphql(`
       profileCover
       profilePhoto
       isDigitalOnly
+      stats{
+        followers
+        averagePrice
+        productsQuantity
+      }
       info {
         phone
         description
