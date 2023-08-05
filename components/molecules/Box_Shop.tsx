@@ -73,7 +73,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
         <>
 
             <Box onClick={() => eventHandler(shop)}
-                mb={'2'} className='cursor-pointer min-h-[50px] sm:hidden mt-5 '
+                mb={'2'} className='cursor-pointer min-h-[50px] sm:hidden mt-4 '
                 _active={{
                     transform: `${scale}`,
                 }}
@@ -83,8 +83,8 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
 
                     <Box
                         marginBottom={1}
-                        width={'113px'}
-                        height={'113px'}
+                        width={'107px'}
+                        height={'107px'}
                         borderWidth={1}
                         borderColor={'#EFEFEF'}
                         background={'#EFEFEF'}
@@ -99,11 +99,11 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                         }
                             //PlaceholderSrc={PlaceholderImage}
                             alt={'' + shop.name}
-                            className='my-auto h-[110px] w-[110px] m-auto rounded-full'
+                            className='my-auto h-[105px] w-[105px] m-auto rounded-full'
 
                         />
                     </Box>
-                    <Box display={'grid'} gap={'6px'} my={'auto'}>
+                    <Box display={'grid'} gap={'7px'} my={'auto'}>
                         <ShopName />
 
 
@@ -118,7 +118,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                     </Box>
 
                 </Box>
-                <Divider className='mt-7 mx-auto'
+                <Divider className='mt-6 mx-auto'
                     width={'95%'}
                     orientation='horizontal' />
             </Box >
