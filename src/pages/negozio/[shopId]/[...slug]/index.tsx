@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout'
-import { Box, Button, ButtonGroup, defineStyle, Divider, Flex, Spacer, Text } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, defineStyle, Divider, Flex, HStack, Spacer, Text } from '@chakra-ui/react'
 import Box_Dress from '../../../../../components/molecules/Box_Dress'
 import { useRouter } from 'next/router'
 import createUrlSchema from '../../../../../components/utils/create_url'
@@ -24,6 +24,7 @@ import { GetShopQuery, Product, ProductsQueryResponse } from '../../../../lib/ap
 import { LIST_ITEM_VARIANT } from '../../../../../components/mook/transition'
 import { AnimatePresence, motion } from 'framer-motion';
 import PageNotFound from '../../../../../components/molecules/PageNotFound'
+import TagComponent from '../../../../../components/atoms/TagComponent'
 
 const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) : 12
 
@@ -190,42 +191,46 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
 
     const popoverList = (): ActionsPopover[] => {
         const actionsPopoverElements: ActionsPopover[] = [];
-        //TODO inserire if per TikTok, Instagram e FB
-        actionsPopoverElements.push({
-            title: 'Instagram',
-            icon: <Instagram
-                className='w-7 h-7 my-auto'
-                strokeWidth={1.5}
-            />,
-            handleClick: () => {
-                if (typeof window !== 'undefined' && shop.address) {
-                    window.open(
-                        //TODO inserire link Instagram
-                        'https://www.instagram.com/veplo_it/',
-                        '_blank' // <- This is what makes it open in a new window.
-                    );
+        if (shop.links?.instagram) {
+            actionsPopoverElements.push({
+                title: 'Instagram',
+                icon: <Instagram
+                    className='w-7 h-7 my-auto'
+                    strokeWidth={1.5}
+                />,
+                handleClick: () => {
+                    if (typeof window !== 'undefined' && shop.links?.instagram) {
+                        window.open(
+                            //TODO inserire link Instagram
+                            shop.links?.instagram,
+                            '_blank' // <- This is what makes it open in a new window.
+                        );
+                    }
+
                 }
+            })
+        }
 
-            }
-        })
+        if (shop.links?.tiktok) {
+            actionsPopoverElements.push({
+                title: 'TikTok',
+                icon: <TikTok
+                    className='w-7 h-7 my-auto'
+                    strokeWidth={1.5}
+                />,
+                handleClick: () => {
+                    if (typeof window !== 'undefined' && shop.links?.tiktok) {
+                        window.open(
+                            //TODO inserire link Instagram
+                            shop.links?.tiktok,
+                            '_blank' // <- This is what makes it open in a new window.
+                        );
+                    }
 
-        actionsPopoverElements.push({
-            title: 'TikTok',
-            icon: <TikTok
-                className='w-7 h-7 my-auto'
-                strokeWidth={1.5}
-            />,
-            handleClick: () => {
-                if (typeof window !== 'undefined' && shop.address) {
-                    window.open(
-                        //TODO inserire link Instagram
-                        'https://www.instagram.com/veplo_it/',
-                        '_blank' // <- This is what makes it open in a new window.
-                    );
                 }
+            })
+        }
 
-            }
-        })
 
 
 
@@ -287,8 +292,8 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                     >
                         <Box
                             marginBottom={1}
-                            width={['28', '40']}
-                            height={['28', '40']}
+                            width={[28, '40']}
+                            height={[28, '40']}
                             mt={[-14, -20]}
                             zIndex={10}
                             borderWidth={1}
@@ -321,24 +326,24 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                             </Box>
 
                         </Box>
-                        {shop.minimumAmountForFreeShipping && <Text
+
+                        {shop.minimumAmountForFreeShipping && <Box
                             fontSize={['sm', 'md']}
                             fontWeight={'bold'}
-                            py={['2px']}
-                            px={[3]}
-                            bgColor={'#F2F2F2'}
                             color={'primaryBlack.text'}
-
                             top={3}
-                            borderRadius={'full'}
                             noOfLines={1}
                             mr={[1.5, 0]}
                             mt={4}
-                            width={'fit-content'}
-                            height={'fit-content'}
+                            display={'flex'}
+
+
                         >
-                            spedizione gratuita da {parseInt((shop.minimumAmountForFreeShipping / 100).toString())}€
-                        </Text>}
+                            <img src='https://www.datocms-assets.com/102220/1691334807-articulated-lorry.png'
+                                className='w-5 h-5 mr-2'
+                            />
+                            <span className='underline mr-1'>Gratuita</span> da {parseInt((shop.minimumAmountForFreeShipping / 100).toString())}€
+                        </Box>}
                     </Box>
                 </motion.div>
 
@@ -361,12 +366,18 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                             >
                                 {shop.name}
                             </Text>
-                            {shop.categories && <Text
-                                color={'primaryBlack.text'}
-                                className='font-medium md:font-semibold text-[16px] lg:text-[18px] my-auto -mt-1'
+                            <HStack spacing={2.5}
+                                className='my-1 md:my-2'
                             >
-                                {shop?.categories.join(', ')}
-                            </Text>}
+                                {shop.categories && shop.categories.map((category) => (
+                                    <TagComponent
+                                        key={category}
+                                        text={category}
+                                        bg={'primary.opacityBg'}
+                                        color={'primary.bg'}
+                                    />
+                                ))}
+                            </HStack>
 
                         </Box>
 
@@ -392,7 +403,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                             <Text
                                 noOfLines={!showAllDescriptionShop || descriptionRefTextLength <= 3 ? 3 : 100}
                                 color={'#909090'}
-                                className='font-medium md:font-normal text-sm mt-2 lg:text-md'
+                                className='font-medium md:font-normal text-sm lg:text-md'
                                 ref={descriptionRefText}
                             >
                                 {shop.info.description}

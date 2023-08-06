@@ -39,13 +39,9 @@ const index: FC<{}> = () => {
       const business: Business = value.data?.business;
       const shop = business?.shops?.find(shop => shop.id === shopId);
       setShop(shop)
-
     })
 
 
-    return () => {
-
-    }
   }, [user, router])
 
 

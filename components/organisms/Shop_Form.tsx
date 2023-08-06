@@ -7,6 +7,7 @@ import { DAYS } from '../mook/days';
 import { imageKitUrl } from '../utils/imageKitUrl';
 import SelectMultipleOptions from '../atoms/SelectMultipleOptions';
 import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString';
+import { Instagram, TikTok } from 'iconoir-react';
 
 
 
@@ -154,6 +155,53 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                 </InputGroup>
 
             </Div_input_creation>
+            <Div_input_creation text='Instagram'>
+                <InputGroup
+                >
+                    <InputLeftAddon rounded={10} paddingY={6} children={
+                        <Instagram
+                            className='w-5 h-5'
+                        />
+                    } paddingInline={5} />
+                    <Input
+                        maxLength={12}
+                        rounded={10}
+                        paddingY={6}
+                        type='text'
+                        isInvalid={false}
+                        disabled={true}
+                        _disabled={{
+                            opacity: '1',
+                            background: 'gray.50',
+                        }}
+                        {...register("links.instagram", { required: true })}
+                    />
+                </InputGroup>
+            </Div_input_creation>
+            <Div_input_creation text='TikTok'>
+                <InputGroup
+                >
+                    <InputLeftAddon rounded={10} paddingY={6} children={
+                        <TikTok
+                            className='w-5 h-5'
+                        />
+                    } paddingInline={5} />
+                    <Input
+                        maxLength={12}
+                        rounded={10}
+                        paddingY={6}
+                        type='text'
+                        isInvalid={false}
+                        disabled={true}
+                        _disabled={{
+                            opacity: '1',
+                            background: 'gray.50',
+                        }}
+                        {...register("links.tiktok", { required: true })}
+                    />
+                </InputGroup>
+            </Div_input_creation>
+
             {/* <Div_input_creation text='Giorni di apertura'>
                 <InputGroup>
                     <Input
