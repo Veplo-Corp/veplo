@@ -51,7 +51,7 @@ div {
 
 .ReactCrop__crop-selection {
   /* Regole di stile personalizzate */
-  //background-color: red;
+
   border: none !important;
   opacity: 1;
 }
