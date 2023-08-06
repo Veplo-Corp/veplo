@@ -40,7 +40,7 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                         className="text-center md:min-w-24 lg:w-32 xl:w-full min-w-[100px]"
                         h={'full'}
                         cursor={sizeProductExist?.quantity <= 0 || !sizeProductExist ? '' : 'pointer'}
-                        px={[4, 2]}
+                        px={[2, 2]}
                         onClick={() => {
                             if (sizeProductExist?.quantity <= 0 || !sizeProductExist) return;
                             handleLot(size);
@@ -61,7 +61,7 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                                 {size.toUpperCase()}
 
                             </Box>
-                            <Box fontWeight={['normal', 'normal']} fontSize={['2xs', '2xs']} color={'gray.500'} mt={-1}>
+                            <Box fontWeight={['base', 'base']} fontSize={['2xs', '2xs']} color={'gray.500'} mt={-1}>
                                 {sizeProductExist?.quantity < 10 && sizeProductExist?.quantity > 0 ? `solo ${sizeProductExist?.quantity} disponibili` : sizeProductExist?.quantity > 0 ? `` : 'terminato'}
                             </Box>
                         </Box>
