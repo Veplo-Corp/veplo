@@ -26,6 +26,10 @@ const GET_BUSINESS = gql`
                 minimumAmountForFreeShipping
                 profileCover
                 isDigitalOnly
+                links{
+                    instagram
+                    tiktok
+                }
                 info{
                     phone
                     description

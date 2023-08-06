@@ -12,6 +12,7 @@ const GET_PRODUCTS_FROM_SHOP = gql`
             id: $id
         )  {
                 id
+                
                 products(
                     limit: $limit
                     offset: $offset

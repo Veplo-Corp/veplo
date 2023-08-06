@@ -18,6 +18,10 @@ const GET_SHOP = graphql(`
             profileCover
             isDigitalOnly
             minimumAmountForFreeShipping
+            links{
+                instagram
+                tiktok
+            }
             info{
                 phone
                 description

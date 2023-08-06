@@ -8,7 +8,7 @@ import { Shop } from '../../../interfaces/shop.interface';
 import createUrlSchema from '../../../../components/utils/create_url';
 import getCityAndPostcodeFromSlug from '../../../../components/utils/get_City_and_Postcode_from_Slug';
 import { initApollo } from '../../../lib/apollo';
-import GET_SHOPS_BY_LOCATION from '../../../lib/apollo/queries/getShops'
+import GET_SHOPS from '../../../lib/apollo/queries/getShops'
 import Input_Search_Item from '../../../../components/atoms/Input_Search_Item';
 import PostMeta from '../../../../components/organisms/PostMeta';
 import Link from 'next/link';
@@ -41,9 +41,9 @@ export const getStaticProps = async (ctx: any) => {
     const apolloClient = initApollo();
     try {
         const { data }/* : { data: ShopsQuery } */ = await apolloClient.query({
-            query: GET_SHOPS_BY_LOCATION,
+            query: GET_SHOPS,
             variables: {
-                limit: 10,
+                limit: 100,
                 offset: 0,
                 filters: {
                     categories: listCategory

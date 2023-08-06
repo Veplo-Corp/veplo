@@ -1,3 +1,4 @@
+import { Instagram } from 'iconoir-react';
 import { Product } from './product.interface';
 
 export interface AddressShop {
@@ -30,7 +31,11 @@ export interface Shop {
     profileCover: string,
     profilePhoto: string,
     address: AddressShop,
-    minimumAmountForFreeShipping?: number
+    minimumAmountForFreeShipping?: number,
+    links: {
+        instagram: string,
+        tiktok: string
+    }
 }
 
 export interface ShopAndProducts extends Shop {

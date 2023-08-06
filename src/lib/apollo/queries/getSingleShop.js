@@ -15,6 +15,10 @@ const GET_SHOP_AND_PRODUCTS = graphql(`
             name
             createdAt
             status
+            links{
+                instagram
+                tiktok
+            }
             stats{
                 followers
                 averagePrice
@@ -23,15 +27,10 @@ const GET_SHOP_AND_PRODUCTS = graphql(`
             profilePhoto
             profileCover
             categories
-            isDigitalOnly
             minimumAmountForFreeShipping
             info{
                 phone
                 description
-                opening{
-                    days
-                    hours
-                }
             }
             address{
                 postcode

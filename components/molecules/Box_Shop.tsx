@@ -7,6 +7,7 @@ import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
 import isShopOpen from '../utils/isShopOpen';
 import { imageKitUrl } from '../utils/imageKitUrl';
 import { GetShopQuery, ShopsQuery } from '../../src/lib/apollo/generated/graphql';
+import TagComponent from '../atoms/TagComponent';
 
 const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scale: string }> = ({ shop, eventHandler, scale }) => {
     let numImages = 1;
@@ -65,19 +66,12 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
     const ShopTag = () => {
         return (<HStack spacing={2.5}>
             {shop.categories && shop.categories.map((category) => (
-                <Tag
-                    size={['sm', 'md']}
-                    paddingX={['12px', '16px']}
-                    paddingY={['5px', '6px']}
+                <TagComponent
                     key={category}
-                    borderRadius='full'
-                    fontWeight={'semibold'}
-                    variant='solid'
+                    text={category}
                     bg={'primary.opacityBg'}
                     color={'primary.bg'}
-                >
-                    <TagLabel>{category}</TagLabel>
-                </Tag>
+                />
             ))}
         </HStack>)
     }
@@ -96,8 +90,8 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
 
                     <Box
                         marginBottom={1}
-                        width={'107px'}
-                        height={'107px'}
+                        width={'102px'}
+                        height={'102px'}
                         borderWidth={1}
                         borderColor={'#EFEFEF'}
                         background={'#EFEFEF'}
@@ -112,7 +106,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                         }
                             //PlaceholderSrc={PlaceholderImage}
                             alt={'' + shop.name}
-                            className='my-auto h-[105px] w-[105px] m-auto rounded-full'
+                            className='my-auto h-[100px] w-[100px] m-auto rounded-full'
 
                         />
                     </Box>
