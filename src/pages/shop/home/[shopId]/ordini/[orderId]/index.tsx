@@ -3,7 +3,7 @@ import { Box, Button, ButtonGroup, Input, InputGroup, Tag, Text, VStack } from '
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Desktop_Layout from '../../../../../../../components/atoms/Desktop_Layout'
 import GrayBox from '../../../../../../../components/atoms/GrayBox'
 import ProductVariationInOrder from '../../../../../../../components/molecules/ProductVariationInOrder'
@@ -22,6 +22,8 @@ import DENY_RETURN from '../../../../../../lib/apollo/mutations/denyReturn'
 import GET_ORDER from '../../../../../../lib/apollo/queries/getOrder'
 import Link from 'next/link'
 import ModalReausable from '../../../../../../../components/organisms/ModalReausable'
+import expirationTimeTokenControll from '../../../../../../../components/utils/expirationTimeTokenControll'
+import { openModal } from '../../../../../../store/reducers/globalModal'
 
 const index = () => {
     const { addToast } = ToastOpen();
@@ -33,6 +35,8 @@ const index = () => {
     const { register, handleSubmit, reset, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<{ code: string, courier: string }>({
         mode: "all",
     });
+    const dispatch = useDispatch();
+
     const [orderStatus, setOrderStatus] = useState<{ text: string, color: string }>();
     const [isOpenModalDeleteOrder, setIsOpenModalDeleteOrder] = useState(false);
     const [isOpenModalConfirmationReturnOrder, setisOpenModalConfirmationReturnOrder] = useState(false)
@@ -149,6 +153,8 @@ const index = () => {
     }, [user, router])
 
     const onSubmitFormOrder = async (orderInfo: { courier: string, code: string }) => {
+        const resolve = await expirationTimeTokenControll(user.expirationTime)
+        if (!resolve) return
         try {
             await editCurrierInfo({
                 variables: {
@@ -157,6 +163,10 @@ const index = () => {
                 }
             })
         } catch (error: any) {
+            dispatch(openModal({
+                title: 'Errore',
+                description: "Non siamo riusciti a inserire il codice di spedizione. Contatta l'assistenza se il problema persiste",
+            }))
         }
     }
 
@@ -170,8 +180,9 @@ const index = () => {
     }
 
     const deleteOrder = async () => {
-        //TODO capire se esiste ancora sta roba
-        //TODO come gestisce tommaso il cart quando sono finiti i prodotti?
+        const resolve = await expirationTimeTokenControll(user.expirationTime)
+        if (!resolve) return
+        setIsOpenModalDeleteOrder(false)
         try {
             await deleteOrderByShop({
                 variables: {
@@ -179,12 +190,17 @@ const index = () => {
                 }
             })
         } catch (error: any) {
-
+            dispatch(openModal({
+                title: 'Errore',
+                description: "Non siamo riusciti a cancellare l'ordine. Contatta l'assistenza se il problema persiste",
+            }))
 
         }
     }
 
     const handleConfirmReturn = async () => {
+        const resolve = await expirationTimeTokenControll(user.expirationTime)
+        if (!resolve) return
         try {
             await returnedOrderHasArrived({
                 variables: {
@@ -195,20 +211,34 @@ const index = () => {
             addToast({ position: 'top', title: 'Reso confermato', status: 'success', duration: 5000, isClosable: true })
             router.back()
         } catch (error: any) {
-
+            setisOpenModalConfirmationReturnOrder(false)
+            dispatch(openModal({
+                title: 'Errore',
+                description: "Non siamo riusciti a confermare il reso. Contatta l'assistenza se il problema persiste",
+            }))
 
         }
     }
 
     const handleDenyReturn = async () => {
+        const resolve = await expirationTimeTokenControll(user.expirationTime)
+        if (!resolve) return
         setIsOpenModalRejectReturn(false)
-        await denyReturn({
-            variables: {
-                orderId: order?.id,
-            }
-        })
-        addToast({ position: 'top', title: 'Reso rifiutato con successo', status: 'success', duration: 5000, isClosable: true })
-        router.back()
+        try {
+            await denyReturn({
+                variables: {
+                    orderId: order?.id,
+                }
+            })
+            addToast({ position: 'top', title: 'Reso rifiutato con successo', status: 'success', duration: 5000, isClosable: true })
+            router.back()
+        } catch {
+            dispatch(openModal({
+                title: 'Errore',
+                description: "Non siamo riusciti a procedere con il rifiuto del reso. Contatta l'assistenza se il problema persiste",
+            }))
+        }
+
     }
 
     return (
@@ -441,7 +471,7 @@ const index = () => {
                                                     variant='outline'
                                                     {...register("code", {
                                                         required: true,
-                                                        minLength: 6
+                                                        minLength: 3
                                                     })}
                                                 >
                                                 </Input>
@@ -457,7 +487,7 @@ const index = () => {
                                                     }}
                                                     {...register("courier", {
                                                         required: true,
-                                                        minLength: 2
+                                                        minLength: 1
                                                     })}
                                                     background={'white'}
                                                     variant='outline'

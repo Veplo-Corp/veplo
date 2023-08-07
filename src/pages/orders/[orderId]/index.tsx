@@ -30,6 +30,8 @@ import { formatNumberWithTwoDecimalsInString } from '../../../../components/util
 import OrderComponent from '../../../../components/molecules/OrderComponent';
 import { GTMEventType } from '../../../lib/analytics/eventTypes';
 import { gtag } from '../../../lib/analytics/gtag';
+import expirationTimeTokenControll from '../../../../components/utils/expirationTimeTokenControll';
+import { openModal } from '../../../store/reducers/globalModal';
 
 
 
@@ -98,6 +100,8 @@ const index = () => {
         //effettuare richiesta reso qui
         //mettere in RET01
         //creare collection per richiesta reso
+        const resolve = await expirationTimeTokenControll(user.expirationTime)
+        if (!resolve) return
         try {
             await returnOrder({
                 variables: {
@@ -127,8 +131,24 @@ const index = () => {
         } catch {
             //aggiungere errore chiamat
             // se superati più di 15 giorni
+            dispatch(openModal({
+                title: 'Errore',
+                description: "Non siamo riusciti a procedere con la richiesta di reso. Contatta l'assistenza se il problema persiste",
+            }))
         }
 
+
+    }
+
+    const canUserRequestReturnOrder = (): boolean => {
+        if (!order) return false
+        const historyDelivery = order?.history?.find(history => history?.status === "SHIP03")
+        if (typeof historyDelivery?.date !== 'string') return false
+        const inputDate = new Date(historyDelivery.date);
+        const currentDate = new Date();
+        const differenceInMilliseconds = currentDate.getTime() - inputDate.getTime();
+        const millisecondsIn15Days = 15 * 24 * 60 * 60 * 1000; // 15 giorni in millisecondi
+        return differenceInMilliseconds < millisecondsIn15Days;
 
     }
 
@@ -231,7 +251,7 @@ const index = () => {
                         orderStatus={orderStatus}
                     />
                     {
-                        order?.status === 'SHIP03' && user.uid === order?.user?.firebaseId &&
+                        order?.status === 'SHIP03' && canUserRequestReturnOrder() && user.uid === order?.user?.firebaseId &&
                         <Box
                             display={'flex'}
                             gap={2}
