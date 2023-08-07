@@ -34,7 +34,7 @@ const index = () => {
                 className='w-[95%] sm:w-11/12 md:w-11/12 lg:w-9/12 xl:w-7/12 2xl:w-6/12 m-auto mt-4 md:mt-8 mb-12'
             >
                 {orders.length <= 0 && !noOrders &&
-                    <Box h={['60vh', '90vh', '80vh']}
+                    <Box className='h-[60vh] md:h-[50vh] lg:h-[70vh] xl:h-[75vh]'
                         display={'flex'}
                         justifyContent={'center'}>
                         <Loading />
