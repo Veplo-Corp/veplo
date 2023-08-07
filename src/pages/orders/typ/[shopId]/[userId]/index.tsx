@@ -136,7 +136,7 @@ const index = () => {
         <Desktop_Layout>
             {order ? (
                 <div
-                    className='w-full md:w-11/12 lg:w-3/4 xl:w-7/12 m-auto md:mt4'
+                    className='w-full md:w-11/12 lg:w-10/12 xl:w-7/12 m-auto md:mt4'
                 >
 
                     <Box

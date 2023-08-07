@@ -429,7 +429,7 @@ const index = () => {
                     </Box>}
                     <Desktop_Layout>
 
-                        <div className='w-full m-auto lg:w-3/4 xl:w-8/12 mt-2'>
+                        <div className='w-full m-auto lg:w-10/12 xl:w-8/12 mt-2'>
                             <Box
                                 width={'fit-content'}
                             >
