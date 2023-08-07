@@ -284,8 +284,9 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
             >
                     <LazyLoadImage src={shop.profileCover ? imageKitUrl(shop.profileCover) : ''}
                         //PlaceholderSrc={PlaceholderImage}
-                        alt={shop.name ? shop.name : 'immagine non trovata'}
-                        className='w-full object-cover aspect-[2.3/1] lg:aspect-[3/1] lg:rounded-[10px]'
+                        effect='blur'
+                        alt={shop.name ? shop.name : ''}
+                        className='w-full object-cover aspect-[2.3/1] lg:aspect-[3/1] min-h-[120px] lg:min-h-[300px] lg:rounded-[10px]'
                     />
                     <Box display={'flex'}
                         justifyContent={'space-between'}
@@ -319,6 +320,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                                         imageKitUrl(shop.profilePhoto) :
                                         ''
                                 }
+                                    effect='blur'
                                     //PlaceholderSrc={PlaceholderImage}
                                     alt={shop.name ? shop.name : 'immagine non trovata'}
                                     className='m-auto h-full w-full p-[4px] lg:p-[5px] rounded-full'
