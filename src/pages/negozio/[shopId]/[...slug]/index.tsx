@@ -342,7 +342,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                             <img src='https://www.datocms-assets.com/102220/1691334807-articulated-lorry.png'
                                 className='w-5 h-5 mr-2'
                             />
-                            <span className='underline mr-1'>Gratuita</span> da {parseInt((shop.minimumAmountForFreeShipping / 100).toString())}€
+                            Spedizione gratuita da {parseInt((shop.minimumAmountForFreeShipping / 100).toString())}€
                         </Box>}
                     </Box>
                 </motion.div>

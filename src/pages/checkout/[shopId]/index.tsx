@@ -429,7 +429,7 @@ const index = () => {
                     </Box>}
                     <Desktop_Layout>
 
-                        <div className='w-full m-auto lg:w-8/12 mt-2'>
+                        <div className='w-full m-auto lg:w-3/4 xl:w-8/12 mt-2'>
                             <Box
                                 width={'fit-content'}
                             >
@@ -763,7 +763,7 @@ const index = () => {
                 </>
             ) :
                 (
-                    <Box h={['60vh', '90vh', '80vh']}
+                    <Box className='h-[60vh] md:h-[50vh] lg:h-[70vh] xl:h-[75vh]'
                         display={'flex'}
                         justifyContent={'center'}>
                         <Loading />

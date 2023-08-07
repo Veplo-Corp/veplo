@@ -136,7 +136,7 @@ const index = () => {
         <Desktop_Layout>
             {order ? (
                 <div
-                    className='w-full md:w-11/12 lg:w-8/12 xl:w-7/12 m-auto md:mt4'
+                    className='w-full md:w-11/12 lg:w-3/4 xl:w-7/12 m-auto md:mt4'
                 >
                     {order?.status === 'RET01' &&
                         <div className='my-4'>
@@ -262,7 +262,8 @@ const index = () => {
                 </div>
             ) :
                 (
-                    <Box h={['60vh', '90vh', '80vh']}
+                    <Box
+                        className='h-[60vh] md:h-[50vh] lg:h-[70vh] xl:h-[75vh]'
                         display={'flex'}
                         justifyContent={'center'}>
                         <Loading />
