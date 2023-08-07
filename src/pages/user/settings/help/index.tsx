@@ -7,11 +7,12 @@ const index = () => {
     return (
         <Box
             className='
-            h-screen
+            md:h-screen
+            mb-96 mt-10
             w-full md:w-3/4 lg:w-5/12 m-auto my-4 lg:my-20'
             display={['grid', 'flex']}
-            gap={10}
-            justifyContent={'space-between'}
+            gap={[10, 10]}
+            justifyContent={['center', 'space-between']}
         >
             <Box>
                 <Mail
