@@ -7,6 +7,7 @@ import { DateFormat, getDateFromMongoDBDate } from '../utils/getDateFromMongoDBD
 import { imageKitUrl } from '../utils/imageKitUrl';
 import ProfilePhoto from './ProfilePhoto';
 import { Order } from '../../src/lib/apollo/generated/graphql';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 
 const OrderCart: FC<{ order: Order }> = ({ order }) => {
@@ -63,11 +64,13 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                     <Box
                         display={'flex'}
                     >
-                        <img loading='lazy'
+                        <LazyLoadImage
+                            effect='opacity'
                             className='h-36 rounded-[10px] z-10'
                             src={imageKitUrl(order.productVariations?.[0].photo)}
                         />
-                        {order.productVariations?.[1]?.photo && <img loading='lazy'
+                        {order.productVariations?.[1]?.photo && <LazyLoadImage
+                            effect='opacity'
                             className='my-auto h-28 rounded-[10px] z-0 -ml-24'
                             src={imageKitUrl(order.productVariations?.[1].photo)}
                         />}

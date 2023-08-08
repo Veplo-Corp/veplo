@@ -35,6 +35,7 @@ const EditProductInputForm: FC<{ univers: string, defaultValues: IFormInputProdu
 
 
 
+
     const onSubmit = (value: IFormInputProductEdit) => {
         handleConfirm(value)
     }
@@ -193,6 +194,23 @@ const EditProductInputForm: FC<{ univers: string, defaultValues: IFormInputProdu
                             }} />
                     )}
                 />
+            </Div_input_creation>
+            <Div_input_creation text='Genere'>
+                <InputGroup >
+                    <Input
+                        autoComplete='off'
+                        maxLength={30}
+                        rounded={10}
+                        paddingY={6}
+                        disabled={true}
+                        _disabled={{
+                            background: 'gray.200'
+                        }}
+                        type="text"
+                        {...register("gender", { required: true })}
+                        isInvalid={false}
+                    />
+                </InputGroup>
             </Div_input_creation>
             <Div_input_creation text='Categoria'>
                 <InputGroup >

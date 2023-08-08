@@ -213,8 +213,6 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
         description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
       />
 
-
-
       <Shop_not_Allowed>
         <Box
           bgColor={'primary.bg'}

@@ -340,7 +340,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                                         paddingLeft={[2, 4]}
                                         className='hidden lg:table-cell'>
                                         <span>
-                                            {product.info.gender === 'f' ? 'donna' : 'uomo'}
+                                            {product.info.gender === 'f' ? 'donna' : product.info.gender === 'u' ? 'unisex' : product.info.gender === 'm' ? 'uomo' : 'non trovato'}
                                         </span>
                                     </Td>
                                     <Td paddingRight={0}
