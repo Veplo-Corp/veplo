@@ -50,7 +50,8 @@ export interface IFormInputProductEdit {
     fit?: string;
     length?: string;
     description?: string;
-    modelDescription?: string
+    modelDescription?: string;
+    gender: string
 }
 
 const index = () => {
@@ -172,7 +173,8 @@ const index = () => {
             traits: product.info.traits ? product.info.traits : [],
             length: product.info.length,
             description: product.info.description,
-            modelDescription: product.info.modelDescription
+            modelDescription: product.info.modelDescription,
+            gender: product.info.gender === 'f' ? 'donna' : product.info.gender === 'm' ? 'uomo' : product.info.gender === 'u' ? 'unisex' : 'donna',
         })
 
         //remove colors used for new variations

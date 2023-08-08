@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import PageNotFound from '../../../components/molecules/PageNotFound';
 import { useLazyQuery } from '@apollo/client';
 import GET_USER_ORDERS from '../../lib/apollo/queries/getUserOrders';
+import expirationTimeTokenControll from '../../../components/utils/expirationTimeTokenControll';
 
 
 const index = () => {
@@ -24,9 +25,14 @@ const index = () => {
         if (user.statusAuthentication === 'logged_out') {
             router.replace('user/login?type=login&person=user')
         }
-        if (user.statusAuthentication === 'logged_in' && !user.isBusiness) {
-            getUserOrders()
+        const fetchData = async () => {
+            if (user.statusAuthentication === 'logged_in' && !user.isBusiness) {
+                const resolve = await expirationTimeTokenControll(user.expirationTime)
+                if (!resolve) return
+                getUserOrders()
+            }
         }
+        fetchData()
         setTimeout(() => {
             setNoOrders(true)
         }, 6000);
