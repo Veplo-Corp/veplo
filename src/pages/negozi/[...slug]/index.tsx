@@ -86,7 +86,6 @@ const index: FC<{ shops: ShopsQuery["shops"], listType: 'brand' | 'shop', listCa
         const genderName = getGender()
         if (genderName) return setGender(genderName)
 
-
     }, [])
 
 
@@ -100,7 +99,7 @@ const index: FC<{ shops: ShopsQuery["shops"], listType: 'brand' | 'shop', listCa
         >
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
-                title={`Brand | Veplo`}
+                title={`Brand${listCategory ? ' | ' + toUpperCaseFirstLetter(listCategory) : ''} | Veplo`}
                 subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
                 image={""}
                 description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}

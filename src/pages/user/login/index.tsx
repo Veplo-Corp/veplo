@@ -9,6 +9,7 @@ import AuthenticationLayout from '../../../../components/atoms/AuthenticationLay
 import LoginAndRegistrationForm, { InputFormLogin } from '../../../../components/organisms/LoginAndRegistrationForm';
 import Head from 'next/head';
 import { getGender } from '../../../../components/utils/getGender';
+import PostMeta from '../../../../components/organisms/PostMeta';
 
 type InputForm = {
   email: string,
@@ -52,7 +53,13 @@ const index = () => {
 
   return (
     <AuthenticationLayout>
-
+      <PostMeta
+        canonicalUrl={'https://www.veplo.it' + router.asPath}
+        title={`Login | Veplo`}
+        subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+        image={''}
+        description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+      />
       <Button
         className='absolute top-3 left-1 lg:top-5 lg:left-3'
         fontSize={['25px', '3xl']}
