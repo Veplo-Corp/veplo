@@ -1,12 +1,12 @@
 import { Avatar, Box, Center, Text, useBreakpointValue } from '@chakra-ui/react'
 import Link from 'next/link';
 import React, { FC } from 'react'
-import { Order } from '../../src/interfaces/order.interface'
 import { STATUS } from '../mook/statusOrderUser';
 import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString';
 import { DateFormat, getDateFromMongoDBDate } from '../utils/getDateFromMongoDBDate';
 import { imageKitUrl } from '../utils/imageKitUrl';
 import ProfilePhoto from './ProfilePhoto';
+import { Order } from '../../src/lib/apollo/generated/graphql';
 
 
 const OrderCart: FC<{ order: Order }> = ({ order }) => {
@@ -26,9 +26,9 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                 mb={3}
             >
                 <ProfilePhoto
-                    imgName={order.shop.name}
-                    scr={order.shop.photo}
-                    primaryText={order.shop.name}
+                    imgName={order?.shop?.name + ''}
+                    scr={order?.shop?.photo + ''}
+                    primaryText={order?.shop?.name + ''}
                     secondaryText={'#' + order.code}
                 />
 
@@ -72,7 +72,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                             src={imageKitUrl(order.productVariations?.[1].photo)}
                         />}
 
-                        {order?.productVariations?.length > 2 && <Text
+                        {order?.productVariations && order?.productVariations?.length > 2 && <Text
                             ml={5}
                             my={'auto'}
                             fontWeight={'bold'}
@@ -138,7 +138,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                             pl={6}
                             pr={4}
                         >
-                            {order.history.filter(order => order.status !== 'SHIP01').slice(-3).map((singleOrder, index) => (
+                            {order.history && order.history.filter(order => order.status !== 'SHIP01').slice(-3).map((singleOrder, index) => (
                                 <React.Fragment key={index}>
                                     <Box
                                         display="flex"
@@ -159,7 +159,7 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                                             {getDateFromMongoDBDate(singleOrder.date, DateFormat.completeDate)}
                                         </Text>
                                     </Box>
-                                    {order.history.filter(order => order.status !== 'SHIP01').slice(-3).length > index + 1 && index !== 2 && ( // Aggiungi il divider solo se non è l'ultimo elemento
+                                    {order.history && order.history.filter(order => order.status !== 'SHIP01').slice(-3).length > index + 1 && index !== 2 && ( // Aggiungi il divider solo se non è l'ultimo elemento
                                         <div className="ml-2 h-4 border-l border-dashed border-[#909090] my-2" />
                                     )}
                                 </React.Fragment>
