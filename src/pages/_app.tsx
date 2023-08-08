@@ -265,15 +265,13 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
     onAuthStateChanged(auth, async (userAuth) => {
       //signOut(auth)
-      const apolloClient = initApollo()
       if (userAuth) {
         //analytics
         //setUserId(analytics, userAuth.uid);
         //setUserProperties(analytics, { favorite_food: 'apples' });
-        const idToken = await userAuth.getIdToken(true)
-        setAuthTokenInSessionStorage(idToken)
+
         const tokenResult = await userAuth.getIdTokenResult()
-        console.log(tokenResult);
+        setAuthTokenInSessionStorage(tokenResult.token)
 
 
         // user is logged in, send the user's details to redux, store the current user in the state
@@ -284,7 +282,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               statusAuthentication: 'logged_in',
               email: userAuth.email,
               uid: userAuth.uid,
-              idToken: idToken,
+              idToken: tokenResult.token,
               emailVerified: userAuth.emailVerified,
               accountId: tokenResult.claims.mongoId,
               expirationTime: tokenResult.expirationTime,
@@ -295,11 +293,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
           );
           getUser().then((data) => {
             if (!data.data) return
-
-
             let carts: Cart[] = data?.data?.user?.carts?.carts ? data?.data?.user?.carts?.carts : []
-
-
             carts = carts.map(cart => {
               if (!cart?.productVariations || cart?.productVariations?.length > 0) {
                 const sortedProductVariations = cart.productVariations ? [...cart.productVariations].filter((oggetto) => oggetto !== null).sort((a: any, b: any) => (a?.id > b?.id) ? 1 : -1) : [];
@@ -310,8 +304,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
 
             //const orders: Order[] = data?.data?.user?.orders ? data?.data?.user?.orders : [];
-            //TODO Non gestiamo il caso in cui un prodotto venga eliminato
-            //TODO per questo abbiamo messo un filter su isSizeNonExisting
             const warnings: CartWarning[] = data?.data?.user?.carts?.warnings ? data?.data?.user?.carts?.warnings.filter((warning) => warning?.isProductNonExisting === null) : [];
             if (warnings.length > 0) {
               dispatch(openModal({
@@ -354,7 +346,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               statusAuthentication: 'logged_in',
               email: userAuth.email,
               uid: userAuth.uid,
-              idToken: idToken,
+              idToken: tokenResult.token,
               emailVerified: userAuth.emailVerified,
               isBusiness,
               createdAt: date_for_redux || new Date(),
@@ -402,7 +394,8 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         return
       } else if (!userAuth) {
         deleteAuthTokenInSessionStorage()
-        apolloClient.clearStore()
+        //const apolloClient = initApollo()
+        //apolloClient.clearStore()
         dispatch(
           resetCarts()
         )
