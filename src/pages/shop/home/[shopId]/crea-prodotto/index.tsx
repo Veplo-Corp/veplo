@@ -42,7 +42,7 @@ export interface IFormInputProduct {
     length?: string;
     description?: string;
     modelDescription?: string;
-
+    gender: 'donna' | 'uomo' | 'unisex' | 'f' | 'm' | 'u'
 }
 
 export interface Macrocategory extends Category {
@@ -66,11 +66,7 @@ const index = () => {
         }
     });
     const router = useRouter();
-    const [genderSelected, setGenderSelected] = useState<string>('')
     const [macrocategorySelectedSpec, setMacrocategorySelectedSpec] = useState<Macrocategory>()
-
-
-
     const [sizeTypeSelected, setSizeTypeSelected] = useState<string | undefined>('')
     const [newCard, setNewCard] = useState(true)
     const [productVariations, setProductVariations] = useState<VariationCard[]>([])
@@ -80,10 +76,6 @@ const index = () => {
     const [createProduct] = useMutation(CREATE_PRODUCT, {
         update(cache, el, query) {
             const data = el.data
-
-
-
-
 
             const shop: any = cache.readQuery({
                 query: GET_PRODUCTS_FROM_SHOP,
@@ -350,6 +342,15 @@ const index = () => {
                 moreInfo['modelDescription'] = watch('modelDescription')
             }
 
+            if (watch('gender') === 'unisex') {
+                setValue('gender', 'u');
+            } else if (watch('gender') === 'donna') {
+                setValue('gender', 'f');
+            } else if (watch('gender') === 'uomo') {
+                setValue('gender', 'm');
+            } else {
+                return
+            }
 
             const product = {
                 name: watch('name').toLowerCase(),
@@ -362,7 +363,7 @@ const index = () => {
                 info: {
                     univers: watch('univers').toLowerCase(),
                     brand: watch('brand').toLocaleLowerCase(),
-                    gender: genderSelected === 'donna' ? 'f' : 'm',
+                    gender: watch('gender').toLocaleLowerCase(),
                     macroCategory: watch('macrocategory').toLocaleLowerCase(),
                     microCategory: watch('microcategory').toLocaleLowerCase(),
                     traits: watch('traits') ? watch('traits') : [],
@@ -371,7 +372,7 @@ const index = () => {
                 variations: variations
             }
 
-            const isCreatedProduct = await createProduct({ variables: { shopId: router.query.shopId, options: product } })
+            await createProduct({ variables: { shopId: router.query.shopId, options: product } })
 
             setIsLoading(false)
             addToast({ position: 'top', title: 'Prodotto creato con successo', description: 'controlla il tuo nuovo prodotto nella sezione dedicata', status: 'success', duration: 5000, isClosable: true })
@@ -521,6 +522,23 @@ const index = () => {
                             )}
                         />
                     </Div_input_creation>
+                    <Div_input_creation text='Genere'>
+                        <Controller
+                            control={control}
+                            name="gender"
+                            rules={{ required: false }}
+                            render={({ field }) => (
+                                <SelectStringOption
+                                    values={['donna', 'uomo', 'unisex']}
+                                    defaultValue={field.value}
+                                    handleClick={(gender: 'donna' | 'uomo' | 'unisex') => {
+                                        setValue('gender', gender);
+
+                                    }}
+                                />
+                            )}
+                        />
+                    </Div_input_creation>
                     <Div_input_creation text='Categoria'>
                         <Controller
                             control={control}
@@ -531,10 +549,8 @@ const index = () => {
                                     univers={watch('univers')}
                                     selectedValueBefore={macrocategorySelectedSpec?.name}
                                     handleClick={(macrocategory: Macrocategory) => {
-                                        setGenderSelected(macrocategory.gender)
                                         setSizeTypeSelected(macrocategory.sizes)
                                         setValue('macrocategory', macrocategory.name);
-
                                         setProductVariations([])
                                         setMacrocategorySelectedSpec(macrocategory)
                                         resetForm()
@@ -543,6 +559,7 @@ const index = () => {
                             )}
                         />
                     </Div_input_creation>
+
                     <Div_input_creation text='Microcategoria'>
                         <Controller
                             control={control}

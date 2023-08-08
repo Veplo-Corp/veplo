@@ -39,8 +39,40 @@ const SelectMacrocategory: FC<{ univers: Univers, selectedValueBefore: string | 
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-
                     <Listbox.Options className="z-10 bg-white absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-whitetext-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-base">
+                        {Object.values(categories.current)[0][univers].map((value: any, valueIdx: number) => {
+                            return (
+                                <Listbox.Option
+                                    key={valueIdx}
+                                    className={({ active }) =>
+                                        ` z-10 relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-blue-700 text-white' : 'text-white-900'}`
+                                    }
+                                    value={{
+                                        ...value
+                                    }}
+                                >
+                                    {({ selected }) => (
+                                        <>
+                                            <span
+                                                className={`block truncate ${selected ? 'font-medium' : 'font-normal'
+                                                    }`}
+                                            >
+                                                {value.name}
+                                            </span>
+                                            {selected ? (
+                                                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                                </span>
+                                            ) : null}
+                                        </>
+                                    )}
+                                </Listbox.Option>
+                            )
+                        })}
+
+                    </Listbox.Options>
+
+                    {/*  <Listbox.Options className="z-10 bg-white absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-whitetext-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-base">
                         {Object.keys(categories.current).map((gender: string, indexObject: number) => {
                             return (
                                 <div key={indexObject}>
@@ -86,7 +118,7 @@ const SelectMacrocategory: FC<{ univers: Univers, selectedValueBefore: string | 
                             )
                         })}
 
-                    </Listbox.Options>
+                    </Listbox.Options> */}
                 </Transition>
             </div>
         </Listbox>
