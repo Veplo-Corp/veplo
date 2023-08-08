@@ -196,21 +196,21 @@ const EditProductInputForm: FC<{ univers: string, defaultValues: IFormInputProdu
                 />
             </Div_input_creation>
             <Div_input_creation text='Genere'>
-                <InputGroup >
-                    <Input
-                        autoComplete='off'
-                        maxLength={30}
-                        rounded={10}
-                        paddingY={6}
-                        disabled={true}
-                        _disabled={{
-                            background: 'gray.200'
-                        }}
-                        type="text"
-                        {...register("gender", { required: true })}
-                        isInvalid={false}
-                    />
-                </InputGroup>
+                <Controller
+                    control={control}
+                    name="gender"
+                    rules={{ required: false }}
+                    defaultValue={watch('gender')}
+                    render={({ field }) => (
+                        <SelectStringOption
+                            values={['donna', 'uomo', 'unisex']}
+                            defaultValue={field.value}
+                            handleClick={(gender: 'donna' | 'uomo' | 'unisex') => {
+                                setValue('gender', gender);
+                            }}
+                        />
+                    )}
+                />
             </Div_input_creation>
             <Div_input_creation text='Categoria'>
                 <InputGroup >

@@ -223,7 +223,8 @@ const index = () => {
                 fit?: string;
                 length?: string;
                 description?: string;
-                modelDescription?: string
+                modelDescription?: string;
+                gender?: string
             }
             price?: {
                 v1?: number,
@@ -258,7 +259,17 @@ const index = () => {
             info["modelDescription"] = productElement.modelDescription
         }
 
-
+        let gender: string = '';
+        if (productElement.gender === 'unisex') {
+            gender = 'u'
+        } else if (productElement.gender === 'donna') {
+            gender = 'f'
+        } else if (productElement.gender === 'uomo') {
+            gender = 'm'
+        }
+        if (gender !== '') {
+            info["gender"] = gender
+        }
 
 
         if (Object.keys(info).length > 0) {

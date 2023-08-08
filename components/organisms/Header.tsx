@@ -355,7 +355,7 @@ const Header = () => {
                                                             fontSize={'md'}
 
                                                         >
-                                                            {router.query?.prodotti && 'Negozi'}
+                                                            {router.query?.prodotti && 'Brand'}
                                                             {!router.query?.prodotti && 'Prodotti'}
                                                         </Text>
 
