@@ -309,7 +309,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             });
 
 
-            const orders: Order[] = data?.data?.user?.orders ? data?.data?.user?.orders : [];
+            //const orders: Order[] = data?.data?.user?.orders ? data?.data?.user?.orders : [];
             //TODO Non gestiamo il caso in cui un prodotto venga eliminato
             //TODO per questo abbiamo messo un filter su isSizeNonExisting
             const warnings: CartWarning[] = data?.data?.user?.carts?.warnings ? data?.data?.user?.carts?.warnings.filter((warning) => warning?.isProductNonExisting === null) : [];
@@ -334,11 +334,12 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               )
             }
 
-            if (orders?.length > 0) {
-              dispatch(
-                setOrders(orders)
-              )
-            }
+            //TODO eliminare gestione orders in redux
+            // if (orders?.length > 0) {
+            //   dispatch(
+            //     setOrders(orders)
+            //   )
+            // }
           })
         }
         let ISODate: any = userAuth.metadata.creationTime
