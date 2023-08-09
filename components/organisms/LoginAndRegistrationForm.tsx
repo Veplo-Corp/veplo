@@ -235,7 +235,7 @@ const LoginAndRegistrationForm: FC<{
                             })
 
                             await router.replace('/shop/crea-business-account')
-                            router.reload()
+                            //router.reload()
                             // setemail('')
                             // setpassword('')
                         } catch (error: any) {

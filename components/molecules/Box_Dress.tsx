@@ -195,7 +195,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 imgName={product?.shopInfo?.name?.visualized}
                                 scr={product?.shopInfo?.profilePhoto}
                                 primaryText={product?.shopInfo?.name?.visualized}
-                                secondaryText={product?.info?.brand}
+                                secondaryText={'@' + product?.shopInfo?.name?.unique}
                             />
                         </Box>
                     </Link>}
@@ -344,20 +344,37 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                         ml={doubleGridDevice ? '1px' : 3}
                         mr={doubleGridDevice ? 1 : 3}
                     >
-                        <Text
-                            fontSize={'md'}
-                            fontWeight={'semibold'}
-                            py={0}
-                            top={3}
-                            left={3}
-                            borderRadius={'full'}
-                            noOfLines={1}
-                            zIndex={10}
-                            maxW={doubleGridDevice ? 'full' : product.price?.v2 ? '65%' : '73%'}
-
+                        <Box
+                            display={'grid'}
+                            gap={0}
+                            width={'full'}
+                            mb={doubleGridDevice ? 1 : 0}
                         >
-                            {product?.name?.toLocaleUpperCase()}
-                        </Text>
+                            <Text
+                                fontSize={'md'}
+                                fontWeight={'semibold'}
+                                py={0}
+                                borderRadius={'full'}
+                                noOfLines={1}
+                                zIndex={10}
+                                maxW={doubleGridDevice ? 'full' : product.price?.v2 ? '65%' : '73%'}
+
+                            >
+                                {product?.name?.toLocaleUpperCase()}
+                            </Text>
+                            <Text
+                                fontSize={doubleGridDevice ? 'sm' : 'md'}
+                                fontWeight={'medium'}
+                                mt={doubleGridDevice ? '-4px' : '-3px'}
+                                borderRadius={'full'}
+                                noOfLines={1}
+                                color={'#909090'}
+                                zIndex={10}
+                            >
+                                {product?.info?.brand}
+                            </Text>
+                        </Box>
+
                         <Box
                             display={'flex'}
                             gap={1}

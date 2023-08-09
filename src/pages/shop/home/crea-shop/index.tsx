@@ -60,7 +60,7 @@ interface IFormInput {
     //! togliere description (obbligatoria), macrocategories e gendere in createProduct
     //!deve inserire tommaso
     profileCover: string,
-    profileType: 'brand' | 'shop',
+    type: 'brand' | 'shop',
     profilePhoto: string,
     isDigitalOnly?: boolean,
     categories: string[],
@@ -393,7 +393,7 @@ const index = () => {
                     visualized: e.name?.visualized,
                     unique: e.name?.unique,
                 },
-                profileType: e.profileType,
+                type: e.type,
                 profileCover: photoUploadedCover.id,
                 profilePhoto: photoUploadedProfile.id,
                 info: {
@@ -721,7 +721,7 @@ const index = () => {
                         <Div_input_creation text='Tipologia'>
                             <Controller
                                 control={control}
-                                name="profileType"
+                                name="type"
                                 rules={{ required: false }}
                                 defaultValue='brand'
                                 render={({ field }) => (
@@ -729,7 +729,7 @@ const index = () => {
                                         values={['brand', 'shop']}
                                         defaultValue={field.value}
                                         handleClick={(microcategory: 'brand' | 'shop') => {
-                                            setValue('profileType', microcategory);
+                                            setValue('type', microcategory);
                                         }}
                                     />
                                 )}

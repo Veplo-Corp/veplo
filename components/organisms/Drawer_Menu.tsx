@@ -117,7 +117,7 @@ const Drawer_Menu: React.FC<{ user: any, isOpen: boolean, closeDrawer: () => voi
                                     fontSize={'lg'}
                                     fontWeight={'bold'}
                                 >
-                                    {userDispatch.favouriteShop?.name.toUpperCase()}
+                                    {userDispatch?.favouriteShop?.name ? userDispatch?.favouriteShop?.name.toUpperCase() : userDispatch?.favouriteShop?.name}
                                 </Text>
                                 <Text
                                     fontSize={'sm'}
