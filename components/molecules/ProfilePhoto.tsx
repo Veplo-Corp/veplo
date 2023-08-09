@@ -23,8 +23,8 @@ const ProfilePhoto = (props: Props,) => {
                 name={props.imgName ? props.imgName : 'Immagine non trovata'}
                 src={props.scr ? imageKitUrl(props.scr, 100, 100) : ''}
                 bg='white'
-                height={[props.doubleGridDevice ? '40px' : props.maxWidth && isSmallView ? '45px' : '50px', '45px', '50px', '60px']}
-                width={[props.doubleGridDevice ? '40px' : props.maxWidth && isSmallView ? '45px' : '50px', '45px', '50px', '60px']}
+                height={[props.doubleGridDevice ? '40px' : props.maxWidth && isSmallView ? '55px' : '55px', '55px', '55px', '60px']}
+                width={[props.doubleGridDevice ? '40px' : props.maxWidth && isSmallView ? '55px' : '55px', '55px', '55px', '60px']}
                 borderWidth={'1px'}
                 borderColor={'#F3F3F3'}
             />
@@ -33,8 +33,8 @@ const ProfilePhoto = (props: Props,) => {
             >
                 <Text
                     fontWeight={'black'}
-                    fontSize={[props.doubleGridDevice ? '13px' : '15px', '18px']}
-                    lineHeight={[props.doubleGridDevice ? '12px' : '16px', '19px']}
+                    fontSize={[props.doubleGridDevice ? '13px' : '17px', '18px']}
+                    lineHeight={[props.doubleGridDevice ? '12px' : '18px', '19px']}
                     maxW={props.maxWidth && isSmallView ? '120px' : ''}
                     isTruncated
                 >
@@ -42,7 +42,8 @@ const ProfilePhoto = (props: Props,) => {
                 </Text>
                 <Text
                     fontWeight={'medium'}
-                    fontSize={[props.doubleGridDevice ? '10px' : '12px', '14px']}
+                    mt={'-1px'}
+                    fontSize={[props.doubleGridDevice ? '10px' : '13px', '14px']}
                     maxW={props.maxWidth && isSmallView ? '120px' : ''}
                     color={'#909090'}
                 >
