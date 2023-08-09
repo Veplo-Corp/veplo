@@ -22,7 +22,10 @@ const GET_ORDER = gql`
                 businessId
                 stripeId
                 id
-                name
+                name{
+                    unique
+                    visualized
+                }
                 photo
                 businessName
                 address{

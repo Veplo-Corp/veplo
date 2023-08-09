@@ -47,7 +47,10 @@ export interface Product {
     shopInfo: {
         id: string,
         businessId: string,
-        name: string,
+        name: {
+            unique: string,
+            visualized: string
+        }
         city: string,
         status: string,
         profilePhoto: string,

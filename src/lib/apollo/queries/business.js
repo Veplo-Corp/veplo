@@ -19,7 +19,10 @@ const GET_BUSINESS = gql`
                 id
                 businessId
                 categories
-                name
+                name{
+                    unique
+                    visualized
+                }
                 createdAt
                 status
                 profilePhoto

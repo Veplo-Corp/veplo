@@ -39,7 +39,10 @@ query getSimilarProducts($productId: ID!, $offset: Int!, $limit: Int!, $shopId: 
             shopInfo{
                 id
                 businessId
-                name 
+                name{
+                    unique
+                    visualized
+                } 
                 city
                 status
             }

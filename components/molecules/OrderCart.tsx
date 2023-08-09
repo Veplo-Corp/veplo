@@ -27,9 +27,9 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                 mb={3}
             >
                 <ProfilePhoto
-                    imgName={order?.shop?.name + ''}
+                    imgName={order?.shop?.name?.visualized + ''}
                     scr={order?.shop?.photo + ''}
-                    primaryText={order?.shop?.name + ''}
+                    primaryText={order?.shop?.name?.visualized + ''}
                     secondaryText={'#' + order.code}
                 />
 

@@ -15,7 +15,10 @@ export interface Shop {
     id: string,
     businessId: string,
     //TODO aggiungere tipologia negozio
-    name: string,
+    name: {
+        unique: string,
+        visualized: string
+    },
     createdAt: string,
     categories?: string[],
     status: 'not_active' | 'active',

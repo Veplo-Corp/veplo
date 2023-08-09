@@ -10,7 +10,10 @@ const GET_SHOP = graphql(`
         ){
             id
             businessId
-            name
+            name{
+                unique
+                visualized
+            }
             categories
             createdAt
             status

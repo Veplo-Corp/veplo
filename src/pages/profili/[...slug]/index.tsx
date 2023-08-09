@@ -149,7 +149,7 @@ const index: FC<{ shops: ShopsQuery["shops"], listType: 'brand' | 'shop', listCa
                         >
                             <Link
                                 prefetch={false}
-                                href={element.toLowerCase() === listCategory ? '/negozi/' + listType : '/negozi/' + listType + '/' + element.toLowerCase()}
+                                href={element.toLowerCase() === listCategory ? '/profili/' + listType : '/profili/' + listType + '/' + element.toLowerCase()}
                             >
                                 <Text
                                     textAlign={'start'}
@@ -173,7 +173,7 @@ const index: FC<{ shops: ShopsQuery["shops"], listType: 'brand' | 'shop', listCa
                 value={listType}
                 onChange={(event) => {
                     return router.push({
-                        pathname: `/negozi/${event.target.value}`,
+                        pathname: `/profili/${event.target.value}`,
                     })
                 }}
                 color={'black'}
@@ -213,7 +213,7 @@ const index: FC<{ shops: ShopsQuery["shops"], listType: 'brand' | 'shop', listCa
                                 exit="hidden"
                             >
                                 <Link
-                                    prefetch={false} href={`/negozio/${shop.id}/${createUrlSchema([shop.name])}${gender ? '/' + gender : ''}`}>
+                                    prefetch={false} href={`/@${shop?.name?.unique}`}>
                                     <Box_Shop scale={'scale(0.99)'} eventHandler={() => { }} shop={shop} />
                                 </Link>
                             </motion.div>

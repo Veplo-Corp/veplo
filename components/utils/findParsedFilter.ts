@@ -1,4 +1,4 @@
-import { ProductsFilter } from "../../src/pages/[prodotti]/[...slug]";
+import { ProductsFilter } from "../../src/pages/cerca/[...slug]";
 import { FilterAccepted } from "../atoms/TagFilter";
 import { CATEGORIES, Univers } from "../mook/categories";
 import { Color } from "../mook/colors";

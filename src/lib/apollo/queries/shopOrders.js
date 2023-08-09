@@ -13,7 +13,10 @@ const GET_SHOP_ORDERS = gql`
         ){
             id
             status
-            name
+            name{
+                unique
+                visualized
+            }
             orders(
                 statuses: $statuses
                 limit: $limit
@@ -32,6 +35,7 @@ const GET_SHOP_ORDERS = gql`
                 status
                 shop{
                     id
+                    
                 }
                 recipient{
                     name

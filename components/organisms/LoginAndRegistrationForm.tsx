@@ -105,7 +105,7 @@ const LoginAndRegistrationForm: FC<{
             else if (!isBusiness) {
                 const genderName = getGender()
                 if (!genderName) {
-                    router.replace('/negozi/brand')
+                    router.replace('/profili/brand')
                 } else {
                     router.replace(`/abbigliamento/${genderName}-tutto/tutto/rilevanza`)
                 }

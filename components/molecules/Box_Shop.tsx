@@ -58,7 +58,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                 lineHeight={'normal'}
                 mb={0}
             >
-                {toUpperCaseFirstLetter(shop.name)}
+                {toUpperCaseFirstLetter(shop.name?.visualized)}
             </Box>
         )
     }
@@ -105,7 +105,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                             imageKitUrl(shop.profilePhoto)
                         }
                             //PlaceholderSrc={PlaceholderImage}
-                            alt={'' + shop.name}
+                            alt={'' + shop.name?.visualized}
                             className='my-auto h-[100px] w-[100px] m-auto rounded-full'
 
                         />
@@ -141,7 +141,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                     imageKitUrl(shop?.profileCover ? shop?.profileCover : '', 870, 378)
                 }
                     //PlaceholderSrc={PlaceholderImage}
-                    alt={'' + shop?.name}
+                    alt={'' + shop?.name?.visualized}
                     effect='blur'
                     className='object-cover aspect-[2.3/1] min-h-[100px] xl:min-h-[200px] rounded-[20px]'
                 />
@@ -177,7 +177,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                                 imageKitUrl(shop.profilePhoto)
                             }
                                 //PlaceholderSrc={PlaceholderImage}
-                                alt={'' + shop.name}
+                                alt={'' + shop.name?.visualized}
                                 className='m-auto h-full w-full p-[4px] lg:p-[5px] rounded-full'
                             />
                         </Box>

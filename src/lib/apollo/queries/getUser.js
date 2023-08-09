@@ -21,7 +21,10 @@ const GET_USER = graphql(`
                     userId
                     shopInfo {
                         id
-                        name
+                        name{
+                            unique
+                            visualized
+                        }
                         city
                         status
                         minimumAmountForFreeShipping
@@ -72,7 +75,10 @@ const GET_USER = graphql(`
                 }
                 status
                 shop{
-                    name
+                    name{
+                        unique
+                        visualized
+                    }
                     photo
                 }
                 productVariations{

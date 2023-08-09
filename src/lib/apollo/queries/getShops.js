@@ -6,7 +6,10 @@ const GET_SHOPS = graphql(`
     shops(limit: $limit, offset: $offset, filters: $filters) {
       categories
       id
-      name
+      name{
+        unique
+        visualized
+      }
       status
       profileCover
       profilePhoto

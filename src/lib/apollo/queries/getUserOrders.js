@@ -20,7 +20,10 @@ const GET_USER_ORDERS = graphql(`
                 }
                 status
                 shop{
-                    name
+                    name{
+                        unique
+                        visualized
+                    }
                     photo
                 }
                 productVariations{

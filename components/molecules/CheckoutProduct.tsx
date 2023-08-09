@@ -11,8 +11,8 @@ import { formatPercentage } from '../utils/formatPercentage'
 import Link from 'next/link'
 import { CartProductVariation } from '../../src/lib/apollo/generated/graphql'
 import createUrlSchema from '../utils/create_url'
-const CheckoutProduct: FC<{ variation: CartProductVariation, toProduct?: (variation: CartProductVariation) => void, deleteVariation?: (variation: CartProductVariation) => void, editVariation?: (variation: CartProductVariation, quantity: number) => void }> = ({ variation, deleteVariation, editVariation }) => {
-    const URI = `/prodotto/${variation?.productId}/${createUrlSchema([variation?.brand, variation?.name])}?colors=${variation?.color}`
+const CheckoutProduct: FC<{ shopUniqueName: string, variation: CartProductVariation, toProduct?: (variation: CartProductVariation) => void, deleteVariation?: (variation: CartProductVariation) => void, editVariation?: (variation: CartProductVariation, quantity: number) => void }> = ({ variation, shopUniqueName, deleteVariation, editVariation }) => {
+    const URI = `@${shopUniqueName}/prodotto/${variation?.productId}/${createUrlSchema([variation?.brand, variation?.name])}?colors=${variation?.color}`
 
     return (
         <Box

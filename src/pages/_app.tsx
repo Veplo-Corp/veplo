@@ -272,6 +272,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
         const tokenResult = await userAuth.getIdTokenResult()
         setAuthTokenInSessionStorage(tokenResult.token)
+        console.log(tokenResult.token);
 
 
         // user is logged in, send the user's details to redux, store the current user in the state
@@ -355,13 +356,13 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               expirationTime: tokenResult.expirationTime
             })
           );
-          const favouriteShop: ({ id: string, name: string, street: string }) = getFavouriteShopFromLocalStorage();
+          const favouriteShop: ({ id: string, name: { unique: string, visualized: string }, street: string }) = getFavouriteShopFromLocalStorage();
 
           if (favouriteShop) {
             dispatch(
               addFavouriteShopBusiness({
                 id: favouriteShop.id,
-                name: favouriteShop.name,
+                name: favouriteShop.name.visualized,
                 street: favouriteShop.street
               })
             )

@@ -45,7 +45,10 @@ const GET_PRODUCTS = graphql(`
                 shopInfo{
                     id
                     businessId
-                    name 
+                    name{
+                        unique
+                        visualized
+                    } 
                     city
                     status
                     profilePhoto

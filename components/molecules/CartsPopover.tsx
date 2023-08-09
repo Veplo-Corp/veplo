@@ -102,10 +102,10 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                                 justifyContent={'space-between'}
                                                             >
                                                                 <ProfilePhoto
-                                                                    imgName={cart?.shopInfo?.name}
+                                                                    imgName={cart?.shopInfo?.name?.visualized}
                                                                     scr={cart.shopInfo?.profilePhoto}
-                                                                    primaryText={cart.shopInfo?.name}
-                                                                    secondaryText={cart.shopInfo?.name}
+                                                                    primaryText={cart.shopInfo?.name?.visualized}
+                                                                    secondaryText={'@' + cart.shopInfo?.name?.unique}
                                                                     maxWidth={true}
                                                                 />
                                                                 <Box

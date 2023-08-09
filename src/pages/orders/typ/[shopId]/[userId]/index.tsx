@@ -25,7 +25,6 @@ import GET_LAST_ORDER_USER_FROM_SHOP from '../../../../../lib/apollo/queries/get
 import { Order } from '../../../../../lib/apollo/generated/graphql';
 import { Firebase_User } from '../../../../../interfaces/firebase_user.interface';
 import ProfilePhoto from '../../../../../../components/molecules/ProfilePhoto';
-import CheckoutProduct from '../../../../../../components/molecules/CheckoutProduct';
 import OrderComponent from '../../../../../../components/molecules/OrderComponent';
 import { fbq, gtag } from '../../../../../lib/analytics/gtag';
 import { GTMEventType, PixelEventType } from '../../../../../lib/analytics/eventTypes';
@@ -145,12 +144,12 @@ const index = () => {
                         mb={3}
                     >
                         <Link
-                            href={'/negozio/' + order.shop?.id + '/' + createUrlSchema([order?.shop?.name ? order?.shop?.name : ''])}
+                            href={`/@${order.shop?.name?.unique}`}
                         >
                             <ProfilePhoto
-                                imgName={order?.shop?.name}
+                                imgName={order?.shop?.name?.visualized}
                                 scr={order?.shop?.photo}
-                                primaryText={order?.shop?.name}
+                                primaryText={order?.shop?.name?.visualized}
                                 secondaryText={'#' + order.code}
                             />
                         </Link>

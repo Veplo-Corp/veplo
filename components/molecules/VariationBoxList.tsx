@@ -9,7 +9,7 @@ import { Cancel } from 'iconoir-react'
 import ButtonClose from '../atoms/ButtonClose'
 import { formatPercentage } from '../utils/formatPercentage'
 import { CartProductVariation } from '../../src/lib/apollo/generated/graphql'
-const VariationBoxList: FC<{ variation: CartProductVariation, toProduct: (variation: CartProductVariation) => void, deleteVariation: (variation: CartProductVariation) => void }> = ({ variation, toProduct, deleteVariation }) => {
+const VariationBoxList: FC<{ shopUniqueName: string, variation: CartProductVariation, toProduct: (variation: CartProductVariation, shopUniqueName: string) => void, deleteVariation: (variation: CartProductVariation) => void }> = ({ variation, toProduct, deleteVariation, shopUniqueName }) => {
 
     return (
         <Box
@@ -38,7 +38,7 @@ const VariationBoxList: FC<{ variation: CartProductVariation, toProduct: (variat
                         fontSize={['sm', 'medium']}
                         fontWeight={'medium'}
                         cursor={'pointer'}
-                        onClick={() => toProduct(variation)}
+                        onClick={() => toProduct(variation, shopUniqueName)}
                     >
                         {toUpperCaseFirstLetter(variation?.name)} ({variation?.color})
                     </Box>

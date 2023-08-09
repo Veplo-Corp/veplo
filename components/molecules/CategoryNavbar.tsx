@@ -62,7 +62,7 @@ const CategoryNavbar: FC<{ showMacrocategory: boolean }> = ({ showMacrocategory 
                             <div
                                 key={type.title}
                             // onMouseEnter={() => {
-                            //     // if (type.url === 'negozi') {
+                            //     // if (type.url === 'profili') {
                             //     //     setGenderSelected('')
                             //     //     setcategoryCardOpen(false)
                             //     //     return
@@ -81,7 +81,7 @@ const CategoryNavbar: FC<{ showMacrocategory: boolean }> = ({ showMacrocategory 
                                     <Link
                                         prefetch={false}
                                         onClick={() => { setcategoryCardOpen(false) }}
-                                        href={type.url !== 'negozi' ? `/${user.gategoryTypeSelected ? user.gategoryTypeSelected : 'abbigliamento'}/${type.url}-tutto/tutto/rilevanza` : '/negozi/brand'}
+                                        href={type.url !== 'profili' ? `/${user.gategoryTypeSelected ? user.gategoryTypeSelected : 'abbigliamento'}/${type.url}-tutto/tutto/rilevanza` : '/profili/brand'}
                                     >
                                         {type.title}
                                     </Link>

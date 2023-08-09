@@ -25,7 +25,6 @@ import GET_ORDER from '../../../lib/apollo/queries/getOrder';
 import { Order } from '../../../lib/apollo/generated/graphql';
 import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 import ProfilePhoto from '../../../../components/molecules/ProfilePhoto';
-import CheckoutProduct from '../../../../components/molecules/CheckoutProduct';
 import { formatNumberWithTwoDecimalsInString } from '../../../../components/utils/formatNumberWithTwoDecimalsInString';
 import OrderComponent from '../../../../components/molecules/OrderComponent';
 import { GTMEventType } from '../../../lib/analytics/eventTypes';
@@ -198,7 +197,7 @@ const index = () => {
                                     fontWeight={'normal'}
                                     mb={0}
                                 >
-                                    4. Invia il reso a: <strong>{order?.shop?.businessName}, {order?.shop?.name}</strong>
+                                    4. Invia il reso a: <strong>{order?.shop?.businessName}, {order?.shop?.name?.visualized}</strong>
                                 </Text>
 
                                 <Text
@@ -225,12 +224,12 @@ const index = () => {
                         mb={3}
                     >
                         <Link
-                            href={'/negozio/' + order.shop?.id + '/' + createUrlSchema([order?.shop?.name ? order?.shop?.name : ''])}
+                            href={`/@${order.shop?.name?.unique}`}
                         >
                             <ProfilePhoto
-                                imgName={order?.shop?.name}
+                                imgName={order?.shop?.name?.visualized}
                                 scr={order?.shop?.photo}
-                                primaryText={order?.shop?.name}
+                                primaryText={order?.shop?.name?.visualized}
                                 secondaryText={'#' + order.code}
                             />
                         </Link>

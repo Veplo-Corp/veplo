@@ -36,6 +36,7 @@ const OrderComponent: FC<{ order: Order, orderStatus: OrderStatus | undefined }>
                         return (
                             <div key={index} className='w-full'>
                                 <CheckoutProduct
+                                    shopUniqueName={order?.shop?.name?.unique ? order?.shop?.name?.unique : ''}
                                     variation={variation}
                                 />
                             </div>
