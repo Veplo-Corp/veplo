@@ -1,4 +1,4 @@
-import { ProductsFilter } from "../../src/pages/cerca/[...slug]";
+import { ProductsFilter } from "../../src/pages/cerca/[prodotti]/[...slug]";
 
 export const getParamsFiltersFromObject = (filters: ProductsFilter | undefined): Omit<ProductsFilter, "macroCategory" | "gender" | "microCategory"> | undefined => {
     if (!filters) return undefined
