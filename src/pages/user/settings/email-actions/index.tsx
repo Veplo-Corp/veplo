@@ -37,7 +37,7 @@ const index = () => {
 
             if ('auth/invalid-action-code') {
                 addToast({ position: 'top', title: 'Link scaduto', description: 'richiedi un nuovo link per il reset della password', status: 'error', duration: 5000, isClosable: true })
-                router.push('/negozi/brand')
+                router.push('/profili/brand')
             }
         }
     }
@@ -155,7 +155,7 @@ const index = () => {
                 fontWeight={'black'}
                 colorScheme='white'
                 onClick={() => {
-                    router.replace('/negozi/brand')
+                    router.replace('/profili/brand')
                 }}
             >VEPLO</Button>
             <Box className='mt-[15vh] lg:mt-[22vh] px-4 md:px-0'>

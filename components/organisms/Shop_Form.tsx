@@ -26,7 +26,26 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
         <>
             <h1 className='text-xl lg:text-2xl font-extrabold mb-3 md:mb-4'>Info Profilo</h1>
 
-            <Div_input_creation text='Nome (visualizzato dagli utenti)'>
+            <Div_input_creation text='Nome univoco (utilizzato per creare il tuo link univoco)'>
+                <InputGroup>
+                    <Input
+                        autoComplete='off'
+                        maxLength={35}
+                        rounded={10}
+                        paddingY={6}
+                        type="text"
+                        {...register("name", { required: true, maxLength: 30 })}
+                        isInvalid={false}
+                        disabled={true}
+                        _disabled={{
+                            opacity: '1',
+                            background: 'gray.50'
+                        }}
+                        className='cursor-not-allowed'
+                    />
+                </InputGroup>
+            </Div_input_creation>
+            <Div_input_creation text='Nome pubblico (visualizzato dagli utenti)'>
                 <InputGroup>
                     <Input
                         autoComplete='off'

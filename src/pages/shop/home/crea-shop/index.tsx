@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Box, Button, Center, Input, InputGroup, InputLeftAddon, Select, Spinner, Textarea } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, Center, Input, InputGroup, InputLeftAddon, InputRightAddon, Select, Spinner, Text, Textarea } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import BlackButton from '../../../../../components/atoms/BlackButton'
 import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout'
@@ -15,7 +15,7 @@ import { useDebounceEffect } from '../../../../../components/utils/useDebounceEf
 import { canvasPreview } from '../../../../../components/molecules/Canva_previews'
 import { storage } from '../../../../config/firebase'
 import { useForm, Controller } from 'react-hook-form'
-import { useMutation } from '@apollo/client'
+import { useLazyQuery, useMutation } from '@apollo/client'
 import CREATE_SHOP from '../../../../lib/apollo/mutations/createShop'
 import { ToastOpen } from '../../../../../components/utils/Toast'
 import { useDispatch, useSelector } from 'react-redux'
@@ -28,6 +28,8 @@ import PostMeta from '../../../../../components/organisms/PostMeta'
 import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo'
 import isShopOpen from '../../../../../components/utils/isShopOpen'
 import GET_BUSINESS from '../../../../lib/apollo/queries/business'
+import DOES_SHOP_UNIQUE_NAME_EXISTS from '../../../../lib/apollo/queries/doesShopUniqueNameExists'
+
 import { addShopFavouriteToLocalStorage } from '../../../../../components/utils/shop_localStorage'
 import ModalReausable from '../../../../../components/organisms/ModalReausable'
 import ImageCrop from '../../../../../components/molecules/ImageCrop'
@@ -37,6 +39,7 @@ import { SHOP_CATEGORIES } from '../../../../../components/mook/shopCategories'
 import { uploadImage } from '../../../../lib/upload/uploadImage'
 import { UploadEventType } from '../../../../lib/upload/UploadEventTypes'
 import SelectStringOption from '../../../../../components/atoms/SelectStringOption'
+import { Cancel, CheckCircle } from 'iconoir-react'
 
 
 
@@ -48,7 +51,12 @@ type Image = {
 }
 
 interface IFormInput {
-    name?: string;
+
+    name?: {
+        unique?: string;
+        visualized?: string;
+    },
+
     //! togliere description (obbligatoria), macrocategories e gendere in createProduct
     //!deve inserire tommaso
     profileCover: string,
@@ -96,73 +104,9 @@ const index = () => {
                 id: user.accountId
             }
         }],
-        // update(cache, el, query) {
 
-
-
-
-        //     const business = cache.readQuery<any>({
-        //         query: GET_BUSINESS,
-        //         variables: {
-        //             //mongoId Shop
-        //             id: user.accountId
-        //         }
-        //     });
-
-
-        //     const newShop = {
-        //         __typename: 'Shop',
-        //         id: el.data.createShop,
-        //         businessId: user.accountId,
-        //         name: query?.variables?.options.name,
-        //         createdAt: "now",
-        //         status: "not_active",
-        //         photo: query?.variables?.options.photo,
-        //         isDigitalOnly: query?.variables?.options.isDigitalOnly,
-        //         info: {
-        //             __typename: "ShopInformations",
-        //             phone: query?.variables?.options.info.phone,
-        //             description: query?.variables?.options.info.description,
-        //             opening: {
-        //                 __typename: "Opening",
-        //                 days: query?.variables?.options.info.opening.days,
-        //                 hours: query?.variables?.options.info.opening.hours,
-        //             }
-        //         },
-        //         address: {
-        //             __typename: "AddressShop",
-        //             postcode: "00000",
-        //             city: query?.variables?.options.address.city,
-        //             street: query?.variables?.options.address.street,
-        //             location: {
-        //                 __typename: "Location",
-        //                 type: "Point",
-        //                 coordinates: query?.variables?.options.address.location.coordinates,
-        //             }
-        //         }
-        //     }
-
-
-        //     cache.writeQuery({
-        //         query: GET_BUSINESS,
-        //         variables: {
-        //             //mongoId Shop
-        //             id: user.accountId
-        //         },
-        //         data: {
-        //             business: {
-        //                 ...business.business,
-        //                 shops: [
-        //                     ...business.business.shops,
-        //                     newShop
-        //                 ]
-        //             }
-        //         }
-        //     })
-
-        // }
     });
-
+    const [isValidUniqueName, setIsValidUniqueName] = useState<boolean | undefined>()
 
 
 
@@ -285,6 +229,7 @@ const index = () => {
     const [address_searched, setAddress_searched] = useState('')
     const dispatch = useDispatch();
     const [isProfileImageModalOpen, setisProfileImageModalOpen] = useState(false)
+    const [getIsNameValid] = useLazyQuery(DOES_SHOP_UNIQUE_NAME_EXISTS);
 
 
     const onChangeAddress = async (address_searched: string) => {
@@ -444,7 +389,10 @@ const index = () => {
             const photoUploadedProfile = await uploadImage(imageProfile?.file, UploadEventType.shopPhoto)
 
             let Shop: IFormInput = {
-                name: e.name,
+                name: {
+                    visualized: e.name?.visualized,
+                    unique: e.name?.unique,
+                },
                 profileType: e.profileType,
                 profileCover: photoUploadedCover.id,
                 profilePhoto: photoUploadedProfile.id,
@@ -529,6 +477,59 @@ const index = () => {
             addToast({ position: 'top', title: 'Errore durante la creazione dello Shop', description: "non siamo riusciti a creare il tuo shop. riprova più tardi o contattaci", status: 'error', duration: 5000, isClosable: false })
         }
     }
+
+    const uniqueNameCheck = () => {
+        if (!watch('name.unique') || errors?.name?.unique) {
+            return (<></>)
+        }
+        if (watch('name.unique'))
+            if (isValidUniqueName === true) {
+                return (<CheckCircle
+                    className='h-6 w-6 text-[#37D1A9]'
+                />)
+            } else if (isValidUniqueName === false) {
+                return (<Cancel
+                    className='h-6 w-6 text-[#C63F3F]'
+                    strokeWidth={2}
+                />)
+            } else {
+                return (<Spinner
+                    thickness='2px'
+                    emptyColor='white'
+                    color='gray.900'
+                    speed='0.65s'
+                    size={'md'}
+                />)
+            }
+    }
+
+    useDebounceEffect(async () => {
+        const isValid = false;
+        const nameBrand = watch('name.unique')
+        if (!nameBrand || errors?.name?.unique) {
+            return setIsValidUniqueName(undefined)
+        }
+
+        getIsNameValid({ variables: { name: nameBrand } }).then((res) => {
+
+            if (res.data?.doesShopUniqueNameExists === false) {
+                return setIsValidUniqueName(true)
+            } else {
+                setIsValidUniqueName(false)
+            }
+        }).catch(() => {
+            setIsValidUniqueName(false)
+        })
+
+
+
+    },
+        1500,
+        [watch('name.unique')],
+    )
+
+
+
 
     const handleImageConfirm = (image: PixelCrop, type: UploadEventType, imgRefCurrent: HTMLImageElement) => {
 
@@ -734,7 +735,50 @@ const index = () => {
                                 )}
                             />
                         </Div_input_creation>
-                        <Div_input_creation text='Nome (visualizzato dagli utenti)'>
+                        <Div_input_creation text='Nome univoco (utilizzato per creare il tuo link univoco)'>
+                            <InputGroup>
+                                <Input
+                                    rounded={10}
+                                    paddingY={6}
+                                    autoComplete="new-password"
+                                    type="text"
+                                    maxLength={30}
+                                    borderRightColor={'white'}
+                                    {...register("name.unique", {
+                                        required: true,
+                                        pattern: /^[A-Za-zÀ-ÿ0-9-]+$/, // Espressione regolare che accetta lettere, numeri e "-"
+                                        onChange: () => {
+                                            setIsValidUniqueName(undefined);
+                                        },
+                                    })}
+                                />
+
+                                <InputRightAddon
+                                    borderLeftColor={'white'}
+                                    paddingY={6}
+                                    bg={'white'}
+                                    borderLeftWidth={0}
+                                    children={
+                                        uniqueNameCheck()
+                                    } />
+                            </InputGroup>
+                            {errors.name?.unique && watch('name.unique') && <Text
+                                pl={2}
+                                mt={0}
+                                fontSize={'sm'}
+                                fontWeight={'medium'}
+                                role="alert">I caratteri speciali non sono accettati</Text>}
+                            {isValidUniqueName === false && <Text
+                                pl={2}
+                                mt={0}
+                                fontSize={'sm'}
+                                fontWeight={'normal'}
+                                color={'#C63F3F'}
+                                role="alert">il nome inserito è già esistente</Text>}
+
+                        </Div_input_creation>
+
+                        <Div_input_creation text='Nome pubblico (visualizzato dagli utenti)'>
                             <InputGroup >
                                 <Input
                                     maxLength={35}
@@ -743,7 +787,7 @@ const index = () => {
                                     autoComplete="new-password"
                                     type="text"
                                     // value={shop_name}
-                                    {...register("name", { required: true, maxLength: 30 })}
+                                    {...register("name.visualized", { required: true, maxLength: 30 })}
                                     // onChange={(event) => changeInput(event, 'shop_name')}
                                     isInvalid={false}
                                 />

@@ -185,16 +185,16 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                     {showStoreHeader && <Link
                         prefetch={false}
                         onClick={handleEventSelectedDress}
-                        href={product?.shopInfo?.name && product?.shopInfo?.id ? `/negozio/${product?.shopInfo?.id}/${createUrlSchema([product.shopInfo.name])}` : ''}>
+                        href={product?.shopInfo?.name?.unique ? `/@${product.shopInfo.name.unique}` : ''}>
                         <Box
                             display={'flex'}
                             mb={doubleGridDevice ? 1 : 3}
                         >
                             <ProfilePhoto
                                 doubleGridDevice={doubleGridDevice}
-                                imgName={product?.shopInfo?.name}
+                                imgName={product?.shopInfo?.name?.visualized}
                                 scr={product?.shopInfo?.profilePhoto}
-                                primaryText={product?.shopInfo?.name}
+                                primaryText={product?.shopInfo?.name?.visualized}
                                 secondaryText={product?.info?.brand}
                             />
                         </Box>

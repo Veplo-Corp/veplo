@@ -48,7 +48,10 @@ const GET_PRODUCTS_FROM_SHOP = gql`
                         shopInfo{
                             id
                             businessId
-                            name 
+                            name{
+                                unique
+                                visualized
+                            } 
                             city
                             status
                             profilePhoto

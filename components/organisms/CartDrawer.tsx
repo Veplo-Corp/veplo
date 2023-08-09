@@ -195,8 +195,8 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
         }
     }
 
-    const pushToProduct = (variation: CartProductVariation) => {
-        router.push('/prodotto/' + variation?.productId + '/' + createUrlSchema([variation?.brand, variation?.name]) + '?colors=' + variation?.color?.toLowerCase())
+    const pushToProduct = (variation: CartProductVariation, shopUniqueName: string) => {
+        router.push('/@' + shopUniqueName + '/prodotto/' + variation?.productId + '/' + createUrlSchema([variation?.brand, variation?.name]) + '?colors=' + variation?.color?.toLowerCase())
         closeDrawer()
     }
 
@@ -244,6 +244,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                 >
                     <VStack gap={[2, 3]}>
                         {cartsDispatch && cartsDispatch.map((cart, index) => {
+
                             return (
                                 <Box key={index} width={'full'}>
                                     <Box
@@ -253,7 +254,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
 
                                         <Text
                                             onClick={() => {
-                                                router.push(`/negozio/${cart.shopInfo.id}/${createUrlSchema([cart.shopInfo.name])}`)
+                                                router.push(`/@${cart.shopInfo?.name?.unique}`)
                                                 closeDrawer()
                                             }}
                                             cursor={'pointer'}
@@ -261,7 +262,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                                             fontWeight={'bold'}
                                             width={'fit-content'}
                                             mb={[2, 3]}
-                                        >{toUpperCaseFirstLetter(cart.shopInfo.name)}</Text>
+                                        >{toUpperCaseFirstLetter(cart.shopInfo.name.visualized)}</Text>
                                         <VStack
                                             gap={1}
                                         >
@@ -270,7 +271,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                                                     <div key={index}
                                                         className='w-full'
                                                     >
-                                                        <VariationBoxList variation={variation} toProduct={pushToProduct} deleteVariation={deleteVariation} />
+                                                        <VariationBoxList variation={variation} toProduct={pushToProduct} deleteVariation={deleteVariation} shopUniqueName={cart.shopInfo?.name?.unique} />
                                                     </div>
                                                 )
                                             })}

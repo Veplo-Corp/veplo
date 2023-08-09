@@ -12,7 +12,10 @@ const GET_SHOP_AND_PRODUCTS = graphql(`
         ){
             id
             businessId
-            name
+            name{
+                unique
+                visualized
+            }
             createdAt
             status
             links{
@@ -77,7 +80,10 @@ const GET_SHOP_AND_PRODUCTS = graphql(`
                     shopInfo{
                         id
                         businessId
-                        name 
+                        name{
+                            unique
+                            visualized
+                        } 
                         city
                         status
                         profilePhoto

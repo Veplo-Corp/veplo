@@ -1,90 +1,30 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout'
-import { Box, Button, ButtonGroup, defineStyle, Divider, Flex, HStack, Spacer, Text } from '@chakra-ui/react'
-import Box_Dress from '../../../../../components/molecules/Box_Dress'
-import { useRouter } from 'next/router'
-import createUrlSchema from '../../../../../components/utils/create_url'
-import { initApollo } from '../../../../lib/apollo'
-import GET_PRODUCTS_FROM_SHOP from '../../../../lib/apollo/queries/geetProductsShop'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
-
-import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter'
-import { imageKitUrl } from '../../../../../components/utils/imageKitUrl'
-import PostMeta from '../../../../../components/organisms/PostMeta'
+import { GetShopQuery, Product, ProductsQueryResponse } from '../../src/lib/apollo/generated/graphql';
+import PageNotFound from '../molecules/PageNotFound';
+import { useRouter } from 'next/router';
+import { numberOfLineText } from '../utils/numberOfLineText';
+import { useLazyQuery } from '@apollo/client';
+import GET_PRODUCTS_FROM_SHOP from '../../src/lib/apollo/queries/geetProductsShop';
+import PopoverComponent, { ActionsPopover } from '../molecules/PopoverComponent';
+import { Instagram, MoreHoriz, SmallShopAlt, TikTok } from 'iconoir-react';
+import Desktop_Layout from '../atoms/Desktop_Layout';
+import NoIndexSeo from './NoIndexSeo';
+import PostMeta from './PostMeta';
+import { motion } from 'framer-motion';
+import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
+import { LIST_ITEM_VARIANT } from '../mook/transition';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { imageKitUrl } from '../utils/imageKitUrl';
+import { Box, Button, ButtonGroup, HStack, Text } from '@chakra-ui/react';
+import TagComponent from '../atoms/TagComponent';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useLazyQuery, useQuery } from '@apollo/client'
-import GET_SHOP_AND_PRODUCTS from '../../../../lib/apollo/queries/getSingleShop'
-import { Facebook, Instagram, MoreHoriz, Phone, Pin, PinAlt, Position, SmallShopAlt, TikTok } from 'iconoir-react'
-import PopoverComponent, { ActionsPopover } from '../../../../../components/molecules/PopoverComponent'
-import { numberOfLineText } from '../../../../../components/utils/numberOfLineText'
-import { isMobile } from 'react-device-detect'
-import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo'
-import { CATEGORIES } from '../../../../../components/mook/categories'
-import { GetShopQuery, Product, ProductsQueryResponse } from '../../../../lib/apollo/generated/graphql'
-import { LIST_ITEM_VARIANT } from '../../../../../components/mook/transition'
-import { AnimatePresence, motion } from 'framer-motion';
-import PageNotFound from '../../../../../components/molecules/PageNotFound'
-import TagComponent from '../../../../../components/atoms/TagComponent'
+import { CATEGORIES } from '../mook/categories';
+import Box_Dress from '../molecules/Box_Dress';
+import createUrlSchema from '../utils/create_url';
 
 const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) : 12
 
-
-export async function getStaticPaths() {
-    return {
-        paths: [],
-        fallback: 'blocking', // can also be true or false
-    }
-}
-
-export async function getStaticProps(ctx: any) {
-    let { shopId, slug } = ctx.params;
-    const apolloClient = initApollo();
-    //!creare filtro per gender
-    const gender = slug[1];
-
-    try {
-        const { data }: { data: GetShopQuery } = await apolloClient.query({
-            query: GET_SHOP_AND_PRODUCTS,
-            variables: {
-                id: shopId,
-                limit: RANGE,
-                offset: 0,
-                filters: {
-                    gender: gender ? (gender === 'uomo' ? 'm' : 'f') : null
-                }
-            },
-        })
-
-
-
-
-        return {
-            props: {
-                shop: data.shop,
-                gender: gender ? (gender === 'uomo' ? 'm' : 'f') : null
-            },
-            revalidate: 60, // In seconds
-        }
-    } catch (e) {
-
-        return {
-            props: {
-
-                shop: null,
-                gender: gender ? (gender === 'uomo' ? 'm' : 'f') : null
-            },
-            revalidate: 1, // In seconds
-        }
-    }
-
-
-}
-
-
-
-
-
-const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ shop, gender }) => {
+const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ shop, gender }) => {
 
 
 
@@ -120,7 +60,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
         }
     }, [descriptionRefText]);
 
-    const [getMoreProducts, { loading, error, data, fetchMore }] = useLazyQuery(GET_PRODUCTS_FROM_SHOP);
+    const [getMoreProducts] = useLazyQuery(GET_PRODUCTS_FROM_SHOP);
 
 
 
@@ -266,10 +206,10 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
 
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
-                title={`${shop.name ? toUpperCaseFirstLetter(shop.name) : 'Brand'} | Veplo`}
-                subtitle={`${shop.name} è su Veplo | Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
+                title={`${shop.name ? toUpperCaseFirstLetter(shop.name.visualized) : 'Brand'} | Veplo`}
+                subtitle={`${shop.name?.visualized} è su Veplo | Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
                 image={shop?.profilePhoto ? shop?.profilePhoto : ''}
-                description={`${shop.name} è su Veplo | Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
+                description={`${shop.name?.visualized} è su Veplo | Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
             />
 
             <Box
@@ -285,7 +225,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                     <LazyLoadImage src={shop.profileCover ? imageKitUrl(shop.profileCover) : ''}
                         //PlaceholderSrc={PlaceholderImage}
                         effect='blur'
-                        alt={shop.name ? shop.name : ''}
+                        alt={shop.name?.visualized ? shop.name.visualized : ''}
                         className='w-full object-cover aspect-[2.3/1] lg:aspect-[3/1] min-h-[120px] lg:min-h-[300px] lg:rounded-[10px]'
                     />
                     <Box display={'flex'}
@@ -322,7 +262,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                                 }
                                     effect='blur'
                                     //PlaceholderSrc={PlaceholderImage}
-                                    alt={shop.name ? shop.name : 'immagine non trovata'}
+                                    alt={shop.name?.visualized ? shop.name.visualized : 'immagine non trovata'}
                                     className='m-auto h-full w-full p-[4px] lg:p-[5px] rounded-full'
                                 />
                             </Box>
@@ -366,7 +306,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                             <Text
                                 className='font-extrabold text-2xl lg:text-4xl my-auto'
                             >
-                                {shop.name}
+                                {shop.name?.visualized}
                             </Text>
                             <HStack spacing={2.5}
                                 className='my-1 md:my-2'
@@ -433,12 +373,12 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
                                         sessionStorage.removeItem("keyShopSession")
                                         sessionStorage.removeItem("productsFoundedInShop")
                                         sessionStorage.removeItem('scrollPositionShop');
-                                        if (!shop.name) return
+                                        if (!shop.name?.visualized) return
                                         if (genderInitial !== genderSelected) {
-                                            router.replace(`/negozio/${shop.id}/${createUrlSchema([shop.name])}/${gender}`)
+                                            router.replace(`/@${shop.name.unique}/${gender}`)
                                         } else {
                                             setGenderSelected(undefined)
-                                            router.replace(`/negozio/${shop.id}/${createUrlSchema([shop.name])}`)
+                                            router.replace(`/@${shop.name.unique}`)
                                         }
                                     }}
                                     key={gender}
@@ -514,7 +454,7 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
 
                                             sessionStorage.setItem('scrollPositionShop', window.pageYOffset.toString());
                                         }}
-                                        productLink={`/prodotto/${product.id}/${createUrlSchema([product?.info?.brand, product.name])}`}
+                                        productLink={`/@${shop.name?.unique}/prodotto/${product.id}/${createUrlSchema([product?.info?.brand, product.name])}`}
 
                                     ></Box_Dress>
                                 </motion.div>
@@ -535,4 +475,4 @@ const index: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ sh
     )
 }
 
-export default index
+export default ShopPage

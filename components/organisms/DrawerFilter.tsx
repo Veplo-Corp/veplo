@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 
 import SelectMaxMinPrice from '../atoms/SelectMaxMinPrice'
 import ButtonClose from '../atoms/ButtonClose'
-import { ProductsFilter } from '../../src/pages/[prodotti]/[...slug]'
+import { ProductsFilter } from '../../src/pages/cerca/[...slug]'
 import { FilterParameters, findParsedFilter } from '../utils/findParsedFilter'
 import SelectOption from '../atoms/SelectOption'
 import { FilterAccepted } from '../atoms/TagFilter'

@@ -15,7 +15,7 @@ const ShopInfoSection: FC<{ shop: Shop, shopStreet: string | undefined }> = ({ s
                 mt={-1}
                 fontSize={['md', '2xl']}
                 fontWeight={'extrabold'}
-            >{shop.name}</Text>
+            >{shop.name.visualized}</Text>
             {shopStreet && <Text
                 mt={-1}
                 fontSize={['2xs', 'md']}

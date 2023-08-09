@@ -1,34 +1,34 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
-import { initApollo } from '../../../lib/apollo';
-import { Product, ProductsQuery } from '../../../lib/apollo/generated/graphql';
-import GET_PRODUCTS from '../../../lib/apollo/queries/getProducts';
-import getGenderandMacrocategory from '../../../../components/utils/get_Gender_and_Macrocategory';
-import { ParsedURL, parseURLProducts } from '../../../../components/utils/parseUrlProducts';
+import { initApollo } from '../../../../lib/apollo';
+import { Product, ProductsQuery } from '../../../../lib/apollo/generated/graphql';
+import GET_PRODUCTS from '../../../../lib/apollo/queries/getProducts';
+import getGenderandMacrocategory from '../../../../../components/utils/get_Gender_and_Macrocategory';
+import { ParsedURL, parseURLProducts } from '../../../../../components/utils/parseUrlProducts';
 import { Box, Button, FilterProps, HStack, Select, Skeleton, SkeletonCircle, SkeletonText, Tag, TagLabel, TagRightIcon, Text, useBreakpointValue } from '@chakra-ui/react';
-import PostMeta from '../../../../components/organisms/PostMeta';
-import NoIndexSeo from '../../../../components/organisms/NoIndexSeo';
+import PostMeta from '../../../../../components/organisms/PostMeta';
+import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo';
 import { useRouter } from 'next/router';
-import Shop_not_Allowed from '../../../../components/utils/Shop_not_Allowed';
+import Shop_not_Allowed from '../../../../../components/utils/Shop_not_Allowed';
 import { AnimatePresence, motion } from 'framer-motion';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import Box_Dress from '../../../../components/molecules/Box_Dress';
-import { LIST_ITEM_VARIANT } from '../../../../components/mook/transition';
+import Box_Dress from '../../../../../components/molecules/Box_Dress';
+import { LIST_ITEM_VARIANT } from '../../../../../components/mook/transition';
 import { useLazyQuery } from '@apollo/client';
-import { setInLocalStorage } from '../../../../components/utils/setInLocalStorage';
-import { changeUnivers, changeGenderSelected } from '../../../store/reducers/user';
+import { setInLocalStorage } from '../../../../../components/utils/setInLocalStorage';
+import { changeUnivers, changeGenderSelected } from '../../../../store/reducers/user';
 import { useDispatch } from 'react-redux';
-import { parseSlugUrlFilter } from '../../../../components/utils/parseUrlFilters';
-import { CATEGORIES, Univers } from '../../../../components/mook/categories';
-import createUrlSchema from '../../../../components/utils/create_url';
-import toUpperCaseFirstLetter from '../../../../components/utils/uppercase_First_Letter';
+import { parseSlugUrlFilter } from '../../../../../components/utils/parseUrlFilters';
+import { CATEGORIES, Univers } from '../../../../../components/mook/categories';
+import createUrlSchema from '../../../../../components/utils/create_url';
+import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter';
 import Link from 'next/link';
-import { SORT_PRODUCT, Sort } from '../../../../components/mook/sort_products';
+import { SORT_PRODUCT, Sort } from '../../../../../components/mook/sort_products';
 import { Cancel, Filter, NavArrowDown } from 'iconoir-react';
-import { getParamsFiltersFromObject } from '../../../../components/utils/getParamsFiltersFromObject';
-import FiltersSelections from '../../../../components/organisms/FiltersSelections';
-import TagFilter, { FilterAccepted } from '../../../../components/atoms/TagFilter';
-import { getUnivers } from '../../../../components/utils/getUnivers';
-import { getSortingFilter } from '../../../../components/utils/getSortingFilter';
+import { getParamsFiltersFromObject } from '../../../../../components/utils/getParamsFiltersFromObject';
+import FiltersSelections from '../../../../../components/organisms/FiltersSelections';
+import TagFilter, { FilterAccepted } from '../../../../../components/atoms/TagFilter';
+import { getUnivers } from '../../../../../components/utils/getUnivers';
+import { getSortingFilter } from '../../../../../components/utils/getSortingFilter';
 
 
 
@@ -351,7 +351,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         const sortUrl = SORT_PRODUCT.find(element => element.url === e.target.value)?.url
         router.replace({
-            pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sortUrl ? sortUrl : 'rilevanza'}`,
+            pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sortUrl ? sortUrl : 'rilevanza'}`,
             query: {
                 ...filtersParams
             }
@@ -383,7 +383,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         if (filterParameter === 'macroCategory') {
             const query = filterParamsOnChangeMacrocatecory(filtersParams)
             return router.push({
-                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${createUrlSchema([value])}/tutto/${sort}`,
+                pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${createUrlSchema([value])}/tutto/${sort}`,
                 query: {
                     ...query
                 }
@@ -391,7 +391,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
         if (filterParameter === 'microCategory') {
             return router.push({
-                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${createUrlSchema([value])}/${sort}`,
+                pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${createUrlSchema([value])}/${sort}`,
                 query: {
                     ...filtersParams
                 }
@@ -405,7 +405,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             //filterParameter === 'fit' || filterParameter === 'length' || filterParameter === 'materials' || filterParameter === 'traits'
         ) {
             return router.push({
-                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
+                pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                 query: {
                     ...filtersParams,
                     [filterParameter]: value.toLocaleLowerCase()
@@ -416,7 +416,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         if (filterParameter === 'sizes') {
             const size = value?.split(' (')[0].toLocaleLowerCase()
             return router.push({
-                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
+                pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                 query: {
                     ...filtersParams,
                     sizes: size ? [value.split(' (')[0].toLocaleLowerCase()] : null
@@ -428,7 +428,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
             if (value === 'true') {
                 return router.push({
-                    pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
+                    pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                     query: {
                         ...filtersParams,
                         [filterParameter]: true
@@ -437,7 +437,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
             } else {
                 const { [filterParameter]: removedFilterParameter, ...newFilterParameters } = filtersParams
                 return router.push({
-                    pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
+                    pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                     query: {
                         ...newFilterParameters,
                     }
@@ -460,7 +460,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         if (paramters === 'macroCategory') {
             const query = filterParamsOnChangeMacrocatecory(filtersParams)
             return router.push({
-                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/${sort}`,
+                pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/${sort}`,
                 query: {
                     ...query
                 }
@@ -469,7 +469,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         if (paramters === 'microCategory') {
             return router.push({
-                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/tutto/${sort}`,
+                pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/tutto/${sort}`,
                 query: {
                     ...filtersParams
                 }
@@ -477,7 +477,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         }
 
         return router.push({
-            pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
+            pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
             query: {
                 ...filtersParams
             }
@@ -488,7 +488,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         if (!filtersDrawerModal) {
             return router.push({
-                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/tutto}/${sort ? sort : 'rilevanza'}`,
+                pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/tutto}/${sort ? sort : 'rilevanza'}`,
             })
         }
         if (typeof filtersDrawerModal.sizes?.[0] === 'string') {
@@ -508,7 +508,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
 
         return router.push({
-            pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filtersDrawerModal.macroCategory === 'string' && filtersDrawerModal.macroCategory !== '' ? filtersDrawerModal.macroCategory.toLowerCase() : 'tutto'}/${filtersDrawerModal.microCategory ? createUrlSchema([filtersDrawerModal.microCategory]) : 'tutto'}/${sort}`,
+            pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filtersDrawerModal.macroCategory === 'string' && filtersDrawerModal.macroCategory !== '' ? filtersDrawerModal.macroCategory.toLowerCase() : 'tutto'}/${filtersDrawerModal.microCategory ? createUrlSchema([filtersDrawerModal.microCategory]) : 'tutto'}/${sort}`,
             query: {
                 ...filtersParams
             }
@@ -638,7 +638,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                         text={'Resetta Filtri'}
                         handleEvent={() => {
                             return router.push({
-                                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/${sort}`,
+                                pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/${sort}`,
                             })
                         }}
                     />
@@ -683,9 +683,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                             prefetch={false}
                                             href={element.url === createUrlSchema([filters?.macroCategory ? filters?.macroCategory : ''])
                                                 ?
-                                                '/' + universProps + '/' + (filters?.gender == 'm' ? 'uomo' : 'donna') + '-tutto/tutto/' + sort
+                                                '/cerca/' + universProps + '/' + (filters?.gender == 'm' ? 'uomo' : 'donna') + '-tutto/tutto/' + sort
                                                 :
-                                                '/' + universProps + '/' + (filters?.gender == 'm' ? 'uomo' : 'donna') + '-' + element.url + '/tutto/' + sort
+                                                '/cerca/' + universProps + '/' + (filters?.gender == 'm' ? 'uomo' : 'donna') + '-' + element.url + '/tutto/' + sort
                                             }
                                         >
                                             <Text
@@ -781,7 +781,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                             }
                                         }
                                         router.replace({
-                                            pathname: `/ ${universProps} /${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'} /${sort}`,
+                                            pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'} /${sort}`,
                                             query: {
                                                 ...filtersParams,
                                                 ...newParams
@@ -791,7 +791,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                     handleChangeMacroCategory={(value: string, filtersParams: ProductsFilter | undefined) => {
                                         if (!filtersParams) {
                                             return router.push({
-                                                pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/tutto/${sort}`,
+                                                pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/tutto/${sort}`,
                                             })
                                         }
 
@@ -809,7 +809,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
 
                                         return router.push({
-                                            pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${value !== '' ? value.toLowerCase() : 'tutto'}/tutto/` + sort,
+                                            pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${value !== '' ? value.toLowerCase() : 'tutto'}/tutto/` + sort,
                                             query: {
                                                 ...query
                                             }
@@ -869,7 +869,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                         let filtersParams: any = getParamsFiltersFromObject(filters)
                                         delete filtersParams["query"]
                                         return router.push({
-                                            pathname: `/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
+                                            pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${typeof filters?.macroCategory === 'string' && filters?.macroCategory !== '' ? filters?.macroCategory.toLowerCase() : 'tutto'}/${filters.microCategory ? createUrlSchema([filters.microCategory]) : 'tutto'}/${sort}`,
                                             query: {
                                                 ...filtersParams
                                             }
@@ -949,7 +949,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                                         sessionStorage.setItem("productsInProductsPage", JSON.stringify(products))
                                                                         sessionStorage.setItem('scrollPositionProducts', window.pageYOffset.toString());
                                                                     }}
-                                                                    productLink={`/prodotto/${product.id}/${createUrlSchema([product?.info?.brand, product.name])}${router.asPath.split('?')[1] ? '?' + router.asPath.split('?')[1] : ''}`}
+                                                                    productLink={`/@${product.shopInfo?.name?.unique}/prodotto/${product.id}/${createUrlSchema([product?.info?.brand, product.name])}${router.asPath.split('?')[1] ? '?' + router.asPath.split('?')[1] : ''}`}
                                                                     showStoreHeader={true} product={product} color={filters.colors?.[0] ? filters.colors[0] : undefined}></Box_Dress>
 
                                                             </motion.div>

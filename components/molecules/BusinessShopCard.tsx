@@ -45,7 +45,7 @@ const BusinessShopCard: FC<{ shop: Shop, toShop: (shop: Shop) => void }> = ({ sh
                         imageKitUrl(shop.profilePhoto)
                     }
                         //PlaceholderSrc={PlaceholderImage}
-                        alt={shop.name}
+                        alt={shop.name.visualized}
                         className='m-auto h-full w-full p-[4px] lg:p-[5px] rounded-full'
                     />
                 </Box>
@@ -79,7 +79,7 @@ const BusinessShopCard: FC<{ shop: Shop, toShop: (shop: Shop) => void }> = ({ sh
                     lineHeight='tight'
                     noOfLines={1}
                 >
-                    {shop.name}
+                    {shop.name.visualized}
                 </Box>
                 <Box
                     fontWeight='normal'

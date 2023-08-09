@@ -40,7 +40,10 @@ const GET_SINGLE_PRODUCT = gql`
             shopInfo{
                 id
                 businessId
-                name 
+                name{
+                    unique
+                    visualized
+                } 
                 city
                 status
                 minimumAmountForFreeShipping

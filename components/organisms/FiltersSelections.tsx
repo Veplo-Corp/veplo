@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { ProductsFilter } from '../../src/pages/[prodotti]/[...slug]'
+import { ProductsFilter } from '../../src/pages/cerca/[...slug]'
 import { Box, Button, Text, useBreakpointValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 

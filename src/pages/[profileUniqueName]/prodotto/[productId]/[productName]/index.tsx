@@ -1,53 +1,53 @@
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
-import Desktop_Layout from '../../../../../components/atoms/Desktop_Layout';
+import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout';
 import { Box, Button, HStack, Image, Tag, Text, Tooltip, useBreakpointValue } from '@chakra-ui/react';
-import GET_SINGLE_PRODUCT from '../../../../lib/apollo/queries/getSingleProduct'
+import GET_SINGLE_PRODUCT from '../../../../../lib/apollo/queries/getSingleProduct'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { Product, Variation } from '../../../../interfaces/product.interface';
-import { initApollo } from '../../../../lib/apollo';
-import Size_Box from '../../../../../components/atoms/Size_Box';
-import Horizontal_Line from '../../../../../components/atoms/Horizontal_Line';
-import createUrlSchema from '../../../../../components/utils/create_url';
-import { Color, COLORS } from '../../../../../components/mook/colors';
+import { Product, Variation } from '../../../../../interfaces/product.interface';
+import { initApollo } from '../../../../../lib/apollo';
+import Size_Box from '../../../../../../components/atoms/Size_Box';
+import Horizontal_Line from '../../../../../../components/atoms/Horizontal_Line';
+import createUrlSchema from '../../../../../../components/utils/create_url';
+import { Color, COLORS } from '../../../../../../components/mook/colors';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-import GET_SIMILAR_PRODUCT_ON_SHOP from '../../../../lib/apollo/queries/getSimilarProductOnShop';
-import Image_Product from '../../../../../components/organisms/Image_Product';
+import GET_SIMILAR_PRODUCT_ON_SHOP from '../../../../../lib/apollo/queries/getSimilarProductOnShop';
+import Image_Product from '../../../../../../components/organisms/Image_Product';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-import { imageKitUrl } from '../../../../../components/utils/imageKitUrl';
-import PostMeta from '../../../../../components/organisms/PostMeta';
+import { imageKitUrl } from '../../../../../../components/utils/imageKitUrl';
+import PostMeta from '../../../../../../components/organisms/PostMeta';
 import Link from 'next/link';
-import CircleColorSelected from '../../../../../components/atoms/CircleColorSelected';
-import ModalReausable from '../../../../../components/organisms/ModalReausable'
-import CartDrawer from '../../../../../components/organisms/CartDrawer';
-import EDIT_CART from '../../../../lib/apollo/mutations/editCart';
+import CircleColorSelected from '../../../../../../components/atoms/CircleColorSelected';
+import ModalReausable from '../../../../../../components/organisms/ModalReausable'
+import CartDrawer from '../../../../../../components/organisms/CartDrawer';
+import EDIT_CART from '../../../../../lib/apollo/mutations/editCart';
 import { useDispatch, useSelector } from 'react-redux';
-import { Cart, ProductVariation } from '../../../../interfaces/carts.interface';
-import { editVariationFromCart } from '../../../../store/reducers/carts';
-import { Firebase_User } from '../../../../interfaces/firebase_user.interface';
-import { newTotalHandler } from '../../../../../components/utils/newTotalHandler';
-import { setInLocalStorage } from '../../../../../components/utils/setInLocalStorage';
-import { sortShopsInCart } from '../../../../../components/utils/sortShopsInCart';
-import { handleErrorGraphQL } from '../../../../../components/utils/handleError_graphQL';
-import expirationTimeTokenControll from '../../../../../components/utils/expirationTimeTokenControll';
-import Box_Dress from '../../../../../components/molecules/Box_Dress';
+import { Cart, ProductVariation } from '../../../../../interfaces/carts.interface';
+import { editVariationFromCart } from '../../../../../store/reducers/carts';
+import { Firebase_User } from '../../../../../interfaces/firebase_user.interface';
+import { newTotalHandler } from '../../../../../../components/utils/newTotalHandler';
+import { setInLocalStorage } from '../../../../../../components/utils/setInLocalStorage';
+import { sortShopsInCart } from '../../../../../../components/utils/sortShopsInCart';
+import { handleErrorGraphQL } from '../../../../../../components/utils/handleError_graphQL';
+import expirationTimeTokenControll from '../../../../../../components/utils/expirationTimeTokenControll';
+import Box_Dress from '../../../../../../components/molecules/Box_Dress';
 import { NavArrowDown } from 'iconoir-react';
-import { sortAndFilterSizes } from '../../../../../components/utils/sortAndFilterSizes';
+import { sortAndFilterSizes } from '../../../../../../components/utils/sortAndFilterSizes';
 import { Disclosure, Transition } from '@headlessui/react';
-import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo';
+import NoIndexSeo from '../../../../../../components/organisms/NoIndexSeo';
 import { InView, useInView } from 'react-intersection-observer';
 import { AnimatePresence, motion } from 'framer-motion';
-import { formatNumberWithTwoDecimalsInString } from '../../../../../components/utils/formatNumberWithTwoDecimalsInString';
-import GuideSize from '../../../../../components/organisms/GuideSize';
-import toUpperCaseFirstLetter from '../../../../../components/utils/uppercase_First_Letter';
+import { formatNumberWithTwoDecimalsInString } from '../../../../../../components/utils/formatNumberWithTwoDecimalsInString';
+import GuideSize from '../../../../../../components/organisms/GuideSize';
+import toUpperCaseFirstLetter from '../../../../../../components/utils/uppercase_First_Letter';
 
-import { findMacrocategorySizeGuideFromMacrocategory } from '../../../../../components/utils/findMacrocategorySizeGuideFromMacrocategory';
-import { formatPercentage } from '../../../../../components/utils/formatPercentage';
-import { numberOfLineText } from '../../../../../components/utils/numberOfLineText';
-import { fbq } from '../../../../lib/analytics/gtag';
-import { PixelEventType } from '../../../../lib/analytics/eventTypes';
-import { openModal } from '../../../../store/reducers/globalModal';
-import PageNotFound from '../../../../../components/molecules/PageNotFound';
+import { findMacrocategorySizeGuideFromMacrocategory } from '../../../../../../components/utils/findMacrocategorySizeGuideFromMacrocategory';
+import { formatPercentage } from '../../../../../../components/utils/formatPercentage';
+import { numberOfLineText } from '../../../../../../components/utils/numberOfLineText';
+import { fbq } from '../../../../../lib/analytics/gtag';
+import { PixelEventType } from '../../../../../lib/analytics/eventTypes';
+import { openModal } from '../../../../../store/reducers/globalModal';
+import PageNotFound from '../../../../../../components/molecules/PageNotFound';
 
 
 
@@ -133,7 +133,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
     const colors = useRef<Color[]>(COLORS)
     const router = useRouter();
-    const { slug } = router.query;
     const [sizeSelected, setSizeSelected] = useState<string>('')
     const [getSimilarProductOnShop, shopProductsData] = useLazyQuery(GET_SIMILAR_PRODUCT_ON_SHOP);
     const [openDrawerCart, setOpenDrawerCart] = useState(false)
@@ -489,7 +488,11 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     userId: user.uid,
                     shopInfo: {
                         id: product.shopInfo.id,
-                        name: product.shopInfo.name,
+                        name: {
+                            unique: product.shopInfo.name.unique,
+                            visualized: product.shopInfo.name.visualized
+
+                        },
                         city: product.shopInfo.city,
                         status: product.shopInfo.status,
                         minimumAmountForFreeShipping: product.shopInfo.minimumAmountForFreeShipping,
@@ -1090,11 +1093,11 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                         className='text-2xl md:text-5xl mt-5 lg:mt-0 ml-2'
                         lineHeight={'normal'}
                     >
-                        {product.shopInfo.name}
+                        {product.shopInfo.name.visualized}
                     </Box>
                     <Link
                         prefetch={false}
-                        href={`/negozio/${product.shopInfo.id}/${createUrlSchema([product.shopInfo.name])}`}>
+                        href={`/@${product.shopInfo?.name?.unique}`}>
                         <Box
                             fontWeight='normal'
                             as='h1'
@@ -1103,7 +1106,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                             className='text-xl md:text-2xl w-fit ml-2'
                             lineHeight={'normal'}
                         >
-                            Altri prodotti di <span className='underline '>{product.shopInfo.name}</span>
+                            Altri prodotti di <span className='underline '>{product.shopInfo.name.visualized}</span>
                         </Box>
                     </Link>
                     <InView as="div" onChange={(inView, entry) => { handleVisibilityChange(inView) }} >
@@ -1152,7 +1155,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                                     <Box_Dress
                                                         doubleGridDevice={false}
                                                         overflowCards={true}
-                                                        productLink={`/prodotto/${product.id}/${createUrlSchema([product?.info?.brand, product.name])}`}
+                                                        productLink={`/@${product.shopInfo.name?.unique}/prodotto/${product.id}/${createUrlSchema([product?.info?.brand, product.name])}`}
                                                         showStoreHeader={false} product={product} color={typeof colors === 'string' ? colors : undefined} />
                                                 </motion.div>
 

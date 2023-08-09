@@ -24,7 +24,10 @@ const GET_LAST_ORDER_USER_FROM_SHOP = graphql(`
                 businessId
                 stripeId
                 id
-                name
+                name{
+                    unique
+                    visualized
+                }
                 photo
                 businessName
                 address{

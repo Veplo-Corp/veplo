@@ -6,7 +6,6 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import Loading from '../../../../components/molecules/Loading';
-import VariationBoxList from '../../../../components/molecules/VariationBoxList';
 import NoIndexSeo from '../../../../components/organisms/NoIndexSeo'
 import PriceAndShippingListingCost from '../../../../components/organisms/PriceAndShippingListingCost';
 import createUrlSchema from '../../../../components/utils/create_url';
@@ -70,9 +69,9 @@ const index = () => {
             //in futuro mettiamo carrello non trovato e non reindiriziamo a negozi
             timeoutId = setTimeout(() => {
                 if (shop) {
-                    router.replace(`/negozio/${shop?.id}/${createUrlSchema([shop?.name])}`)
+                    router.replace(`/@${shop?.name?.unique}`)
                 } else {
-                    router.replace(`/negozi/brand`)
+                    router.replace(`/profili/brand`)
                 }
             }, 3000); // Timeout di 4 secondi
             setCart(undefined)
@@ -331,7 +330,7 @@ const index = () => {
 
     const pushToProduct = (variation: CartProductVariation) => {
         if (!variation) return
-        router.push('/prodotto/' + variation?.productId + '/' + createUrlSchema([variation?.brand, variation?.name]) + '?colore=' + variation?.color)
+        router.push('/@' + shop?.name?.unique + '/prodotto/' + variation?.productId + '/' + createUrlSchema([variation?.brand, variation?.name]) + '?colore=' + variation?.color)
     }
 
     const handleDeleteVariations = async () => {
@@ -434,13 +433,13 @@ const index = () => {
                                 width={'fit-content'}
                             >
                                 <Link
-                                    href={'/negozio/' + shop.id + '/' + createUrlSchema([shop.name])}
+                                    href={`/@${shop?.name?.unique}`}
                                 >
                                     <ProfilePhoto
-                                        imgName={shop.name}
+                                        imgName={shop.name?.visualized}
                                         scr={shop.profilePhoto}
-                                        primaryText={shop.name}
-                                        secondaryText={shop.name}
+                                        primaryText={shop.name?.visualized}
+                                        secondaryText={'@' + shop.name?.unique}
                                     />
                                 </Link>
                             </Box>
@@ -470,6 +469,7 @@ const index = () => {
                                                         className='w-full'
                                                     >
                                                         <CheckoutProduct
+                                                            shopUniqueName={shop?.name?.unique ? shop?.name?.unique : ''}
                                                             variation={variation}
                                                             toProduct={() => pushToProduct(variation)}
                                                             deleteVariation={() => {

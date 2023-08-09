@@ -87,7 +87,7 @@ const index = () => {
         if (shop.id && (!user.favouriteShop?.id || user.favouriteShop?.id !== shop.id)) {
             const element = {
                 id: shop.id,
-                name: shop?.name,
+                name: shop?.name.visualized,
                 street: shop?.address.city + ', ' + shop?.address.street
             }
             addShopFavouriteToLocalStorage(element)

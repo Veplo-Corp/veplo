@@ -23,7 +23,10 @@ export interface Cart {
     userId: string,
     shopInfo: {
         id: string,
-        name: string,
+        name: {
+            unique: string,
+            visualized: string
+        },
         city: string,
         status: string,
         minimumAmountForFreeShipping?: number,
