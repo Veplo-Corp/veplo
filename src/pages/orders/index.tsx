@@ -72,11 +72,11 @@ const index = () => {
 
 
 
-            {data?.user?.orders && data?.user?.orders.length <= 0 && noOrders &&
+            {(data?.user?.orders && data?.user?.orders.length <= 0) || !data?.user?.orders && noOrders &&
                 <PageNotFound
                     title='non hai ancora effettuato ordini'
                     description='non hai nessun ordine collegato al tuo account'
-                    imageSrc="https://www.datocms-assets.com/102220/1686599080-undraw_cancel_re_pkdm.png"
+                    imageSrc="https://www.datocms-assets.com/102220/1691590515-undraw_web_shopping_re_owap.png"
                 />
             }
         </>

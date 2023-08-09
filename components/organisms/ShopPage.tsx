@@ -24,7 +24,7 @@ import createUrlSchema from '../utils/create_url';
 
 const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) : 12
 
-const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' }> = ({ shop, gender }) => {
+const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undefined }> = ({ shop, gender }) => {
 
 
 

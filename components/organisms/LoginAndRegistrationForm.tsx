@@ -107,7 +107,7 @@ const LoginAndRegistrationForm: FC<{
                 if (!genderName) {
                     router.replace('/profili/brand')
                 } else {
-                    router.replace(`/abbigliamento/${genderName}-tutto/tutto/rilevanza`)
+                    router.replace(`/cerca/abbigliamento/${genderName}-tutto/tutto/rilevanza`)
                 }
                 if (cartsDispatchProduct.length > 0) {
                     setTimeout(() => {
@@ -243,7 +243,7 @@ const LoginAndRegistrationForm: FC<{
                             const errorForModal = handleErrorFirebase(error.code)
                             dispatch(openModal({
                                 title: errorForModal?.title,
-                                description: "error.code = " + error.code + "error.message = " + error.message
+                                description: errorForModal?.description
                             }))
                             setIsLoading(false)
                         }
