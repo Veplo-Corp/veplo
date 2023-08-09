@@ -137,7 +137,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
             width={'full'}
           >
             <Link
-              href={'/abbigliamento/donna-abbigliamento/tutto/rilevanza'}
+              href={'/cerca/abbigliamento/donna-abbigliamento/tutto/rilevanza'}
               className='w-full'
             >
               <Button
@@ -158,7 +158,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
             </Link>
 
             <Link
-              href={'/abbigliamento/uomo-abbigliamento/tutto/rilevanza'}
+              href={'/cerca/abbigliamento/uomo-abbigliamento/tutto/rilevanza'}
               className='w-full'
             >
               <Button

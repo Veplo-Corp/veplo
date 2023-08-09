@@ -59,7 +59,7 @@ const Header = () => {
 
         if (!result) {
             router.push({
-                pathname: `/${getUnivers()}/${gender}-tutto/tutto/rilevanza`,
+                pathname: `/cerca/${getUnivers()}/${gender}-tutto/tutto/rilevanza`,
                 query: {
                     query: betterInputGeneratorResult.variables?.query
                 }
@@ -67,7 +67,7 @@ const Header = () => {
             return
         }
         router.push({
-            pathname: `/${getUnivers()}/${gender}-${typeof result.macroCategory === 'string' ? result.macroCategory.toLowerCase() : 'tutto'}/${typeof result.microCategory === 'string' ? createUrlSchema([result.microCategory]) : 'tutto'}/rilevanza`,
+            pathname: `/cerca/${getUnivers()}/${gender}-${typeof result.macroCategory === 'string' ? result.macroCategory.toLowerCase() : 'tutto'}/${typeof result.microCategory === 'string' ? createUrlSchema([result.microCategory]) : 'tutto'}/rilevanza`,
             query: {
                 ...result.filters,
                 query: betterInputGeneratorResult.variables?.query
@@ -238,7 +238,7 @@ const Header = () => {
                                                         return (
                                                             <Link
                                                                 key={element}
-                                                                href={`/${getUnivers()}/${element.toLocaleLowerCase()}-tutto/tutto/rilevanza`}
+                                                                href={`/cerca/${getUnivers()}/${element.toLocaleLowerCase()}-tutto/tutto/rilevanza`}
                                                             >
                                                                 <Popover.Button
                                                                     className='text-left font-bold text-lg py-1'
@@ -291,7 +291,7 @@ const Header = () => {
                                             >
                                                 <Link
                                                     className='flex gap-2 p-2'
-                                                    href={router.query?.prodotti ? '/profili/brand' : (gender ? `/${getUnivers()}/${gender}-tutto/tutto/rilevanza` : '/')}
+                                                    href={router.query?.prodotti ? '/profili/brand' : (gender ? `/cerca/${getUnivers()}/${gender}-tutto/tutto/rilevanza` : '/')}
                                                 >
                                                     {router.query?.prodotti ?
                                                         (<SmallShopAlt
@@ -335,7 +335,7 @@ const Header = () => {
 
 
                                                 <Link
-                                                    href={router.query.prodotti ? '/profili/brand' : (gender ? `/${getUnivers()}/${gender}-tutto/tutto/rilevanza` : '/')}
+                                                    href={router.query.prodotti ? '/profili/brand' : (gender ? `/cerca/${getUnivers()}/${gender}-tutto/tutto/rilevanza` : '/')}
                                                     className='flex h-full w-full'
                                                 >
                                                     <Button

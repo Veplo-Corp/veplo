@@ -114,6 +114,7 @@ export interface ProductsFilter extends ParsedURL {
 }
 
 const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Product[], universProps: Univers, sortProps: string }> = ({ filtersProps, error, dataProducts, universProps, sortProps }) => {
+
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(true);
     const [products, setProducts] = useState<Product[]>([])
@@ -306,7 +307,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     }, [filters?.gender])
 
     useEffect(() => {
-
         if (!data) return /* setHasMoreData(false) */
 
 
@@ -314,7 +314,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         if (newProducts.length % RANGE !== 0 || newProducts.length <= 0) {
             setHasMoreData(false)
             setIsLoading(false)
-
 
         }
 
