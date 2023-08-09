@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from 'react'
-import { ProductsFilter } from '../../src/pages/cerca/[...slug]'
 import { Box, Button, Text, useBreakpointValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
@@ -14,6 +13,7 @@ import { FilterAccepted } from '../atoms/TagFilter';
 import { GTMEventType, VeploGTMEvent } from '../../src/lib/analytics/eventTypes';
 import { Univers } from '../mook/categories';
 import { gtag } from '../../src/lib/analytics/gtag';
+import { ProductsFilter } from '../../src/pages/cerca/[prodotti]/[...slug]';
 
 
 
