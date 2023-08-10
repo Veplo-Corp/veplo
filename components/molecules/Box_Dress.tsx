@@ -252,7 +252,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                                     justifyContent={'center'}
                                                     width={'full'}
                                                     fontSize={size?.length > 6 ? 'sm' : 'lg'}
-                                                    background={'#EEEEEE'}
+                                                    className='bg-[#EEEEEE] hover:bg-[#FF5A78] hover:text-white'
                                                     borderRadius={'xl'}
                                                     onMouseEnter={() => {
                                                         const udpateUrl = manipulateUrlForProductColorAndSize(undefined, size, productLinkPage)
