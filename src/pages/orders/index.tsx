@@ -17,9 +17,8 @@ const index = () => {
     const router = useRouter()
     //const orders: Order[] = useSelector((state: any) => state.orders.orders);
     const user: Firebase_User = useSelector((state: any) => state.user.user);
-    const [getUserOrders, { error, data }] = useLazyQuery(GET_USER_ORDERS);
+    const [getUserOrders, { error, data, loading }] = useLazyQuery(GET_USER_ORDERS);
 
-    const [noOrders, setNoOrders] = useState(false)
 
     useEffect(() => {
         if (user.statusAuthentication === 'logged_out') {
@@ -33,19 +32,19 @@ const index = () => {
             }
         }
         fetchData()
-        setTimeout(() => {
-            setNoOrders(true)
-        }, 6000);
+
     }, [user])
+
+
 
 
 
     return (
         <>
             <Box
-                className='w-[95%] sm:w-11/12 md:w-11/12 lg:w-9/12 xl:w-7/12 2xl:w-6/12 m-auto mt-4 md:mt-8 mb-12 '
+                className='w-[95%] sm:w-11/12 md:w-11/12 lg:w-9/12 xl:w-7/12 2xl:w-6/12 m-auto mt-4 md:mt-8 mb-12 min-h-screen '
             >
-                {(!data?.user?.orders || data?.user?.orders.length <= 0) && !noOrders &&
+                {loading &&
                     <Box className='h-[60vh] md:h-[50vh] lg:h-[70vh] xl:h-[75vh]'
                         display={'flex'}
                         justifyContent={'center'}>
@@ -67,18 +66,19 @@ const index = () => {
                         })}
                     </VStack>
                 }
+                {data?.user?.orders === null &&
+                    <PageNotFound
+                        title='non hai ancora effettuato ordini'
+                        description='non hai nessun ordine collegato al tuo account'
+                        imageSrc="https://www.datocms-assets.com/102220/1691590515-undraw_web_shopping_re_owap.png"
+                    />
+                }
             </Box>
 
 
 
 
-            {(data?.user?.orders && data?.user?.orders.length <= 0) || !data?.user?.orders && noOrders &&
-                <PageNotFound
-                    title='non hai ancora effettuato ordini'
-                    description='non hai nessun ordine collegato al tuo account'
-                    imageSrc="https://www.datocms-assets.com/102220/1691590515-undraw_web_shopping_re_owap.png"
-                />
-            }
+
         </>
 
     )
