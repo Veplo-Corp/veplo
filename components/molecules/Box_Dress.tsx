@@ -365,7 +365,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                             <Text
                                 fontSize={doubleGridDevice ? 'sm' : 'md'}
                                 fontWeight={'medium'}
-                                mt={doubleGridDevice ? '-4px' : '-3px'}
+                                mt={doubleGridDevice ? '-4px' : '-4px'}
                                 borderRadius={'full'}
                                 noOfLines={1}
                                 color={'#909090'}

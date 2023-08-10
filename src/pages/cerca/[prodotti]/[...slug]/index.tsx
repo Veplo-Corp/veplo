@@ -706,7 +706,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             value={univers}
                             onChange={(event) => {
                                 return router.push({
-                                    pathname: `/${event.target.value}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/rilevanza`,
+                                    pathname: `/cerca/${event.target.value}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/rilevanza`,
                                 })
                             }}
                             color={'black'}

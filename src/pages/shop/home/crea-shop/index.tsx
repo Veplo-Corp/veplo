@@ -746,7 +746,8 @@ const index = () => {
                                     borderRightColor={'white'}
                                     {...register("name.unique", {
                                         required: true,
-                                        pattern: /^[A-Za-zÀ-ÿ0-9-]+$/, // Espressione regolare che accetta lettere, numeri e "-"
+                                        pattern: /^[A-Za-zÀ-ÿ0-9.\-_]+$/,
+                                        // Espressione regolare che accetta lettere, numeri e "-"
                                         onChange: () => {
                                             setIsValidUniqueName(undefined);
                                         },
