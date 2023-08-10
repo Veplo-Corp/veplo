@@ -65,12 +65,10 @@ const OrderCart: FC<{ order: Order }> = ({ order }) => {
                         display={'flex'}
                     >
                         <LazyLoadImage
-                            effect='opacity'
                             className='h-36 rounded-[10px] z-10'
                             src={imageKitUrl(order.productVariations?.[0].photo)}
                         />
                         {order.productVariations?.[1]?.photo && <LazyLoadImage
-                            effect='opacity'
                             className='my-auto h-28 rounded-[10px] z-0 -ml-24'
                             src={imageKitUrl(order.productVariations?.[1].photo)}
                         />}
