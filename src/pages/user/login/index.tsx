@@ -34,7 +34,7 @@ const index = () => {
       if (!genderName) {
         router.replace('/profili/brand')
       } else {
-        router.replace(`cerca/abbigliamento/${genderName}-tutto/tutto/rilevanza`)
+        router.replace(`/cerca/abbigliamento/${genderName}-tutto/tutto/rilevanza`)
       }
     }
     return () => {
