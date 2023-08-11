@@ -264,7 +264,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                                         <Text
                                                             fontSize={'2xs'}
                                                             fontWeight={'medium'}
-                                                            color={'primaryBlack.text'}
+                                                            className='hover:text-white'
                                                             mt={-0.5}
                                                             lineHeight={'1'}
                                                         >

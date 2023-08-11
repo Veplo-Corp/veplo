@@ -276,7 +276,7 @@ const index = () => {
 
 
 
-        if (!editedCart) return router.back()
+        if (!editedCart) return router.push(`/@${shop?.name?.unique}`)
 
 
 
@@ -303,11 +303,12 @@ const index = () => {
                     carts: NewCarts
                 })
             );
+            return router.push(`/@${shop?.name?.unique}`)
         }
         if (!user.uid) {
             localStorage.setItem('carts', JSON.stringify(NewCarts))
         }
-        if (editedCart?.productVariations?.length < 1) return router.back()
+        //if (editedCart?.productVariations?.length < 1) return router.back()
 
     }
 
