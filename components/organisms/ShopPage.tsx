@@ -183,7 +183,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                         try {
                             await navigator.share({
                                 title: 'Condividi @' + shop.name?.unique,
-                                url: 'www.vepli.it',
+                                url: 'https://www.veplo.it/@' + shop.name?.unique,
                             });
                         } catch (error) {
                             console.error('Errore durante la condivisione:', error);
