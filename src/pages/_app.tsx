@@ -52,6 +52,7 @@ const theme = extendTheme({
     secondary: {
       bg: "#37D1A9",
       text: '#FFFFFF',
+      opacityBg: '#E1FFF7',
     },
     primaryBlack: {
       text: '#222222'
