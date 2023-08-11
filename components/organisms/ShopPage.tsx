@@ -400,8 +400,8 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                         width={'full'}
                         mb={[4, 4]}
                     >
-                        <HStack spacing={2.5}
-                            className='my-2 md:my-3'
+                        <HStack spacing={[1, 2, 2.5]}
+                            className='mt-0 mb-2 md:my-1'
                         >
                             {/* <img src='https://www.datocms-assets.com/102220/1691334807-articulated-lorry.png'
                                 className='w-5 h-5 mr-2'
@@ -416,10 +416,10 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                             ))}
                         </HStack>
                         <HStack
-                            className='my-2 md:my-3'
+                            className='mt-0 mb-2 md:my-1'
                         >
                             {shop?.minimumAmountForFreeShipping && <TagComponent
-                                text={`Spedizione gratuita da ${parseInt((shop?.minimumAmountForFreeShipping / 100).toString())}€`}
+                                text={`consegna gratis da ${parseInt((shop?.minimumAmountForFreeShipping / 100).toString())}€`}
                                 bg={'secondary.opacityBg'}
                                 color={'secondary.bg'}
                             />}
