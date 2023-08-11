@@ -189,7 +189,6 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                             console.error('Errore durante la condivisione:', error);
                         }
                     }
-
                 }
             })
         }
@@ -220,6 +219,48 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
     }
 
 
+    const InfoAndFollow = () => {
+        return (
+            <>
+                <PopoverComponent
+                    actionsPopover={popoverList()}
+                    icon={
+                        <MoreHoriz
+                            className='m-auto'
+                            height={'full'}
+                            width={'full'}
+                            strokeWidth={2}
+                        />
+                    }
+                />
+                <Button
+                    variant={'primary'}
+                    borderRadius={'full'}
+                    paddingInline={[10, 10, 12, 12]}
+                    fontWeight={'extrabold'}
+                    height={[10, 10, 12, 12]}
+                    fontSize={['md', 'md', 'lg', '20px']}
+                >
+                    Segui
+                </Button>
+            </>
+
+
+        )
+    }
+
+    const TextFollower = () => {
+        return (
+            <Text
+                mr={'5px'}
+                fontSize={['13px', '13px', '14px']}
+                mt={'2px'}
+                fontWeight={'semibold'}
+                textAlign={'end'}
+                color={'#909090'}
+            >23 follower</Text>
+        )
+    }
 
     return (
         <Desktop_Layout
@@ -289,26 +330,20 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                                     className='m-auto h-full w-full p-[4px] lg:p-[5px] rounded-full'
                                 />
                             </Box>
-
+                        </Box>
+                        <Box
+                            className='lg:hidden mt-1 mr-2'
+                        >
+                            <Box
+                                display={'flex'}
+                                gap={[1.5, 1.5, 2.5]}>
+                                <InfoAndFollow />
+                            </Box>
+                            <TextFollower />
                         </Box>
 
-                        {shop.minimumAmountForFreeShipping && <Box
-                            fontSize={['sm', 'md']}
-                            fontWeight={'bold'}
-                            color={'primaryBlack.text'}
-                            top={3}
-                            noOfLines={1}
-                            mr={[1.5, 0]}
-                            mt={4}
-                            display={'flex'}
 
 
-                        >
-                            {/* <img src='https://www.datocms-assets.com/102220/1691334807-articulated-lorry.png'
-                                className='w-5 h-5 mr-2'
-                            /> */}
-                            Spedizione gratuita da {parseInt((shop.minimumAmountForFreeShipping / 100).toString())}€
-                        </Box>}
                     </Box>
                 </motion.div>
 
@@ -321,6 +356,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                     <Box
                         display={'flex'}
                         justifyContent={'space-between'}
+                        mb={[2, 4]}
                     >
                         <Box
                             my={'auto'}
@@ -339,41 +375,55 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                                 noOfLines={1}
                                 color={'#909090'}
                                 zIndex={10}
-                                mb={[4, 4]}
+
                             >
                                 @{shop.name?.unique}
                             </Text>
-                            <HStack spacing={2.5}
-                                className='my-2 md:my-3'
-                            >
-                                {shop.categories && shop.categories.map((category) => (
-                                    <TagComponent
-                                        key={category}
-                                        text={category}
-                                        bg={'primary.opacityBg'}
-                                        color={'primary.bg'}
-                                    />
-                                ))}
-                            </HStack>
+                        </Box>
 
+                        <Box
+                            className='hidden lg:grid'
+                        >
+                            <Box
+                                display={'flex'}
+                                gap={2.5}>
+                                <InfoAndFollow />
+                            </Box>
+                            <TextFollower />
                         </Box>
 
 
-                        <Box display={'flex'} gap={2}>
-                            <PopoverComponent
-                                actionsPopover={popoverList()}
-                                icon={
-                                    <MoreHoriz
-                                        className='m-auto'
-                                        height={'full'}
-                                        width={'full'}
-                                        strokeWidth={2}
-                                    />
-                                }
-                            />
-
-                        </Box>
-
+                    </Box>
+                    <Box
+                        display={'flex'}
+                        justifyContent={'space-between'}
+                        width={'full'}
+                        mb={[4, 4]}
+                    >
+                        <HStack spacing={2.5}
+                            className='my-2 md:my-3'
+                        >
+                            {/* <img src='https://www.datocms-assets.com/102220/1691334807-articulated-lorry.png'
+                                className='w-5 h-5 mr-2'
+                            /> */}
+                            {shop.categories && shop.categories.map((category) => (
+                                <TagComponent
+                                    key={category}
+                                    text={category}
+                                    bg={'primary.opacityBg'}
+                                    color={'primary.bg'}
+                                />
+                            ))}
+                        </HStack>
+                        <HStack
+                            className='my-2 md:my-3'
+                        >
+                            {shop?.minimumAmountForFreeShipping && <TagComponent
+                                text={`Spedizione gratuita da ${parseInt((shop?.minimumAmountForFreeShipping / 100).toString())}€`}
+                                bg={'secondary.opacityBg'}
+                                color={'secondary.bg'}
+                            />}
+                        </HStack>
 
                     </Box>
 
