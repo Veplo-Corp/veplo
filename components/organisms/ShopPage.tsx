@@ -6,7 +6,7 @@ import { numberOfLineText } from '../utils/numberOfLineText';
 import { useLazyQuery } from '@apollo/client';
 import GET_PRODUCTS_FROM_SHOP from '../../src/lib/apollo/queries/geetProductsShop';
 import PopoverComponent, { ActionsPopover } from '../molecules/PopoverComponent';
-import { Instagram, MoreHoriz, SmallShopAlt, TikTok } from 'iconoir-react';
+import { Instagram, MoreHoriz, ShareIos, SmallShopAlt, TikTok } from 'iconoir-react';
 import Desktop_Layout from '../atoms/Desktop_Layout';
 import NoIndexSeo from './NoIndexSeo';
 import PostMeta from './PostMeta';
@@ -21,6 +21,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { CATEGORIES } from '../mook/categories';
 import Box_Dress from '../molecules/Box_Dress';
 import createUrlSchema from '../utils/create_url';
+import { isMobile } from 'react-device-detect';
 
 const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) : 12
 
@@ -170,6 +171,28 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                 }
             })
         }
+        if (isMobile) {
+            actionsPopoverElements.push({
+                title: 'Condividi lo shop',
+                icon: <ShareIos
+                    className='w-7 h-7 my-auto'
+                    strokeWidth={1.5}
+                />,
+                handleClick: async () => {
+                    if (navigator.share) {
+                        try {
+                            await navigator.share({
+                                title: 'Condividi @' + shop.name?.unique,
+                                url: 'www.vepli.it',
+                            });
+                        } catch (error) {
+                            console.error('Errore durante la condivisione:', error);
+                        }
+                    }
+
+                }
+            })
+        }
 
 
 
@@ -281,9 +304,9 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
 
 
                         >
-                            <img src='https://www.datocms-assets.com/102220/1691334807-articulated-lorry.png'
+                            {/* <img src='https://www.datocms-assets.com/102220/1691334807-articulated-lorry.png'
                                 className='w-5 h-5 mr-2'
-                            />
+                            /> */}
                             Spedizione gratuita da {parseInt((shop.minimumAmountForFreeShipping / 100).toString())}€
                         </Box>}
                     </Box>
@@ -336,23 +359,27 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                         </Box>
 
 
+                        <Box display={'flex'} gap={2}>
+                            <PopoverComponent
+                                actionsPopover={popoverList()}
+                                icon={
+                                    <MoreHoriz
+                                        className='m-auto'
+                                        height={'full'}
+                                        width={'full'}
+                                        strokeWidth={2}
+                                    />
+                                }
+                            />
 
-                        <PopoverComponent
-                            actionsPopover={popoverList()}
-                            icon={
-                                <MoreHoriz
-                                    className='m-auto'
-                                    height={'full'}
-                                    width={'full'}
-                                    strokeWidth={2}
-                                />
-                            } />
+                        </Box>
+
 
                     </Box>
 
                     {shop.info && shop.info.description &&
                         <Box
-                            className='lg:w-10/12 mb-3'
+                            className='lg:w-8/12 mb-3'
                         >
                             <Text
                                 noOfLines={!showAllDescriptionShop || descriptionRefTextLength <= 3 ? 3 : 100}
