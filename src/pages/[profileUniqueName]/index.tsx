@@ -41,7 +41,6 @@ export async function getStaticProps(ctx: any) {
         }
 
     } catch (e) {
-        console.log(e);
 
         return {
             props: {
@@ -60,7 +59,6 @@ export async function getStaticProps(ctx: any) {
 
 
 const index: React.FC<{ shop: GetShopQuery["shop"] }> = ({ shop }) => {
-    console.log(shop);
 
     return (
         <ShopPage
