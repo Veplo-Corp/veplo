@@ -129,7 +129,8 @@ const LoginAndRegistrationForm: FC<{
             if (type === 'login') {
                 try {
                     const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password)
-                    const tokenResult = await userCredential.user.getIdTokenResult();
+                    if (!userCredential) return
+                    const tokenResult = await userCredential?.user?.getIdTokenResult();
                     const isBusiness = tokenResult.claims.isBusiness ? true : false;
                     setAuthTokenInSessionStorage(tokenResult.token)
                     await handleCartInLocalStorage()

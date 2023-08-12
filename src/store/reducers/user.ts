@@ -64,11 +64,19 @@ export const userState = createSlice({
           gategoryTypeSelected: action.payload
         }
       }
+    },
+    changeFavouriteShops: (state, action) => {
+      if (action.payload) {
+        state.user = {
+          ...state.user,
+          favouriteShops: action.payload.favouriteShops
+        }
+      }
     }
   },
 });
 
-export const { login, logout, addFavouriteShopBusiness, changeName, changeGenderSelected, changeUnivers } = userState.actions;
+export const { login, logout, addFavouriteShopBusiness, changeName, changeGenderSelected, changeUnivers, changeFavouriteShops } = userState.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUser = (state: RootState) => state.user.user;

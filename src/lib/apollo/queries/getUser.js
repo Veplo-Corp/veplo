@@ -13,6 +13,9 @@ const GET_USER = graphql(`
             email,
             phone,
             gender,
+            following{
+                shopId
+            }
             createdAt,
             carts{
                 carts

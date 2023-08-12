@@ -11,6 +11,11 @@ const GET_SHOPS = graphql(`
         visualized
       }
       status
+      stats{
+        followers
+        averagePrice
+        productsQuantity
+      }
       profileCover
       profilePhoto
       stats{

@@ -45,6 +45,11 @@ const User_Popover = () => {
             href: '/orders',
         },
         {
+            name: 'Seguiti',
+            description: 'i tuoi seguiti',
+            href: '/profili/seguiti',
+        },
+        {
             name: 'Impostazioni',
             description: 'gestisci le impostazioni',
             href: '/user/settings',

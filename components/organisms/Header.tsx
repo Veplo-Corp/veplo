@@ -140,7 +140,7 @@ const Header = () => {
 
 
     const handleScroll = () => {
-        if (!isSmallView && !isHeaderVisible) {
+        if (!isSmallView) {
             return setIsHeaderVisible(true)
         }
         const currentScrollY = window.scrollY;
