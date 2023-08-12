@@ -28,6 +28,8 @@ import FOLLOW from '../../src/lib/apollo/mutations/follow';
 import UNFOLLOW from '../../src/lib/apollo/mutations/unfollow';
 
 import { changeFavouriteShops } from '../../src/store/reducers/user';
+import ModalReausable from './ModalReausable';
+import LoginAndRegistrationForm from './LoginAndRegistrationForm';
 
 const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) : 12
 
@@ -64,6 +66,8 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
     const [unfollowShop] = useMutation(UNFOLLOW);
     const dispatch = useDispatch();
     const [onFollowLoading, setOnFollowLoading] = useState(false)
+    const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('login')
+    const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
 
     console.log(user);
 
@@ -205,6 +209,26 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                     }
                 }
             })
+        } else {
+            actionsPopoverElements.push({
+                title: 'Copia link profilo',
+                icon: <ShareIos
+                    className='w-7 h-7 my-auto'
+                    strokeWidth={1.5}
+                />,
+                handleClick: async () => {
+                    if (navigator.share) {
+                        try {
+                            await navigator.share({
+                                title: 'Condividi @' + shop.name?.unique,
+                                url: 'https://www.veplo.it/@' + shop.name?.unique,
+                            });
+                        } catch (error) {
+                            console.error('Errore durante la condivisione:', error);
+                        }
+                    }
+                }
+            })
         }
 
 
@@ -243,6 +267,9 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
 
 
     const addFollow = async () => {
+        if (user.statusAuthentication === 'logged_out') {
+            return setIsOpenLoginModal(true)
+        }
         const isFollowed = isShopFollower();
         let favouriteShops = user.favouriteShops ? [...user.favouriteShops] : [];
         setOnFollowLoading(true)
@@ -632,6 +659,21 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                     </div>
                 }
             </InfiniteScroll>
+            <ModalReausable
+                marginTop={0}
+                title='' isOpen={isOpenLoginModal}
+                closeModal={() => setIsOpenLoginModal(false)}
+            >
+                <LoginAndRegistrationForm
+                    open='modal'
+                    type={typeLogin}
+                    person='user'
+                    handleChangeTypeOrPerson={(type, person) => {
+                        if (person === 'business') return
+                        setTypeLogin(type)
+                    }}
+                />
+            </ModalReausable>
 
 
 

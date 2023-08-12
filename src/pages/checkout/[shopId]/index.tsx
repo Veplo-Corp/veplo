@@ -223,7 +223,7 @@ const index = () => {
             setIsLoading(false)
             dispatch(openModal({
                 title: 'Errore imprevisto',
-                description: 'Ci, dispiace, ma non siamo riusciti ad aggiornare il carrello. Riprova tra poco.'
+                description: 'Ci dispiace, ma non siamo riusciti ad aggiornare il carrello. Riprova tra poco.'
             }))
 
         }
@@ -251,7 +251,7 @@ const index = () => {
             setIsLoading(false)
             dispatch(openModal({
                 title: 'Errore imprevisto',
-                description: 'Ci, dispiace, ma non siamo riusciti ad aggiornare il carrello. Riprova tra poco.'
+                description: 'Ci dispiace, ma non siamo riusciti ad aggiornare il carrello. Riprova tra poco.'
             }))
         }
 
