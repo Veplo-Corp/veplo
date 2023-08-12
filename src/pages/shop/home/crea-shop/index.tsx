@@ -40,6 +40,7 @@ import { uploadImage } from '../../../../lib/upload/uploadImage'
 import { UploadEventType } from '../../../../lib/upload/UploadEventTypes'
 import SelectStringOption from '../../../../../components/atoms/SelectStringOption'
 import { Cancel, CheckCircle } from 'iconoir-react'
+import expirationTimeTokenControll from '../../../../../components/utils/expirationTimeTokenControll'
 
 
 
@@ -377,6 +378,8 @@ const index = () => {
     }
 
     const submitData = async (e: IFormInput) => {
+        const resolve = await expirationTimeTokenControll(user.expirationTime)
+        if (!resolve) return
         // const url = await uploadPhotoFirebase(image?.blob, `/${user.uid}/shop_image/immagine`)
 
         setIsLoading(true)

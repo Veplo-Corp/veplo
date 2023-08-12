@@ -78,6 +78,9 @@ function createApolloClient() {
                 Product: {
                     keyFields: ["id"],
                 },
+                User: {
+                    keyFields: ["id"],
+                },
                 ShopInfo: {
                     keyFields: false,
                     merge: false,
