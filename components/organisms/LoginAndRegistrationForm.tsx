@@ -79,7 +79,6 @@ const LoginAndRegistrationForm: FC<{
                         //TODO gestire errore
                     }
                 }
-                return
             }
         }
 
