@@ -76,6 +76,7 @@ const index = () => {
             variables: {
                 id: '640c9f3aff10cf6f8c8df3f7'
             },
+
             //!useless
             fetchPolicy: 'cache-first',
             nextFetchPolicy: 'cache-only',

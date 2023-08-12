@@ -3,7 +3,11 @@ import { graphql } from '../generated/gql'
 
 
 const GET_USER = graphql(`
-    query user{
+    query user(
+        $limit: Int!
+        $offset: Int!
+        $onlyIds: Boolean!
+    ){
         user{
             id,
             name,
@@ -13,7 +17,11 @@ const GET_USER = graphql(`
             email,
             phone,
             gender,
-            following{
+            following(
+                limit: $limit
+                offset: $offset
+                onlyIds: $onlyIds
+            ){
                 shopId
             }
             createdAt,

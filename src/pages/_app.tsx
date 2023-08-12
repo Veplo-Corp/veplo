@@ -294,7 +294,13 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               }
             })
           );
-          getUser().then((data) => {
+          getUser({
+            variables: {
+              limit: 0,
+              offset: 0,
+              onlyIds: true
+            }
+          }).then((data) => {
             if (!data.data) return
             console.log(data.data.user);
 
