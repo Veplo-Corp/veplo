@@ -15,7 +15,7 @@ import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter';
 import { LIST_ITEM_VARIANT } from '../mook/transition';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { imageKitUrl } from '../utils/imageKitUrl';
-import { Box, Button, ButtonGroup, HStack, Text } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, HStack, Text, useClipboard } from '@chakra-ui/react';
 import TagComponent from '../atoms/TagComponent';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { CATEGORIES } from '../mook/categories';
@@ -30,10 +30,12 @@ import UNFOLLOW from '../../src/lib/apollo/mutations/unfollow';
 import { changeFavouriteShops } from '../../src/store/reducers/user';
 import ModalReausable from './ModalReausable';
 import LoginAndRegistrationForm from './LoginAndRegistrationForm';
+import { ToastOpen } from '../utils/Toast';
 
 const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) : 12
 
 const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undefined }> = ({ shop, gender }) => {
+    const { onCopy, value, setValue, hasCopied } = useClipboard('https://www.veplo.it/@' + shop?.name?.unique);
 
 
 
@@ -68,6 +70,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
     const [onFollowLoading, setOnFollowLoading] = useState(false)
     const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('login')
     const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
+    const { addToast } = ToastOpen();
 
     console.log(user);
 
@@ -217,16 +220,8 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                     strokeWidth={1.5}
                 />,
                 handleClick: async () => {
-                    if (navigator.share) {
-                        try {
-                            await navigator.share({
-                                title: 'Condividi @' + shop.name?.unique,
-                                url: 'https://www.veplo.it/@' + shop.name?.unique,
-                            });
-                        } catch (error) {
-                            console.error('Errore durante la condivisione:', error);
-                        }
-                    }
+                    onCopy();
+                    return addToast({ position: 'bottom', title: 'link profilo copiato', status: 'success', duration: 2000, isClosable: true })
                 }
             })
         }
