@@ -31,6 +31,8 @@ import { changeFavouriteShops } from '../../src/store/reducers/user';
 import ModalReausable from './ModalReausable';
 import LoginAndRegistrationForm from './LoginAndRegistrationForm';
 import { ToastOpen } from '../utils/Toast';
+import expirationTimeTokenControll from '../utils/expirationTimeTokenControll';
+import GET_USER from '../../src/lib/apollo/queries/getUser';
 
 const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) : 12
 
@@ -151,6 +153,8 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
         })
     }
 
+
+
     const popoverList = (): ActionsPopover[] => {
         const actionsPopoverElements: ActionsPopover[] = [];
         if (shop.links?.instagram) {
@@ -229,6 +233,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
 
 
 
+
         if (shop.info?.phone) {
             actionsPopoverElements.push({
                 title: 'Indicazioni',
@@ -262,6 +267,8 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
 
 
     const addFollow = async () => {
+        const resolve = await expirationTimeTokenControll(user.expirationTime)
+        if (!resolve) return
         if (user.statusAuthentication === 'logged_out') {
             return setIsOpenLoginModal(true)
         }
@@ -469,8 +476,8 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                             </Text>
                             <Text
                                 fontSize={['md', 'lg']}
-                                fontWeight={'medium'}
-                                mt={['-5px', '-3px']}
+                                fontWeight={'normal'}
+                                mt={['-5px', '-5px']}
                                 borderRadius={'full'}
                                 noOfLines={1}
                                 color={'#909090'}

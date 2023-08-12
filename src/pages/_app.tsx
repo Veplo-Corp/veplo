@@ -291,7 +291,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
               expirationTime: tokenResult.expirationTime,
               userInfo: {
                 name: userAuth.displayName
-              }
+              },
             })
           );
           getUser({

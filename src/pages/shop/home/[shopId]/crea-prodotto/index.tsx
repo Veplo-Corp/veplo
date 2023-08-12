@@ -28,6 +28,9 @@ import { TRAITS_TYPES } from '../../../../../../components/mook/productParameter
 import axios, { AxiosResponse } from 'axios'
 import { uploadImage } from '../../../../../lib/upload/uploadImage'
 import { UploadEventType } from '../../../../../lib/upload/UploadEventTypes'
+import expirationTimeTokenControll from '../../../../../../components/utils/expirationTimeTokenControll'
+import { Firebase_User } from '../../../../../interfaces/firebase_user.interface'
+import { useSelector } from 'react-redux'
 
 export interface IFormInputProduct {
     univers: Univers,
@@ -161,6 +164,7 @@ const index = () => {
 
         }
     });
+    const user: Firebase_User = useSelector((state: any) => state.user.user);
 
 
 
@@ -246,6 +250,8 @@ const index = () => {
 
 
     const createProductHandler = async () => {
+        const resolve = await expirationTimeTokenControll(user.expirationTime)
+        if (!resolve) return
         const v1 = Math.floor(Number(watch('price').replace(',', '.')) * 100)
 
         if (!v1 || v1 <= 0) return

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Divider, HStack, Image, Tag, TagLabel, VStack } from '@chakra-ui/react'
+import { Box, Divider, HStack, Image, Tag, TagLabel, Text, VStack } from '@chakra-ui/react'
 import { Shop } from '../../src/interfaces/shop.interface'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
@@ -23,21 +23,21 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                 <Box
                     fontWeight='medium'
                     as='h2'
-                    fontSize={['15px', '17px']}
+                    fontSize={['15px', '17px', '15px', '17px']}
                     color={'#909090'}
                     lineHeight={'4'}
                     my={'auto'}
-                    mb={'6px'}
+                    mt={[0, '13px', '13px']}
                     noOfLines={1}
                 >
                     {shop.stats?.productsQuantity} prodott{shop.stats?.productsQuantity && shop.stats?.productsQuantity > 1 ? 'i' : 'o'}
                 </Box>
-                <div className="w-[4px] h-[4px] sm:w-[5px] sm:h-[5px] rounded-full bg-[#909090] my-auto mb-3 "></div>
-                <Box display={'flex'} gap={[1.5, '8px']} className='my-auto mb-[3px] '>
+                <div className="w-[4px] h-[4px] sm:w-[5px] sm:h-[5px]  rounded-full bg-[#909090] my-auto mb-2 sm:mt-5 "></div>
+                <Box display={'flex'} gap={[1.5, '8px']} className='my-auto sm:mt-[10px] md:mt-[14px] lg:mt-[12px] xl:mt-[12px] '>
                     {Array.from({ length: numImages }).map((_, index) => (
                         <img
                             key={index}
-                            className='h-5 w-5 sm:h-6 sm:w-6 '
+                            className='h-5 w-5 sm:h-6 sm:w-6 md:h-4 md:w-4 lg:h-5 lg:w-5 xl:h-6 xl:w-6'
                             src={'https://www.datocms-assets.com/102220/1691248108-money-with-wings_1f4b8-1.png'}
                             alt='Money with wings'
                         />
@@ -51,15 +51,31 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
     const ShopName = () => {
         return (
             <Box
-                fontWeight='extrabold'
-                as='h2'
-                noOfLines={1}
-                fontSize={['22px', '30px']}
-                lineHeight={'normal'}
-                mb={0}
             >
-                {toUpperCaseFirstLetter(shop.name?.visualized)}
+                <Text
+                    fontWeight='extrabold'
+                    as='h2'
+                    noOfLines={1}
+                    fontSize={['22px', '30px', '20px', '24px', '30px']}
+                    lineHeight={'normal'}
+                    mb={0}
+                >
+                    {toUpperCaseFirstLetter(shop.name?.visualized)}
+                </Text>
+                <Text
+                    fontWeight={'normal'}
+                    as='h2'
+                    noOfLines={1}
+                    color={'#909090'}
+                    fontSize={['14px', '18px', '14px', '16px', '18px']}
+                    lineHeight={['normal']}
+                    mb={0}
+                    mt={['-2px', -1]}
+                >
+                    @{shop.name?.unique}
+                </Text>
             </Box>
+
         )
     }
 
@@ -191,7 +207,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
 
                 <Box pb={1} pl={8} display={'flex'} gap={'10px'}>
                     <ShopName />
-                    <div className="w-[5px] h-[5px] rounded-full bg-[#909090] my-auto mb-3 "></div>
+                    <div className="w-[5px] h-[5px] rounded-full bg-[#909090] my-auto mt-5 "></div>
                     <ShopInfo />
                 </Box>
 
