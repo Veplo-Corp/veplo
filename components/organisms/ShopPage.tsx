@@ -74,7 +74,6 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
     const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
     const { addToast } = ToastOpen();
 
-    console.log(user);
 
 
     useEffect(() => {

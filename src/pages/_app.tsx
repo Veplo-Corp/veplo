@@ -302,7 +302,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             }
           }).then((data) => {
             if (!data.data) return
-            console.log(data.data.user);
 
             if (data.data.user?.following) {
               const following = data.data.user?.following.map((shop) => {

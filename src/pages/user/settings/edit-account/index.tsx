@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { Box, Button, ButtonGroup, Divider, IconButton, Input, InputGroup, Spinner, VStack } from '@chakra-ui/react';
 import { sendPasswordResetEmail, updateProfile } from 'firebase/auth';
 import React, { useEffect, useState } from 'react'
@@ -26,7 +26,13 @@ interface Props {
 const index = () => {
     const { addToast } = ToastOpen();
 
-    const [getUser, user] = useLazyQuery<Props>(GET_USER);
+    const { data } = useQuery(GET_USER, {
+        variables: {
+            limit: 0,
+            offset: 0,
+            onlyIds: true
+        }
+    });
     const [isOpenPasswordModal, setIsOpenPasswordModal] = useState(false)
     const [isOpenNameModal, setIsOpenNameModal] = useState(false)
     const [userName, setuserName] = useState({
@@ -41,16 +47,12 @@ const index = () => {
     const [editUserInfo] = useMutation(EDIT_USER_INFO, {
         update(cache, el, query) {
 
-            //!testare se non serve
-            const user = cache.readQuery<any>({
-                query: GET_USER,
-
-            });
 
 
 
 
-            const normalizedId = cache.identify({ id: user.user.id, __typename: 'User' });
+
+            const normalizedId = cache.identify({ id: data?.user?.id, __typename: 'User' });
 
             cache.modify({
                 id: normalizedId,
@@ -72,28 +74,19 @@ const index = () => {
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
-        getUser({
-            variables: {
-                id: '640c9f3aff10cf6f8c8df3f7'
-            },
-
-            //!useless
-            fetchPolicy: 'cache-first',
-            nextFetchPolicy: 'cache-only',
-        }).then(user => {
-            if (!user.data?.user.name && !user.data?.user.surname) return
+        if (data?.user) {
             setuserName({
-                name: user.data?.user.name,
-                surname: user.data?.user.surname,
+                name: data?.user?.name ? data?.user?.name : '',
+                surname: data?.user?.surname ? data?.user?.surname : '',
             })
-        })
-    }, [])
+        }
+    }, [data])
 
 
     const editPassword = async () => {
-        if (!user?.data?.user.email) return
+        if (!data?.user?.email) return
         try {
-            await sendPasswordResetEmail(auth, user?.data.user.email)
+            await sendPasswordResetEmail(auth, data.user.email)
             setIsOpenPasswordModal(true)
         } catch (e) {
 
@@ -102,11 +95,11 @@ const index = () => {
     }
 
     const editNameOrSurname = async () => {
-        if (user.data?.user.name === userName.name && user.data?.user.surname === userName.surname || isLoading) return
+        if (data?.user?.name === userName.name && data?.user.surname === userName.surname || isLoading) return
 
         setIsLoading(true)
         try {
-            const response = await editUserInfo({
+            await editUserInfo({
                 variables: {
                     options: {
                         name: userName.name,
@@ -124,26 +117,29 @@ const index = () => {
 
             setIsLoading(false);
             setIsOpenNameModal(false)
-        } catch {
+        } catch (e: any) {
+
             setIsLoading(false)
             return addToast({ position: 'top', title: "c'è stato un problema", description: 'non siamo riusciti a modificare le informazioni', status: 'error', duration: 5000, isClosable: true })
         }
 
     }
 
+
+
     return (
         <>
             <Desktop_Layout>
                 <div className='flex w-full mt-8 md:mt-10' >
                     <div className='md:p-3 space-y-4 m-auto w-full md:w-8/12 lg:w-1/2'>
-                        {user?.data && <SettingsCard title='Impostazioni'>
+                        {data && <SettingsCard title='Impostazioni'>
                             <Box
                                 paddingY={5}
                                 paddingX={8}
                                 display={'flex'}
                                 justifyContent={'space-between'}
                             >
-                                <Box>{user?.data.user.email}</Box>
+                                <Box>{data?.user?.email}</Box>
 
                             </Box>
                             <Divider
@@ -176,7 +172,7 @@ const index = () => {
                                 <Box
                                     marginY={'auto'}
                                 >
-                                    {user?.data.user.name}  {user?.data.user.surname}
+                                    {data?.user?.name}  {data?.user?.surname}
                                 </Box>
 
                                 <IconButton
@@ -200,7 +196,7 @@ const index = () => {
                     fontWeight={'normal'}
                     color={'gray.500'}
                 >
-                    ti abbiamo appena inviato una mail a {user.data?.user.email}!
+                    ti abbiamo appena inviato una mail a {data?.user?.email}!
                 </Box>
                 <ButtonGroup gap='4'
                     marginTop={5}
