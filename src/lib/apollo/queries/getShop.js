@@ -15,6 +15,11 @@ const GET_SHOP = graphql(`
                 visualized
             }
             categories
+            stats{
+                followers
+                averagePrice
+                productsQuantity
+            }
             createdAt
             status
             profilePhoto

@@ -3,7 +3,7 @@ import { GetShopQuery, Product, ProductsQueryResponse } from '../../src/lib/apol
 import PageNotFound from '../molecules/PageNotFound';
 import { useRouter } from 'next/router';
 import { numberOfLineText } from '../utils/numberOfLineText';
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import GET_PRODUCTS_FROM_SHOP from '../../src/lib/apollo/queries/geetProductsShop';
 import PopoverComponent, { ActionsPopover } from '../molecules/PopoverComponent';
 import { Instagram, MoreHoriz, ShareIos, SmallShopAlt, TikTok } from 'iconoir-react';
@@ -22,6 +22,12 @@ import { CATEGORIES } from '../mook/categories';
 import Box_Dress from '../molecules/Box_Dress';
 import createUrlSchema from '../utils/create_url';
 import { isMobile } from 'react-device-detect';
+import { Firebase_User } from '../../src/interfaces/firebase_user.interface';
+import { useDispatch, useSelector } from 'react-redux';
+import FOLLOW from '../../src/lib/apollo/mutations/follow';
+import UNFOLLOW from '../../src/lib/apollo/mutations/unfollow';
+
+import { changeFavouriteShops } from '../../src/store/reducers/user';
 
 const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) : 12
 
@@ -53,6 +59,14 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
     const [descriptionRefTextLength, setDescriptionRefTextLength] = useState(0)
     const descriptionRefText = useRef<any>(null);
     const [genderSelected, setGenderSelected] = useState<'f' | 'm'>()
+    const user: Firebase_User = useSelector((state: any) => state.user.user);
+    const [followShop] = useMutation(FOLLOW);
+    const [unfollowShop] = useMutation(UNFOLLOW);
+    const dispatch = useDispatch();
+    const [onFollowLoading, setOnFollowLoading] = useState(false)
+
+    console.log(user);
+
 
     useEffect(() => {
         if (descriptionRefText.current) {
@@ -217,9 +231,66 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
         return actionsPopoverElements;
 
     }
+    const isShopFollower = () => {
+        const shopId = shop.id
+        if (!user?.favouriteShops || !shopId) return false
+        const result = user?.favouriteShops?.filter((element: string) => element === shopId)
+        if (!result || result.length <= 0) return false
+        return true
+    }
 
+
+
+
+    const addFollow = async () => {
+        const isFollowed = isShopFollower();
+        let favouriteShops = user.favouriteShops ? [...user.favouriteShops] : [];
+        setOnFollowLoading(true)
+        if (!shop.id) return
+        if (!isFollowed) {
+            favouriteShops.push(shop.id);
+            dispatch(changeFavouriteShops({
+                favouriteShops: favouriteShops
+            }))
+
+            try {
+                await followShop({
+                    variables: {
+                        id: shop.id
+                    }
+                })
+                setOnFollowLoading(false)
+            }
+            catch {
+                //TODO handle error follow
+                setOnFollowLoading(false)
+
+            }
+        } else {
+
+            dispatch(changeFavouriteShops({
+                favouriteShops: favouriteShops?.filter((shopId: string) => shopId !== shop.id)
+            }))
+
+            try {
+                await unfollowShop({
+                    variables: {
+                        id: shop.id
+                    }
+                })
+                setOnFollowLoading(false)
+
+            }
+            catch {
+                //TODO handle error follow
+                setOnFollowLoading(false)
+
+            }
+        }
+    }
 
     const InfoAndFollow = () => {
+
         return (
             <>
                 <PopoverComponent
@@ -234,14 +305,21 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                     }
                 />
                 <Button
-                    variant={'primary'}
+                    onClick={addFollow}
+                    variant={isShopFollower() ? 'grayPrimary' : 'primary'}
                     borderRadius={'full'}
-                    paddingInline={[10, 10, 12, 12]}
-                    fontWeight={'extrabold'}
-                    height={[10, 10, 12, 12]}
-                    fontSize={['md', 'md', 'lg', '20px']}
+                    //paddingInline={isShopFollower() ? [6, 6, 7, 7] : [10, 10, 12, 12]}
+                    width={[28, 28, 32, 32]}
+                    fontWeight={isShopFollower() ? 'semibold' : 'extrabold'}
+                    height={[9, 9, 12, 12]}
+                    fontSize={['md', 'md', 'lg', 'lg']}
+                    isDisabled={onFollowLoading}
+                    _disabled={{
+                    }}
+                    _hover={{
+                    }}
                 >
-                    Segui
+                    {isShopFollower() ? 'segui già' : 'segui'}
                 </Button>
             </>
 
@@ -258,7 +336,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                 fontWeight={'semibold'}
                 textAlign={'end'}
                 color={'#909090'}
-            >23 follower</Text>
+            >{shop.stats?.followers} follower</Text>
         )
     }
 
@@ -331,7 +409,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                                 />
                             </Box>
                         </Box>
-                        <Box
+                        {((user.statusAuthentication === 'logged_in' && (user.favouriteShops)) || user.statusAuthentication === 'logged_out') && <Box
                             className='lg:hidden mt-1 mr-2'
                         >
                             <Box
@@ -339,8 +417,8 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                                 gap={[1.5, 1.5, 2.5]}>
                                 <InfoAndFollow />
                             </Box>
-                            <TextFollower />
-                        </Box>
+                            {/* <TextFollower /> */}
+                        </Box>}
 
 
 
@@ -381,7 +459,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                             </Text>
                         </Box>
 
-                        <Box
+                        {((user.statusAuthentication === 'logged_in' && (user.favouriteShops)) || user.statusAuthentication === 'logged_out') && <Box
                             className='hidden lg:grid'
                         >
                             <Box
@@ -389,8 +467,8 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                                 gap={2.5}>
                                 <InfoAndFollow />
                             </Box>
-                            <TextFollower />
-                        </Box>
+                            {/* <TextFollower /> */}
+                        </Box>}
 
 
                     </Box>

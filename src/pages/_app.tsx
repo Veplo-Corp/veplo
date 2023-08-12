@@ -8,7 +8,7 @@ import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from '../store/store'
 import { FC, useEffect, useRef, useState } from 'react'
 import { auth, onAuthStateChanged, signOut } from '../config/firebase'
-import user, { addFavouriteShopBusiness, login, logout } from '../store/reducers/user'
+import user, { addFavouriteShopBusiness, changeFavouriteShops, login, logout } from '../store/reducers/user'
 import { setAddress } from '../store/reducers/address_user'
 import { useRouter } from 'next/router'
 import { ApolloProvider, useLazyQuery } from '@apollo/client'
@@ -113,6 +113,7 @@ const theme = extendTheme({
           },
 
         },
+
         whiteButton: {
           bg: "white", // Usa il colore primario come sfondo
           color: "secondaryBlack.text", // Testo bianco
@@ -295,6 +296,21 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
           );
           getUser().then((data) => {
             if (!data.data) return
+            console.log(data.data.user);
+
+            if (data.data.user?.following) {
+              const following = data.data.user?.following.map((shop) => {
+                return shop.shopId
+              })
+              dispatch(changeFavouriteShops({
+                favouriteShops: following
+              }))
+            } else {
+              dispatch(changeFavouriteShops({
+                favouriteShops: []
+              }))
+            }
+
             let carts: Cart[] = data?.data?.user?.carts?.carts ? data?.data?.user?.carts?.carts : []
             carts = carts.map(cart => {
               if (!cart?.productVariations || cart?.productVariations?.length > 0) {

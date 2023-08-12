@@ -14,6 +14,7 @@ export interface Firebase_User {
         id: string,
         street: string
     }
+    favouriteShops?: string[],
     userInfo?: {
         stripeId?: string,
         name?: string,
