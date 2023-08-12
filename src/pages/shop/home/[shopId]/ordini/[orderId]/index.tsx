@@ -1,5 +1,5 @@
 import { useLazyQuery, useMutation } from '@apollo/client'
-import { Box, Button, ButtonGroup, Input, InputGroup, Tag, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Input, InputGroup, Stack, Tag, Text, VStack } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -700,6 +700,17 @@ const index = () => {
                                     </>
                                 }
                             </GrayBox>
+                            {(order?.totalDetails?.amountDiscount && order?.totalDetails?.amountDiscount > 0) &&
+                                <GrayBox>
+                                    <Text
+                                        my={'auto'}
+                                        fontWeight={'normal'}
+                                        fontSize={'sm'}
+                                    >
+                                        *lo sconto aggiuntivo applicato viene finanziato interamente da Veplo, riducendo la commissione per il servizio
+                                    </Text>
+                                </GrayBox>
+                            }
                         </Box>
                     </>
                 }

@@ -698,6 +698,31 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                     dimension={'1.5rem'} space={5} showTooltip={true}
                                 />
                             </div>}
+
+                            <Box
+                                fontWeight='light'
+                                as='h1'
+                                mt={5}
+                                mb={0}
+                                fontSize='md'
+                                display={'flex'}
+                                gap={1}
+                                width={'full'}
+                            >
+                                pubblicato da:
+                                <Text
+
+                                    fontWeight={'medium'}
+                                    cursor={'pointer'}
+                                    onClick={() => {
+                                        router.push(
+                                            '/@' + product?.shopInfo?.name?.unique
+                                        )
+                                    }}
+                                >
+                                    @{product?.shopInfo?.name?.unique}
+                                </Text>
+                            </Box>
                             <Box
                                 fontWeight='light'
                                 as='h1'
@@ -840,6 +865,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                             <Box
                                 className='grid grid-cols-3 lg:grid-cols-4 w-fit gap-x-1 gap-y-4 lg:gap-4 mt-6'
                             >
+
                                 {product.info.modelDescription && product.info.modelDescription?.length > 0 &&
                                     <>
                                         <Text

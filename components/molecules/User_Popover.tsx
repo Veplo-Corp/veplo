@@ -46,7 +46,7 @@ const User_Popover = () => {
         },
         {
             name: 'Seguiti',
-            description: 'i tuoi seguiti',
+            description: 'profili seguiti',
             href: '/profili/seguiti',
         },
         {
