@@ -153,11 +153,14 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
     if (errorLog) {
         return (
-            <PageNotFound
-                title='Prodotto non trovato'
-                description='Probabilmente il prodotto è stato appena cancellato dal brand'
-                imageSrc='https://www.datocms-assets.com/102220/1686599080-undraw_cancel_re_pkdm.png'
-            />
+            <Box className='h-screen'>
+                <PageNotFound
+                    title='Prodotto non trovato'
+                    description='Probabilmente il prodotto è stato appena cancellato dal brand'
+                    imageSrc='https://www.datocms-assets.com/102220/1686599080-undraw_cancel_re_pkdm.png'
+                />
+            </Box>
+
         )
     }
 
@@ -551,7 +554,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 const element = await getSimilarProductOnShop({
                     variables: {
                         productId: product.id,
-                        limit: 6,
+                        limit: 5,
                         offset: 0,
                         shopId: product.shopInfo.id
                     },
@@ -561,7 +564,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 if (element) {
                     setproductsLikeThis(element?.data?.product.productsLikeThis)
                 }
-            }, 200);
+            }, 0);
 
         }
     };
