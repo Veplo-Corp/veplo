@@ -31,12 +31,12 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                         borderWidth={sizeSelected === size ? '2px' : borderWidth}
                         borderColor={sizeSelected === size ? 'gray.600' : 'gray-100'}
                         py={py}
+                        minH={12}
                         borderRadius={borderRadius}
                         fontSize={fontSize}
                         fontWeight={fontWeight}
                         bg={sizeProductExist?.quantity > 0 ? 'white' : '#F2F2F2'}
                         color={sizeProductExist?.quantity > 0 ? 'black' : '#A19F9F'}
-                        noOfLines={3}
                         className="text-center md:min-w-24 lg:w-32 xl:w-full min-w-[100px]"
                         h={'full'}
                         cursor={sizeProductExist?.quantity <= 0 || !sizeProductExist ? '' : 'pointer'}
@@ -51,7 +51,7 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                     >
                         <Box
                             paddingY={0}
-                            minH={12}
+
                         >
                             <Box
                                 fontSize={size.length > 5 ? '15px' : fontSize}
@@ -61,8 +61,7 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                                 {size.toUpperCase()}
                             </Box>
                             <Box fontWeight={['base', 'base']}
-
-                                fontSize={['2xs', '2xs']} color={'gray.500'} mt={-3}>
+                                fontSize={['2xs', '2xs']} color={'gray.500'} mt={'-13px'}>
                                 {sizeProductExist?.quantity < 10 && sizeProductExist?.quantity > 0 ? `solo ${sizeProductExist?.quantity} disponibil${sizeProductExist?.quantity > 1 ? 'i' : 'e'}` : sizeProductExist?.quantity > 0 ? `` : 'terminato'}
                             </Box>
                         </Box>
