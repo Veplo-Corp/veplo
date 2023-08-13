@@ -135,18 +135,20 @@ const index = () => {
 
     return (
         <Desktop_Layout>
+            <NoIndexSeo />
+
+            <PostMeta
+                canonicalUrl={'https://www.veplo.it' + router.asPath}
+                title={"Ordine | Veplo"}
+                subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+                image={"android-chrome-512x512.png"}
+                description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+            />
             {order ? (
                 <div
                     className='w-full md:w-11/12 lg:w-10/12 xl:w-7/12 m-auto md:mt4'
                 >
-                    <PostMeta
-                        canonicalUrl={'https://www.veplo.it' + router.asPath}
-                        title={"Ordine | Veplo"}
-                        subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
-                        image={"android-chrome-512x512.png"}
-                        description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
-                    />
-                    <NoIndexSeo />
+
                     <Box
                         display={'flex'}
                         justifyContent={'space-between'}
