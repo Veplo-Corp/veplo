@@ -710,18 +710,12 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 width={'full'}
                             >
                                 pubblicato da:
-                                <Text
-
-                                    fontWeight={'medium'}
-                                    cursor={'pointer'}
-                                    onClick={() => {
-                                        router.push(
-                                            '/@' + product?.shopInfo?.name?.unique
-                                        )
-                                    }}
+                                <Link
+                                    className='font-semibold'
+                                    href={'/@' + product?.shopInfo?.name?.unique}
                                 >
                                     @{product?.shopInfo?.name?.unique}
-                                </Text>
+                                </Link>
                             </Box>
                             <Box
                                 fontWeight='light'
