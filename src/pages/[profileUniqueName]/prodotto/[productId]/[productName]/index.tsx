@@ -153,11 +153,14 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
     if (errorLog) {
         return (
-            <PageNotFound
-                title='Prodotto non trovato'
-                description='Probabilmente il prodotto è stato appena cancellato dal brand'
-                imageSrc='https://www.datocms-assets.com/102220/1686599080-undraw_cancel_re_pkdm.png'
-            />
+            <Box className='h-screen'>
+                <PageNotFound
+                    title='Prodotto non trovato'
+                    description='Probabilmente il prodotto è stato appena cancellato dal brand'
+                    imageSrc='https://www.datocms-assets.com/102220/1686599080-undraw_cancel_re_pkdm.png'
+                />
+            </Box>
+
         )
     }
 

@@ -13,6 +13,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Box_Shop from '../../../../components/molecules/Box_Shop';
 import { ShopsQuery } from '../../../lib/apollo/generated/graphql';
+import PageNotFound from '../../../../components/molecules/PageNotFound';
 
 const index = () => {
     const user: Firebase_User = useSelector((state: any) => state.user.user);
@@ -28,6 +29,7 @@ const index = () => {
             })
         }
     }, [user])
+
 
 
     return (
@@ -78,6 +80,14 @@ const index = () => {
                         }
                     </Box>
                 }
+                {error && !loading && !data?.user?.following?.length &&
+                    <PageNotFound
+                        title='Nessun profilo seguito'
+                        description='non segui ancora nessun profilo'
+                        imageSrc='https://www.datocms-assets.com/102220/1686599080-undraw_cancel_re_pkdm.png'
+                    />
+                }
+
 
             </Box>
         </>
