@@ -50,7 +50,7 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                         justifyContent="center"
                     >
                         <Box
-                            paddingY={size.length > 5 ? 0 : 1}
+                            paddingY={0}
                             minH={12}
                         >
                             <Box

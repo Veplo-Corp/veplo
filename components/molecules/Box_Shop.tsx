@@ -33,7 +33,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                     {shop.stats?.productsQuantity} prodott{shop.stats?.productsQuantity && shop.stats?.productsQuantity > 1 ? 'i' : 'o'}
                 </Box>
                 <div className="w-[4px] h-[4px] sm:w-[5px] sm:h-[5px]  rounded-full bg-[#909090] my-auto mb-2 sm:mt-5 "></div>
-                <Box display={'flex'} gap={[1.5, '8px']} className='my-auto sm:mt-[10px] md:mt-[14px] lg:mt-[12px] xl:mt-[12px] '>
+                <Box display={'flex'} gap={[1.5, '8px']} className='my-auto sm:mt-[10px] md:mt-[14px] lg:mt-[12px] xl:mt-[10px] '>
                     {Array.from({ length: numImages }).map((_, index) => (
                         <img
                             key={index}
@@ -67,10 +67,10 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                     as='h2'
                     noOfLines={1}
                     color={'#909090'}
-                    fontSize={['14px', '18px', '14px', '16px', '18px']}
+                    fontSize={['14px', '18px', '14px', '16px', '16px']}
                     lineHeight={['normal']}
                     mb={0}
-                    mt={['-2px', -1]}
+                    mt={['-2px', '-2px']}
                 >
                     @{shop.name?.unique}
                 </Text>
@@ -166,7 +166,6 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                     justifyContent={'space-between'}
                 >
                     <Box
-                        marginBottom={1}
                         width={['20', '32']}
                         height={['20', '32']}
                         mt={[-10, -16]}
