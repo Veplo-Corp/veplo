@@ -554,7 +554,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 const element = await getSimilarProductOnShop({
                     variables: {
                         productId: product.id,
-                        limit: 6,
+                        limit: 5,
                         offset: 0,
                         shopId: product.shopInfo.id
                     },
@@ -564,7 +564,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 if (element) {
                     setproductsLikeThis(element?.data?.product.productsLikeThis)
                 }
-            }, 200);
+            }, 0);
 
         }
     };
