@@ -31,7 +31,7 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                         borderWidth={sizeSelected === size ? '2px' : borderWidth}
                         borderColor={sizeSelected === size ? 'gray.600' : 'gray-100'}
                         py={py}
-                        minH={12}
+                        minH={'60px'}
                         borderRadius={borderRadius}
                         fontSize={fontSize}
                         fontWeight={fontWeight}
@@ -56,12 +56,12 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                             <Box
                                 fontSize={size.length > 5 ? '15px' : fontSize}
                                 fontWeight={size.length > 5 ? 'medium' : fontWeight}
-                                mb={size.length > 5 ? 1.5 : 2}
+
                             >
                                 {size.toUpperCase()}
                             </Box>
                             <Box fontWeight={['base', 'base']}
-                                fontSize={['2xs', '2xs']} color={'gray.500'} mt={'-13px'}>
+                                fontSize={['2xs', '2xs']} color={'gray.500'} mt={'-4px'}>
                                 {sizeProductExist?.quantity < 10 && sizeProductExist?.quantity > 0 ? `solo ${sizeProductExist?.quantity} disponibil${sizeProductExist?.quantity > 1 ? 'i' : 'e'}` : sizeProductExist?.quantity > 0 ? `` : 'terminato'}
                             </Box>
                         </Box>
