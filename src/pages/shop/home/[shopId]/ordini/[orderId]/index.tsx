@@ -220,6 +220,9 @@ const index = () => {
         }
     }
 
+    console.log(order?.totalDetails?.amountDiscount);
+
+
     const handleDenyReturn = async () => {
         const resolve = await expirationTimeTokenControll(user.expirationTime)
         if (!resolve) return
@@ -700,7 +703,7 @@ const index = () => {
                                     </>
                                 }
                             </GrayBox>
-                            {(order?.totalDetails?.amountDiscount && order?.totalDetails?.amountDiscount > 0) &&
+                            {order?.totalDetails?.amountDiscount > 0 &&
                                 <GrayBox>
                                     <Text
                                         my={'auto'}
