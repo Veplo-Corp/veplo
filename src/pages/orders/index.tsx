@@ -11,6 +11,8 @@ import PageNotFound from '../../../components/molecules/PageNotFound';
 import { useLazyQuery } from '@apollo/client';
 import GET_USER_ORDERS from '../../lib/apollo/queries/getUserOrders';
 import expirationTimeTokenControll from '../../../components/utils/expirationTimeTokenControll';
+import PostMeta from '../../../components/organisms/PostMeta';
+import NoIndexSeo from '../../../components/organisms/NoIndexSeo';
 
 
 const index = () => {
@@ -41,6 +43,14 @@ const index = () => {
 
     return (
         <>
+            <PostMeta
+                canonicalUrl={'https://www.veplo.it' + router.asPath}
+                title={"Ordini | Veplo"}
+                subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+                image={"android-chrome-512x512.png"}
+                description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+            />
+            <NoIndexSeo />
             <Box
                 className='w-[95%] sm:w-11/12 md:w-11/12 lg:w-9/12 xl:w-7/12 2xl:w-6/12 m-auto mt-4 md:mt-8 mb-12 min-h-screen '
             >
