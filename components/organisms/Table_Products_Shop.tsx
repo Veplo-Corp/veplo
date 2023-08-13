@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
     Table,
     Thead,
@@ -15,6 +15,9 @@ import {
     TagLabel,
     Tag,
     Tooltip,
+    InputGroup,
+    Input,
+    InputRightElement,
 } from '@chakra-ui/react'
 import GET_PRODUCTS_FROM_SHOP from '../../src/lib/apollo/queries/geetProductsShop';
 import { ApolloClient, useMutation, useQuery } from '@apollo/client';
@@ -31,6 +34,7 @@ import Product_Status_Popover from '../molecules/Product_Status_Popover';
 import EDIT_STATUS_PRODUCT from '../../src/lib/apollo/mutations/editStatusProduct';
 import { ToastOpen } from '../utils/Toast';
 import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString';
+import { Search } from 'iconoir-react';
 
 
 interface Props {
@@ -47,7 +51,7 @@ interface Props {
 
 const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ idShop, deleteProduct }) => {
     const { addToast } = ToastOpen();
-
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     const router = useRouter()
     //const [products, SetProducts] = useState<Product[] | []>([])
@@ -200,11 +204,61 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                     NUOVO PRODOTTO
                 </Button>
                 <div className='mb-2 w-3/4 md:mb-0 md:w-fit'>
-                    <Input_Search_Item
-                        handleChangeValue={() => { }}
-                        placeholder='cerca prodotto'
-                        onConfirmText={textSearchProducts}
-                    />
+                    <InputGroup
+                        className='relative w-full'
+                    >
+                        <Input
+                            type='text'
+                            maxLength={50}
+                            borderWidth={1.5}
+                            borderColor={'white'}
+                            ref={inputRef}
+                            placeholder={'cerca prodotto'}
+                            _placeholder={{
+                                color: '#A19F9F',
+                                opacity: 1,
+                                fontWeight: '500'
+                            }}
+                            borderRadius={10}
+                            py={2}
+                            pl={4}
+                            size='md'
+                            fontSize={'md'}
+                            focusBorderColor='#F2F2F2'
+                            _focus={{
+                                background: 'white',
+                            }}
+                            fontWeight={'semibold'}
+                            bg={'#F2F2F2'}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === undefined) {
+                                    if (inputRef?.current?.value) {
+                                        textSearchProducts(inputRef.current.value)
+                                        inputRef.current.value = ''
+                                    }
+
+                                }
+
+                            }
+                            }
+                        />
+                        <InputRightElement
+                            mr={1}
+                            className='cursor-pointer'
+                            color={'#A19F9F'}
+                            onClick={() => {
+
+                            }}
+                            children={
+                                <Search
+                                    className="w-6 h-6"
+                                    strokeWidth={2}
+                                />
+
+
+                            }
+                        />
+                    </InputGroup>
                 </div>
 
             </div>
