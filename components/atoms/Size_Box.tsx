@@ -51,17 +51,18 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                     >
                         <Box
                             paddingY={size.length > 5 ? 0 : 1}
+                            minH={12}
                         >
-                            <Box fontSize={size.length > 5 ? '15px' : fontSize}
+                            <Box
+                                fontSize={size.length > 5 ? '15px' : fontSize}
                                 fontWeight={size.length > 5 ? 'medium' : fontWeight}
-                                lineHeight={'20px'}
                                 mb={size.length > 5 ? 1.5 : 2}
-
                             >
                                 {size.toUpperCase()}
-
                             </Box>
-                            <Box fontWeight={['base', 'base']} fontSize={['2xs', '2xs']} color={'gray.500'} mt={-1}>
+                            <Box fontWeight={['base', 'base']}
+
+                                fontSize={['2xs', '2xs']} color={'gray.500'} mt={-3}>
                                 {sizeProductExist?.quantity < 10 && sizeProductExist?.quantity > 0 ? `solo ${sizeProductExist?.quantity} disponibil${sizeProductExist?.quantity > 1 ? 'i' : 'e'}` : sizeProductExist?.quantity > 0 ? `` : 'terminato'}
                             </Box>
                         </Box>
