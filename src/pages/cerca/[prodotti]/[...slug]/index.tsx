@@ -369,7 +369,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
 
         //testare se non da problemi
-        setIsLoading(true)
 
         const filtersParams = getParamsFiltersFromObject(filters)
         if (!filtersParams) return
@@ -515,7 +514,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
     }
 
-    const SkeletonComponent = () => {
+    /* const SkeletonComponent = () => {
         return (
             <>
                 <HStack
@@ -540,6 +539,46 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                     className={`${doubleGridDevice ? 'h-[190px]' : 'h-[360px]'} md:h-[280px] lg:h-[350px] xl:h-[400px]`}
                     borderRadius={'3xl'}
                 />
+            </>
+
+        )
+    } */
+
+    const SkeletonComponent = () => {
+        return (
+            <>
+
+                <div className="animate-pulse">
+
+                    <Box
+                        className='flex space-x-4 mb-3'
+                    >
+                        <Box className="rounded-full bg-slate-200 "
+                            width={[doubleGridDevice ? '12' : '14', '14', '14', '14', '16']}
+                            height={[doubleGridDevice ? '12' : '14', '14', '14', '14', '16']}
+                        ></Box>
+                        <Box
+                            ml={2}
+                            my={'auto'}
+                        >
+                            <Box
+                                className="rounded-full bg-slate-200"
+                                width={[doubleGridDevice ? 24 : 56, 40, 28, 40, 48]}
+                                noOfLines={1} height={'4'} />
+                            <Box mt={2.5}
+                                className="rounded-full bg-slate-200"
+                                width={[doubleGridDevice ? 16 : 24, 28, 20, 32, 36]}
+                                noOfLines={1} height={'3'} />
+                        </Box>
+                    </Box>
+
+
+                    <Box
+                        //height={['250px', '150', '500px']}
+                        className={`${doubleGridDevice ? 'h-[190px]' : 'h-[360px]'} md:h-[280px] lg:h-[350px] xl:h-[400px]  bg-slate-200 rounded-[20px] w-full`}
+                    />
+                </div>
+
             </>
 
         )
@@ -931,7 +970,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                             (
                                                 <AnimatePresence>
                                                     {products.map((product: Product, index) => {
-
                                                         return (
                                                             <motion.div
 
