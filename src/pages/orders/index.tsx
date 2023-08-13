@@ -43,6 +43,8 @@ const index = () => {
 
     return (
         <>
+            <NoIndexSeo />
+
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={"Ordini | Veplo"}
@@ -50,7 +52,7 @@ const index = () => {
                 image={"android-chrome-512x512.png"}
                 description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
             />
-            <NoIndexSeo />
+
             <Box
                 className='w-[95%] sm:w-11/12 md:w-11/12 lg:w-9/12 xl:w-7/12 2xl:w-6/12 m-auto mt-4 md:mt-8 mb-12 min-h-screen '
             >
