@@ -34,6 +34,7 @@ const index = () => {
 
     return (
         <>
+            <NoIndexSeo />
             <PostMeta
                 canonicalUrl={'https://www.veplo.it/profili/seguiti'}
                 title={'Seguiti su Veplo'}
@@ -41,7 +42,6 @@ const index = () => {
                 image={""}
                 description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
             />
-            <NoIndexSeo />
 
             <Box
                 px={[2, 2, 2, 6, 0]}

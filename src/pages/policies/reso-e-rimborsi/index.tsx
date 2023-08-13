@@ -5,6 +5,7 @@ import { initApollo } from '../../../lib/apollo';
 import GET_POLICY from '../../../lib/apollo/dato_CMS/queries/getPolicy';
 import Policy, { Policies } from '../../../../components/organisms/Policy';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
+import PostMeta from '../../../../components/organisms/PostMeta';
 
 
 
@@ -43,15 +44,26 @@ const index: FC<{ data: Policies }> = ({ data }) => {
 
 
     return (
-        <Desktop_Layout>
-            {data?.policy ?
-                (
-                    <Policy data={data} />
-                ) : (
-                    <></>
-                )
-            }
-        </Desktop_Layout>
+        <>
+            <PostMeta
+                canonicalUrl={'https://www.veplo.it/policies/reso-e-rimborsi'}
+                title={'Politica Reso | Veplo'}
+                subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+                image={""}
+                description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+            />
+            <Desktop_Layout>
+
+                {data?.policy ?
+                    (
+                        <Policy data={data} />
+                    ) : (
+                        <></>
+                    )
+                }
+            </Desktop_Layout>
+        </>
+
     )
 
 
