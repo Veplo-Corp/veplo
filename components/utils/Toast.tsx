@@ -1,12 +1,15 @@
 import { ToastPosition, useToast, UseToastOptions } from "@chakra-ui/react";
 
+
+
 export type AddToast = {
     position?: ToastPosition,
     title: string,
     description?: string | any,
     status: UseToastOptions["status"],
     duration: number
-    isClosable: boolean
+    isClosable: boolean,
+    variant?: string
 }
 
 export const ToastOpen = () => {
@@ -21,6 +24,7 @@ export const ToastOpen = () => {
             status: newRes.status,
             duration: newRes.duration,
             isClosable: newRes.isClosable,
+            variant: newRes.variant
         })
     }
 

@@ -224,7 +224,10 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                 />,
                 handleClick: async () => {
                     onCopy();
-                    return addToast({ position: 'bottom', title: 'link profilo copiato', status: 'success', duration: 2000, isClosable: true })
+                    return addToast({
+                        position: 'bottom', title: 'link profilo copiato', status: 'success', duration: 2000, isClosable: true,
+                        variant: "customSuccess"
+                    })
                 }
             })
         }

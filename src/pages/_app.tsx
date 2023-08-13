@@ -2,8 +2,9 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 // 1. import `ChakraProvider` component
-import { Box, Center, ChakraProvider, CircularProgress, Text, VStack } from '@chakra-ui/react'
+import { Box, Center, ChakraProvider, CircularProgress, Text, VStack, createMultiStyleConfigHelpers } from '@chakra-ui/react'
 import { extendTheme } from "@chakra-ui/react"
+import { alertAnatomy } from '@chakra-ui/anatomy';
 import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from '../store/store'
 import { FC, useEffect, useRef, useState } from 'react'
@@ -37,11 +38,60 @@ import { setBrands } from '../store/reducers/brands'
 import ModalWrapper from '../../components/organisms/ModalWrapper'
 import { Cart, CartWarning, Order } from '../lib/apollo/generated/graphql'
 import { deleteAuthTokenInSessionStorage } from '../../components/utils/deleteAuthTokenSessionStorage'
-import WarningCard from '../../components/molecules/WarningCard'
+
+
+const { definePartsStyle, defineMultiStyleConfig } =
+  createMultiStyleConfigHelpers(alertAnatomy.keys);
+
+const customSuccess = definePartsStyle({
+  container: {
+    //border: '1px solid',
+    //borderColor: 'teal.200',
+    background: '#FF5A78',
+    //colore bottone di chiusura
+    color: '#FFFFFF',
+    _dark: {
+      //borderColor: 'teal.600',
+      background: '#FF5A78',
+    },
+  },
+
+  //colore icon
+  icon: {
+    color: '#FFFFFF',
+  },
+  title: {
+    color: '#FFFFFF',
+    _dark: {
+      color: '#FFFFFF',
+    },
+  },
+});
+
+// const customError = definePartsStyle({
+//   container: {
+//     border: '1px solid',
+//     borderColor: 'pink.200',
+//     background: 'pink.400',
+//     _dark: {
+//       borderColor: 'pink.600',
+//       background: 'pink.800',
+//     },
+//   },
+//   title: {
+//     color: 'teal.200',
+//     _dark: {
+//       color: 'teal.300',
+//     },
+//   },
+// });
+
+const alertTheme = defineMultiStyleConfig({
+  variants: { customSuccess/* , customError */ },
+});
 
 
 const theme = extendTheme({
-
   colors: {
     primary: {
       bg: '#FF5A78',
@@ -83,8 +133,7 @@ const theme = extendTheme({
     }
   },
   components: {
-
-
+    Alert: alertTheme,
     Button: {
       baseStyle: {
         fontWeight: "bold",
