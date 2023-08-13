@@ -267,7 +267,7 @@ const index = () => {
         } else if (productElement.gender === 'uomo') {
             gender = 'm'
         }
-        if (gender !== '') {
+        if (gender !== '' && gender !== product?.info.gender) {
             info["gender"] = gender
         }
 
