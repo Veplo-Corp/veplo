@@ -3,6 +3,8 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout'
 import SettingsCard from '../../../../components/molecules/SettingsCard'
+import PostMeta from '../../../../components/organisms/PostMeta'
+import NoIndexSeo from '../../../../components/organisms/NoIndexSeo'
 
 const settings = [
     {
@@ -35,6 +37,14 @@ const index = () => {
     const router = useRouter()
     return (
         <Desktop_Layout>
+            <NoIndexSeo />
+            <PostMeta
+                canonicalUrl={'https://www.veplo.it/user/settings'}
+                title={'Impostazioni | Veplo'}
+                subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+                image={""}
+                description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+            />
             <div className='flex w-full mt-8 md:mt-10' >
                 <div className='md:p-3 space-y-4 m-auto w-full md:w-8/12 lg:w-1/2'>
                     <SettingsCard title='Impostazioni'>

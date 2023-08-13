@@ -16,6 +16,8 @@ import { User } from '../../../../interfaces/user.interface';
 import EDIT_USER_INFO from '../../../../lib/apollo/mutations/editUserInfo';
 import GET_USER from '../../../../lib/apollo/queries/getUser';
 import { changeName } from '../../../../store/reducers/user';
+import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo';
+import PostMeta from '../../../../../components/organisms/PostMeta';
 
 interface Props {
     user: User
@@ -129,6 +131,14 @@ const index = () => {
 
     return (
         <>
+            <NoIndexSeo />
+            <PostMeta
+                canonicalUrl={'https://www.veplo.it/user/settings/edit-account'}
+                title={'Gestisci account | Veplo'}
+                subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+                image={""}
+                description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+            />
             <Desktop_Layout>
                 <div className='flex w-full mt-8 md:mt-10' >
                     <div className='md:p-3 space-y-4 m-auto w-full md:w-8/12 lg:w-1/2'>
