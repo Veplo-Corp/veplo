@@ -575,7 +575,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                                         if (genderInitial !== genderSelected) {
                                             router.replace(`/@${shop.name.unique}/${gender}`)
                                         } else {
-                                            setGenderSelected(undefined)
+                                            //setGenderSelected(undefined)
                                             router.replace(`/@${shop.name.unique}`)
                                         }
                                     }}
