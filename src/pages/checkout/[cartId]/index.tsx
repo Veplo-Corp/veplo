@@ -127,7 +127,7 @@ const index = () => {
         try {
             const create = await checkoutUrlMutation({
                 variables: {
-                    shopId: cart?.id
+                    shopId: cart?.shopInfo?.id
                 }
             })
             fbq({
