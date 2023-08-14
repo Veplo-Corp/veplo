@@ -62,10 +62,16 @@ const GET_USER = graphql(`
                     }
                     total
                     productVariations{
+                        productId
                         id
                         quantity
                         color
                         size
+                        price{
+                            v1
+                            v2
+                            discountPercentage
+                        }
                     }
                 }
                 warnings {

@@ -18,7 +18,7 @@ export interface ProductVariation {
     },
 }
 
-export interface Cart {
+export interface CartDispatch {
     id: string,
     userId: string,
     shopInfo: {

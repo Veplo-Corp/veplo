@@ -354,7 +354,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
             if (data.data.user?.following) {
               const following = data.data.user?.following.map((shop) => {
-                return shop.shopId
+                return shop?.shopId
               })
               dispatch(changeFavouriteShops({
                 favouriteShops: following

@@ -17,7 +17,7 @@ import { Medal1St, NavArrowDown, Search, ShoppingBag, SmallShopAlt, TShirt, User
 import Input_Search_Item from '../atoms/Input_Search_Item';
 import { useRouter } from 'next/router';
 import { getFromLocalStorage } from '../utils/getFromLocalStorage';
-import { Cart } from '../../src/interfaces/carts.interface';
+import { CartDispatch } from '../../src/interfaces/carts.interface';
 import createUrlSchema from '../utils/create_url';
 import { motion } from 'framer-motion';
 import { Popover, Transition } from '@headlessui/react'
@@ -31,7 +31,7 @@ const Header = () => {
     const isButtonHidden = useBreakpointValue({ base: true, lg: false });
     const router = useRouter()
     const user: Firebase_User = useSelector((state: any) => state.user.user);
-    const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
+    const cartsDispatch: CartDispatch[] = useSelector((state: any) => state.carts.carts);
     const [numberOfProductsInCarts, setnumberOfProductsInCarts] = useState<number>(0)
     const [showMacrocategory, setshowMacrocategory] = useState(true)
     const [openDrawerBusinessAccount, setopenDrawerBusinessAccount] = useState(false)

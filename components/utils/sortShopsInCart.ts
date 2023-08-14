@@ -1,5 +1,5 @@
-import { Cart } from './../../src/interfaces/carts.interface';
-export const sortShopsInCart = (carts: Cart[]) => {
+import { CartDispatch } from './../../src/interfaces/carts.interface';
+export const sortShopsInCart = (carts: CartDispatch[]) => {
 
 
     const newCarts = carts.slice().sort((a, b) =>

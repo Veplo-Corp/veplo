@@ -3,14 +3,14 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
 import { useEffect } from 'react'
-import { Cart } from '../../interfaces/carts.interface'
+import { CartDispatch } from '../../interfaces/carts.interface'
 import { Product } from '../../interfaces/product.interface'
 
 
 
 
 const initialState: {
-    carts: Cart[]
+    carts: CartDispatch[]
 } = {
     carts: []
 }
