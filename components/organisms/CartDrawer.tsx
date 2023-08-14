@@ -200,8 +200,8 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
         closeDrawer()
     }
 
-    const pushToCheckout = (shopId: string) => {
-        router.push('/checkout/' + shopId)
+    const pushToCheckout = (cartId: string) => {
+        router.push('/checkout/' + cartId)
         closeDrawer()
     }
 
@@ -282,7 +282,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
                                         mt={4}
                                         mb={3}
                                         onClick={() => {
-                                            pushToCheckout(cart.shopInfo.id)
+                                            pushToCheckout(cart.id)
                                         }}
                                         type={'button'}
                                         borderRadius={'10px'}

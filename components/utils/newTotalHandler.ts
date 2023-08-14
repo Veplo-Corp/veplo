@@ -1,6 +1,6 @@
-import { CartProductVariation } from '../../src/lib/apollo/generated/graphql';
-import { ProductVariation } from './../../src/interfaces/carts.interface';
-export const newTotalHandler = (productVariations: CartProductVariation[] | null): number => {
+import { CartQuery } from "../../src/lib/apollo/generated/graphql";
+
+export const newTotalHandler = (productVariations: CartQuery["cart"]["productVariations"]): number => {
     if (!productVariations) { return 0 }
     let total = 0;
     productVariations.forEach(element => {
