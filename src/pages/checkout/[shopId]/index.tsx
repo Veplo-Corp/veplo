@@ -142,7 +142,12 @@ const index = () => {
                     email: user.email
                 }
             })
-            router.reload()
+            dispatch(openModal({
+                title: 'Errore imprevisto',
+                description: "abbiamo riscontrato un errore imprevisto durante la creazione del tuo ordine. Se l'errore persiste contatta l'assistenza."
+            }))
+            //router.reload()
+
             setIsDisabled(false)
         }
     }
