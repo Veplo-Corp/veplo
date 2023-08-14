@@ -2,7 +2,7 @@ import { Maybe } from 'graphql/jsutils/Maybe';
 import { CartProductVariation } from './../../src/lib/apollo/generated/graphql';
 import { formatNumberWithTwoDecimalsInNumber } from "./formatNumberWithTwoDecimalsInNumber";
 
-export const GtagVariationsToItemsFor = (variations: Maybe<CartProductVariation>[] | undefined): any[] => {
+export const GtagVariationsToItemsFor = (variations: Maybe<CartProductVariation>[] | undefined | null): any[] => {
     if (!variations) return [];
     const items = variations?.map(variation => {
 
