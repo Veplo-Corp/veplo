@@ -463,54 +463,19 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     ])
 
                 }
-            }
+                //aggiungi al carrello
 
-            //CART INESISTENTE
+                dispatch(
+                    editVariationFromCart({
+                        //add new Carts
+                        carts: NewCarts
+                    })
+                );
+            }
             if (!Cart) {
                 addToCartEffect()
-
-                const newProductVariation: ProductVariation = {
-                    id: variationSelected.id,
-                    photo: variationSelected.photos[0],
-                    name: product.name,
-                    brand: product.info.brand,
-                    quantity: 1,
-                    maxQuantity: quantityMax ? quantityMax : 1,
-                    color: variationSelected.color,
-                    size: sizeSelected,
-                    productId: product.id,
-                    price: {
-                        v1: product.price.v1,
-                        v2: product.price.v2 ? product.price.v2 : null,
-                        discountPercentage: product.price.discountPercentage ? product.price.discountPercentage : null,
-                    },
-                }
-
-                NewCart = {
-                    id: 'cartId',
-                    userId: user.uid,
-                    shopInfo: {
-                        id: product.shopInfo.id,
-                        name: {
-                            unique: product.shopInfo.name.unique,
-                            visualized: product.shopInfo.name.visualized
-
-                        },
-                        city: product.shopInfo.city,
-                        status: product.shopInfo.status,
-                        minimumAmountForFreeShipping: product.shopInfo.minimumAmountForFreeShipping,
-                        profilePhoto: product.shopInfo.profilePhoto,
-                    },
-                    total: product?.price.v2 ? product?.price.v2 : product?.price.v1,
-                    productVariations: [newProductVariation]
-                }
-
-                NewCarts = sortShopsInCart(
-                    [
-                        ...Carts.filter(cart => cart.shopInfo.id !== product.shopInfo.id),
-                        NewCart
-                    ])
             }
+
 
 
             //aggiungi al carrello
@@ -526,15 +491,127 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             try {
                 if (user.uid) {
 
-                    await editCart({
+                    const result = await editCart({
                         variables: {
                             productVariationId: variationSelected.id,
                             size: sizeSelected,
                             quantity: productVariationQuantity > 0 ? productVariationQuantity : 1
                         }
                     })
+                    console.log(result?.data.editCart);
+                    console.log(Cart);
+
+                    if (typeof result?.data.editCart !== 'string') return
+                    //CART INESISTENTE
+                    if (!Cart) {
+
+
+                        const newProductVariation: ProductVariation = {
+                            id: variationSelected.id,
+                            photo: variationSelected.photos[0],
+                            name: product.name,
+                            brand: product.info.brand,
+                            quantity: 1,
+                            maxQuantity: quantityMax ? quantityMax : 1,
+                            color: variationSelected.color,
+                            size: sizeSelected,
+                            productId: product.id,
+                            price: {
+                                v1: product.price.v1,
+                                v2: product.price.v2 ? product.price.v2 : null,
+                                discountPercentage: product.price.discountPercentage ? product.price.discountPercentage : null,
+                            },
+                        }
+
+                        NewCart = {
+                            id: result?.data.editCart,
+                            userId: user.uid,
+                            shopInfo: {
+                                id: product.shopInfo.id,
+                                name: {
+                                    unique: product.shopInfo.name.unique,
+                                    visualized: product.shopInfo.name.visualized
+
+                                },
+                                city: product.shopInfo.city,
+                                status: product.shopInfo.status,
+                                minimumAmountForFreeShipping: product.shopInfo.minimumAmountForFreeShipping,
+                                profilePhoto: product.shopInfo.profilePhoto,
+                            },
+                            total: product?.price.v2 ? product?.price.v2 : product?.price.v1,
+                            productVariations: [newProductVariation]
+                        }
+
+                        NewCarts = sortShopsInCart(
+                            [
+                                ...Carts.filter(cart => cart.shopInfo.id !== product.shopInfo.id),
+                                NewCart
+                            ])
+                        //aggiungi al carrello
+
+                        dispatch(
+                            editVariationFromCart({
+                                //add new Carts
+                                carts: NewCarts
+                            })
+                        );
+                    }
                 } else if (!user.uid) {
+                    if (!Cart) {
+
+
+                        const newProductVariation: ProductVariation = {
+                            id: variationSelected.id,
+                            photo: variationSelected.photos[0],
+                            name: product.name,
+                            brand: product.info.brand,
+                            quantity: 1,
+                            maxQuantity: quantityMax ? quantityMax : 1,
+                            color: variationSelected.color,
+                            size: sizeSelected,
+                            productId: product.id,
+                            price: {
+                                v1: product.price.v1,
+                                v2: product.price.v2 ? product.price.v2 : null,
+                                discountPercentage: product.price.discountPercentage ? product.price.discountPercentage : null,
+                            },
+                        }
+
+                        NewCart = {
+                            id: product.shopInfo.id,
+                            userId: user.uid,
+                            shopInfo: {
+                                id: product.shopInfo.id,
+                                name: {
+                                    unique: product.shopInfo.name.unique,
+                                    visualized: product.shopInfo.name.visualized
+
+                                },
+                                city: product.shopInfo.city,
+                                status: product.shopInfo.status,
+                                minimumAmountForFreeShipping: product.shopInfo.minimumAmountForFreeShipping,
+                                profilePhoto: product.shopInfo.profilePhoto,
+                            },
+                            total: product?.price.v2 ? product?.price.v2 : product?.price.v1,
+                            productVariations: [newProductVariation]
+                        }
+
+                        NewCarts = sortShopsInCart(
+                            [
+                                ...Carts.filter(cart => cart.shopInfo.id !== product.shopInfo.id),
+                                NewCart
+                            ])
+                        //aggiungi al carrello
+
+                        dispatch(
+                            editVariationFromCart({
+                                //add new Carts
+                                carts: NewCarts
+                            })
+                        );
+                    }
                     localStorage.setItem('carts', JSON.stringify(NewCarts))
+
                 }
 
                 // if (!edited.data?.editCart) return //mettere un errore qui
