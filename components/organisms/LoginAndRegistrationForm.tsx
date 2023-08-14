@@ -35,11 +35,13 @@ declare let window: CustomWindow; // Assicurati di importare la definizione di t
 
 
 const LoginAndRegistrationForm: FC<{
+    shopId?: string,
     type: 'login' | 'registration' | 'reset_password' | undefined, person: 'user' | 'business' | undefined,
     handleChangeTypeOrPerson: (type: 'login' | 'registration' | 'reset_password', person: 'user' | 'business') => void,
-    open?: 'modal' | 'fullPage' | undefined
+    open?: 'modal' | 'fullPage' | undefined,
+    closeModal?: () => void
 }> =
-    ({ type, person, handleChangeTypeOrPerson, open }) => {
+    ({ type, person, handleChangeTypeOrPerson, open, shopId, closeModal }) => {
         const [isLoading, setIsLoading] = useState(false)
         const cartsDispatchProduct: Cart[] = useSelector((state: any) => state.carts.carts);
         const user: Firebase_User = useSelector((state: any) => state?.user.user);
@@ -62,30 +64,41 @@ const LoginAndRegistrationForm: FC<{
         }
 
         const handleCartInLocalStorage = async () => {
+            let cartId: string = '';
             if (cartsDispatchProduct.length <= 0) return
             for await (const cart of cartsDispatchProduct) {
                 if (!cart?.productVariations) return
                 for await (const variation of cart?.productVariations) {
                     try {
-                        await editCart({
+                        const result = await editCart({
                             variables: {
                                 productVariationId: variation?.id,
                                 size: variation?.size,
                                 quantity: variation?.quantity
                             }
                         })
+                        console.log(shopId);
+                        console.log(cart.shopInfo?.id);
+                        console.log(cart.shopInfo?.id === shopId);
+
+                        if (cart.shopInfo?.id === shopId) {
+
+                            cartId = result?.data.editCart
+                        }
                     }
                     catch {
                         //TODO gestire errore
                     }
                 }
             }
+            router.replace('/checkout/' + cartId)
         }
 
         const redirectUser = (isBusiness: boolean) => {
             // rimani nella stessa pagina in modal
             localStorage.removeItem('carts')
-            if (open === 'modal') {
+            if (open === 'modal' && closeModal) {
+                closeModal()
                 setTimeout(() => {
                     router.reload()
                 }, 200);
@@ -235,7 +248,7 @@ const LoginAndRegistrationForm: FC<{
                             })
 
                             await router.replace('/shop/crea-business-account')
-                            router.reload()
+                            // router.reload()
                             // setemail('')
                             // setpassword('')
                         } catch (error: any) {

@@ -77,14 +77,24 @@ const index = () => {
 
     useEffect(() => {
         const { cartId } = router.query;
-        if (!router.isReady || typeof cartId !== 'string' || user.statusAuthentication === 'not_yet_authenticated' || user.statusAuthentication === 'logged_out') return
+        if (!router.isReady || typeof cartId !== 'string' || user.statusAuthentication === 'not_yet_authenticated') return
         //setCart(undefined)
-        getCart({
-            variables: {
-                id: cartId
-            },
-            fetchPolicy: "network-only"
-        })
+        if (user.statusAuthentication === 'logged_out') {
+            //uso lo shopId da non loggato come cartId
+            const cart = cartsDispatch.filter(cart => cart.shopInfo.id === cartId)?.[0]
+            if (cart) {
+                setCart(cart)
+            }
+        }
+        if (user.statusAuthentication === 'logged_in') {
+            getCart({
+                variables: {
+                    id: cartId
+                },
+                fetchPolicy: "network-only"
+            })
+        }
+
 
         // let timeoutId: any;
         // timeoutId = setTimeout(() => {
@@ -226,6 +236,8 @@ const index = () => {
             })
         );
 
+        setCart(NewCart)
+
         try {
             if (user.uid) {
                 await editCart({
@@ -270,10 +282,29 @@ const index = () => {
             setIsDisabled(false)
             setIsLoading(false)
 
-        } catch {
+        } catch (e: any) {
+            console.log(e.message);
             //TODO gestire errore in edit card
             setIsDisabled(false)
             setIsLoading(false)
+            if (e.message.includes('mongo: no documents in result')) {
+                let NewCarts: Cart[] = [];
+                NewCarts = [
+                    ...cartsDispatch.filter(element => element?.shopInfo?.id !== cart?.shopInfo?.id)]
+                dispatch(
+                    editVariationFromCart({
+                        //add new Carts
+                        carts: NewCarts
+                    })
+                );
+                dispatch(
+                    editVariationFromCart({
+                        //add new Carts
+                        carts: NewCarts
+                    })
+                );
+                return router.push(`/@${cart?.shopInfo?.name?.unique}`)
+            }
             dispatch(openModal({
                 title: 'Errore imprevisto',
                 description: 'Ci dispiace, ma non siamo riusciti ad aggiornare il carrello. Riprova tra poco.'
@@ -299,41 +330,38 @@ const index = () => {
 
         console.log(editedCart);
 
+        if (editedCart) {
+            let NewCarts: Cart[] = [];
+            setCart(editedCart)
 
-        if (!editedCart) return router.push(`/@${cart?.shopInfo?.name?.unique}`)
+            if (editedCart?.total && editedCart?.total > 0 && editedCart?.shopInfo?.id) {
+                NewCarts = [
+                    ...cartsDispatch.filter(cart => cart?.shopInfo?.id !== editedCart?.shopInfo?.id),
+                    editedCart
+                ]
+                dispatch(
+                    editVariationFromCart({
+                        //add new Carts
+                        carts: NewCarts
+                    })
+                );
 
-
-
-        let NewCarts: Cart[] = [];
-
-        if (editedCart?.total && editedCart?.total > 0 && editedCart?.shopInfo?.id) {
-            NewCarts = [
-                ...cartsDispatch.filter(cart => cart?.shopInfo?.id !== editedCart?.shopInfo?.id),
-                editedCart
-            ]
-            dispatch(
-                editVariationFromCart({
-                    //add new Carts
-                    carts: NewCarts
-                })
-            );
-
-        } else {
-            NewCarts = [
-                ...cartsDispatch.filter(cart => cart?.shopInfo?.id !== editedCart?.shopInfo?.id)]
-            dispatch(
-                editVariationFromCart({
-                    //add new Carts
-                    carts: NewCarts
-                })
-            );
-            return router.push(`/@${cart?.shopInfo?.name?.unique}`)
+            } else {
+                NewCarts = [
+                    ...cartsDispatch.filter(cart => cart?.shopInfo?.id !== editedCart?.shopInfo?.id)]
+                dispatch(
+                    editVariationFromCart({
+                        //add new Carts
+                        carts: NewCarts
+                    })
+                );
+                return router.push(`/@${cart?.shopInfo?.name?.unique}`)
+            }
+            if (!user.uid) {
+                localStorage.setItem('carts', JSON.stringify(NewCarts))
+            }
+            //if (editedCart?.productVariations?.length < 1) return router.back()
         }
-        if (!user.uid) {
-            localStorage.setItem('carts', JSON.stringify(NewCarts))
-        }
-        //if (editedCart?.productVariations?.length < 1) return router.back()
-
     }
 
     function findShippingDate(): string {
@@ -810,10 +838,12 @@ const index = () => {
                     open='modal'
                     type={typeLogin}
                     person='user'
+                    shopId={cart?.shopInfo?.id ? cart?.shopInfo?.id : ''}
                     handleChangeTypeOrPerson={(type, person) => {
                         if (person === 'business') return
                         setTypeLogin(type)
                     }}
+                    closeModal={() => setIsOpenLoginModal(false)}
                 />
             </ModalReausable>
 
