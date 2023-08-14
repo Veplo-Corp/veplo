@@ -477,7 +477,7 @@ const index = () => {
         } catch (e) {
             setIsLoading(false)
 
-            addToast({ position: 'top', title: 'Errore durante la creazione dello Shop', description: "non siamo riusciti a creare il tuo shop. riprova più tardi o contattaci", status: 'error', duration: 5000, isClosable: false })
+            addToast({ position: 'top', title: 'Errore durante la creazione dello Shop', description: "non siamo riusciti a creare il tuo shop. riprova più tardi o contattaci", status: 'error', duration: 10000, isClosable: true })
         }
     }
 

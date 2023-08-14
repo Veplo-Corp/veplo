@@ -25,7 +25,7 @@ export interface Product {
     info: {
         macroCategory: string,
         microCategory: string,
-        gender: 'm' | 'f',
+        gender: 'm' | 'f' | 'u',
         brand: string,
         fit?: string,
         traits: ('eco-friendly' | 'vegan' | 'handmade' | 'vintage')[],

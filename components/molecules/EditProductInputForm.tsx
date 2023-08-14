@@ -24,7 +24,7 @@ interface Macrocategory {
     url: string
 }
 
-const EditProductInputForm: FC<{ univers: string, defaultValues: IFormInputProductEdit, handleConfirm: (product: IFormInputProductEdit) => void, gender: 'f' | 'm' }> = ({ univers, defaultValues, handleConfirm, gender }) => {
+const EditProductInputForm: FC<{ univers: string, defaultValues: IFormInputProductEdit, handleConfirm: (product: IFormInputProductEdit) => void, gender: 'f' | 'm' | 'u' }> = ({ univers, defaultValues, handleConfirm, gender }) => {
     const [macrocategorySelectedSpec, setMacrocategorySelectedSpec] = useState<Category>()
 
     const { register, handleSubmit, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<IFormInputProductEdit>({

@@ -102,8 +102,6 @@ const Header = () => {
         }
         const genderName = getGender()
         if (genderName) return setGender(genderName)
-
-
         return () => {
 
         }
@@ -292,7 +290,7 @@ const Header = () => {
                                             >
                                                 <Link
                                                     className='flex gap-2 p-2'
-                                                    href={router.query?.prodotti ? '/profili/brand' : (gender ? `/cerca/${getUnivers()}/${gender}-tutto/tutto/rilevanza` : '/')}
+                                                    href={router.query?.prodotti ? '/profili/brand' : (gender ? `/cerca/${getUnivers()}/${gender}-tutto/tutto/rilevanza` : '/?gatto=berry')}
                                                 >
                                                     {router.query?.prodotti ?
                                                         (<SmallShopAlt

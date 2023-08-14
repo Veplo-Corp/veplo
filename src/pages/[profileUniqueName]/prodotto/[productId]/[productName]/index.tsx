@@ -279,7 +279,9 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
         setproductsLikeThis(undefined)
 
-        setInLocalStorage('genderSelected', product.info.gender)
+        if (product.info.gender === 'f' || product.info.gender === 'm') {
+            setInLocalStorage('genderSelected', product.info.gender)
+        }
         const genderSelected = product.info.gender === 'm' ? 'uomo' : product.info.gender === 'f' ? 'donna' : undefined;
         if (!genderSelected) return
         //TODO prendere anche parametro "Accessori" o "abbigliamento" da prodotto
