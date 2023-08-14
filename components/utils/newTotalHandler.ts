@@ -1,6 +1,7 @@
-import { CartQuery } from "../../src/lib/apollo/generated/graphql";
+import { Maybe } from "graphql/jsutils/Maybe";
+import { CartProductVariation } from "../../src/lib/apollo/generated/graphql";
 
-export const newTotalHandler = (productVariations: CartQuery["cart"]["productVariations"]): number => {
+export const newTotalHandler = (productVariations: Maybe<CartProductVariation>[]): number => {
     if (!productVariations) { return 0 }
     let total = 0;
     productVariations.forEach(element => {

@@ -45,8 +45,6 @@ const index = () => {
     const [editCurrierInfo] = useMutation(ADD_CODE_AND_COURIER_TO_ORDER, {
         update(cache, el, query) {
 
-
-
             const OrderCacheId = cache.identify({ id: query.variables?.id, __typename: 'Order' })
 
             cache.modify({

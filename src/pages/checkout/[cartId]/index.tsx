@@ -21,25 +21,34 @@ import ProfilePhoto from '../../../../components/molecules/ProfilePhoto';
 import CheckoutProduct from '../../../../components/molecules/CheckoutProduct';
 import { formatNumberWithTwoDecimalsInString } from '../../../../components/utils/formatNumberWithTwoDecimalsInString';
 import expirationTimeTokenControll from '../../../../components/utils/expirationTimeTokenControll';
-import { CartProductVariation, CartQuery, GetSingleShopQuery, Shop } from '../../../lib/apollo/generated/graphql';
+import { Cart, CartProductVariation, CartQuery, GetSingleShopQuery, Shop } from '../../../lib/apollo/generated/graphql';
 import { fbq, gtag } from '../../../lib/analytics/gtag';
 import { GTMEventType, PixelEventType } from '../../../lib/analytics/eventTypes';
 import { GtagVariationsToItemsFor } from '../../../../components/utils/GtagVariationsToItemsFor';
 import { formatNumberWithTwoDecimalsInNumber } from '../../../../components/utils/formatNumberWithTwoDecimalsInNumber';
 import { openModal } from '../../../store/reducers/globalModal';
 import GET_CART from '../../../lib/apollo/queries/getCart';
-import { Cart } from '../../../interfaces/carts.interface';
+import { CartDispatch } from '../../../interfaces/carts.interface';
 
 
 const index = () => {
-    const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
+    const cartsDispatch: CartDispatch[] = useSelector((state: any) => state.carts.carts);
     const user: Firebase_User = useSelector((state: any) => state.user.user);
 
-    const [cart, setCart] = useState<CartQuery["cart"]>()
+    const [cart, setCart] = useState<Cart>()
     const router = useRouter()
     const [checkoutUrlMutation, { error }] = useMutation(CRATE_CHECKOUT_URL);
     const dispatch = useDispatch();
-    const [editCart] = useMutation(EDIT_CART);
+    const [editCart] = useMutation(EDIT_CART, {
+        awaitRefetchQueries: true,
+        refetchQueries: [{
+            query: GET_CART,
+            variables: {
+                //mongoId Shop
+                id: router.query.cartId
+            }
+        }],
+    });
     const [isDisabled, setIsDisabled] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -60,25 +69,21 @@ const index = () => {
     useEffect(() => {
         console.log(data);
 
-        if (!data?.cart) return
-        data?.cart
-        setCart(data?.cart)
+        if (!data?.cart.carts?.[0]) return
+        data?.cart.carts?.[0]
+        setCart(data?.cart.carts?.[0])
     }, [data])
 
 
-
     useEffect(() => {
-        const { shopId } = router.query;
-        if (!router.isReady || typeof shopId !== 'string' || user.statusAuthentication === 'not_yet_authenticated' || user.statusAuthentication === 'logged_out') return
-        // const cart = cartsDispatch.filter(cart => cart?.shopInfo?.id === shopId)[0]
-        // if (cart) {
-        //     setCart(cart)
-        // }
-
+        const { cartId } = router.query;
+        if (!router.isReady || typeof cartId !== 'string' || user.statusAuthentication === 'not_yet_authenticated' || user.statusAuthentication === 'logged_out') return
+        //setCart(undefined)
         getCart({
             variables: {
-                id: shopId
-            }
+                id: cartId
+            },
+            fetchPolicy: "network-only"
         })
 
         // let timeoutId: any;
@@ -195,7 +200,7 @@ const index = () => {
 
         const newTotal: number = newTotalHandler(productVariations)
 
-        let NewCart: CartQuery["cart"] = {
+        let NewCart: any = {
             ...cart,
             total: newTotal,
             productVariations: productVariations
@@ -204,7 +209,7 @@ const index = () => {
 
 
         NewCarts = [
-            ...cartsDispatch.filter(cart => cart?.shopInfo?.id !== router.query.shopId),
+            ...cartsDispatch.filter(cart => cart?.id !== router?.query?.cartId),
             NewCart
         ]
 
@@ -277,8 +282,6 @@ const index = () => {
 
 
         let editedCart: Cart | undefined = undefined;
-
-
         for await (const cart of cartsDispatch) {
             for await (const element of cart.productVariations) {
                 if (element.productId === variation?.productId) {
@@ -294,6 +297,7 @@ const index = () => {
             }
         }
 
+        console.log(editedCart);
 
 
         if (!editedCart) return router.push(`/@${cart?.shopInfo?.name?.unique}`)
@@ -302,9 +306,9 @@ const index = () => {
 
         let NewCarts: Cart[] = [];
 
-        if (editedCart.total > 0) {
+        if (editedCart?.total && editedCart?.total > 0 && editedCart?.shopInfo?.id) {
             NewCarts = [
-                ...cartsDispatch.filter(cart => cart?.shopInfo?.id !== editedCart?.shopInfo.id),
+                ...cartsDispatch.filter(cart => cart?.shopInfo?.id !== editedCart?.shopInfo?.id),
                 editedCart
             ]
             dispatch(
@@ -316,7 +320,7 @@ const index = () => {
 
         } else {
             NewCarts = [
-                ...cartsDispatch.filter(cart => cart?.shopInfo?.id !== editedCart?.shopInfo.id)]
+                ...cartsDispatch.filter(cart => cart?.shopInfo?.id !== editedCart?.shopInfo?.id)]
             dispatch(
                 editVariationFromCart({
                     //add new Carts
@@ -789,9 +793,10 @@ const index = () => {
                 </>
             ) :
                 (
-                    <Box className='h-[60vh] md:h-[50vh] lg:h-[70vh] xl:h-[75vh]'
-                        display={'flex'}
-                        justifyContent={'center'}>
+                    <Box
+                        mt={'30vh'}
+                        className='min-h-screen'
+                    >
                         <Loading />
                     </Box>
                 )

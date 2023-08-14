@@ -123,8 +123,6 @@ const index = () => {
 
     const [deleteVariation] = useMutation(DELETE_VARIATON, {
         update(cache, el, query) {
-
-
             const normalizedIdVariation = cache.identify({ id: query?.variables?.id, __typename: 'ProductVariation' });
             cache.evict({ id: normalizedIdVariation })
         }
@@ -132,8 +130,6 @@ const index = () => {
 
     const [editVariation] = useMutation(EDIT_VARIATIONS, {
         update(cache, el, query) {
-
-
 
             const normalizedIdVariation = cache.identify({ id: query?.variables?.id, __typename: 'ProductVariation' });
             cache.modify({

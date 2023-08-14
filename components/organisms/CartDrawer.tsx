@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay, Tag, Text, VStack } from '@chakra-ui/react'
 import React, { FC, useEffect } from 'react'
-import { Cart, ProductVariation } from '../../src/interfaces/carts.interface'
+import { CartDispatch, ProductVariation } from '../../src/interfaces/carts.interface'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { imageKitUrl } from '../utils/imageKitUrl'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
@@ -20,7 +20,7 @@ import ButtonClose from '../atoms/ButtonClose'
 import { CartProductVariation } from '../../src/lib/apollo/generated/graphql'
 
 const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, closeDrawer }) => {
-    const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
+    const cartsDispatch: CartDispatch[] = useSelector((state: any) => state.carts.carts);
     const user: Firebase_User = useSelector((state: any) => state.user.user);
 
     const [editCart] = useMutation(EDIT_CART);
@@ -143,7 +143,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
 
         }
 
-        let editedCart: Cart | undefined = undefined;
+        let editedCart: CartDispatch | undefined = undefined;
 
 
         for await (const cart of cartsDispatch) {
@@ -164,7 +164,7 @@ const CartDrawer: FC<{ isOpen: boolean, closeDrawer: () => void }> = ({ isOpen, 
         if (!editedCart) return
 
 
-        let NewCarts: Cart[] = [];
+        let NewCarts: CartDispatch[] = [];
 
         if (editedCart.total > 0) {
             NewCarts = sortShopsInCart([

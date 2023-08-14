@@ -1,7 +1,6 @@
 import { Box, Button, Tag, Text, VStack } from '@chakra-ui/react'
 import React, { FC } from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-import { Cart, ProductVariation } from '../../src/interfaces/carts.interface'
 import { imageKitUrl } from '../utils/imageKitUrl'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString'

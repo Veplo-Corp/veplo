@@ -22,7 +22,7 @@ import ModalReausable from '../../../../../../components/organisms/ModalReausabl
 import CartDrawer from '../../../../../../components/organisms/CartDrawer';
 import EDIT_CART from '../../../../../lib/apollo/mutations/editCart';
 import { useDispatch, useSelector } from 'react-redux';
-import { Cart, ProductVariation } from '../../../../../interfaces/carts.interface';
+import { CartDispatch, ProductVariation } from '../../../../../interfaces/carts.interface';
 import { editVariationFromCart } from '../../../../../store/reducers/carts';
 import { Firebase_User } from '../../../../../interfaces/firebase_user.interface';
 import { newTotalHandler } from '../../../../../../components/utils/newTotalHandler';
@@ -137,7 +137,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     const [getSimilarProductOnShop, shopProductsData] = useLazyQuery(GET_SIMILAR_PRODUCT_ON_SHOP);
     const [openDrawerCart, setOpenDrawerCart] = useState(false)
     const [editCart, elementEditCart] = useMutation(EDIT_CART);
-    const cartsDispatchProduct: Cart[] = useSelector((state: any) => state.carts.carts);
+    const cartsDispatchProduct: CartDispatch[] = useSelector((state: any) => state.carts.carts);
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     const [product, setproduct] = useState<Product>(productFounded)
     const [variationSelected, setVariationSelected] = useState<Variation>(productFounded?.variations?.[0])
@@ -362,10 +362,10 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         if (isAddedToCart) return
         else {
 
-            const Carts: Cart[] = cartsDispatchProduct
+            const Carts: CartDispatch[] = cartsDispatchProduct
             const Cart = Carts.find(cart => cart.shopInfo.id === product.shopInfo.id);
-            let NewCart: Cart;
-            let NewCarts: Cart[] = [];
+            let NewCart: CartDispatch;
+            let NewCarts: CartDispatch[] = [];
             let quantityMax;
             let productVariationQuantity = 0;
             const variation = product.variations.find(variation => variation?.id === variationSelected.id)

@@ -8,36 +8,39 @@ const GET_CART = graphql(`
         cart(
             id: $id
         ){
-            id
-            userId
-            shopInfo {
+            carts{
                 id
-                name{
-                    unique
-                    visualized
+                userId
+                shopInfo {
+                    id
+                    name{
+                        unique
+                        visualized
+                    }
+                    city
+                    status
+                    minimumAmountForFreeShipping
+                    profilePhoto
                 }
-                city
-                status
-                minimumAmountForFreeShipping
-                profilePhoto
-            }
-            total
-            productVariations{
-                productId
-                id
-                photo
-                name
-                quantity
-                maxQuantity
-                color
-                size
-                brand
-                price{
-                    v1
-                    v2
-                    discountPercentage
+                total
+                productVariations{
+                    productId
+                    id
+                    photo
+                    name
+                    quantity
+                    maxQuantity
+                    color
+                    size
+                    brand
+                    price{
+                        v1
+                        v2
+                        discountPercentage
+                    }
                 }
             }
+            
         }
     }
 `)
