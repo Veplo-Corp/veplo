@@ -58,27 +58,14 @@ const GET_USER = graphql(`
                             unique
                             visualized
                         }
-                        city
-                        status
-                        minimumAmountForFreeShipping
                         profilePhoto
                     }
                     total
                     productVariations{
-                        productId
                         id
-                        photo
-                        name
                         quantity
-                        maxQuantity
                         color
                         size
-                        brand
-                        price{
-                            v1
-                            v2
-                            discountPercentage
-                        }
                     }
                 }
                 warnings {
@@ -94,35 +81,6 @@ const GET_USER = graphql(`
                     quantity
                 }
             } 
-            orders(
-                limit:100,
-                offset:0
-            )
-            {
-                id
-                code
-                cartId
-                createdAt
-                totalDetails{
-                    total
-                }
-                status
-                shop{
-                    name{
-                        unique
-                        visualized
-                    }
-                    photo
-                }
-                productVariations{
-                    id
-                    photo                    
-                }
-                history {
-                    date
-                    status
-                  }
-            }
         }
     }
 `)

@@ -59,7 +59,7 @@ const index = () => {
                     >
 
                         {data?.user?.following.map(element => {
-                            if (!element.shop) {
+                            if (!element || !element.shop) {
                                 return (<></>)
                             }
                             return (

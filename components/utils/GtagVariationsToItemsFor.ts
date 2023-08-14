@@ -1,7 +1,7 @@
-import { CartProductVariation } from "../../src/lib/apollo/generated/graphql";
+import { CartProductVariation, CartQuery } from "../../src/lib/apollo/generated/graphql";
 import { formatNumberWithTwoDecimalsInNumber } from "./formatNumberWithTwoDecimalsInNumber";
 
-export const GtagVariationsToItemsFor = (variations: CartProductVariation[] | undefined | null): any[] => {
+export const GtagVariationsToItemsFor = (variations: CartQuery["cart"]["productVariations"]): any[] => {
     if (!variations) return [];
     const items = variations?.map(variation => {
 

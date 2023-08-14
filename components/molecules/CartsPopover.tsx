@@ -82,7 +82,7 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                         0)
                                                     return (
                                                         <Link
-                                                            href={'/checkout/' + cart.shopInfo?.id}
+                                                            href={'/checkout/' + cart.id}
                                                             className='w-full'
                                                             onClick={() => close()}
                                                             key={index}

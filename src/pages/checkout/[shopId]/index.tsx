@@ -10,7 +10,6 @@ import NoIndexSeo from '../../../../components/organisms/NoIndexSeo'
 import PriceAndShippingListingCost from '../../../../components/organisms/PriceAndShippingListingCost';
 import createUrlSchema from '../../../../components/utils/create_url';
 import { newTotalHandler } from '../../../../components/utils/newTotalHandler';
-import { Cart, ProductVariation } from '../../../interfaces/carts.interface';
 import CRATE_CHECKOUT_URL from '../../../lib/apollo/mutations/checkout';
 import EDIT_CART from '../../../lib/apollo/mutations/editCart';
 import { editVariationFromCart } from '../../../store/reducers/carts';
@@ -22,19 +21,21 @@ import ProfilePhoto from '../../../../components/molecules/ProfilePhoto';
 import CheckoutProduct from '../../../../components/molecules/CheckoutProduct';
 import { formatNumberWithTwoDecimalsInString } from '../../../../components/utils/formatNumberWithTwoDecimalsInString';
 import expirationTimeTokenControll from '../../../../components/utils/expirationTimeTokenControll';
-import { CartProductVariation, GetSingleShopQuery, Shop } from '../../../lib/apollo/generated/graphql';
+import { CartProductVariation, CartQuery, GetSingleShopQuery, Shop } from '../../../lib/apollo/generated/graphql';
 import { fbq, gtag } from '../../../lib/analytics/gtag';
 import { GTMEventType, PixelEventType } from '../../../lib/analytics/eventTypes';
 import { GtagVariationsToItemsFor } from '../../../../components/utils/GtagVariationsToItemsFor';
 import { formatNumberWithTwoDecimalsInNumber } from '../../../../components/utils/formatNumberWithTwoDecimalsInNumber';
 import { openModal } from '../../../store/reducers/globalModal';
+import GET_CART from '../../../lib/apollo/queries/getCart';
+import { Cart } from '../../../interfaces/carts.interface';
 
 
 const index = () => {
     const cartsDispatch: Cart[] = useSelector((state: any) => state.carts.carts);
     const user: Firebase_User = useSelector((state: any) => state.user.user);
 
-    const [cart, setCart] = useState<Cart>()
+    const [cart, setCart] = useState<CartQuery["cart"]>()
     const router = useRouter()
     const [checkoutUrlMutation, { error }] = useMutation(CRATE_CHECKOUT_URL);
     const dispatch = useDispatch();
@@ -42,53 +43,63 @@ const index = () => {
     const [isDisabled, setIsDisabled] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const shopQuery = useQuery(GET_SHOP, {
-        variables: {
-            id: typeof router?.query?.shopId === 'string' ? router?.query?.shopId : ''
-        }
-    });
-    const [shop, setShop] = useState<GetSingleShopQuery["shop"]>();
+    // const shopQuery = useQuery(GET_SHOP, {
+    //     variables: {
+    //         id: typeof router?.query?.shopId === 'string' ? router?.query?.shopId : ''
+    //     }
+    // });
+    // const [shop, setShop] = useState<GetSingleShopQuery["shop"]>();
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
     const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
     const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('login')
     const [IsOpenDeleteVariation, setIsOpenDeleteVariation] = useState<CartProductVariation>()
     const isSmallView = useBreakpointValue({ base: true, md: false });
+    const [getCart, { data }] = useLazyQuery(GET_CART);
 
+
+    useEffect(() => {
+        console.log(data);
+
+        if (!data?.cart) return
+        data?.cart
+        setCart(data?.cart)
+    }, [data])
 
 
 
     useEffect(() => {
         const { shopId } = router.query;
-        if (!router.isReady || !shopId || user.statusAuthentication === 'not_yet_authenticated' || !cartsDispatch) return
-        const cart = cartsDispatch.filter(cart => cart.shopInfo.id === shopId)[0]
-        let timeoutId: any;
-        if (cart) {
-            setCart(cart)
-        }
-        if (!cart) {
-            //in futuro mettiamo carrello non trovato e non reindiriziamo a negozi
-            timeoutId = setTimeout(() => {
-                if (shop) {
-                    router.replace(`/@${shop?.name?.unique}`)
-                } else {
-                    router.replace(`/profili/brand`)
-                }
-            }, 3000); // Timeout di 4 secondi
-            setCart(undefined)
+        if (!router.isReady || typeof shopId !== 'string' || user.statusAuthentication === 'not_yet_authenticated' || user.statusAuthentication === 'logged_out') return
+        // const cart = cartsDispatch.filter(cart => cart?.shopInfo?.id === shopId)[0]
+        // if (cart) {
+        //     setCart(cart)
+        // }
 
-        }
-        return () => {
-            clearTimeout(timeoutId);
-        };
-    }, [user, cartsDispatch, router.query])
+        getCart({
+            variables: {
+                id: shopId
+            }
+        })
+
+        // let timeoutId: any;
+        // timeoutId = setTimeout(() => {
+        //     if (!data) {
+        //         router.replace(`/profili/brand`)
+        //         setCart(undefined)
+        //     }
+        // }, 6000); // Timeout di 6 secondi
+        // return () => {
+        //     clearTimeout(timeoutId);
+        // };
+    }, [user, router.query])
 
 
 
 
-    useEffect(() => {
-        if (!shopQuery.data?.shop) return
-        setShop(shopQuery?.data?.shop)
-    }, [shopQuery])
+    // useEffect(() => {
+    //     if (!shopQuery.data?.shop) return
+    //     setShop(shopQuery?.data?.shop)
+    // }, [shopQuery])
 
     useEffect(() => {
         if (!error) return
@@ -111,12 +122,13 @@ const index = () => {
         try {
             const create = await checkoutUrlMutation({
                 variables: {
-                    shopId: cart?.shopInfo.id
+                    shopId: cart?.shopInfo?.id
                 }
             })
             fbq({
                 command: PixelEventType.initiateCheckout
             })
+            if (!cart?.productVariations) return
             const items = GtagVariationsToItemsFor(cart?.productVariations)
             gtag({
                 command: GTMEventType.begin_checkout,
@@ -154,8 +166,8 @@ const index = () => {
 
     const handleEditVariation = async (variationSelected: CartProductVariation, quantity: number) => {
         const resolve = await expirationTimeTokenControll(user.expirationTime)
-        if (!resolve || !cart) return
-        let NewCarts: Cart[] = [];
+        if (!resolve || !cart || !cart.productVariations) return
+        let NewCarts: CartQuery["cart"][] = [];
         setIsDisabled(true)
         setIsLoading(true)
         //caso in cui la Variation è già presente in cart
@@ -176,11 +188,14 @@ const index = () => {
         });
 
 
+        if (!productVariations || productVariations.length <= 0) return
 
 
-        const newTotal = newTotalHandler(productVariations)
 
-        let NewCart: Cart = {
+
+        const newTotal: number = newTotalHandler(productVariations)
+
+        let NewCart: CartQuery["cart"] = {
             ...cart,
             total: newTotal,
             productVariations: productVariations
@@ -189,7 +204,7 @@ const index = () => {
 
 
         NewCarts = [
-            ...cartsDispatch.filter(cart => cart.shopInfo.id !== router.query.shopId),
+            ...cartsDispatch.filter(cart => cart?.shopInfo?.id !== router.query.shopId),
             NewCart
         ]
 
@@ -281,7 +296,7 @@ const index = () => {
 
 
 
-        if (!editedCart) return router.push(`/@${shop?.name?.unique}`)
+        if (!editedCart) return router.push(`/@${cart?.shopInfo?.name?.unique}`)
 
 
 
@@ -289,7 +304,7 @@ const index = () => {
 
         if (editedCart.total > 0) {
             NewCarts = [
-                ...cartsDispatch.filter(cart => cart.shopInfo.id !== editedCart?.shopInfo.id),
+                ...cartsDispatch.filter(cart => cart?.shopInfo?.id !== editedCart?.shopInfo.id),
                 editedCart
             ]
             dispatch(
@@ -301,14 +316,14 @@ const index = () => {
 
         } else {
             NewCarts = [
-                ...cartsDispatch.filter(cart => cart.shopInfo.id !== editedCart?.shopInfo.id)]
+                ...cartsDispatch.filter(cart => cart?.shopInfo?.id !== editedCart?.shopInfo.id)]
             dispatch(
                 editVariationFromCart({
                     //add new Carts
                     carts: NewCarts
                 })
             );
-            return router.push(`/@${shop?.name?.unique}`)
+            return router.push(`/@${cart?.shopInfo?.name?.unique}`)
         }
         if (!user.uid) {
             localStorage.setItem('carts', JSON.stringify(NewCarts))
@@ -336,7 +351,7 @@ const index = () => {
 
     const pushToProduct = (variation: CartProductVariation) => {
         if (!variation) return
-        router.push('/@' + shop?.name?.unique + '/prodotto/' + variation?.productId + '/' + createUrlSchema([variation?.brand, variation?.name]) + '?colore=' + variation?.color)
+        router.push('/@' + cart?.shopInfo?.name?.unique + '/prodotto/' + variation?.productId + '/' + createUrlSchema([variation?.brand, variation?.name]) + '?colore=' + variation?.color)
     }
 
     const handleDeleteVariations = async () => {
@@ -350,8 +365,8 @@ const index = () => {
                 if (typeof errorVariation?.path !== 'string') return
                 let id: string = errorVariation?.path
                 id = id.trim()
-                if (!cart) return
-                const variations = cart.productVariations.filter(element => element.id === id)
+                if (!cart?.productVariations) return
+                const variations = cart?.productVariations.filter(element => element?.id === id)
                 for await (const variation of variations) {
                     await editCart({
                         variables: {
@@ -375,7 +390,7 @@ const index = () => {
 
     return (
         <>
-            {cart && shop ? (
+            {cart ? (
                 <>
                     <NoIndexSeo title='Veplo'></NoIndexSeo>
                     {isSmallView && <Box
@@ -415,8 +430,8 @@ const index = () => {
                                 }}
                             >
                                 {!isDisabled ?
-                                    `Procedi ${(typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) ?
-                                        formatNumberWithTwoDecimalsInString(cart.total + 499) :
+                                    `Procedi ${(typeof cart?.shopInfo?.minimumAmountForFreeShipping !== 'number' || typeof cart.total !== 'number' || cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) ?
+                                        formatNumberWithTwoDecimalsInString(cart?.total ? cart?.total + 499 : null) :
                                         formatNumberWithTwoDecimalsInString(cart.total)
                                     }€` :
                                     <Spinner
@@ -439,13 +454,13 @@ const index = () => {
                                 width={'fit-content'}
                             >
                                 <Link
-                                    href={`/@${shop?.name?.unique}`}
+                                    href={`/@${cart?.shopInfo?.name?.unique}`}
                                 >
                                     <ProfilePhoto
-                                        imgName={shop.name?.visualized}
-                                        scr={shop.profilePhoto}
-                                        primaryText={shop.name?.visualized}
-                                        secondaryText={'@' + shop.name?.unique}
+                                        imgName={cart?.shopInfo?.name?.visualized}
+                                        scr={cart?.shopInfo?.profilePhoto}
+                                        primaryText={cart?.shopInfo?.name?.visualized}
+                                        secondaryText={'@' + cart?.shopInfo?.name?.unique}
                                     />
                                 </Link>
                             </Box>
@@ -469,13 +484,18 @@ const index = () => {
                                             gap={5}
                                         >
                                             {cart?.productVariations?.map(variation => {
+                                                if (!variation) {
+                                                    return (
+                                                        <></>
+                                                    )
+                                                }
                                                 return (
                                                     <div
                                                         key={variation?.id && variation?.size ? variation?.id + variation?.size : Math.random()}
                                                         className='w-full'
                                                     >
                                                         <CheckoutProduct
-                                                            shopUniqueName={shop?.name?.unique ? shop?.name?.unique : ''}
+                                                            shopUniqueName={cart?.shopInfo?.name?.unique ? cart?.shopInfo?.name?.unique : ''}
                                                             variation={variation}
                                                             toProduct={() => pushToProduct(variation)}
                                                             deleteVariation={() => {
@@ -578,7 +598,7 @@ const index = () => {
                                                         Spedizione
                                                     </Text>
 
-                                                    {(typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) && <Text
+                                                    {(typeof cart?.shopInfo?.minimumAmountForFreeShipping !== 'number' || typeof cart.total !== 'number' || cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) && <Text
                                                         fontSize={'12px'}
                                                         fontWeight={'medium'}
                                                         color={'primary.bg'}
@@ -594,7 +614,7 @@ const index = () => {
                                                         fontWeight={'semibold'}
                                                         color={'secondaryBlack.text'}
                                                     >
-                                                        {(typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) ? '4,99€' : 'gratis'}
+                                                        {(typeof cart?.shopInfo?.minimumAmountForFreeShipping !== 'number' || typeof cart.total !== 'number' || cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) ? '4,99€' : 'gratis'}
                                                     </Text>
                                                 ) : (
                                                     <Stack
@@ -633,8 +653,8 @@ const index = () => {
                                                     color={'secondaryBlack.text'}
                                                 >
                                                     {
-                                                        (typeof cart.shopInfo.minimumAmountForFreeShipping !== 'number' || cart.shopInfo.minimumAmountForFreeShipping > cart.total) ?
-                                                            formatNumberWithTwoDecimalsInString(cart.total + 499) :
+                                                        (typeof cart?.shopInfo?.minimumAmountForFreeShipping !== 'number' || typeof cart.total !== 'number' || cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) ?
+                                                            formatNumberWithTwoDecimalsInString(cart.total ? cart.total + 499 : null) :
                                                             formatNumberWithTwoDecimalsInString(cart.total)
                                                     }€
                                                 </Text>
@@ -726,8 +746,8 @@ const index = () => {
                                     if (typeof error.path !== 'string') return (<></>)
                                     let id: string = error.path
                                     id = id.trim()
-
-                                    const variations = cart.productVariations.filter(element => element.id === id)
+                                    const variations = cart?.productVariations?.filter(element => element?.id === id)
+                                    if (!variations) return (<></>)
                                     return (
                                         <div key={index}>
                                             {
