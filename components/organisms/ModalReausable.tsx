@@ -1,6 +1,6 @@
 import { Box, Button, IconButton, Text } from '@chakra-ui/react'
 import { Dialog, Transition } from '@headlessui/react'
-import React, { useEffect } from 'react'
+import React, { memo, useEffect } from 'react'
 import { Fragment, useState } from 'react'
 import ButtonClose from '../atoms/ButtonClose'
 
@@ -15,15 +15,15 @@ export interface ErrorModal {
 
 const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isOpen, positionTopModal, marginTop }) => {
 
-    function handleCloseButton() {
-        closeModal()
-    }
+
+
+
 
 
     return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-50"
-                onClose={handleCloseButton}>
+                onClose={closeModal}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -77,4 +77,4 @@ const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isO
     )
 }
 
-export default ModalReausable
+export default memo(ModalReausable)

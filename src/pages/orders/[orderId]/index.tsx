@@ -153,7 +153,6 @@ const index = () => {
 
     }
 
-    console.log(router.asPath);
 
     return (
         <Desktop_Layout>

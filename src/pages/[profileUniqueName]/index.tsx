@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { initApollo } from '../../lib/apollo'
 import GET_SHOP_AND_PRODUCTS_BY_PROFILE_UNIQUE_NAME from '../../lib/apollo/queries/getShopAndProductsByUniqueName'
 import { GetShopQuery, ShopByUniqueNameQuery } from '../../lib/apollo/generated/graphql'

@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Box, Image, Tooltip } from '@chakra-ui/react'
 
 
-const CircleColorSelected: React.FC<{ colors: { name: string, cssColor: string }[], dimension: number | string, space: number, showTooltip?: boolean, colorSelected: string, handleSelectColor: (color: string) => void }> = ({ colors, dimension, space, showTooltip, colorSelected, handleSelectColor }) => {
+const CircleColorSelected: React.FC<{ colors: { name: string, cssColor: string }[], dimension: number | string, space: number, showTooltip?: boolean, colorSelected: string, handleSelectColor: (color: string, size: undefined) => void }> = ({ colors, dimension, space, showTooltip, colorSelected, handleSelectColor }) => {
 
-    console.log('runna');
 
 
     return (
@@ -24,7 +23,7 @@ const CircleColorSelected: React.FC<{ colors: { name: string, cssColor: string }
                             <Box
                                 cursor={'pointer'}
                                 onClick={() => {
-                                    handleSelectColor(color.name)
+                                    handleSelectColor(color.name, undefined)
                                 }}
                                 h={dimension}
                                 w={dimension}
@@ -39,14 +38,13 @@ const CircleColorSelected: React.FC<{ colors: { name: string, cssColor: string }
                             >
                             </Box>
                         </Box>
-
-
                     </Tooltip>
-
                 )
             })}
         </div>
     )
 }
 
-export default CircleColorSelected
+
+
+export default memo(CircleColorSelected)

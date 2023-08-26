@@ -67,7 +67,6 @@ const index = () => {
 
 
     useEffect(() => {
-        console.log(data);
 
         if (!data?.cart.carts?.[0]) return
         data?.cart.carts?.[0]
@@ -283,7 +282,6 @@ const index = () => {
             setIsLoading(false)
 
         } catch (e: any) {
-            console.log(e.message);
             //TODO gestire errore in edit card
             setIsDisabled(false)
             setIsLoading(false)
@@ -328,7 +326,6 @@ const index = () => {
             }
         }
 
-        console.log(editedCart);
 
         if (editedCart) {
             let NewCarts: Cart[] = [];
