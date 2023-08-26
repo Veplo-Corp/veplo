@@ -4,6 +4,7 @@ import { Box, Image, Tooltip } from '@chakra-ui/react'
 
 const CircleColorSelected: React.FC<{ colors: { name: string, cssColor: string }[], dimension: number | string, space: number, showTooltip?: boolean, colorSelected: string, handleSelectColor: (color: string) => void }> = ({ colors, dimension, space, showTooltip, colorSelected, handleSelectColor }) => {
 
+    console.log('runna');
 
 
     return (

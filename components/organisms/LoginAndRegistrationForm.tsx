@@ -181,7 +181,7 @@ const LoginAndRegistrationForm: FC<{
                         //! age ora è Int, ma verrà gestita come date o string con rilascio
                         const idToken = await userCredential.user.getIdToken(true);
                         setAuthTokenInSessionStorage(idToken)
-
+                        if (!idToken) return
                         updateProfile(userCredential.user, {
                             displayName: data.firstName
                         })
@@ -221,7 +221,9 @@ const LoginAndRegistrationForm: FC<{
                                 accountId: response?.data.createUser,
                                 userInfo: {
                                     name: data.firstName
-                                }
+                                },
+                                statusAuthentication: 'logged_in',
+                                favouriteShops: []
                             })
                         );
                         setIsLoading(false)
@@ -232,10 +234,13 @@ const LoginAndRegistrationForm: FC<{
                             const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
                             // Signed in 
                             const idToken = await userCredential.user.getIdToken(true);
-
+                            if (!idToken) return
                             setAuthTokenInSessionStorage(idToken)
                             await sendEmailVerificationHanlder()
                             await setBusinessAccount()
+                            //nuovo idtoken con claims aggiunti
+                            const newIdToken = await userCredential.user.getIdToken(true);
+                            setAuthTokenInSessionStorage(newIdToken)
                             gtag({
                                 command: GTMEventType.signUp,
                                 args: {
@@ -246,7 +251,6 @@ const LoginAndRegistrationForm: FC<{
                                     // mongoId: account?.data.createBusinessStep1
                                 }
                             })
-
                             await router.replace('/shop/crea-business-account')
                             // router.reload()
                             // setemail('')
@@ -272,7 +276,8 @@ const LoginAndRegistrationForm: FC<{
                         errorMessage === 'email already used by another user' ||
                         errorMessage === 'ID token must be a non-empty string' ||
                         errorMessage === 'idToken is not defined' ||
-                        errorMessage === "can't create user"
+                        errorMessage === "can't create user" ||
+                        errorMessage === 'not authenticated'
                         //TODO inserire errori corretti
                         //typeof errorMessage === 'string' && !errorMessage.includes('Firebase')
                     ) {
@@ -281,7 +286,6 @@ const LoginAndRegistrationForm: FC<{
                         if (user) {
                             await deleteUser(user)
                         }
-
                     }
                     dispatch(openModal({
                         title: errorForModal?.title,
@@ -363,7 +367,9 @@ const LoginAndRegistrationForm: FC<{
                         accountId: response?.data.createUser,
                         userInfo: {
                             name: fullName ? fullName[0] : 'nome',
-                        }
+                        },
+                        statusAuthentication: 'logged_in',
+                        favouriteShops: []
                     })
                 );
                 setIsLoading(false)
@@ -375,6 +381,8 @@ const LoginAndRegistrationForm: FC<{
 
                 if (
                     errorMessage === "can't create user"
+                    ||
+                    errorMessage === 'not authenticated'
                 ) {
                     const user = auth.currentUser;
                     //elimina user se da questo errore

@@ -103,7 +103,6 @@ const Header = () => {
         const genderName = getGender()
         if (genderName) return setGender(genderName)
         return () => {
-
         }
     }, [user])
 

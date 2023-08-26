@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout';
 import { Box, Button, HStack, Image, Tag, Text, Tooltip, useBreakpointValue } from '@chakra-ui/react';
 import GET_SINGLE_PRODUCT from '../../../../../lib/apollo/queries/getSingleProduct'
@@ -304,36 +304,34 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
 
 
-    const changeDressColorOrSize = (color: string | undefined, size: string | undefined) => {
-        if (!color && !size) return
-        const { colors, sizes } = router.query
+    const changeDressColorOrSize = useCallback(
+        (color: string | undefined, size: string | undefined) => {
+            if (!color && !size) return
+            const { colors, sizes } = router.query
+            let query: { colors?: any, sizes?: any } = {}
+            if (typeof color === 'string' || typeof colors === 'string') {
+                query["colors"] = color ? color.toLocaleLowerCase() : colors
+            }
+            if (typeof size === 'string' || typeof sizes === 'string') {
+                query["sizes"] = size ? size.toLocaleLowerCase() : sizes
+            }
 
 
-        let query: { colors?: any, sizes?: any } = {}
-        if (typeof color === 'string' || typeof colors === 'string') {
-            query["colors"] = color ? color.toLocaleLowerCase() : colors
-        }
-        if (typeof size === 'string' || typeof sizes === 'string') {
-            query["sizes"] = size ? size.toLocaleLowerCase() : sizes
-        }
+            if (color) {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
 
-
-        if (color) {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        }
-
-        return router.replace({
-            pathname: router.asPath.split('?')[0],
-            query
-        },
-            undefined, { shallow: true }
-        )
-
-
-    }
+            return router.replace({
+                pathname: router.asPath.split('?')[0],
+                query
+            },
+                undefined, { shallow: true }
+            )
+        }, []
+    )
 
     const addToCartEffect = () => {
         setIsAddedToCart(true);
@@ -673,7 +671,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                             className='w-full sm:w-9/12 mx-auto md:w-full'
                         >
                             <Image_Product variation={variationSelected} />
-
                         </Box>
                         <Box className='md:block md:w-[90%] lg:w-[80%]  mx-2'>
                             <Text
@@ -962,51 +959,64 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                         </Text>
                                     </>
                                 }
-                                <Text
-                                    fontSize={'md'}
-                                    fontWeight={'semibold'}
-                                    color={'black'}
-                                >
-                                    Materiale
-                                </Text>
-                                <Text
-                                    fontSize={'md'}
-                                    fontWeight={'normal'}
-                                    color={'#909090'}
-                                    className='col-span-2 lg:col-span-3'
-                                >
-                                    {product.info.materials?.length && product.info.materials?.length > 0 ? product.info.materials.join(', ') : 'non disponibile'}
-                                </Text>
-                                <Text
-                                    fontSize={'md'}
-                                    fontWeight={'semibold'}
-                                    color={'black'}
-                                >
-                                    Fit
-                                </Text>
-                                <Text
-                                    fontSize={'md'}
-                                    fontWeight={'normal'}
-                                    color={'#909090'}
-                                    className='col-span-2 lg:col-span-3'
-                                >
-                                    {product.info.fit ? product.info.fit : 'non disponibile'}
-                                </Text>
-                                <Text
-                                    fontSize={'md'}
-                                    fontWeight={'semibold'}
-                                    color={'black'}
-                                >
-                                    Lunghezza
-                                </Text>
-                                <Text
-                                    fontSize={'md'}
-                                    fontWeight={'normal'}
-                                    color={'#909090'}
-                                    className='col-span-2 lg:col-span-3'
-                                >
-                                    {product.info.length ? product.info.length : 'non disponibile'}
-                                </Text>
+                                {product.info.materials &&
+                                    <>
+                                        <Text
+                                            fontSize={'md'}
+                                            fontWeight={'semibold'}
+                                            color={'black'}
+                                        >
+                                            Materiale
+                                        </Text>
+                                        <Text
+                                            fontSize={'md'}
+                                            fontWeight={'normal'}
+                                            color={'#909090'}
+                                            className='col-span-2 lg:col-span-3'
+                                        >
+                                            {product.info.materials?.length && product.info.materials?.length > 0 ? product.info.materials.join(', ') : 'non disponibile'}
+                                        </Text>
+                                    </>
+                                }
+                                {
+                                    product.info.fit &&
+                                    <>
+                                        <Text
+                                            fontSize={'md'}
+                                            fontWeight={'semibold'}
+                                            color={'black'}
+                                        >
+                                            Fit
+                                        </Text>
+                                        <Text
+                                            fontSize={'md'}
+                                            fontWeight={'normal'}
+                                            color={'#909090'}
+                                            className='col-span-2 lg:col-span-3'
+                                        >
+                                            {product.info.fit ? product.info.fit : 'non disponibile'}
+                                        </Text>
+                                    </>
+                                }
+                                {
+                                    product.info.length && <>
+                                        <Text
+                                            fontSize={'md'}
+                                            fontWeight={'semibold'}
+                                            color={'black'}
+                                        >
+                                            Lunghezza
+                                        </Text>
+                                        <Text
+                                            fontSize={'md'}
+                                            fontWeight={'normal'}
+                                            color={'#909090'}
+                                            className='col-span-2 lg:col-span-3'
+                                        >
+                                            {product.info.length ? product.info.length : 'non disponibile'}
+                                        </Text>
+                                    </>
+                                }
                                 {product.info.description && product.info.description?.length > 0 &&
                                     <>
                                         <Text
