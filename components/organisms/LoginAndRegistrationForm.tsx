@@ -384,7 +384,7 @@ const LoginAndRegistrationForm: FC<{
                     return
                 }
                 if (errorMessage === 'email already used by another user') {
-                    const tokenResult = await result.user.getIdTokenResult();
+                    const tokenResult = await result.user.getIdTokenResult(true);
                     const isBusiness = tokenResult.claims.isBusiness ? true : false;
                     gtag({
                         command: GTMEventType.login,
