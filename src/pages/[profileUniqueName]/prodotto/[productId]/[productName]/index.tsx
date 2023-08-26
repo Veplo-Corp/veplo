@@ -330,7 +330,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             },
                 undefined, { shallow: true }
             )
-        }, []
+        }, [router]
     )
 
     const addToCartEffect = () => {
@@ -426,7 +426,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 //caso in cui la Variation non esiste nel cart
                 if (!quantity) {
                     addToCartEffect()
-
                     const newProductVariation: ProductVariation = {
                         id: variationSelected.id,
                         photo: variationSelected.photos[0],
@@ -498,8 +497,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                             quantity: productVariationQuantity > 0 ? productVariationQuantity : 1
                         }
                     })
-                    console.log(result?.data.editCart);
-                    console.log(Cart);
 
                     if (typeof result?.data.editCart !== 'string') return
                     //CART INESISTENTE
@@ -647,6 +644,8 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
     };
 
 
+    //console.log(product);
+
 
     return (
         <>
@@ -767,13 +766,14 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 {product.colors.length === 1 && <span className='ml-1'>colorazione disponibile</span>}
                                 {product.colors.length > 1 && <span className='ml-1'>colorazioni disponibili</span>}
                             </Box>}
+
                             {product.colors && <div className='mt-2'>
                                 <CircleColorSelected
                                     colorSelected={colorSelected ? colorSelected : ''}
                                     colors={
                                         product.colors
                                     }
-                                    handleSelectColor={(color: string) => changeDressColorOrSize(color, undefined)}
+                                    handleSelectColor={changeDressColorOrSize}
                                     dimension={'1.5rem'} space={5} showTooltip={true}
                                 />
                             </div>}

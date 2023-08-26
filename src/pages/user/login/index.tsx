@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { Firebase_User } from '../../../interfaces/firebase_user.interface';
 
@@ -20,8 +20,10 @@ type InputForm = {
 
 const index = () => {
   const router = useRouter()
-  const { type, person } = router.query;
   const user: Firebase_User = useSelector((state: any) => state.user.user);
+  const { type, person } = useMemo(() => {
+    return router.query
+  }, [router])
 
 
   useEffect(() => {
@@ -70,13 +72,13 @@ const index = () => {
         }}
       >VEPLO</Button>
       <Box className={` ${person === 'user' ? 'mt-[11vh] lg:mt-[12vh]' : 'mt-[19vh] lg:mt-[20vh]'}  px-4 md:px-0`}>
-        <LoginAndRegistrationForm
+        {type && person && <LoginAndRegistrationForm
           type={(type === 'login' || type === 'registration' || type === 'reset_password') ? type : undefined}
           person={(person === 'business' || person === 'user') ? person : undefined}
           handleChangeTypeOrPerson={(type, person) => {
             router.replace(`/user/login?type=${type}&person=${person}`)
           }}
-        />
+        />}
       </Box>
 
 

@@ -323,7 +323,6 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
         const tokenResult = await userAuth.getIdTokenResult(true)
         setAuthTokenInSessionStorage(tokenResult.token)
-        console.log(tokenResult.token);
 
 
         // user is logged in, send the user's details to redux, store the current user in the state

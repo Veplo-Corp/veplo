@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { GetShopQuery, Product, ProductsQueryResponse } from '../../src/lib/apollo/generated/graphql';
 import PageNotFound from '../molecules/PageNotFound';
 import { useRouter } from 'next/router';
@@ -73,7 +73,6 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
     const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('login')
     const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
     const { addToast } = ToastOpen();
-    console.log(user);
 
 
 
@@ -372,6 +371,12 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
         )
     }
 
+    const closeModalHandler = useCallback(
+        () => {
+            setIsOpenLoginModal(false)
+        }, []
+    )
+
     return (
         <Desktop_Layout
             noPaddingXMobile={true}
@@ -667,7 +672,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
             <ModalReausable
                 marginTop={0}
                 title='' isOpen={isOpenLoginModal}
-                closeModal={() => setIsOpenLoginModal(false)}
+                closeModal={closeModalHandler}
             >
                 <LoginAndRegistrationForm
                     open='modal'
@@ -677,6 +682,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                         if (person === 'business') return
                         setTypeLogin(type)
                     }}
+                    closeModal={closeModalHandler}
                 />
             </ModalReausable>
 
@@ -689,4 +695,4 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
     )
 }
 
-export default ShopPage
+export default memo(ShopPage)

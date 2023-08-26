@@ -2,7 +2,7 @@ import { Box, Button, ButtonGroup, Input, InputGroup, InputLeftElement, InputRig
 import { UserCredential, createUserWithEmailAndPassword, deleteUser, getAuth, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, updateProfile } from 'firebase/auth';
 import { EyeClose, EyeEmpty, Lock, Mail } from 'iconoir-react';
 import { useRouter } from 'next/router';
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
+import React, { FC, memo, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { handleErrorFirebase } from '../utils/handleErrorFirebase';
 import { openModal } from '../../src/store/reducers/globalModal';
@@ -31,7 +31,6 @@ export type InputFormLogin = {
     firstName: string,
     lastName: string
 }
-declare let window: CustomWindow; // Assicurati di importare la definizione di tipo corretta
 
 
 const LoginAndRegistrationForm: FC<{
@@ -44,7 +43,6 @@ const LoginAndRegistrationForm: FC<{
     ({ type, person, handleChangeTypeOrPerson, open, shopId, closeModal }) => {
         const [isLoading, setIsLoading] = useState(false)
         const cartsDispatchProduct: Cart[] = useSelector((state: any) => state.carts.carts);
-        const user: Firebase_User = useSelector((state: any) => state?.user.user);
 
         const router = useRouter();
         const { register, handleSubmit, reset, watch, formState: { errors, isValid, isSubmitting, isDirty }, setValue, control, formState } = useForm<InputFormLogin>({
@@ -56,6 +54,7 @@ const LoginAndRegistrationForm: FC<{
         const [showPassword, setShowPassword] = useState(false)
         const { addToast } = ToastOpen();
         const [editCart] = useMutation(EDIT_CART);
+
 
 
 
@@ -77,9 +76,7 @@ const LoginAndRegistrationForm: FC<{
                                 quantity: variation?.quantity
                             }
                         })
-                        console.log(shopId);
-                        console.log(cart.shopInfo?.id);
-                        console.log(cart.shopInfo?.id === shopId);
+
 
                         if (cart.shopInfo?.id === shopId) {
 
@@ -97,13 +94,15 @@ const LoginAndRegistrationForm: FC<{
         const redirectUser = (isBusiness: boolean) => {
             // rimani nella stessa pagina in modal
             localStorage.removeItem('carts')
-            if (open === 'modal' && closeModal) {
+
+
+            if (open === 'modal' && typeof closeModal === 'function') {
+
                 closeModal()
                 setTimeout(() => {
                     router.reload()
                 }, 200);
                 return
-
             }
             if (typeof router.query?.callbackUrl === 'string') {
                 router.replace(router.query?.callbackUrl)
@@ -820,4 +819,4 @@ const LoginAndRegistrationForm: FC<{
         )
     }
 
-export default LoginAndRegistrationForm
+export default memo(LoginAndRegistrationForm)

@@ -218,7 +218,6 @@ const index = () => {
         }
     }
 
-    console.log(order?.totalDetails?.amountDiscount);
 
 
     const handleDenyReturn = async () => {
