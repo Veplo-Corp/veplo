@@ -73,6 +73,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
     const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('login')
     const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
     const { addToast } = ToastOpen();
+    console.log(user);
 
 
 
