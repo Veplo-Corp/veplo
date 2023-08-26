@@ -158,14 +158,17 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
         //controlla se esiste già questa sessione nel local storage
         //nel caso esiste, immette i prodotti nel local storage
-        if (window.history.state.key === sessionStorage.getItem("keyProductsSession")) {
+        const keySession = sessionStorage.getItem("keyProductsSession")
+
+        if (window.history.state.key === keySession) {
             const productsFounded = sessionStorage.getItem("productsInProductsPage");
+
             if (productsFounded) {
-                setProducts(JSON.parse(productsFounded))
+                setProducts([...JSON.parse(productsFounded)])
                 const scrollPosition = sessionStorage.getItem('scrollPositionProducts');
-                sessionStorage.removeItem("productsInProductsPage")
+                // sessionStorage.removeItem("productsInProductsPage")
                 sessionStorage.removeItem("scrollPositionProducts")
-                sessionStorage.removeItem("keyProductsSession")
+                // sessionStorage.removeItem("keyProductsSession")
                 setIsLoading(false)
 
                 const newFilters = {
