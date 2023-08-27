@@ -70,7 +70,7 @@ const ImageCrop: FC<Props> = ({ ...props }) => {
 
                     <img
 
-                        className='object-contain border-none'
+                        className='object-contain border-none cursor-pointer'
                         src={props.imageSrc} ref={imgRef}
                     />
 
