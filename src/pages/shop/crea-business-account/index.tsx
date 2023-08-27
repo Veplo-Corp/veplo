@@ -59,7 +59,7 @@ const index = () => {
     return (
         <Desktop_Layout>
             <form
-                className='m-auto w-11/12 md:w-8/12 lg:w-6/12 xl:w-1/3'
+                className='m-auto w-11/12 md:w-8/12 lg:w-6/12 xl:w-4/12'
                 onSubmit={handleSubmit(async (data) => {
                     setIsLoading(true)
                     try {
