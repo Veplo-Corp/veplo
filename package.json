@@ -23,7 +23,6 @@
     "@graphql-codegen/typescript-operations": "^4.0.0",
     "@headlessui/react": "^1.7.3",
     "@heroicons/react": "^2.0.12",
-    "@next/font": "^13.1.6",
     "@pronestor/react-zoom-pan-pinch": "^2.4.3",
     "@reduxjs/toolkit": "^1.8.6",
     "@stripe/react-stripe-js": "^1.16.5",
