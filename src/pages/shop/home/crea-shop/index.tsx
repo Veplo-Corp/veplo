@@ -624,6 +624,7 @@ const index = () => {
                                 marginBottom={1}
                                 zIndex={0}
                                 objectFit='cover'
+                                cursor={'pointer'}
                                 onClick={() => {
                                     setTypeCroppedImage(UploadEventType.shopCover)
                                     handleClick(null, UploadEventType.shopCover)
