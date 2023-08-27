@@ -695,4 +695,4 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
     )
 }
 
-export default memo(ShopPage)
+export default ShopPage

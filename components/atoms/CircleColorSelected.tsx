@@ -47,4 +47,4 @@ const CircleColorSelected: React.FC<{ colors: { name: string, cssColor: string }
 
 
 
-export default memo(CircleColorSelected)
+export default CircleColorSelected

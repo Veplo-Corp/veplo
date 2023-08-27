@@ -77,4 +77,4 @@ const ModalReausable: React.FC<ErrorModal> = ({ title, closeModal, children, isO
     )
 }
 
-export default memo(ModalReausable)
+export default ModalReausable
