@@ -686,7 +686,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                         text={'Resetta Filtri'}
                         handleEvent={() => {
                             return router.push({
-                                pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-tutto/tutto/${sort}`,
+                                pathname: `/cerca/${universProps}/${filters?.gender === 'm' ? 'uomo' : 'donna'}-${filters.macroCategory ? filters.macroCategory.toLowerCase() : 'tutto'}/tutto/${sort}`,
                             })
                         }}
                     />
