@@ -588,13 +588,11 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     }
 
 
-    const saveProductsInSessionStorage = useCallback(
-        () => {
-            sessionStorage.setItem("keyProductsSession", window.history.state.key)
-            sessionStorage.setItem("productsInProductsPage", JSON.stringify(products))
-            sessionStorage.setItem('scrollPositionProducts', window.scrollY.toString());
-        }, []
-    )
+    const saveProductsInSessionStorage = () => {
+        sessionStorage.setItem("keyProductsSession", window.history.state.key)
+        sessionStorage.setItem("productsInProductsPage", JSON.stringify(products))
+        sessionStorage.setItem('scrollPositionProducts', window.scrollY.toString());
+    }
 
 
     const ReturnTagFilter = () => {
