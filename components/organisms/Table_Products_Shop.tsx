@@ -69,7 +69,6 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
                 variables: {
                     id: idShop, limit: 100, offset: 0,
                     filters: {}
-                    //* mettere idShop,
                 },
             });
             const ProductCacheId = cache.identify({ id: query.variables?.id, __typename: 'Product' })
@@ -88,10 +87,7 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
 
 
     const { loading, error, data, fetchMore } = useQuery<Props>(GET_PRODUCTS_FROM_SHOP, {
-        fetchPolicy: 'cache-first',
-        nextFetchPolicy: 'cache-first',
         variables: { id: idShop, limit: 100, offset: 0, filters: {} },
-        // notifyOnNetworkStatusChange: true,
     });
 
 

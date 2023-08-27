@@ -77,92 +77,18 @@ const index = () => {
     const [cardToEdit, setCardToEdit] = useState<any>([])
     const [isLoading, setIsLoading] = useState(false)
     const [createProduct] = useMutation(CREATE_PRODUCT, {
-        update(cache, el, query) {
-            const data = el.data
+        awaitRefetchQueries: true,
+        refetchQueries: [{
+            query: GET_PRODUCTS_FROM_SHOP,
+            variables: {
+                id: router.query.shopId, //* mettere idShop,
+                limit: 100, offset: 0,
+                filters: {
 
-            const shop: any = cache.readQuery({
-                query: GET_PRODUCTS_FROM_SHOP,
-                // Provide any required variables in this object.
-                // Variables of mismatched types will return `null`.
-                variables: {
-                    id: router.query.shopId, //* mettere idShop,
-                    limit: 100, offset: 0,
-                    filters: {
-
-                    }
-                },
-            });
-
-
-
-            if (!shop?.shop.products.products) return
-
-
-
-            const variations = query.variables?.options.variations.map((element: any) => {
-                return {
-                    ...element,
-                    id: 'testId',
-                    __typename: "ProductVariation"
                 }
-            })
+            },
+        }],
 
-
-            if (!query.variables?.options) return
-
-            const newProduct = {
-                canBuy: true,
-                id: data.createProduct,
-                info: {
-                    ...query.variables.options.info,
-                    __typename: "ProductInfo"
-                },
-                name: query.variables.options.name,
-                price: {
-                    v1: query.variables.options.price.v1,
-                    v2: query.variables.options.price.v1,
-                    discountPercentage: null,
-                    __typename: "Price"
-                },
-                shopInfo: {
-                    businessId: "test",
-                    city: "Terni",
-                    id: router.query.shopId,
-                    name: "Negozio fisico",
-                    status: "active",
-                    __typename: "ShopInfo"
-                },
-                status: 'active',
-                variations: variations,
-                location: {
-                    type: 'Points',
-                    coordinates: [1, 1],
-                    __typename: 'Location'
-                },
-                __typename: 'Product',
-
-            }
-
-
-
-
-            cache.writeQuery({
-                query: GET_PRODUCTS_FROM_SHOP,
-                variables: { id: router.query.shopId, limit: 100, offset: 0, filters: {} },
-                data: {
-                    shop: {
-                        id: router.query.shopId,
-                        products: {
-                            products: [
-                                newProduct,
-                                ...shop?.shop.products.products
-                            ]
-                        }
-                    }
-                }
-            })
-
-        }
     });
     const user: Firebase_User = useSelector((state: any) => state.user.user);
 
