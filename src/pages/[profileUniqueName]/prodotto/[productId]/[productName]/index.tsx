@@ -556,7 +556,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                 } else if (!user.uid) {
                     if (!Cart) {
 
-
                         const newProductVariation: ProductVariation = {
                             id: variationSelected.id,
                             photo: variationSelected.photos[0],

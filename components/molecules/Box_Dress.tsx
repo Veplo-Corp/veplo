@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, memo, useEffect, useState } from 'react'
 import { Box, Fade, Image, ScaleFade, Tag, Text, Tooltip, VStack, useBreakpointValue } from '@chakra-ui/react'
 import Circle_Color from '../atoms/Circle_Color'
 import { COLORS } from '../mook/colors'
@@ -31,6 +31,7 @@ import ToolTipComponent from '../atoms/ToolTipComponent';
 
 
 const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean, productLink: string, doubleGridDevice: boolean }> = ({ handleEventSelectedDress, product, color, showStoreHeader, productLink, overflowCards, doubleGridDevice }) => {
+    console.log('runna' + Math.random());
 
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     //const [dimensionUrl, setDimensionUrl] = useState('&tr=w-571,h-825')
@@ -411,4 +412,4 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
     )
 }
 
-export default Box_Dress
+export default memo(Box_Dress)

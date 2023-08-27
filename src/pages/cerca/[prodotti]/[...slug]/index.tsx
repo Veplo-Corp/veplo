@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { initApollo } from '../../../../lib/apollo';
 import { Product, ProductsQuery } from '../../../../lib/apollo/generated/graphql';
 import GET_PRODUCTS from '../../../../lib/apollo/queries/getProducts';
@@ -588,7 +588,13 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     }
 
 
-
+    const saveProductsInSessionStorage = useCallback(
+        () => {
+            sessionStorage.setItem("keyProductsSession", window.history.state.key)
+            sessionStorage.setItem("productsInProductsPage", JSON.stringify(products))
+            sessionStorage.setItem('scrollPositionProducts', window.scrollY.toString());
+        }, []
+    )
 
 
     const ReturnTagFilter = () => {
@@ -976,7 +982,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                         return (
                                                             <motion.div
 
-                                                                key={product?.id ? product?.id : Math.random() + index}
+                                                                key={index}
                                                                 variants={LIST_ITEM_VARIANT}
                                                                 initial="hidden"
                                                                 animate="visible"
@@ -984,14 +990,9 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                             >
                                                                 <Box_Dress
                                                                     doubleGridDevice={isExtraSmallView && doubleGridDevice ? true : false}
-                                                                    handleEventSelectedDress={() => {
-                                                                        sessionStorage.setItem("keyProductsSession", window.history.state.key)
-                                                                        sessionStorage.setItem("productsInProductsPage", JSON.stringify(products))
-                                                                        sessionStorage.setItem('scrollPositionProducts', window.pageYOffset.toString());
-                                                                    }}
+                                                                    handleEventSelectedDress={saveProductsInSessionStorage}
                                                                     productLink={`/@${product.shopInfo?.name?.unique}/prodotto/${product.id}/${createUrlSchema([product?.info?.brand, product.name])}${router.asPath.split('?')[1] ? '?' + router.asPath.split('?')[1] : ''}`}
                                                                     showStoreHeader={true} product={product} color={filters.colors?.[0] ? filters.colors[0] : undefined}></Box_Dress>
-
                                                             </motion.div>
                                                         )
                                                     })}

@@ -34,7 +34,7 @@ const FormReturn: FC<{ orderCode?: string, phone?: string, email?: string, handl
                 mb={3}
                 lineHeight={'9'}
             >
-                Richiesta reso
+
             </Text>
             <Text
                 fontSize={'sm'}

@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react'
-import React, { FC } from 'react'
+import React, { FC, memo } from 'react'
 
 const BoxExplenationStripe: FC<{ textBold: string }> = ({ textBold }) => {
     return (
@@ -24,7 +24,7 @@ const BoxExplenationStripe: FC<{ textBold: string }> = ({ textBold }) => {
                 Fai clic su <strong> {textBold} </strong> per procedere alla registrazione con Stripe.
             </Box>
             <img
-                className='w-2/12 md:1/4'
+                className='w-2/12 md:w-1/4'
                 src={'/static/stripeLogo.svg'}
                 alt='Stripe'
             />
@@ -32,4 +32,4 @@ const BoxExplenationStripe: FC<{ textBold: string }> = ({ textBold }) => {
     )
 }
 
-export default BoxExplenationStripe
+export default memo(BoxExplenationStripe)
