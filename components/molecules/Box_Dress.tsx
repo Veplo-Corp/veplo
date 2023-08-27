@@ -31,8 +31,6 @@ import ToolTipComponent from '../atoms/ToolTipComponent';
 
 
 const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean, productLink: string, doubleGridDevice: boolean }> = ({ handleEventSelectedDress, product, color, showStoreHeader, productLink, overflowCards, doubleGridDevice }) => {
-    console.log('runna' + Math.random());
-
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     //const [dimensionUrl, setDimensionUrl] = useState('&tr=w-571,h-825')
     const [urlProduct, seturlProduct] = useState<string | undefined>()
@@ -54,7 +52,8 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
 
 
 
-    const handleSetPhotoUrl = (colorSelected: string | undefined, sizeSelected: string | undefined) => {
+    const handleSetPhotoUrl = (colorSelected: string | undefined) => {
+
         if (!product?.variations) return
 
         if (!colorSelected) {
@@ -68,7 +67,12 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
             } else {
                 setListOfSizesAvailableForSpecificVariation([])
             }
-            return seturlProduct(url)
+
+            seturlProduct(url)
+            const udpateUrl = manipulateUrlForProductColorAndSize(undefined, undefined, productLink)
+            setProductLinkPage(udpateUrl)
+
+            return
         }
 
         const variationIndex: any = product.variations?.findIndex(variation => variation?.color?.toLowerCase() === colorSelected.toLowerCase())
@@ -129,8 +133,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                 <Circle_Color colors={productcolorsCSS.slice(0, 4)} dimension={doubleGridDevice ? '20px' : isMobile ? '22px' : 6} space={2}
                     handleColorFocused={(color: string) => {
                         if (isSmallView) return
-
-                        handleSetPhotoUrl(color, undefined)
+                        handleSetPhotoUrl(color)
                     }}
 
                 />
@@ -166,7 +169,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
         const isProductSustainable = checkIfProductIsSustainable(product.info?.traits)
         setIsSustainable(isProductSustainable)
         setProductcolorsCSS(colors)
-        handleSetPhotoUrl(color, undefined)
+        handleSetPhotoUrl(color)
         sizeAvailable(product.variations)
 
 
@@ -405,8 +408,6 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                 </Box >
             }
         </>
-
-
 
 
     )

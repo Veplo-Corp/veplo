@@ -12,8 +12,6 @@ import deletePhotoFirebase from '../../../../../../components/utils/deletePhotoF
 import { auth } from '../../../../../config/firebase';
 import { initApollo } from '../../../../../lib/apollo';
 import DELETE_PRODUCT from '../../../../../lib/apollo/mutations/deleteProduct';
-import GET_PRODUCTS_FROM_SHOP from '../../../../../lib/apollo/queries/geetProductsShop';
-import GET_SINGLE_PRODUCT from '../../../../../lib/apollo/queries/getSingleProduct';
 import Verified_Email from '../../../../../../components/molecules/Verified_Email/Verified_Email';
 import Shop_UID_Required from '../../../../../../components/utils/Shop_UID_Required';
 import { Firebase_User } from '../../../../../interfaces/firebase_user.interface';
@@ -85,8 +83,6 @@ const index = () => {
     const [deleteProduct] = useMutation(DELETE_PRODUCT, {
         update(cache, el) {
             const deleteId = el.data
-
-
 
 
             //*delete old data, finding serialized number

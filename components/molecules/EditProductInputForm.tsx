@@ -98,40 +98,14 @@ const EditProductInputForm: FC<{ univers: string, defaultValues: IFormInputProdu
                         onChange={(e) => {
                             const inputValue = onChangeNumberPrice(e)
                             setValue('price.v1', inputValue);
-                            let v1 = Number(onChangeNumberPrice(e).replace(',', '.'))
-                            let v2 = watch('price.v2');
-                            console.log(typeof v2);
-
-                            if (typeof v2 === 'string') {
-                                return v2 = Number(v2.replace(',', '.'))
-                            }
-                            else {
-                                setValue('price.v2', v1);
-                                return setValue('price.discountPercentage', 0);
-                            }
-                            // if (v1 >= Number(watch('price.v2'))) {
-
-                            //     if (Number(watch('price.v2')) > 0) {
-                            //         const discountPercentage = Number((100 - Number(v2) / v1 * 100).toFixed(2));
-                            //         return setValue('price.discountPercentage', discountPercentage);
-                            //     }
-                            //     else {
-                            //         setValue('price.v2', v1);
-                            //         return setValue('price.discountPercentage', 0);
-                            //     }
-                            // } else {
-                            //     console.log('passa qui');
-
-                            //     setValue('price.v2', v1);
-                            //     return setValue('price.discountPercentage', 0);
-                            // }
-
+                            setValue('price.v2', inputValue);
+                            setValue('price.discountPercentage', 0);
 
                         }}
                     />
                 </InputGroup>
             </Div_input_creation>
-            <Div_input_creation text='Prezzo scontato'>
+            <Div_input_creation text='Prezzo scontato e percentuale sconto'>
                 <InputGroup
                     gap={10}
                 >

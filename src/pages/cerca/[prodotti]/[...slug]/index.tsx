@@ -650,17 +650,18 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                         handleEvent={deleteFilterParams}
                     />
                 }
-                {filters.maxPrice &&
-                    <TagFilter
-                        value={'maxPrice'}
-                        text={`Max ${(Number(filters.maxPrice) / 100).toFixed(0)}€`}
-                        handleEvent={deleteFilterParams}
-                    />
-                }
+
                 {filters.minPrice &&
                     <TagFilter
                         value={'minPrice'}
                         text={`Min ${(Number(filters.minPrice) / 100).toFixed(0)}€`}
+                        handleEvent={deleteFilterParams}
+                    />
+                }
+                {filters.maxPrice &&
+                    <TagFilter
+                        value={'maxPrice'}
+                        text={`Max ${(Number(filters.maxPrice) / 100).toFixed(0)}€`}
                         handleEvent={deleteFilterParams}
                     />
                 }

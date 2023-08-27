@@ -577,8 +577,6 @@ const index = () => {
 
                     </div>
                 }
-
-
             </Desktop_Layout>
 
         </>
