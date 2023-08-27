@@ -156,7 +156,9 @@ const FiltersSelections: FC<{
                             isLoading={isLoading}
                             modifyToogleInComponent={true}
                             text={
-                                <Box display={'flex'} gap={'4px'}>
+                                <Box display={'flex'} gap={'4px'}
+
+                                >
                                     <Leaf
                                         className='my-auto'
                                         height={'20px'}
@@ -260,7 +262,7 @@ const FiltersSelections: FC<{
                     >
                         <Button
                             height={12}
-                            variant={['grayPrimary', 'grayPrimary']}
+                            variant={'grayPrimary'}
                             gap={1}
                             paddingX={4}
                             borderRadius={'10px'}
@@ -280,7 +282,7 @@ const FiltersSelections: FC<{
 
                         {isSmallView && <Button
                             height={12}
-                            variant={['grayPrimary', 'grayPrimary']}
+                            variant={'grayPrimary'}
                             gap={1}
                             paddingX={4}
                             borderRadius={'10px'}
