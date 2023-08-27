@@ -64,7 +64,6 @@ export async function getStaticProps(ctx: any) {
     }
     const { sorting, ...newParseURL } = parsedURL
     const sortFilter = getSortingFilter(sorting)
-    console.log(sortFilter);
 
     try {
         const { data, errors }: { data: ProductsQuery, errors: any } = await apolloClient.query({
@@ -133,7 +132,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [sort, setSort] = useState<Sort | string>('')
     const timeoutRef = useRef<any>(null);
 
-    console.log(products);
 
 
     useEffect(() => {
