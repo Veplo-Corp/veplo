@@ -10,7 +10,7 @@ const Product_Status_Popover: FC<{ status: string, onChangeStatus: any }> = ({ s
             DB_name: 'active',
         },
         {
-            name: 'Terminato',
+            name: 'esaurito',
             DB_name: 'not_active',
         }
     ]
@@ -26,7 +26,7 @@ const Product_Status_Popover: FC<{ status: string, onChangeStatus: any }> = ({ s
                     paddingY={1.5}
                 >
                     <span className='hidden md:flex'>
-                        {status === 'active' ? 'Attivo' : 'Terminato'}
+                        {status === 'active' ? 'Attivo' : 'esaurito'}
                     </span>
                     <span className='flex md:hidden'>
                         {status === 'active' ? 'OK' : 'TE'}

@@ -7,7 +7,7 @@ import { extendTheme } from "@chakra-ui/react"
 import { alertAnatomy } from '@chakra-ui/anatomy';
 import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from '../store/store'
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { auth, onAuthStateChanged, signOut } from '../config/firebase'
 import user, { addFavouriteShopBusiness, changeFavouriteShops, login, logout } from '../store/reducers/user'
 import { setAddress } from '../store/reducers/address_user'
@@ -281,30 +281,31 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
 
 
-  const fetchBrandsFromDB = async () => {
+  useMemo(
+    async () => {
 
-    const endpoint = process.env.NEXT_PUBLIC_APOLLO_URI + `/brands`
-    try {
-      const response = await fetch(endpoint, {
-        method: 'GET',
-        mode: 'cors', // Puoi scegliere tra 'no-cors', 'cors', o 'same-origin' a seconda delle tue esigenze
-      });
+      const endpoint = process.env.NEXT_PUBLIC_APOLLO_URI + `/brands`
+      try {
+        const response = await fetch(endpoint, {
+          method: 'GET',
+          mode: 'cors', // Puoi scegliere tra 'no-cors', 'cors', o 'same-origin' a seconda delle tue esigenze
+        });
 
 
-      if (response.ok) {
-        const result = await response.json();
+        if (response.ok) {
+          const result = await response.json();
 
-        if (!result) return;
+          if (!result) return;
 
-        dispatch(setBrands(result));
-      } else {
-        //console.log('La chiamata API non è andata a buon fine. Stato:', response.status);
+          dispatch(setBrands(result));
+        } else {
+          //console.log('La chiamata API non è andata a buon fine. Stato:', response.status);
+        }
+      } catch (error) {
+        //console.log('Si è verificato un errore durante la chiamata API:', error);
       }
-    } catch (error) {
-      //console.log('Si è verificato un errore durante la chiamata API:', error);
-    }
-
-  }
+    }, []
+  )
 
 
 
@@ -490,10 +491,7 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
     });
   }, []);
 
-  useEffect(() => {
-    fetchBrandsFromDB()
 
-  }, [])
 
 
 

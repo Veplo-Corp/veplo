@@ -19,7 +19,7 @@ const WarningCard: FC<{ warning: CartWarning }> = ({ warning }) => {
         } else if (warning.isSizeNonExisting) {
             return "Taglia terminata";
         } else if (warning.isVariationNonExisting) {
-            return "Colore terminato";
+            return "Colore esaurito";
         } else {
             return "Avviso sconosciuto.";
         }

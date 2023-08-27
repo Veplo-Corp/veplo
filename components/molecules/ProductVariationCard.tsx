@@ -59,7 +59,7 @@ const ProductVariationCard: FC<{ index: number, variation: VariationCard, delete
                                     className='text-sm mb-1'
                                     key={Math.random()}
                                 >
-                                    {size.size} - {size.quantity ? size.quantity + ' quantità' : 'TERMINATO'}
+                                    {size.size} - {size.quantity ? size.quantity + ' quantità' : 'ESAURITO'}
                                 </p>
                             )
                         })

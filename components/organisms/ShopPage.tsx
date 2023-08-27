@@ -534,7 +534,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                             className='mt-0 mb-2 md:my-1'
                         >
                             {shop?.minimumAmountForFreeShipping && <TagComponent
-                                text={`consegna gratis da ${parseInt((shop?.minimumAmountForFreeShipping / 100).toString())}€`}
+                                text={`spedizione gratis da ${parseInt((shop?.minimumAmountForFreeShipping / 100).toString())}€`}
                                 bg={'secondary.opacityBg'}
                                 color={'secondary.bg'}
                             />}

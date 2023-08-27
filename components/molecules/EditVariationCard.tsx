@@ -104,7 +104,7 @@ const EditVariationCard: FC<{ variation: Variation, category: string, deleteVari
                                                 className='text-sm mb-1'
                                                 key={Math.random()}
                                             >
-                                                {sizeTypologySelected?.find(element => element.split(' (')[0] === size.size)} - {size.quantity ? size.quantity + ' quantità' : 'TERMINATO'}
+                                                {sizeTypologySelected?.find(element => element.split(' (')[0] === size.size)} - {size.quantity ? size.quantity + ' quantità' : 'ESAURITO'}
                                             </p>
                                         )
                                     })
