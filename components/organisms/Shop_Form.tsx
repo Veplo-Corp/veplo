@@ -1,5 +1,5 @@
 import { Input, InputGroup, InputLeftAddon, Textarea } from '@chakra-ui/react'
-import React, { FC } from 'react'
+import React, { FC, memo } from 'react'
 import { useForm } from 'react-hook-form';
 import { Shop } from '../../src/interfaces/shop.interface';
 import Div_input_creation from '../atoms/Div_input_creation'
@@ -34,7 +34,7 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                         rounded={10}
                         paddingY={6}
                         type="text"
-                        {...register("name", { required: true, maxLength: 30 })}
+                        {...register("name.unique", { required: true, maxLength: 30 })}
                         isInvalid={false}
                         disabled={true}
                         _disabled={{
@@ -53,7 +53,7 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                         rounded={10}
                         paddingY={6}
                         type="text"
-                        {...register("name", { required: true, maxLength: 30 })}
+                        {...register("name.visualized", { required: true, maxLength: 30 })}
                         isInvalid={false}
                         disabled={true}
                         _disabled={{
@@ -278,4 +278,4 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
     )
 }
 
-export default Shop_Form
+export default memo(Shop_Form)

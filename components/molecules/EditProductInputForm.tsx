@@ -77,7 +77,8 @@ const EditProductInputForm: FC<{ univers: string, defaultValues: IFormInputProdu
                 mt={0}
                 fontSize={'sm'}
                 fontWeight={'medium'}
-                role="alert">I caratteri speciali non sono accettati</Text>}
+                color={"cancelTag.bg"}
+                role="alert">* i caratteri speciali non sono accettati</Text>}
             <Div_input_creation text='Prezzo'>
                 <InputGroup
                 >

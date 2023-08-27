@@ -772,7 +772,8 @@ const index = () => {
                                 mt={0}
                                 fontSize={'sm'}
                                 fontWeight={'medium'}
-                                role="alert">I caratteri speciali non sono accettati</Text>}
+                                color={"cancelTag.bg"}
+                                role="alert">* i caratteri speciali non sono accettati</Text>}
                             {isValidUniqueName === false && <Text
                                 pl={2}
                                 mt={0}
