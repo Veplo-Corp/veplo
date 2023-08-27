@@ -903,7 +903,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                                 width={'full'}
                                                 height={'fit-content'}
                                                 cursor={isAddedToCart ? 'default' : 'pointer'}
-                                                variant={!isAddedToCart ? 'secondary' : 'primary'}
+                                                variant={!isAddedToCart ? 'primary' : 'primary'}
                                             >
                                                 {isAddedToCart ? (
                                                     <motion.span
