@@ -64,6 +64,8 @@ export async function getStaticProps(ctx: any) {
     }
     const { sorting, ...newParseURL } = parsedURL
     const sortFilter = getSortingFilter(sorting)
+    console.log(sortFilter);
+
     try {
         const { data, errors }: { data: ProductsQuery, errors: any } = await apolloClient.query({
             query: GET_PRODUCTS,

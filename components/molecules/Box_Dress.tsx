@@ -412,4 +412,4 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
     )
 }
 
-export default memo(Box_Dress)
+export default Box_Dress
