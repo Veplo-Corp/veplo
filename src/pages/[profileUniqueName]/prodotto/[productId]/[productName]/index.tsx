@@ -555,7 +555,6 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     }
                 } else if (!user.uid) {
                     if (!Cart) {
-
                         const newProductVariation: ProductVariation = {
                             id: variationSelected.id,
                             photo: variationSelected.photos[0],
@@ -830,7 +829,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 totalLotsProduct={product.totalSizeAvailable}
                                 borderRadius={'lg'}
                                 fontSize={'2xl'}
-                                fontWeight={'base'}
+                                fontWeight={'medium'}
                                 lots={variationSelected.lots}
                                 handleLot={(size: string) => {
                                     changeDressColorOrSize(undefined, size)
@@ -852,7 +851,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 width={'full'}
                                 height={'fit-content'}
                                 cursor={isAddedToCart ? 'default' : 'pointer'}
-                                variant={!isAddedToCart ? 'secondary' : 'primary'}
+                                variant={!isAddedToCart ? 'primary' : 'primary'}
                             >
                                 {isAddedToCart ? (
                                     <motion.span

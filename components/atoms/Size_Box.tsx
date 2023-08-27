@@ -28,15 +28,15 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                 return (
                     <Box
                         key={size}
-                        borderWidth={sizeSelected === size ? '2px' : borderWidth}
-                        borderColor={sizeSelected === size ? 'gray.600' : 'gray-100'}
+                        borderWidth={sizeSelected === size ? borderWidth : borderWidth}
+                        borderColor={sizeSelected === size ? 'primary.bg' : 'gray.200'}
                         py={py}
                         minH={'60px'}
                         borderRadius={borderRadius}
                         fontSize={fontSize}
                         fontWeight={fontWeight}
-                        bg={sizeProductExist?.quantity > 0 ? 'white' : '#F2F2F2'}
-                        color={sizeProductExist?.quantity > 0 ? 'black' : '#A19F9F'}
+                        bg={sizeProductExist?.quantity > 0 && sizeSelected !== size ? 'white' : sizeSelected === size ? 'primary.bg' : '#F2F2F2'}
+                        color={sizeProductExist?.quantity > 0 && sizeSelected !== size ? '#3A3A3A' : sizeSelected === size ? 'white' : '#A19F9F'}
                         className="text-center md:min-w-24 lg:w-32 xl:w-full min-w-[100px]"
                         h={'full'}
                         cursor={sizeProductExist?.quantity <= 0 || !sizeProductExist ? '' : 'pointer'}
@@ -55,13 +55,12 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                         >
                             <Box
                                 fontSize={size.length > 5 ? '15px' : fontSize}
-                                fontWeight={size.length > 5 ? 'medium' : fontWeight}
-
+                                fontWeight={sizeSelected !== size ? fontWeight : 'semibold'}
                             >
                                 {size.toUpperCase()}
                             </Box>
                             <Box fontWeight={['base', 'base']}
-                                fontSize={['2xs', '2xs']} color={'gray.500'} mt={'-4px'}>
+                                fontSize={['2xs', '2xs']} color={sizeProductExist?.quantity > 0 && sizeSelected !== size ? 'gray.500' : 'white'} mt={'-4px'}>
                                 {sizeProductExist?.quantity < 10 && sizeProductExist?.quantity > 0 ? `solo ${sizeProductExist?.quantity} disponibil${sizeProductExist?.quantity > 1 ? 'i' : 'e'}` : sizeProductExist?.quantity > 0 ? `` : 'esaurito'}
                             </Box>
                         </Box>
@@ -69,7 +68,7 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                     </Box>
                 )
             })}
-        </div>
+        </div >
     )
 }
 
