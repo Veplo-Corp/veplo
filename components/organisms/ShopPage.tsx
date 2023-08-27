@@ -378,9 +378,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
     )
 
     return (
-        <Desktop_Layout
-            noPaddingXMobile={true}
-        >
+        <>
             <NoIndexSeo />
 
             <PostMeta
@@ -392,8 +390,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
             />
 
             <Box
-                className='xl:w-9/12 m-auto -p-10 mb-6 lg:mb-9'
-
+                className='lg:mx-6 xl:w-10/12 2xl:w-9/12  mx-2 xl:mx-auto lg:mb-9'
             ><motion.div
                 key={shop.id}
                 variants={LIST_ITEM_VARIANT}
@@ -638,7 +635,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                 }
             >
                 {productsFounded &&
-                    <div className="grid grid-cols-1 px-2 lg:px-0 md:grid-cols-3 gap-5 w-full xl:w-9/12 mx-auto mb-10">
+                    <div className="grid grid-cols-1 px-2 lg:px-0 md:grid-cols-3 gap-5 w-full xl:w-10/12 mx-auto mb-10">
 
                         {productsFounded.map((product: Product, index) => {
                             return (
@@ -690,7 +687,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
 
             {/* {false && <Modal_Info_Store isOpen={isOpen} onClose={() => setIsOpen(false)} shop={shop} />} */}
 
-        </Desktop_Layout>
+        </>
 
     )
 }

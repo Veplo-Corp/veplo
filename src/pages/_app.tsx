@@ -166,7 +166,7 @@ const theme = extendTheme({
         whiteButton: {
           bg: "white", // Usa il colore primario come sfondo
           color: "secondaryBlack.text", // Testo bianco
-          borderColor: "#gray",
+          borderColor: "#F3F3F3",
           borderWidth: "1px",
           borderStyle: "solid",
           _hover: {

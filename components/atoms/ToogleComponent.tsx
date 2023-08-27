@@ -18,7 +18,7 @@ const ToogleComponent: FC<{ isLoading: boolean, text: ReactNode | string, toogle
 
         <Box height={12}
             borderWidth={1}
-            borderColor={'gray.200'}
+            borderColor={'#F3F3F3'}
             rounded={'10px'}
             display={'flex'}
             textAlign={'center'}
