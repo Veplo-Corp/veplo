@@ -133,16 +133,15 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [sort, setSort] = useState<Sort | string>('')
     const timeoutRef = useRef<any>(null);
 
+    console.log(products);
 
 
     useEffect(() => {
         clearTimeout(timeoutRef.current);
-
         if (!router.isReady) return
         setDoubleGridDevice(localStorage.getItem('doubleGridDevice') === 'true' ? true : false)
         const fitlerSlug = router.asPath.split('?')[1]
         const filterParams: any = parseSlugUrlFilter(fitlerSlug)
-
         if (router.asPath.split('?')[1]) {
             setHistory(router.asPath.toLowerCase())
         }
@@ -155,22 +154,17 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
         setHasMoreData(true)
         setSort(sortProps)
         //loading e hasmoredata resettati
-
-
-
         //controlla se esiste già questa sessione nel local storage
         //nel caso esiste, immette i prodotti nel local storage
-        const keySession = sessionStorage.getItem("keyProductsSession")
-
+        let keySession = sessionStorage.getItem("keyProductsSession")
         if (window.history.state.key === keySession) {
             const productsFounded = sessionStorage.getItem("productsInProductsPage");
-
             if (productsFounded) {
                 setProducts([...JSON.parse(productsFounded)])
                 const scrollPosition = sessionStorage.getItem('scrollPositionProducts');
                 // sessionStorage.removeItem("productsInProductsPage")
                 sessionStorage.removeItem("scrollPositionProducts")
-                // sessionStorage.removeItem("keyProductsSession")
+                //sessionStorage.removeItem("keyProductsSession")
                 setIsLoading(false)
 
                 const newFilters = {
@@ -185,77 +179,80 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                         top: parseInt(scrollPosition),
                         behavior: "smooth"
                     });
+                    sessionStorage.removeItem("keyProductsSession")
                 }, 500);
                 return
             }
         }
-
-        if (!filterParams) {
-            setFilters(filtersProps)
-            setProducts(dataProducts)
-            if (dataProducts && dataProducts?.length % RANGE !== 0 || dataProducts?.length < RANGE) {
-                setHasMoreData(false)
-                return setIsLoading(false)
-            }
-            return setIsLoading(false)
-        }
-
         else {
 
-            setResetProducts(true)
-            const newFilters = {
-                ...filtersProps,
-                ...filterParams,
+            if (!filterParams) {
+                setFilters(filtersProps)
+                setProducts(dataProducts)
+                if (dataProducts && dataProducts?.length % RANGE !== 0 || dataProducts?.length < RANGE) {
+                    setHasMoreData(false)
+                    return setIsLoading(false)
+                }
+                return setIsLoading(false)
             }
-            setFilters(newFilters)
-            const sortFilter = getSortingFilter(sortProps)
 
-
-            if (router.asPath.toLowerCase() === history) {
-
+            else {
+                setResetProducts(true)
                 const newFilters = {
                     ...filtersProps,
                     ...filterParams,
                 }
                 setFilters(newFilters)
-                const newProducts = data?.products.products ? data?.products.products : [];
-                setProducts(() => {
-                    return [
-                        ...newProducts
-                    ]
-                })
-                setHasMoreData(true)
-                setIsLoading(false)
-                return
-            }
+                const sortFilter = getSortingFilter(sortProps)
 
-            const fetchData = async () => {
-                try {
-                    //controllare se crasha
-                    setTimeout(async () => {
-                        await getProducts({
-                            variables: {
-                                offset: 0,
-                                limit: RANGE,
-                                //inserire la microcategoria
-                                filters: {
-                                    ...newFilters,
-                                    univers
-                                },
-                                sort: sortFilter
-                            }
-                        })
-                    }, 800);
-                } catch {
+                if (router.asPath.toLowerCase() === history) {
+
+                    const newFilters = {
+                        ...filtersProps,
+                        ...filterParams,
+                    }
+                    setFilters(newFilters)
+                    const newProducts = data?.products.products ? data?.products.products : [];
+                    setProducts(() => {
+                        return [
+                            ...newProducts
+                        ]
+                    })
+                    setHasMoreData(true)
+                    setIsLoading(false)
+                    return
                 }
-            };
-            fetchData();
-            //TODO togli setisloading qui quando gestirai il sorting
-            // setTimeout(() => {
-            //     setIsLoading(false)
-            // }, 800);
 
+                const fetchData = async () => {
+                    try {
+                        //controllare se crasha
+                        setTimeout(async () => {
+                            await getProducts({
+                                variables: {
+                                    offset: 0,
+                                    limit: RANGE,
+                                    //inserire la microcategoria
+                                    filters: {
+                                        ...newFilters,
+                                        univers
+                                    },
+                                    sort: sortFilter
+                                }
+                            })
+                        }, 800);
+                    } catch {
+                    }
+                };
+                fetchData();
+                //TODO togli setisloading qui quando gestirai il sorting
+                // setTimeout(() => {
+                //     setIsLoading(false)
+                // }, 800);
+
+            }
         }
+
+
         return () => {
             // Annulla la chiamata se il componente viene smontato o la rotta cambia
             clearTimeout(timeoutRef.current);
