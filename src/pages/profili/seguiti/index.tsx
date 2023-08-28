@@ -84,7 +84,6 @@ const index = () => {
                     <PageNotFound
                         title='Nessun profilo seguito'
                         description='non segui ancora nessun profilo'
-                        imageSrc='https://www.datocms-assets.com/102220/1686599080-undraw_cancel_re_pkdm.png'
                     />
                 }
 

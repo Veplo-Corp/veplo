@@ -24,14 +24,13 @@ const index = () => {
 
     const continueUrl =
         process.env.NODE_ENV === 'production' ?
-            'https://www.veplo.it/' :
-            'http://localhost:3000/'
+            'https://www.veplo.it?gatto=berry' :
+            'http://localhost:3000?gatto=berry'
 
 
     const verifyFirebaseCode = async (auth: Auth, oobCode: any) => {
         try {
             const codeIsVerified = await verifyPasswordResetCode(auth, oobCode)
-
         }
         catch (e: any) {
 
@@ -83,7 +82,7 @@ const index = () => {
             // TODO: If a continue URL is available, display a button which on
             // click redirects the user back to the app via continueUrl with
             // additional state determined from that URL's parameters.
-            addToast({ position: 'top', title: 'Email convalidata!', status: 'success', duration: 5000, isClosable: true })
+            addToast({ position: 'top', title: 'Email convalidata!', status: 'success', duration: 5000, isClosable: true, variant: "customSuccess" })
             router.push(continueUrl)
 
         }).catch((error) => {
@@ -116,9 +115,12 @@ const index = () => {
                 // click redirects the user back to the app via continueUrl with
                 // additional state determined from that URL's parameters.
                 // Display reset password handler and UI.
+                addToast({
+                    position: 'top', title: 'Password aggiornata con successo', description: 'la password è stata aggiornata con successo', status: 'success', duration: 5000, isClosable: true,
+                    variant: "customSuccess"
+                })
                 router.push(continueUrl)
             }).catch((error) => {
-
                 addToast({ position: 'top', title: 'Errore durante modifica della password', description: "non siamo riusciti ad aggiornare la password. Riprova più tardi", status: 'error', duration: 5000, isClosable: true })
                 // Error occurred during confirmation. The code might have expired or the
                 // password is too weak.
@@ -293,8 +295,6 @@ const index = () => {
 
                                 </Button>
                             </form>
-
-
                         }
                     </>
                 ) : (

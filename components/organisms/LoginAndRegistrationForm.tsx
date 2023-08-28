@@ -276,7 +276,8 @@ const LoginAndRegistrationForm: FC<{
                         errorMessage === 'ID token must be a non-empty string' ||
                         errorMessage === 'idToken is not defined' ||
                         errorMessage === "can't create user" ||
-                        errorMessage === 'not authenticated'
+                        errorMessage === 'not authenticated' ||
+                        errorMessage === 'no user exists with the uid: \"\"'
                         //TODO inserire errori corretti
                         //typeof errorMessage === 'string' && !errorMessage.includes('Firebase')
                     ) {
