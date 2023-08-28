@@ -8,19 +8,19 @@ const PageNotFound: FC<{ title: string, description?: string, imageSrc?: string 
     return (
         <>
             <div className='text-center h-[screen] content-center'>
-                <div className=' mt-16 md:mt-28 m-auto'>
-                    <Text className='font-extrabold md:8/12 lg:w-6/12 m-auto text-2xl lg:text-3xl text-[#222222] px-9 line-clamp-2'>
+                <div className=' mt-16 md:mt-28 lg:mt-12 2xl:mt-8 m-auto'>
+                    <Text className='font-extrabold md:w-8/12 lg:w-8/12 m-auto text-2xl lg:text-3xl text-[#222222] px-9 line-clamp-2'>
                         <span>
                             {title}
                         </span>
                     </Text>
-                    {description && <Text className='font-medium md:8/12 lg:w-6/12 m-auto text-md md:text-lg text-[#222222] px-9 line-clamp-2 mb-6'>
+                    {description && <Text className='font-medium md:8/12 lg:w-6/12 m-auto text-md md:text-lg text-[#222222] px-9 line-clamp-2 mb-6 mt-2'>
                         <span>
                             {description}
                         </span>
                     </Text>}
                     {imageSrc && <img
-                        className='m-auto h-72  mt-10'
+                        className='m-auto h-72  mt-2 mb-6'
                         src={imageSrc}
                         alt="non trovata" />}
 

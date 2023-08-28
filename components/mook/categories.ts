@@ -343,8 +343,6 @@ export const CATEGORIES: Categories = {
                 colors: 'clothes_colors',
                 sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
             },
-
-
             {
                 name: "Bermuda",
                 url: "bermuda",
@@ -361,7 +359,22 @@ export const CATEGORIES: Categories = {
                 length: 'clothes_length',
                 colors: 'clothes_colors',
                 sizeGuideCode: 'ONLY_TROUSERS_AND_SKIRT_GUIDE_WOMAN_CLOTHES_SIZES'
-
+            },
+            {
+                name: "Calzini",
+                url: "calzini",
+                types: [
+                    "sportivi",
+                    "lunghi",
+                    "corti",
+                ],
+                sizes: "shoes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: undefined,
+                length: undefined,
+                colors: 'clothes_colors',
+                sizeGuideCode: undefined
             },
 
             // {
@@ -819,6 +832,22 @@ export const CATEGORIES: Categories = {
                 colors: 'clothes_colors',
                 sizeGuideCode: 'DEFAULT_GUIDE_MAN_CLOTHES_SIZES'
             },
+            {
+                name: "Calzini",
+                url: "calzini",
+                types: [
+                    "sportivi",
+                    "lunghi",
+                    "corti",
+                ],
+                sizes: "shoes_sizes",
+                traits: 'clothes_traits',
+                materials: 'clothes_materials',
+                fit: undefined,
+                length: undefined,
+                colors: 'clothes_colors',
+                sizeGuideCode: undefined
+            },
         ],
         accessori: [
             {
@@ -954,6 +983,7 @@ export const CATEGORIES: Categories = {
                 colors: "clothes_colors",
                 sizeGuideCode: 'JEWELLERY_MAN_SIZES'
             },
+
 
             //TODO portafoglio
         ],
