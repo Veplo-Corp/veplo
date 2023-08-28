@@ -2,13 +2,13 @@ import React, { memo } from 'react'
 import { Box, Image, Tooltip } from '@chakra-ui/react'
 
 
-const CircleColorSelected: React.FC<{ colors: { name: string, cssColor: string }[], dimension: number | string, space: number, showTooltip?: boolean, colorSelected: string, handleSelectColor: (color: string, size: undefined) => void }> = ({ colors, dimension, space, showTooltip, colorSelected, handleSelectColor }) => {
+const CircleColorSelected: React.FC<{ colors: { name: string, cssColor: string }[] | undefined | null, dimension: number | string, space: number, showTooltip?: boolean, colorSelected: string, handleSelectColor: (color: string, size: undefined) => void }> = ({ colors, dimension, space, showTooltip, colorSelected, handleSelectColor }) => {
 
 
 
     return (
         <div className={`flex space-x-1`}>
-            {colors.map((color, index) => {
+            {colors && colors.map((color, index) => {
                 return (
                     <Tooltip key={index} isDisabled={!showTooltip} label={color.name}>
                         <Box
