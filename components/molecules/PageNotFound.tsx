@@ -3,7 +3,7 @@ import Desktop_Layout from '../atoms/Desktop_Layout'
 import { Button, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
-const PageNotFound: FC<{ title: string, description?: string, imageSrc: string }> = ({ title, description, imageSrc }) => {
+const PageNotFound: FC<{ title: string, description?: string, imageSrc?: string }> = ({ title, description, imageSrc }) => {
     const router = useRouter()
     return (
         <>
@@ -14,18 +14,18 @@ const PageNotFound: FC<{ title: string, description?: string, imageSrc: string }
                             {title}
                         </span>
                     </Text>
-                    {description && <Text className='font-medium md:8/12 lg:w-6/12 m-auto text-md md:text-lg text-[#222222] px-9 line-clamp-2'>
+                    {description && <Text className='font-medium md:8/12 lg:w-6/12 m-auto text-md md:text-lg text-[#222222] px-9 line-clamp-2 mb-6'>
                         <span>
                             {description}
                         </span>
                     </Text>}
-                    <img
-                        className='m-auto h-72 mb-6 mt-10'
+                    {imageSrc && <img
+                        className='m-auto h-72  mt-10'
                         src={imageSrc}
-                        alt="non trovata" />
+                        alt="non trovata" />}
 
                     <Button
-                        colorScheme={'blackAlpha'}
+                        variant={'primary'}
                         onClick={() => { router.push('/' + '?gatto=berry') }}
                     >Torna alla Home</Button>
                 </div>

@@ -56,7 +56,7 @@ const BrandsFilter: React.FC<{ handleChangeValues: any, selectedValue?: string |
                 handleChangeValues(value)
             }}>
             <div className="relative">
-                <div className="border  w-fit border-gray rounded-lg h-12 font-semibold ">
+                <div className="border  w-fit border-[#F3F3F3] rounded-lg h-12 font-semibold ">
                     {brands && <Combobox.Input
                         autoComplete='off'
                         placeholder={placeholder ? placeholder : ''}
