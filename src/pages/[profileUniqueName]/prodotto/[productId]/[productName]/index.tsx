@@ -2,16 +2,15 @@ import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout';
 import { Box, Button, HStack, Image, Tag, Text, Tooltip, useBreakpointValue } from '@chakra-ui/react';
-import GET_SINGLE_PRODUCT from '../../../../../lib/apollo/queries/getSingleProduct'
+import GET_PRODUCT_AND_SIMILAR_PRODUCTS_ON_SHOP from '../../../../../lib/apollo/queries/getProductAndSimilarProductsOnShop'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { Product, Variation } from '../../../../../interfaces/product.interface';
 import { initApollo } from '../../../../../lib/apollo';
 import Size_Box from '../../../../../../components/atoms/Size_Box';
 import Horizontal_Line from '../../../../../../components/atoms/Horizontal_Line';
 import createUrlSchema from '../../../../../../components/utils/create_url';
 import { Color, COLORS } from '../../../../../../components/mook/colors';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-import GET_SIMILAR_PRODUCT_ON_SHOP from '../../../../../lib/apollo/queries/getSimilarProductOnShop';
+import GET_SIMILAR_PRODUCT_ON_SHOP from '../../../../../lib/apollo/queries/getProductAndSimilarProductsOnShop';
 import Image_Product from '../../../../../../components/organisms/Image_Product';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { imageKitUrl } from '../../../../../../components/utils/imageKitUrl';
@@ -22,7 +21,7 @@ import ModalReausable from '../../../../../../components/organisms/ModalReausabl
 import CartDrawer from '../../../../../../components/organisms/CartDrawer';
 import EDIT_CART from '../../../../../lib/apollo/mutations/editCart';
 import { useDispatch, useSelector } from 'react-redux';
-import { CartDispatch, ProductVariation } from '../../../../../interfaces/carts.interface';
+import { CartDispatch, ProductVariationInCart } from '../../../../../interfaces/carts.interface';
 import { editVariationFromCart } from '../../../../../store/reducers/carts';
 import { Firebase_User } from '../../../../../interfaces/firebase_user.interface';
 import { newTotalHandler } from '../../../../../../components/utils/newTotalHandler';
@@ -48,6 +47,7 @@ import { fbq } from '../../../../../lib/analytics/gtag';
 import { PixelEventType } from '../../../../../lib/analytics/eventTypes';
 import { openModal } from '../../../../../store/reducers/globalModal';
 import PageNotFound from '../../../../../../components/molecules/PageNotFound';
+import { Product, ProductVariation } from '../../../../../lib/apollo/generated/graphql';
 
 
 
@@ -76,14 +76,19 @@ export async function getServerSideProps(ctx: any) {
     const apolloClient = initApollo()
     try {
         const { data } = await apolloClient.query({
-            query: GET_SINGLE_PRODUCT,
-            variables: { id: productId },
+            query: GET_PRODUCT_AND_SIMILAR_PRODUCTS_ON_SHOP,
+            variables: {
+                id: productId,
+                limit: 5,
+                offset: 0,
+                ofThisShop: true
+            },
             //!useless
             // fetchPolicy: 'cache-first',
             // nextFetchPolicy: 'cache-only',
         })
 
-        const colors = data.product.variations.map((variation: Variation) => {
+        const colors = data.product?.variations?.map((variation: ProductVariation) => {
             return {
                 name: variation?.color,
                 cssColor: COLORS.find(color => color.name === variation?.color)?.cssColor
@@ -122,27 +127,29 @@ export async function getServerSideProps(ctx: any) {
 
 
 
+interface ProductProps extends Product {
+    colors: { name: string, cssColor: string }[],
+    totalSizeAvailable?: string[]
+}
 
 
-
-const index: React.FC<{ productFounded: Product, errorLog?: string, initialApolloState: any }> = ({ productFounded, errorLog, initialApolloState }) => {
+const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initialApolloState: any }> = ({ productFounded, errorLog, initialApolloState }) => {
     const { ref, inView, entry } = useInView({
         /* Optional options */
         threshold: 0,
     });
 
+
     const colors = useRef<Color[]>(COLORS)
     const router = useRouter();
     const [sizeSelected, setSizeSelected] = useState<string>('')
-    const [getSimilarProductOnShop, shopProductsData] = useLazyQuery(GET_SIMILAR_PRODUCT_ON_SHOP);
     const [openDrawerCart, setOpenDrawerCart] = useState(false)
     const [editCart, elementEditCart] = useMutation(EDIT_CART);
     const cartsDispatchProduct: CartDispatch[] = useSelector((state: any) => state.carts.carts);
     const user: Firebase_User = useSelector((state: any) => state.user.user);
-    const [product, setproduct] = useState<Product>(productFounded)
-    const [variationSelected, setVariationSelected] = useState<Variation>(productFounded?.variations?.[0])
-    const [colorSelected, setColorSelected] = useState<string>()
-    const [productsLikeThis, setproductsLikeThis] = useState<Product[]>()
+    const [product, setproduct] = useState<ProductProps>(productFounded)
+    const [variationSelected, setVariationSelected] = useState<ProductVariation>()
+    const [colorSelected, setColorSelected] = useState<string | undefined | null>()
     const [isOpenModalGuideSize, setIsOpenModalGuideSize] = useState(false)
     const [macrocategorySizeGuide, setMacrocategorySizeGuide] = useState(false)
     const isSmallView = useBreakpointValue({ base: true, md: false });
@@ -164,13 +171,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         )
     }
 
-    if (!variationSelected) {
-        return (
-            <Desktop_Layout>
 
-            </Desktop_Layout>
-        )
-    }
 
 
 
@@ -178,10 +179,14 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
 
     useEffect(() => {
-        if (!productFounded) return
+        console.log(productFounded);
+
+        const product = { ...productFounded }
+        if (!productFounded && !product?.variations?.[0] && product?.variations?.[0]?.color) return
         setproduct(productFounded)
-        setVariationSelected(productFounded?.variations?.[0])
-        setColorSelected(productFounded?.variations?.[0]?.color)
+
+        setVariationSelected(product?.variations?.[0])
+        setColorSelected(product?.variations?.[0]?.color)
     }, [productFounded])
 
 
@@ -210,11 +215,11 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
     useEffect(() => {
         const { colors, sizes } = router.query;
-        let variation: Variation | undefined
-
-
-        if (typeof colors === 'string' && productFounded) {
-            variation = productFounded.variations.find(variation => variation?.color.toLowerCase() == colors.toLowerCase())
+        let variation: ProductVariation | undefined
+        const product = { ...productFounded }
+        if (!product || !product?.variations) return
+        if (typeof colors === 'string') {
+            variation = product?.variations.find(variation => variation?.color?.toLowerCase() == colors.toLowerCase())
             if (!variation) { }
             else {
                 setVariationSelected(variation)
@@ -222,18 +227,18 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             }
         }
         if (typeof sizes === 'string') {
-            if (variation) {
-                const sizeWithQuantity = variation.lots
+            if (variation && variation.lots) {
+                const sizeWithQuantity = variation?.lots
                     .filter((lot) => lot.size === sizes)[0]
-                if (sizeWithQuantity && sizeWithQuantity?.quantity > 0) {
-                    setSizeSelected(sizeWithQuantity.size)
+                if (sizeWithQuantity && sizeWithQuantity?.size && sizeWithQuantity?.quantity && sizeWithQuantity?.quantity > 0) {
+                    setSizeSelected(sizeWithQuantity?.size)
                 } else {
                     setSizeSelected('')
                 }
-            } else {
-                const sizeWithQuantity = product.variations[0].lots
+            } else if (product?.variations?.[0]?.lots) {
+                const sizeWithQuantity = product?.variations?.[0]?.lots
                     .filter((lot) => lot.size === sizes)[0]
-                if (sizeWithQuantity && sizeWithQuantity?.quantity > 0) {
+                if (sizeWithQuantity && sizeWithQuantity?.size && sizeWithQuantity?.quantity && sizeWithQuantity?.quantity > 0) {
                     setSizeSelected(sizeWithQuantity.size)
                 } else {
                     setSizeSelected('')
@@ -241,21 +246,21 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             }
         } else {
             //metti già la taglia se ne ha solo una
-            if (variation) {
-                const sizeWithQuantity = variation.lots
-                    .filter((lot) => lot.quantity > 0)
+            if (variation && variation.lots) {
+                const sizeWithQuantity = variation?.lots
+                    .filter((lot) => lot.quantity && lot.quantity > 0)
                     .map((lot) => lot.size);
-                if (sizeWithQuantity.length === 1) {
+                if (sizeWithQuantity?.[0] && sizeWithQuantity.length === 1) {
                     setSizeSelected(sizeWithQuantity[0])
                 } else {
                     setSizeSelected('')
                 }
             }
-            else if (productFounded.variations[0].lots.length === 1) {
-                const sizeWithQuantity = productFounded.variations[0].lots
-                    .filter((lot) => lot.quantity > 0)
+            else if (product?.variations?.[0]?.lots && product?.variations?.[0]?.lots.length === 1) {
+                const sizeWithQuantity = product?.variations[0].lots
+                    .filter((lot) => lot.quantity && lot.quantity > 0)
                     .map((lot) => lot.size);
-                if (sizeWithQuantity.length === 1) {
+                if (sizeWithQuantity?.[0] && sizeWithQuantity.length === 1) {
                     setSizeSelected(sizeWithQuantity[0])
                 } else {
                     setSizeSelected('')
@@ -277,22 +282,21 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         }
 
 
-        setproductsLikeThis(undefined)
 
-        if (product.info.gender === 'f' || product.info.gender === 'm') {
-            setInLocalStorage('genderSelected', product.info.gender)
+        if (product?.info?.gender === 'f' || product?.info?.gender === 'm') {
+            setInLocalStorage('genderSelected', product?.info?.gender)
         }
-        const genderSelected = product.info.gender === 'm' ? 'uomo' : product.info.gender === 'f' ? 'donna' : undefined;
-        if (!genderSelected) return
+        const genderSelected = product?.info?.gender === 'm' ? 'uomo' : product?.info?.gender === 'f' ? 'donna' : undefined;
+        if (!genderSelected || !product?.info?.macroCategory) return
         //TODO prendere anche parametro "Accessori" o "abbigliamento" da prodotto
 
-        const macrocategorySizeGuideFromMacrocategory = findMacrocategorySizeGuideFromMacrocategory(product.info.macroCategory, genderSelected, product.info.univers ? product.info.univers : 'abbigliamento')
+        const macrocategorySizeGuideFromMacrocategory = findMacrocategorySizeGuideFromMacrocategory(product?.info?.macroCategory, genderSelected, product?.info?.univers === 'abbigliamento' ? product?.info?.univers : product?.info?.univers === 'accessori' ? 'accessori' : 'abbigliamento')
         if (macrocategorySizeGuideFromMacrocategory) {
             setMacrocategorySizeGuide(macrocategorySizeGuideFromMacrocategory)
         }
 
         // dispatch(
-        //     changeGenderSelected(product.info.gender)
+        //     changeGenderSelected(product?.info?.gender)
         // );
 
     }, [product])
@@ -363,12 +367,12 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         else {
 
             const Carts: CartDispatch[] = cartsDispatchProduct
-            const Cart = Carts.find(cart => cart.shopInfo.id === product.shopInfo.id);
+            const Cart = Carts.find(cart => cart.shopInfo.id === product?.shopInfo?.id);
             let NewCart: CartDispatch;
             let NewCarts: CartDispatch[] = [];
             let quantityMax;
             let productVariationQuantity = 0;
-            const variation = product.variations.find(variation => variation?.id === variationSelected.id)
+            const variation = product?.variations?.find(variation => variation?.id === variationSelected?.id)
             const lots = variation?.lots
 
             if (lots) {
@@ -376,7 +380,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             }
             //CART ESISTENTE
             if (Cart) {
-                const quantity = Cart.productVariations.find(variation => variation?.size === sizeSelected && variation?.id === variationSelected.id)?.quantity
+                const quantity = Cart.productVariations.find(variation => variation?.size === sizeSelected && variation?.id === variationSelected?.id)?.quantity
 
                 //caso in cui la Variation è già presente in cart
                 if (quantity) {
@@ -404,7 +408,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
                     const productVariations = [
                         newProductVariation,
-                        ...Cart.productVariations.filter(variation => variation?.size !== sizeSelected || variation?.id !== variationSelected.id),
+                        ...Cart.productVariations.filter(variation => variation?.size !== sizeSelected || variation?.id !== variationSelected?.id),
                     ]
 
 
@@ -419,27 +423,27 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     }
 
                     NewCarts = sortShopsInCart([
-                        ...Carts.filter(cart => cart.shopInfo.id !== product.shopInfo.id),
+                        ...Carts.filter(cart => cart.shopInfo.id !== product?.shopInfo?.id),
                         NewCart
                     ])
                 }
                 //caso in cui la Variation non esiste nel cart
                 if (!quantity) {
                     addToCartEffect()
-                    const newProductVariation: ProductVariation = {
-                        id: variationSelected.id,
-                        photo: variationSelected.photos[0],
-                        name: product.name,
-                        brand: product.info.brand,
+                    const newProductVariation: ProductVariationInCart = {
+                        id: variationSelected?.id ? variationSelected?.id : '',
+                        photo: typeof variationSelected?.photos?.[0] === 'string' ? variationSelected?.photos?.[0] : '',
+                        name: product?.name ? product?.name : '',
+                        brand: product?.info?.brand ? product?.info?.brand : '',
                         quantity: 1,
                         maxQuantity: quantityMax ? quantityMax : 1,
-                        color: variationSelected.color,
+                        color: variationSelected?.color ? variationSelected?.color : '',
                         size: sizeSelected,
-                        productId: product.id,
+                        productId: product.id ? product.id : '',
                         price: {
-                            v1: product.price.v1,
-                            v2: product.price.v2 ? product.price.v2 : null,
-                            discountPercentage: product.price.discountPercentage ? product.price.discountPercentage : null,
+                            v1: product?.price?.v1 ? product?.price?.v1 : 0,
+                            v2: product?.price?.v2 ? product?.price?.v2 : null,
+                            discountPercentage: product?.price?.discountPercentage ? product?.price?.discountPercentage : null,
                         },
                     }
 
@@ -457,7 +461,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                         productVariations
                     }
                     NewCarts = sortShopsInCart([
-                        ...Carts.filter(cart => cart.shopInfo.id !== product.shopInfo.id),
+                        ...Carts.filter(cart => cart.shopInfo.id !== product?.shopInfo?.id),
                         NewCart
                     ])
 
@@ -492,7 +496,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
 
                     const result = await editCart({
                         variables: {
-                            productVariationId: variationSelected.id,
+                            productVariationId: variationSelected?.id,
                             size: sizeSelected,
                             quantity: productVariationQuantity > 0 ? productVariationQuantity : 1
                         }
@@ -503,20 +507,20 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     if (!Cart) {
 
 
-                        const newProductVariation: ProductVariation = {
-                            id: variationSelected.id,
-                            photo: variationSelected.photos[0],
-                            name: product.name,
-                            brand: product.info.brand,
+                        const newProductVariation: ProductVariationInCart = {
+                            id: variationSelected?.id ? variationSelected?.id : '',
+                            photo: variationSelected?.photos?.[0] ? variationSelected?.photos[0] : '',
+                            name: product?.name ? product?.name : '',
+                            brand: product?.info?.brand ? product?.info?.brand : '',
                             quantity: 1,
                             maxQuantity: quantityMax ? quantityMax : 1,
-                            color: variationSelected.color,
+                            color: variationSelected?.color ? variationSelected?.color : '',
                             size: sizeSelected,
-                            productId: product.id,
+                            productId: product.id ? product.id : '',
                             price: {
-                                v1: product.price.v1,
-                                v2: product.price.v2 ? product.price.v2 : null,
-                                discountPercentage: product.price.discountPercentage ? product.price.discountPercentage : null,
+                                v1: product?.price?.v1 ? product?.price?.v1 : 0,
+                                v2: product?.price?.v2 ? product?.price?.v2 : null,
+                                discountPercentage: product?.price?.discountPercentage ? product?.price?.discountPercentage : null,
                             },
                         }
 
@@ -524,24 +528,24 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                             id: result?.data.editCart,
                             userId: user.uid,
                             shopInfo: {
-                                id: product.shopInfo.id,
+                                id: product?.shopInfo?.id ? product?.shopInfo?.id : '',
                                 name: {
-                                    unique: product.shopInfo.name.unique,
-                                    visualized: product.shopInfo.name.visualized
+                                    unique: product?.shopInfo?.name?.unique ? product?.shopInfo?.name?.unique : '',
+                                    visualized: product?.shopInfo?.name?.visualized ? product?.shopInfo?.name?.visualized : '',
 
                                 },
-                                city: product.shopInfo.city,
-                                status: product.shopInfo.status,
-                                minimumAmountForFreeShipping: product.shopInfo.minimumAmountForFreeShipping,
-                                profilePhoto: product.shopInfo.profilePhoto,
+                                city: product?.shopInfo?.city ? product?.shopInfo?.city : '',
+                                status: product?.shopInfo?.status ? product?.shopInfo?.status : '',
+                                minimumAmountForFreeShipping: product?.shopInfo?.minimumAmountForFreeShipping ? product?.shopInfo?.minimumAmountForFreeShipping : 0,
+                                profilePhoto: product?.shopInfo?.profilePhoto ? product?.shopInfo?.profilePhoto : '',
                             },
-                            total: product?.price.v2 ? product?.price.v2 : product?.price.v1,
+                            total: product?.price?.v2 ? product?.price?.v2 : product?.price?.v1 ? product?.price?.v1 : 0,
                             productVariations: [newProductVariation]
                         }
 
                         NewCarts = sortShopsInCart(
                             [
-                                ...Carts.filter(cart => cart.shopInfo.id !== product.shopInfo.id),
+                                ...Carts.filter(cart => cart.shopInfo.id !== product?.shopInfo?.id),
                                 NewCart
                             ])
                         //aggiungi al carrello
@@ -555,45 +559,45 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     }
                 } else if (!user.uid) {
                     if (!Cart) {
-                        const newProductVariation: ProductVariation = {
-                            id: variationSelected.id,
-                            photo: variationSelected.photos[0],
-                            name: product.name,
-                            brand: product.info.brand,
+                        const newProductVariation: ProductVariationInCart = {
+                            id: variationSelected?.id ? variationSelected?.id : '',
+                            photo: variationSelected?.photos?.[0] ? variationSelected?.photos[0] : '',
+                            name: product?.name ? product?.name : '',
+                            brand: product?.info?.brand ? product?.info?.brand : '',
                             quantity: 1,
                             maxQuantity: quantityMax ? quantityMax : 1,
-                            color: variationSelected.color,
+                            color: variationSelected?.color ? variationSelected?.color : '',
                             size: sizeSelected,
-                            productId: product.id,
+                            productId: product.id ? product.id : '',
                             price: {
-                                v1: product.price.v1,
-                                v2: product.price.v2 ? product.price.v2 : null,
-                                discountPercentage: product.price.discountPercentage ? product.price.discountPercentage : null,
+                                v1: product?.price?.v1 ? product?.price?.v1 : 0,
+                                v2: product?.price?.v2 ? product?.price?.v2 : null,
+                                discountPercentage: product?.price?.discountPercentage ? product?.price?.discountPercentage : null,
                             },
                         }
 
                         NewCart = {
-                            id: product.shopInfo.id,
+                            id: product?.shopInfo?.id ? product?.shopInfo?.id : '',
                             userId: user.uid,
                             shopInfo: {
-                                id: product.shopInfo.id,
+                                id: product?.shopInfo?.id ? product?.shopInfo?.id : '',
                                 name: {
-                                    unique: product.shopInfo.name.unique,
-                                    visualized: product.shopInfo.name.visualized
+                                    unique: product?.shopInfo?.name?.unique ? product?.shopInfo?.name?.unique : '',
+                                    visualized: product?.shopInfo?.name?.visualized ? product?.shopInfo?.name?.visualized : '',
 
                                 },
-                                city: product.shopInfo.city,
-                                status: product.shopInfo.status,
-                                minimumAmountForFreeShipping: product.shopInfo.minimumAmountForFreeShipping,
-                                profilePhoto: product.shopInfo.profilePhoto,
+                                city: product?.shopInfo?.city ? product?.shopInfo?.city : '',
+                                status: product?.shopInfo?.status ? product?.shopInfo?.status : '',
+                                minimumAmountForFreeShipping: product?.shopInfo?.minimumAmountForFreeShipping ? product?.shopInfo?.minimumAmountForFreeShipping : 0,
+                                profilePhoto: product?.shopInfo?.profilePhoto ? product?.shopInfo?.profilePhoto : '',
                             },
-                            total: product?.price.v2 ? product?.price.v2 : product?.price.v1,
+                            total: product?.price?.v2 ? product?.price?.v2 : product?.price?.v1 ? product?.price?.v1 : 0,
                             productVariations: [newProductVariation]
                         }
 
                         NewCarts = sortShopsInCart(
                             [
-                                ...Carts.filter(cart => cart.shopInfo.id !== product.shopInfo.id),
+                                ...Carts.filter(cart => cart.shopInfo.id !== product?.shopInfo?.id),
                                 NewCart
                             ])
                         //aggiungi al carrello
@@ -618,31 +622,39 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
         }
     }
 
-    const handleVisibilityChange = async (inView: boolean) => {
-        if (inView) {
-            // Funzione da eseguire quando il componente diventa visibile
-            //! lista di prodotti del negozio
-            setTimeout(async () => {
-                const element = await getSimilarProductOnShop({
-                    variables: {
-                        productId: product.id,
-                        limit: 5,
-                        offset: 0,
-                        shopId: product.shopInfo.id
-                    },
-                    fetchPolicy: 'cache-first',
-                })
+    // const handleVisibilityChange = async (inView: boolean) => {
+    //     if (inView) {
+    //         // Funzione da eseguire quando il componente diventa visibile
+    //         //! lista di prodotti del negozio
+    //         setTimeout(async () => {
+    //             const element = await getSimilarProductOnShop({
+    //                 variables: {
+    //                     productId: product.id,
+    //                     limit: 5,
+    //                     offset: 0,
+    //                     shopId: product?.shopInfo?.id
+    //                 },
+    //                 fetchPolicy: 'cache-first',
+    //             })
 
-                if (element) {
-                    setproductsLikeThis(element?.data?.product.productsLikeThis)
-                }
-            }, 0);
+    //             if (element) {
+    //                 setproductsLikeThis(element?.data?.product.productsLikeThis)
+    //             }
+    //         }, 0);
 
-        }
-    };
+    //     }
+    // };
 
 
     //console.log(product);
+
+    if (!variationSelected) {
+        return (
+            <Desktop_Layout>
+
+            </Desktop_Layout>
+        )
+    }
 
 
     return (
@@ -658,10 +670,10 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                     <PostMeta
                         canonicalUrl={'https://www.veplo.it' + router.asPath}
                         //riverdere length description 150 to 160
-                        title={`${toUpperCaseFirstLetter(product.info.macroCategory)} ${toUpperCaseFirstLetter(product.info.brand)} ${product.name.toUpperCase()} | Veplo`}
-                        subtitle={`${toUpperCaseFirstLetter(product.info.macroCategory)} ${toUpperCaseFirstLetter(product.info.brand)} ${product.name.toUpperCase()} a ${product.price.v2 ? product.price.v2 : product.price.v1}€. Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
-                        image={imageKitUrl(variationSelected.photos[0], 237, 247)}
-                        description={`${toUpperCaseFirstLetter(product.info.macroCategory)} ${toUpperCaseFirstLetter(product.info.brand)} ${product.name.toUpperCase()} a ${product.price.v2 ? product.price.v2 : product.price.v1}€. Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
+                        title={`${toUpperCaseFirstLetter(product?.info?.macroCategory)} ${toUpperCaseFirstLetter(product?.info?.brand)} ${product?.name?.toUpperCase()} | Veplo`}
+                        subtitle={`${toUpperCaseFirstLetter(product?.info?.macroCategory)} ${toUpperCaseFirstLetter(product?.info?.brand)} ${product?.name?.toUpperCase()} a ${product?.price?.v2 ? product?.price?.v2 : product?.price?.v1}€. Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
+                        image={imageKitUrl(variationSelected?.photos?.[0], 237, 247)}
+                        description={`${toUpperCaseFirstLetter(product?.info?.macroCategory)} ${toUpperCaseFirstLetter(product?.info?.brand)} ${product?.name?.toUpperCase()} a ${product?.price?.v2 ? product?.price?.v2 : product?.price?.v1}€. Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
                     />
                     <div className='md:flex justify-between w-full mb-5 lg:mb-0 gap-5'>
                         <Box
@@ -678,7 +690,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 fontSize={'md'}
                                 color={'#909090'}
                             >
-                                {product.info.brand}
+                                {product?.info?.brand}
                             </Text>
                             <Box
                                 fontWeight='bold'
@@ -689,7 +701,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 lineHeight={'33px'}
                                 pb='3'
                             >
-                                {`${product.name.toLocaleUpperCase()}`}
+                                {`${product?.name?.toLocaleUpperCase()}`}
 
                             </Box>
                             <Box
@@ -704,15 +716,15 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                     lineHeight={['4']}
                                     my={'auto'}
                                 >
-                                    {product?.price?.v2 < product.price?.v1 && <span className=' text-red-700 font-bold'>{formatNumberWithTwoDecimalsInString(product.price?.v2)}€<br /> </span>}
+                                    {product?.price?.v2 && product?.price?.v1 && product?.price?.v2 < product.price?.v1 && <span className=' text-red-700 font-bold'>{formatNumberWithTwoDecimalsInString(product.price?.v2)}€<br /> </span>}
 
                                     <span
-                                        className={`${product.price?.v2 < product.price.v1 ? 'text-slate-500 font-normal text-sm ' : ''} mr-2`}
+                                        className={`${product?.price?.v2 && product?.price?.v1 && product.price?.v2 < product?.price?.v1 ? 'text-slate-500 font-normal text-sm ' : ''} mr-2`}
                                     >
-                                        {product.price.v2 < product.price.v1 && <span>prima era: </span>}<span className={product.price.v2 < product.price.v1 ? 'line-through' : ''}>{formatNumberWithTwoDecimalsInString(product.price?.v1)} €</span>
-                                        {product?.price?.discountPercentage > 0 &&
+                                        {product?.price?.v2 && product?.price?.v1 && product?.price?.v2 < product?.price?.v1 && <span>prima era: </span>}<span className={product?.price?.v2 && product?.price?.v1 && product?.price?.v2 < product?.price?.v1 ? 'line-through' : ''}>{formatNumberWithTwoDecimalsInString(product.price?.v1)} €</span>
+                                        {product?.price?.discountPercentage && product?.price?.discountPercentage > 0 &&
                                             <span className='ml-2 text-red-500'>
-                                                -{formatPercentage(product.price.discountPercentage)}%
+                                                -{formatPercentage(product?.price?.discountPercentage)}%
                                             </span>}
                                     </span>
 
@@ -724,11 +736,11 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                     noOfLines={1}
                                     fontSize='sm'
 
-                                    className={`${product.price.v2 ? 'mt-2' : 'mt-4'} lg:my-auto`}
+                                    className={`${product?.price?.v2 ? 'mt-2' : 'mt-4'} lg:my-auto`}
                                 >
 
-                                    {/* {product.info.traits && <HStack spacing={2} justifyContent={'start'}>
-                                    {product.info.traits.map(value => {
+                                    {/* {product?.info?.traits && <HStack spacing={2} justifyContent={'start'}>
+                                    {product?.info?.traits.map(value => {
 
                                         return (
                                             <Tag
@@ -769,7 +781,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 <CircleColorSelected
                                     colorSelected={colorSelected ? colorSelected : ''}
                                     colors={
-                                        product.colors
+                                        product?.colors
                                     }
                                     handleSelectColor={changeDressColorOrSize}
                                     dimension={'1.5rem'} space={5} showTooltip={true}
@@ -830,7 +842,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 borderRadius={'lg'}
                                 fontSize={'2xl'}
                                 fontWeight={'medium'}
-                                lots={variationSelected.lots}
+                                lots={variationSelected?.lots ? variationSelected?.lots : undefined}
                                 handleLot={(size: string) => {
                                     changeDressColorOrSize(undefined, size)
                                     //setSizeSelected(size)
@@ -937,7 +949,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                 className='grid grid-cols-3 lg:grid-cols-4 w-fit gap-x-1 gap-y-4 lg:gap-4 mt-6'
                             >
 
-                                {product.info.modelDescription && product.info.modelDescription?.length > 0 &&
+                                {product?.info?.modelDescription && product?.info?.modelDescription?.length > 0 &&
                                     <>
                                         <Text
                                             fontSize={'md'}
@@ -952,12 +964,12 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                             color={'#909090'}
                                             className='col-span-2 lg:col-span-3'
                                         >   {
-                                                product.info.modelDescription
+                                                product?.info?.modelDescription
                                             }
                                         </Text>
                                     </>
                                 }
-                                {product.info.materials &&
+                                {product?.info?.materials &&
                                     <>
                                         <Text
                                             fontSize={'md'}
@@ -972,12 +984,12 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                             color={'#909090'}
                                             className='col-span-2 lg:col-span-3'
                                         >
-                                            {product.info.materials?.length && product.info.materials?.length > 0 ? product.info.materials.join(', ') : 'non disponibile'}
+                                            {product?.info?.materials?.length && product?.info?.materials?.length > 0 ? product?.info?.materials.join(', ') : 'non disponibile'}
                                         </Text>
                                     </>
                                 }
                                 {
-                                    product.info.fit &&
+                                    product?.info?.fit &&
                                     <>
                                         <Text
                                             fontSize={'md'}
@@ -992,12 +1004,12 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                             color={'#909090'}
                                             className='col-span-2 lg:col-span-3'
                                         >
-                                            {product.info.fit ? product.info.fit : 'non disponibile'}
+                                            {product?.info?.fit ? product?.info?.fit : 'non disponibile'}
                                         </Text>
                                     </>
                                 }
                                 {
-                                    product.info.length && <>
+                                    product?.info?.length && <>
                                         <Text
                                             fontSize={'md'}
                                             fontWeight={'semibold'}
@@ -1011,11 +1023,11 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                             color={'#909090'}
                                             className='col-span-2 lg:col-span-3'
                                         >
-                                            {product.info.length ? product.info.length : 'non disponibile'}
+                                            {product?.info?.length ? product?.info?.length : 'non disponibile'}
                                         </Text>
                                     </>
                                 }
-                                {product.info.description && product.info.description?.length > 0 &&
+                                {product?.info?.description && product?.info?.description?.length > 0 &&
                                     <>
                                         <Text
                                             fontSize={'md'}
@@ -1035,7 +1047,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                                 className='col-span-2 lg:col-span-3'
                                                 ref={descriptionRefText}
                                             >
-                                                {product.info.description}
+                                                {product?.info?.description}
                                             </Text>
                                             {descriptionRefTextLength > 3 && <Text
                                                 onClick={() => setshowAllDescriptionShop(!showAllDescriptionShop)}
@@ -1098,7 +1110,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                                 <Box
                                                     className='grid grid-cols-3 lg:grid-cols-4 w-fit gap-x-1 gap-y-4 lg:gap-4'
                                                 >
-                                                    {product.info.modelDescription && product.info.modelDescription?.length > 0 &&
+                                                    {product?.info?.modelDescription && product?.info?.modelDescription?.length > 0 &&
                                                         <>
                                                             <Text
                                                                 fontSize={'md'}
@@ -1113,7 +1125,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                                                 color={'#909090'}
                                                                 className='col-span-2 lg:col-span-3'
                                                             >   {
-                                                                    product.info.modelDescription
+                                                                    product?.info?.modelDescription
                                                                 }
                                                             </Text>
                                                         </>
@@ -1131,7 +1143,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                                         color={'#909090'}
                                                         className='col-span-2 lg:col-span-3'
                                                     >
-                                                        {product.info.materials?.length && product.info.materials?.length > 0 ? product.info.materials.join(', ') : 'non disponibile'}
+                                                        {product?.info?.materials?.length && product?.info?.materials?.length > 0 ? product?.info?.materials.join(', ') : 'non disponibile'}
                                                     </Text>
                                                     <Text
                                                         fontSize={'md'}
@@ -1146,7 +1158,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                                         color={'#909090'}
                                                         className='col-span-2 lg:col-span-3'
                                                     >
-                                                        {product.info.fit ? product.info.fit : 'non disponibile'}
+                                                        {product?.info?.fit ? product?.info?.fit : 'non disponibile'}
                                                     </Text>
                                                     <Text
                                                         fontSize={'md'}
@@ -1161,9 +1173,9 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                                         color={'#909090'}
                                                         className='col-span-2 lg:col-span-3'
                                                     >
-                                                        {product.info.length ? product.info.length : 'non disponibile'}
+                                                        {product?.info?.length ? product?.info?.length : 'non disponibile'}
                                                     </Text>
-                                                    {product.info.description && product.info.description?.length > 0 &&
+                                                    {product?.info?.description && product?.info?.description?.length > 0 &&
                                                         <>
                                                             <Text
                                                                 fontSize={'md'}
@@ -1178,7 +1190,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                                                                 color={'#909090'}
                                                                 className='col-span-2 lg:col-span-3'
                                                             >   {
-                                                                    product.info.description
+                                                                    product?.info?.description
                                                                 } lorem ipsum dolorem sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam
                                                             </Text>
                                                         </>
@@ -1203,7 +1215,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                         className='text-2xl md:text-5xl mt-5 lg:mt-0 ml-2'
                         lineHeight={'normal'}
                     >
-                        {product.shopInfo.name.visualized}
+                        {product?.shopInfo?.name?.visualized}
                     </Box>
                     <Link
                         prefetch={false}
@@ -1216,71 +1228,69 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
                             className='text-xl md:text-2xl w-fit ml-2'
                             lineHeight={'normal'}
                         >
-                            Altri prodotti di <span className='underline '>{product.shopInfo.name.visualized}</span>
+                            Altri prodotti di <span className='underline '>{product?.shopInfo?.name?.visualized}</span>
                         </Box>
                     </Link>
-                    <InView as="div" onChange={(inView, entry) => { handleVisibilityChange(inView) }} >
-                        <div
-                            className="overflow-x-scroll flex gap-4 pb-4 min-h-[320px] ml-2 pr-10"
-                        >
-                            <AnimatePresence>
-                                {productsLikeThis && productsLikeThis.map((product: Product, index: number) => {
-                                    //motion
-                                    const listItemVariants = {
-                                        visible: {
-                                            opacity: 1,
-                                            y: 0,
-                                            transition: {
-                                                delay: index * 0.1,
-                                                duration: 0.5,
-                                                ease: "easeOut",
-                                            },
+                    <div
+                        className="overflow-x-scroll flex gap-4 pb-4 min-h-[320px] ml-2 pr-10"
+                    >
+                        <AnimatePresence>
+                            {product.productsLikeThis && product.productsLikeThis.map((product: Product, index: number) => {
+                                //motion
+                                const listItemVariants = {
+                                    visible: {
+                                        opacity: 1,
+                                        y: 0,
+                                        transition: {
+                                            delay: index * 0.1,
+                                            duration: 0.5,
+                                            ease: "easeOut",
                                         },
-                                        hidden: {
-                                            opacity: 0,
-                                            y: 0,
-                                            transition: {
-                                                duration: 0.5,
-                                                ease: "easeOut",
-                                            },
+                                    },
+                                    hidden: {
+                                        opacity: 0,
+                                        y: 0,
+                                        transition: {
+                                            duration: 0.5,
+                                            ease: "easeOut",
                                         },
-                                    };
-                                    return (
-                                        <div
-                                            key={product.id}
-                                            className={'flex gap-4 w-fit'} >
-                                            <Box
-                                                overflow='hidden'
-                                                mb={2}
-                                                className={`w-72 lg:w-[350px]`}/*  aspect-[8.5/12] */
+                                    },
+                                };
+                                return (
+                                    <div
+                                        key={product.id}
+                                        className={'flex gap-4 w-fit'} >
+                                        <Box
+                                            overflow='hidden'
+                                            mb={2}
+                                            className={`w-72 lg:w-[350px]`}/*  aspect-[8.5/12] */
+                                        >
+                                            <motion.div
+                                                key={product.id}
+                                                variants={listItemVariants}
+                                                initial="hidden"
+                                                animate="visible"
+                                                exit="hidden"
                                             >
-                                                <motion.div
-                                                    key={product.id}
-                                                    variants={listItemVariants}
-                                                    initial="hidden"
-                                                    animate="visible"
-                                                    exit="hidden"
-                                                >
 
-                                                    <Box_Dress
-                                                        doubleGridDevice={false}
-                                                        overflowCards={true}
-                                                        productLink={`/@${product.shopInfo.name?.unique}/prodotto/${product.id}/${createUrlSchema([product?.info?.brand, product.name])}`}
-                                                        showStoreHeader={false} product={product} color={typeof colors === 'string' ? colors : undefined} />
-                                                </motion.div>
+                                                <Box_Dress
+                                                    doubleGridDevice={false}
+                                                    overflowCards={true}
+                                                    productLink={`/@${product?.shopInfo?.name?.unique}/prodotto/${product.id}/${createUrlSchema([product?.info?.brand, product?.name])}`}
+                                                    showStoreHeader={false} product={product} color={typeof colors === 'string' ? colors : undefined} />
+                                            </motion.div>
 
-                                            </Box>
-                                        </div>
-                                    )
+                                        </Box>
+                                    </div>
+                                )
 
-                                })
+                            })
 
-                                }
-                            </AnimatePresence>
+                            }
+                        </AnimatePresence>
 
 
-                        </div>
-                    </InView>
+                    </div>
 
                 </Box >
 
@@ -1289,7 +1299,7 @@ const index: React.FC<{ productFounded: Product, errorLog?: string, initialApoll
             <ModalReausable
                 marginTop={10}
                 positionTopModal={true}
-                title={`${toUpperCaseFirstLetter(product.info.macroCategory)} da ${product.info.gender === 'm' ? 'uomo' : 'donna'}`} isOpen={isOpenModalGuideSize}
+                title={`${toUpperCaseFirstLetter(product?.info?.macroCategory)} da ${product?.info?.gender === 'm' ? 'uomo' : 'donna'}`} isOpen={isOpenModalGuideSize}
                 closeModal={() => setIsOpenModalGuideSize(false)}
             >
                 <GuideSize

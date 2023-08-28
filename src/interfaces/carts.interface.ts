@@ -1,7 +1,7 @@
 import { CartProductVariation } from "../lib/apollo/generated/graphql"
 
 
-export interface ProductVariation {
+export interface ProductVariationInCart {
     id: string,
     photo: string,
     name: string,

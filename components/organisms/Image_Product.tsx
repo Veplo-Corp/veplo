@@ -3,7 +3,6 @@ import { Box, IconButton, Image, Modal, ModalBody, ModalContent, ModalOverlay, M
 import { TransformComponent, TransformWrapper } from '@pronestor/react-zoom-pan-pinch'
 import React, { useEffect, useState } from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-import { Product, Variation } from '../../src/interfaces/product.interface'
 import { imageKitUrl } from '../utils/imageKitUrl'
 import ButtonClose from '../atoms/ButtonClose'
 import { LIST_ITEM_VARIANT } from '../mook/transition'
@@ -16,7 +15,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css';
 import 'swiper/css/pagination';
-const Image_Product: React.FC<{ variation: Variation | undefined }> = ({ variation }) => {
+import { ProductVariation } from '../../src/lib/apollo/generated/graphql'
+const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ variation }) => {
 
     if (!variation) {
         return (
