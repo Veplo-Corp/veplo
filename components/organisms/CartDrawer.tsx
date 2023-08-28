@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay, Tag, Text, VStack } from '@chakra-ui/react'
 import React, { FC, useEffect } from 'react'
-import { CartDispatch, ProductVariation } from '../../src/interfaces/carts.interface'
+import { CartDispatch } from '../../src/interfaces/carts.interface'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { imageKitUrl } from '../utils/imageKitUrl'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
