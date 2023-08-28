@@ -201,22 +201,14 @@ const index = () => {
             </Desktop_Layout>
             <ModalReausable title='Cambia Password' closeModal={() => setIsOpenPasswordModal(false)} isOpen={isOpenPasswordModal}>
                 <Box
-                    marginTop={3}
+                    marginY={3}
                     fontSize={'md'}
                     fontWeight={'normal'}
                     color={'gray.500'}
                 >
                     ti abbiamo appena inviato una mail a {data?.user?.email}!
                 </Box>
-                <ButtonGroup gap='4'
-                    marginTop={5}
-                    textAlign={'end'}
-                >
-                    <Button
-                        onClick={() => setIsOpenPasswordModal(false)}
-                        variant={'ghost'}
-                        colorScheme='facebook'>Chiudi</Button>
-                </ButtonGroup>
+
             </ModalReausable>
             <ModalReausable title='Modifica informazioni' closeModal={() => setIsOpenNameModal(false)} isOpen={isOpenNameModal}>
                 <VStack
