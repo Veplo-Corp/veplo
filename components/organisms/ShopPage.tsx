@@ -388,16 +388,16 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                 image={shop?.profilePhoto ? shop?.profilePhoto : ''}
                 description={`${shop.name?.visualized} è su Veplo | Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
             />
-
             <Box
-                className='lg:mx-6 xl:w-10/12 2xl:w-9/12  mx-2 xl:mx-auto lg:mb-9'
-            ><motion.div
-                key={shop.id}
-                variants={LIST_ITEM_VARIANT}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
+                className='lg:mx-6 xl:w-10/12 2xl:w-9/12 xl:mx-auto lg:mb-9'
             >
+                <motion.div
+                    key={shop.id}
+                    variants={LIST_ITEM_VARIANT}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                >
                     <LazyLoadImage src={shop.profileCover ? imageKitUrl(shop.profileCover) : ''}
                         //PlaceholderSrc={PlaceholderImage}
                         effect='blur'
@@ -463,7 +463,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
 
                 <Box
                     mt={[4, 6]}
-                    className='px-2 lg:p-0'
+                    className='mx-2'
                 >
                     <Box
                         display={'flex'}
