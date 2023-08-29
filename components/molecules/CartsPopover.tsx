@@ -41,7 +41,10 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                 borderRadius={'full'}
                                 bg={'primary.bg'}
                                 color={'primary.text'}
-                                className='-top-2 -right-2.5'
+                                className='-top-2 -right-[12px] h-[28px] w-[28px]'
+                                borderWidth={3}
+                                padding={0}
+                                borderColor={'white'}
                             >
                                 <Text
                                     fontSize={['xs', 'sm']}
