@@ -405,6 +405,7 @@ const Header = () => {
                                                 className="w-6 h-6 my-auto"
                                             />
                                             {numberOfProductsInCarts > 0 &&
+
                                                 <Tag
                                                     position={'absolute'}
                                                     borderRadius={'full'}

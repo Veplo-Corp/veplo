@@ -663,10 +663,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                 <Box
                     className='lg:mx-6 xl:w-10/12 2xl:w-9/12 md:mx-2 xl:mx-auto'
                 >
-
-
                     <NoIndexSeo />
-
                     <PostMeta
                         canonicalUrl={'https://www.veplo.it' + router.asPath}
                         //riverdere length description 150 to 160
@@ -718,15 +715,16 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                 >
                                     {product?.price?.v2 && product?.price?.v1 && product?.price?.v2 < product.price?.v1 && <span className=' text-red-700 font-bold'>{formatNumberWithTwoDecimalsInString(product.price?.v2)}€<br /> </span>}
 
-                                    <span
+                                    {<span
                                         className={`${product?.price?.v2 && product?.price?.v1 && product.price?.v2 < product?.price?.v1 ? 'text-slate-500 font-normal text-sm ' : ''} mr-2`}
                                     >
-                                        {product?.price?.v2 && product?.price?.v1 && product?.price?.v2 < product?.price?.v1 && <span>prima era: </span>}<span className={product?.price?.v2 && product?.price?.v1 && product?.price?.v2 < product?.price?.v1 ? 'line-through' : ''}>{formatNumberWithTwoDecimalsInString(product.price?.v1)} €</span>
-                                        {product?.price?.discountPercentage && product?.price?.discountPercentage > 0 &&
+                                        {product?.price?.v2 && product?.price?.v1 && product?.price?.v2 < product?.price?.v1 && <span>prima era: </span>}<span className={product?.price?.v2 && product?.price?.v1 && product?.price?.v2 < product?.price?.v1 ? 'line-through' : ''}>{formatNumberWithTwoDecimalsInString(product.price?.v1)}€</span>
+                                        {typeof product?.price?.discountPercentage === 'number' && product?.price?.discountPercentage > 0 &&
                                             <span className='ml-2 text-red-500'>
                                                 -{formatPercentage(product?.price?.discountPercentage)}%
-                                            </span>}
-                                    </span>
+                                            </span>
+                                        }
+                                    </span>}
 
                                 </Box>
                                 <Box
