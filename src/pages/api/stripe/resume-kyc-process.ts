@@ -11,7 +11,7 @@ export default async function handler(
 
     let url = 'https://www.veplo.it/shop/home';
 
-    if (process.env.ENV === 'development') {
+    if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'development') {
         url = 'http://localhost:3000/shop/home'
     }
 

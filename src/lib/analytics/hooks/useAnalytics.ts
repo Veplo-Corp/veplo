@@ -11,7 +11,7 @@ interface CustomWindow extends Window {
 
 export const useAnalytics = (payload: VeploGTMEvent) => {
     const sendMessage = useCallback(() => {
-        if (typeof window !== 'undefined' && process.env.ENV === 'production') {
+        if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_ENVIRONMENT === 'production') {
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({ event: payload.command, ...payload.args });
             window.gtag('event', payload.command, payload.args);
