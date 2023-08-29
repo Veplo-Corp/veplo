@@ -389,7 +389,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                 description={`${shop.name?.visualized} è su Veplo | Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
             />
             <Box
-                className='lg:mx-6 xl:w-10/12 2xl:w-9/12 xl:mx-auto lg:mb-9'
+                className='lg:mx-6 xl:w-10/12 2xl:w-9/12 xl:mx-auto mb-4 lg:mb-9'
             >
                 <motion.div
                     key={shop.id}
@@ -635,7 +635,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                 }
             >
                 {productsFounded &&
-                    <div className="grid grid-cols-1 px-2 lg:px-0 md:grid-cols-3 gap-5 w-full xl:w-10/12 mx-auto mb-10">
+                    <div className="grid grid-cols-1 px-2 lg:px-0 md:grid-cols-3 gap-5  md:mx-6 2xl:w-9/12  xl:w-10/12 xl:mx-auto mb-10">
 
                         {productsFounded.map((product: Product, index) => {
                             return (
