@@ -23,7 +23,7 @@ const index = () => {
     });
 
     const continueUrl =
-        process.env.NODE_ENV === 'production' ?
+        process.env.ENV === 'production' ?
             'https://www.veplo.it?gatto=berry' :
             'http://localhost:3000?gatto=berry'
 
