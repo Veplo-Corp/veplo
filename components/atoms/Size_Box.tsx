@@ -62,9 +62,9 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                             >
                                 {size.toUpperCase()}
                             </Box>
-                            <Box fontWeight={['base', 'base']}
+                            <Box fontWeight={'normal'}
                                 fontSize={['2xs', '2xs']} color={sizeProductExist?.quantity && sizeProductExist?.quantity > 0 && sizeSelected !== size ? 'gray.500' : sizeSelected === size ? 'white' : '#A19F9F'} mt={'-4px'}>
-                                {sizeProductExist?.quantity && sizeProductExist?.quantity < 10 && sizeProductExist?.quantity > 0 ? `solo ${sizeProductExist?.quantity} disponibil${sizeProductExist?.quantity > 1 ? 'i' : 'e'}` : sizeProductExist?.quantity && sizeProductExist?.quantity > 0 ? `` : 'esaurito'}
+                                {sizeProductExist?.quantity && sizeProductExist?.quantity === 1 ? 'ultimo rimasto' : sizeProductExist?.quantity && sizeProductExist?.quantity < 10 && sizeProductExist?.quantity > 0 ? `solo ${sizeProductExist?.quantity} disponibil${sizeProductExist?.quantity > 1 ? 'i' : 'e'}` : sizeProductExist?.quantity && sizeProductExist?.quantity > 0 ? `` : 'esaurito'}
                             </Box>
                         </Box>
 

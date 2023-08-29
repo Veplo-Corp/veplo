@@ -17,6 +17,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { ProductVariation } from '../../src/lib/apollo/generated/graphql'
 const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ variation }) => {
+    console.log('runna');
 
     if (!variation) {
         return (
@@ -42,10 +43,10 @@ const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ 
         if (variation?.photos) {
             setfullImage(variation?.photos[0])
         }
-
     }, [variation])
 
     const isSmallView = useBreakpointValue({ base: true, md: false });
+
 
 
     return (
@@ -175,37 +176,32 @@ const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ 
 
                             </Box>
                             <div>
-                                <motion.div
-                                    variants={LIST_ITEM_VARIANT}
-                                    initial="hidden"
-                                    animate="visible"
-                                    exit="hidden"
-                                >
-                                    {variation?.photos && variation?.photos.map((image) => {
-                                        return (
-                                            <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'5'} borderRadius='lg' overflow='hidden'
-                                                borderWidth={1.5}
-                                                className={` ${image == fullImage ? "border-black border-8" : "border-white"}   cursor-pointer
+
+                                {variation?.photos && variation?.photos.map((image) => {
+
+                                    return (
+                                        <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'2'} borderRadius='lg' overflow='hidden'
+                                            borderWidth={1.5}
+                                            className={` ${image == fullImage ? "border-black border-8" : "border-white"}   cursor-pointer
                                         w-14
                                         xl:w-20
-                                    `}
-                                            >
+                                    `
+                                            }
+                                        >
 
-                                                <Image src={
+                                            <LazyLoadImage
+                                                src={
                                                     imageKitUrl(image, 237, 247)
                                                 }
-                                                    alt={variation?.color + 'non trovato'}
-                                                    width={'fit-content'}
-                                                    maxH={'52'}
-                                                    // height={'fit-content'}
-                                                    className='aspect-[4.8/5] object-cover '
-                                                    loading="lazy"
-                                                />
+                                                alt={variation?.color + 'non trovato'}
+                                                width={'fit-content'}
+                                                // height={'fit-content'}
+                                                className='aspect-[4.8/5] max-h-52 object-cover '
+                                            />
 
-                                            </Box>
-                                        )
-                                    })}
-                                </motion.div>
+                                        </Box>
+                                    )
+                                })}
                             </div>
                         </>
                     ) : (

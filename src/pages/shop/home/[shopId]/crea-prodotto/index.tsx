@@ -519,7 +519,7 @@ const index = () => {
                                 render={({ field }) => (
                                     <Textarea
                                         fontSize={'sm'}
-                                        maxLength={450}
+                                        maxLength={700}
                                         rounded={10}
                                         paddingY={6}
                                         paddingTop={2}

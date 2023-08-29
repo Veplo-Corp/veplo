@@ -155,8 +155,6 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
     const isSmallView = useBreakpointValue({ base: true, md: false });
     const [isAddedToCart, setIsAddedToCart] = useState(false)
     const [showAllDescriptionShop, setshowAllDescriptionShop] = useState(false)
-    const [descriptionRefTextLength, setDescriptionRefTextLength] = useState(0)
-    const descriptionRefText = useRef<any>(null);
 
     if (errorLog) {
         return (
@@ -222,7 +220,9 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
             variation = product?.variations.find(variation => variation?.color?.toLowerCase() == colors.toLowerCase())
             if (!variation) { }
             else {
-                setVariationSelected(variation)
+                if (variation.color !== variationSelected?.color) {
+                    setVariationSelected(variation)
+                }
                 setColorSelected(variation?.color)
             }
         }
@@ -274,12 +274,11 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
 
 
 
+
     useEffect(() => {
+
         if (!product) return
-        if (descriptionRefText.current) {
-            const numberOfLine = numberOfLineText(descriptionRefText.current);
-            setDescriptionRefTextLength(numberOfLine);
-        }
+
 
 
 
@@ -300,6 +299,10 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
         // );
 
     }, [product])
+
+    console.log(product?.info?.description);
+
+
 
 
 
@@ -622,31 +625,8 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
         }
     }
 
-    // const handleVisibilityChange = async (inView: boolean) => {
-    //     if (inView) {
-    //         // Funzione da eseguire quando il componente diventa visibile
-    //         //! lista di prodotti del negozio
-    //         setTimeout(async () => {
-    //             const element = await getSimilarProductOnShop({
-    //                 variables: {
-    //                     productId: product.id,
-    //                     limit: 5,
-    //                     offset: 0,
-    //                     shopId: product?.shopInfo?.id
-    //                 },
-    //                 fetchPolicy: 'cache-first',
-    //             })
-
-    //             if (element) {
-    //                 setproductsLikeThis(element?.data?.product.productsLikeThis)
-    //             }
-    //         }, 0);
-
-    //     }
-    // };
 
 
-    //console.log(product);
 
     if (!variationSelected) {
         return (
@@ -655,6 +635,8 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
             </Desktop_Layout>
         )
     }
+
+
 
 
     return (
@@ -1038,168 +1020,21 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                             className='col-span-2 lg:col-span-3'
                                         >
                                             <Text
-                                                noOfLines={!showAllDescriptionShop || descriptionRefTextLength <= 3 ? 3 : 100}
                                                 fontSize={'md'}
                                                 fontWeight={'normal'}
                                                 color={'#909090'}
                                                 className='col-span-2 lg:col-span-3'
-                                                ref={descriptionRefText}
                                             >
                                                 {product?.info?.description}
                                             </Text>
-                                            {descriptionRefTextLength > 3 && <Text
-                                                onClick={() => setshowAllDescriptionShop(!showAllDescriptionShop)}
-                                                color={'#909090'}
-                                                cursor={'pointer'}
-                                                className='font-semibold underline text-sm lg:text-md'
-                                            >
-                                                {!showAllDescriptionShop ? 'mostra altro' : 'mostra meno'}
-                                            </Text>}
+
                                         </Box>
 
                                     </>
                                 }
                             </Box>
 
-                            {false && <Box
-                                mt={3}
 
-                                borderRadius={10}
-                                bg={'white'}
-                                position={'relative'}
-
-                            >
-                                <Disclosure
-                                >
-                                    {({ open }) => (
-                                        <Box
-                                            width={'full'}
-                                            paddingY={[5, 5]}
-                                            paddingX={[2, 5]}
-                                            position={open && !isSmallView ? 'absolute' : 'static'}
-                                            bg={'white'}
-                                            borderRadius={10}
-                                            borderWidth={1}
-                                        >
-                                            <Disclosure.Button className="flex text-center w-full h-full"
-                                            >
-                                                <Box
-                                                    className='m-auto flex'
-
-                                                    bg={'white'}
-                                                >
-                                                    <Text
-                                                        fontSize={'lg'}
-                                                        fontWeight={'bold'}
-                                                        margin={'auto'}
-                                                    >
-                                                        Caratteristiche
-                                                    </Text>
-                                                    <NavArrowDown
-                                                        strokeWidth={3}
-                                                        className={`${open ? 'rotate-180 transform' : ''
-                                                            } h-6 w-6 my-auto ml-1`}
-                                                    />
-                                                </Box>
-
-                                            </Disclosure.Button>
-                                            <Disclosure.Panel className="pl-1 pt-4 pb-2 text-sm text-gray-500">
-
-                                                <Box
-                                                    className='grid grid-cols-3 lg:grid-cols-4 w-fit gap-x-1 gap-y-4 lg:gap-4'
-                                                >
-                                                    {product?.info?.modelDescription && product?.info?.modelDescription?.length > 0 &&
-                                                        <>
-                                                            <Text
-                                                                fontSize={'md'}
-                                                                fontWeight={'semibold'}
-                                                                color={'black'}
-                                                            >
-                                                                Descrizione modello
-                                                            </Text>
-                                                            <Text
-                                                                fontSize={'md'}
-                                                                fontWeight={'normal'}
-                                                                color={'#909090'}
-                                                                className='col-span-2 lg:col-span-3'
-                                                            >   {
-                                                                    product?.info?.modelDescription
-                                                                }
-                                                            </Text>
-                                                        </>
-                                                    }
-                                                    <Text
-                                                        fontSize={'md'}
-                                                        fontWeight={'semibold'}
-                                                        color={'black'}
-                                                    >
-                                                        Materiale
-                                                    </Text>
-                                                    <Text
-                                                        fontSize={'md'}
-                                                        fontWeight={'normal'}
-                                                        color={'#909090'}
-                                                        className='col-span-2 lg:col-span-3'
-                                                    >
-                                                        {product?.info?.materials?.length && product?.info?.materials?.length > 0 ? product?.info?.materials.join(', ') : 'non disponibile'}
-                                                    </Text>
-                                                    <Text
-                                                        fontSize={'md'}
-                                                        fontWeight={'semibold'}
-                                                        color={'black'}
-                                                    >
-                                                        Fit
-                                                    </Text>
-                                                    <Text
-                                                        fontSize={'md'}
-                                                        fontWeight={'normal'}
-                                                        color={'#909090'}
-                                                        className='col-span-2 lg:col-span-3'
-                                                    >
-                                                        {product?.info?.fit ? product?.info?.fit : 'non disponibile'}
-                                                    </Text>
-                                                    <Text
-                                                        fontSize={'md'}
-                                                        fontWeight={'semibold'}
-                                                        color={'black'}
-                                                    >
-                                                        Lunghezza
-                                                    </Text>
-                                                    <Text
-                                                        fontSize={'md'}
-                                                        fontWeight={'normal'}
-                                                        color={'#909090'}
-                                                        className='col-span-2 lg:col-span-3'
-                                                    >
-                                                        {product?.info?.length ? product?.info?.length : 'non disponibile'}
-                                                    </Text>
-                                                    {product?.info?.description && product?.info?.description?.length > 0 &&
-                                                        <>
-                                                            <Text
-                                                                fontSize={'md'}
-                                                                fontWeight={'semibold'}
-                                                                color={'black'}
-                                                            >
-                                                                Descrizione
-                                                            </Text>
-                                                            <Text
-                                                                fontSize={'md'}
-                                                                fontWeight={'normal'}
-                                                                color={'#909090'}
-                                                                className='col-span-2 lg:col-span-3'
-                                                            >   {
-                                                                    product?.info?.description
-                                                                } lorem ipsum dolorem sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam
-                                                            </Text>
-                                                        </>
-                                                    }
-                                                </Box>
-
-                                            </Disclosure.Panel>
-                                        </Box>
-                                    )}
-                                </Disclosure>
-                            </Box>}
 
 
                         </Box>
