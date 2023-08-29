@@ -20,7 +20,7 @@ export default function Document() {
         <link rel="icon" type="image/x-icon" href="/android-chrome-512x512.png" sizes="512x512" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         {
-          process.env.ENV === 'production' &&
+          process.env.NEXT_PUBLIC_ENVIRONMENT === 'production' &&
           <>
             <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" async />
             <script type="text/javascript"
@@ -92,7 +92,7 @@ _iub.csConfiguration = {"gdprAppliesGlobally":false,"perPurposeConsent":true,"si
 
 
       <body>
-        {/* {process.env.ENV === 'development' && <noscript dangerouslySetInnerHTML={{
+        {/* {process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' && <noscript dangerouslySetInnerHTML={{
           __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${process.env.GOOGLE_TAG_MANAGER}"
             height="0" width="0" style="display:none;visibility:hidden"></iframe>`
         }} />} */}

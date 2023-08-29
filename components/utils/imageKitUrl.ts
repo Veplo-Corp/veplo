@@ -11,6 +11,6 @@ export const imageKitUrl = (/* googleUrl */imageUid: string | undefined | null, 
     return endpoint + '/' + imageUid
   }
   // return googleUrl.replace(
-  //     `https://firebasestorage.googleapis.com/v0/b/dintorni-${process.env.ENV === 'production' ? 'prod' : 'dev'}.appspot.com`, 'https://ik.imagekit.io/veplo')
+  //     `https://firebasestorage.googleapis.com/v0/b/dintorni-${process.env.NEXT_PUBLIC_ENVIRONMENT === 'production' ? 'prod' : 'dev'}.appspot.com`, 'https://ik.imagekit.io/veplo')
   //     + `?tr=w-${width},h-${height}`
 }

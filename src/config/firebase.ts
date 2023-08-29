@@ -42,7 +42,10 @@ let firebaseConfig;
 
 
 
-if (process.env.ENV === 'production') {
+
+
+if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'production') {
+
   // Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   firebaseConfig = {
