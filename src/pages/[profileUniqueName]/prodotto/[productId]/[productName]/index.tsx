@@ -155,7 +155,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
     const isSmallView = useBreakpointValue({ base: true, md: false });
     const [isAddedToCart, setIsAddedToCart] = useState(false)
     const [showAllDescriptionShop, setshowAllDescriptionShop] = useState(false)
-
+    const [viewAllDescription, setViewAllDescription] = useState(false)
     if (errorLog) {
         return (
             <Box className='h-screen'>
@@ -300,7 +300,6 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
 
     }, [product])
 
-    console.log(product?.info?.description);
 
 
 
@@ -1025,9 +1024,19 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                                 color={'#909090'}
                                                 className='col-span-2 lg:col-span-3'
                                             >
-                                                {product?.info?.description}
-                                            </Text>
+                                                {`${product?.info?.description?.length > 150 &&
+                                                    !viewAllDescription
+                                                    ? product?.info?.description.slice(0, 120) + '...' : product?.info?.description}`}
 
+                                            </Text>
+                                            {product?.info?.description?.length > 150 && <Text
+                                                onClick={() => setViewAllDescription(!viewAllDescription)}
+                                                color={'#909090'}
+                                                cursor={'pointer'}
+                                                className='font-semibold underline text-sm lg:text-md'
+                                            >
+                                                {!viewAllDescription ? 'mostra altro' : 'mostra meno'}
+                                            </Text>}
                                         </Box>
 
                                     </>

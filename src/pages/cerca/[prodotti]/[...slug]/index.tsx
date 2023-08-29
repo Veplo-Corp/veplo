@@ -263,6 +263,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
 
 
+
     const fetchMoreData = async () => {
 
 
