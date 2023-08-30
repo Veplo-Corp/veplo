@@ -27,6 +27,7 @@ import { COLORS, Color } from '../../../../../../../components/mook/colors';
 import { VariationCard } from '../../../../../../interfaces/variationCard.interface';
 import { uploadImage } from '../../../../../../lib/upload/uploadImage';
 import { UploadEventType } from '../../../../../../lib/upload/UploadEventTypes';
+import expirationTimeTokenControll from '../../../../../../../components/utils/expirationTimeTokenControll';
 
 interface Props {
     shop: {
@@ -314,6 +315,8 @@ const index = () => {
 
 
         if (Object.keys(options).length < 1) return
+        const resolve = await expirationTimeTokenControll(user.expirationTime)
+        if (!resolve) return
         try {
             await editProduct({
                 variables: {

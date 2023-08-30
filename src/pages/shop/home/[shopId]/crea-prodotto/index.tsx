@@ -176,6 +176,7 @@ const index = () => {
 
 
     const createProductHandler = async () => {
+
         const resolve = await expirationTimeTokenControll(user.expirationTime)
         if (!resolve) return
         const v1 = Math.floor(Number(watch('price').replace(',', '.')) * 100)

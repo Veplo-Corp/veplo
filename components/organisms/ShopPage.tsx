@@ -383,7 +383,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
 
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
-                title={`${shop.name ? toUpperCaseFirstLetter(shop.name.visualized) : 'Brand'} | Veplo`}
+                title={`${shop.name ? shop.name.visualized + ' (@' + shop.name.unique : 'Brand'}) | Veplo`}
                 subtitle={`${shop.name?.visualized} è su Veplo | Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
                 image={shop?.profilePhoto ? shop?.profilePhoto : ''}
                 description={`${shop.name?.visualized} è su Veplo | Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
