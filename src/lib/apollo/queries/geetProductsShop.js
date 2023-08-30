@@ -7,16 +7,17 @@ const GET_PRODUCTS_FROM_SHOP = gql`
         $limit: Int!
         $offset: Int!
         $filters: ProductFilters!
+        $sort: ProductSort
         ) {
         shop(
             id: $id
         )  {
                 id
-                
                 products(
                     limit: $limit
                     offset: $offset
                     filters: $filters
+                    sort: $sort
                 ){
                     products{
                         id
