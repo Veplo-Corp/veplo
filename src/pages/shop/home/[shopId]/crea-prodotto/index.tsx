@@ -83,6 +83,10 @@ const index = () => {
             variables: {
                 id: router.query.shopId, //* mettere idShop,
                 limit: 100, offset: 0,
+                sort: {
+                    ascending: false,
+                    for: "createdAt"
+                },
                 filters: {
 
                 }

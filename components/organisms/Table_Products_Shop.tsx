@@ -87,7 +87,17 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
 
 
     const { loading, error, data, fetchMore } = useQuery<Props>(GET_PRODUCTS_FROM_SHOP, {
-        variables: { id: idShop, limit: 100, offset: 0, filters: {} },
+        variables: {
+            id: router.query.shopId, //* mettere idShop,
+            limit: 100, offset: 0,
+            sort: {
+                ascending: false,
+                for: "createdAt"
+            },
+            filters: {
+
+            }
+        },
     });
 
 
