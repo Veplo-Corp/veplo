@@ -468,8 +468,14 @@ const index = () => {
             //TODO
             //add shopId to user in Redux with function
             addToast({ position: 'top', title: 'Shop creato con successo', description: "inizia a inserire i tuoi prodotti in Veplo!", status: 'success', duration: 5000, isClosable: true })
+
+
             addShopFavouriteToLocalStorage({
-                name: e.name,
+                name: {
+                    visualized: e.name?.visualized,
+                    unique: e.name?.unique,
+                },
+                street: address.city + ', ' + address.address + ' ' + address.streetNumber,
                 id: isCreatedShop.data.createShop
             })
             setIsLoading(false)

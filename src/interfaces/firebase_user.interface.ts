@@ -10,9 +10,12 @@ export interface Firebase_User {
     statusAuthentication?: 'not_yet_authenticated' | 'logged_out' | 'logged_in',
     accountId?: string,
     favouriteShop?: {
-        name: string,
-        id: string,
-        street: string
+        name?: {
+            unique?: string,
+            visualized?: string
+        },
+        id?: string,
+        street?: string
     }
     favouriteShops?: string[],
     userInfo?: {

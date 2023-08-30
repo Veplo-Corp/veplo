@@ -177,7 +177,6 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
 
 
     useEffect(() => {
-        console.log(productFounded);
 
         const product = { ...productFounded }
         if (!productFounded && !product?.variations?.[0] && product?.variations?.[0]?.color) return
