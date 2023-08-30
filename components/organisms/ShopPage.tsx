@@ -398,7 +398,8 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                     animate="visible"
                     exit="hidden"
                 >
-                    <LazyLoadImage src={shop.profileCover ? imageKitUrl(shop.profileCover) : ''}
+                    <LazyLoadImage
+                        src={shop.profileCover ? imageKitUrl(shop.profileCover) : ''}
                         //PlaceholderSrc={PlaceholderImage}
                         effect='blur'
                         alt={shop.name?.visualized ? shop.name.visualized : ''}

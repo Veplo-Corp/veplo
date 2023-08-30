@@ -308,11 +308,10 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                             return (
                                                 <SwiperSlide key={index}>
                                                     <LazyLoadImage
-                                                        effect="blur"
                                                         onMouseEnter={() => {
                                                             setShowSize(true)
                                                         }}
-                                                        src={isMobile && photoUrl ? imageKitUrl(photoUrl) : imageKitUrl(photoUrl ? photoUrl : '', 630, 660)}
+                                                        src={isMobile && photoUrl ? imageKitUrl(photoUrl, 480, 500) : imageKitUrl(photoUrl ? photoUrl : '', 480, 500)}
                                                         alt={product.name ? product.name : ''}
                                                         className={`lg:w-full ${doubleGridDevice ? 'min-h-[180px]' : 'min-h-[350px] sm:min-h-[300px]'}  md:min-h-0 aspect-[4.8/5] object-cover rounded-[20px]`}
                                                     />
@@ -323,7 +322,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 :
                                 (
                                     <LazyLoadImage
-                                        effect="blur"
+                                        //effect="blur"
                                         onMouseEnter={() => {
                                             setShowSize(true)
                                         }}
