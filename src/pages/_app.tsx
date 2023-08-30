@@ -435,7 +435,11 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
             dispatch(
               addFavouriteShopBusiness({
                 id: favouriteShop.id,
-                name: favouriteShop.name.visualized,
+                name: {
+                  visualized: favouriteShop.name.visualized,
+                  unique: favouriteShop.name.unique
+                },
+
                 street: favouriteShop.street
               })
             )

@@ -5,6 +5,7 @@ export const getFavouriteShopFromLocalStorage = () => {
 
         if (element !== undefined && element !== null && element !== 'undefined') {
             const shop = JSON.parse(element);
+
             if (shop?.id && shop?.name && shop?.street) {
                 return shop
             }

@@ -3,7 +3,6 @@ import { signOut } from 'firebase/auth'
 import React, { useEffect, useState } from 'react'
 import { auth } from '../../src/config/firebase'
 import { Tooltip } from '@chakra-ui/react'
-import Verified_Email from '../molecules/Verified_Email/Verified_Email'
 import { useRouter } from 'next/router'
 import MobileDetect from 'mobile-detect'
 import { deleteAuthTokenInSessionStorage } from '../utils/deleteAuthTokenSessionStorage'
@@ -67,6 +66,7 @@ const Drawer_Menu: React.FC<{ user: any, isOpen: boolean, closeDrawer: () => voi
 
 
 
+
     return (
         <Drawer
             isOpen={isOpen}
@@ -117,7 +117,8 @@ const Drawer_Menu: React.FC<{ user: any, isOpen: boolean, closeDrawer: () => voi
                                     fontSize={'lg'}
                                     fontWeight={'bold'}
                                 >
-                                    {userDispatch?.favouriteShop?.name ? userDispatch?.favouriteShop?.name.toUpperCase() : userDispatch?.favouriteShop?.name}
+                                    {userDispatch?.favouriteShop?.name?.visualized && userDispatch?.favouriteShop?.name?.unique && `${userDispatch?.favouriteShop?.name.visualized.toUpperCase()} (@${userDispatch?.favouriteShop?.name.unique})`}
+
                                 </Text>
                                 <Text
                                     fontSize={'sm'}

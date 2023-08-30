@@ -87,9 +87,14 @@ const index = () => {
         if (shop.id && (!user.favouriteShop?.id || user.favouriteShop?.id !== shop.id)) {
             const element = {
                 id: shop.id,
-                name: shop?.name.visualized,
+                name: {
+                    unique: shop?.name.unique,
+                    visualized: shop?.name.visualized
+                },
                 street: shop?.address.city + ', ' + shop?.address.street
             }
+            console.log(element);
+
             addShopFavouriteToLocalStorage(element)
             dispatch(
                 addFavouriteShopBusiness(element)
@@ -116,8 +121,8 @@ const index = () => {
                         />
                     </Box>
                 }
-                {!user.emailVerified && user.statusAuthentication === 'logged_in' && <Verified_Email />}
-                <Text className='text-xl lg:text-2xl font-extrabold mb-4'>I tuoi profili</Text>
+                {false && !user.emailVerified && user.statusAuthentication === 'logged_in' && <Verified_Email />}
+                <Text className='text-xl lg:text-2xl font-extrabold mb-4'>I tuoi brand e negozi</Text>
                 <div className='grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-3 gap-x-2.5 gap-y-3.5 '>
                     <AddNewShopCard />
                     {data?.business?.shops && data.business.shops.map((shop) => {
