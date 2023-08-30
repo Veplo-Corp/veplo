@@ -316,6 +316,8 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
 
 
     onAuthStateChanged(auth, async (userAuth) => {
+      console.log(userAuth);
+
       //signOut(auth)
       if (userAuth) {
         //analytics
