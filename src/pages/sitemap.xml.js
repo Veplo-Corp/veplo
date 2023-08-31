@@ -5,7 +5,7 @@ const URLS = [
     "https://www.veplo.it/cerca/abbigliamento/uomo-tutto/tutto/rilevanza",
     "https://www.veplo.it/cerca/abbigliamento/donna-tutto/tutto/rilevanza",
     "https://www.veplo.it/profili/brand",
-    "https://www.veplo.it/user/login?type=login&amp;person=user"
+    //"https://www.veplo.it/user/login?type=login&amp;person=user"
 ]
 
 function generateSiteMap() {
