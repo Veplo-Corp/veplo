@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout';
-import { Box, Button, HStack, Image, Tag, Text, Tooltip, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Button, Divider, HStack, Image, Tag, Text, Tooltip, useBreakpointValue } from '@chakra-ui/react';
 import GET_PRODUCT_AND_SIMILAR_PRODUCTS_ON_SHOP from '../../../../../lib/apollo/queries/getProductAndSimilarProductsOnShop'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { initApollo } from '../../../../../lib/apollo';
@@ -48,6 +48,8 @@ import { PixelEventType } from '../../../../../lib/analytics/eventTypes';
 import { openModal } from '../../../../../store/reducers/globalModal';
 import PageNotFound from '../../../../../../components/molecules/PageNotFound';
 import { Product, ProductVariation } from '../../../../../lib/apollo/generated/graphql';
+import ProfilePhoto from '../../../../../../components/molecules/ProfilePhoto';
+import ButtonFollow from '../../../../../../components/molecules/ButtonFollow';
 
 
 
@@ -131,6 +133,8 @@ interface ProductProps extends Product {
     colors: { name: string, cssColor: string }[],
     totalSizeAvailable?: string[]
 }
+
+
 
 
 const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initialApolloState: any }> = ({ productFounded, errorLog, initialApolloState }) => {
@@ -302,8 +306,19 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
 
 
 
-
-
+    const ShopComponent = () => {
+        return (
+            <Box
+                my={'auto'}
+            >
+                {((user.statusAuthentication === 'logged_in' && (user.favouriteShops)) || user.statusAuthentication === 'logged_out') && <Box
+                    className='mt-1 mr-2'
+                >
+                    <ButtonFollow shopId={product.shopInfo?.id} />
+                </Box>}
+            </Box>
+        )
+    }
 
 
 
@@ -652,13 +667,56 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                         image={imageKitUrl(variationSelected?.photos?.[0], 237, 247)}
                         description={`${toUpperCaseFirstLetter(product?.info?.macroCategory)} ${toUpperCaseFirstLetter(product?.info?.brand)} ${product?.name?.toUpperCase()} a ${product?.price?.v2 ? product?.price?.v2 : product?.price?.v1}€. Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
                     />
+                    {!isSmallView && <Box
+                        display={'flex'}
+                        mb={4}
+                        gap={8}
+                    >
+                        <Link
+                            prefetch={false}
+                            href={product?.shopInfo?.name?.unique ? `/@${product.shopInfo.name.unique}` : ''}>
+                            <ProfilePhoto
+                                imgName={product.name}
+                                scr={product.shopInfo?.profilePhoto}
+                                primaryText={product.shopInfo?.name?.visualized}
+                                secondaryText={'@' + product.shopInfo?.name?.unique}
+                            />
+                        </Link>
+                        <ShopComponent />
+                    </Box>}
                     <div className='md:flex justify-between w-full mb-5 lg:mb-0 gap-5'>
+
                         <Box
                             className='w-full sm:w-9/12 mx-auto md:w-full'
                         >
                             <Image_Product variation={variationSelected} />
                         </Box>
                         <Box className='md:block md:w-[90%] lg:w-[80%]  mx-2'>
+                            {isSmallView &&
+                                <Box>
+                                    <Box
+                                        display={'flex'}
+                                        mt={2}
+                                        justifyContent={'space-between'}
+                                    >
+                                        <Link
+                                            prefetch={false}
+                                            href={product?.shopInfo?.name?.unique ? `/@${product.shopInfo.name.unique}` : ''}>
+                                            <ProfilePhoto
+                                                imgName={product.name}
+                                                scr={product.shopInfo?.profilePhoto}
+                                                primaryText={product.shopInfo?.name?.visualized}
+                                                secondaryText={'@' + product.shopInfo?.name?.unique}
+                                            />
+                                        </Link>
+                                        <ShopComponent />
+                                    </Box>
+                                    <Divider
+                                        py={2}
+                                    />
+                                </Box>
+                            }
+
                             <Text
                                 fontWeight='medium'
                                 as='h2'
@@ -669,6 +727,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                             >
                                 {product?.info?.brand}
                             </Text>
+
                             <Box
                                 fontWeight='bold'
                                 as='h1'
@@ -679,7 +738,6 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                 pb='3'
                             >
                                 {`${product?.name?.toLocaleUpperCase()}`}
-
                             </Box>
                             <Box
                                 className='lg:flex'

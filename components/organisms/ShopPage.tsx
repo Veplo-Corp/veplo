@@ -7,7 +7,6 @@ import { useLazyQuery, useMutation } from '@apollo/client';
 import GET_PRODUCTS_FROM_SHOP from '../../src/lib/apollo/queries/geetProductsShop';
 import PopoverComponent, { ActionsPopover } from '../molecules/PopoverComponent';
 import { Instagram, MoreHoriz, ShareIos, SmallShopAlt, TikTok } from 'iconoir-react';
-import Desktop_Layout from '../atoms/Desktop_Layout';
 import NoIndexSeo from './NoIndexSeo';
 import PostMeta from './PostMeta';
 import { motion } from 'framer-motion';
@@ -24,15 +23,9 @@ import createUrlSchema from '../utils/create_url';
 import { isMobile } from 'react-device-detect';
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface';
 import { useDispatch, useSelector } from 'react-redux';
-import FOLLOW from '../../src/lib/apollo/mutations/follow';
-import UNFOLLOW from '../../src/lib/apollo/mutations/unfollow';
-
-import { changeFavouriteShops } from '../../src/store/reducers/user';
-import ModalReausable from './ModalReausable';
-import LoginAndRegistrationForm from './LoginAndRegistrationForm';
 import { ToastOpen } from '../utils/Toast';
-import expirationTimeTokenControll from '../utils/expirationTimeTokenControll';
-import GET_USER_FOLLOWINGS from '../../src/lib/apollo/queries/getUserFollowings';
+
+import ButtonFollow from '../molecules/ButtonFollow';
 
 const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) : 12
 
@@ -66,34 +59,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
     const descriptionRefText = useRef<any>(null);
     const [genderSelected, setGenderSelected] = useState<'f' | 'm'>()
     const user: Firebase_User = useSelector((state: any) => state.user.user);
-    const [followShop] = useMutation(FOLLOW, {
-        awaitRefetchQueries: true,
-        refetchQueries: [{
-            query: GET_USER_FOLLOWINGS,
-            variables: {
-                limit: 10,
-                offset: 0,
-                onlyIds: false
-            }
-        }],
 
-    });
-    const [unfollowShop] = useMutation(UNFOLLOW, {
-        awaitRefetchQueries: true,
-        refetchQueries: [{
-            query: GET_USER_FOLLOWINGS,
-            variables: {
-                limit: 10,
-                offset: 0,
-                onlyIds: false
-            }
-        }],
-
-    });
-    const dispatch = useDispatch();
-    const [onFollowLoading, setOnFollowLoading] = useState(false)
-    const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('login')
-    const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
     const { addToast } = ToastOpen();
 
 
@@ -279,71 +245,13 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
         return actionsPopoverElements;
 
     }
-    const isShopFollower = () => {
-        const shopId = shop.id
-        if (!user?.favouriteShops || !shopId) return false
-        const result = user?.favouriteShops?.filter((element: string) => element === shopId)
-        if (!result || result.length <= 0) return false
-        return true
-    }
 
 
 
 
-    const addFollow = async () => {
-        const resolve = await expirationTimeTokenControll(user.expirationTime)
-        if (!resolve) return
-        if (user.statusAuthentication === 'logged_out') {
-            return setIsOpenLoginModal(true)
-        }
-        const isFollowed = isShopFollower();
-        let favouriteShops = user.favouriteShops ? [...user.favouriteShops] : [];
-        setOnFollowLoading(true)
-        if (!shop.id) return
-        if (!isFollowed) {
-            favouriteShops.push(shop.id);
-            dispatch(changeFavouriteShops({
-                favouriteShops: favouriteShops
-            }))
 
-            try {
-                await followShop({
-                    variables: {
-                        id: shop.id
-                    }
-                })
-                setOnFollowLoading(false)
-            }
-            catch {
-                //TODO handle error follow
-                setOnFollowLoading(false)
-
-            }
-        } else {
-
-            dispatch(changeFavouriteShops({
-                favouriteShops: favouriteShops?.filter((shopId: string) => shopId !== shop.id)
-            }))
-
-            try {
-                await unfollowShop({
-                    variables: {
-                        id: shop.id
-                    }
-                })
-                setOnFollowLoading(false)
-
-            }
-            catch {
-                //TODO handle error follow
-                setOnFollowLoading(false)
-
-            }
-        }
-    }
 
     const InfoAndFollow = () => {
-
         return (
             <>
                 <PopoverComponent
@@ -357,23 +265,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                         />
                     }
                 />
-                <Button
-                    onClick={addFollow}
-                    variant={isShopFollower() ? 'grayPrimary' : 'primary'}
-                    borderRadius={'full'}
-                    //paddingInline={isShopFollower() ? [6, 6, 7, 7] : [10, 10, 12, 12]}
-                    width={[28, 28, 32, 32]}
-                    fontWeight={isShopFollower() ? 'semibold' : 'extrabold'}
-                    height={[9, 9, 12, 12]}
-                    fontSize={['md', 'md', 'lg', 'lg']}
-                    isDisabled={onFollowLoading}
-                    _disabled={{
-                    }}
-                    _hover={{
-                    }}
-                >
-                    {isShopFollower() ? 'segui già' : 'segui'}
-                </Button>
+                <ButtonFollow shopId={shop?.id} />
             </>
 
 
@@ -393,11 +285,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
         )
     }
 
-    const closeModalHandler = useCallback(
-        () => {
-            setIsOpenLoginModal(false)
-        }, []
-    )
+
 
     return (
         <>
@@ -689,22 +577,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                     </div>
                 }
             </InfiniteScroll>
-            <ModalReausable
-                marginTop={0}
-                title='' isOpen={isOpenLoginModal}
-                closeModal={closeModalHandler}
-            >
-                <LoginAndRegistrationForm
-                    open='modal'
-                    type={typeLogin}
-                    person='user'
-                    handleChangeTypeOrPerson={(type, person) => {
-                        if (person === 'business') return
-                        setTypeLogin(type)
-                    }}
-                    closeModal={closeModalHandler}
-                />
-            </ModalReausable>
+
 
 
 
