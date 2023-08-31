@@ -28,14 +28,14 @@ const User_Popover = () => {
         },
         {
             name: 'Registrati',
-            description: 'registrati per poter usufruire di tutti i servizi',
+            description: 'registra il tuo account',
             href: '/user/login?type=registration&person=user',
         },
-        {
-            name: 'Sei un brand?',
-            //description: 'accedi o registra gratis il tuo account',
-            href: '/user/login?type=login&person=business',
-        },
+        // {
+        //     name: 'Sei un brand?',
+        //     //description: 'accedi o registra gratis il tuo account',
+        //     href: '/user/login?type=login&person=business',
+        // },
     ]
 
     const actionsLogged = [
