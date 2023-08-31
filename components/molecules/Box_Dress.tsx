@@ -200,6 +200,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 scr={product?.shopInfo?.profilePhoto}
                                 primaryText={product?.shopInfo?.name?.visualized}
                                 secondaryText={'@' + product?.shopInfo?.name?.unique}
+                                maxWidth={'105px'}
                             />
                         </Box>
                     </Link>}
@@ -342,7 +343,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                     </Box >
                     <Box
                         display={doubleGridDevice ? 'grid' : 'flex'}
-                        mt={doubleGridDevice ? -1 : 2}
+                        mt={doubleGridDevice ? 0 : 2}
                         justifyContent={doubleGridDevice ? '' : 'space-between'}
                         ml={doubleGridDevice ? '1px' : 3}
                         mr={doubleGridDevice ? 1 : 3}

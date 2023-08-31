@@ -111,7 +111,7 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                                     scr={cart.shopInfo?.profilePhoto}
                                                                     primaryText={cart.shopInfo?.name?.visualized}
                                                                     secondaryText={'@' + cart.shopInfo?.name?.unique}
-                                                                    maxWidth={true}
+                                                                    maxWidth={'110px'}
                                                                 />
 
                                                                 <Box

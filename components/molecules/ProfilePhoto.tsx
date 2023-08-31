@@ -7,7 +7,7 @@ type Props = {
     scr: string | null | undefined,
     primaryText: string | null | undefined,
     secondaryText: string | null | undefined
-    maxWidth?: boolean,
+    maxWidth?: string | undefined,
     doubleGridDevice?: boolean
 }
 
@@ -35,7 +35,7 @@ const ProfilePhoto = (props: Props,) => {
                     fontWeight={'black'}
                     fontSize={[props.doubleGridDevice ? '13px' : '19px', '18px']}
                     lineHeight={[props.doubleGridDevice ? '12px' : '16px', '19px']}
-                    maxW={props.maxWidth && isSmallView ? '110px' : ''}
+                    maxW={props.maxWidth && isSmallView ? props.maxWidth : ''}
                     isTruncated
                     color={'primaryBlack.text'}
                 >
@@ -45,7 +45,7 @@ const ProfilePhoto = (props: Props,) => {
                     fontWeight={'normal'}
                     mt={'-1px'}
                     fontSize={[props.doubleGridDevice ? '10px' : '14px', '14px']}
-                    maxW={props.maxWidth && isSmallView ? '110px' : ''}
+                    maxW={props.maxWidth && isSmallView ? props.maxWidth : ''}
                     color={'#909090'}
                     isTruncated
                 >
