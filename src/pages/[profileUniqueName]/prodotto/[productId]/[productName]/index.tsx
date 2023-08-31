@@ -699,6 +699,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                         mt={2}
                                         justifyContent={'space-between'}
                                     >
+
                                         <Link
                                             prefetch={false}
                                             href={product?.shopInfo?.name?.unique ? `/@${product.shopInfo.name.unique}` : ''}>
@@ -707,12 +708,15 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                                 scr={product.shopInfo?.profilePhoto}
                                                 primaryText={product.shopInfo?.name?.visualized}
                                                 secondaryText={'@' + product.shopInfo?.name?.unique}
+                                                maxWidth={isSmallView ? '160px' : undefined}
                                             />
                                         </Link>
+
                                         <ShopComponent />
                                     </Box>
                                     <Divider
-                                        py={2}
+                                        pt={1}
+                                        pb={2}
                                     />
                                 </Box>
                             }
