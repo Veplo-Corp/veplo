@@ -112,6 +112,7 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                                     primaryText={cart.shopInfo?.name?.visualized}
                                                                     secondaryText={'@' + cart.shopInfo?.name?.unique}
                                                                     maxWidth={'110px'}
+                                                                    popover={true}
                                                                 />
 
                                                                 <Box
