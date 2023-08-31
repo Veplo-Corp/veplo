@@ -93,7 +93,7 @@ const index = () => {
                 },
                 street: shop?.address.city + ', ' + shop?.address.street
             }
-            console.log(element);
+
 
             addShopFavouriteToLocalStorage(element)
             dispatch(

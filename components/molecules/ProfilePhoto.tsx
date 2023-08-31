@@ -37,6 +37,7 @@ const ProfilePhoto = (props: Props,) => {
                     lineHeight={[props.doubleGridDevice ? '12px' : '18px', '19px']}
                     maxW={props.maxWidth && isSmallView ? '110px' : ''}
                     isTruncated
+                    color={'primaryBlack.text'}
                 >
                     {props.primaryText}
                 </Text>
