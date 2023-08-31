@@ -8,7 +8,8 @@ type Props = {
     primaryText: string | null | undefined,
     secondaryText: string | null | undefined
     maxWidth?: string | undefined,
-    doubleGridDevice?: boolean
+    doubleGridDevice?: boolean,
+    popover?: boolean
 }
 
 const ProfilePhoto = (props: Props,) => {
@@ -23,8 +24,8 @@ const ProfilePhoto = (props: Props,) => {
                 name={props.imgName ? props.imgName : 'Immagine non trovata'}
                 src={props.scr ? imageKitUrl(props.scr, 100, 100) : ''}
                 bg='white'
-                height={[props.doubleGridDevice ? '40px' : props.maxWidth && isSmallView ? '45px' : '60px', '60px', '60px', '60px']}
-                width={[props.doubleGridDevice ? '40px' : props.maxWidth && isSmallView ? '45px' : '60px', '60px', '60px', '60px']}
+                height={[props.doubleGridDevice ? '40px' : props.popover ? '50px' : '60px', '60px', '60px', '60px']}
+                width={[props.doubleGridDevice ? '40px' : props.popover ? '50px' : '60px', '60px', '60px', '60px']}
                 borderWidth={'1px'}
                 borderColor={'#F3F3F3'}
             />
@@ -33,8 +34,8 @@ const ProfilePhoto = (props: Props,) => {
             >
                 <Text
                     fontWeight={'black'}
-                    fontSize={[props.doubleGridDevice ? '13px' : '19px', '18px']}
-                    lineHeight={[props.doubleGridDevice ? '12px' : '16px', '19px']}
+                    fontSize={[props.doubleGridDevice ? '13px' : isSmallView && props.popover ? '15px' : '19px', '18px']}
+                    lineHeight={[props.doubleGridDevice ? '12px' : isSmallView && props.popover ? '15px' : '16px', '19px']}
                     maxW={props.maxWidth && isSmallView ? props.maxWidth : ''}
                     isTruncated
                     color={'primaryBlack.text'}
@@ -44,7 +45,7 @@ const ProfilePhoto = (props: Props,) => {
                 <Text
                     fontWeight={'normal'}
                     mt={'-1px'}
-                    fontSize={[props.doubleGridDevice ? '10px' : '14px', '14px']}
+                    fontSize={[props.doubleGridDevice ? '10px' : isSmallView && props.popover ? '12px' : '14px', '14px']}
                     maxW={props.maxWidth && isSmallView ? props.maxWidth : ''}
                     color={'#909090'}
                     isTruncated
