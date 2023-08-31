@@ -419,178 +419,264 @@ const index = () => {
 
     return (
         <>
-            {cart ? (
-                <>
-                    <NoIndexSeo title='Veplo'></NoIndexSeo>
-                    {isSmallView && <Box
-                        position="fixed"
-                        bottom="0"
-                        left="0"
-                        right="0"
-                        zIndex={1}
-                    >
-                        <Box
-                            bg={'#FFFFFF'}
-                            width={'full'}
-                            height={'fit-content'}
-                            paddingX={3}
-                            paddingY={3}
+            <Box
+                className='min-h-[100vh]'
+            >
+                {cart ? (
+                    <>
+                        <NoIndexSeo title='Veplo'></NoIndexSeo>
+                        {isSmallView && <Box
+                            position="fixed"
+                            bottom="0"
+                            left="0"
+                            right="0"
+                            zIndex={1}
                         >
-                            <Button
-                                position={'sticky'}
-                                onClick={checkoutUrl}
-                                type={'button'}
-                                borderRadius={'10px'}
-                                fontWeight={'black'}
-                                paddingInline={16}
-                                width={'full'}
-                                height={'60px'}
-                                variant={'primary'}
-                                _disabled={{
-                                    bg: '#FF5A78'
-                                }}
-                                _hover={{
-                                    color: 'primary.text'
-                                }}
-                                fontSize={'xl'}
-                                isDisabled={isDisabled}
-                                style={{
-                                    boxShadow: '0px 0px 20px rgba(255, 90, 120, 0.25)',
-                                }}
-                            >
-                                {!isDisabled ?
-                                    `Procedi ${(typeof cart?.shopInfo?.minimumAmountForFreeShipping !== 'number' || typeof cart.total !== 'number' || cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) ?
-                                        formatNumberWithTwoDecimalsInString(cart?.total ? cart?.total + 499 : null) :
-                                        formatNumberWithTwoDecimalsInString(cart.total)
-                                    }€` :
-                                    <Spinner
-                                        thickness='4px'
-                                        speed='0.65s'
-                                        emptyColor='primary.bg'
-                                        color='white'
-                                        size='lg'
-                                    />
-                                }
-
-                            </Button>
-                        </Box>
-
-                    </Box>}
-                    <Desktop_Layout>
-
-                        <div className='w-full m-auto lg:w-10/12 xl:w-8/12 mt-2'>
                             <Box
-                                width={'fit-content'}
+                                bg={'#FFFFFF'}
+                                width={'full'}
+                                height={'fit-content'}
+                                paddingX={3}
+                                paddingY={3}
                             >
-                                <Link
-                                    href={`/@${cart?.shopInfo?.name?.unique}`}
+                                <Button
+                                    position={'sticky'}
+                                    onClick={checkoutUrl}
+                                    type={'button'}
+                                    borderRadius={'10px'}
+                                    fontWeight={'black'}
+                                    paddingInline={16}
+                                    width={'full'}
+                                    height={'60px'}
+                                    variant={'primary'}
+                                    _disabled={{
+                                        bg: '#FF5A78'
+                                    }}
+                                    _hover={{
+                                        color: 'primary.text'
+                                    }}
+                                    fontSize={'xl'}
+                                    isDisabled={isDisabled}
+                                    style={{
+                                        boxShadow: '0px 0px 20px rgba(255, 90, 120, 0.25)',
+                                    }}
                                 >
-                                    <ProfilePhoto
-                                        imgName={cart?.shopInfo?.name?.visualized}
-                                        scr={cart?.shopInfo?.profilePhoto}
-                                        primaryText={cart?.shopInfo?.name?.visualized}
-                                        secondaryText={'@' + cart?.shopInfo?.name?.unique}
-                                    />
-                                </Link>
+                                    {!isDisabled ?
+                                        `Procedi ${(typeof cart?.shopInfo?.minimumAmountForFreeShipping !== 'number' || typeof cart.total !== 'number' || cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) ?
+                                            formatNumberWithTwoDecimalsInString(cart?.total ? cart?.total + 499 : null) :
+                                            formatNumberWithTwoDecimalsInString(cart.total)
+                                        }€` :
+                                        <Spinner
+                                            thickness='4px'
+                                            speed='0.65s'
+                                            emptyColor='primary.bg'
+                                            color='white'
+                                            size='lg'
+                                        />
+                                    }
+
+                                </Button>
                             </Box>
 
-                            <Box
-                                className='md:flex'
-                                width={'full'}
-                                mx={'auto'}
-                                mt={3}
-                            >
+                        </Box>}
+                        <Desktop_Layout>
+
+                            <div className='w-full m-auto lg:w-10/12 xl:w-8/12 mt-2'>
                                 <Box
-                                    className='w-full lg:w-7/12 mr-5'
+                                    width={'fit-content'}
                                 >
-                                    <Box
-                                        borderWidth={1}
-                                        borderColor={'#F3F3F3'}
-                                        padding={5}
-                                        borderRadius={'15px'}
+                                    <Link
+                                        href={`/@${cart?.shopInfo?.name?.unique}`}
                                     >
-                                        <VStack
-                                            gap={5}
-                                        >
-                                            {cart?.productVariations?.map(variation => {
-                                                if (!variation) {
-                                                    return (
-                                                        <></>
-                                                    )
-                                                }
-                                                return (
-                                                    <div
-                                                        key={variation?.id && variation?.size ? variation?.id + variation?.size : Math.random()}
-                                                        className='w-full'
-                                                    >
-                                                        <CheckoutProduct
-                                                            shopUniqueName={cart?.shopInfo?.name?.unique ? cart?.shopInfo?.name?.unique : ''}
-                                                            variation={variation}
-                                                            toProduct={() => pushToProduct(variation)}
-                                                            deleteVariation={() => {
-                                                                if (!variation) return
-                                                                setIsOpenDeleteVariation(variation)
-                                                            }}
-                                                            editVariation={(variation: CartProductVariation, quantity: number) => handleEditVariation(variation, quantity)}
-                                                        />
-                                                    </div>
-                                                )
-                                            })}
-
-                                        </VStack>
-                                    </Box>
-                                    <Box
-                                        mt={5}
-                                        borderWidth={1}
-                                        borderColor={'#F3F3F3'}
-                                        paddingX={[3, 5]}
-                                        paddingY={[5, 6]}
-                                        borderRadius={'15px'}
-                                        textAlign={'center'}
-                                        className='mb-5 lg:mb-0'
-                                    >
-                                        <Text
-                                            fontSize={'20px'}
-                                            color={'secondaryBlack.text'}
-                                            fontWeight={'extrabold'}
-                                        >
-                                            Consegna prevista
-                                        </Text>
-                                        <Text
-                                            fontSize={'15px'}
-                                            color={'#909090'}
-                                            fontWeight={'medium'}
-                                        >
-                                            {findShippingDate()}
-                                        </Text>
-                                    </Box>
-
+                                        <ProfilePhoto
+                                            imgName={cart?.shopInfo?.name?.visualized}
+                                            scr={cart?.shopInfo?.profilePhoto}
+                                            primaryText={cart?.shopInfo?.name?.visualized}
+                                            secondaryText={'@' + cart?.shopInfo?.name?.unique}
+                                        />
+                                    </Link>
                                 </Box>
+
                                 <Box
-                                    className='w-full lg:w-5/12'
+                                    className='md:flex'
+                                    width={'full'}
+                                    mx={'auto'}
+                                    mt={3}
                                 >
                                     <Box
-
-                                        borderWidth={1}
-                                        borderColor={'#F3F3F3'}
-                                        padding={5}
-                                        borderRadius={'15px'}
+                                        className='w-full lg:w-7/12 mr-5'
                                     >
-                                        <VStack
-                                            gap={6}
-                                            width={'full'}
+                                        <Box
+                                            borderWidth={1}
+                                            borderColor={'#F3F3F3'}
+                                            padding={5}
+                                            borderRadius={'15px'}
                                         >
+                                            <VStack
+                                                gap={5}
+                                            >
+                                                {cart?.productVariations?.map(variation => {
+                                                    if (!variation) {
+                                                        return (
+                                                            <></>
+                                                        )
+                                                    }
+                                                    return (
+                                                        <div
+                                                            key={variation?.id && variation?.size ? variation?.id + variation?.size : Math.random()}
+                                                            className='w-full'
+                                                        >
+                                                            <CheckoutProduct
+                                                                shopUniqueName={cart?.shopInfo?.name?.unique ? cart?.shopInfo?.name?.unique : ''}
+                                                                variation={variation}
+                                                                toProduct={() => pushToProduct(variation)}
+                                                                deleteVariation={() => {
+                                                                    if (!variation) return
+                                                                    setIsOpenDeleteVariation(variation)
+                                                                }}
+                                                                editVariation={(variation: CartProductVariation, quantity: number) => handleEditVariation(variation, quantity)}
+                                                            />
+                                                        </div>
+                                                    )
+                                                })}
+
+                                            </VStack>
+                                        </Box>
+                                        <Box
+                                            mt={5}
+                                            borderWidth={1}
+                                            borderColor={'#F3F3F3'}
+                                            paddingX={[3, 5]}
+                                            paddingY={[5, 6]}
+                                            borderRadius={'15px'}
+                                            textAlign={'center'}
+                                            className='mb-5 lg:mb-0'
+                                        >
+                                            <Text
+                                                fontSize={'20px'}
+                                                color={'secondaryBlack.text'}
+                                                fontWeight={'extrabold'}
+                                            >
+                                                Consegna prevista
+                                            </Text>
+                                            <Text
+                                                fontSize={'15px'}
+                                                color={'#909090'}
+                                                fontWeight={'medium'}
+                                            >
+                                                {findShippingDate()}
+                                            </Text>
+                                        </Box>
+
+                                    </Box>
+                                    <Box
+                                        className='w-full lg:w-5/12'
+                                    >
+                                        <Box
+
+                                            borderWidth={1}
+                                            borderColor={'#F3F3F3'}
+                                            padding={5}
+                                            borderRadius={'15px'}
+                                        >
+                                            <VStack
+                                                gap={6}
+                                                width={'full'}
+                                            >
+                                                <Box
+                                                    display={'flex'}
+                                                    width={'full'}
+                                                    justifyContent={'space-between'}
+                                                >
+                                                    <Text
+                                                        fontSize={'18px'}
+                                                        fontWeight={'medium'}
+                                                        color={'#909090'}
+                                                    >
+                                                        Subtotale
+                                                    </Text>
+                                                    {!isLoading ? (
+                                                        <Text
+                                                            fontSize={'18px'}
+                                                            fontWeight={'semibold'}
+                                                            color={'secondaryBlack.text'}
+                                                        >
+                                                            {formatNumberWithTwoDecimalsInString(cart.total)}€
+                                                        </Text>
+                                                    ) : (
+                                                        <Stack
+                                                            marginY={'auto'}
+                                                        >
+                                                            <Skeleton
+
+                                                                height='20px' width={'60px'} />
+                                                        </Stack>
+                                                    )
+                                                    }
+
+                                                </Box>
+                                                <Box
+                                                    display={'flex'}
+                                                    width={'full'}
+                                                    justifyContent={'space-between'}
+                                                >
+                                                    <Box>
+                                                        <Text
+                                                            fontSize={'18px'}
+                                                            fontWeight={'medium'}
+                                                            color={'#909090'}
+                                                            lineHeight={'18px'}
+                                                        >
+                                                            Spedizione
+                                                        </Text>
+
+                                                        {(typeof cart?.shopInfo?.minimumAmountForFreeShipping !== 'number' || typeof cart.total !== 'number' || cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) && <Text
+                                                            fontSize={'12px'}
+                                                            fontWeight={'medium'}
+                                                            color={'primary.bg'}
+                                                        >
+                                                            * gratis dai {cart?.shopInfo?.minimumAmountForFreeShipping && cart?.shopInfo?.minimumAmountForFreeShipping / 100} euro di carrello
+                                                        </Text>}
+                                                    </Box>
+
+
+                                                    {!isLoading ? (
+                                                        <Text
+                                                            fontSize={'18px'}
+                                                            fontWeight={'semibold'}
+                                                            color={'secondaryBlack.text'}
+                                                        >
+                                                            {(typeof cart?.shopInfo?.minimumAmountForFreeShipping !== 'number' || typeof cart.total !== 'number' || cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) ? '4,99€' : 'gratis'}
+                                                        </Text>
+                                                    ) : (
+                                                        <Stack
+                                                            marginY={'auto'}
+                                                        >
+                                                            <Skeleton
+
+                                                                height='20px' width={'55px'} />
+                                                        </Stack>
+                                                    )
+                                                    }
+                                                </Box>
+                                            </VStack>
+                                            <Divider
+                                                mt={4}
+                                                mb={5}
+                                                bg={'#F3F3F3'}
+                                            />
                                             <Box
                                                 display={'flex'}
                                                 width={'full'}
                                                 justifyContent={'space-between'}
+                                                className='md:mb-5'
                                             >
                                                 <Text
                                                     fontSize={'18px'}
                                                     fontWeight={'medium'}
                                                     color={'#909090'}
                                                 >
-                                                    Subtotale
+                                                    Totale
                                                 </Text>
                                                 {!isLoading ? (
                                                     <Text
@@ -598,7 +684,11 @@ const index = () => {
                                                         fontWeight={'semibold'}
                                                         color={'secondaryBlack.text'}
                                                     >
-                                                        {formatNumberWithTwoDecimalsInString(cart.total)}€
+                                                        {
+                                                            (typeof cart?.shopInfo?.minimumAmountForFreeShipping !== 'number' || typeof cart.total !== 'number' || cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) ?
+                                                                formatNumberWithTwoDecimalsInString(cart.total ? cart.total + 499 : null) :
+                                                                formatNumberWithTwoDecimalsInString(cart.total)
+                                                        }€
                                                     </Text>
                                                 ) : (
                                                     <Stack
@@ -606,226 +696,140 @@ const index = () => {
                                                     >
                                                         <Skeleton
 
-                                                            height='20px' width={'60px'} />
+                                                            height='20px' width={'70px'} />
                                                     </Stack>
                                                 )
                                                 }
 
                                             </Box>
-                                            <Box
-                                                display={'flex'}
+                                            {!isSmallView && <Button
+                                                onClick={checkoutUrl}
+                                                type={'button'}
+                                                borderRadius={'10px'}
+                                                size={'20px'}
+                                                fontWeight={'black'}
+
+                                                paddingInline={16}
                                                 width={'full'}
-                                                justifyContent={'space-between'}
-                                            >
-                                                <Box>
-                                                    <Text
-                                                        fontSize={'18px'}
-                                                        fontWeight={'medium'}
-                                                        color={'#909090'}
-                                                        lineHeight={'18px'}
-                                                    >
-                                                        Spedizione
-                                                    </Text>
+                                                height={'55px'}
+                                                variant={'primary'}
+                                                _disabled={{
+                                                    bg: '#FF5A78'
+                                                }}
+                                                _hover={{
+                                                    color: 'primary.text'
+                                                }}
+                                                isDisabled={isDisabled}
+                                                style={{
+                                                    boxShadow: '0px 0px 20px rgba(255, 90, 120, 0.25)',
+                                                }}
+                                            > {!isDisabled ?
 
-                                                    {(typeof cart?.shopInfo?.minimumAmountForFreeShipping !== 'number' || typeof cart.total !== 'number' || cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) && <Text
-                                                        fontSize={'12px'}
-                                                        fontWeight={'medium'}
-                                                        color={'primary.bg'}
-                                                    >
-                                                        * gratis dai {cart?.shopInfo?.minimumAmountForFreeShipping && cart?.shopInfo?.minimumAmountForFreeShipping / 100} euro di carrello
-                                                    </Text>}
-                                                </Box>
-
-
-                                                {!isLoading ? (
-                                                    <Text
-                                                        fontSize={'18px'}
-                                                        fontWeight={'semibold'}
-                                                        color={'secondaryBlack.text'}
-                                                    >
-                                                        {(typeof cart?.shopInfo?.minimumAmountForFreeShipping !== 'number' || typeof cart.total !== 'number' || cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) ? '4,99€' : 'gratis'}
-                                                    </Text>
-                                                ) : (
-                                                    <Stack
-                                                        marginY={'auto'}
-                                                    >
-                                                        <Skeleton
-
-                                                            height='20px' width={'55px'} />
-                                                    </Stack>
-                                                )
+                                                `Procedi` :
+                                                <Spinner
+                                                    thickness='4px'
+                                                    speed='0.65s'
+                                                    emptyColor='primary.bg'
+                                                    color='white'
+                                                    size='lg'
+                                                />
                                                 }
-                                            </Box>
-                                        </VStack>
-                                        <Divider
-                                            mt={4}
-                                            mb={5}
-                                            bg={'#F3F3F3'}
-                                        />
-                                        <Box
-                                            display={'flex'}
-                                            width={'full'}
-                                            justifyContent={'space-between'}
-                                            className='md:mb-5'
-                                        >
-                                            <Text
-                                                fontSize={'18px'}
-                                                fontWeight={'medium'}
-                                                color={'#909090'}
-                                            >
-                                                Totale
-                                            </Text>
-                                            {!isLoading ? (
-                                                <Text
-                                                    fontSize={'18px'}
-                                                    fontWeight={'semibold'}
-                                                    color={'secondaryBlack.text'}
-                                                >
-                                                    {
-                                                        (typeof cart?.shopInfo?.minimumAmountForFreeShipping !== 'number' || typeof cart.total !== 'number' || cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) ?
-                                                            formatNumberWithTwoDecimalsInString(cart.total ? cart.total + 499 : null) :
-                                                            formatNumberWithTwoDecimalsInString(cart.total)
-                                                    }€
-                                                </Text>
-                                            ) : (
-                                                <Stack
-                                                    marginY={'auto'}
-                                                >
-                                                    <Skeleton
 
-                                                        height='20px' width={'70px'} />
-                                                </Stack>
-                                            )
-                                            }
-
+                                            </Button>}
                                         </Box>
-                                        {!isSmallView && <Button
-                                            onClick={checkoutUrl}
-                                            type={'button'}
-                                            borderRadius={'10px'}
-                                            size={'20px'}
-                                            fontWeight={'black'}
+                                        <Box
+                                            mt={5}
+                                            borderWidth={1}
+                                            borderColor={'#F3F3F3'}
+                                            paddingX={5}
+                                            paddingY={8}
 
-                                            paddingInline={16}
-                                            width={'full'}
-                                            height={'55px'}
-                                            variant={'primary'}
-                                            _disabled={{
-                                                bg: '#FF5A78'
-                                            }}
-                                            _hover={{
-                                                color: 'primary.text'
-                                            }}
-                                            isDisabled={isDisabled}
-                                            style={{
-                                                boxShadow: '0px 0px 20px rgba(255, 90, 120, 0.25)',
-                                            }}
-                                        > {!isDisabled ?
-
-                                            `Procedi` :
-                                            <Spinner
-                                                thickness='4px'
-                                                speed='0.65s'
-                                                emptyColor='primary.bg'
-                                                color='white'
-                                                size='lg'
-                                            />
-                                            }
-
-                                        </Button>}
-                                    </Box>
-                                    <Box
-                                        mt={5}
-                                        borderWidth={1}
-                                        borderColor={'#F3F3F3'}
-                                        paddingX={5}
-                                        paddingY={8}
-
-                                        borderRadius={'15px'}
-                                        textAlign={'center'}
-                                    >
-
-                                        <Text
-                                            fontSize={'12px'}
-                                            color={'#909090'}
-                                            fontWeight={'normal'}
+                                            borderRadius={'15px'}
+                                            textAlign={'center'}
                                         >
-                                            Se hai un coupon inseriscilo nel passaggio successivo
-                                        </Text>
+
+                                            <Text
+                                                fontSize={'12px'}
+                                                color={'#909090'}
+                                                fontWeight={'normal'}
+                                            >
+                                                Se hai un coupon inseriscilo nel passaggio successivo
+                                            </Text>
+                                        </Box>
                                     </Box>
+
+
                                 </Box>
 
-
-                            </Box>
-
-                        </div>
-                        <ModalReausable title='Carrello ingombrante' isOpen={isErrorModalOpen} closeModal={() => setIsErrorModalOpen(false)} >
-                            <Text mt={2}
-                                mb={3}
-                                fontSize={'md'}
-                                fontWeight={'medium'}
-                            >
-                                Dobbiamo eliminare dal carrello questi prodotti perchè non sono più disponibili o la quantità selezionata è terminata:
-                            </Text>
-                            <UnorderedList
-                                fontSize={'md'}
-                                fontWeight={'bold'}
-                            >
-                                {error?.graphQLErrors.map((error, index) => {
-                                    if (typeof error.path !== 'string') return (<></>)
-                                    let id: string = error.path
-                                    id = id.trim()
-                                    const variations = cart?.productVariations?.filter(element => element?.id === id)
-                                    if (!variations) return (<></>)
-                                    return (
-                                        <div key={index}>
-                                            {
-                                                variations.map((variation, index) => {
-                                                    return (
-                                                        <ListItem
-                                                            key={index}
-                                                        >
-                                                            {variation?.name}
-                                                        </ListItem>)
-                                                })
-                                            }
-                                        </div>
-                                    )
+                            </div>
+                            <ModalReausable title='Carrello ingombrante' isOpen={isErrorModalOpen} closeModal={() => setIsErrorModalOpen(false)} >
+                                <Text mt={2}
+                                    mb={3}
+                                    fontSize={'md'}
+                                    fontWeight={'medium'}
+                                >
+                                    Dobbiamo eliminare dal carrello questi prodotti perchè non sono più disponibili o la quantità selezionata è terminata:
+                                </Text>
+                                <UnorderedList
+                                    fontSize={'md'}
+                                    fontWeight={'bold'}
+                                >
+                                    {error?.graphQLErrors.map((error, index) => {
+                                        if (typeof error.path !== 'string') return (<></>)
+                                        let id: string = error.path
+                                        id = id.trim()
+                                        const variations = cart?.productVariations?.filter(element => element?.id === id)
+                                        if (!variations) return (<></>)
+                                        return (
+                                            <div key={index}>
+                                                {
+                                                    variations.map((variation, index) => {
+                                                        return (
+                                                            <ListItem
+                                                                key={index}
+                                                            >
+                                                                {variation?.name}
+                                                            </ListItem>)
+                                                    })
+                                                }
+                                            </div>
+                                        )
 
 
-                                })}
-                            </UnorderedList>
-                            <ButtonGroup gap='2'
-                                display={'flex'}
-                                justifyContent={'right'}
-                                mt={5}
-                            >
+                                    })}
+                                </UnorderedList>
+                                <ButtonGroup gap='2'
+                                    display={'flex'}
+                                    justifyContent={'right'}
+                                    mt={5}
+                                >
 
-                                <Button colorScheme='orange'
-                                    borderRadius={'full'}
-                                    paddingX={6}
-                                    paddingY={5}
-                                    size={'sm'}
-                                    isDisabled={false}
-                                    //disabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
-                                    onClick={handleDeleteVariations}
-                                >Conferma
-                                </Button>
-                            </ButtonGroup>
+                                    <Button colorScheme='orange'
+                                        borderRadius={'full'}
+                                        paddingX={6}
+                                        paddingY={5}
+                                        size={'sm'}
+                                        isDisabled={false}
+                                        //disabled={images.length < 2 || color === '' || productSizeSelected[0]?.quantity === undefined || productSizeSelected[0]?.quantity < 1 || productSizeSelected[0]?.size === undefined || productSizeSelected[0]?.size === ''}
+                                        onClick={handleDeleteVariations}
+                                    >Conferma
+                                    </Button>
+                                </ButtonGroup>
 
-                        </ModalReausable>
-                    </Desktop_Layout>
-                </>
-            ) :
-                (
-                    <Box
-                        mt={'30vh'}
-                        className='min-h-screen'
-                    >
-                        <Loading />
-                    </Box>
-                )
-            }
+                            </ModalReausable>
+                        </Desktop_Layout>
+                    </>
+                ) :
+                    (
+                        <Box
+                            mt={48}
+                        >
+                            <Loading />
+                        </Box>
+                    )
+                }
+            </Box>
+
             <ModalReausable
                 marginTop={0}
                 title='' isOpen={isOpenLoginModal}

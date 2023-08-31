@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../components/atoms/Desktop_Layout';
 import { Box } from '@chakra-ui/react';
 import { useLazyQuery } from '@apollo/client';
-import GET_USER from '../../../lib/apollo/queries/getUser';
+import GET_USER_FOLLOWINGS from '../../../lib/apollo/queries/getUserFollowings';
 import Loading from '../../../../components/molecules/Loading';
 import PostMeta from '../../../../components/organisms/PostMeta';
 import NoIndexSeo from '../../../../components/organisms/NoIndexSeo';
@@ -17,7 +17,7 @@ import PageNotFound from '../../../../components/molecules/PageNotFound';
 
 const index = () => {
     const user: Firebase_User = useSelector((state: any) => state.user.user);
-    const [getUser, { data, loading, error }] = useLazyQuery(GET_USER);
+    const [getUser, { data, loading, error }] = useLazyQuery(GET_USER_FOLLOWINGS);
     useEffect(() => {
         if (user.statusAuthentication === 'logged_in') {
             getUser({

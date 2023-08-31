@@ -32,7 +32,7 @@ import ModalReausable from './ModalReausable';
 import LoginAndRegistrationForm from './LoginAndRegistrationForm';
 import { ToastOpen } from '../utils/Toast';
 import expirationTimeTokenControll from '../utils/expirationTimeTokenControll';
-import GET_USER from '../../src/lib/apollo/queries/getUser';
+import GET_USER_FOLLOWINGS from '../../src/lib/apollo/queries/getUserFollowings';
 
 const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) : 12
 
@@ -66,8 +66,30 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
     const descriptionRefText = useRef<any>(null);
     const [genderSelected, setGenderSelected] = useState<'f' | 'm'>()
     const user: Firebase_User = useSelector((state: any) => state.user.user);
-    const [followShop] = useMutation(FOLLOW);
-    const [unfollowShop] = useMutation(UNFOLLOW);
+    const [followShop] = useMutation(FOLLOW, {
+        awaitRefetchQueries: true,
+        refetchQueries: [{
+            query: GET_USER_FOLLOWINGS,
+            variables: {
+                limit: 10,
+                offset: 0,
+                onlyIds: false
+            }
+        }],
+
+    });
+    const [unfollowShop] = useMutation(UNFOLLOW, {
+        awaitRefetchQueries: true,
+        refetchQueries: [{
+            query: GET_USER_FOLLOWINGS,
+            variables: {
+                limit: 10,
+                offset: 0,
+                onlyIds: false
+            }
+        }],
+
+    });
     const dispatch = useDispatch();
     const [onFollowLoading, setOnFollowLoading] = useState(false)
     const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('login')
@@ -389,7 +411,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                 description={`${shop.name?.visualized} è su Veplo | Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
             />
             <Box
-                className='lg:mx-6 xl:w-10/12 2xl:w-9/12 xl:mx-auto lg:mb-9'
+                className='lg:mx-6 xl:w-10/12 2xl:w-9/12 xl:mx-auto mb-6 lg:mb-9'
             >
                 <motion.div
                     key={shop.id}
