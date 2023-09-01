@@ -555,7 +555,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
             ) : (
               <main className={`${sans.variable} font-sans`}>
                 <Component {...pageProps} />
-                {router.pathname !== '/' && !router.pathname.includes("/login") && !router.pathname.includes("/user/settings/email-actions") && !router.query?.fbclid && <Footer />}
+                {/* router.pathname !== '/' &&  */!router.pathname.includes("/login") && !router.pathname.includes("/user/settings/email-actions") && !router.query?.fbclid && <Footer />}
               </main>
             )}
             <ModalWrapper />

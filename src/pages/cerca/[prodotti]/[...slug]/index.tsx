@@ -1004,7 +1004,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                             </InfiniteScroll >)
                             : (
                                 <div
-                                    className={`grid ${doubleGridDevice ? 'grid-cols-2' : 'grid-cols-1'}  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 gap-y-5 w-full`}
+                                    className={`grid ${doubleGridDevice ? 'grid-cols-2' : 'grid-cols-1'}  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 gap-y-5 w-full mb-10`}
 
                                 >
                                     {[1, 2, 3, 4].map((index) => {
