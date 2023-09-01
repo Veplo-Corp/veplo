@@ -11,16 +11,18 @@ import GET_USER_FOLLOWINGS from '../../src/lib/apollo/queries/getUserFollowings'
 import FOLLOW from '../../src/lib/apollo/mutations/follow';
 import expirationTimeTokenControll from '../utils/expirationTimeTokenControll';
 
-const ButtonFollow: FC<{ shopId: string | undefined | null }> = ({ shopId }) => {
+const ButtonFollow: FC<{ shopId: string | undefined | null; isSmall?: boolean }> = ({ shopId, isSmall }) => {
     if (!shopId) {
         return (<>
         </>)
     }
+
+
     const user: Firebase_User = useSelector((state: any) => state.user.user);
     const [onFollowLoading, setOnFollowLoading] = useState(false)
     const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
     const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('login')
-    const [isShopFollowed, setIsShopFollowed] = useState(false)
+    const [isShopFollowed, setIsShopFollowed] = useState<boolean>()
     const [followShop] = useMutation(FOLLOW, {
         awaitRefetchQueries: true,
         refetchQueries: [{
@@ -123,17 +125,18 @@ const ButtonFollow: FC<{ shopId: string | undefined | null }> = ({ shopId }) => 
     }, [user, shopId])
 
 
+
     return (
         <>
-            <Button
+            {(isShopFollowed === false || isShopFollowed === true) && <Button
                 onClick={addFollow}
                 variant={isShopFollowed ? 'grayPrimary' : 'primary'}
                 borderRadius={'full'}
                 //paddingInline={isShopFollowed ? [6, 6, 7, 7] : [10, 10, 12, 12]}
-                width={[28, 28, 32, 32]}
+                width={isSmall ? [28, 28, 28, 28] : [28, 28, 32, 32]}
                 fontWeight={isShopFollowed ? 'semibold' : 'extrabold'}
-                height={[9, 9, 12, 12]}
-                fontSize={['md', 'md', 'lg', 'lg']}
+                height={isSmall ? [9, 9, 10, 10] : [9, 9, 12, 12]}
+                fontSize={isSmall ? ['md', 'md', '16px', '16px'] : ['md', 'md', 'lg', 'lg']}
                 isDisabled={onFollowLoading}
                 _disabled={{
                 }}
@@ -141,7 +144,7 @@ const ButtonFollow: FC<{ shopId: string | undefined | null }> = ({ shopId }) => 
                 }}
             >
                 {isShopFollowed ? 'segui già' : 'segui'}
-            </Button>
+            </Button>}
             <ModalReausable
                 marginTop={0}
                 title='' isOpen={isOpenLoginModal}

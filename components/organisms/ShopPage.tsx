@@ -353,7 +353,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                             </Box>
                         </Box>
                         {((user.statusAuthentication === 'logged_in' && (user.favouriteShops)) || user.statusAuthentication === 'logged_out') && <Box
-                            className='lg:hidden mt-1 mr-2'
+                            className='lg:hidden mt-2.5 mr-2'
                         >
                             <Box
                                 display={'flex'}

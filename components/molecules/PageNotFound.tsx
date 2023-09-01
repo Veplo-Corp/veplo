@@ -26,7 +26,7 @@ const PageNotFound: FC<{ title: string, description?: string, imageSrc?: string 
 
                     <Button
                         variant={'primary'}
-                        onClick={() => { router.push('/' + '?gatto=berry') }}
+                        onClick={() => { router.push('/') }}
                     >Torna alla Home</Button>
                 </div>
             </div>

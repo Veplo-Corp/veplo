@@ -36,7 +36,7 @@ const ProfilePhoto = (props: Props,) => {
                     fontWeight={'black'}
                     fontSize={[props.doubleGridDevice ? '13px' : isSmallView && props.popover ? '15px' : '19px', props.popover ? '12px' : '18px', '18px']}
                     lineHeight={[props.doubleGridDevice ? '12px' : isSmallView && props.popover ? '15px' : '16px', props.popover ? '12px' : '19px', '19px']}
-                    maxW={props.maxWidth && isSmallView ? props.maxWidth : ''}
+                    maxW={props.maxWidth && (props.doubleGridDevice || props.popover) && isSmallView ? props.maxWidth : ''}
                     isTruncated
                     color={'primaryBlack.text'}
                 >
@@ -46,7 +46,7 @@ const ProfilePhoto = (props: Props,) => {
                     fontWeight={'normal'}
                     mt={'-1px'}
                     fontSize={[props.doubleGridDevice ? '10px' : isSmallView && props.popover ? '12px' : '14px', props.popover ? '10px' : '14px', '14px']}
-                    maxW={props.maxWidth && isSmallView ? props.maxWidth : ''}
+                    maxW={props.maxWidth && (props.doubleGridDevice || props.popover) && isSmallView ? props.maxWidth : ''}
                     color={'#909090'}
                     isTruncated
                 >

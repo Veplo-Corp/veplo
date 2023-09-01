@@ -45,6 +45,7 @@ export const getStaticProps: GetStaticProps<{}> = async () => {
 const index: FC<{ data: ListComponents }> = ({ data }) => {
   const router = useRouter()
   const [canView, setCanView] = useState(false)
+
   useEffect(() => {
     if (!router.isReady) return
     const gender = getGender()
@@ -58,6 +59,7 @@ const index: FC<{ data: ListComponents }> = ({ data }) => {
       return setCanView(true)
     }
   }, [router])
+
   return (
     <Box minH={'120vh'}>
       {canView && <HomePage data={data} />}

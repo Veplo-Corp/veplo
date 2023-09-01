@@ -17,7 +17,6 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { ProductVariation } from '../../src/lib/apollo/generated/graphql'
 const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ variation }) => {
-    console.log('runna');
 
     if (!variation) {
         return (
