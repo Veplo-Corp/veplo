@@ -24,8 +24,8 @@ const index = () => {
 
     const continueUrl =
         process.env.NEXT_PUBLIC_ENVIRONMENT === 'production' ?
-            'https://www.veplo.it?gatto=berry' :
-            'http://localhost:3000?gatto=berry'
+            'https://www.veplo.it' :
+            'http://localhost:3000'
 
 
     const verifyFirebaseCode = async (auth: Auth, oobCode: any) => {
