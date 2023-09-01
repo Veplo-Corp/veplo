@@ -57,7 +57,6 @@ const index: FC<{ data: ListComponents }> = ({ data }) => {
     if (!gender) {
       return setCanView(true)
     }
-
   }, [router])
   return (
     <Box minH={'120vh'}>
