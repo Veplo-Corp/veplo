@@ -21,11 +21,11 @@ const settings = [
     }, */
     {
         name: 'Voglio restituire un ordine',
-        href: '/policies/reso-e-rimborsi',
+        href: '/informative/reso-e-rimborsi',
     },
     {
         name: 'Termini e Condizioni',
-        href: '/policies/termini-e-condizioni',
+        href: '/informative/termini-e-condizioni',
     }
 ]
 

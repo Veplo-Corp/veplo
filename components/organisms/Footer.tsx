@@ -52,18 +52,18 @@ const Footer = () => {
                                 </li>
 
                                 <li >
-                                    <Link href="/policies/termini-e-condizioni" className="hover:underline">Termini &amp; Condizioni</Link>
+                                    <Link href="/informative/termini-e-condizioni" className="hover:underline">Termini &amp; Condizioni</Link>
                                 </li>
 
                                 <li >
-                                    <Link href="/policies/reso-e-rimborsi" className="hover:underline" >Politica di Reso</Link>
+                                    <Link href="/informative/reso-e-rimborsi" className="hover:underline" >Politica di Reso</Link>
                                 </li>
 
                                 <li >
-                                    <Link href="/policies/termini-e-condizioni-vendita" className="hover:underline">Vendere su Veplo</Link>
+                                    <Link href="/informative/termini-e-condizioni-vendita" className="hover:underline">Vendere su Veplo</Link>
                                 </li>
                                 <li >
-                                    <Link href="/policies/termini-e-condizioni-vendita" className="hover:underline">Vendere su Veplo</Link>
+                                    <Link href="/informative/termini-e-condizioni-vendita" className="hover:underline">Vendere su Veplo</Link>
                                 </li>
                                 <li >
                                     <Box cursor={'pointer'} onClick={() => setIsModalHelpOpen(true)} className="hover:underline">Hai bisogno di aiuto?</Box>
