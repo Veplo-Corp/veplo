@@ -12,9 +12,6 @@ import GET_SHOPS from '../../../lib/apollo/queries/getShops'
 import Input_Search_Item from '../../../../components/atoms/Input_Search_Item';
 import PostMeta from '../../../../components/organisms/PostMeta';
 import Link from 'next/link';
-import { removeFromLocalStorage } from '../../../../components/utils/removeFromLocalStorage';
-import NoIndexSeo from '../../../../components/organisms/NoIndexSeo';
-import { getFromLocalStorage } from '../../../../components/utils/getFromLocalStorage';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { LIST_ITEM_VARIANT } from '../../../../components/mook/transition';

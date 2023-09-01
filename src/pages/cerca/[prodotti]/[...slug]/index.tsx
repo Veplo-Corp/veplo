@@ -698,7 +698,6 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
 
     return (
         <>
-            <NoIndexSeo />
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`${typeof filters?.macroCategory === 'string' ? toUpperCaseFirstLetter(filters?.macroCategory) : toUpperCaseFirstLetter(univers)} ${filters?.gender === 'f' ? 'donna' : 'uomo'} | Veplo`}

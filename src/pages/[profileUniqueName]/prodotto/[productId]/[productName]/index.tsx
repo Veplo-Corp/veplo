@@ -658,7 +658,6 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                 <Box
                     className='lg:mx-6 xl:w-10/12 2xl:w-9/12 md:mx-2 xl:mx-auto'
                 >
-                    <NoIndexSeo />
                     <PostMeta
                         canonicalUrl={'https://www.veplo.it' + router.asPath}
                         //riverdere length description 150 to 160

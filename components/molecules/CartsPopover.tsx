@@ -70,7 +70,7 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                             style={{
                                 boxShadow: "0px 0px 20px 0px rgba(144, 144, 144, 0.25)",
                             }}
-                            className="absolute cursor-pointer z-10 w-[340px] sm:w-[500px] md:w-[550px] mt-2 right-[-50px] sm:right-0.5 p-2 sm:p-3 bg-white border border-white rounded-[20px]">
+                            className="absolute cursor-pointer z-10 w-[340px]  sm:w-[550px] md:w-[550px] mt-2 right-[-50px] sm:right-0.5 p-2 sm:p-3 bg-white border border-white rounded-[20px]">
                             {({ close }) => (
                                 <>
                                     {cartsDispatch.length > 0 ?
@@ -94,7 +94,7 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                                 _active={{
                                                                     transform: 'scale(0.99)',
                                                                 }}
-                                                                p={[2, 4]}
+                                                                p={[2, 2, 4]}
                                                                 py={[2, 3]}
                                                                 borderColor={'#F3F3F3'}
                                                                 borderRadius={'15px'}
@@ -122,7 +122,7 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                                     <Text
                                                                         my={'auto'}
                                                                         color={'#909090'}
-                                                                        fontSize={['13px', '14px']}
+                                                                        fontSize={['13px', '10px', '14px']}
                                                                         fontWeight={'medium'}
                                                                     >
                                                                         {isSmallView ? `Q.ta ${totalQuantity}` : `${totalQuantity} Prodott${totalQuantity === 1 ? 'o' : 'i'}`}
@@ -133,7 +133,7 @@ const CartsPopover: FC<{ numberOfProductsInCarts: number }> = ({ numberOfProduct
                                                                     <Text
                                                                         my={'auto'}
                                                                         color={'primaryBlack.text'}
-                                                                        fontSize={['13px', '14px']}
+                                                                        fontSize={['13px', '10px', '14px']}
                                                                         fontWeight={'semibold'}
                                                                     >
                                                                         {formatNumberWithTwoDecimalsInString(cart?.total ? cart?.total : 0)}€
