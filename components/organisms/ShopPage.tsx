@@ -258,9 +258,9 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                     actionsPopover={popoverList()}
                     icon={
                         <MoreHoriz
-                            className='m-auto'
-                            height={'full'}
-                            width={'full'}
+                            className='m-auto h-full w-full'
+                            // height={'full'}
+                            // width={'full'}
                             strokeWidth={2}
                         />
                     }
@@ -301,7 +301,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
             <Box
                 className='lg:mx-6 xl:w-10/12 2xl:w-9/12 xl:mx-auto mb-4 lg:mb-9'
             >
-                <motion.div
+                {shop.profilePhoto && shop.profileCover && <motion.div
                     key={shop.id}
                     variants={LIST_ITEM_VARIANT}
                     initial="hidden"
@@ -311,7 +311,6 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                     <LazyLoadImage
                         src={shop.profileCover ? imageKitUrl(shop.profileCover) : ''}
                         //PlaceholderSrc={PlaceholderImage}
-                        effect='blur'
                         alt={shop.name?.visualized ? shop.name.visualized : ''}
                         className='w-full object-cover aspect-[2.3/1] lg:aspect-[3/1] min-h-[120px] lg:min-h-[300px] lg:rounded-[10px]'
                     />
@@ -347,7 +346,6 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                                         imageKitUrl(shop.profilePhoto) :
                                         ''
                                 }
-                                    effect='blur'
                                     //PlaceholderSrc={PlaceholderImage}
                                     alt={shop.name?.visualized ? shop.name.visualized : 'immagine non trovata'}
                                     className='m-auto h-full w-full p-[4px] lg:p-[5px] rounded-full'
@@ -368,7 +366,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
 
 
                     </Box>
-                </motion.div>
+                </motion.div>}
 
 
 

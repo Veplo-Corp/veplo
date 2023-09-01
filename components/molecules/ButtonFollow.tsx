@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react'
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface';
 import { useDispatch, useSelector } from 'react-redux';
 import ModalReausable from '../organisms/ModalReausable';
@@ -20,6 +20,7 @@ const ButtonFollow: FC<{ shopId: string | undefined | null }> = ({ shopId }) => 
     const [onFollowLoading, setOnFollowLoading] = useState(false)
     const [isOpenLoginModal, setIsOpenLoginModal] = useState(false)
     const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('login')
+    const [isShopFollowed, setIsShopFollowed] = useState(false)
     const [followShop] = useMutation(FOLLOW, {
         awaitRefetchQueries: true,
         refetchQueries: [{
@@ -45,12 +46,7 @@ const ButtonFollow: FC<{ shopId: string | undefined | null }> = ({ shopId }) => 
 
     });
     const dispatch = useDispatch();
-    const isShopFollower = () => {
-        if (!user?.favouriteShops || !shopId) return false
-        const result = user?.favouriteShops?.filter((element: string) => element === shopId)
-        if (!result || result.length <= 0) return false
-        return true
-    }
+
 
     const addFollow = async () => {
         const resolve = await expirationTimeTokenControll(user.expirationTime)
@@ -58,11 +54,10 @@ const ButtonFollow: FC<{ shopId: string | undefined | null }> = ({ shopId }) => 
         if (user.statusAuthentication === 'logged_out') {
             return setIsOpenLoginModal(true)
         }
-        const isFollowed = isShopFollower();
         let favouriteShops = user.favouriteShops ? [...user.favouriteShops] : [];
         setOnFollowLoading(true)
         if (!shopId) return
-        if (!isFollowed) {
+        if (!isShopFollowed) {
             favouriteShops.push(shopId);
             dispatch(changeFavouriteShops({
                 favouriteShops: favouriteShops
@@ -82,9 +77,9 @@ const ButtonFollow: FC<{ shopId: string | undefined | null }> = ({ shopId }) => 
 
             }
         } else {
-
+            const newFavouriteShopsArray = favouriteShops?.filter((id: string) => id !== shopId)
             dispatch(changeFavouriteShops({
-                favouriteShops: favouriteShops?.filter((shopId: string) => shopId !== shopId)
+                favouriteShops: newFavouriteShopsArray
             }))
 
             try {
@@ -110,15 +105,33 @@ const ButtonFollow: FC<{ shopId: string | undefined | null }> = ({ shopId }) => 
         }, []
     )
 
+    useEffect(() => {
+
+        if (!user?.favouriteShops || !shopId) {
+            setIsShopFollowed(false)
+            return
+        }
+
+        const result = user?.favouriteShops?.filter((element: string) => element === shopId)
+
+        if (!result || result.length <= 0) {
+            setIsShopFollowed(false)
+            return
+        }
+        setIsShopFollowed(true)
+        return
+    }, [user, shopId])
+
+
     return (
         <>
             <Button
                 onClick={addFollow}
-                variant={isShopFollower() ? 'grayPrimary' : 'primary'}
+                variant={isShopFollowed ? 'grayPrimary' : 'primary'}
                 borderRadius={'full'}
-                //paddingInline={isShopFollower() ? [6, 6, 7, 7] : [10, 10, 12, 12]}
+                //paddingInline={isShopFollowed ? [6, 6, 7, 7] : [10, 10, 12, 12]}
                 width={[28, 28, 32, 32]}
-                fontWeight={isShopFollower() ? 'semibold' : 'extrabold'}
+                fontWeight={isShopFollowed ? 'semibold' : 'extrabold'}
                 height={[9, 9, 12, 12]}
                 fontSize={['md', 'md', 'lg', 'lg']}
                 isDisabled={onFollowLoading}
@@ -127,7 +140,7 @@ const ButtonFollow: FC<{ shopId: string | undefined | null }> = ({ shopId }) => 
                 _hover={{
                 }}
             >
-                {isShopFollower() ? 'segui già' : 'segui'}
+                {isShopFollowed ? 'segui già' : 'segui'}
             </Button>
             <ModalReausable
                 marginTop={0}
