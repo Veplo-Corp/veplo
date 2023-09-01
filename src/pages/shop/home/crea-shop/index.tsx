@@ -559,12 +559,10 @@ const index = () => {
                     const kb = Math.ceil(((yourBase64String.length * 6) / 8) / 1000); //es. 426 kb
 
                     //set quality based on dimension photo
-                    const quality = kb > 3000 ? 0.3 : 0.8;
+                    const quality = kb > 3000 ? 0.9 : 1;
                     canvas.toBlob(function (blob) {
                         if (!blob) { return }
                         const url = URL.createObjectURL(blob);
-
-
                         const file = new File([blob], "photo1", {
                             type: 'image/jpeg'
                         });
