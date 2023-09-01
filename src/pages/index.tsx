@@ -1,21 +1,10 @@
-import type { GetStaticProps, NextPage } from 'next'
-import { Button, Box, Stack, Text, InputGroup, Input, VStack, Icon, Highlight, Heading, ButtonGroup } from '@chakra-ui/react'
-import BlackButton from '../../components/atoms/BlackButton'
-import { FC, useEffect, useRef, useState } from 'react'
-import Drawer_Address from '../../components/organisms/Drawer_Address'
-import Image from 'next/image'
+import type { GetStaticProps } from 'next'
+import { Button, Box, Stack, Text, Input, VStack, Icon, Highlight, Heading, ButtonGroup } from '@chakra-ui/react'
+import { FC, useState } from 'react'
 import Shop_not_Allowed from '../../components/utils/Shop_not_Allowed'
-import Desktop_Layout from '../../components/atoms/Desktop_Layout'
-import Gradient_Component_home from '../../components/molecules/Gradient_Component_home'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
-import createUrlSchema from '../../components/utils/create_url'
 import PostMeta from '../../components/organisms/PostMeta'
-import Section from '../../components/atoms/Section'
-import { getFromLocalStorage } from '../../components/utils/getFromLocalStorage'
-import { setInLocalStorage } from '../../components/utils/setInLocalStorage'
-import Link from 'next/link'
-import ModalForm from '../../components/organisms/ModalForm'
 import { useForm } from 'react-hook-form'
 import { useMutation } from '@apollo/client'
 import CREATE_FORM_INFO_BUSINESS from '../lib/apollo/mutations/createFormInfoBusiness'
@@ -23,6 +12,8 @@ import { initApollo } from '../lib/apollo'
 import GET_COMPONENTS_HOME_LIST from '../lib/apollo/dato_CMS/queries/getComponentsHomeList'
 import { Instagram, SendMail } from 'iconoir-react'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
+import Link from 'next/link'
+import ModalForm from '../../components/organisms/ModalForm'
 
 type InputForm = {
   email: string,
@@ -212,44 +203,15 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
         image={"android-chrome-512x512.png"}
         description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
       />
-
       <Shop_not_Allowed>
         <Box
           bgColor={'primary.bg'}
-          className='hidden lg:block p-10 pt-0 h-[100vh] lg:h-[98vh] rounded-b-[7vh]'
+          className='hidden lg:flex p-10 py-0 h-[100vh] lg:h-[86vh] rounded-b-[7vh]'
         >
-          <Box
-            height={'12vh'}
-            display={'flex'}
-            justifyContent={'space-between'}
-          >
-            <Box
-              width={'42vh'}
-              my={'auto'}
-            >
-              <ButtonGroupGender />
-            </Box>
-            <Button
-              my={'auto'}
-              width={'30vh'}
-              variant={'whiteButton'}
-              borderWidth={0}
-              fontSize={'xl'}
-              borderRadius={'30px'}
-              padding={6}
-              paddingY={7}
-              style={{
-                boxShadow: '0px 0px 20px 0px rgba(173, 173, 173, 0.25)'
-              }}
-              onClick={() => { setModalForm(true) }}
-            >
-              Sono un Brand
-            </Button>
-          </Box>
           <Box
             bgColor={'primary.text'}
             borderRadius={'30px'}
-            className='hidden lg:grid p-8 h-[82vh] lg:h-[80vh] rounded-b-[7vh]'
+            className='p-8 h-[75vh] w-full my-auto rounded-b-[7vh]'
             style={{
               boxShadow: '0px 4px 20px 20px rgba(255, 255, 255, 0.25)'
             }}
@@ -257,19 +219,13 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
             gap={10}
           >
             <Box
-              className='lg:ml-8 xl:ml-24 mt-10 '
+              className='lg:ml-8 xl:ml-24 mt-10'
             >
-              <Box>
-                <img loading='lazy'
-                  className='lg:w-[95%] h-[20vh]'
-                  src='https://www.datocms-assets.com/102220/1688458870-veplo_graffiti_web.png'
-                />
 
-              </Box>
               <Text
-                className='lg:text-[9.5vh] xl:text-[13vh] mt-16 xl:mt-5'
+                className='lg:text-[9.5vh] xl:text-[11vh] mt-16 xl:mt-5'
                 fontWeight={'black'}
-                lineHeight={['', '', '', '12vh', '14vh', '13vh']}
+                lineHeight={['', '', '', '12vh', '11vh']}
                 color={'primaryBlack.text'}
               >
                 Lo spazio dei <br />
@@ -279,6 +235,14 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
                   brand
                 </span> made in <br />Italy
               </Text>
+              <Box
+                mt={12}
+                maxW={'28vw'}
+              >
+                <ButtonGroupGender />
+              </Box>
+
+
             </Box>
             {/* mook phone solo per web */}
             <LazyLoadImage
@@ -291,23 +255,18 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
         </Box>
         <Box
           bgColor={'primary.bg'}
-          className='w-full rounded-b-[4vh] h-fit pb-1 lg:hidden'
+          className='w-full rounded-b-[4vh] h-fit pb-1 flex lg:hidden'
         >
-          <img loading='lazy'
-            className='m-auto pt-4 px-10 pb-3 h-[23vh] sm:h-[32vh]  md:h-[30vh] w-full min-380:h-[28vh]  sm:w-9/12  md:w-7/12 '
-            src='https://www.datocms-assets.com/102220/1688456383-veplo_graffiti_mobile.png'
-          />
-
           <Box
             bgColor={'primary.text'}
             borderRadius={'30px'}
-            marginTop={0}
+
             padding={[6, 6, 10]}
             paddingY={[8, 8, 12]}
             style={{
               boxShadow: '0px 4px 20px 20px rgba(255, 255, 255, 0.25)'
             }}
-            className='m-5 md:mx-auto sm:w-10/12 sm:mx-auto md:w-7/12 sm:mb-10 md:mb-8 mt-0'
+            className='m-5 md:mx-auto sm:w-10/12 md:w-7/12 sm:mb-10 md:mb-8'
 
           >
             <Text
@@ -358,10 +317,9 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
           </Box>
         </Box>
         <Box
-          className='lg:flex sm:w-10/12 md:w-9/12 lg:w-11/12 xl:w-10/12 mx-auto lg:my-7 lg:gap-12 xl:gap-20 justify-between'
+          className='lg:flex sm:w-10/12 md:w-9/12 lg:w-11/12 xl:w-10/12 mx-auto my-8  lg:gap-12 xl:gap-20 justify-between'
         >
           <Box
-            marginY={10}
             width={['', '', '', '50%', '40%']}
           >
             <Text
@@ -429,7 +387,6 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
 
           </Box>
           <Box
-            marginY={10}
             marginX={7}
           >
             <Text
@@ -478,7 +435,7 @@ const Home: FC<{ data: ListComponents }> = ({ data }) => {
           className='w-full rounded-t-[4vh] lg:rounded-none rou h-fit pt-6 pb-1'
         >
           <Box
-            className='m-5 sm:mx-auto sm:w-3/4 md:w-1/2 lg:w-5/12 xl:w-1/3 md:mb-8 mt-0 md:mt-5 lg:mt-7'
+            className='m-5 sm:mx-auto sm:w-3/4 md:w-1/2 lg:w-5/12 xl:w-[33vw] md:mb-8 mt-0 md:mt-5 lg:mt-7'
             bgColor={'primary.text'}
             borderRadius={'30px'}
             marginBottom={0}
