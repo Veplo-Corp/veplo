@@ -543,7 +543,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
       <ApolloProvider client={apolloClient} > {/* client={clientApollo} */}
         <ChakraProvider theme={theme}>
           <Auth>
-            {router.pathname !== '/' && !router.pathname.includes("/user/settings/email-actions") && !router.pathname.includes("/login") &&
+            {router.pathname !== '/' && router.pathname !== '/informative/come-funziona' && !router.pathname.includes("/user/settings/email-actions") && !router.pathname.includes("/login") &&
               <Header />
             }
 

@@ -220,7 +220,7 @@ const index = () => {
                                     >
                                         Per qualunque dubbio domanda consulta la <Link
                                             target="_blank"
-                                            href={'/policies/reso-e-rimborsi'}
+                                            href={'/informative/reso-e-rimborsi'}
                                             className='underline cursor-pointer'
                                         >politica di reso</Link> o <span
                                             className='underline cursor-pointer'

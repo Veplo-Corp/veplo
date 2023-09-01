@@ -42,7 +42,7 @@ const FormReturn: FC<{ orderCode?: string, phone?: string, email?: string, handl
                 color={'gray.800'}
                 lineHeight={'short'}
                 mb={5}
-            >vuoi sapere come funziona la procedura di reso con Veplo? <Link href="/policies/reso-e-rimborsi"
+            >vuoi sapere come funziona la procedura di reso con Veplo? <Link href="/informative/reso-e-rimborsi"
                 className='underline'
                 target="_blank"
             >politica di reso</Link>

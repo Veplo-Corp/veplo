@@ -21,7 +21,7 @@ export const getStaticProps: GetStaticProps<{}> = async () => {
 
         },
         variables: {
-            title: "Termini e Condizioni di Vendita"
+            title: "Termini e Condizioni"
         },
     })
 
@@ -46,8 +46,8 @@ const index: FC<{ data: Policies }> = ({ data }) => {
     return (
         <>
             <PostMeta
-                canonicalUrl={'https://www.veplo.it/policies/termini-e-condizioni-vendita'}
-                title={'Condizioni di Vendita | Veplo'}
+                canonicalUrl={'https://www.veplo.it/informative/termini-e-condizioni'}
+                title={'Termini e Condizioni | Veplo'}
                 subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
                 image={""}
                 description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
