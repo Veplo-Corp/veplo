@@ -312,6 +312,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                                         onMouseEnter={() => {
                                                             setShowSize(true)
                                                         }}
+                                                        //consigliato 480, 500 dimensione
                                                         src={isMobile && photoUrl ? imageKitUrl(photoUrl, 630, 660) : imageKitUrl(photoUrl ? photoUrl : '', 630, 660)}
                                                         alt={product.name ? product.name : ''}
                                                         className={`lg:w-full ${doubleGridDevice ? 'min-h-[180px]' : 'min-h-[350px] sm:min-h-[300px]'}  md:min-h-0 aspect-[4.8/5] object-cover rounded-[20px]`}
