@@ -372,7 +372,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
 
             dispatch(openModal({
                 title: 'Taglia mancante',
-                description: 'Inserisci la taglia prima di aggiungere il prodotto al carrello.'
+                description: 'Seleziona la taglia prima di aggiungere il prodotto al carrello.'
                 // description: <Box>
                 //     test jsx in funzione
                 // </Box>
@@ -921,8 +921,11 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                         animate={{ opacity: 1, x: 0 }}
                                         exit={{ opacity: 0, x: '100%' }}
                                     >
-                                        Aggiungi al carrello
-                                        {sizeSelected && <span className='ml-[5px]'> - {sizeSelected.toLocaleUpperCase()}</span>}
+
+                                        {sizeSelected ?
+                                            <span >Aggiungi al carrello - {sizeSelected.toLocaleUpperCase()}</span>
+                                            : <span >Seleziona la taglia</span>
+                                        }
                                     </motion.span>
                                 )}
                             </Button>)
