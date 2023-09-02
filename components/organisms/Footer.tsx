@@ -60,7 +60,7 @@ const Footer = () => {
                                 </li>
 
                                 <li >
-                                    <Link href="/informative/termini-e-condizioni-vendita" className="hover:underline">Vendere su Veplo</Link>
+                                    <Link href="/informative/come-funziona" className="hover:underline">Scopri di più</Link>
                                 </li>
                                 <li >
                                     <Link href="/informative/termini-e-condizioni-vendita" className="hover:underline">Vendere su Veplo</Link>
