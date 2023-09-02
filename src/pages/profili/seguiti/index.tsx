@@ -31,6 +31,9 @@ const index = () => {
     }, [user])
 
 
+    console.log(data?.user?.following === null);
+
+
 
     return (
         <>
@@ -80,7 +83,7 @@ const index = () => {
                         }
                     </Box>
                 }
-                {error && !loading && !data?.user?.following?.length &&
+                {((error && !loading && !data?.user?.following?.length) || data?.user?.following === null) &&
                     <PageNotFound
                         title='Nessun profilo seguito'
                         description='non segui ancora nessun profilo'
