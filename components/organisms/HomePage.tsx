@@ -144,7 +144,7 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                 canonicalUrl='https://www.veplo.it'
                 title={"Veplo"}
                 subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
-                image={"android-chrome-512x512.png"}
+                image={""}
                 description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
             />
             <Shop_not_Allowed>

@@ -162,7 +162,7 @@ const index = () => {
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={"Ordine | Veplo"}
                 subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
-                image={"android-chrome-512x512.png"}
+                image={""}
                 description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
             />
             <div
