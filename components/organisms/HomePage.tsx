@@ -150,41 +150,94 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
             <Shop_not_Allowed>
                 <Box
                     bgColor={'primary.bg'}
-                    className='hidden lg:flex p-10 py-0 h-[100vh] lg:h-[86vh] rounded-b-[7vh]'
+                    className='grid p-5 pb-7 pt-3 sm:py-16 lg:p-10 lg:py-0  lg:h-[86vh] rounded-b-[4vh] lg:rounded-b-[7vh]'
                 >
+                    <Link
+                        href={'https://www.veplo.it'}
+                        className='flex lg:hidden '
+                    >
+                        <Box
+                            className='mb-2'
+                        >
+                            <img
+                                src='/android-chrome-512x512.png'
+                                loading='lazy'
+                                className='w-12'
+                            />
+                            <Text
+                                color={'primary.text'}
+                                fontSize={'2xl'}
+                                marginY={'auto'}
+                                fontWeight={'extrabold'}
+                            >
+                                Veplo
+                            </Text>
+                        </Box>
+                    </Link>
+
                     <Box
                         bgColor={'primary.text'}
                         borderRadius={'30px'}
-                        className='p-8 h-[75vh] w-full my-auto rounded-b-[7vh]'
+                        className='p-6 lg:p-8 lg:h-[75vh]  my-auto rounded-b-[30px] lg:rounded-b-[7vh] sm:mx-auto sm:w-10/12 md:w-3/4 lg:w-full'
                         style={{
                             boxShadow: '0px 4px 20px 20px rgba(255, 255, 255, 0.25)'
                         }}
                         display={'flex'}
                         gap={10}
                     >
+
                         <Box
-                            className='lg:ml-8 xl:ml-24 mt-10'
+                            className='lg:ml-8 xl:ml-24 lg:mt-5'
                         >
 
                             <Text
-                                className='lg:text-[9.5vh] xl:text-[11vh] mt-16 xl:mt-5'
+                                className='lg:text-[9.5vh] xl:text-[11vh] lg:w-9/12 xl:w-11/12'
                                 fontWeight={'black'}
-                                lineHeight={['', '', '', '12vh', '11vh']}
+                                fontSize={['5vh', '7vh', '7vh', '8vh', '9.5vh']}
+                                lineHeight={['48px', '60px', '60px', '9vh', '10vh']}
                                 color={'primaryBlack.text'}
                             >
                                 Lo spazio dei <br />
                                 <span
                                     className='text-[#FF5A78]'
                                 >
-                                    brand
-                                </span> made in <br />Italy
+                                    brand<span className='lg:hidden'><br /></span>
+                                </span> made in Italy
+                            </Text>
+                            <Text
+                                my={[3, 6]}
+                                color={'#909090'}
+                                fontWeight={'regular'}
+                                fontSize={'18px'}
+                                lineHeight={'22px'}
+                                mb={[4, 7]}
+                                className='lg:w-8/12'
+                            >
+                                connettiamo i migliori brand di abbigliamento made in Italy in un unico negozio online
                             </Text>
                             <Box
-                                mt={12}
-                                maxW={'28vw'}
+                                mt={[8, 8, 8]}
+                                maxW={['full', 'full', 'full', '28vw']}
                             >
                                 <ButtonGroupGender />
+                                <Button
+                                    marginTop={[3, 6, 6]}
+                                    width={'full'}
+                                    variant={'primary'}
+                                    padding={6}
+                                    paddingY={7}
+                                    fontSize={'xl'}
+                                    borderRadius={'30px'}
+                                    style={{
+                                        boxShadow: '0px 4px 20px 0px rgba(255, 90, 120, 0.75)'
+                                    }}
+                                    onClick={() => { setModalForm(true) }}
+                                    className='lg:hidden'
+                                >
+                                    Sono un brand
+                                </Button>
                             </Box>
+
 
 
                         </Box>
@@ -193,11 +246,11 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                             src={'https://www.datocms-assets.com/102220/1690476458-vectary-texture.png'}
                             alt={''}
                             //effect="blur"
-                            className="object-cover h-[100%] m-auto"
+                            className="object-cover h-[100%] mr-10 hidden lg:flex"
                         />
                     </Box>
                 </Box>
-                <Box
+                {/*  <Box
                     bgColor={'primary.bg'}
                     className='w-full rounded-b-[4vh] h-fit pb-1 flex lg:hidden'
                 >
@@ -259,7 +312,7 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                             Sono un brand
                         </Button>
                     </Box>
-                </Box>
+                </Box> */}
                 <Box
                     className='lg:flex sm:w-10/12 md:w-9/12 lg:w-11/12 xl:w-10/12 mx-auto my-8  lg:gap-12 xl:gap-20 justify-between'
                 >
