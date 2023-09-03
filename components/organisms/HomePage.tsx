@@ -150,7 +150,7 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
             <Shop_not_Allowed>
                 <Box
                     bgColor={'primary.bg'}
-                    className='grid p-5 pb-7 sm:py-16 lg:p-10 lg:py-0  lg:h-[86vh] rounded-b-[4vh] lg:rounded-b-[7vh]'
+                    className='grid p-5 py-7 sm:py-16 lg:p-10 lg:py-0  lg:h-[86vh] rounded-b-[4vh] lg:rounded-b-[7vh]'
                 >
                     {/* <Link
                         href={'https://www.veplo.it'}
@@ -178,7 +178,7 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                     <Box
                         bgColor={'primary.text'}
                         borderRadius={'30px'}
-                        className='p-6 lg:p-8 lg:h-[75vh]  my-auto rounded-b-[30px] lg:rounded-b-[7vh] sm:mx-auto sm:w-10/12 md:w-3/4 lg:w-full'
+                        className='p-6 py-8 lg:p-8 lg:h-[75vh]  my-auto rounded-b-[30px] lg:rounded-b-[7vh] sm:mx-auto sm:w-10/12 md:w-3/4 lg:w-full'
                         style={{
                             boxShadow: '0px 4px 20px 20px rgba(255, 255, 255, 0.25)'
                         }}
@@ -187,41 +187,41 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                     >
 
                         <Box
-                            className='lg:ml-8 xl:ml-24 lg:mt-5'
+                            className='lg:ml-8 xl:ml-28 lg:mt-12 xl:mt-5'
                         >
 
                             <Text
-                                className='lg:text-[9.5vh] xl:text-[11vh] lg:w-9/12 xl:w-11/12'
+                                className='lg:text-[9.5vh] xl:text-[11vh] xl:w-11/12'
                                 fontWeight={'black'}
-                                fontSize={['5vh', '7vh', '7vh', '8vh', '9.5vh']}
-                                lineHeight={['48px', '60px', '60px', '9vh', '10vh']}
+                                fontSize={['5vh', '7vh', '7vh', '8.5vh', '11.5vh']}
+                                lineHeight={['48px', '60px', '60px', '11vh', '13vh']}
                                 color={'primaryBlack.text'}
                             >
-                                Lo spazio dei <br />
-                                <span
+                                Lo spazio {/* <br className='flex lg:hidden' /> */}
+                                dove <span
                                     className='text-[#FF5A78]'
                                 >
-                                    brand<span className='lg:hidden'><br /></span>
-                                </span> made in Italy
+                                    scoprire{/* <span className='lg:hidden'><br /></span> */}
+                                </span> nuovi {/* <br className='hidden lg:flex' /> */}stili
                             </Text>
                             <Text
-                                my={[3, 6]}
+                                my={[3, 4]}
                                 color={'#909090'}
                                 fontWeight={'regular'}
                                 fontSize={'18px'}
-                                lineHeight={'22px'}
-                                mb={[4, 7]}
-                                className='lg:w-8/12'
+                                lineHeight={'23px'}
+                                mb={[5, 7]}
+                                className='hidden'/* 'lg:w-7/12' */
                             >
-                                connettiamo i migliori brand di abbigliamento made in Italy in un unico negozio online
+                                connettiamo i migliori brand di abbigliamento italiani in un unico negozio online
                             </Text>
                             <Box
                                 mt={[8, 8, 8]}
-                                maxW={['full', 'full', 'full', '28vw']}
+                                maxW={['full', 'full', 'full', '36vw', '24vw']}
                             >
                                 <ButtonGroupGender />
                                 <Button
-                                    marginTop={[3, 6, 6]}
+                                    marginTop={[4, 6, 6]}
                                     width={'full'}
                                     variant={'primary'}
                                     padding={6}
@@ -243,10 +243,10 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                         </Box>
                         {/* mook phone solo per web */}
                         <LazyLoadImage
-                            src={'https://www.datocms-assets.com/102220/1690476458-vectary-texture.png'}
+                            src={'https://www.datocms-assets.com/102220/1693770284-vectary-texture-oblique.png'}
                             alt={''}
                             //effect="blur"
-                            className="object-cover h-[100%] mr-10 hidden lg:flex"
+                            className="object-cover h-[100%] mr-5 xl:mr-24 hidden lg:flex"
                         />
                     </Box>
                 </Box>
