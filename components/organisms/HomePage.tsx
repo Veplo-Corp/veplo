@@ -194,15 +194,15 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                                 className='lg:text-[9.5vh] xl:text-[11vh] xl:w-11/12'
                                 fontWeight={'black'}
                                 fontSize={['5vh', '7vh', '7vh', '8.5vh', '11.5vh']}
-                                lineHeight={['48px', '60px', '60px', '11vh', '13vh']}
+                                lineHeight={['45px', '60px', '60px', '11vh', '13vh']}
                                 color={'primaryBlack.text'}
                             >
                                 Lo spazio {/* <br className='flex lg:hidden' /> */}
                                 dove <span
                                     className='text-[#FF5A78]'
                                 >
-                                    scoprire{/* <span className='lg:hidden'><br /></span> */}
-                                </span> nuovi {/* <br className='hidden lg:flex' /> */}stili
+                                    scoprire<span className='lg:hidden'><br /></span>
+                                </span> nuovi {/* <br className='hidden lg:grid' /> */}stili
                             </Text>
                             <Text
                                 my={[3, 4]}
@@ -216,7 +216,7 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                                 connettiamo i migliori brand di abbigliamento italiani in un unico negozio online
                             </Text>
                             <Box
-                                mt={[8, 8, 8]}
+                                mt={[5, 8, 8]}
                                 maxW={['full', 'full', 'full', '36vw', '24vw']}
                             >
                                 <ButtonGroupGender />
