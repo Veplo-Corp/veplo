@@ -150,14 +150,14 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
             <Shop_not_Allowed>
                 <Box
                     bgColor={'primary.bg'}
-                    className='grid p-5 pb-7 pt-3 sm:py-16 lg:p-10 lg:py-0  lg:h-[86vh] rounded-b-[4vh] lg:rounded-b-[7vh]'
+                    className='grid p-5 pb-7 sm:py-16 lg:p-10 lg:py-0  lg:h-[86vh] rounded-b-[4vh] lg:rounded-b-[7vh]'
                 >
-                    <Link
+                    {/* <Link
                         href={'https://www.veplo.it'}
                         className='flex lg:hidden '
                     >
                         <Box
-                            className='mb-2'
+                            className='mb-2 flex'
                         >
                             <img
                                 src='/android-chrome-512x512.png'
@@ -173,7 +173,7 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                                 Veplo
                             </Text>
                         </Box>
-                    </Link>
+                    </Link> */}
 
                     <Box
                         bgColor={'primary.text'}

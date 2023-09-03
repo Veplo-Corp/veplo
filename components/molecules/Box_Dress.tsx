@@ -39,7 +39,6 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
     const [listOfSizesAvailableForSpecificVariation, setListOfSizesAvailableForSpecificVariation] = useState<any>()
     const [showSize, setShowSize] = useState(false)
     const [isSustainable, setIsSustainable] = useState(false)
-    const router = useRouter()
     const isSmallView = useBreakpointValue({ base: true, md: false });
     const [productLinkPage, setProductLinkPage] = useState(productLink)
 
@@ -69,7 +68,7 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
             }
 
             seturlProduct(url)
-            const udpateUrl = manipulateUrlForProductColorAndSize(undefined, undefined, productLink)
+            const udpateUrl = manipulateUrlForProductColorAndSize(undefined, undefined, productLinkPage)
             setProductLinkPage(udpateUrl)
 
             return
@@ -221,7 +220,6 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                             }}
                             prefetch={false}
                             href={productLinkPage}
-
                         >
                             {isSustainable &&
                                 <ToolTipComponent
