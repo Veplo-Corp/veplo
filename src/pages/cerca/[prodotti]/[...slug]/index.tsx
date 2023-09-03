@@ -29,6 +29,7 @@ import FiltersSelections from '../../../../../components/organisms/FiltersSelect
 import TagFilter, { FilterAccepted } from '../../../../../components/atoms/TagFilter';
 import { getUnivers } from '../../../../../components/utils/getUnivers';
 import { getSortingFilter } from '../../../../../components/utils/getSortingFilter';
+import { findParamInURL } from '../../../../../components/utils/findParamInURL';
 
 
 
@@ -987,7 +988,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                                 <Box_Dress
                                                                     doubleGridDevice={isExtraSmallView && doubleGridDevice ? true : false}
                                                                     handleEventSelectedDress={saveProductsInSessionStorage}
-                                                                    productLink={`/@${product.shopInfo?.name?.unique}/prodotto/${product.id}/${createUrlSchema([product?.info?.brand, product.name])}${router.asPath.split('?')[1] ? '?' + router.asPath.split('?')[1] : ''}`}
+                                                                    productLink={`/@${product.shopInfo?.name?.unique}/prodotto/${product.id}/${createUrlSchema([product?.info?.brand, product.name])}${findParamInURL('sizes', router.asPath.split('?')[1]) ? '?' + findParamInURL('sizes', router.asPath.split('?')[1]) : ''}`}
                                                                     showStoreHeader={true} product={product} color={filters.colors?.[0] ? filters.colors[0] : undefined}></Box_Dress>
                                                             </motion.div>
                                                         )
