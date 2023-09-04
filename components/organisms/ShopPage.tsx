@@ -311,6 +311,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                     <LazyLoadImage
                         src={shop.profileCover ? imageKitUrl(shop.profileCover) : ''}
                         //PlaceholderSrc={PlaceholderImage}
+                        effect='blur'
                         alt={shop.name?.visualized ? shop.name.visualized : ''}
                         className='w-full object-cover aspect-[2.3/1] lg:aspect-[3/1] min-h-[120px] lg:min-h-[300px] lg:rounded-[10px]'
                     />
@@ -346,6 +347,8 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                                         imageKitUrl(shop.profilePhoto) :
                                         ''
                                 }
+                                    effect='blur'
+
                                     //PlaceholderSrc={PlaceholderImage}
                                     alt={shop.name?.visualized ? shop.name.visualized : 'immagine non trovata'}
                                     className='m-auto h-full w-full p-[4px] lg:p-[5px] rounded-full'
