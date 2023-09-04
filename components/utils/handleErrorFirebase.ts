@@ -15,7 +15,7 @@ export const handleErrorFirebase = (error: string) => {
         case 'Firebase: Error (auth/user-not-found).':
             return {
                 title: 'Email errata',
-                description: "l'email inserita non è collegata a nessun account"
+                description: "l'email inserita non è collegata a un account esistente"
             }
         case 'auth/user-not-shop':
             return {

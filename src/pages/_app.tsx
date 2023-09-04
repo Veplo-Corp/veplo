@@ -323,8 +323,12 @@ const Auth: React.FC<{ children: any }> = ({ children }) => {
         //analytics
         //setUserId(analytics, userAuth.uid);
         //setUserProperties(analytics, { favorite_food: 'apples' });
-
-        const tokenResult = await userAuth.getIdTokenResult(true)
+        let tokenResult;
+        try {
+          tokenResult = await userAuth.getIdTokenResult(true)
+        } catch {
+          return dispatch(logout());
+        }
         setAuthTokenInSessionStorage(tokenResult.token)
 
 

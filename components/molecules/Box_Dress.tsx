@@ -360,8 +360,8 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                 borderRadius={'full'}
                                 noOfLines={1}
                                 zIndex={10}
-                                maxW={doubleGridDevice ? 'full' : product.price?.v2 ? '65%' : '73%'}
-
+                                //maxW={doubleGridDevice ? 'full' : product.price?.v2 && product.price?.v2 > 0 ? '100%' : '80%'}
+                                maxW={doubleGridDevice ? 'full' : '90%'}
                             >
                                 {product?.name?.toLocaleUpperCase()}
                             </Text>
