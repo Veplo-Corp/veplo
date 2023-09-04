@@ -544,10 +544,11 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                     image={imageKitUrl(variationSelected?.photos?.[0], 237, 247)}
                     description={`${toUpperCaseFirstLetter(product?.info?.macroCategory)} ${toUpperCaseFirstLetter(product?.info?.brand)} ${product?.name?.toUpperCase()} a ${product?.price?.v2 ? product?.price?.v2 : product?.price?.v1}€. Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
                 />
-                {!isSmallView && <Box
-                    display={'flex'}
+                <Box
+
                     mb={4}
                     gap={8}
+                    className='hidden md:flex'
                 >
                     <Link
                         prefetch={false}
@@ -568,7 +569,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                             <ButtonFollow shopId={product.shopInfo?.id} isSmall={true} />
                         </Box>}
                     </Box>
-                </Box>}
+                </Box>
                 <div className='md:flex justify-between w-full mb-5 lg:mb-0 gap-5'>
 
                     <Box
@@ -577,41 +578,43 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                         <Image_Product variation={variationSelected} />
                     </Box>
                     <Box className='md:block md:w-[90%] lg:w-[80%]  mx-2'>
-                        {isSmallView &&
-                            <>
+
+                        <Box
+                            className='grid md:hidden'
+                        >
+                            <Box
+                                display={'flex'}
+                                mt={3}
+                                justifyContent={'space-between'}
+                            >
+                                <Link
+                                    prefetch={false}
+                                    href={product?.shopInfo?.name?.unique ? `/@${product.shopInfo.name.unique}` : ''}>
+                                    <ProfilePhoto
+                                        imgName={product.name}
+                                        scr={product.shopInfo?.profilePhoto}
+                                        primaryText={product.shopInfo?.name?.visualized}
+                                        secondaryText={'@' + product.shopInfo?.name?.unique}
+                                    />
+                                </Link>
                                 <Box
-                                    display={'flex'}
-                                    mt={3}
-                                    justifyContent={'space-between'}
+                                    my={'auto'}
                                 >
-                                    <Link
-                                        prefetch={false}
-                                        href={product?.shopInfo?.name?.unique ? `/@${product.shopInfo.name.unique}` : ''}>
-                                        <ProfilePhoto
-                                            imgName={product.name}
-                                            scr={product.shopInfo?.profilePhoto}
-                                            primaryText={product.shopInfo?.name?.visualized}
-                                            secondaryText={'@' + product.shopInfo?.name?.unique}
-                                        />
-                                    </Link>
-                                    <Box
-                                        my={'auto'}
+                                    {((user.statusAuthentication === 'logged_in' && (user.favouriteShops)) || user.statusAuthentication === 'logged_out') && <Box
+                                        className='mt-1 mr-2'
                                     >
-                                        {((user.statusAuthentication === 'logged_in' && (user.favouriteShops)) || user.statusAuthentication === 'logged_out') && <Box
-                                            className='mt-1 mr-2'
-                                        >
-                                            <ButtonFollow shopId={product.shopInfo?.id} isSmall={true} />
-                                        </Box>}
-                                    </Box>
-
-
+                                        <ButtonFollow shopId={product.shopInfo?.id} isSmall={true} />
+                                    </Box>}
                                 </Box>
-                                <Divider
-                                    pt={1}
-                                    pb={2}
-                                />
-                            </>
-                        }
+
+
+                            </Box>
+                            <Divider
+                                pt={1}
+                                pb={2}
+                            />
+                        </Box>
+
                         <Text
                             fontWeight='medium'
                             as='h2'
