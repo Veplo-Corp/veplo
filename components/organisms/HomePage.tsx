@@ -191,10 +191,10 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                         >
 
                             <Text
-                                className='lg:text-[9.5vh] xl:text-[11vh] xl:w-11/12'
+                                className='lg:text-[9.5vh] xl:text-[11vh] xl:w-full'
                                 fontWeight={'black'}
-                                fontSize={['5vh', '7vh', '7vh', '8.5vh', '11.5vh']}
-                                lineHeight={['45px', '60px', '60px', '11vh', '13vh']}
+                                fontSize={['5vw', '7vw', '7vw', '6vw', '6.5vw']}
+                                lineHeight={['45px', '60px', '60px', '7vw', '7vw']}
                                 color={'primaryBlack.text'}
                             >
                                 Lo spazio {/* <br className='flex lg:hidden' /> */}
@@ -217,7 +217,7 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                             </Text>
                             <Box
                                 mt={[5, 8, 8]}
-                                maxW={['full', 'full', 'full', '36vw', '24vw']}
+                                maxW={['full', 'full', 'full', '28vw', '24vw']}
                             >
                                 <ButtonGroupGender />
                                 <Button
