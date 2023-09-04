@@ -220,6 +220,7 @@ const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ 
                                         }}
                                     >
                                         <LazyLoadImage
+                                            effect='blur'
 
                                             src={imageKitUrl(photoUrl)}
                                             alt={''}
