@@ -800,6 +800,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                     left="0"
                                     right="0"
                                     zIndex={1}
+                                    className='flex md:hidden'
                                 >
                                     <Box
                                         bg={'#FFFFFF'}
