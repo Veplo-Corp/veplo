@@ -12,7 +12,7 @@ import FOLLOW from '../../src/lib/apollo/mutations/follow';
 import expirationTimeTokenControll from '../utils/expirationTimeTokenControll';
 
 const ButtonFollow: FC<{ shopId: string | undefined | null; isSmall?: boolean }> = ({ shopId, isSmall }) => {
-    console.log('runna');
+    console.log('runna ButtonFollow');
 
 
     if (!shopId) {

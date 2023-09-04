@@ -1,7 +1,7 @@
 import { Box, IconButton, Image, Modal, ModalBody, ModalContent, ModalOverlay, ModalCloseButton, ModalHeader, useBreakpointValue, CloseButton } from '@chakra-ui/react'
 //!pronestor - not the original library! because it doesn't work with react 18
 import { TransformComponent, TransformWrapper } from '@pronestor/react-zoom-pan-pinch'
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { imageKitUrl } from '../utils/imageKitUrl'
 import ButtonClose from '../atoms/ButtonClose'
@@ -17,6 +17,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { ProductVariation } from '../../src/lib/apollo/generated/graphql'
 const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ variation }) => {
+    console.log('runna Image_Product');
 
     if (!variation) {
         return (
@@ -50,9 +51,7 @@ const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ 
 
     return (
         <>
-
             <Modal size={['lg', 'lg', 'full', 'full']}
-
                 isCentered={false/* isSmallView ? false : true */} isOpen={isOpen} onClose={() => setisOpen(false)}
             >
                 <ModalOverlay
@@ -151,40 +150,20 @@ const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ 
                 </ModalContent>
             </Modal >
 
-            <div className='flex space-x-3 lg:space-x-4 w-full  md:min-h-0 '>
+            <div className='flex space-x-3 lg:space-x-2 w-full  md:min-h-0 '>
 
                 {!isSmallView ?
                     (
                         <>
-                            <Box onClick={() => zoomImage()} mb={[2, 5]} overflow='hidden' className='cursor-pointer w-full'>
-
-                                <motion.div
-                                    variants={LIST_ITEM_VARIANT}
-                                    initial="hidden"
-                                    animate="visible"
-                                    exit="hidden"
-                                >
-                                    <LazyLoadImage src={imageKitUrl(fullImage)}
-                                        effect="blur"
-                                        //PlaceholderSrc={PlaceholderImage}
-                                        //effect="blur"
-                                        alt={variation?.color + 'non trovato'}
-                                        className='rounded-lg w-full aspect-[4.8/5] object-cover'
-                                    />
-                                </motion.div>
-
-                            </Box>
                             <div>
 
-                                {variation?.photos && variation?.photos.map((image) => {
+                                {variation?.photos && variation?.photos.map((image, index) => {
+                                    console.log(variation?.photos);
 
                                     return (
-                                        <Box onClick={() => changeImageFull(image)} key={Math.random()} mb={'2'} borderRadius='lg' overflow='hidden'
+                                        <Box onMouseEnter={() => changeImageFull(image)} key={index} mb={'2'} borderRadius='xl' overflow='hidden'
                                             borderWidth={1.5}
-                                            className={` ${image == fullImage ? "border-black border-8" : "border-white"}   cursor-pointer
-                                        w-14
-                                        xl:w-20
-                                    `
+                                            className={` ${image == fullImage ? "border-black border-8" : "border-white"}   cursor-pointer w-14 xl:w-20`
                                             }
                                         >
 
@@ -194,14 +173,31 @@ const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ 
                                                 }
                                                 alt={variation?.color + 'non trovato'}
                                                 width={'fit-content'}
-                                                // height={'fit-content'}
-                                                className='aspect-[4.8/5] max-h-52 object-cover '
+                                                className='aspect-[4.8/5] max-h-52 object-cover min-h-52'
+
                                             />
 
                                         </Box>
                                     )
                                 })}
                             </div>
+                            <Box
+                                borderRadius='2xl'
+                                onClick={() => zoomImage()} mb={[2, 5]} overflow='hidden' className='cursor-pointer w-full'>
+                                <motion.div
+                                    variants={LIST_ITEM_VARIANT}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="hidden"
+                                >
+                                    <LazyLoadImage src={imageKitUrl(fullImage)}
+                                        alt={variation?.color + 'non trovato'}
+                                        className='rounded-lg w-full aspect-[4.8/5] object-cover'
+                                    />
+                                </motion.div>
+
+                            </Box>
+
                         </>
                     ) : (
 
@@ -224,9 +220,9 @@ const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ 
                                         }}
                                     >
                                         <LazyLoadImage
+
                                             src={imageKitUrl(photoUrl)}
                                             alt={''}
-                                            effect="blur"
                                             className="md:w-full md:min-h-0 min-h-[350px] aspect-[4.8/5] object-cover"
                                         />
                                     </SwiperSlide>
@@ -244,4 +240,4 @@ const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ 
     )
 }
 
-export default Image_Product
+export default memo(Image_Product)
