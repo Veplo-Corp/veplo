@@ -251,26 +251,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
 
 
 
-    const InfoAndFollow = () => {
-        return (
-            <>
-                <PopoverComponent
-                    actionsPopover={popoverList()}
-                    icon={
-                        <MoreHoriz
-                            className='m-auto h-full w-full'
-                            // height={'full'}
-                            // width={'full'}
-                            strokeWidth={2}
-                        />
-                    }
-                />
-                <ButtonFollow shopId={shop?.id} />
-            </>
 
-
-        )
-    }
 
     const TextFollower = () => {
         return (
@@ -361,7 +342,18 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                             <Box
                                 display={'flex'}
                                 gap={[1.5, 1.5, 2.5]}>
-                                <InfoAndFollow />
+                                <PopoverComponent
+                                    actionsPopover={popoverList()}
+                                    icon={
+                                        <MoreHoriz
+                                            className='m-auto h-full w-full'
+                                            // height={'full'}
+                                            // width={'full'}
+                                            strokeWidth={2}
+                                        />
+                                    }
+                                />
+                                <ButtonFollow shopId={shop?.id} />
                             </Box>
                             {/* <TextFollower /> */}
                         </Box>}
@@ -411,8 +403,18 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                             <Box
                                 display={'flex'}
                                 gap={2.5}>
-                                <InfoAndFollow />
-                            </Box>
+                                <PopoverComponent
+                                    actionsPopover={popoverList()}
+                                    icon={
+                                        <MoreHoriz
+                                            className='m-auto h-full w-full'
+                                            // height={'full'}
+                                            // width={'full'}
+                                            strokeWidth={2}
+                                        />
+                                    }
+                                />
+                                <ButtonFollow shopId={shop?.id} />                            </Box>
                             {/* <TextFollower /> */}
                         </Box>}
 

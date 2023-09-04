@@ -12,7 +12,6 @@ import FOLLOW from '../../src/lib/apollo/mutations/follow';
 import expirationTimeTokenControll from '../utils/expirationTimeTokenControll';
 
 const ButtonFollow: FC<{ shopId: string | undefined | null; isSmall?: boolean }> = ({ shopId, isSmall }) => {
-    console.log('runna ButtonFollow');
 
 
     if (!shopId) {
@@ -76,7 +75,9 @@ const ButtonFollow: FC<{ shopId: string | undefined | null; isSmall?: boolean }>
                 })
                 setOnFollowLoading(false)
             }
-            catch {
+            catch (e) {
+                console.log(e);
+
                 //TODO handle error follow
                 setOnFollowLoading(false)
 
@@ -96,8 +97,10 @@ const ButtonFollow: FC<{ shopId: string | undefined | null; isSmall?: boolean }>
                 setOnFollowLoading(false)
 
             }
-            catch {
+            catch (e) {
                 //TODO handle error follow
+                console.log(e);
+
                 setOnFollowLoading(false)
 
             }
