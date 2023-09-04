@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Box, Image } from '@chakra-ui/react';
+import { Box, Image, Text } from '@chakra-ui/react';
 import { Lot } from '../../src/lib/apollo/generated/graphql';
 
 interface Props {
@@ -54,18 +54,19 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                     >
                         <Box
                             paddingY={0}
-
+                            className='select-none'
                         >
-                            <Box
+                            <Text
+
                                 fontSize={size.length > 5 ? '15px' : fontSize}
                                 fontWeight={sizeSelected !== size ? fontWeight : 'semibold'}
                             >
                                 {size.toUpperCase()}
-                            </Box>
-                            <Box fontWeight={'normal'}
+                            </Text>
+                            <Text fontWeight={'normal'}
                                 fontSize={['2xs', '2xs']} color={sizeProductExist?.quantity && sizeProductExist?.quantity > 0 && sizeSelected !== size ? 'gray.500' : sizeSelected === size ? 'white' : '#A19F9F'} mt={'-4px'}>
                                 {sizeProductExist?.quantity && sizeProductExist?.quantity === 1 ? 'ultimo rimasto' : sizeProductExist?.quantity && sizeProductExist?.quantity < 10 && sizeProductExist?.quantity > 0 ? `solo ${sizeProductExist?.quantity} disponibil${sizeProductExist?.quantity > 1 ? 'i' : 'e'}` : sizeProductExist?.quantity && sizeProductExist?.quantity > 0 ? `` : 'esaurito'}
-                            </Box>
+                            </Text>
                         </Box>
 
                     </Box>
