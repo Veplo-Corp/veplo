@@ -27,7 +27,7 @@ import { ToastOpen } from '../utils/Toast';
 
 import ButtonFollow from '../molecules/ButtonFollow';
 
-const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) : 12
+const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE) * 3 : 12 * 3
 
 const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undefined }> = ({ shop, gender }) => {
     const { onCopy, value, setValue, hasCopied } = useClipboard('https://www.veplo.it/@' + shop?.name?.unique);

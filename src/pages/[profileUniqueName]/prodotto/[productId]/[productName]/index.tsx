@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import Desktop_Layout from '../../../../../../components/atoms/Desktop_Layout';
 import { Box, Button, Divider, HStack, Image, Tag, Text, Tooltip, useBreakpointValue } from '@chakra-ui/react';
 import GET_PRODUCT_AND_SIMILAR_PRODUCTS_ON_SHOP from '../../../../../lib/apollo/queries/getProductAndSimilarProductsOnShop'
@@ -142,6 +142,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
         /* Optional options */
         threshold: 0,
     });
+    console.log('pagina prodotto');
 
 
     const colors = useRef<Color[]>(COLORS)
@@ -181,7 +182,6 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
 
 
     useEffect(() => {
-
         const product = { ...productFounded }
         if (!productFounded && !product?.variations?.[0] && product?.variations?.[0]?.color) return
         setproduct(productFounded)
@@ -306,7 +306,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
 
 
 
-    const ShopComponent = () => {
+    const ShopComponent = memo(() => {
         return (
             <Box
                 my={'auto'}
@@ -318,7 +318,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                 </Box>}
             </Box>
         )
-    }
+    })
 
 
 

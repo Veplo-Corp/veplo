@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react'
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { FC, memo, useCallback, useEffect, useState } from 'react'
 import { Firebase_User } from '../../src/interfaces/firebase_user.interface';
 import { useDispatch, useSelector } from 'react-redux';
 import ModalReausable from '../organisms/ModalReausable';
@@ -12,6 +12,9 @@ import FOLLOW from '../../src/lib/apollo/mutations/follow';
 import expirationTimeTokenControll from '../utils/expirationTimeTokenControll';
 
 const ButtonFollow: FC<{ shopId: string | undefined | null; isSmall?: boolean }> = ({ shopId, isSmall }) => {
+    console.log('runna');
+
+
     if (!shopId) {
         return (<>
         </>)
@@ -166,4 +169,4 @@ const ButtonFollow: FC<{ shopId: string | undefined | null; isSmall?: boolean }>
     )
 }
 
-export default ButtonFollow
+export default memo(ButtonFollow)
