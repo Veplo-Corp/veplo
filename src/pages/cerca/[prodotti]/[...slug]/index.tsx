@@ -978,8 +978,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
                                                     {products.map((product: Product, index) => {
                                                         return (
                                                             <motion.div
-
-                                                                key={index}
+                                                                key={product.id}
                                                                 variants={LIST_ITEM_VARIANT}
                                                                 initial="hidden"
                                                                 animate="visible"
