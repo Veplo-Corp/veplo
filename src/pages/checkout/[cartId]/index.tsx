@@ -425,14 +425,16 @@ const index = () => {
                 {cart ? (
                     <>
                         <NoIndexSeo title='Veplo'></NoIndexSeo>
-                        {isSmallView && <Box
+                        <Box
                             position="fixed"
                             bottom="0"
                             left="0"
                             right="0"
                             zIndex={1}
+                            className='flex md:hidden'
                         >
                             <Box
+
                                 bg={'#FFFFFF'}
                                 width={'full'}
                                 height={'fit-content'}
@@ -478,7 +480,7 @@ const index = () => {
                                 </Button>
                             </Box>
 
-                        </Box>}
+                        </Box>
                         <Desktop_Layout>
 
                             <div className='w-full m-auto lg:w-10/12 xl:w-8/12 mt-2'>
@@ -702,40 +704,45 @@ const index = () => {
                                                 }
 
                                             </Box>
-                                            {!isSmallView && <Button
-                                                onClick={checkoutUrl}
-                                                type={'button'}
-                                                borderRadius={'10px'}
-                                                size={'20px'}
-                                                fontWeight={'black'}
+                                            <Box
+                                                className='hidden md:flex'
+                                            >
+                                                <Button
+                                                    onClick={checkoutUrl}
+                                                    type={'button'}
+                                                    borderRadius={'10px'}
+                                                    size={'20px'}
+                                                    fontWeight={'black'}
+                                                    paddingInline={16}
+                                                    width={'full'}
+                                                    height={'55px'}
+                                                    variant={'primary'}
+                                                    _disabled={{
+                                                        bg: '#FF5A78'
+                                                    }}
+                                                    _hover={{
+                                                        color: 'primary.text'
+                                                    }}
+                                                    isDisabled={isDisabled}
+                                                    style={{
+                                                        boxShadow: '0px 0px 20px rgba(255, 90, 120, 0.25)',
+                                                    }}
 
-                                                paddingInline={16}
-                                                width={'full'}
-                                                height={'55px'}
-                                                variant={'primary'}
-                                                _disabled={{
-                                                    bg: '#FF5A78'
-                                                }}
-                                                _hover={{
-                                                    color: 'primary.text'
-                                                }}
-                                                isDisabled={isDisabled}
-                                                style={{
-                                                    boxShadow: '0px 0px 20px rgba(255, 90, 120, 0.25)',
-                                                }}
-                                            > {!isDisabled ?
+                                                > {!isDisabled ?
 
-                                                `Procedi` :
-                                                <Spinner
-                                                    thickness='4px'
-                                                    speed='0.65s'
-                                                    emptyColor='primary.bg'
-                                                    color='white'
-                                                    size='lg'
-                                                />
-                                                }
+                                                    `Procedi` :
+                                                    <Spinner
+                                                        thickness='4px'
+                                                        speed='0.65s'
+                                                        emptyColor='primary.bg'
+                                                        color='white'
+                                                        size='lg'
+                                                    />
+                                                    }
 
-                                            </Button>}
+                                                </Button>
+                                            </Box>
+
                                         </Box>
                                         <Box
                                             mt={5}
