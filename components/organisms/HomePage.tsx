@@ -193,8 +193,8 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                             <Text
                                 className='lg:text-[9.5vh] xl:text-[11vh] xl:w-full'
                                 fontWeight={'black'}
-                                fontSize={['10vw', '9vw', '7vw', '6vw', '6.5vw']}
-                                lineHeight={['11.5vw', '11vw', '8.5vw', '7vw', '7vw']}
+                                fontSize={['10vw', '10.5vw', '9vw', '7vw', '7vw']}
+                                lineHeight={['11.5vw', '11.5vw', '10vw', '8vw', '7.5vw']}
                                 color={'primaryBlack.text'}
                             >
                                 Lo spazio {/* <br className='flex lg:hidden' /> */}
@@ -208,15 +208,15 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                                 my={[3, 4]}
                                 color={'#909090'}
                                 fontWeight={'regular'}
-                                fontSize={'18px'}
+                                fontSize={['16px', '18px']}
                                 lineHeight={'23px'}
                                 mb={[5, 7]}
-                                className='hidden'/* 'lg:w-7/12' */
+                                className='lg:hidden'/* 'lg:w-7/12' */
                             >
                                 connettiamo i migliori brand di abbigliamento italiani in un unico negozio online
                             </Text>
                             <Box
-                                mt={[5, 8, 8]}
+                                mt={[5, 5, 5]}
                                 maxW={['full', 'full', 'full', '28vw', '24vw']}
                             >
                                 <ButtonGroupGender />
