@@ -42,10 +42,10 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                         color={sizeProductExist?.quantity && sizeProductExist?.quantity > 0 && sizeSelected !== size ? '#3A3A3A' : sizeSelected === size ? 'white' : '#A19F9F'}
                         className="text-center md:min-w-24 lg:w-32 xl:w-full min-w-[100px]"
                         h={'full'}
-                        cursor={sizeProductExist?.quantity && sizeProductExist?.quantity <= 0 || !sizeProductExist ? '' : 'pointer'}
+                        cursor={typeof sizeProductExist?.quantity === 'number' && sizeProductExist?.quantity <= 0 ? '' : 'pointer'}
                         px={[2, 2]}
                         onClick={() => {
-                            if (sizeProductExist?.quantity && sizeProductExist?.quantity <= 0 || !sizeProductExist) return;
+                            if (typeof sizeProductExist?.quantity === 'number' && sizeProductExist?.quantity <= 0) return;
                             handleLot(size);
                         }}
                         display="flex"
