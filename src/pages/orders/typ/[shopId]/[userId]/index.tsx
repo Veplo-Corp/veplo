@@ -32,6 +32,7 @@ import { formatNumberWithTwoDecimalsInNumber } from '../../../../../../component
 import { GtagVariationsToItemsFor } from '../../../../../../components/utils/GtagVariationsToItemsFor';
 import PostMeta from '../../../../../../components/organisms/PostMeta';
 import NoIndexSeo from '../../../../../../components/organisms/NoIndexSeo';
+import { CheckCircle } from 'iconoir-react';
 
 
 
@@ -148,7 +149,32 @@ const index = () => {
                 <div
                     className='w-full md:w-11/12 lg:w-10/12 xl:w-7/12 m-auto md:mt4'
                 >
-
+                    <Box
+                        my={2}
+                        mb={6}
+                        width={'full'}
+                        bg={'secondary.bg'}
+                        py={[5, 7]}
+                        borderRadius={'15px'}
+                        display={['grid', 'flex']}
+                        justifyContent={'center'}
+                        gap={[1.5, 3]}
+                        color={'white'}
+                        placeItems="center"
+                    >
+                        <CheckCircle
+                            strokeWidth={2}
+                            width={42}
+                            height={42}
+                        />
+                        <Text
+                            my={'auto'}
+                            fontWeight={'bold'}
+                            fontSize={'xl'}
+                        >
+                            Grazie per aver scelto Veplo
+                        </Text>
+                    </Box>
                     <Box
                         display={'flex'}
                         justifyContent={'space-between'}
