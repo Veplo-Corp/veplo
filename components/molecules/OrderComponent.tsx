@@ -135,6 +135,7 @@ const OrderComponent: FC<{ order: Order, orderStatus: OrderStatus | undefined }>
                                     fontWeight="medium"
                                     fontSize="12px"
                                     color="#909090"
+                                    textAlign={'end'}
                                 >
                                     {getDateFromMongoDBDate(singleOrder.date, DateFormat.completeDate)}
                                 </Text>
@@ -177,6 +178,7 @@ const OrderComponent: FC<{ order: Order, orderStatus: OrderStatus | undefined }>
                     width={'full'}
                     justifyContent={'space-between'}
                     mb={5}
+                    textAlign={'end'}
                 >
                     <Text
                         fontSize={'16px'}
