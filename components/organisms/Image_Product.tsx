@@ -184,17 +184,13 @@ const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ 
                             <Box
                                 borderRadius='2xl'
                                 onClick={() => zoomImage()} mb={[2, 5]} overflow='hidden' className='cursor-pointer w-full'>
-                                <motion.div
-                                    variants={LIST_ITEM_VARIANT}
-                                    initial="hidden"
-                                    animate="visible"
-                                    exit="hidden"
-                                >
-                                    <LazyLoadImage src={imageKitUrl(fullImage)}
-                                        alt={variation?.color + 'non trovato'}
-                                        className='rounded-lg w-full aspect-[4.8/5] object-cover'
-                                    />
-                                </motion.div>
+
+                                <LazyLoadImage src={imageKitUrl(fullImage)}
+                                    alt={variation?.color + 'non trovato'}
+                                    effect='blur'
+
+                                    className='rounded-lg w-full aspect-[4.8/5] object-cover'
+                                />
 
                             </Box>
 

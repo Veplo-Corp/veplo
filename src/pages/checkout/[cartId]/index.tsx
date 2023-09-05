@@ -29,6 +29,7 @@ import { formatNumberWithTwoDecimalsInNumber } from '../../../../components/util
 import { openModal } from '../../../store/reducers/globalModal';
 import GET_CART from '../../../lib/apollo/queries/getCart';
 import { CartDispatch } from '../../../interfaces/carts.interface';
+import PageNotFound from '../../../../components/molecules/PageNotFound';
 
 
 const index = () => {
@@ -63,15 +64,14 @@ const index = () => {
     const [typeLogin, setTypeLogin] = useState<'login' | 'registration' | 'reset_password'>('login')
     const [IsOpenDeleteVariation, setIsOpenDeleteVariation] = useState<CartProductVariation>()
     const isSmallView = useBreakpointValue({ base: true, md: false });
-    const [getCart, { data }] = useLazyQuery(GET_CART);
+    const [getCart, cartResponse] = useLazyQuery(GET_CART);
 
 
     useEffect(() => {
 
-        if (!data?.cart.carts?.[0]) return
-        data?.cart.carts?.[0]
-        setCart(data?.cart.carts?.[0])
-    }, [data])
+        if (!cartResponse?.data?.cart.carts?.[0]) return
+        setCart(cartResponse.data?.cart.carts?.[0])
+    }, [cartResponse])
 
 
     useEffect(() => {
@@ -79,6 +79,7 @@ const index = () => {
         if (!router.isReady || typeof cartId !== 'string' || user.statusAuthentication === 'not_yet_authenticated') return
         //setCart(undefined)
         if (user.statusAuthentication === 'logged_out') {
+
             //uso lo shopId da non loggato come cartId
             const cart = cartsDispatch.filter(cart => cart.shopInfo.id === cartId)?.[0]
             if (cart) {
@@ -86,26 +87,15 @@ const index = () => {
             }
         }
         if (user.statusAuthentication === 'logged_in') {
-            getCart({
-                variables: {
-                    id: cartId
-                },
-                fetchPolicy: "network-only"
-            })
+            if (cart?.id !== cartId) {
+                getCart({
+                    variables: {
+                        id: cartId
+                    },
+                })
+            }
         }
-
-
-        // let timeoutId: any;
-        // timeoutId = setTimeout(() => {
-        //     if (!data) {
-        //         router.replace(`/profili/brand`)
-        //         setCart(undefined)
-        //     }
-        // }, 6000); // Timeout di 6 secondi
-        // return () => {
-        //     clearTimeout(timeoutId);
-        // };
-    }, [user, router.query])
+    }, [user])
 
 
 
@@ -115,13 +105,7 @@ const index = () => {
     //     setShop(shopQuery?.data?.shop)
     // }, [shopQuery])
 
-    useEffect(() => {
-        if (!error) return
-        //router.reload()
-        //TODO gestire errore carrello
 
-        //setIsErrorModalOpen(true)
-    }, [error])
 
 
     const checkoutUrl = async () => {
@@ -361,6 +345,8 @@ const index = () => {
         }
     }
 
+
+
     function findShippingDate(): string {
         const oggi: Date = new Date();
         const cinqueGiorniDopo: Date = new Date();
@@ -419,12 +405,13 @@ const index = () => {
 
     return (
         <>
+            <NoIndexSeo title='Checkout | Veplo'></NoIndexSeo>
             <Box
                 className='min-h-[100vh]'
             >
                 {cart ? (
                     <>
-                        <NoIndexSeo title='Veplo'></NoIndexSeo>
+
                         <Box
                             position="fixed"
                             bottom="0"
@@ -826,13 +813,21 @@ const index = () => {
                             </ModalReausable>
                         </Desktop_Layout>
                     </>
-                ) :
+                ) : cartResponse.loading ?
                     (
                         <Box
                             mt={48}
                         >
                             <Loading />
                         </Box>
+                    ) : cartResponse.error ? (
+                        <PageNotFound
+                            title='Errore imprevisto'
+                            description='Ci dispiace, non siamo riusciti a trovare il carrello'
+                            imageSrc='https://www.datocms-assets.com/102220/1686599080-undraw_cancel_re_pkdm.png'
+                        />
+                    ) : (
+                        <></>
                     )
                 }
             </Box>
