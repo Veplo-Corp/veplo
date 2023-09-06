@@ -680,6 +680,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                             noOfLines={1}
                             mt={['4', '6']}
                             fontSize='md'
+                            className='select-none'
                         >
                             {product.colors.length || 0}
                             {product.colors.length === 1 && <span className='ml-1'>colorazione disponibile</span>}
@@ -725,7 +726,9 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                             justifyContent={'space-between'}
                             width={'full'}
                         >
-                            <Text>
+                            <Text
+                                className='select-none'
+                            >
                                 Taglie disponibili
                             </Text>
                             {macrocategorySizeGuide && <Box
