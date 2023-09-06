@@ -39,6 +39,7 @@ import { useMutation } from '@apollo/client'
 import Horizontal_Line from '../../../../../../components/atoms/Horizontal_Line'
 import Box_Dress from '../../../../../../components/molecules/Box_Dress'
 import createUrlSchema from '../../../../../../components/utils/create_url'
+import VariationPreview from '../../../../../../components/molecules/VariationPreview'
 
 interface ProductProps extends Product {
     colors: { name: string, cssColor: string }[],
@@ -680,19 +681,27 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                             noOfLines={1}
                             mt={['4', '6']}
                             fontSize='md'
-                            className='select-none'
                         >
                             {product.colors.length || 0}
                             {product.colors.length === 1 && <span className='ml-1'>colorazione disponibile</span>}
                             {product.colors.length > 1 && <span className='ml-1'>colorazioni disponibili</span>}
                         </Box>}
 
-                        {product.colors && <div className='mt-2'>
+                        {/* {product.colors && <div className='mt-2'>
                             <CircleColorSelected
                                 colorSelected={variationSelected?.color ? variationSelected?.color : ''}
                                 colors={
                                     product?.colors
                                 }
+                                handleSelectColor={changeDressColorOrSize}
+                                dimension={'1.5rem'} space={5} showTooltip={true}
+                            />
+                        </div>} */}
+                        {product.colors && product.variations && <div className='mt-2'>
+                            <VariationPreview
+                                colorSelected={variationSelected?.color ? variationSelected?.color : ''}
+
+                                variations={product.variations}
                                 handleSelectColor={changeDressColorOrSize}
                                 dimension={'1.5rem'} space={5} showTooltip={true}
                             />
