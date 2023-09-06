@@ -68,6 +68,7 @@ const index = () => {
 
 
     useEffect(() => {
+        console.log(cartResponse);
 
         if (!cartResponse?.data?.cart.carts?.[0]) return
         setCart(cartResponse.data?.cart.carts?.[0])
@@ -95,7 +96,7 @@ const index = () => {
                 })
             }
         }
-    }, [user])
+    }, [user, router.query])
 
 
 
