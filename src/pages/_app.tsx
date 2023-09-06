@@ -566,9 +566,7 @@ function MyApp({ Component, pageProps }: any /* AppProps */) {
           </Auth>
         </ChakraProvider>
       </ApolloProvider>
-
     </Provider >
-
   )
 }
 

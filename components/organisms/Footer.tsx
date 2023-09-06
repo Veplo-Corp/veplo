@@ -62,11 +62,15 @@ const Footer = () => {
                                 <li >
                                     <Link href="/informative/come-funziona" className="hover:underline">Scopri di più</Link>
                                 </li>
+
                                 <li >
                                     <Link href="/informative/termini-e-condizioni-vendita" className="hover:underline">Vendere su Veplo</Link>
                                 </li>
                                 <li >
                                     <Box cursor={'pointer'} onClick={() => setIsModalHelpOpen(true)} className="hover:underline">Hai bisogno di aiuto?</Box>
+                                </li>
+                                <li >
+                                    <a target="_blank" href="https://www.datocms-assets.com/102220/1693996944-informazioni_societarie_veplo_srl.pdf">Informazioni Societarie</a>
                                 </li>
                             </ul>
 
