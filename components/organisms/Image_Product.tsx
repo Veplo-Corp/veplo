@@ -173,7 +173,7 @@ const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ 
                                                 }
                                                 alt={variation?.color + 'non trovato'}
                                                 width={'fit-content'}
-                                                className='aspect-[4.8/5] max-h-52 object-cover min-h-52'
+                                                className='aspect-[4.8/5] max-h-20 object-cover min-h-20'
 
                                             />
 
