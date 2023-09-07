@@ -69,9 +69,9 @@ const Footer = () => {
                                 <li >
                                     <Box cursor={'pointer'} onClick={() => setIsModalHelpOpen(true)} className="hover:underline">Hai bisogno di aiuto?</Box>
                                 </li>
-                                <li >
+                                {/* <li >
                                     <a target="_blank" href="https://www.datocms-assets.com/102220/1693996944-informazioni_societarie_veplo_srl.pdf">Informazioni Societarie</a>
-                                </li>
+                                </li> */}
                             </ul>
 
                         </div>
