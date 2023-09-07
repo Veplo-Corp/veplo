@@ -187,14 +187,14 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                     >
 
                         <Box
-                            className='lg:ml-8 xl:ml-28 lg:mt-12 xl:mt-5'
+                            className='lg:ml-8 xl:ml-28 lg:mt-12 xl:mt-3'
                         >
 
                             <Text
-                                className='lg:text-[9.5vh] xl:text-[11vh] xl:w-full'
+                                className='xl:w-full'
                                 fontWeight={'black'}
-                                fontSize={['10.5vw', '10.5vw', '9vw', '7vw', '7vw']}
-                                lineHeight={['11vw', '11.5vw', '10vw', '8vw', '7.5vw']}
+                                fontSize={['10.5vw', '10.5vw', '9vw', '7vw', '6.5vw']}
+                                lineHeight={['11vw', '11.5vw', '10vw', '8vw', '7vw']}
                                 color={'primaryBlack.text'}
                             >
                                 Lo spazio {/* <br className='flex lg:hidden' /> */}
