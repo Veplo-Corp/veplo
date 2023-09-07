@@ -364,7 +364,7 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                                 <Button
                                     mx={'auto'}
                                     variant={'primary'}
-                                    className='w-[92%] sm:w-[70%] md:w-[70%] xl:w-[80%] mx-auto md:mt-2'
+                                    className='mx-auto md:mt-2'
                                     borderWidth={0}
                                     padding={8}
                                     paddingY={7}
