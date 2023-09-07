@@ -193,8 +193,8 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                             <Text
                                 className='xl:w-full'
                                 fontWeight={'black'}
-                                fontSize={['10.5vw', '10.5vw', '9vw', '7vw', '6.5vw']}
-                                lineHeight={['11vw', '11.5vw', '10vw', '8vw', '7vw']}
+                                fontSize={['10.5vw', '10.5vw', '9vw', '7vw', '85px']}
+                                lineHeight={['11vw', '11.5vw', '10vw', '8vw', '90px']}
                                 color={'primaryBlack.text'}
                             >
                                 Lo spazio {/* <br className='flex lg:hidden' /> */}
