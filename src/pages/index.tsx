@@ -50,10 +50,10 @@ const index: FC<{ data: ListComponents }> = ({ data }) => {
     if (!router.isReady) return
     const gender = getGender()
     if (gender === 'donna') {
-      router.push('/cerca/abbigliamento/donna-abbigliamento/tutto/rilevanza')
+      router.replace('/cerca/abbigliamento/donna-abbigliamento/tutto/rilevanza')
     }
     if (gender === 'uomo') {
-      router.push('/cerca/abbigliamento/uomo-abbigliamento/tutto/rilevanza')
+      router.replace('/cerca/abbigliamento/uomo-abbigliamento/tutto/rilevanza')
     }
     if (!gender) {
       return setCanView(true)
