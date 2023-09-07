@@ -166,7 +166,6 @@ const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ 
                                             className={` ${image == fullImage ? "border-black border-8" : "border-white"}   cursor-pointer w-14 xl:w-20`
                                             }
                                         >
-
                                             <LazyLoadImage
                                                 src={
                                                     imageKitUrl(image, 237, 247)
@@ -182,14 +181,13 @@ const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ 
                                 })}
                             </div>
                             <Box
-                                borderRadius='2xl'
                                 onClick={() => zoomImage()} mb={[2, 5]} overflow='hidden' className='cursor-pointer w-full'>
 
                                 <LazyLoadImage src={imageKitUrl(fullImage)}
                                     alt={variation?.color + 'non trovato'}
                                     effect='blur'
 
-                                    className='rounded-lg w-full aspect-[4.8/5] object-cover'
+                                    className='rounded-2xl w-full aspect-[4.8/5] object-cover'
                                 />
 
                             </Box>
