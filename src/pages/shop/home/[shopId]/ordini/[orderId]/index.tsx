@@ -471,7 +471,7 @@ const index = () => {
                                                     variant='outline'
                                                     {...register("code", {
                                                         required: true,
-                                                        minLength: 3
+                                                        minLength: 1
                                                     })}
                                                 >
                                                 </Input>
