@@ -476,7 +476,7 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                         </Button>
                     </Box>
                     <Link
-                        href={'https://www.instagram.com/veplo_it/'}
+                        href={'https://www.instagram.com/veplo.it/'}
                         target='_blank'
                     >
                         <Instagram
