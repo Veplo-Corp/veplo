@@ -63,6 +63,7 @@ const index: FC<{ data: ListComponents }> = ({ data }) => {
   return (
     <Box minH={'120vh'}>
       {canView && <HomePage data={data} />}
+
     </Box>
   )
 }

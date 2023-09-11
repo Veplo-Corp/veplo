@@ -96,7 +96,7 @@ const index: FC<{ shops: ShopsQuery["shops"], listType: 'brand' | 'shop', listCa
         >
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
-                title={`${listCategory ? '' + toUpperCaseFirstLetter(listCategory) : 'Scopri i Brand'} | Veplo`}
+                title={`${listCategory ? 'Marchi ' + toUpperCaseFirstLetter(listCategory) : 'Tutti i Brand'} | Veplo`}
                 subtitle={"Su Veplo trovi i migliori migliori brand di abbigliamento e accessori made in Italy. Trova il tuo capo dei sogni tra tanti prodotti disponibili!"}
                 image={""}
                 description={"Su Veplo trovi i migliori migliori brand di abbigliamento e accessori made in Italy. Trova il tuo capo dei sogni tra tanti prodotti disponibili!"}
@@ -190,16 +190,16 @@ const index: FC<{ shops: ShopsQuery["shops"], listType: 'brand' | 'shop', listCa
                 <option
                     value='brand'>Brand
                 </option>
-                <option value='shop'>
+                {/* <option value='shop'>
                     Negozi
-                </option>
+                </option> */}
             </Select>
             <Box className="grid md:pt-1 sm:grid-cols-1 md:grid-cols-2 sm:gap-10 md:gap-5 lg:gap-20 md:mt-4 mb-32"
 
             >
 
                 {shops.length > 0 &&
-                    shops.map((shop, index) => {
+                    shops.map((shop) => {
 
                         return (
                             <motion.div

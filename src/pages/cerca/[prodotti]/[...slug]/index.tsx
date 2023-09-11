@@ -6,7 +6,6 @@ import getGenderandMacrocategory from '../../../../../components/utils/get_Gende
 import { ParsedURL, parseURLProducts } from '../../../../../components/utils/parseUrlProducts';
 import { Box, Button, FilterProps, HStack, Select, Skeleton, SkeletonCircle, SkeletonText, Tag, TagLabel, TagRightIcon, Text, useBreakpointValue } from '@chakra-ui/react';
 import PostMeta from '../../../../../components/organisms/PostMeta';
-import NoIndexSeo from '../../../../../components/organisms/NoIndexSeo';
 import { useRouter } from 'next/router';
 import Shop_not_Allowed from '../../../../../components/utils/Shop_not_Allowed';
 import { AnimatePresence, motion } from 'framer-motion';

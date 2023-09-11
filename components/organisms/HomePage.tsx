@@ -15,6 +15,7 @@ import CREATE_FORM_INFO_BUSINESS from '../../src/lib/apollo/mutations/createForm
 import PostMeta from './PostMeta'
 import Shop_not_Allowed from '../utils/Shop_not_Allowed'
 import ModalForm from './ModalForm'
+import { Transition } from '@headlessui/react'
 
 
 type InputForm = {
@@ -147,6 +148,7 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                 image={""}
                 description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
             />
+
             <Shop_not_Allowed>
                 <Box
                     bgColor={'primary.bg'}
@@ -242,10 +244,10 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
 
                         </Box>
                         {/* mook phone solo per web */}
+
                         <LazyLoadImage
-                            src={'https://www.datocms-assets.com/102220/1693770284-vectary-texture-oblique.png'}
+                            src={'https://www.datocms-assets.com/102220/1694436945-mook-phone.png'}
                             alt={''}
-                            //effect="blur"
                             className="object-cover h-[100%] mr-5 xl:mr-24 hidden lg:flex"
                         />
                     </Box>
@@ -577,7 +579,7 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                         >
                         </Input>
                         <Input
-                            placeholder='nome del tuo brand (opzionale)'
+                            placeholder='nome del tuo brand'
                             id='businessName'
                             type='text'
                             py={5}
