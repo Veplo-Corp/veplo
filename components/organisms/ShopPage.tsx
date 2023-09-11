@@ -270,8 +270,6 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
 
     return (
         <>
-            <NoIndexSeo />
-
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`${shop.name ? shop.name.visualized + ' (@' + shop.name.unique : 'Brand'}) | Veplo`}

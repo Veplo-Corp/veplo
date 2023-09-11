@@ -3,6 +3,7 @@ import HomePage, { ListComponents } from '../../../../components/organisms/HomeP
 import GET_COMPONENTS_HOME_LIST from '../../../lib/apollo/dato_CMS/queries/getComponentsHomeList'
 import { GetStaticProps } from 'next'
 import { initApollo } from '../../../lib/apollo'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 
 export const getStaticProps: GetStaticProps<{}> = async () => {
@@ -41,6 +42,7 @@ export const getStaticProps: GetStaticProps<{}> = async () => {
 const index: FC<{ data: ListComponents }> = ({ data }) => {
     return (
         <>
+
             <HomePage data={data} />
 
         </>
