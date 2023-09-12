@@ -188,16 +188,15 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                     >
 
                         <Box
-                            className='lg:ml-8 xl:ml-28 lg:mt-12 xl:mt-5 2xl:mt-3'
+                            className='lg:ml-8 xl:ml-28 lg:mt-12 xl:mt-5 2xl:mt-3 my-auto'
                         >
 
                             <Text
                                 className='xl:w-full'
                                 fontWeight={'black'}
-                                fontSize={['10.5vw', '10.5vw', '9vw', '7.5vw', '6.5vw', '85px']}
-                                lineHeight={['11vw', '11.5vw', '10vw', '8vw', '7vw', '90px']}
+                                fontSize={['10.5vw', '10.5vw', '9vw', '7.5vw', '6.5vw', '85px', '6.5vw']}
+                                lineHeight={['11vw', '11.5vw', '10vw', '8vw', '7vw', '90px', '7vw']}
                                 color={'primaryBlack.text'}
-                                maxW={'4xl'}
                             >
                                 Lo spazio {/* <br className='flex lg:hidden' /> */}
                                 dove <span
@@ -248,7 +247,7 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                         <LazyLoadImage
                             src={'https://www.datocms-assets.com/102220/1694436945-mook-phone.png'}
                             alt={''}
-                            className="object-cover h-[100%] mr-5 xl:mr-24 hidden lg:flex"
+                            className="object-cover h-[100%] mr-5 xl:mr-24 2xl:mx-auto hidden lg:flex"
                         />
                     </Box>
                 </Box>
