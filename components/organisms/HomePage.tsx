@@ -128,7 +128,6 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                         style={{
                             boxShadow: '0px 0px 20px 0px rgba(173, 173, 173, 0.25)'
                         }}
-
                     >
                         Uomo
                     </Button>
@@ -198,6 +197,7 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                                 fontSize={['10.5vw', '10.5vw', '9vw', '7.5vw', '6.5vw', '85px']}
                                 lineHeight={['11vw', '11.5vw', '10vw', '8vw', '7vw', '90px']}
                                 color={'primaryBlack.text'}
+                                maxW={'4xl'}
                             >
                                 Lo spazio {/* <br className='flex lg:hidden' /> */}
                                 dove <span
