@@ -218,7 +218,7 @@ const HomePage: FC<{ data: ListComponents }> = ({ data }) => {
                             </Text>
                             <Box
                                 mt={[5, 5, 10, 10, 10]}
-                                maxW={['full', 'full', 'full', '28vw', '18vw']}
+                                maxW={['full', 'full', 'full', '28vw', '24vw', '18vw']}
                             >
                                 <ButtonGroupGender />
                                 <Button

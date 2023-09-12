@@ -185,24 +185,28 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
             {
                 product?.variations?.[0].photos?.[0] &&
                 <Box>
-                    {showStoreHeader && <Link
-                        prefetch={false}
-                        onClick={handleEventSelectedDress}
-                        href={product?.shopInfo?.name?.unique ? `/@${product.shopInfo.name.unique}` : ''}>
+                    {showStoreHeader &&
                         <Box
                             display={'flex'}
                             mb={doubleGridDevice ? 1 : 3}
                         >
-                            <ProfilePhoto
-                                doubleGridDevice={doubleGridDevice}
-                                imgName={product?.shopInfo?.name?.visualized}
-                                scr={product?.shopInfo?.profilePhoto}
-                                primaryText={product?.shopInfo?.name?.visualized}
-                                secondaryText={'@' + product?.shopInfo?.name?.unique}
-                                maxWidth={'105px'}
-                            />
+                            <Link
+                                prefetch={false}
+                                onClick={handleEventSelectedDress}
+                                className=''
+                                href={product?.shopInfo?.name?.unique ? `/@${product.shopInfo.name.unique}` : ''}>
+                                <ProfilePhoto
+                                    doubleGridDevice={doubleGridDevice}
+                                    imgName={product?.shopInfo?.name?.visualized}
+                                    scr={product?.shopInfo?.profilePhoto}
+                                    primaryText={product?.shopInfo?.name?.visualized}
+                                    secondaryText={'@' + product?.shopInfo?.name?.unique}
+                                    maxWidth={'105px'}
+                                />
+                            </Link>
+
                         </Box>
-                    </Link>}
+                    }
 
                     <Box minW='20'
                         _active={{
