@@ -317,7 +317,7 @@ const index = () => {
             return router.push('/shop/home/' + router.query.shopId + '/prodotti')
 
         } catch (error) {
-
+            addToast({ position: 'top', title: 'Errore durante la creazione del prodotto', description: "contattaci se l'errore persiste", status: 'error', duration: 5000, isClosable: true })
             setIsLoading(false)
         }
 
