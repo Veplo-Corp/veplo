@@ -36,7 +36,6 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
 
     if (!shop) return (
         /* gestire errore in caso shop non viene trovato */
-
         <div className='min-h-[100vh]'>
             <PageNotFound
                 title='pagina non trovata'
@@ -274,7 +273,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`${shop.name ? shop.name.visualized + ' (@' + shop.name.unique : 'Brand'}) | Veplo`}
                 subtitle={`${shop.name?.visualized} è su Veplo | Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
-                image={shop?.profilePhoto ? shop?.profilePhoto : ''}
+                image={shop?.profilePhoto}
                 description={`${shop.name?.visualized} è su Veplo | Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
             />
             <Box
@@ -442,8 +441,8 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                         <HStack
                             className='mt-0 mb-2 md:my-1'
                         >
-                            {shop?.minimumAmountForFreeShipping && <TagComponent
-                                text={`spedizione gratis da ${parseInt((shop?.minimumAmountForFreeShipping / 100).toString())}€`}
+                            {typeof shop?.minimumAmountForFreeShipping === 'number' && <TagComponent
+                                text={shop?.minimumAmountForFreeShipping > 0 ? `spedizione gratis da ${parseInt((shop?.minimumAmountForFreeShipping / 100).toString())}€` : 'spedizione sempre gratuita'}
                                 bg={'secondary.opacityBg'}
                                 color={'secondary.bg'}
                             />}
