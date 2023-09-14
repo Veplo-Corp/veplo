@@ -675,7 +675,7 @@ const index = () => {
                                                         color={'secondaryBlack.text'}
                                                     >
                                                         {
-                                                            (typeof cart?.shopInfo?.minimumAmountForFreeShipping !== 'number' || typeof cart.total !== 'number' || cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) ?
+                                                            (typeof cart?.shopInfo?.minimumAmountForFreeShipping === 'number' && typeof cart.total === 'number' && cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) ?
                                                                 formatNumberWithTwoDecimalsInString(cart.total ? cart.total + 499 : null) :
                                                                 formatNumberWithTwoDecimalsInString(cart.total)
                                                         }€
