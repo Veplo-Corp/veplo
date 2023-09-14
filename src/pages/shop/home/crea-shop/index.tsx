@@ -807,7 +807,7 @@ const index = () => {
                             <Controller
                                 control={control}
                                 name="categories"
-                                rules={{ required: false }}
+                                rules={{ required: true }}
                                 render={() => (
                                     <SelectMultipleOptions
                                         limitNumber={2}
