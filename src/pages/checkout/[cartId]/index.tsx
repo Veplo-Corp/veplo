@@ -620,7 +620,7 @@ const index = () => {
                                                             Spedizione
                                                         </Text>
 
-                                                        {(typeof cart?.shopInfo?.minimumAmountForFreeShipping !== 'number' || typeof cart.total !== 'number' || cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) && <Text
+                                                        {(typeof cart?.shopInfo?.minimumAmountForFreeShipping === 'number' && typeof cart.total === 'number' && cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) && <Text
                                                             fontSize={'12px'}
                                                             fontWeight={'medium'}
                                                             color={'primary.bg'}
@@ -636,7 +636,7 @@ const index = () => {
                                                             fontWeight={'semibold'}
                                                             color={'secondaryBlack.text'}
                                                         >
-                                                            {(typeof cart?.shopInfo?.minimumAmountForFreeShipping !== 'number' || typeof cart.total !== 'number' || cart?.shopInfo?.minimumAmountForFreeShipping > cart.total) ? '4,99€' : 'gratis'}
+                                                            {typeof cart?.shopInfo?.minimumAmountForFreeShipping === 'number' && typeof cart.total === 'number' && cart?.shopInfo?.minimumAmountForFreeShipping > cart.total ? '4,99€' : 'gratis'}
                                                         </Text>
                                                     ) : (
                                                         <Stack

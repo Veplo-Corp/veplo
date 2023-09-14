@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React, { FC } from 'react'
 
-const PostMeta: FC<{ title: string, subtitle: string, image: string, description: string, canonicalUrl: string, children?: any }> = ({ title, subtitle, image, description, canonicalUrl, children }) => {
+const PostMeta: FC<{ title: string, subtitle: string, image: string | null | undefined, description: string, canonicalUrl: string, children?: any }> = ({ title, subtitle, image, description, canonicalUrl, children }) => {
   return (
     <Head>
       <title>{title}</title>
@@ -17,12 +17,12 @@ const PostMeta: FC<{ title: string, subtitle: string, image: string, description
       <meta property="og:title" content={title} />
       <meta property="og:description" content={subtitle} />
       <meta property="og:url" content={canonicalUrl} />
-      {image.length > 0 && <meta property="og:image" content={image} />}
+      {image && <meta property="og:image" content={image} />}
       {/* twitter card meta */}
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:title" content={title} />
       <meta property="twitter:description" content={description} />
-      {image.length > 0 && < meta property="twitter:image" content={image} />}
+      {image && < meta property="twitter:image" content={image} />}
     </Head>
 
   )
