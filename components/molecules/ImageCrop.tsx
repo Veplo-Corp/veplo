@@ -12,21 +12,22 @@ interface Props {
     circularCrop: boolean,
     onHanldeConfirm: (completeCrop: PixelCrop, type: UploadEventType | undefined, imageRefCurrent: HTMLImageElement) => void,
     handlerCancel: () => void,
-    type: UploadEventType | undefined
+    type: UploadEventType | undefined,
+    defaultCrop?: Crop | any
 }
 
 const ImageCrop: FC<Props> = ({ ...props }) => {
     const imgRef = useRef<HTMLImageElement>(null)
     const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
-    const [crop, setCrop] = useState<Crop | any>(
-        /* {
+    const [crop, setCrop] = useState<Crop | any>(props.defaultCrop ? props.defaultCrop : undefined)
+
+    /* {
             unit: '%', // Can be 'px' or '%'
-            x: 17.53,
-            y: 11.00,
-            width: 65.99,  //762 diviso 5
-            height: 76.209,//1100 diviso 5
+            // x: 17.53,
+            // y: 11.00,
+            width: 50,  //762 diviso 5
+            height: 50,//1100 diviso 5
         } */
-    )
 
     const onHanldeConfirm = () => {
         if (completedCrop && imgRef.current) {
@@ -60,7 +61,6 @@ const ImageCrop: FC<Props> = ({ ...props }) => {
                     circularCrop={props.circularCrop}
                     onChange={(_, percentCrop) => setCrop(percentCrop)}
                     onComplete={(c) => {
-
                         setCompletedCrop(c)
                     }}
 

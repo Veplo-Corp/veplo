@@ -48,12 +48,15 @@ const EditColorToProduct: FC<{ category: string | undefined, confirmCard: (varia
 
     }, [defaultCardValue])
 
+
     useEffect(() => {
         if (!category) return
+
         const sizeType = SIZES_TYPES.find(size => size.name === category)?.type
+        console.log(sizeType);
+
         if (!sizeType) return setSizeTypologySelected([])
         setSizeTypologySelected(sizeType);
-        setSizeTypologySelected(sizeTypologySelected);
 
     }, [category])
 
@@ -115,7 +118,6 @@ const EditColorToProduct: FC<{ category: string | undefined, confirmCard: (varia
                                     disabledSizes={productSizeSelected}
                                     values={sizeTypologySelected}
                                     defaultValue={element.size}
-
                                     handleClick={(size) => {
                                         if (size === undefined) return
 
