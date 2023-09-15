@@ -83,7 +83,9 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
     //refactoring of onSelectFile
     const onSelectFileInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
 
-        hiddenFileInputImage.current.click();
+        //await hiddenFileInputImage.current.click();
+
+
         if (e.target.files) {
             try {
                 const file = e.target.files[0];
@@ -95,13 +97,14 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
             } catch (err) {
                 //TODO gestisci errore
             }
-
         }
         else {
         }
 
 
     }
+
+
 
     const handleImageConfirm = (image: PixelCrop, imgRefCurrent: HTMLImageElement) => {
 
@@ -297,8 +300,8 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                 </Button>}
                 <Div_input_creation text='Carica immagini'>
                     <Box
-                        width={'full'}
-                        display={'flex'}
+                        display={'grid'}
+                        className='grid-cols-2 w-fit gap-2'
                         justifyContent={'start'}
                         mt={2}
                     >
@@ -306,25 +309,22 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                             return (
                                 <Box
                                     key={index}
-                                    className='flex mr-2 aspect-[4.8/5] max-w-[150px]'
-
-                                    height={130}
-                                    width={125}
+                                    className='flex mr-2 aspect-[4.8/5] max-h-[330px]'
+                                    height={330}
+                                    width={315}
 
                                     position={'relative'}
                                     borderRadius={'10px'}
-
-
                                 >
                                     <img
-                                        className='aspect-[4.8/5] object-cover rounded-[10px] max-w-[150px]'
+                                        className='aspect-[4.8/5] object-cover rounded-[10px] max-h-[315px]'
                                         src={image.url}
                                     ></img>
 
                                     <Box
                                         height={5}
                                         width={5}
-                                        className='absolute right-1 top-1  cursor-pointer rounded-lg'
+                                        className='absolute right-6 top-2  cursor-pointer rounded-lg'
                                         bgColor={'white'}
                                         display={'flex'}
                                         justifyContent={'center'}
@@ -429,7 +429,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
 
             <ModalReausable
                 marginTop={0}
-                title={'inserisci immagine (ritaglia la foto)'}
+                title={'inserisci immagine 630x660 (ritaglia la foto se necessario)'}
                 isOpen={isImageModalOpen}
                 closeModal={() => {
                     hiddenFileInputImage.current.value = null;
@@ -442,16 +442,18 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                     imageSrc={imgSrc} type={UploadEventType.product} aspectRatio={4.8 / 5}
                     circularCrop={false}
                     onHanldeConfirm={(image, type, imageRefCurrent) => {
-
                         handleImageConfirm(image, imageRefCurrent)
                         hiddenFileInputImage.current.value = null;
                         setIsImageModalOpen(false)
-                    }
-
-                    }
+                    }}
                     handlerCancel={() => {
                         hiddenFileInputImage.current.value = null;
                         setIsImageModalOpen(false)
+                    }}
+                    defaultCrop={{
+                        unit: 'px',
+                        width: 210,  //630 diviso 3
+                        height: 220,//660 diviso 3
                     }}
                 />
             </ModalReausable>
