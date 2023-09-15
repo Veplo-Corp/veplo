@@ -306,8 +306,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                             return (
                                 <Box
                                     key={index}
-                                    className='flex mr-2 '
-
+                                    className='flex mr-2 aspect-[4.8/5] max-w-[150px]'
 
                                     height={130}
                                     width={125}
@@ -318,7 +317,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
 
                                 >
                                     <img
-                                        className='aspect-[4.8/5] object-cover rounded-[10px]'
+                                        className='aspect-[4.8/5] object-cover rounded-[10px] max-w-[150px]'
                                         src={image.url}
                                     ></img>
 

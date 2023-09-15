@@ -442,7 +442,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                             className='mt-0 mb-2 md:my-1'
                         >
                             {typeof shop?.minimumAmountForFreeShipping === 'number' && <TagComponent
-                                text={shop?.minimumAmountForFreeShipping > 0 ? `spedizione gratis da ${parseInt((shop?.minimumAmountForFreeShipping / 100).toString())}€` : 'spedizione sempre gratuita'}
+                                text={shop?.minimumAmountForFreeShipping > 0 ? `spedizione gratis da ${parseInt((shop?.minimumAmountForFreeShipping / 100).toString())}€` : 'spedizione gratuita'}
                                 bg={'secondary.opacityBg'}
                                 color={'secondary.bg'}
                             />}
