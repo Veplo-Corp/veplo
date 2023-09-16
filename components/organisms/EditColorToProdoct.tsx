@@ -54,7 +54,6 @@ const EditColorToProduct: FC<{ category: string | undefined, confirmCard: (varia
         const sizeType = SIZES_TYPES.find(size => size.name === category)?.type
         if (!sizeType) return setSizeTypologySelected([])
         setSizeTypologySelected(sizeType);
-
     }, [category])
 
 
