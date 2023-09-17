@@ -139,7 +139,6 @@ interface ProductProps extends Product {
 
 const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initialApolloState: any }> = ({ productFounded, errorLog, initialApolloState }) => {
 
-    console.log('pagina prodotto');
 
 
     const colors = useRef<Color[]>(COLORS)

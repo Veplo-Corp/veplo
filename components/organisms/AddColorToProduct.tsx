@@ -15,6 +15,7 @@ import { canvasPreview } from '../molecules/Canva_previews';
 import { resizeFile } from '../utils/resizeFile';
 import { SIZES_TYPES } from '../mook/productParameters/sizes';
 import { UploadEventType } from '../../src/lib/upload/UploadEventTypes';
+import { imageKitUrl } from '../utils/imageKitUrl';
 
 const quantity = Array.from({ length: 100 }, (_, i) => i + 1)
 
@@ -32,7 +33,6 @@ type Image = {
 }
 
 const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => void, confirmCard: (variation: VariationCard) => void, colors: Color[], defaultCardValue?: VariationCard }> = ({ category, deleteCard, confirmCard, colors, defaultCardValue }) => {
-    console.log('runna AddColorToProduct');
 
     const [color, setColor] = useState('')
     const [sizeTypologySelected, setSizeTypologySelected] = useState<string[]>([])
@@ -43,7 +43,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
     const hiddenFileInputImage = useRef<any>(null);
     const [imgSrc, setImgSrc] = useState<any>('');
     const previewCanvasRef = useRef<HTMLCanvasElement>(null)
-    const [images, setImages] = useState<Image[]>([])
+    const [images, setImages] = useState<any[]>([])
     const [editIndex, setEditIndex] = useState<number>()
     const [productSizeSelected, setProductSizeSelected] = useState<Size[]>([
         {
@@ -53,9 +53,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
     ])
     useEffect(() => {
         if (!defaultCardValue) return
-        console.log(defaultCardValue);
         const card = { ...defaultCardValue }
-        console.log(card);
         setColor(card.color)
         setTimeout(() => {
             setProductSizeSelected((prevState) => {
@@ -332,20 +330,33 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                                     position={'relative'}
                                     borderRadius={'10px'}
                                 >
-                                    <img
-                                        onClick={() => {
-                                            setEditIndex(index)
-                                            handleClickImage()
-                                        }
-                                        }
-                                        className='aspect-[4.8/5] object-cover rounded-[10px] max-h-[315px]'
-                                        src={image.url}
-                                    ></img>
+                                    {image?.url ?
+                                        (<img
+                                            onClick={() => {
+                                                setEditIndex(index)
+                                                handleClickImage()
+                                            }
+                                            }
+                                            className='aspect-[4.8/5] object-cover rounded-[10px] max-h-[315px]'
+                                            src={image.url}
+                                        />) : (
+                                            <img
+                                                onClick={() => {
+                                                    setEditIndex(index)
+                                                    handleClickImage()
+                                                }
+                                                }
+                                                className='aspect-[4.8/5] object-cover rounded-[10px] max-h-[315px]'
+                                                src={imageKitUrl(image)}
+                                            />
+                                        )}
+
+
 
                                     <Box
                                         height={5}
                                         width={5}
-                                        className='absolute right-6 top-2  cursor-pointer rounded-lg'
+                                        className='absolute right-4 top-3  cursor-pointer rounded-lg'
                                         bgColor={'white'}
                                         display={'flex'}
                                         justifyContent={'center'}
@@ -353,10 +364,8 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                                             transform: 'scale(0.90)',
                                         }}
                                         onClick={() => {
-
                                             setImages(prevstate => {
-                                                const element = prevstate.filter(element => element.url !== image.url)
-
+                                                const element = prevstate.filter(element => (element.url !== image.url || element !== image))
                                                 return element
                                             })
 

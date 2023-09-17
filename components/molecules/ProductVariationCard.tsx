@@ -1,5 +1,5 @@
 import { Box, ButtonGroup, IconButton } from '@chakra-ui/react'
-import React, { FC, memo, useState } from 'react'
+import React, { FC, memo, useEffect, useState } from 'react'
 import { Variation } from '../../src/interfaces/product.interface'
 import { VariationCard } from '../../src/interfaces/variationCard.interface'
 import { imageKitUrl } from '../utils/imageKitUrl'
@@ -7,25 +7,36 @@ import AddColorToProduct from '../organisms/AddColorToProduct'
 
 const ProductVariationCard: FC<{ category: string | undefined, index: number, variation: VariationCard, deleteCard: (variation: any) => void, editCard: (variation: VariationCard) => void }> = ({ category, index, deleteCard, editCard, variation }) => {
     const [isEdited, setIsEdited] = useState(false)
+    const [variationState, setVariationState] = useState<VariationCard>(variation)
+    useEffect(() => {
+
+        setVariationState(variation)
+    }, [variation])
+
+
 
     return (
         isEdited ?
             (
-                <AddColorToProduct
-                    defaultCardValue={variation}
-                    confirmCard={(variation) => {
-                        editCard(variation)
-                        setIsEdited(false)
-                    }}
-                    deleteCard={() => setIsEdited(false)}
-                    colors={[]}
-                    category={category}
-                />
+                <Box
+                    mb={5}
+                >
+                    <AddColorToProduct
+                        defaultCardValue={variationState}
+                        confirmCard={(variationState) => {
+                            editCard(variationState)
+                            setIsEdited(false)
+                        }}
+                        deleteCard={() => setIsEdited(false)}
+                        colors={[]}
+                        category={category}
+                    />
+                </Box>
+
             )
             :
             (
                 <Box
-                    key={index}
                     paddingTop={7}
                     paddingBottom={5}
                     paddingX={7}
@@ -36,7 +47,7 @@ const ProductVariationCard: FC<{ category: string | undefined, index: number, va
                 >
                     <div className='flex justify-between mb-1'>
                         <h5 className=' text-md lg:text-lg font-extrabold my-auto'>
-                            {variation?.color}
+                            {variationState?.color}
                         </h5>
                         <h5 className=' text-sm lg:text-md font-bold text-right my-auto'>
                             Taglie
@@ -44,9 +55,9 @@ const ProductVariationCard: FC<{ category: string | undefined, index: number, va
                     </div>
                     <div className='flex justify-between mt-2'>
                         <div className='flex gap-2'>
-                            {variation?.photos.length > 0 && variation?.photos.map((image: any) => {
-                                if (image?.url) {
+                            {variationState?.photos.length > 0 && variationState?.photos.map((image: any) => {
 
+                                if (image?.url) {
                                     return (
                                         <img
                                             key={image.url}
@@ -69,7 +80,7 @@ const ProductVariationCard: FC<{ category: string | undefined, index: number, va
 
                         <div className='gap-2 text-right'>
                             {
-                                variation?.lots.length > 0 && variation?.lots.map((size: any, index: number) => {
+                                variationState?.lots.length > 0 && variationState?.lots.map((size: any, index: number) => {
                                     return (
                                         <p
                                             className='text-sm mb-1'
@@ -107,7 +118,7 @@ const ProductVariationCard: FC<{ category: string | undefined, index: number, va
                             colorScheme={'red'}
                             variant={'ghost'}
                             onClick={() => {
-                                deleteCard(variation)
+                                deleteCard(variationState)
                             }}
                             icon={
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

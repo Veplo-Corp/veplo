@@ -93,13 +93,10 @@ const index = () => {
     });
     const user: Firebase_User = useSelector((state: any) => state.user.user);
 
-    console.log(productVariations);
-    console.log(productVariations.length);
 
 
 
     const confirmCard = (variation: VariationCard, isEdit?: boolean) => {
-        console.log(variation);
         if (isEdit) {
             setProductVariations((prevstate: VariationCard[]) => {
                 let newVariation = [...prevstate]
@@ -658,9 +655,6 @@ const index = () => {
                                     />
                                 )
                             })}
-
-
-
 
                             {!newCard ? (
                                 <Button

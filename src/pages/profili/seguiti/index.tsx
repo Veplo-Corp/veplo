@@ -31,7 +31,6 @@ const index = () => {
     }, [user])
 
 
-    console.log(data?.user?.following === null);
 
 
 

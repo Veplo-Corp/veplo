@@ -67,8 +67,10 @@ const Modal_Error_Shop: React.FC<ErrorModal> = ({ title, description, closeText,
                                 <div className='flex '>
                                     <div className="mt-4 m-auto mr-2">
                                         <Button
-                                            colorScheme={'black'}
-                                            variant='outline'
+                                            variant={'grayPrimary'}
+                                            borderRadius={'20px'}
+                                            fontSize={'md'}
+                                            paddingInline={'25px'}
                                             onClick={closeModal}
                                         >
                                             {closeText}
@@ -81,7 +83,10 @@ const Modal_Error_Shop: React.FC<ErrorModal> = ({ title, description, closeText,
                                                     handleEvent(data)
                                                     closeModal()
                                                 }}
-                                                colorScheme={'red'}
+                                                colorScheme='red'
+                                                borderRadius={'20px'}
+                                                fontSize={'md'}
+                                                paddingInline={'25px'}
                                             >
                                                 {confirmText}
                                             </Button>
