@@ -138,7 +138,6 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
 
     useEffect(() => {
         if (!productFounded) return
-        console.log('runna useEffect productFounded');
 
         setproduct(productFounded)
         if (productFounded?.info?.gender === 'f' || product?.info?.gender === 'm') {
@@ -157,7 +156,6 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
 
     const variationSelected: ProductVariation | undefined = useMemo(() => {
         const { colors, sizes } = router.query
-        console.log('runna useMemo variationSelected');
 
         if (!productFounded) return
         if (!colors && productFounded?.variations?.[0]?.photos?.[0]) {

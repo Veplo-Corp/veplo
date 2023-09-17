@@ -15,7 +15,6 @@ const VariationPreview: React.FC<{ variations: ProductVariation[], dimension: nu
                 gap={2}
             >
                 {variations.map((variation, index) => {
-                    console.log(colorSelected === variation.color);
 
                     return (
                         <Tooltip key={index} isDisabled={!showTooltip} label={variation?.color}>

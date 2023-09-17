@@ -1,6 +1,6 @@
 import { gql, makeVar, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import Desktop_Layout from '../../../../../../../components/atoms/Desktop_Layout';
 import EditProductInputForm from '../../../../../../../components/molecules/EditProductInputForm';
@@ -21,13 +21,16 @@ import CREATE_VARIATION from '../../../../../../lib/apollo/mutations/createVaria
 
 import GET_PRODUCTS_FROM_SHOP from '../../../../../../lib/apollo/queries/geetProductsShop';
 import GET_SINGLE_PRODUCT from '../../../../../../lib/apollo/queries/getSingleProduct';
-import { Button } from '@chakra-ui/react';
+import { Button, ButtonGroup, Text } from '@chakra-ui/react';
 import AddColorToProduct from '../../../../../../../components/organisms/AddColorToProduct';
 import { COLORS, Color } from '../../../../../../../components/mook/colors';
 import { VariationCard } from '../../../../../../interfaces/variationCard.interface';
 import { uploadImage } from '../../../../../../lib/upload/uploadImage';
 import { UploadEventType } from '../../../../../../lib/upload/UploadEventTypes';
 import expirationTimeTokenControll from '../../../../../../../components/utils/expirationTimeTokenControll';
+import ProductVariationCard from '../../../../../../../components/molecules/ProductVariationCard';
+import ModalReausable from '../../../../../../../components/organisms/ModalReausable';
+import { isProductVariationChanged } from '../../../../../../../components/utils/isProductVariationChanged';
 
 interface Props {
     shop: {
@@ -65,17 +68,16 @@ const index = () => {
     //const [getBusiness, { error, data }] = useLazyQuery<Props>(GET_BUSINESS);
     const router = useRouter();
     const [product, setProduct] = useState<Product>();
+    const [modalVariationToDelete, setModalVariationToDelete] = useState<Variation | undefined>()
     const [defaultValue, setdefaultValue] = useState<IFormInputProductEdit>();
     const productData = useQuery(GET_SINGLE_PRODUCT, {
         variables: {
             id: router.query?.productId
         }
     })
-    const [first, setfirst] = useState(true)
     const [sizeTypeSelected, setSizeTypeSelected] = useState<string>('')
     const [newCard, setNewCard] = useState(false)
     const [colors, setColors] = useState<Color[]>(COLORS)
-    const [sizeCateggory, setSizeCateggory] = useState('')
     const [createVariation] = useMutation(CREATE_VARIATION, {
         awaitRefetchQueries: true,
         refetchQueries: [{
@@ -84,6 +86,8 @@ const index = () => {
             }
         }],
     })
+
+
 
 
 
@@ -131,7 +135,6 @@ const index = () => {
 
     const [editVariation] = useMutation(EDIT_VARIATIONS, {
         update(cache, el, query) {
-
             const normalizedIdVariation = cache.identify({ id: query?.variables?.id, __typename: 'ProductVariation' });
             cache.modify({
                 id: normalizedIdVariation,
@@ -139,7 +142,9 @@ const index = () => {
                     lots(cachedvalue) {
                         return query?.variables?.options?.lots
                     },
-
+                    photos() {
+                        return query?.variables?.options?.photos
+                    }
                 }
             })
         }
@@ -152,7 +157,7 @@ const index = () => {
 
     useEffect(() => {
         const product: Product = productData?.data?.product
-        if (!product) return
+
         if (!product) return
         setProduct(product)
         setdefaultValue({
@@ -335,16 +340,15 @@ const index = () => {
 
 
 
-    const handleDeleteVariation = async (variationId: string, color: string) => {
+    const handleDeleteVariation = async (variation: Variation) => {
         if (product && product.variations?.length <= 1) {
             return addToast({ position: 'top', title: "Impossibile cancellare il colore", description: "hai solo un colore disponibile per questo prodotto", status: 'error', duration: 5000, isClosable: true })
         }
         try {
-
             //Delete Variation on GraphQL
             await deleteVariation({
                 variables: {
-                    id: variationId
+                    id: variation.id
                 }
             })
             addToast({ position: 'top', title: `Variante di colore cancellata!`, status: 'success', duration: 3000, isClosable: true })
@@ -352,7 +356,7 @@ const index = () => {
             //Edit Product.variations once you delete the variation
             setProduct((prevstate) => {
                 if (!prevstate?.variations) return prevstate
-                const newVariations = prevstate?.variations.filter(variation => variation?.id !== variationId)
+                const newVariations = prevstate?.variations.filter(variation => variation?.id !== variation.id)
                 return {
                     ...prevstate,
                     variations: newVariations
@@ -360,7 +364,7 @@ const index = () => {
             })
 
             setColors((prevState: Color[]) => {
-                const colorElement: Color | undefined = COLORS.find(element => element.name === color)
+                const colorElement: Color | undefined = COLORS.find(element => element.name === variation.color)
                 if (colorElement) return [
                     colorElement,
                     ...prevState
@@ -377,60 +381,94 @@ const index = () => {
         }
     }
 
-    const editVariationHandler = async (variationId: string, variation: Size[], photos: string[]) => {
 
-
-        let variationSize = variation?.map(variation => {
+    const handleEditCard = useCallback(async (variation: VariationCard, variationId: string) => {
+        let variationSize = variation.lots?.map(element => {
             return {
-                quantity: variation?.quantity,
-                size: variation?.size.split(' (')[0]
+                quantity: element?.quantity,
+                size: element?.size.split(' (')[0]
             }
         })
 
+        let photos: File[] = [];
+        for (const photo of variation?.photos) {
+            if (photo.file) photos.push(photo.file)
+        }
 
 
-        await editVariation({
-            variables: {
-                id: variationId,
-                options: {
-                    photos: photos,
-                    lots: variationSize
+
+        const promises: Promise<string>[] = [];
+        addToast({ position: 'top', title: `Modifica variante ${variation?.color} in corso`, status: 'loading', duration: photos.length > 0 ? 3000 : 1000, isClosable: true })
+
+        if (photos.length > 0) {
+            //crea le promises per il Promise.all
+            for await (const photo of photos) {
+                promises.push(
+                    new Promise<string>(async (resolve) => {
+                        try {
+                            const result = await uploadImage(photo, UploadEventType.product);
+                            if (!result) {
+                                throw new Error('Upload failed');
+                            }
+                            resolve(result.id);
+                        } catch (error) {
+
+                        }
+                    }))
+            }
+        }
+
+
+
+        try {
+            let photosFileIDs: string[] = [];
+            if (promises.length > 0) {
+                photosFileIDs = await Promise.all(promises);
+            }
+            let photosURLToUpload: string[] = [];
+            let indexPhoto = 0
+            for (const photo of variation?.photos) {
+                if (photo.file) {
+                    photosURLToUpload.push(photosFileIDs[indexPhoto])
+                    indexPhoto++
+                } else {
+                    photosURLToUpload.push(photo)
                 }
             }
-        })
-        addToast({ position: 'top', title: `Prodotto aggiornato!`, status: 'success', duration: 3000, isClosable: true })
 
 
-        setProduct((prevstate) => {
-            if (!prevstate?.variations) return prevstate
-            let newStateVariations = prevstate.variations.map(variation => {
-                if (variation?.id === variationId) {
-                    const newVariation = {
-                        ...variation,
+
+            //controllo che le foto siano di lunghezza superiore a 1
+            if (photosURLToUpload.length <= 0) {
+                return addToast({ position: 'top', title: `Non possiamo aggiornare una variante di colore senza foto`, status: 'error', duration: 3000, isClosable: true })
+
+            }
+            await editVariation({
+                variables: {
+                    id: variationId,
+                    options: {
+                        photos: photosURLToUpload,
                         lots: variationSize
                     }
-                    return newVariation
                 }
-                return variation
             })
+            addToast({ position: 'top', title: `Prodotto aggiornato!`, status: 'success', duration: 3000, isClosable: true })
 
 
 
+            //mettere alert per creazione avvenuta con successo
 
-            return {
-                ...prevstate,
-                variations: [
-                    ...newStateVariations
-                ]
-            }
-        })
+        } catch (e) {
 
+        }
 
-    }
+    }, [])
 
+    console.log('prodotto', product);
 
 
     const confirmCard = async (variation: VariationCard) => {
+        addToast({ position: 'top', title: `Creazione variante ${variation?.color} in corso!`, status: 'loading', duration: 3500, isClosable: true })
 
         const variationLots = variation?.lots.map(lot => {
             return {
@@ -517,8 +555,8 @@ const index = () => {
                     </h1>
                 </div>
                 {product?.variations && defaultValue &&
-                    <div className='lg:flex w-full'>
-                        <div className='w-full md:w-8/12 lg:w-5/12 m-auto mb-10 mt-0'>
+                    <div className='lg:flex w-full lg:gap-6'>
+                        <div className='w-full md:w-8/12 lg:w-5/12 xl:w-1/2 m-auto mb-10 mt-0'>
                             <EditProductInputForm
                                 univers={productData?.data?.product?.info?.univers}
                                 handleConfirm={editProductHandler}
@@ -526,17 +564,35 @@ const index = () => {
                                 gender={product.info.gender}
                             />
                         </div>
-                        <div className='w-full md:w-8/12 lg:w-5/12  mx-auto'>
-                            {sizeTypeSelected && product.variations.map((variation, index) => {
+                        <div className='w-full md:w-8/12 lg:w-7/12 xl:w-1/2  mx-auto'>
+                            {sizeTypeSelected && product.variations.map((variation: any, index) => {
                                 return (
-                                    <div key={index}>
+                                    <div
+                                        key={index}
+
+                                    >
+                                        {/* <div key={index}>
                                         <EditVariationCard
                                             variation={variation}
                                             category={sizeTypeSelected}
                                             deleteVariation={handleDeleteVariation}
                                             editVariation={editVariationHandler}
                                         />
+                                    </div> */}
+                                        <ProductVariationCard
+                                            index={index}
+                                            variation={variation}
+                                            deleteCard={(variation: Variation) => {
+                                                setModalVariationToDelete(variation)
+                                            }}
+                                            editCard={(newVariation: VariationCard) => {
+                                                if (!isProductVariationChanged(variation, newVariation)) return
+                                                handleEditCard(newVariation, variation.id)
+                                            }}
+                                            category={sizeTypeSelected}
+                                        />
                                     </div>
+
                                 )
                             })}
                             {!newCard ? (
@@ -581,7 +637,52 @@ const index = () => {
                     </div>
                 }
             </Desktop_Layout>
+            <ModalReausable
+                title={'Elimina Variante di colore'}
+                isOpen={modalVariationToDelete ? true : false}
+                closeModal={() => setModalVariationToDelete(undefined)}
+            >
+                <Text
+                    mr={5}
+                    mt={6}
+                    mb={5}
+                    fontSize={'18px'}
+                    fontWeight={'normal'}
+                    color={'secondaryBlack.text'}
 
+                >
+                    Sei sicuro di voler eliminare il colore {modalVariationToDelete?.color}
+                </Text>
+                <ButtonGroup
+                    float={'right'}
+                >
+                    <Button
+                        variant={'grayPrimary'}
+                        borderRadius={'20px'}
+                        fontSize={'md'}
+                        paddingInline={'25px'}
+                        onClick={() => {
+
+                            setModalVariationToDelete(undefined)
+                        }}
+                    >
+                        Annulla
+                    </Button>
+                    <Button
+                        colorScheme='red'
+                        borderRadius={'20px'}
+                        fontSize={'md'}
+                        paddingInline={'25px'}
+                        onClick={() => {
+                            if (!modalVariationToDelete) return
+                            handleDeleteVariation(modalVariationToDelete)
+                            setModalVariationToDelete(undefined)
+                        }}
+                    >
+                        Conferma
+                    </Button>
+                </ButtonGroup>
+            </ModalReausable>
         </>
 
     )

@@ -76,7 +76,6 @@ const ButtonFollow: FC<{ shopId: string | undefined | null; isSmall?: boolean }>
                 setOnFollowLoading(false)
             }
             catch (e) {
-                console.log(e);
 
                 //TODO handle error follow
                 setOnFollowLoading(false)
@@ -99,7 +98,6 @@ const ButtonFollow: FC<{ shopId: string | undefined | null; isSmall?: boolean }>
             }
             catch (e) {
                 //TODO handle error follow
-                console.log(e);
 
                 setOnFollowLoading(false)
 

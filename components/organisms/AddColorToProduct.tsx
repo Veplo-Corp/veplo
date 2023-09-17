@@ -1,6 +1,6 @@
 import { CheckIcon, DownloadIcon } from '@chakra-ui/icons';
 import { Avatar, Box, Button, ButtonGroup, IconButton, Select } from '@chakra-ui/react'
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { FC, memo, useEffect, useRef, useState } from 'react'
 import { Variation } from '../../src/interfaces/product.interface';
 import { VariationCard } from '../../src/interfaces/variationCard.interface';
 import Div_input_creation from '../atoms/Div_input_creation';
@@ -15,6 +15,7 @@ import { canvasPreview } from '../molecules/Canva_previews';
 import { resizeFile } from '../utils/resizeFile';
 import { SIZES_TYPES } from '../mook/productParameters/sizes';
 import { UploadEventType } from '../../src/lib/upload/UploadEventTypes';
+import { imageKitUrl } from '../utils/imageKitUrl';
 
 const quantity = Array.from({ length: 100 }, (_, i) => i + 1)
 
@@ -33,27 +34,38 @@ type Image = {
 
 const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => void, confirmCard: (variation: VariationCard) => void, colors: Color[], defaultCardValue?: VariationCard }> = ({ category, deleteCard, confirmCard, colors, defaultCardValue }) => {
 
-
     const [color, setColor] = useState('')
     const [sizeTypologySelected, setSizeTypologySelected] = useState<string[]>([])
     const [canAddNewSize, setcanAddNewSize] = useState(false)
     const [isCardConfirmed, setIsCardConfirmed] = useState(false)
-
-
     //image
     const [isImageModalOpen, setIsImageModalOpen] = useState(false)
     const hiddenFileInputImage = useRef<any>(null);
     const [imgSrc, setImgSrc] = useState<any>('');
     const previewCanvasRef = useRef<HTMLCanvasElement>(null)
-    const [images, setImages] = useState<Image[]>([])
-
+    const [images, setImages] = useState<any[]>([])
+    const [editIndex, setEditIndex] = useState<number>()
+    const [productSizeSelected, setProductSizeSelected] = useState<Size[]>([
+        {
+            size: '',
+            quantity: 0
+        }
+    ])
     useEffect(() => {
-
         if (!defaultCardValue) return
+        const card = { ...defaultCardValue }
+        setColor(card.color)
+        setTimeout(() => {
+            setProductSizeSelected((prevState) => {
+                return [
+                    ...defaultCardValue?.lots
+                ]
+            }
+            )
+            setcanAddNewSize(true)
+        }, 500);
 
-        setColor(defaultCardValue?.color)
-        setProductSizeSelected(defaultCardValue?.lots)
-
+        setImages(card.photos)
     }, [defaultCardValue])
 
     useEffect(() => {
@@ -63,12 +75,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
         setSizeTypologySelected(sizeType);
     }, [category])
 
-    const [productSizeSelected, setProductSizeSelected] = useState<Size[]>([
-        {
-            size: '',
-            quantity: 0
-        }
-    ])
+
 
     const confirmButton = () => {
         setIsCardConfirmed(true)
@@ -142,14 +149,24 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                             file: file,
                             position: images.length
                         }
+                        if (typeof editIndex === 'number' && editIndex >= 0) {
+                            setImages(prevstate => {
+                                let images = [...prevstate]
+                                images[editIndex] = newImage
+                                return [
+                                    ...images,
+                                ]
+                            })
+                            setEditIndex(undefined)
+                        } else {
+                            setImages(prevstate => {
+                                return [
+                                    ...prevstate,
+                                    newImage
+                                ]
+                            })
+                        }
 
-
-                        setImages(prevstate => {
-                            return [
-                                ...prevstate,
-                                newImage
-                            ]
-                        })
 
                     }, 'image/jpeg', quality);
 
@@ -180,25 +197,26 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                 display={`${isCardConfirmed ? 'none' : ''}`}
             >
                 <h3 className='text-md md:text-xl font-extrabold mb-6'>
-                    Aggiungi colore
+                    {color ? color.toLocaleUpperCase() : 'Aggiungi colore'}
                 </h3>
-                <Div_input_creation text='Colore'>
-                    <Box
-                        width={80}
-                        height={12}
-                    >
-                        <SelectColor
-                            placeholder='colore'
-                            colors={colors}
-                            fit='fit'
-                            defaultValue={color}
-                            handleClick={(color) => {
-                                setColor(color)
-                            }}
-                        />
-                    </Box>
+                {!defaultCardValue &&
+                    <Div_input_creation text='Colore'>
+                        <Box
+                            width={80}
+                            height={12}
+                        >
+                            <SelectColor
+                                placeholder='colore'
+                                colors={colors}
+                                fit='fit'
+                                defaultValue={color}
+                                handleClick={(color) => {
+                                    setColor(color)
+                                }}
+                            />
+                        </Box>
 
-                </Div_input_creation>
+                    </Div_input_creation>}
                 <div className='w-10/12'>
                     <div className='flex justify-between text-sm text-gray-600 font-norma'>
                         <p >
@@ -220,7 +238,6 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                                     defaultValue={productSizeSelected[index].size}
                                     handleClick={(size) => {
                                         setProductSizeSelected((prevstate: Size[]) => {
-
                                             let newState = prevstate;
                                             prevstate[index].size = size
                                             if (prevstate[index].quantity > 0 && prevstate[index].size !== '') {
@@ -270,7 +287,6 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                                 }}
                             />
                         </div>
-
                     )
                 })}
                 {/* || productSizeSelected.length === 0  */}
@@ -309,22 +325,38 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                             return (
                                 <Box
                                     key={index}
-                                    className='flex mr-2 aspect-[4.8/5] max-h-[330px]'
-                                    height={330}
-                                    width={315}
-
+                                    className='flex mr-2 aspect-[4.8/5] max-h-[330px] lg:h-330 lg:w-315'
+                                    cursor={'pointer'}
                                     position={'relative'}
                                     borderRadius={'10px'}
                                 >
-                                    <img
-                                        className='aspect-[4.8/5] object-cover rounded-[10px] max-h-[315px]'
-                                        src={image.url}
-                                    ></img>
+                                    {image?.url ?
+                                        (<img
+                                            onClick={() => {
+                                                setEditIndex(index)
+                                                handleClickImage()
+                                            }
+                                            }
+                                            className='aspect-[4.8/5] object-cover rounded-[10px] max-h-[315px]'
+                                            src={image.url}
+                                        />) : (
+                                            <img
+                                                onClick={() => {
+                                                    setEditIndex(index)
+                                                    handleClickImage()
+                                                }
+                                                }
+                                                className='aspect-[4.8/5] object-cover rounded-[10px] max-h-[315px]'
+                                                src={imageKitUrl(image)}
+                                            />
+                                        )}
+
+
 
                                     <Box
                                         height={5}
                                         width={5}
-                                        className='absolute right-6 top-2  cursor-pointer rounded-lg'
+                                        className='absolute right-4 top-3  cursor-pointer rounded-lg'
                                         bgColor={'white'}
                                         display={'flex'}
                                         justifyContent={'center'}
@@ -332,10 +364,8 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                                             transform: 'scale(0.90)',
                                         }}
                                         onClick={() => {
-
                                             setImages(prevstate => {
-                                                const element = prevstate.filter(element => element.url !== image.url)
-
+                                                const element = prevstate.filter(element => (element.url !== image.url || element !== image))
                                                 return element
                                             })
 
@@ -372,7 +402,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                                 alignItems={'center'}
                                 margin={'auto'}
                                 color={'gray.500'}
-
+                                cursor={'pointer'}
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 m-auto">
                                     <path fillRule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clipRule="evenodd" />
@@ -380,20 +410,21 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                                 <h2>aggiungi</h2>
                             </Box>
 
-                            <input
-                                ref={hiddenFileInputImage}
-                                type="file" id="file" multiple accept="image/*"
-                                className='hidden'
-                                onChange={(e) => {
-                                    onSelectFileInput(e);
-                                }} />
-                            {<canvas
-                                ref={previewCanvasRef}
-                                className='hidden'
 
-                            />}
                         </Box>}
+                        <input
+                            ref={hiddenFileInputImage}
+                            type="file" id="file" multiple accept="image/*"
+                            className='hidden'
+                            onChange={(e) => {
 
+                                onSelectFileInput(e);
+                            }} />
+                        {<canvas
+                            ref={previewCanvasRef}
+                            className='hidden'
+
+                        />}
 
 
                     </Box>
@@ -424,7 +455,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                     >Conferma
                     </Button>
                 </ButtonGroup>
-            </Box>
+            </Box >
 
 
             <ModalReausable
@@ -465,4 +496,4 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
 
 
 
-export default AddColorToProduct
+export default memo(AddColorToProduct)

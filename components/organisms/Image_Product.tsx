@@ -17,7 +17,6 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { ProductVariation } from '../../src/lib/apollo/generated/graphql'
 const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ variation }) => {
-    console.log('runna Image_Product');
 
     if (!variation) {
         return (
@@ -158,7 +157,6 @@ const Image_Product: React.FC<{ variation: ProductVariation | undefined }> = ({ 
                             <div>
 
                                 {variation?.photos && variation?.photos.map((image, index) => {
-                                    console.log(variation?.photos);
 
                                     return (
                                         <Box onMouseEnter={() => changeImageFull(image)} key={index} mb={'2'} borderRadius='xl' overflow='hidden'
