@@ -738,7 +738,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                             >
                                 Taglie disponibili
                             </Text>
-                            {macrocategorySizeGuide && <Box
+                            {false && macrocategorySizeGuide && <Box
                                 cursor={'pointer'}
                                 onClick={() => setIsOpenModalGuideSize(true)}
                                 display={'flex'}
