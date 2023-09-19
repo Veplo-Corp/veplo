@@ -103,9 +103,9 @@ const index = () => {
                         fontSize={['md', 'lg']}
                         fontWeight={'medium'}
                     >
-                        <Link href="tel:+393403033922"
+                        <Link href="tel:+393518392262"
                         >
-                            +39 3403033922
+                            +39 3518392262
                         </Link>
                     </Text>
                 </Box>

@@ -44,7 +44,7 @@ import expirationTimeTokenControll from '../../../../../components/utils/expirat
 
 
 
-type Image = {
+export type Image = {
     type: string,
     blob: any,
     url: any,

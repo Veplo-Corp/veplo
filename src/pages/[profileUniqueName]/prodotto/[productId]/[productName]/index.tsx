@@ -819,8 +819,8 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                         bg={'#FFFFFF'}
                                         width={'full'}
                                         height={'fit-content'}
-                                        paddingX={3}
-                                        paddingY={3}
+                                        paddingX={2}
+                                        paddingY={2}
                                     >
 
                                         <Button
@@ -830,8 +830,8 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                             size={'xl'}
                                             fontWeight={'bold'}
                                             padding={5}
-                                            fontSize={['xl', 'lg']}
-                                            paddingInline={10}
+                                            fontSize={['5vw', 'lg']}
+                                            paddingInline={5}
                                             width={'full'}
                                             height={'fit-content'}
                                             cursor={isAddedToCart ? 'default' : 'pointer'}

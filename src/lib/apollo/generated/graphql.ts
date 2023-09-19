@@ -164,6 +164,7 @@ export type EditProductInput = {
   info?: InputMaybe<EditProductInfo>;
   name?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<PriceInput>;
+  sizeGuidePhoto?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -177,6 +178,7 @@ export type EditShopInput = {
   name?: InputMaybe<EditShopNameInput>;
   profileCover?: InputMaybe<Scalars['String']['input']>;
   profilePhoto?: InputMaybe<Scalars['String']['input']>;
+  sizeGuideTemplates?: InputMaybe<Array<SizeGuideTemplateInput>>;
   status?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
@@ -253,6 +255,8 @@ export type Mutation = {
   /** admin - create a simulated jwt */
   adminCreateSimulatedJWT?: Maybe<Scalars['Boolean']['output']>;
   adminDeleteProduct: Scalars['ID']['output'];
+  /** delete a business connect from stripe */
+  adminDeleteStripeBusiness?: Maybe<Scalars['Boolean']['output']>;
   adminEditProduct: Scalars['ID']['output'];
   /** tells that a package was lost */
   adminLostPackage?: Maybe<Scalars['Boolean']['output']>;
@@ -338,6 +342,11 @@ export type MutationAdminCreateSimulatedJwtArgs = {
 
 export type MutationAdminDeleteProductArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationAdminDeleteStripeBusinessArgs = {
+  stripeId: Scalars['String']['input'];
 };
 
 
@@ -568,6 +577,7 @@ export type Product = {
   productsLikeThis?: Maybe<Array<Product>>;
   score?: Maybe<Scalars['Float']['output']>;
   shopInfo?: Maybe<ShopInfo>;
+  sizeGuidePhoto?: Maybe<Scalars['String']['output']>;
   status?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['Time']['output']>;
   variations?: Maybe<Array<ProductVariation>>;
@@ -661,6 +671,7 @@ export type ProductInput = {
   info: ProductInfoInput;
   name: Scalars['String']['input'];
   price: PriceInput;
+  sizeGuidePhoto?: InputMaybe<Scalars['String']['input']>;
   status: Scalars['String']['input'];
   variations: Array<ProductVariationInput>;
 };
@@ -852,6 +863,7 @@ export type Shop = {
   profilePhoto?: Maybe<Scalars['String']['output']>;
   score?: Maybe<Scalars['Float']['output']>;
   shopsLikeThis?: Maybe<Array<Shop>>;
+  sizeGuideTemplates?: Maybe<Array<SizeGuideTemplate>>;
   stats?: Maybe<ShopStats>;
   status?: Maybe<Scalars['String']['output']>;
   type?: Maybe<Scalars['String']['output']>;
@@ -916,6 +928,7 @@ export type ShopInput = {
   name: ShopNameInput;
   profileCover?: InputMaybe<Scalars['String']['input']>;
   profilePhoto?: InputMaybe<Scalars['String']['input']>;
+  sizeGuideTemplates: Array<SizeGuideTemplateInput>;
   type: Scalars['String']['input'];
 };
 
@@ -1098,6 +1111,17 @@ export type ProductsNotAvailableInput = {
   variationId: Scalars['ID']['input'];
 };
 
+export type SizeGuideTemplate = {
+  __typename?: 'sizeGuideTemplate';
+  photo?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+};
+
+export type SizeGuideTemplateInput = {
+  photo: Scalars['String']['input'];
+  title: Scalars['String']['input'];
+};
+
 export type EditOrderMutationVariables = Exact<{
   id: Scalars['ID']['input'];
   options: EditOrderInput;
@@ -1201,6 +1225,14 @@ export type EditProductMutationVariables = Exact<{
 
 
 export type EditProductMutation = { __typename?: 'Mutation', editProduct?: boolean | null };
+
+export type EditShopMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  options: EditShopInput;
+}>;
+
+
+export type EditShopMutation = { __typename?: 'Mutation', editShop?: boolean | null };
 
 export type ChangeProductStatusMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -1425,6 +1457,7 @@ export const DeleteVariationDocument = {"kind":"Document","definitions":[{"kind"
 export const MutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Mutation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"denyReturn"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderId"}}}]}]}}]} as unknown as DocumentNode<MutationMutation, MutationMutationVariables>;
 export const EditCartDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"editCart"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"productVariationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"size"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"quantity"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"editCart"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"productVariationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"productVariationId"}}},{"kind":"Argument","name":{"kind":"Name","value":"size"},"value":{"kind":"Variable","name":{"kind":"Name","value":"size"}}},{"kind":"Argument","name":{"kind":"Name","value":"quantity"},"value":{"kind":"Variable","name":{"kind":"Name","value":"quantity"}}}]}]}}]} as unknown as DocumentNode<EditCartMutation, EditCartMutationVariables>;
 export const EditProductDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"editProduct"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"options"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EditProductInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"editProduct"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"options"},"value":{"kind":"Variable","name":{"kind":"Name","value":"options"}}}]}]}}]} as unknown as DocumentNode<EditProductMutation, EditProductMutationVariables>;
+export const EditShopDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"editShop"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"options"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EditShopInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"editShop"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"options"},"value":{"kind":"Variable","name":{"kind":"Name","value":"options"}}}]}]}}]} as unknown as DocumentNode<EditShopMutation, EditShopMutationVariables>;
 export const ChangeProductStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"changeProductStatus"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"status"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changeProductStatus"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"status"},"value":{"kind":"Variable","name":{"kind":"Name","value":"status"}}}]}]}}]} as unknown as DocumentNode<ChangeProductStatusMutation, ChangeProductStatusMutationVariables>;
 export const EditUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"editUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"options"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EditUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"editUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"options"},"value":{"kind":"Variable","name":{"kind":"Name","value":"options"}}}]}]}}]} as unknown as DocumentNode<EditUserMutation, EditUserMutationVariables>;
 export const EditVariationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"editVariation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"options"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EditVariationInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"editVariation"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"options"},"value":{"kind":"Variable","name":{"kind":"Name","value":"options"}}}]}]}}]} as unknown as DocumentNode<EditVariationMutation, EditVariationMutationVariables>;
