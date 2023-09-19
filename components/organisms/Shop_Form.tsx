@@ -172,8 +172,10 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                 info["description"] = watch("info.description")
                 info["phone"] = watch("info.phone")
                 if (watch("info.opening.days") && watch("info.opening.hours")) {
-                    info["opening"]["days"] = []
-                    info["opening"]["hours"] = watch("info.opening.hours")
+                    let opening: any = {}
+                    opening["days"] = watch("info.opening.days")
+                    opening["hours"] = watch("info.opening.hours")
+                    info["opening"] = opening
                 }
             }
             if (watch("links.instagram") !== shop.links.instagram || watch("links.tiktok") !== shop.links.tiktok) {
@@ -231,7 +233,9 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                 isClosable: true
             })
             setIsLoading(false)
-        } catch {
+        } catch (e) {
+            console.log(e);
+
             addToast({
                 position: 'top',
                 title: 'Errore durante aggiornamento profilo',
