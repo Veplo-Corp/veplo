@@ -389,7 +389,7 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                 >
                     <img
                         src={image ? image.url : imageKitUrl(shop.profileCover)}
-                        className='w-full aspect-[2.3/1] object-cover rounded-md mb-4'
+                        className='w-full aspect-[2.6/1] object-cover rounded-md mb-4'
                     />
                     <Box
                         className='absolute top-2 right-2 p-2'

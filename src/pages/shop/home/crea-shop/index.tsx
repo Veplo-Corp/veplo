@@ -611,7 +611,7 @@ const index = () => {
                                 borderStyle={'dashed'}
                                 borderRadius={10}
                                 color={'gray.400'}
-                                className='cursor-pointer aspect-[2.3/1]'
+                                className='cursor-pointer aspect-[2.6/1]'
                             >
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 m-auto">

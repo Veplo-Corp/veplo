@@ -291,7 +291,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                         //PlaceholderSrc={PlaceholderImage}
                         effect='blur'
                         alt={shop.name?.visualized ? shop.name.visualized : ''}
-                        className='w-full object-cover aspect-[2.3/1] lg:aspect-[3/1] min-h-[120px] lg:min-h-[300px] lg:rounded-[10px]'
+                        className='w-full object-cover aspect-[2.6/1] lg:aspect-[2.6/1] min-h-[120px] lg:min-h-[300px] lg:rounded-[10px]'
                     />
                     <Box display={'flex'}
                         justifyContent={'space-between'}
