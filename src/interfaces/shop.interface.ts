@@ -34,7 +34,7 @@ export interface Shop {
     profileCover: string,
     profilePhoto: string,
     address: AddressShop,
-    minimumAmountForFreeShipping?: number,
+    minimumAmountForFreeShipping?: number | string,
     links: {
         instagram: string,
         tiktok: string

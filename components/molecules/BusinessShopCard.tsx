@@ -15,7 +15,7 @@ const BusinessShopCard: FC<{ shop: Shop, toShop: (shop: Shop) => void }> = ({ sh
             onClick={() => toShop(shop)}
         >
             <LazyLoadImage
-                className='w-96 lg:w-full object-cover aspect-[2.3/1]'
+                className='w-96 lg:w-full object-cover aspect-[2.6/1]'
                 src={imageKitUrl(shop.profileCover)}
                 alt={'immagine non trovata'}
             />

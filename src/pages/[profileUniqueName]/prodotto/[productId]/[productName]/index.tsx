@@ -40,6 +40,7 @@ import Horizontal_Line from '../../../../../../components/atoms/Horizontal_Line'
 import Box_Dress from '../../../../../../components/molecules/Box_Dress'
 import createUrlSchema from '../../../../../../components/utils/create_url'
 import VariationPreview from '../../../../../../components/molecules/VariationPreview'
+import NoIndexSeo from '../../../../../../components/organisms/NoIndexSeo'
 
 interface ProductProps extends Product {
     colors: { name: string, cssColor: string }[],
@@ -126,6 +127,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
     if (errorLog) {
         return (
             <Box className='h-screen'>
+                <NoIndexSeo />
                 <PageNotFound
                     title='Prodotto non trovato'
                     description='Probabilmente il prodotto è stato appena cancellato dal brand'
@@ -819,8 +821,8 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                         bg={'#FFFFFF'}
                                         width={'full'}
                                         height={'fit-content'}
-                                        paddingX={3}
-                                        paddingY={3}
+                                        paddingX={2}
+                                        paddingY={2}
                                     >
 
                                         <Button
@@ -830,8 +832,8 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                             size={'xl'}
                                             fontWeight={'bold'}
                                             padding={5}
-                                            fontSize={['xl', 'lg']}
-                                            paddingInline={10}
+                                            fontSize={['5vw', 'lg']}
+                                            paddingInline={5}
                                             width={'full'}
                                             height={'fit-content'}
                                             cursor={isAddedToCart ? 'default' : 'pointer'}

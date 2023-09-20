@@ -60,7 +60,7 @@ const EditProductInputForm: FC<{ univers: string, defaultValues: IFormInputProdu
                 <InputGroup >
                     <Input
                         autoComplete='off'
-                        maxLength={30}
+                        maxLength={40}
                         rounded={10}
                         paddingY={6}
                         type="text"
@@ -204,7 +204,7 @@ const EditProductInputForm: FC<{ univers: string, defaultValues: IFormInputProdu
                 <InputGroup >
                     <Input
                         autoComplete='off'
-                        maxLength={30}
+                        maxLength={40}
                         rounded={10}
                         paddingY={6}
                         disabled={true}
@@ -221,7 +221,7 @@ const EditProductInputForm: FC<{ univers: string, defaultValues: IFormInputProdu
                 <InputGroup>
                     <Input
                         autoComplete='off'
-                        maxLength={30}
+                        maxLength={40}
                         rounded={10}
                         paddingY={6}
                         disabled={true}

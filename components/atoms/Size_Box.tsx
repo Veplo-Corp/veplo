@@ -57,14 +57,16 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                             className='select-none'
                         >
                             <Text
-
                                 fontSize={size.length > 5 ? '15px' : fontSize}
                                 fontWeight={sizeSelected !== size ? fontWeight : 'semibold'}
+                                lineHeight={size.length > 5 ? '18px' : fontSize}
                             >
                                 {size.toUpperCase()}
                             </Text>
                             <Text fontWeight={'normal'}
-                                fontSize={['2xs', '2xs']} color={sizeProductExist?.quantity && sizeProductExist?.quantity > 0 && sizeSelected !== size ? 'gray.500' : sizeSelected === size ? 'white' : '#A19F9F'} mt={'-4px'}>
+                                fontSize={['2xs', '2xs']}
+                                color={sizeProductExist?.quantity && sizeProductExist?.quantity > 0 && sizeSelected !== size ? 'gray.500' : sizeSelected === size ? 'white' : '#A19F9F'}
+                                mt={'0px'}>
                                 {sizeProductExist?.quantity && sizeProductExist?.quantity === 1 ? 'ultimo rimasto' : sizeProductExist?.quantity && sizeProductExist?.quantity < 10 && sizeProductExist?.quantity > 0 ? `solo ${sizeProductExist?.quantity} disponibil${sizeProductExist?.quantity > 1 ? 'i' : 'e'}` : sizeProductExist?.quantity && sizeProductExist?.quantity > 0 ? `` : 'esaurito'}
                             </Text>
                         </Box>

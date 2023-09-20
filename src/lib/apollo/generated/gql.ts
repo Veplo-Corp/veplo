@@ -27,6 +27,7 @@ const documents = {
     "\n    mutation Mutation($orderId: ID!) {\n        denyReturn(orderId: $orderId)\n    }\n": types.MutationDocument,
     "\n    mutation editCart(\n        $productVariationId: ID!\n        $size: String!\n        $quantity: Int!\n    ) {\n        editCart(\n            productVariationId: $productVariationId\n            size: $size\n            quantity: $quantity\n        )\n    }\n": types.EditCartDocument,
     "\n    mutation editProduct(\n        $id: ID!\n        $options: EditProductInput!\n    ) {\n        editProduct(\n            id: $id\n            options: $options\n        )\n    }\n": types.EditProductDocument,
+    "\n    mutation editShop(\n        $id: ID!\n        $options: EditShopInput!\n        ) {\n        editShop(\n            id: $id\n            options: $options\n\n        )      \n    }\n    \n": types.EditShopDocument,
     "\n  mutation changeProductStatus(\n    $id: ID!\n    $status:String!\n  ){\n    changeProductStatus(\n        id: $id\n        status: $status\n    ) \n  }\n": types.ChangeProductStatusDocument,
     "\n    mutation editUser(\n        $options: EditUserInput!\n    ) {\n        editUser(\n            options:$options\n        )\n    }\n": types.EditUserDocument,
     "\n    mutation editVariation(\n        $id:ID!\n        $options: EditVariationInput!\n    ) {\n        editVariation(\n            id:$id\n            options:$options\n        )\n    }\n": types.EditVariationDocument,
@@ -125,6 +126,10 @@ export function graphql(source: "\n    mutation editCart(\n        $productVaria
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation editProduct(\n        $id: ID!\n        $options: EditProductInput!\n    ) {\n        editProduct(\n            id: $id\n            options: $options\n        )\n    }\n"): (typeof documents)["\n    mutation editProduct(\n        $id: ID!\n        $options: EditProductInput!\n    ) {\n        editProduct(\n            id: $id\n            options: $options\n        )\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation editShop(\n        $id: ID!\n        $options: EditShopInput!\n        ) {\n        editShop(\n            id: $id\n            options: $options\n\n        )      \n    }\n    \n"): (typeof documents)["\n    mutation editShop(\n        $id: ID!\n        $options: EditShopInput!\n        ) {\n        editShop(\n            id: $id\n            options: $options\n\n        )      \n    }\n    \n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -400,7 +400,7 @@ const index = () => {
                             <InputGroup >
                                 <Input
                                     autoComplete='off'
-                                    maxLength={30}
+                                    maxLength={40}
                                     rounded={10}
                                     paddingY={6}
                                     type="text"

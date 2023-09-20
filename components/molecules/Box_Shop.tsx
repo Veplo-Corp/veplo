@@ -159,7 +159,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                     //PlaceholderSrc={PlaceholderImage}
                     alt={'' + shop?.name?.visualized}
                     effect='blur'
-                    className='object-cover aspect-[2.3/1] min-h-[100px] xl:min-h-[200px] rounded-[20px]'
+                    className='object-cover aspect-[2.6/1] min-h-[100px] xl:min-h-[200px] rounded-[20px]'
                 />
                 <Box
                     display={'flex'}

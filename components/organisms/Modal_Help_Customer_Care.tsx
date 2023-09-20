@@ -127,9 +127,9 @@ const Modal_Help_Customer_Care: FC<{ isOpen: boolean, onClose: () => void }> = (
                                 fontSize={['md', 'lg']}
                                 fontWeight={'medium'}
                             >
-                                <Link href="tel:+393403033922"
+                                <Link href="tel:+393518392262"
                                 >
-                                    +39 3403033922
+                                    +39 3518392262
                                 </Link>
                             </Text>
                         </Box>
@@ -159,12 +159,12 @@ export default Modal_Help_Customer_Care
 //                     </div>
 //                     <div className='w-full flex justify-between mt-4'>
 //                         <p>Scrivi o chiama:</p>
-//                         {/* <Link href="https://wa.me/+393403033922" >
+//                         {/* <Link href="https://wa.me/+393518392262" >
 //                         <a
 //                             target="_blank" rel="noopener noreferrer"
 //                             className='text-blue-700 underline'
-//                         >+39 3403033922
+//                         >+39 3518392262
 //                         </a>
 //                     </Link> */}
-//                         <p > +39 3403033922</p >
+//                         <p > +39 3518392262</p >
 //                     </div > 
