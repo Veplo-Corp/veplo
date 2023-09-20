@@ -449,13 +449,13 @@ const Header = () => {
                                             <form action={`/api/stripe/dashboard-link?stripeId=${stripeId}`}
                                                 method="POST"
                                                 target="_blank"
-                                                className='hidden md:flex'
+                                                className='flex'
                                             >
                                                 <Button
-                                                    fontSize={'md'}
+                                                    fontSize={['sm', 'md']}
                                                     fontWeight={'semibold'}
                                                     textColor={'white'}
-                                                    size={'sm'}
+                                                    size={['sm', 'sm']}
                                                     mr={'2'}
                                                     variant={'black'}
                                                     type='submit'
