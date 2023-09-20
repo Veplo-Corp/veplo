@@ -40,6 +40,7 @@ import Horizontal_Line from '../../../../../../components/atoms/Horizontal_Line'
 import Box_Dress from '../../../../../../components/molecules/Box_Dress'
 import createUrlSchema from '../../../../../../components/utils/create_url'
 import VariationPreview from '../../../../../../components/molecules/VariationPreview'
+import NoIndexSeo from '../../../../../../components/organisms/NoIndexSeo'
 
 interface ProductProps extends Product {
     colors: { name: string, cssColor: string }[],
@@ -126,6 +127,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
     if (errorLog) {
         return (
             <Box className='h-screen'>
+                <NoIndexSeo />
                 <PageNotFound
                     title='Prodotto non trovato'
                     description='Probabilmente il prodotto è stato appena cancellato dal brand'

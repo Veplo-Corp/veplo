@@ -57,7 +57,6 @@ const Size_Box: React.FC<Props> = ({ borderWidth, py, borderRadius, fontSize, fo
                             className='select-none'
                         >
                             <Text
-
                                 fontSize={size.length > 5 ? '15px' : fontSize}
                                 fontWeight={sizeSelected !== size ? fontWeight : 'semibold'}
                                 lineHeight={size.length > 5 ? '18px' : fontSize}
