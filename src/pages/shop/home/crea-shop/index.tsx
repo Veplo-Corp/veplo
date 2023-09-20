@@ -178,7 +178,6 @@ const index = () => {
     //refactoring of onSelectFile
     const onSelectFileInput = async (e: React.ChangeEvent<HTMLInputElement>, type: UploadEventType) => {
 
-        hiddenFileInputProfileImage.current.click();
         if (e.target.files) {
             try {
 
