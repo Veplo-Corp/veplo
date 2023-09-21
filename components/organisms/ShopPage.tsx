@@ -441,11 +441,14 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                         <HStack
                             className='mt-0 mb-2 md:my-1'
                         >
-                            {typeof shop?.minimumAmountForFreeShipping === 'number' && <TagComponent
-                                text={shop?.minimumAmountForFreeShipping > 0 ? `spedizione gratis da ${parseInt((shop?.minimumAmountForFreeShipping / 100).toString())}€` : 'spedizione gratuita'}
+                            <TagComponent
+                                text={
+                                    typeof shop?.minimumAmountForFreeShipping === 'number' && shop?.minimumAmountForFreeShipping > 0 ? `spedizione gratis da ${parseInt((shop?.minimumAmountForFreeShipping / 100).toString())}€`
+                                        : !shop?.minimumAmountForFreeShipping ? 'spedizione 4,99€'
+                                            : 'spedizione gratuita'}
                                 bg={'secondary.opacityBg'}
                                 color={'secondary.bg'}
-                            />}
+                            />
                         </HStack>
 
                     </Box>

@@ -635,7 +635,9 @@ const index = () => {
                                                             fontWeight={'semibold'}
                                                             color={'secondaryBlack.text'}
                                                         >
-                                                            {typeof cart?.shopInfo?.minimumAmountForFreeShipping === 'number' && typeof cart.total === 'number' && cart?.shopInfo?.minimumAmountForFreeShipping > cart.total ? '4,99€' : 'gratis'}
+                                                            {typeof cart?.shopInfo?.minimumAmountForFreeShipping === 'number' && typeof cart.total === 'number' && cart?.shopInfo?.minimumAmountForFreeShipping > cart.total ? '4,99€' :
+                                                                !cart?.shopInfo?.minimumAmountForFreeShipping ? '4,99€' :
+                                                                    'gratis'}
                                                         </Text>
                                                     ) : (
                                                         <Stack
