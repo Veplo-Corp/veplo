@@ -3,25 +3,24 @@ import React, { FC, useEffect, useState } from 'react'
 import { GUIDE_SIZES } from '../mook/sizeGuide'
 import toUpperCaseFirstLetter from '../utils/uppercase_First_Letter'
 import { CATEGORIES } from '../mook/categories'
+import { imageKitUrl } from '../utils/imageKitUrl'
 
-const GuideSize: FC<{ macrocategorySizeGuide: any }> = ({ macrocategorySizeGuide }) => {
+const GuideSize: FC<{ macrocategorySizeGuide: any, sizeGuideTemplatePhotoUrl?: string | null | undefined }> = ({ macrocategorySizeGuide, sizeGuideTemplatePhotoUrl }) => {
 
 
 
-    if (!macrocategorySizeGuide) return (
-        <></>
-    )
+
 
 
     return (
-        <Box mt={2} minH={'50vh'}>
+        <Box minH={'50vh'} minW={'30vw'}>
             {/* <Text
                 mb={2}
                 fontSize={['lg', 'xl']}
                 fontWeight={'bold'}
             >{toUpperCaseFirstLetter(categories)}</Text> */}
             {macrocategorySizeGuide
-                &&
+                && !sizeGuideTemplatePhotoUrl &&
                 <TableContainer >
                     <Table variant='striped' colorScheme='gray'>
                         <Thead>
@@ -60,6 +59,13 @@ const GuideSize: FC<{ macrocategorySizeGuide: any }> = ({ macrocategorySizeGuide
                         </Tbody>
                     </Table>
                 </TableContainer>
+            }
+            {
+                sizeGuideTemplatePhotoUrl &&
+                <img
+                    className='min-h-[50vh]  min-w-[30vw] max-h-[75vh] lg:max-w-[90vw]'
+                    src={imageKitUrl(sizeGuideTemplatePhotoUrl)}
+                />
             }
         </Box>
 

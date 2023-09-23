@@ -530,7 +530,7 @@ const SizeGuidesComponent: FC<{ id: string, isSelectable?: boolean, onChangeSize
               width={'full'}
               size={'lg'}
               borderRadius={'10px'}
-              isDisabled={defaultTemplateGuideSelectionPhoto === sizeGuideSelected?.photo}
+              isDisabled={(defaultTemplateGuideSelectionPhoto === sizeGuideSelected?.photo) || !sizeGuideSelected?.photo}
               _disabled={{
                 bg: 'gray.300'
               }}

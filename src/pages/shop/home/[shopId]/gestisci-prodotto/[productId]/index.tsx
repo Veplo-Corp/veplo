@@ -473,7 +473,7 @@ const index = () => {
 
 
     const confirmCard = async (variation: VariationCard) => {
-        addToast({ position: 'top', title: `Creazione variante ${variation?.color} in corso!`, status: 'loading', duration: 3500, isClosable: true })
+        addToast({ position: 'top', title: `Creazione variante "${variation?.color}" in corso!`, status: 'loading', duration: 3500, isClosable: true })
 
         const variationLots = variation?.lots.map(lot => {
             return {
@@ -526,7 +526,7 @@ const index = () => {
                 }
             }
             )
-            addToast({ position: 'top', title: `Variante ${variation?.color} creata!`, status: 'success', duration: 3000, isClosable: true })
+            addToast({ position: 'top', title: `Variante "${variation?.color}" creata!`, status: 'success', duration: 3000, isClosable: true })
 
 
             //mettere alert per creazione avvenuta con successo
