@@ -21,6 +21,7 @@ export interface Product {
     name: string,
     canBuy: boolean,
     status: string,
+    sizeGuidePhoto: string | null;
     colors?: { name: string, cssColor: string }[],
     info: {
         macroCategory: string,

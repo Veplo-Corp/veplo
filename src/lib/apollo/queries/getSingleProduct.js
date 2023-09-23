@@ -9,6 +9,7 @@ const GET_SINGLE_PRODUCT = gql`
             name
             status
             canBuy
+            sizeGuidePhoto
             info {
                 gender
                 macroCategory

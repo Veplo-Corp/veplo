@@ -21,7 +21,7 @@ import CREATE_VARIATION from '../../../../../../lib/apollo/mutations/createVaria
 
 import GET_PRODUCTS_FROM_SHOP from '../../../../../../lib/apollo/queries/geetProductsShop';
 import GET_SINGLE_PRODUCT from '../../../../../../lib/apollo/queries/getSingleProduct';
-import { Button, ButtonGroup, Text } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Text } from '@chakra-ui/react';
 import AddColorToProduct from '../../../../../../../components/organisms/AddColorToProduct';
 import { COLORS, Color } from '../../../../../../../components/mook/colors';
 import { VariationCard } from '../../../../../../interfaces/variationCard.interface';
@@ -31,6 +31,7 @@ import expirationTimeTokenControll from '../../../../../../../components/utils/e
 import ProductVariationCard from '../../../../../../../components/molecules/ProductVariationCard';
 import ModalReausable from '../../../../../../../components/organisms/ModalReausable';
 import { isProductVariationChanged } from '../../../../../../../components/utils/isProductVariationChanged';
+import SizeGuidesComponent from '../../../../../../../components/organisms/SizeGuidesComponent';
 
 interface Props {
     shop: {
@@ -93,12 +94,14 @@ const index = () => {
 
 
 
+
     const [editProduct] = useMutation(EDIT_PRODUCT, {
 
         update(cache, el, query) {
 
             const normalizedId = cache.identify({ id: router.query.productId, __typename: 'Product' });
 
+            console.log(query?.variables?.options);
 
             cache.modify({
                 id: normalizedId,
@@ -120,6 +123,9 @@ const index = () => {
                             brand: query?.variables?.options?.info?.brand ? query?.variables?.options?.info?.brand : cachedvalue.brand,
                             fit: query?.variables?.options?.info?.fit ? query?.variables?.options?.info?.fit : cachedvalue.fit,
                         }
+                    },
+                    sizeGuidePhoto(cachedvalue) {
+                        return query?.variables?.options.sizeGuidePhoto ? query?.variables?.options.sizeGuidePhoto : cachedvalue
                     },
                 }
             })
@@ -464,7 +470,6 @@ const index = () => {
 
     }, [])
 
-    console.log('prodotto', product);
 
 
     const confirmCard = async (variation: VariationCard) => {
@@ -543,6 +548,26 @@ const index = () => {
 
     }
 
+    const handleEditSizeGuideTemplateFromProduct = async (photoUrl: string) => {
+        try {
+            await editProduct({
+                variables: {
+                    id: product?.id,
+                    options: {
+                        sizeGuidePhoto: photoUrl
+                    }
+                }
+            })
+            addToast({ position: 'top', title: 'Prodotto modificato con successo', status: 'success', duration: 3000, isClosable: true })
+
+        } catch {
+            addToast({
+                position: 'top', title: "Errore imprevisto, se persiste contatta l'assistenza", status: 'error', duration: 3000, isClosable: true
+            })
+
+        }
+    }
+
 
 
     return (
@@ -564,7 +589,20 @@ const index = () => {
                                 gender={product.info.gender}
                             />
                         </div>
-                        <div className='w-full md:w-8/12 lg:w-7/12 xl:w-1/2  mx-auto'>
+                        <div className='w-full md:w-8/12 lg:w-7/12 xl:w-1/2 mx-auto'>
+                            {typeof router.query.shopId === 'string' && product &&
+                                <Box
+                                    mb={4}
+                                >
+                                    <SizeGuidesComponent
+                                        isSelectable={true}
+                                        id={router.query.shopId}
+                                        defaultTemplateGuideSelectionPhoto={product.sizeGuidePhoto}
+                                        productId={product.id}
+                                        handleEditSizeGuideTemplateFromProduct={handleEditSizeGuideTemplateFromProduct}
+                                    />
+                                </Box>
+                            }
                             {sizeTypeSelected && product.variations.map((variation: any, index) => {
                                 return (
                                     <div

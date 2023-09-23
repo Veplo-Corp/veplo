@@ -1,5 +1,6 @@
 export enum UploadEventType {
     product = 'product',
     shopCover = 'shopCover',
-    shopPhoto = 'shopPhoto'
+    shopPhoto = 'shopPhoto',
+    sizeGuide = 'sizeGuide'
 }
