@@ -30,6 +30,7 @@ import expirationTimeTokenControll from '../../../../../../components/utils/expi
 import { Firebase_User } from '../../../../../interfaces/firebase_user.interface'
 import { useSelector } from 'react-redux'
 import { Size } from '../../../../../../components/organisms/EditColorToProdoct'
+import SizeGuidesComponent from '../../../../../../components/organisms/SizeGuidesComponent'
 
 export interface IFormInputProduct {
     univers: Univers,
@@ -72,7 +73,8 @@ const index = () => {
     const [newCard, setNewCard] = useState(true)
     const [productVariations, setProductVariations] = useState<VariationCard[]>([])
     const [colors, setColors] = useState<Color[]>(COLORS)
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+    const [sizeGuidePhotoUrl, setsizeGuidePhotoUrl] = useState<string | undefined>()
     const [createProduct] = useMutation(CREATE_PRODUCT, {
         awaitRefetchQueries: true,
         refetchQueries: [{
@@ -291,7 +293,7 @@ const index = () => {
                 return
             }
 
-            const product = {
+            const product: any = {
                 name: watch('name').trim().toLowerCase(),
                 status: 'active',
                 canBuy: true,
@@ -309,6 +311,10 @@ const index = () => {
                     ...moreInfo
                 },
                 variations: variations
+            }
+
+            if (sizeGuidePhotoUrl) {
+                product["sizeGuidePhoto"] = sizeGuidePhotoUrl
             }
 
             await createProduct({ variables: { shopId: router.query.shopId, options: product } })
@@ -636,6 +642,16 @@ const index = () => {
 
                     {watch('macrocategory') !== undefined &&
                         <div className='w-full md:w-9/12 m-auto lg:m-0 lg:w-7/12 xl:w-6/12 '>
+                            <h1 className='text-lg md:text-2xl font-extrabold mt-6 mb-4'>
+                                Guida alle taglie
+                            </h1>
+                            {typeof router.query.shopId === 'string' && <SizeGuidesComponent
+                                isSelectable={true}
+                                onChangeSizeGuide={(url: string | undefined) => {
+                                    setsizeGuidePhotoUrl(url)
+
+                                }}
+                                id={router.query.shopId} />}
                             <h1 className='text-lg md:text-2xl font-extrabold mt-6 mb-4'>
                                 Varianti colore
                             </h1>

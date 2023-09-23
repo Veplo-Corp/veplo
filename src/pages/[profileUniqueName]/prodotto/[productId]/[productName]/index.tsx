@@ -245,6 +245,9 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
         }, [router]
     )
 
+    console.log(product);
+
+
     const addToCart = async (product: Product) => {
 
         const resolve = await expirationTimeTokenControll(user.expirationTime)
@@ -740,7 +743,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                             >
                                 Taglie disponibili
                             </Text>
-                            {false && macrocategorySizeGuide && <Box
+                            {/* (product.sizeGuidePhoto || macrocategorySizeGuide) */ product.sizeGuidePhoto && <Box
                                 cursor={'pointer'}
                                 onClick={() => setIsOpenModalGuideSize(true)}
                                 display={'flex'}
@@ -1082,6 +1085,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
             >
                 <GuideSize
                     macrocategorySizeGuide={macrocategorySizeGuide}
+                    sizeGuideTemplatePhotoUrl={product.sizeGuidePhoto}
                 />
 
             </ModalReausable>

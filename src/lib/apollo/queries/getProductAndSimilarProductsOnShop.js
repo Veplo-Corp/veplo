@@ -11,6 +11,7 @@ query getProductAndSimilarProduct($id: ID!, $offset: Int!, $limit: Int!, $ofThis
         name
         status
         canBuy
+        sizeGuidePhoto
         info {
             gender
             macroCategory

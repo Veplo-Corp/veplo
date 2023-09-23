@@ -24,11 +24,11 @@ interface Size {
     quantity: number
 }
 
-type Image = {
+export type Image = {
     type: string,
     blob: any,
     url: any,
-    position: number,
+    position?: number,
     file: any
 }
 
@@ -190,7 +190,7 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
 
             <Box
                 paddingY={7}
-                paddingX={7}
+                paddingX={[3, 7]}
                 borderWidth={1}
                 borderColor={'gray.300'}
                 borderRadius={'2xl'}
