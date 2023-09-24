@@ -18,7 +18,7 @@ import { imageKitUrl } from '../utils/imageKitUrl';
 import { SizeGuideTemplate } from '../../src/lib/apollo/generated/graphql';
 import { ToastOpen } from '../utils/Toast';
 
-const SizeGuidesComponent: FC<{ id: string, isSelectable?: boolean, onChangeSizeGuide?: (url: string | undefined) => void, defaultTemplateGuideSelectionPhoto?: string | undefined | null, productId?: string | null | undefined, handleEditSizeGuideTemplateFromProduct?: (photoUrl: string) => void }> = ({ id, isSelectable, onChangeSizeGuide, defaultTemplateGuideSelectionPhoto, productId, handleEditSizeGuideTemplateFromProduct }) => {
+const SizeGuidesComponent: FC<{ id: string, isSelectable?: boolean, onChangeSizeGuide?: (url: string | undefined) => void, defaultTemplateGuideSelectionPhoto?: string | undefined | null, productId?: string | null | undefined, handleEditSizeGuideTemplateFromProduct?: (photoUrl: string | undefined | null) => void }> = ({ id, isSelectable, onChangeSizeGuide, defaultTemplateGuideSelectionPhoto, productId, handleEditSizeGuideTemplateFromProduct }) => {
   const hiddenFileInputSizeGuideImage = useRef<any>(null);
   const hiddenEditFileInputSizeGuideImage = useRef<any>(null);
   const { addToast } = ToastOpen();
@@ -530,7 +530,7 @@ const SizeGuidesComponent: FC<{ id: string, isSelectable?: boolean, onChangeSize
               width={'full'}
               size={'lg'}
               borderRadius={'10px'}
-              isDisabled={(defaultTemplateGuideSelectionPhoto === sizeGuideSelected?.photo) || !sizeGuideSelected?.photo}
+              isDisabled={(defaultTemplateGuideSelectionPhoto === sizeGuideSelected?.photo) || (!sizeGuideSelected?.photo && !defaultTemplateGuideSelectionPhoto)}
               _disabled={{
                 bg: 'gray.300'
               }}
@@ -538,7 +538,7 @@ const SizeGuidesComponent: FC<{ id: string, isSelectable?: boolean, onChangeSize
                 color: 'primary.text'
               }}
               onClick={() => {
-                if (handleEditSizeGuideTemplateFromProduct && sizeGuideSelected?.photo) {
+                if (handleEditSizeGuideTemplateFromProduct) {
                   handleEditSizeGuideTemplateFromProduct(sizeGuideSelected?.photo)
                 }
               }}

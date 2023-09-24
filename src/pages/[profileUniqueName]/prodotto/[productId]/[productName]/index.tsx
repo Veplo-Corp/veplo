@@ -743,7 +743,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                             >
                                 Taglie disponibili
                             </Text>
-                            {/* (product.sizeGuidePhoto || macrocategorySizeGuide) */ product.sizeGuidePhoto && <Box
+                            {/* (product.sizeGuidePhoto || macrocategorySizeGuide) */ product.sizeGuidePhoto && product.sizeGuidePhoto.length > 0 && <Box
                                 cursor={'pointer'}
                                 onClick={() => setIsOpenModalGuideSize(true)}
                                 display={'flex'}
