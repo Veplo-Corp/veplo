@@ -154,7 +154,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
             >
 
                 <LazyLoadImage src={
-                    imageKitUrl(shop?.profileCover ? shop?.profileCover : '', 870, 378)
+                    imageKitUrl(shop?.profileCover ? shop?.profileCover : ''/* , 870, 378 */)
                 }
                     //PlaceholderSrc={PlaceholderImage}
                     alt={'' + shop?.name?.visualized}
