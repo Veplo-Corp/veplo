@@ -527,8 +527,6 @@ const index = () => {
             }
             )
             addToast({ position: 'top', title: `Variante "${variation?.color}" creata!`, status: 'success', duration: 3000, isClosable: true })
-
-
             //mettere alert per creazione avvenuta con successo
 
         } catch (e) {
@@ -548,17 +546,17 @@ const index = () => {
 
     }
 
-    const handleEditSizeGuideTemplateFromProduct = async (photoUrl: string) => {
+    const handleEditSizeGuideTemplateFromProduct = async (photoUrl: string | undefined | null) => {
         try {
             await editProduct({
                 variables: {
                     id: product?.id,
                     options: {
-                        sizeGuidePhoto: photoUrl
+                        sizeGuidePhoto: photoUrl ? photoUrl : ''
                     }
                 }
             })
-            addToast({ position: 'top', title: 'Prodotto modificato con successo', status: 'success', duration: 3000, isClosable: true })
+            addToast({ position: 'top', title: 'La guida alle taglie del prodotto è stata aggiornata con successo', status: 'success', duration: 3000, isClosable: true })
 
         } catch {
             addToast({
