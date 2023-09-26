@@ -228,7 +228,6 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                     </div>
                 </div>
                 {productSizeSelected && productSizeSelected.map((element, index) => {
-
                     return (
                         <div className='w-full flex' key={index} >
                             <div className='flex justify-between h-full w-10/12 mb-2'>
@@ -282,8 +281,10 @@ const AddColorToProduct: FC<{ category: string | undefined, deleteCard: () => vo
                                     </svg>
                                 }
                                 onClick={() => {
+                                    if (productSizeSelected && productSizeSelected.length <= 1) return
                                     const newproductSizeSelected = productSizeSelected.filter(value => value.size !== element.size)
                                     setProductSizeSelected(newproductSizeSelected)
+                                    setcanAddNewSize(true)
                                 }}
                             />
                         </div>

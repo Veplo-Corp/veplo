@@ -238,6 +238,7 @@ const index = () => {
                 let lots: Size[] = [];
                 let photos: string[] = [];
                 variation?.lots.forEach(lot => {
+                    if (!lot.quantity || !lot.size) return
                     lots.push({
                         quantity: lot.quantity,
                         size: lot.size.split(' (')[0]
