@@ -678,7 +678,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                             >
                             </Box>
                         </Box>
-                        {product?.colors && <Box
+                        {false && product?.colors && <Box
                             fontWeight='light'
                             as='h1'
                             noOfLines={1}
@@ -700,7 +700,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                 dimension={'1.5rem'} space={5} showTooltip={true}
                             />
                         </div>} */}
-                        {product.colors && product.variations && <div className='mt-2'>
+                        {product.colors && product.variations && <div className='mt-6'>
                             <VariationPreview
                                 colorSelected={variationSelected?.color ? variationSelected?.color : ''}
 
@@ -709,7 +709,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                 dimension={'1.5rem'} space={5} showTooltip={true}
                             />
                         </div>}
-                        <Box
+                        {false && <Box
                             fontWeight='light'
                             as='h1'
                             mt={5}
@@ -726,28 +726,30 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                             >
                                 @{product?.shopInfo?.name?.unique}
                             </Link>
-                        </Box>
+                        </Box>}
                         <Box
                             fontWeight='light'
                             as='h1'
                             noOfLines={1}
-                            mt='6'
-                            mb={3}
+
                             fontSize='md'
                             display={'flex'}
                             justifyContent={'space-between'}
                             width={'full'}
+                            my={3}
                         >
-                            <Text
+                            {/* <Text
                                 className='select-none'
                             >
                                 Taglie disponibili
-                            </Text>
+                            </Text> */}
                             {/* (product.sizeGuidePhoto || macrocategorySizeGuide) */ product.sizeGuidePhoto && product.sizeGuidePhoto.length > 0 && <Box
                                 cursor={'pointer'}
                                 onClick={() => setIsOpenModalGuideSize(true)}
                                 display={'flex'}
                                 gap={2}
+                                mt={3}
+                                mb={0}
                             >
                                 <img
                                     className='h-[18px] my-auto'
