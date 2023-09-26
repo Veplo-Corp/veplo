@@ -731,12 +731,12 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                             fontWeight='light'
                             as='h1'
                             noOfLines={1}
-                            mt='6'
-                            mb={3}
+
                             fontSize='md'
                             display={'flex'}
                             justifyContent={'space-between'}
                             width={'full'}
+                            my={3}
                         >
                             {/* <Text
                                 className='select-none'
@@ -748,6 +748,8 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                 onClick={() => setIsOpenModalGuideSize(true)}
                                 display={'flex'}
                                 gap={2}
+                                mt={3}
+                                mb={0}
                             >
                                 <img
                                     className='h-[18px] my-auto'
