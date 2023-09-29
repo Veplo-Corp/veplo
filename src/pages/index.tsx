@@ -6,6 +6,7 @@ import HomePage, { ListComponents } from '../../components/organisms/HomePage'
 import { Box } from '@chakra-ui/react'
 import { getGender } from '../../components/utils/getGender'
 import { useRouter } from 'next/router'
+import PostMeta from '../../components/organisms/PostMeta'
 
 
 
@@ -61,10 +62,19 @@ const index: FC<{ data: ListComponents }> = ({ data }) => {
   }, [router])
 
   return (
-    <Box minH={'120vh'}>
-      {canView && <HomePage data={data} />}
+    <>
+      <PostMeta
+        canonicalUrl='https://www.veplo.it'
+        title={"Veplo"}
+        subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+        image={""}
+        description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+      />
+      <Box minH={'120vh'}>
+        {canView && <HomePage data={data} />}
+      </Box>
+    </>
 
-    </Box>
   )
 }
 

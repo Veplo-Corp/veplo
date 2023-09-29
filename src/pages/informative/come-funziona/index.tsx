@@ -4,6 +4,7 @@ import GET_COMPONENTS_HOME_LIST from '../../../lib/apollo/dato_CMS/queries/getCo
 import { GetStaticProps } from 'next'
 import { initApollo } from '../../../lib/apollo'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
+import PostMeta from '../../../../components/organisms/PostMeta'
 
 
 export const getStaticProps: GetStaticProps<{}> = async () => {
@@ -42,7 +43,13 @@ export const getStaticProps: GetStaticProps<{}> = async () => {
 const index: FC<{ data: ListComponents }> = ({ data }) => {
     return (
         <>
-
+            <PostMeta
+                canonicalUrl='https://www.veplo.it'
+                title={"Veplo"}
+                subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+                image={""}
+                description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+            />
             <HomePage data={data} />
 
         </>
