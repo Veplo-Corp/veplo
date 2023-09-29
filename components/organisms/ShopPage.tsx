@@ -272,9 +272,9 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`${shop.name ? shop.name.visualized + ' (@' + shop.name.unique : 'Brand'}) | Veplo`}
-                subtitle={`${shop.name?.visualized} è su Veplo | Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
+                subtitle={`${shop.name?.visualized} è su Veplo | Scopri i migliori brand di abbigliamento made in Italy. Con Veplo sostieni la moda responsabile.`}
                 image={shop?.profilePhoto}
-                description={`${shop.name?.visualized} è su Veplo | Scopri i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile.`}
+                description={`${shop.name?.visualized} è su Veplo | Scopri i migliori brand di abbigliamento made in Italy. Con Veplo sostieni la moda responsabile.`}
             />
             <Box
                 className='lg:mx-6 xl:w-10/12 2xl:w-9/12 xl:mx-auto mb-4 lg:mb-9'
