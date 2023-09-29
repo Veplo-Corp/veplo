@@ -235,7 +235,7 @@ const LoginAndRegistrationForm: FC<{
                             const idToken = await userCredential.user.getIdToken(true);
                             if (!idToken) return
                             setAuthTokenInSessionStorage(idToken)
-                            await sendEmailVerificationHanlder()
+                            //await sendEmailVerificationHanlder()
                             await setBusinessAccount()
                             //nuovo idtoken con claims aggiunti
                             const newIdToken = await userCredential.user.getIdToken(true);
