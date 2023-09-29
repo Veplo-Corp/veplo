@@ -41,9 +41,9 @@ const index = () => {
             <PostMeta
                 canonicalUrl={'https://www.veplo.it/user/settings'}
                 title={'Impostazioni | Veplo'}
-                subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+                subtitle={"Veplo è lo spazio dove trovare i migliori brand emergenti italiani di abbigliamento. Con Veplo sostieni la vera moda."}
                 image={""}
-                description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+                description={"Veplo è lo spazio dove trovare i migliori brand emergenti italiani di abbigliamento. Con Veplo sostieni la vera moda."}
             />
             <div className='flex w-full mt-8 md:mt-10' >
                 <div className='md:p-3 space-y-4 m-auto w-full md:w-8/12 lg:w-1/2'>

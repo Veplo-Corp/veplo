@@ -48,9 +48,9 @@ const index: FC<{ data: Policies }> = ({ data }) => {
             <PostMeta
                 canonicalUrl={'https://www.veplo.it/informative/reso-e-rimborsi'}
                 title={'Politica Reso | Veplo'}
-                subtitle={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+                subtitle={"Veplo è lo spazio dove trovare i migliori brand emergenti italiani di abbigliamento. Con Veplo sostieni la vera moda."}
                 image={""}
-                description={"Veplo è lo spazio dove trovare i migliori brand di abbigliamento e accessori made in Italy. Con Veplo sostieni la moda responsabile."}
+                description={"Veplo è lo spazio dove trovare i migliori brand emergenti italiani di abbigliamento. Con Veplo sostieni la vera moda."}
             />
             <Desktop_Layout>
 

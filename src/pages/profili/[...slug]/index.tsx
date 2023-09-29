@@ -97,9 +97,9 @@ const index: FC<{ shops: ShopsQuery["shops"], listType: 'brand' | 'shop', listCa
             <PostMeta
                 canonicalUrl={'https://www.veplo.it' + router.asPath}
                 title={`${listCategory ? 'Marchi ' + toUpperCaseFirstLetter(listCategory) : 'Tutti i Brand'} | Veplo`}
-                subtitle={"Su Veplo trovi i migliori migliori brand di abbigliamento e accessori made in Italy. Trova il tuo capo dei sogni tra tanti prodotti disponibili!"}
+                subtitle={"Su Veplo trovi i migliori migliori brand di abbigliamento made in Italy. Trova il tuo capo dei sogni tra tanti prodotti disponibili!"}
                 image={""}
-                description={"Su Veplo trovi i migliori migliori brand di abbigliamento e accessori made in Italy. Trova il tuo capo dei sogni tra tanti prodotti disponibili!"}
+                description={"Su Veplo trovi i migliori migliori brand di abbigliamento made in Italy. Trova il tuo capo dei sogni tra tanti prodotti disponibili!"}
             />
             {/* <div className='md:flex justify-end'>
                 
