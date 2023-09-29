@@ -225,8 +225,33 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                             prefetch={false}
                             href={productLinkPage}
                         >
-                            {isSustainable &&
-                                <ToolTipComponent
+
+                            <Box
+                                position={'absolute'}
+                                top={doubleGridDevice ? 2 : 3.5}
+                                right={doubleGridDevice ? 2 : '15px'}
+                                display={'flex'}
+                                gap={doubleGridDevice ? 1 : 1.5}
+                            >
+                                {product.info?.gender === 'u' && <Box
+                                    zIndex={20}
+                                    height={doubleGridDevice ? 7 : 8}
+                                    margin={'none'}
+                                    paddingX={doubleGridDevice ? 2 : 3}
+                                    background={'white'}
+                                    borderRadius={'full'}
+                                    display={'flex'}
+                                    textAlign={'center'}
+                                >
+                                    <Text
+                                        fontWeight={'medium'}
+                                        my={'auto'}
+                                    >
+                                        Unisex
+                                    </Text>
+
+                                </Box>}
+                                {isSustainable && <ToolTipComponent
                                     smallView={doubleGridDevice}
                                     label={'Prodotto sostenibile'}
                                     icon={<Leaf
@@ -235,8 +260,13 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                                         width={doubleGridDevice ? '16px' : '19px'}
                                         strokeWidth={2.1}
                                     />}
-                                />
-                            }
+                                />}
+                            </Box>
+
+
+
+
+
                             {showSize &&
                                 <ScaleFade
                                     initialScale={0.7} in={showSize}
