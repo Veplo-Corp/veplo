@@ -481,13 +481,14 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                         mt={3}
                     >
 
-                        {Object.keys(CATEGORIES).map(gender => {
+                        {Object.keys(CATEGORIES).map((gender, index) => {
                             const genderInitial = gender === 'uomo' ? 'm' : 'f'
                             return (
 
                                 <Box
                                     cursor={'pointer'}
                                     display={'flex'}
+                                    key={index}
                                     onClick={() => {
                                         //elimina sessionStorage
                                         sessionStorage.removeItem("keyShopSession")

@@ -29,7 +29,7 @@ export interface CartDispatch {
         },
         city: string,
         status: string,
-        minimumAmountForFreeShipping?: number,
+        minimumAmountForFreeShipping?: number | null,
         profilePhoto?: string
     },
     total: number,
