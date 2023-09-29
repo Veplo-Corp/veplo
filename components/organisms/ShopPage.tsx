@@ -223,7 +223,7 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
 
 
 
-        if (shop.info?.phone) {
+        if (shop.address) {
             actionsPopoverElements.push({
                 title: 'Indicazioni',
                 icon: <SmallShopAlt
@@ -475,14 +475,19 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                             </Text>}
                         </Box>
                     }
-                    <ButtonGroup
-                        gap={0}
+                    <Box
+                        display={'flex'}
+                        gap={1}
                         mt={3}
                     >
+
                         {Object.keys(CATEGORIES).map(gender => {
                             const genderInitial = gender === 'uomo' ? 'm' : 'f'
                             return (
-                                <Button
+
+                                <Box
+                                    cursor={'pointer'}
+                                    display={'flex'}
                                     onClick={() => {
                                         //elimina sessionStorage
                                         sessionStorage.removeItem("keyShopSession")
@@ -496,12 +501,12 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                                             router.replace(`/@${shop.name.unique}`)
                                         }
                                     }}
-                                    key={gender}
                                     borderWidth={1}
                                     borderColor={'secondaryBlack.borderColor'}
                                     borderRadius={'10px'}
                                     height={12}
                                     paddingX={8}
+                                    textAlign={'center'}
                                     bg={genderSelected === genderInitial ? 'black' : 'white'}
                                     color={genderSelected === genderInitial ? 'white' : 'secondaryBlack.text'}
                                     _hover={
@@ -518,11 +523,17 @@ const ShopPage: React.FC<{ shop: GetShopQuery["shop"], gender: 'f' | 'm' | undef
                                     fontSize={'16px'}
                                     fontWeight={'bold'}
                                 >
-                                    {toUpperCaseFirstLetter(gender)}
-                                </Button>
+                                    <Text
+                                        my={'auto'}
+                                    >
+                                        {toUpperCaseFirstLetter(gender)}
+
+                                    </Text>
+                                </Box>
+
                             )
                         })}
-                    </ButtonGroup>
+                    </Box>
                 </Box>
 
             </Box>
