@@ -245,7 +245,6 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
         }, [router]
     )
 
-    console.log(product);
 
 
     const addToCart = async (product: Product) => {
@@ -436,12 +435,14 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                 },
                                 city: product?.shopInfo?.city ? product?.shopInfo?.city : '',
                                 status: product?.shopInfo?.status ? product?.shopInfo?.status : '',
-                                minimumAmountForFreeShipping: product?.shopInfo?.minimumAmountForFreeShipping ? product?.shopInfo?.minimumAmountForFreeShipping : 0,
+                                minimumAmountForFreeShipping: product?.shopInfo?.minimumAmountForFreeShipping ? product?.shopInfo?.minimumAmountForFreeShipping : null,
                                 profilePhoto: product?.shopInfo?.profilePhoto ? product?.shopInfo?.profilePhoto : '',
                             },
                             total: product?.price?.v2 ? product?.price?.v2 : product?.price?.v1 ? product?.price?.v1 : 0,
                             productVariations: [newProductVariation]
                         }
+
+
 
                         NewCarts = sortShopsInCart(
                             [
@@ -488,7 +489,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                 },
                                 city: product?.shopInfo?.city ? product?.shopInfo?.city : '',
                                 status: product?.shopInfo?.status ? product?.shopInfo?.status : '',
-                                minimumAmountForFreeShipping: product?.shopInfo?.minimumAmountForFreeShipping ? product?.shopInfo?.minimumAmountForFreeShipping : 0,
+                                minimumAmountForFreeShipping: product?.shopInfo?.minimumAmountForFreeShipping ? product?.shopInfo?.minimumAmountForFreeShipping : null,
                                 profilePhoto: product?.shopInfo?.profilePhoto ? product?.shopInfo?.profilePhoto : '',
                             },
                             total: product?.price?.v2 ? product?.price?.v2 : product?.price?.v1 ? product?.price?.v1 : 0,

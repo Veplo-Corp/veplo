@@ -164,7 +164,6 @@ const SizeGuidesComponent: FC<{ id: string, isSelectable?: boolean, onChangeSize
         duration: 6000,
         isClosable: true
       })
-      console.log(e);
 
     }
   }

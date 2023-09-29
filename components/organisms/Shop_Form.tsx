@@ -194,7 +194,6 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                 options.profileCover = photoUploadedCover.id
             }
             if (imageProfile) {
-                console.log(imageProfile?.file);
                 const photoUploadedProfile = await uploadImage(imageProfile?.file, UploadEventType.shopPhoto)
                 options.profilePhoto = photoUploadedProfile.id
             }
@@ -233,7 +232,6 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
             })
             setIsLoading(false)
         } catch (e) {
-            console.log(e);
 
             addToast({
                 position: 'top',

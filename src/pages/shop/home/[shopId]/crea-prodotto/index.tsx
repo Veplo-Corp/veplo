@@ -658,7 +658,6 @@ const index = () => {
                             </h1>
 
                             {productVariations.length > 0 && productVariations.map((variation: VariationCard, index) => {
-                                console.log('variation', variation);
 
                                 return (
 
