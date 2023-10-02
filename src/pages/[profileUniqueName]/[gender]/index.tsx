@@ -4,7 +4,7 @@ import { GetShopQuery, ShopByUniqueNameQuery } from '../../../lib/apollo/generat
 import GET_SHOP_AND_PRODUCTS_BY_PROFILE_UNIQUE_NAME from '../../../lib/apollo/queries/getShopAndProductsByUniqueName';
 import ShopPage from '../../../../components/organisms/ShopPage';
 
-const RANGE = typeof process.env.NEXT_PUBLIC_RANGE === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE_SHOP) : 150
+const RANGE = typeof process.env.NEXT_PUBLIC_RANGE_SHOP === 'string' ? Number(process.env.NEXT_PUBLIC_RANGE_SHOP) : 150
 
 
 export async function getStaticPaths() {
