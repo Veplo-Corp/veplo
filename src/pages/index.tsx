@@ -57,6 +57,7 @@ const index: FC<{ data: ListComponents }> = ({ data }) => {
       router.replace('/cerca/abbigliamento/uomo-abbigliamento/tutto/rilevanza')
     }
     if (!gender) {
+      router.replace('/cerca/abbigliamento/uomo-abbigliamento/tutto/rilevanza')
       return setCanView(true)
     }
   }, [router])
@@ -71,7 +72,7 @@ const index: FC<{ data: ListComponents }> = ({ data }) => {
         description={"Veplo è lo spazio dove trovare i migliori brand emergenti italiani di abbigliamento. Con Veplo sostieni la vera moda."}
       />
       <Box minH={'120vh'}>
-        {canView && <HomePage data={data} />}
+        {/* {canView && <HomePage data={data} />} */}
       </Box>
     </>
 
