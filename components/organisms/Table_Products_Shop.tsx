@@ -31,7 +31,7 @@ import addAWSPath from '../utils/add_path_aws';
 import { imageKitUrl } from '../utils/imageKitUrl';
 import Input_Search_Item from '../atoms/Input_Search_Item'
 import Product_Status_Popover from '../molecules/Product_Status_Popover';
-import EDIT_STATUS_PRODUCT from '../../src/lib/apollo/mutations/editStatusProduct';
+//import EDIT_STATUS_PRODUCT from '../../src/lib/apollo/mutations/editStatusProduct';
 import { ToastOpen } from '../utils/Toast';
 import { formatNumberWithTwoDecimalsInString } from '../utils/formatNumberWithTwoDecimalsInString';
 import { Search } from 'iconoir-react';
@@ -60,30 +60,30 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
         products: []
     })
 
-    const [editStatus, editStatusResponse] = useMutation(EDIT_STATUS_PRODUCT, {
-        update(cache, el, query) {
+    // const [editStatus, editStatusResponse] = useMutation(EDIT_STATUS_PRODUCT, {
+    //     update(cache, el, query) {
 
-            const deleteId = el.data
-            const { shop } = cache.readQuery<any>({
-                query: GET_PRODUCTS_FROM_SHOP,
-                variables: {
-                    id: idShop, limit: 100, offset: 0,
-                    filters: {}
-                },
-            });
-            const ProductCacheId = cache.identify({ id: query.variables?.id, __typename: 'Product' })
-            cache.modify({
-                id: ProductCacheId, //productId
-                fields: {
-                    status(/* cachedvalue */) {
-                        return query.variables?.status //newStatus
-                    }
-                },
-                broadcast: false // Include this to prevent automatic query refresh
-            });
+    //         const deleteId = el.data
+    //         const { shop } = cache.readQuery<any>({
+    //             query: GET_PRODUCTS_FROM_SHOP,
+    //             variables: {
+    //                 id: idShop, limit: 100, offset: 0,
+    //                 filters: {}
+    //             },
+    //         });
+    //         const ProductCacheId = cache.identify({ id: query.variables?.id, __typename: 'Product' })
+    //         cache.modify({
+    //             id: ProductCacheId, //productId
+    //             fields: {
+    //                 status(/* cachedvalue */) {
+    //                     return query.variables?.status //newStatus
+    //                 }
+    //             },
+    //             broadcast: false // Include this to prevent automatic query refresh
+    //         });
 
-        }
-    })
+    //     }
+    // })
 
 
     const { loading, error, data, fetchMore } = useQuery<Props>(GET_PRODUCTS_FROM_SHOP, {
@@ -110,20 +110,20 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
 
 
 
-    const handleChangeStatus = async (DBstatus: string, productId: string) => {
-        try {
-            await editStatus({ variables: { id: productId, status: DBstatus } })
-        } catch (e) {
-            addToast({
-                position: 'top',
-                title: 'Errore durante cambio status',
-                description: 'Ci dispiace, riprova più tardi',
-                status: 'error',
-                duration: 5000,
-                isClosable: true
-            })
-        }
-    }
+    // const handleChangeStatus = async (DBstatus: string, productId: string) => {
+    //     try {
+    //         await editStatus({ variables: { id: productId, status: DBstatus } })
+    //     } catch (e) {
+    //         addToast({
+    //             position: 'top',
+    //             title: 'Errore durante cambio status',
+    //             description: 'Ci dispiace, riprova più tardi',
+    //             status: 'error',
+    //             duration: 5000,
+    //             isClosable: true
+    //         })
+    //     }
+    // }
 
 
     const handleButtonDelete = async (productId: string, name: string, photos: string[]) => {
@@ -168,9 +168,9 @@ const Table_Products_Shop: React.FC<{ idShop: any, deleteProduct: any, }> = ({ i
         })
     }
 
-    const onChangeStatus = (DBstatus: string, productId: string) => {
-        handleChangeStatus(DBstatus, productId)
-    }
+    // const onChangeStatus = (DBstatus: string, productId: string) => {
+    //     handleChangeStatus(DBstatus, productId)
+    // }
 
 
 
