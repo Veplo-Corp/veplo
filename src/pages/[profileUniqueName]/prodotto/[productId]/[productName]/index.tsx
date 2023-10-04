@@ -606,7 +606,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                                     my={'auto'}
                                 >
                                     {((user.statusAuthentication === 'logged_in' && (user.favouriteShops)) || user.statusAuthentication === 'logged_out') && <Box
-                                        className='mt-1 mr-2'
+                                        className='mt-1 lg:mr-2'
                                     >
                                         <ButtonFollow shopId={product.shopInfo?.id} isSmall={true} />
                                     </Box>}
