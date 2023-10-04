@@ -260,9 +260,10 @@ const Shop_Form: FC<{ shop: Shop }> = ({ shop }) => {
                         rounded={10}
                         paddingY={6}
                         type="text"
-                        {...register("name.unique", { required: true, maxLength: 30 })}
+                        value={/* '@' +  */watch("name.unique")}
+                        // {...register("name.unique", { required: true, maxLength: 30 })}
                         isInvalid={false}
-                        disabled={isLoading}
+                        disabled={true}
                         _disabled={{
                             opacity: '1',
                             background: 'gray.50'

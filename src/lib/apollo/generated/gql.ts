@@ -16,6 +16,7 @@ const documents = {
     "\n    mutation editOrder(\n        $id: ID!\n        $options: EditOrderInput!\n    ) {\n        editOrder(\n            id: $id\n            options: $options\n        )\n    }\n": types.EditOrderDocument,
     "\nmutation appendSizeGuideTemplate(\n    $shopId:ID!\n    $options: sizeGuideTemplateInput!\n){\n    appendSizeGuideTemplate(\n      shopId:$shopId\n      options:$options\n    ) \n  }\n": types.AppendSizeGuideTemplateDocument,
     "\n    mutation checkout(\n        $shopId: ID!\n    ) {\n        checkout(\n            shopId: $shopId\n        )\n    }\n": types.CheckoutDocument,
+    "\nmutation click(\n    $productId:ID!\n){\n    click(\n        productId:$productId\n    ) \n  }\n": types.ClickDocument,
     "\n    mutation createBusinessStep1{\n        createBusinessStep1\n    }\n": types.CreateBusinessStep1Document,
     "\n    mutation createInformation(\n        $options: InformationInput!\n    ) {\n        createInformation(\n            options: $options\n        )\n    }\n": types.CreateInformationDocument,
     "\n    mutation createProduct(\n        $shopId: ID!\n        $options: ProductInput!\n    ) {\n        createProduct(\n            shopId: $shopId\n            options: $options\n        )\n    }\n": types.CreateProductDocument,
@@ -31,7 +32,6 @@ const documents = {
     "\n    mutation editProduct(\n        $id: ID!\n        $options: EditProductInput!\n    ) {\n        editProduct(\n            id: $id\n            options: $options\n        )\n    }\n": types.EditProductDocument,
     "\n    mutation editShop(\n        $id: ID!\n        $options: EditShopInput!\n        ) {\n        editShop(\n            id: $id\n            options: $options\n\n        )      \n    }\n    \n": types.EditShopDocument,
     "\nmutation editSizeGuideTemplate(\n    $shopId:ID!\n    $title: String!\n    $options: sizeGuideTemplateInput!\n){\n    editSizeGuideTemplate(\n      shopId:$shopId\n      title: $title\n      options:$options\n    ) \n  }\n": types.EditSizeGuideTemplateDocument,
-    "\n  mutation changeProductStatus(\n    $id: ID!\n    $status:String!\n  ){\n    changeProductStatus(\n        id: $id\n        status: $status\n    ) \n  }\n": types.ChangeProductStatusDocument,
     "\n    mutation editUser(\n        $options: EditUserInput!\n    ) {\n        editUser(\n            options:$options\n        )\n    }\n": types.EditUserDocument,
     "\n    mutation editVariation(\n        $id:ID!\n        $options: EditVariationInput!\n    ) {\n        editVariation(\n            id:$id\n            options:$options\n        )\n    }\n": types.EditVariationDocument,
     "\n    mutation follow(\n        $id: ID!\n    ) {\n        follow(\n            id: $id\n        )\n    }\n": types.FollowDocument,
@@ -86,6 +86,10 @@ export function graphql(source: "\nmutation appendSizeGuideTemplate(\n    $shopI
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation checkout(\n        $shopId: ID!\n    ) {\n        checkout(\n            shopId: $shopId\n        )\n    }\n"): (typeof documents)["\n    mutation checkout(\n        $shopId: ID!\n    ) {\n        checkout(\n            shopId: $shopId\n        )\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\nmutation click(\n    $productId:ID!\n){\n    click(\n        productId:$productId\n    ) \n  }\n"): (typeof documents)["\nmutation click(\n    $productId:ID!\n){\n    click(\n        productId:$productId\n    ) \n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -146,10 +150,6 @@ export function graphql(source: "\n    mutation editShop(\n        $id: ID!\n   
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\nmutation editSizeGuideTemplate(\n    $shopId:ID!\n    $title: String!\n    $options: sizeGuideTemplateInput!\n){\n    editSizeGuideTemplate(\n      shopId:$shopId\n      title: $title\n      options:$options\n    ) \n  }\n"): (typeof documents)["\nmutation editSizeGuideTemplate(\n    $shopId:ID!\n    $title: String!\n    $options: sizeGuideTemplateInput!\n){\n    editSizeGuideTemplate(\n      shopId:$shopId\n      title: $title\n      options:$options\n    ) \n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  mutation changeProductStatus(\n    $id: ID!\n    $status:String!\n  ){\n    changeProductStatus(\n        id: $id\n        status: $status\n    ) \n  }\n"): (typeof documents)["\n  mutation changeProductStatus(\n    $id: ID!\n    $status:String!\n  ){\n    changeProductStatus(\n        id: $id\n        status: $status\n    ) \n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

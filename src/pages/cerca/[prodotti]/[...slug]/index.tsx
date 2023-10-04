@@ -12,7 +12,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Box_Dress from '../../../../../components/molecules/Box_Dress';
 import { LIST_ITEM_VARIANT } from '../../../../../components/mook/transition';
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { setInLocalStorage } from '../../../../../components/utils/setInLocalStorage';
 import { changeUnivers, changeGenderSelected } from '../../../../store/reducers/user';
 import { useDispatch } from 'react-redux';
@@ -29,6 +29,7 @@ import TagFilter, { FilterAccepted } from '../../../../../components/atoms/TagFi
 import { getUnivers } from '../../../../../components/utils/getUnivers';
 import { getSortingFilter } from '../../../../../components/utils/getSortingFilter';
 import { findParamInURL } from '../../../../../components/utils/findParamInURL';
+import CLICK_PRODUCT from '../../../../lib/apollo/mutations/click';
 
 
 
@@ -131,6 +132,7 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     const [history, setHistory] = useState<string>()
     const [sort, setSort] = useState<Sort | string>('')
     const timeoutRef = useRef<any>(null);
+    const [clickProduct] = useMutation(CLICK_PRODUCT);
 
 
 
@@ -586,7 +588,13 @@ const index: FC<{ filtersProps: ProductsFilter, error?: string, dataProducts: Pr
     }
 
 
-    const saveProductsInSessionStorage = () => {
+    const saveProductsInSessionStorage = (productId: string) => {
+        //click event product
+        clickProduct({
+            variables: {
+                productId: productId
+            }
+        })
         sessionStorage.setItem("keyProductsSession", window.history.state.key)
         sessionStorage.setItem("productsInProductsPage", JSON.stringify(products))
         sessionStorage.setItem('scrollPositionProducts', window.scrollY.toString());
