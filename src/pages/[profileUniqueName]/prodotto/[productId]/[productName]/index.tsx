@@ -547,7 +547,7 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
                     title={`${product?.info?.brand} ${product?.name?.toUpperCase()} | ${toUpperCaseFirstLetter(product?.info?.macroCategory)}  | Veplo`}
                     subtitle={`${toUpperCaseFirstLetter(product?.info?.macroCategory)} ${product?.info?.brand} ${product?.name?.toUpperCase()} a ${product?.price?.v2 ? formatNumberWithTwoDecimalsInString(product?.price?.v2) : formatNumberWithTwoDecimalsInString(product?.price?.v1)}€. Scopri i migliori brand di abbigliamento italiani. Con Veplo sostieni la moda responsabile.`}
                     image={imageKitUrl(variationSelected?.photos?.[0], 237, 247)}
-                    subtitle={`${toUpperCaseFirstLetter(product?.info?.macroCategory)} ${product?.info?.brand} ${product?.name?.toUpperCase()} a ${product?.price?.v2 ? formatNumberWithTwoDecimalsInString(product?.price?.v2) : formatNumberWithTwoDecimalsInString(product?.price?.v1)}€. Scopri i migliori brand di abbigliamento italiani. Con Veplo sostieni la moda responsabile.`}
+                    description={`${toUpperCaseFirstLetter(product?.info?.macroCategory)} ${product?.info?.brand} ${product?.name?.toUpperCase()} a ${product?.price?.v2 ? formatNumberWithTwoDecimalsInString(product?.price?.v2) : formatNumberWithTwoDecimalsInString(product?.price?.v1)}€. Scopri i migliori brand di abbigliamento italiani. Con Veplo sostieni la moda responsabile.`}
                 />
                 <Box
 
