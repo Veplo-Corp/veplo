@@ -30,7 +30,7 @@ import { manipulateUrlForProductColorAndSize } from '../utils/manipulateUrlForPr
 import ToolTipComponent from '../atoms/ToolTipComponent';
 
 
-const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: () => void, product: Product; color?: string | undefined, showStoreHeader?: boolean, productLink: string, doubleGridDevice: boolean }> = ({ handleEventSelectedDress, product, color, showStoreHeader, productLink, overflowCards, doubleGridDevice }) => {
+const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: (productId: string) => void, product: Product; color?: string | undefined, showStoreHeader?: boolean, productLink: string, doubleGridDevice: boolean }> = ({ handleEventSelectedDress, product, color, showStoreHeader, productLink, overflowCards, doubleGridDevice }) => {
     const [productcolorsCSS, setProductcolorsCSS] = useState<any[]>([]);
     //const [dimensionUrl, setDimensionUrl] = useState('&tr=w-571,h-825')
     const [urlProduct, seturlProduct] = useState<string | undefined>()
@@ -192,7 +192,10 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                         >
                             <Link
                                 prefetch={false}
-                                onClick={handleEventSelectedDress}
+                                onClick={() => {
+                                    if (!product.id || !handleEventSelectedDress) return
+                                    handleEventSelectedDress(product.id)
+                                }}
                                 className=''
                                 href={product?.shopInfo?.name?.unique ? `/@${product.shopInfo.name.unique}` : ''}>
                                 <ProfilePhoto
@@ -218,7 +221,12 @@ const Box_Dress: React.FC<{ overflowCards?: boolean, handleEventSelectedDress?: 
                     //background={'#FBFBFB'}
                     >
                         <Link
-                            onClick={handleEventSelectedDress}
+                            onClick={
+                                () => {
+                                    if (!product.id || !handleEventSelectedDress) return
+                                    handleEventSelectedDress(product.id)
+                                }
+                            }
                             onMouseLeave={() => {
                                 setShowSize(false)
                             }}
