@@ -419,6 +419,8 @@ const SizeGuidesComponent: FC<{ id: string, isSelectable?: boolean, onChangeSize
                       width={'full'}
                       onClick={() => {
                         if (!sizeGuide.title || !sizeGuide.photo) return
+
+
                         if (sizeGuide.title === sizeGuideSelected?.title) {
                           setSizeGuideSelected(undefined)
                           if (onChangeSizeGuide) {
@@ -428,7 +430,7 @@ const SizeGuidesComponent: FC<{ id: string, isSelectable?: boolean, onChangeSize
                         }
                         setSizeGuideSelected(sizeGuide)
                         if (onChangeSizeGuide) {
-                          onChangeSizeGuide(undefined)
+                          onChangeSizeGuide(sizeGuide.photo)
                         }
                       }}
                     >

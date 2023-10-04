@@ -649,8 +649,9 @@ const index = () => {
                             {typeof router.query.shopId === 'string' && <SizeGuidesComponent
                                 isSelectable={true}
                                 onChangeSizeGuide={(url: string | undefined) => {
-                                    setsizeGuidePhotoUrl(url)
+                                    console.log(url);
 
+                                    setsizeGuidePhotoUrl(url)
                                 }}
                                 id={router.query.shopId} />}
                             <h1 className='text-lg md:text-2xl font-extrabold mt-6 mb-4'>
@@ -660,7 +661,6 @@ const index = () => {
                             {productVariations.length > 0 && productVariations.map((variation: VariationCard, index) => {
 
                                 return (
-
                                     <ProductVariationCard
                                         index={index}
                                         key={index}
