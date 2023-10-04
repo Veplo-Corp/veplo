@@ -79,7 +79,6 @@ const LoginAndRegistrationForm: FC<{
 
 
                         if (cart.shopInfo?.id === shopId) {
-
                             cartId = result?.data.editCart
                         }
                     }
@@ -88,7 +87,10 @@ const LoginAndRegistrationForm: FC<{
                     }
                 }
             }
-            router.replace('/checkout/' + cartId)
+            if (cartId.length > 0) {
+                router.replace('/checkout/' + cartId)
+            }
+
         }
 
         const redirectUser = (isBusiness: boolean) => {
@@ -144,9 +146,6 @@ const LoginAndRegistrationForm: FC<{
                     const tokenResult = await userCredential?.user?.getIdTokenResult();
                     const isBusiness = tokenResult.claims.isBusiness ? true : false;
                     setAuthTokenInSessionStorage(tokenResult.token)
-                    await handleCartInLocalStorage()
-
-                    setIsLoading(false)
                     gtag({
                         command: GTMEventType.login,
                         args: {
@@ -156,6 +155,10 @@ const LoginAndRegistrationForm: FC<{
                             userType: isBusiness ? 'Business' : 'Customer'
                         }
                     })
+                    await handleCartInLocalStorage()
+
+                    setIsLoading(false)
+
                     redirectUser(isBusiness)
                     setIsLoading(false)
 
@@ -208,7 +211,6 @@ const LoginAndRegistrationForm: FC<{
                                 userType: 'Customer'
                             }
                         })
-                        await handleCartInLocalStorage()
 
                         dispatch(
                             login({
@@ -225,6 +227,8 @@ const LoginAndRegistrationForm: FC<{
                                 favouriteShops: []
                             })
                         );
+                        await handleCartInLocalStorage()
+
                         setIsLoading(false)
                         redirectUser(false)
 
@@ -356,7 +360,6 @@ const LoginAndRegistrationForm: FC<{
                 updateProfile(result.user, {
                     displayName: typeof fullName?.[0] === 'string' ? fullName[0] : ''
                 })
-                await handleCartInLocalStorage()
                 dispatch(
                     login({
                         email: result.user.email,
@@ -372,6 +375,8 @@ const LoginAndRegistrationForm: FC<{
                         favouriteShops: []
                     })
                 );
+                await handleCartInLocalStorage()
+
                 setIsLoading(false)
                 redirectUser(false)
             } catch (error: any) {
