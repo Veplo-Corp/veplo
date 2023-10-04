@@ -34,7 +34,7 @@ const ProfilePhoto = (props: Props,) => {
             >
                 <Text
                     fontWeight={'black'}
-                    fontSize={[props.doubleGridDevice ? '13px' : isSmallView && props.popover ? '15px' : '19px', props.popover ? '12px' : '18px', '18px']}
+                    fontSize={[props.doubleGridDevice ? '13px' : (isSmallView && props.popover) ? '15px' : (props.primaryText && props.primaryText?.length > 18) ? '17px' : '19px', props.popover ? '12px' : '18px', '18px']}
                     lineHeight={[props.doubleGridDevice ? '12px' : isSmallView && props.popover ? '16px' : '20px', props.popover ? '13px' : '19px', '20px']}
                     maxW={props.maxWidth && (props.doubleGridDevice || props.popover) && isSmallView ? props.maxWidth : ''}
                     isTruncated

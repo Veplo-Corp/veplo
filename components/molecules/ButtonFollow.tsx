@@ -137,7 +137,7 @@ const ButtonFollow: FC<{ shopId: string | undefined | null; isSmall?: boolean }>
                 variant={isShopFollowed ? 'grayPrimary' : 'primary'}
                 borderRadius={'full'}
                 //paddingInline={isShopFollowed ? [6, 6, 7, 7] : [10, 10, 12, 12]}
-                width={isSmall ? [28, 28, 28, 28] : [28, 28, 32, 32]}
+                width={isSmall ? [24, 28, 28, 28] : [24, 28, 32, 32]}
                 fontWeight={isShopFollowed ? 'semibold' : 'extrabold'}
                 height={isSmall ? [9, 9, 10, 10] : [9, 9, 12, 12]}
                 fontSize={isSmall ? ['md', 'md', '16px', '16px'] : ['md', 'md', 'lg', 'lg']}
