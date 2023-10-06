@@ -13,7 +13,7 @@ const GuideSize: FC<{ macrocategorySizeGuide: any, sizeGuideTemplatePhotoUrl?: s
 
 
     return (
-        <Box minH={'50vh'} minW={'30vw'}>
+        <Box >
             {/* <Text
                 mb={2}
                 fontSize={['lg', 'xl']}
@@ -63,7 +63,7 @@ const GuideSize: FC<{ macrocategorySizeGuide: any, sizeGuideTemplatePhotoUrl?: s
             {
                 sizeGuideTemplatePhotoUrl &&
                 <img
-                    className='min-h-[50vh]  min-w-[30vw] max-h-[75vh] lg:max-w-[90vw]'
+                    className='min-w-[30vw] max-h-[75vh] lg:max-w-[90vw] object-contain'
                     src={imageKitUrl(sizeGuideTemplatePhotoUrl)}
                 />
             }

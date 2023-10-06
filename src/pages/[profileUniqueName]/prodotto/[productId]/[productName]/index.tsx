@@ -1083,7 +1083,9 @@ const index: React.FC<{ productFounded: ProductProps, errorLog?: string, initial
             <ModalReausable
                 marginTop={10}
                 positionTopModal={true}
-                title={`${toUpperCaseFirstLetter(product?.info?.macroCategory)} da ${product?.info?.gender === 'm' ? 'uomo' : 'donna'}`} isOpen={isOpenModalGuideSize}
+                //title={`${toUpperCaseFirstLetter(product?.info?.macroCategory)} da ${product?.info?.gender === 'm' ? 'uomo' : 'donna'}`} 
+                isOpen={isOpenModalGuideSize}
+                title=''
                 closeModal={() => setIsOpenModalGuideSize(false)}
             >
                 <GuideSize
