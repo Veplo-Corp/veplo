@@ -29,6 +29,10 @@ export async function getStaticProps(ctx: any) {
                 name: profileUniqueName.replace("@", "").toLowerCase(),
                 limit: RANGE,
                 offset: 0,
+                sort: {
+                    ascending: false,
+                    for: "createdAt"
+                },
                 filters: {
                     gender: gender ? (gender === 'uomo' ? 'm' : 'f') : null
                 }

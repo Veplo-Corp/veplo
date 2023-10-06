@@ -6,6 +6,7 @@ const GET_SHOP_AND_PRODUCTS_BY_UNIQUE_NAME = graphql(`
         $limit: Int!
         $offset: Int!
         $filters: ProductFilters!
+        $sort:ProductSort
         ) {
             shopByUniqueName(
             name: $name
@@ -48,6 +49,7 @@ const GET_SHOP_AND_PRODUCTS_BY_UNIQUE_NAME = graphql(`
                 limit: $limit
                 offset: $offset
                 filters: $filters
+                sort: $sort
             ) 
             {
                 products{

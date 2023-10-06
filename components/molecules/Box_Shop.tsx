@@ -32,7 +32,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                 >
                     {shop.stats?.productsQuantity} prodott{shop.stats?.productsQuantity && shop.stats?.productsQuantity > 1 ? 'i' : 'o'}
                 </Box>
-                <div className="w-[4px] h-[4px] sm:w-[5px] sm:h-[5px]  rounded-full bg-[#909090] my-auto mb-2 sm:mt-5 "></div>
+                {/* <div className="w-[4px] h-[4px] sm:w-[5px] sm:h-[5px]  rounded-full bg-[#909090] my-auto mb-2 sm:mt-5 "></div>
                 <Box display={'flex'} gap={[1.5, '8px']} className='my-auto sm:mt-[10px] md:mt-[14px] lg:mt-[12px] xl:mt-[10px] '>
                     {Array.from({ length: numImages }).map((_, index) => (
                         <img
@@ -42,7 +42,7 @@ const Box_Shop: React.FC<{ shop: ShopsQuery["shops"][0], eventHandler: any, scal
                             alt='Money with wings'
                         />
                     ))}
-                </Box>
+                </Box> */}
             </>
 
         )
