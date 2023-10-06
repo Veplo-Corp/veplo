@@ -582,7 +582,7 @@ const SizeGuidesComponent: FC<{ id: string, isSelectable?: boolean, onChangeSize
           mt={4}
         >
           <img
-            className='min-h[50vh] min-w-[30vw] max-h-[80vh] lg:max-w-[90vw]'
+            className=' min-w-[30vw] max-h-[80vh] lg:max-w-[90vw]'
             src={imageURLForPreview}
           />
         </Box>
