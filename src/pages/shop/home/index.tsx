@@ -84,22 +84,20 @@ const index = () => {
 
 
     const toShop = (shop: Shop) => {
-        if (shop.id && (!user.favouriteShop?.id || user.favouriteShop?.id !== shop.id)) {
-            const element = {
-                id: shop.id,
-                name: {
-                    unique: shop?.name.unique,
-                    visualized: shop?.name.visualized
-                },
-                street: shop?.address.city + ', ' + shop?.address.street
-            }
-
-
-            addShopFavouriteToLocalStorage(element)
-            dispatch(
-                addFavouriteShopBusiness(element)
-            )
+        const element = {
+            id: shop.id,
+            name: {
+                unique: shop?.name.unique,
+                visualized: shop?.name.visualized
+            },
+            street: shop?.address.city + ', ' + shop?.address.street
         }
+
+        addShopFavouriteToLocalStorage(element)
+        dispatch(
+            addFavouriteShopBusiness(element)
+        )
+
         return router.push(`/shop/home/${shop.id}/ordini?statusOrder=tutti&page=1`)
     }
 
