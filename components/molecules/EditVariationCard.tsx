@@ -97,12 +97,12 @@ const EditVariationCard: FC<{ variation: Variation, category: string, deleteVari
 
                             <div className='gap-2 text-right'>
                                 {
-                                    variation?.lots.length > 0 && variation?.lots.map((size: any) => {
+                                    variation?.lots.length > 0 && variation?.lots.map((size: any, index: number) => {
                                         return (
 
                                             <p
                                                 className='text-sm mb-1'
-                                                key={Math.random()}
+                                                key={index}
                                             >
                                                 {sizeTypologySelected?.find(element => element.split(' (')[0] === size.size)} - {size.quantity ? size.quantity + ' quantità' : 'ESAURITO'}
                                             </p>
