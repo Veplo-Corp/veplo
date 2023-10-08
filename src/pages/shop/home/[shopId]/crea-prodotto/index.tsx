@@ -696,7 +696,6 @@ const index = () => {
                                     :
                                     (
                                         <div
-                                            key={Math.random()}
                                             className='mb-4'
                                         >
                                             <AddColorToProduct

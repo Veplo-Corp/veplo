@@ -76,6 +76,7 @@ const index = () => {
             id: router.query?.productId
         }
     })
+    const [isLoadingVariationCard, setIsLoadingVariationCard] = useState<number | undefined>(undefined)
     const [sizeTypeSelected, setSizeTypeSelected] = useState<string>('')
     const [newCard, setNewCard] = useState(false)
     const [colors, setColors] = useState<Color[]>(COLORS)
@@ -401,10 +402,12 @@ const index = () => {
             if (photo.file) photos.push(photo.file)
         }
 
+        //return console.log(variation.photos);
+
+
 
 
         const promises: Promise<string>[] = [];
-        addToast({ position: 'top', title: `Modifica variante ${variation?.color} in corso`, status: 'loading', duration: photos.length > 0 ? 3000 : 1000, isClosable: true })
 
         if (photos.length > 0) {
             //crea le promises per il Promise.all
@@ -425,12 +428,16 @@ const index = () => {
         }
 
 
-
         try {
             let photosFileIDs: string[] = [];
+
             if (promises.length > 0) {
+                console.log('eccolo');
+
                 photosFileIDs = await Promise.all(promises);
             }
+            console.log(photosFileIDs);
+
             let photosURLToUpload: string[] = [];
             let indexPhoto = 0
             for (const photo of variation?.photos) {
@@ -446,6 +453,7 @@ const index = () => {
 
             //controllo che le foto siano di lunghezza superiore a 1
             if (photosURLToUpload.length <= 0) {
+                setIsLoadingVariationCard(undefined)
                 return addToast({ position: 'top', title: `Non possiamo aggiornare una variante di colore senza foto`, status: 'error', duration: 3000, isClosable: true })
 
             }
@@ -458,14 +466,15 @@ const index = () => {
                     }
                 }
             })
-            addToast({ position: 'top', title: `Prodotto aggiornato!`, status: 'success', duration: 3000, isClosable: true })
+            setIsLoadingVariationCard(undefined)
+            return addToast({ position: 'top', title: `Prodotto aggiornato!`, status: 'success', duration: 3000, isClosable: true })
 
 
 
             //mettere alert per creazione avvenuta con successo
 
         } catch (e) {
-
+            return setIsLoadingVariationCard(undefined)
         }
 
     }, [])
@@ -621,8 +630,10 @@ const index = () => {
                                             deleteCard={(variation: Variation) => {
                                                 setModalVariationToDelete(variation)
                                             }}
+                                            isLoading={index === isLoadingVariationCard}
                                             editCard={(newVariation: VariationCard) => {
                                                 if (!isProductVariationChanged(variation, newVariation)) return
+                                                setIsLoadingVariationCard(index)
                                                 handleEditCard(newVariation, variation.id)
                                             }}
                                             category={sizeTypeSelected}
@@ -652,7 +663,6 @@ const index = () => {
                                 </Button>)
                                 : (
                                     <div
-                                        key={Math.random()}
                                         className='mb-4'
                                     >
                                         <AddColorToProduct
